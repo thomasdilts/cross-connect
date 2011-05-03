@@ -1,5 +1,0 @@
-c:\users\tds.es\documents\visual studio 2010\Projects\Sword\Lucerne\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\tds.ES\Documents\Visual Studio 2010\Projects\Sword\Lucerne\Bin\Debug\Lucerne.dll
-C:\Users\tds.ES\Documents\Visual Studio 2010\Projects\Sword\Lucerne\Bin\Debug\Lucerne.pdb
-C:\Users\tds.ES\Documents\Visual Studio 2010\Projects\Sword\Lucerne\obj\Debug\Lucerne.dll
-C:\Users\tds.ES\Documents\Visual Studio 2010\Projects\Sword\Lucerne\obj\Debug\Lucerne.pdb

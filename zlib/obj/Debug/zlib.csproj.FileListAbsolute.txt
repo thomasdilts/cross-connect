@@ -1,5 +1,0 @@
-C:\Users\tds.ES\documents\visual studio 2010\Projects\Sword\zlib\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\tds.ES\documents\visual studio 2010\Projects\Sword\zlib\Bin\Debug\zlib.dll
-C:\Users\tds.ES\documents\visual studio 2010\Projects\Sword\zlib\Bin\Debug\zlib.pdb
-C:\Users\tds.ES\documents\visual studio 2010\Projects\Sword\zlib\obj\Debug\zlib.dll
-C:\Users\tds.ES\documents\visual studio 2010\Projects\Sword\zlib\obj\Debug\zlib.pdb
