@@ -109,7 +109,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="hs.tlcportal.viewmodels.template.pfx" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
   </ItemGroup>
