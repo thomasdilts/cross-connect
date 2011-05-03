@@ -1,0 +1,62 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="CrossConnect.MainPageSplit"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768" 
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:local="clr-namespace:CrossConnect"
+    shell:SystemTray.IsVisible="True" xmlns:my="clr-namespace:CrossConnect"  
+    Unloaded="PhoneApplicationPage_Unloaded"
+    Loaded="MainPage_Loaded">
+    
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+
+    <Grid Name="grid1" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="30"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" ></RowDefinition>
+            <RowDefinition x:Name="MenuRow" Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid x:Name="LayoutRoot" Background="Transparent" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
+            
+        </Grid>
+        <local:ImageButton Click="ShowMenu_Click" Image="/Images/dark/appbar.people.2.rest.png" PressedImage="/Images/dark/appbar.people.2.pressed.rest.png"  Grid.Column="1" Grid.Row="1"  x:Name="ShowMenu" Template="{StaticResource ImageButtonControlTemplate}"/>
+        <Canvas Opacity="1" Background="Gray" Height="223" HorizontalAlignment="Left"  Margin="83,800,0,0" Name="canvas1" VerticalAlignment="Top" Width="299" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" >
+            <ListBox Opacity="1"  SelectionChanged="AppMenu_SelectionChanged" Height="223" HorizontalAlignment="Left" Name="AppMenu" VerticalAlignment="Top" Width="299"  />
+        </Canvas>
+
+
+    </Grid>
+</phone:PhoneApplicationPage>
