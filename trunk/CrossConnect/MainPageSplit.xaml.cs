@@ -161,6 +161,7 @@ namespace CrossConnect
                 switch ((string)e.AddedItems[0])
                 {
                     case "Add new window":
+                        App.windowSettings.isAddNewWindowOnly = true;
                         this.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
                         break;
                     case "Download bibles":

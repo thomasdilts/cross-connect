@@ -75,16 +75,17 @@ namespace CrossConnect
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
             selectDocument.Items.Clear();
+
             foreach (var book in App.installedBooks.installedBooks)
             {
                 selectDocument.Items.Add(book.Value.Name);
-                if (App.openWindows.Count > 0 && App.openWindows[App.windowSettings.openWindowIndex].state.bookToLoad.Equals(book.Value.sbmd.Initials))
+                if (App.windowSettings.isAddNewWindowOnly == false && App.openWindows.Count > 0 && App.openWindows[App.windowSettings.openWindowIndex].state.bookToLoad.Equals(book.Value.sbmd.Initials))
                 {
                     selectDocument.SelectedIndex = selectDocument.Items.Count - 1;
                 }
             }
             System.Windows.Visibility visibility= System.Windows.Visibility.Visible;
-            if(App.openWindows.Count == 0)
+            if(App.openWindows.Count == 0 || App.windowSettings.isAddNewWindowOnly)
             {
                 visibility=System.Windows.Visibility.Collapsed;
             }

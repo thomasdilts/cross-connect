@@ -268,6 +268,7 @@ function notify(e)
         private void butMenu_Click(object sender, RoutedEventArgs e)
         {
             App.windowSettings.openWindowIndex = state.curIndex;
+            App.windowSettings.isAddNewWindowOnly = false;
             MainPageSplit parent = (MainPageSplit)((Grid)((Grid)this.Parent).Parent).Parent;
             parent.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
         }

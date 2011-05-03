@@ -44,6 +44,7 @@ namespace CrossConnect
         public struct WindowSettingsSpec
         {
             public int openWindowIndex;
+            public bool isAddNewWindowOnly;
         }
         public static WindowSettingsSpec windowSettings;
 
