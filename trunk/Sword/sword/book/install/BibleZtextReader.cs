@@ -22,9 +22,9 @@ namespace book.install
     [KnownType(typeof(VersePos))]
     public class BibleZtextReader : IBrowserTextSource
     {
-        [DataMember]
+        //[DataMember] Tried it but it took 10 times longer then re-reading the mod-file
         public List<ChapterPos> chapters = new List<ChapterPos>();
-        [DataMember]
+        //[DataMember] Tried it but it took 10 times longer then re-reading the mod-file
         public List<BookPos> bookPositions = new List<BookPos>();
         [DataMember]
         public string path = "";
@@ -32,6 +32,15 @@ namespace book.install
         public string iso2DigitLangCode = "";
 
         private BibleNames bookNames=null;
+
+        public string[] getAllShortNames()
+        {
+            if (bookNames == null)
+            {
+                bookNames = new BibleNames(iso2DigitLangCode);
+            }
+            return bookNames.getAllShortNames();
+        }
 
         public string getShortName(int bookNum)
         {
@@ -57,18 +66,11 @@ namespace book.install
             relChaptNum = chaptPos.bookRelativeChapterNum;
             fullName=getFullName(bookNum);
         }
-
-        /// <summary>
-        /// Load from a file all the book and verse pointers to the bzz file so that
-        /// we can later read the bzz file quickly and efficiently.
-        /// </summary>
-        /// <param name="path">The path to where the ot.bzs,ot.bzv and ot.bzz and nt files are</param>
-        public BibleZtextReader(string path, string iso2DigitLangCode)
+        public void ReloadSettingsFile()
         {
-            this.iso2DigitLangCode = iso2DigitLangCode;
-            this.path = path;
             IsolatedStorageFile fileStorage = IsolatedStorageFile.GetUserStoreForApplication();
-
+            bookPositions = new List<BookPos>();
+            chapters = new List<ChapterPos>();
             //read the Sword index to the ot bzz file which is the bzs file
             FileStream fs = fileStorage.OpenFile(path + "ot.bzs", FileMode.Open);
             for (int i = 0; i < BOOKS_IN_OT; i++)
@@ -120,7 +122,7 @@ namespace book.install
                     }
                     //update the chapter length now that we know it
                     chapt.length = (int)(startPos - chapterStartPos) + length;
-                    
+
                     chapters.Add(chapt);
 
                     //dump a post for the chapter break
@@ -166,7 +168,7 @@ namespace book.install
                             chapt = new ChapterPos(chapterStartPos, i, j);
                             bookPositions[i].chapters.Add(chapt);
                         }
-                        chapt.verses.Add(new VersePos(startPos - chapterStartPos, length, i)); 
+                        chapt.verses.Add(new VersePos(startPos - chapterStartPos, length, i));
                     }
                     //update the chapter length now that we know it
                     chapt.length = (int)(startPos - chapterStartPos) + length;
@@ -184,6 +186,17 @@ namespace book.install
                 getShortIntFromStream(fs);
             }
             fs.Close();
+        }
+        /// <summary>
+        /// Load from a file all the book and verse pointers to the bzz file so that
+        /// we can later read the bzz file quickly and efficiently.
+        /// </summary>
+        /// <param name="path">The path to where the ot.bzs,ot.bzv and ot.bzz and nt files are</param>
+        public BibleZtextReader(string path, string iso2DigitLangCode)
+        {
+            this.iso2DigitLangCode = iso2DigitLangCode;
+            this.path = path;
+            ReloadSettingsFile();
         }
 
         /// <summary>
@@ -365,7 +378,7 @@ namespace book.install
         public const int CHAPTERS_IN_NT = 260;
 
         /// <summary> Constant for the number of chapters in each book  </summary>
-		internal static readonly short[] CHAPTERS_IN_BOOK = { 50, 40, 27, 36, 34, 24, 21, 4, 31, 24, 22, 25, 29, 36, 10, 13, 10, 42, 150, 31, 12, 8, 66, 52, 5, 48, 12, 14, 3, 9, 1, 4, 7, 3, 3, 3, 2, 14, 4, 28, 16, 24, 21, 28, 16, 16, 13, 6, 6, 4, 4, 5, 3, 6, 4, 3, 1, 13, 5, 5, 3, 5, 1, 1, 1, 22 };
+        public static readonly short[] CHAPTERS_IN_BOOK = { 50, 40, 27, 36, 34, 24, 21, 4, 31, 24, 22, 25, 29, 36, 10, 13, 10, 42, 150, 31, 12, 8, 66, 52, 5, 48, 12, 14, 3, 9, 1, 4, 7, 3, 3, 3, 2, 14, 4, 28, 16, 24, 21, 28, 16, 16, 13, 6, 6, 4, 4, 5, 3, 6, 4, 3, 1, 13, 5, 5, 3, 5, 1, 1, 1, 22 };
 
 		/// <summary> Constant for the number of verses in the Bible  </summary>
 		internal const short VERSES_IN_BIBLE = 31102;

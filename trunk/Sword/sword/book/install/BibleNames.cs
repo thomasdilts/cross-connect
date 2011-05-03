@@ -14,6 +14,10 @@ namespace book.install
         private string[] shortNames = new string[BibleZtextReader.BOOKS_IN_BIBLE];
         private string[] fullNames = new string[BibleZtextReader.BOOKS_IN_BIBLE];
 
+        public string[] getAllShortNames()
+        {
+            return shortNames;
+        }
         public BibleNames(string isoLang2digitCode)
         {
             Assembly assem = Assembly.GetExecutingAssembly();

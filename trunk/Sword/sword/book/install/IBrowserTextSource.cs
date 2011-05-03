@@ -17,6 +17,7 @@ namespace book.install
 
         string getFullName(int bookNum);
         void getInfo(int chaptNum, out int bookNum, out int relChaptNum, out string fullName);
-
+        string[] getAllShortNames();
+        void ReloadSettingsFile();
     }
 }

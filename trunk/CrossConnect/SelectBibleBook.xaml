@@ -54,12 +54,7 @@
 
         <ScrollViewer  Grid.Row="2" Name="scrollViewer1" >
             <Grid x:Name="ScrollContentGrid" Background="Transparent">
-                <Grid.ColumnDefinitions>
 
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-
-                </Grid.RowDefinitions>
 
              </Grid>
         </ScrollViewer>

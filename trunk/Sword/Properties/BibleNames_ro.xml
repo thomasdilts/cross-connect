@@ -59,11 +59,11 @@
 <book keynumber="56" short="Fili" full="Filimon" />
 <book keynumber="57" short="Evre" full="Evrei" />
 <book keynumber="58" short="Iaco" full="Iacov" />
-<book keynumber="59" short="IPet" full="I Petru" />
-<book keynumber="60" short="IIPe" full="II Petru" />
-<book keynumber="61" short="IIoa" full="I Ioan" />
-<book keynumber="62" short="IIIo" full="II Ioan" />
-<book keynumber="63" short="IIII" full="III Ioan" />
+<book keynumber="59" short="1Pet" full="I Petru" />
+<book keynumber="60" short="2Pe" full="II Petru" />
+<book keynumber="61" short="1Ioa" full="I Ioan" />
+<book keynumber="62" short="2Ioa" full="II Ioan" />
+<book keynumber="63" short="3Ioa" full="III Ioan" />
 <book keynumber="64" short="Iuda" full="Iuda" />
 <book keynumber="65" short="Apoc" full="Apocalipsa" />
 </biblenames>

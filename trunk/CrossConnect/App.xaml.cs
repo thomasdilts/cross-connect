@@ -30,17 +30,6 @@ namespace CrossConnect
 
     public partial class App : Application
     {
-        public struct ButtonWindowSpecs
-        {
-            public int ButtonWidth;
-            public int ButtonHeight;
-            public int NumButtons;
-            public Color[] colors;
-            public string[] text;
-            public int buttonSelected;
-        }
-        public static ButtonWindowSpecs buttonWindow;
-
         public struct WindowSettingsSpec
         {
             public int openWindowIndex;
@@ -132,7 +121,7 @@ namespace CrossConnect
                             DataContractSerializer ser = new DataContractSerializer(typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState), types);
                             BrowserTitledWindow nextWindow = new BrowserTitledWindow();
                             nextWindow.state = (CrossConnect.BrowserTitledWindow.SerializableWindowState)ser.ReadObject(reader);
-
+                            nextWindow.state.source.ReloadSettingsFile();
                             openWindows.Add(nextWindow);
                             nextWindow.Initialize(nextWindow.state.bookToLoad, nextWindow.state.bookNum, nextWindow.state.chapterNum, nextWindow.state.windowType);
                         }

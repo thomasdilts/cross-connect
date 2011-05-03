@@ -45,25 +45,25 @@
 <book keynumber="42" short="Secu" full="Secundum Iohannem" />
 <book keynumber="43" short="Actu" full="Actus Apostolorum" />
 <book keynumber="44" short="AdRo" full="Ad Romanos" />
-<book keynumber="45" short="AdCo" full="Ad Corinthios I" />
-<book keynumber="46" short="AdCo" full="Ad Corinthios II" />
+<book keynumber="45" short="IAdCo" full="Ad Corinthios I" />
+<book keynumber="46" short="IIAdCo" full="Ad Corinthios II" />
 <book keynumber="47" short="AdGa" full="Ad Galatas" />
 <book keynumber="48" short="AdEp" full="Ad Ephesios" />
 <book keynumber="49" short="AdPh" full="Ad Philippenses" />
 <book keynumber="50" short="AdCo" full="Ad Colossenses" />
-<book keynumber="51" short="AdTh" full="Ad Thessalonicenses I" />
-<book keynumber="52" short="AdTh" full="Ad Thessalonicenses II" />
-<book keynumber="53" short="AdTi" full="Ad Timotheum I" />
-<book keynumber="54" short="AdTi" full="Ad Timotheum II" />
+<book keynumber="51" short="IAdTh" full="Ad Thessalonicenses I" />
+<book keynumber="52" short="IIAdTh" full="Ad Thessalonicenses II" />
+<book keynumber="53" short="IAdTi" full="Ad Timotheum I" />
+<book keynumber="54" short="IIAdTi" full="Ad Timotheum II" />
 <book keynumber="55" short="AdTi" full="Ad Titum" />
 <book keynumber="56" short="AdPh" full="Ad Philemonem" />
 <book keynumber="57" short="AdHe" full="Ad Hebraeos" />
 <book keynumber="58" short="Jaco" full="Jacobi" />
-<book keynumber="59" short="Petr" full="Petri I" />
-<book keynumber="60" short="Petr" full="Petri II" />
-<book keynumber="61" short="Ioha" full="Iohannis I" />
-<book keynumber="62" short="Ioha" full="Iohannis II" />
-<book keynumber="63" short="Ioha" full="Iohannis III" />
+<book keynumber="59" short="IPetr" full="Petri I" />
+<book keynumber="60" short="IIPetr" full="Petri II" />
+<book keynumber="61" short="IIoh" full="Iohannis I" />
+<book keynumber="62" short="IIIo" full="Iohannis II" />
+<book keynumber="63" short="IIIIo" full="Iohannis III" />
 <book keynumber="64" short="Juda" full="Judae" />
 <book keynumber="65" short="Apoc" full="Apocalypsis" />
 </biblenames>
