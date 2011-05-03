@@ -225,19 +225,19 @@
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Sword\Lucerne\Lucerne.csproj">
+    <ProjectReference Include="..\Lucerne\Lucerne.csproj">
       <Project>{B577714C-3D44-4D40-BA9D-D501844CF2D5}</Project>
       <Name>Lucerne</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Sword\Sword\Sword.csproj">
+    <ProjectReference Include="..\Sword\Sword.csproj">
       <Project>{CE4B6565-208F-41DA-B260-30C8758AD9F4}</Project>
       <Name>Sword</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Sword\zip2\zip2.csproj">
+    <ProjectReference Include="..\zip2\zip2.csproj">
       <Project>{460C536A-FA50-46C0-B9DA-A0B4F8546AEE}</Project>
       <Name>zip2</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Sword\zlib\zlib.csproj">
+    <ProjectReference Include="..\zlib\zlib.csproj">
       <Project>{EA329551-869B-40A5-BC2A-A415E35A9D98}</Project>
       <Name>zlib</Name>
     </ProjectReference>

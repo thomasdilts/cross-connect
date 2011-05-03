@@ -3,3 +3,8 @@ C:\Users\tds.ES\Documents\Visual Studio 2010\Projects\Sword\zip2\Bin\Debug\zip2.
 C:\Users\tds.ES\Documents\Visual Studio 2010\Projects\Sword\zip2\Bin\Debug\zip2.pdb
 C:\Users\tds.ES\Documents\Visual Studio 2010\Projects\Sword\zip2\obj\Debug\zip2.dll
 C:\Users\tds.ES\Documents\Visual Studio 2010\Projects\Sword\zip2\obj\Debug\zip2.pdb
+C:\Users\tds.ES\Desktop\CrossConnect\zip2\Bin\Debug\zip2.dll
+C:\Users\tds.ES\Desktop\CrossConnect\zip2\Bin\Debug\zip2.pdb
+C:\Users\tds.ES\Desktop\CrossConnect\zip2\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\tds.ES\Desktop\CrossConnect\zip2\obj\Debug\zip2.dll
+C:\Users\tds.ES\Desktop\CrossConnect\zip2\obj\Debug\zip2.pdb
