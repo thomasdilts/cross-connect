@@ -34,6 +34,7 @@ namespace CrossConnect
         {
             public int openWindowIndex;
             public bool isAddNewWindowOnly;
+            public bool skipWindowSettings;
         }
         public static WindowSettingsSpec windowSettings;
 
@@ -113,10 +114,10 @@ namespace CrossConnect
                         using (XmlReader reader = XmlReader.Create(sr, settings))
                         {
                             Type[] types = new Type[] { typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState), 
-                                typeof(book.install.BibleZtextReader.VersePos),
-                                typeof(book.install.BibleZtextReader.ChapterPos),
-                                typeof(book.install.BibleZtextReader.BookPos),
-                                typeof(book.install.BibleZtextReader),
+                                typeof(SwordBackend.BibleZtextReader.VersePos),
+                                typeof(SwordBackend.BibleZtextReader.ChapterPos),
+                                typeof(SwordBackend.BibleZtextReader.BookPos),
+                                typeof(SwordBackend.BibleZtextReader),
                             };
                             DataContractSerializer ser = new DataContractSerializer(typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState), types);
                             BrowserTitledWindow nextWindow = new BrowserTitledWindow();
@@ -176,10 +177,10 @@ namespace CrossConnect
             for (int i = 0; i < openWindows.Count(); i++)
             {
                 Type[] types = new Type[] { typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState), 
-                    typeof(book.install.BibleZtextReader.VersePos),
-                    typeof(book.install.BibleZtextReader.ChapterPos),
-                    typeof(book.install.BibleZtextReader.BookPos),
-                    typeof(book.install.BibleZtextReader),
+                    typeof(SwordBackend.BibleZtextReader.VersePos),
+                    typeof(SwordBackend.BibleZtextReader.ChapterPos),
+                    typeof(SwordBackend.BibleZtextReader.BookPos),
+                    typeof(SwordBackend.BibleZtextReader),
                 };
                 DataContractSerializer ser = new DataContractSerializer(typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState), types);
                 using (StringWriter sw = new StringWriter())

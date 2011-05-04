@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
-using book.install;
+using SwordBackend;
 
 namespace CrossConnect
 {
@@ -22,7 +22,7 @@ namespace CrossConnect
         {
             InitializeComponent();
         }
-        book.install.WebInstaller webInst = null;
+        SwordBackend.WebInstaller webInst = null;
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
@@ -35,9 +35,9 @@ namespace CrossConnect
             selectServer.Items.Clear();
 
             // Ask the Install Manager for a map of all known module sites
-            IDictionary<string, book.install.WebInstaller> installers = imanager.Installers;
+            IDictionary<string, SwordBackend.WebInstaller> installers = imanager.Installers;
 
-            foreach (KeyValuePair<string, book.install.WebInstaller> mapEntry in installers)
+            foreach (KeyValuePair<string, SwordBackend.WebInstaller> mapEntry in installers)
             {
                 selectServer.Items.Add(mapEntry.Key.ToString());
             }
@@ -48,7 +48,7 @@ namespace CrossConnect
         {
             butDownload.Visibility = System.Windows.Visibility.Collapsed;
             // Ask the Install Manager for a map of all known module sites
-            IDictionary<string, book.install.WebInstaller> installers = imanager.Installers;
+            IDictionary<string, SwordBackend.WebInstaller> installers = imanager.Installers;
             webInst=installers[selectServer.SelectedItem.ToString()];
             progressBarGetBookList.Visibility = System.Windows.Visibility.Visible;
             progressBarGetBookList.Maximum = 100;
@@ -145,7 +145,7 @@ namespace CrossConnect
         {
             if (sb.isLoaded)
             {
-                App.installedBooks.AddBook(sb.sbmd.Initials);
+                App.installedBooks.AddBook(sb.sbmd.internalName);
                 sb = null;
             }
             this.NavigationService.GoBack();

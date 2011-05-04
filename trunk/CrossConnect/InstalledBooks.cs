@@ -3,7 +3,7 @@ using System.Net;
 
 using System.IO.IsolatedStorage;
 using System.Collections.Generic;
-using book.install;
+using SwordBackend;
 
 namespace CrossConnect
 {
@@ -23,12 +23,12 @@ namespace CrossConnect
             }
 
         }
-        public void AddBook(string initials,bool doSave=true)
+        public void AddBook(string modPath, bool doSave = true)
         {
-            installedBooks[initials] = new SwordBook(initials);
-            if (!installedBooks[initials].isLoaded)
+            installedBooks[modPath] = new SwordBook(modPath);
+            if (!installedBooks[modPath].isLoaded)
             {
-                installedBooks.Remove(initials);
+                installedBooks.Remove(modPath);
             }
             if (doSave)
             {

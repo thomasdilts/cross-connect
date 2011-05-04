@@ -5,9 +5,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossConnect", "CrossConnec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lucerne", "Lucerne\Lucerne.csproj", "{B577714C-3D44-4D40-BA9D-D501844CF2D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sword", "Sword\Sword.csproj", "{CE4B6565-208F-41DA-B260-30C8758AD9F4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwordBackend", "Sword\SwordBackend.csproj", "{CE4B6565-208F-41DA-B260-30C8758AD9F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zip2", "zip2\zip2.csproj", "{460C536A-FA50-46C0-B9DA-A0B4F8546AEE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zip", "zip2\Zip.csproj", "{460C536A-FA50-46C0-B9DA-A0B4F8546AEE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zlib", "zlib\zlib.csproj", "{EA329551-869B-40A5-BC2A-A415E35A9D98}"
 EndProject

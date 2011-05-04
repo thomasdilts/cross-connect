@@ -12,7 +12,7 @@ using System.Windows.Shapes;
 using System.Text;
 using System.Threading;
 using Microsoft.Phone.Controls;
-using book.install;
+using SwordBackend;
 using System.Runtime.Serialization;
 using System.Windows.Navigation;
 
@@ -65,7 +65,7 @@ namespace CrossConnect
             state.windowType = windowType;
             foreach (var book in App.installedBooks.installedBooks)
             {
-                if (book.Value.sbmd.Initials.Equals(bookToLoad))
+                if (book.Value.sbmd.internalName.Equals(bookToLoad))
                 {
                     string bookPath = book.Value.sbmd.getCetProperty(ConfigEntryType.DATA_PATH).ToString().Substring(2);
                     try
@@ -270,6 +270,7 @@ function notify(e)
             App.windowSettings.openWindowIndex = state.curIndex;
             App.windowSettings.isAddNewWindowOnly = false;
             MainPageSplit parent = (MainPageSplit)((Grid)((Grid)this.Parent).Parent).Parent;
+            App.windowSettings.skipWindowSettings = false;
             parent.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
         }
 

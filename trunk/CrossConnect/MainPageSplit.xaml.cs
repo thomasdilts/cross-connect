@@ -49,6 +49,7 @@ namespace CrossConnect
                 }
                 else
                 {
+                    App.windowSettings.skipWindowSettings = false;
                     this.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
                 }
             }
@@ -162,6 +163,7 @@ namespace CrossConnect
                 {
                     case "Add new window":
                         App.windowSettings.isAddNewWindowOnly = true;
+                        App.windowSettings.skipWindowSettings = false;
                         this.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
                         break;
                     case "Download bibles":

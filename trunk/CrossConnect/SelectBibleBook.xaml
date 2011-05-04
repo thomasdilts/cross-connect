@@ -12,7 +12,7 @@
     SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    Loaded="PhoneApplicationPage_Loaded"
+    Loaded="PhoneApplicationPage_Loaded" OrientationChanged="PhoneApplicationPage_OrientationChanged"
     shell:SystemTray.IsVisible="True" xmlns:my="clr-namespace:CrossConnect">
 
     <toolkit:TransitionService.NavigationInTransition>

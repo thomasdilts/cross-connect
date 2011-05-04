@@ -15,6 +15,7 @@ namespace CrossConnect
 {
     public partial class SelectBibleBook : PhoneApplicationPage
     {
+        private ButtonWindowSpecs usingNowSpec = null;
         public class ButtonWindowSpecs
         {
             public ButtonWindowSpecs(
@@ -46,11 +47,25 @@ namespace CrossConnect
         }
         public void reloadWindow(ButtonWindowSpecs buttonWindow)
         {
+            usingNowSpec = buttonWindow;
             ScrollContentGrid.Children.Clear();
             ScrollContentGrid.ColumnDefinitions.Clear();
             ScrollContentGrid.RowDefinitions.Clear();
+            double screenWidth=0;
+            double screenHeight=0;
+            PageOrientation orient=(App.Current.RootVisual as PhoneApplicationFrame).Orientation;
+            if (orient == PageOrientation.Portrait || orient == PageOrientation.PortraitDown || orient == PageOrientation.PortraitUp || orient == PageOrientation.None)
+            {
+                screenWidth = App.Current.Host.Content.ActualWidth;
+                screenHeight = App.Current.Host.Content.ActualHeight;
+            }
+            else
+            {
+                screenWidth = App.Current.Host.Content.ActualHeight;
+                screenHeight = App.Current.Host.Content.ActualWidth;
+            }
 
-            int numCols = (int)App.Current.Host.Content.ActualWidth / buttonWindow.ButtonWidth;
+            int numCols = (int)screenWidth / buttonWindow.ButtonWidth;
             if (numCols == 0)
             {
                 numCols = 1;
@@ -100,17 +115,19 @@ namespace CrossConnect
             int chapter=0;
             for (int i = 0; i < App.openWindows[App.windowSettings.openWindowIndex].state.bookNum; i++)
             {
-                chapter+=book.install.BibleZtextReader.CHAPTERS_IN_BOOK[i];
+                chapter+=SwordBackend.BibleZtextReader.CHAPTERS_IN_BOOK[i];
             }
             App.openWindows[App.windowSettings.openWindowIndex].state.chapterNum = (int)((Button)sender).Tag + chapter;
+            App.windowSettings.skipWindowSettings = true;
             NavigationService.GoBack();
         }
         private void First_Click(object sender, RoutedEventArgs e)
         {
+            PageTitle.Text = "Select chapter";
             //set up the array for the chapter selection
             int bookNum = (int)((Button)sender).Tag;
             App.openWindows[App.windowSettings.openWindowIndex].state.bookNum = bookNum;
-            int chapters = book.install.BibleZtextReader.CHAPTERS_IN_BOOK[bookNum];
+            int chapters = SwordBackend.BibleZtextReader.CHAPTERS_IN_BOOK[bookNum];
             int butWidth = 96;
             int butHeight = 70;
             if (chapters < 50)
@@ -156,8 +173,9 @@ namespace CrossConnect
         }
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
+            PageTitle.Text = "Select book";
             reloadWindow(new ButtonWindowSpecs(
-                96,
+                App.openWindows[App.windowSettings.openWindowIndex].state.source.existsShortNames?96:230,
                 70,
                 66,
                 new Color[] { Colors.Blue, Colors.Blue, Colors.Blue, Colors.Blue, Colors.Blue, 
@@ -172,6 +190,11 @@ namespace CrossConnect
                 Colors.Yellow},
                 App.openWindows[App.windowSettings.openWindowIndex].state.source.getAllShortNames(),
                 First_Click));
+        }
+
+        private void PhoneApplicationPage_OrientationChanged(object sender, OrientationChangedEventArgs e)
+        {
+            reloadWindow(usingNowSpec);
         }
     }
 }

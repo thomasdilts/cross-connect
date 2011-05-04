@@ -33,14 +33,14 @@ namespace CrossConnect
         private void SetBookChoosen()
         {
             WINDOW_TYPE selectedType;
-            book.install.SwordBook bookSelected;
+            SwordBackend.SwordBook bookSelected;
             GetSelectedData(out selectedType, out bookSelected);
             var state=App.openWindows[App.windowSettings.openWindowIndex].state;
             state.windowType = selectedType;
-            state.bookToLoad = bookSelected.sbmd.Initials;
+            state.bookToLoad = bookSelected.sbmd.internalName;
             App.openWindows[App.windowSettings.openWindowIndex].Initialize(state.bookToLoad, state.bookNum, state.chapterNum, state.windowType);
         }
-        private void GetSelectedData(out WINDOW_TYPE selectedType, out book.install.SwordBook bookSelected)
+        private void GetSelectedData(out WINDOW_TYPE selectedType, out SwordBackend.SwordBook bookSelected)
         {
             bookSelected = null;
             if (selectDocument.SelectedItem != null)
@@ -74,12 +74,18 @@ namespace CrossConnect
         }
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
+            if (App.windowSettings.skipWindowSettings)
+            {
+                //request to skip this window.
+                this.NavigationService.GoBack();
+            }
+
             selectDocument.Items.Clear();
 
             foreach (var book in App.installedBooks.installedBooks)
             {
                 selectDocument.Items.Add(book.Value.Name);
-                if (App.windowSettings.isAddNewWindowOnly == false && App.openWindows.Count > 0 && App.openWindows[App.windowSettings.openWindowIndex].state.bookToLoad.Equals(book.Value.sbmd.Initials))
+                if (App.windowSettings.isAddNewWindowOnly == false && App.openWindows.Count > 0 && App.openWindows[App.windowSettings.openWindowIndex].state.bookToLoad.Equals(book.Value.sbmd.internalName))
                 {
                     selectDocument.SelectedIndex = selectDocument.Items.Count - 1;
                 }
@@ -110,9 +116,9 @@ namespace CrossConnect
         private void butAddNew_Click(object sender, RoutedEventArgs e)
         {
             WINDOW_TYPE selectedType;
-            book.install.SwordBook bookSelected;
+            SwordBackend.SwordBook bookSelected;
             GetSelectedData(out selectedType, out bookSelected);
-            App.AddWindow(bookSelected.sbmd.Initials, 0, 0, selectedType);
+            App.AddWindow(bookSelected.sbmd.internalName, 0, 0, selectedType);
             this.NavigationService.GoBack();
         }
 
