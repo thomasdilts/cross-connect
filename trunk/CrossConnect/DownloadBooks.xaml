@@ -46,13 +46,13 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Margin="12,5,0,0" Height="63" VerticalAlignment="Top">
+        <StackPanel  Grid.Row="0" x:Name="TitlePanel" Margin="12,5,0,0" Height="63" VerticalAlignment="Top">
             <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock x:Name="PageTitle" Text="Download books" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
         </StackPanel>
-
+        <ScrollViewer  Grid.Row="1" Name="scrollViewer1" >
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1">
+        <Grid x:Name="ContentPanel" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -94,7 +94,7 @@
             </Grid>
             <ProgressBar Grid.Row="5" Name="progressBarGetBook" Height="60" />
         </Grid>
-        
+        </ScrollViewer>
     </Grid>
 
 

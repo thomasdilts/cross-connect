@@ -110,7 +110,7 @@ namespace CrossConnect
         private void butSearch_Click(object sender, RoutedEventArgs e)
         {
             SetBookChoosen();
-            this.NavigationService.Navigate(new Uri("/SearchSelection.xaml", UriKind.Relative));
+            this.NavigationService.Navigate(new Uri("/Search.xaml", UriKind.Relative));
         }
 
         private void butAddNew_Click(object sender, RoutedEventArgs e)

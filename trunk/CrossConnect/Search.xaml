@@ -41,30 +41,30 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Margin="12,5,0,0" Height="63" VerticalAlignment="Top">
+        <StackPanel Grid.Row="0" x:Name="TitlePanel" Margin="12,5,0,0" Height="63" VerticalAlignment="Top">
             <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock x:Name="PageTitle" Text="Search" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
         </StackPanel>
-
-        <!--ContentPanel - place additional content here-->
-        <StackPanel x:Name="ContentPanel" Grid.Row="2" >
-            <TextBox  Name="SearchText" Text=""  />
-            <TextBlock x:Name="SearchWhereText" Text="Search there" Margin="9,0,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
-            <RadioButton Margin="0,-10,0,-10" IsChecked="True" GroupName="SearchWhere" Content="Whole bible"  Name="wholeBible" />
-            <RadioButton Margin="0,-10,0,-10" GroupName="SearchWhere" Content="Old Testement"  Name="oldTestement" />
-            <RadioButton Margin="0,-10,0,-10" GroupName="SearchWhere" Content="New Testement"  Name="newTEstement" />
-            <RadioButton Margin="0,-10,0,-10" GroupName="SearchWhere" Content="Chapter"  Name="Chapter" />
-            <TextBlock x:Name="SearchForText" Text="Search for" Margin="9,20,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
-            <RadioButton Margin="0,-10,0,-10" IsChecked="True" GroupName="SearchFor" Content="At least one word"  Name="AnyWord" />
-            <RadioButton Margin="0,-10,0,-10" GroupName="SearchFor" Content="All words"  Name="AllWords" />
-            <RadioButton Margin="0,-10,0,-10" GroupName="SearchFor" Content="Entire phrase"  Name="Phrase" />
-            <Button Content="Search" Grid.Row="3"  Name="butSearch"  Click="butSearch_Click" />
-        </StackPanel>
+        <ScrollViewer  Grid.Row="1" Name="scrollViewer1" >
+            <!--ContentPanel - place additional content here-->
+            <StackPanel x:Name="ContentPanel" >
+                <TextBox  Name="SearchText" Text=""  />
+                <TextBlock x:Name="SearchWhereText" Text="Search there" Margin="9,0,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
+                <RadioButton Margin="0,-10,0,-10" IsChecked="True" GroupName="SearchWhere" Content="Whole bible"  Name="wholeBible" />
+                <RadioButton Margin="0,-10,0,-10" GroupName="SearchWhere" Content="Old Testement"  Name="oldTestement" />
+                <RadioButton Margin="0,-10,0,-10" GroupName="SearchWhere" Content="New Testement"  Name="newTEstement" />
+                <RadioButton Margin="0,-10,0,-10" GroupName="SearchWhere" Content="Chapter"  Name="Chapter" />
+                <TextBlock x:Name="SearchForText" Text="Search for" Margin="9,20,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
+                <RadioButton Margin="0,-10,0,-10" IsChecked="True" GroupName="SearchFor" Content="At least one word"  Name="AnyWord" />
+                <RadioButton Margin="0,-10,0,-10" GroupName="SearchFor" Content="All words"  Name="AllWords" />
+                <RadioButton Margin="0,-10,0,-10" GroupName="SearchFor" Content="Entire phrase"  Name="Phrase" />
+                <Button Content="Search" Grid.Row="3"  Name="butSearch"  Click="butSearch_Click" />
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 
 </phone:PhoneApplicationPage>

@@ -6,6 +6,8 @@ using ComponentAce.Compression.Libs.zlib;
 using System.Globalization;
 using System.Runtime.Serialization;
 using System.IO.IsolatedStorage;
+using System.Text;
+using System.Xml;
 
 
 namespace SwordBackend
@@ -30,6 +32,8 @@ namespace SwordBackend
         public string path = "";
         [DataMember]
         public string iso2DigitLangCode = "";
+        [DataMember]
+        public bool isIsoEncoding = false;
 
         private BibleNames bookNames=null;
 
@@ -256,19 +260,222 @@ namespace SwordBackend
         /// we can later read the bzz file quickly and efficiently.
         /// </summary>
         /// <param name="path">The path to where the ot.bzs,ot.bzv and ot.bzz and nt files are</param>
-        public BibleZtextReader(string path, string iso2DigitLangCode)
+        public BibleZtextReader(string path, string iso2DigitLangCode,bool isIsoEncoding)
         {
             this.iso2DigitLangCode = iso2DigitLangCode;
             this.path = path;
+            this.isIsoEncoding = isIsoEncoding;
             ReloadSettingsFile();
         }
 
         /// <summary>
-        /// Return the entire chapter
+        /// Return a raw verse.  This is a very ineffective function so use it with caution.
+        /// </summary>
+        /// <param name="chapterNumber">Chaptern number beginning with zero for the first chapter and 1188 for the last chapter in the bible.</param>
+        /// <param name="verseNumber">Verse number beginning with zero for the first verse</param>
+        /// <returns>Verse raw</returns>   
+        public string GetVerseRaw(int chapterNumber,int verseNumber)
+        {
+            byte[] chapterBuffer = getChapterBytes(chapterNumber);
+            VersePos verse = chapters[chapterNumber].verses[verseNumber];
+            return System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, (int)verse.startPos, verse.length);
+        }
+
+        /// <summary>
+        /// Return the entire chapter without notes and with lots of html markup
         /// </summary>
         /// <param name="bookNumber">Chaptern number beginning with zero for the first chapter and 1188 for the last chapter in the bible.</param>
-        /// <returns>Entire Chapter</returns>
-        public string GetChapter(int chapterNumber)
+        /// <param name="htmlBackgroundColor"></param>
+        /// <param name="htmlForegroundColor"></param>
+        /// <param name="htmlFontSize"></param>
+        /// <param name="htmlPhoneAccentColor"></param>
+        /// <returns>Entire Chapter without notes and with lots of html markup for each verse</returns>
+        public string GetChapterHtml(int chapterNumber,  string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize)
+        {
+            byte[] chapterBuffer = getChapterBytes(chapterNumber);
+            string all = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
+            StringBuilder htmlChapter = new StringBuilder();
+            ChapterPos versesForChapterPositions = chapters[chapterNumber];
+
+            string chapterStartHtml = "<html>" + HtmlHeader(htmlBackgroundColor, htmlForegroundColor,htmlPhoneAccentColor, htmlFontSize);
+            string chapterEndHtml = "</body></html>";
+            for (int i = 0; i < versesForChapterPositions.verses.Count; i++)
+            {
+                VersePos verse = versesForChapterPositions.verses[i];
+
+                string verseTxt = parseOsisText(" <sup>" + (i+1) + "</sup><a name=\"VERSE_" + i + "\"></a><a class=\"normalcolor\"href=\"#\" onclick=\"window.external.Notify('VERSE=" + i + "'); event.returnValue=false; return false;\" > ", chapterBuffer, (int)verse.startPos, verse.length, this.isIsoEncoding);
+                //remove and replace unwanted texts
+                //xxxx
+                //create the verse
+                htmlChapter.Append(
+                    chapterStartHtml
+                    + verseTxt
+                    + "</a>");
+                chapterStartHtml="";
+            }
+            htmlChapter.Append(chapterEndHtml);
+            return htmlChapter.ToString();
+        }
+
+        private static byte[] suffix = System.Text.UTF8Encoding.UTF8.GetBytes("\n</versee>");
+        private static byte[] prefix = System.Text.UTF8Encoding.UTF8.GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<versee>");
+        private static byte[] prefixIso = System.Text.UTF8Encoding.UTF8.GetBytes("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<versee>");
+        private static void appendText(string text,StringBuilder plainText,StringBuilder noteText, bool isInElement)
+        {
+            if (!isInElement)
+            {
+                plainText.Append(text);
+            }
+            else
+            {
+                noteText.Append(text);
+            }
+        }
+
+        private static string parseOsisText(string chapterNumber, byte[] xmlbytes, int startPos, int length, bool isIsoText)
+        {
+            MemoryStream ms = new MemoryStream();
+            if(isIsoText)
+            {
+                ms.Write(prefixIso, 0, prefixIso.Length);
+            }
+            else
+            {
+                ms.Write(prefix, 0, prefix.Length);
+            }
+            
+            ms.Write(xmlbytes, startPos, length);
+            ms.Write(suffix, 0, suffix.Length);
+            ms.Position = 0;
+            StringBuilder plainText = new StringBuilder();
+            StringBuilder noteText = new StringBuilder();
+            XmlReaderSettings settings = new XmlReaderSettings();
+            settings.IgnoreWhitespace=false;
+            bool isInElement = false;
+            bool isInTitle = false;
+            using (XmlReader reader = XmlReader.Create(ms, settings))
+            {
+                try
+                {
+                    // Parse the file and get each of the nodes.
+                    while (reader.Read())
+                    {
+                        switch (reader.NodeType)
+                        {
+                            case XmlNodeType.Element:
+                                switch (reader.Name)
+                                {
+
+                                    case "lb":
+                                        if (reader.HasAttributes)
+                                        {
+                                            reader.MoveToFirstAttribute();
+                                            if (reader.Name.Equals("type"))
+                                            {
+                                                if (reader.Value.Equals("x-end-paragraph"))
+                                                {
+                                                    appendText("</p>", plainText, noteText, isInElement);
+                                                }
+                                                else
+                                                {
+                                                    appendText("<p>", plainText, noteText, isInElement);
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    case "title":
+                                        isInTitle = true;
+                                        appendText("<h2>", plainText, noteText, isInElement);
+                                        break;
+                                    case "reference":
+                                        noteText.Append("<p>");
+                                        break;
+                                    case "lg":
+                                        break;
+                                    case "note":
+                                        isInElement = true;
+                                        break;
+                                    case "hi":
+                                        appendText("<i>", plainText, noteText, isInElement);
+                                        break;
+                                }
+                                break;
+                            case XmlNodeType.Text:
+                                if (!isInElement && chapterNumber.Length > 0 && !isInTitle)
+                                {
+                                    plainText.Append(chapterNumber);
+                                    chapterNumber = "";
+                                }
+                                string text = "";
+                                try
+                                {
+                                    text = reader.Value;
+                                }
+                                catch (Exception)
+                                {
+                                    text = "*error*";
+                                }
+                                appendText(text, plainText, noteText, isInElement);
+                                break;
+                            case XmlNodeType.EndElement:
+                                switch (reader.Name)
+                                {
+                                    case "title":
+                                        appendText("</h2>", plainText, noteText, isInElement);
+                                        isInTitle = false;
+                                        break;
+                                    case "reference":
+                                        noteText.Append("</p>");
+                                        break;
+                                    case "note":
+                                        isInElement = false;
+                                        break;
+                                    case "hi":
+                                        appendText("</i>", plainText, noteText, isInElement);
+                                        break;
+                                }
+                                break;
+                        }
+                    }
+                }catch(Exception)
+                {
+
+                }
+            }
+            return plainText.ToString();
+        }
+
+        private static string HtmlHeader( string htmlBackgroundColor, string htmlForegroundColor,string htmlPhoneAccentColor, double htmlFontSize)
+        {
+            var head = new StringBuilder();
+            head.Append("<head>");
+            /*head.Append(string.Format(
+                "<meta name=\"viewport\" value=\"width={0}\" user-scalable=\"no\">",
+                viewportWidth));*/
+            head.Append("<style>");
+            head.Append("html { -ms-text-size-adjust:150% }");
+            head.Append(string.Format(
+                "body {{background:{0};color:{1};font-family:'Segoe WP';font-size:{2}pt;margin:0;padding:0 }}",
+                htmlBackgroundColor,
+                htmlForegroundColor,
+                htmlFontSize));
+            head.Append(string.Format(
+                "a {{color:{0};text-decoration:none;}}",
+                htmlForegroundColor));
+            //                GetBrowserColor("PhoneAccentColor")));
+            
+
+            head.Append(string.Format(
+                ".highlightedcolor {{ color: {0}; }} .normalcolor:hover {{ color: {1}; }} ",
+                htmlPhoneAccentColor,
+                htmlPhoneAccentColor));
+
+            head.Append("</style>");
+            // head.Append(NotifyScript);
+            head.Append("</head>");
+            return head.ToString();
+        }
+        private byte[] getChapterBytes(int chapterNumber)
         {
             IsolatedStorageFile fileStorage = IsolatedStorageFile.GetUserStoreForApplication();
             ChapterPos versesForChapterPositions = chapters[chapterNumber];
@@ -284,7 +491,7 @@ namespace SwordBackend
                 catch (Exception)
                 {
                     //does not exist
-                    return "Does not exist";
+                    return System.Text.UTF8Encoding.UTF8.GetBytes("Does not exist");
                 }
             }
             else
@@ -296,8 +503,8 @@ namespace SwordBackend
                 catch (Exception)
                 {
                     //does not exist
-                    return "Does not exist";
-                } 
+                    return System.Text.UTF8Encoding.UTF8.GetBytes("Does not exist");
+                }
             }
 
             //adjust the start postion of the stream to where this book begins.  
@@ -349,11 +556,22 @@ namespace SwordBackend
                     }
                 }
             }
-            catch (Exception )
+            catch (Exception)
             {
             }
             fs.Close();
             zipStream.Close();
+            return chapterBuffer;
+        }
+
+        /// <summary>
+        /// Return the entire chapter
+        /// </summary>
+        /// <param name="bookNumber">Chaptern number beginning with zero for the first chapter and 1188 for the last chapter in the bible.</param>
+        /// <returns>Entire Chapter</returns>
+        public string GetChapterRaw(int chapterNumber)
+        {
+            byte[] chapterBuffer=getChapterBytes(chapterNumber);
             string retValue = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
             return retValue;
         }

@@ -41,7 +41,7 @@ namespace CrossConnect
             [DataMember]
             public int numRowsIown = 1;
             [DataMember]
-            public string bookToLoad ="";
+            public string bookToLoad = "";
             [DataMember]
             public int bookNum = 1;
             [DataMember]
@@ -68,9 +68,10 @@ namespace CrossConnect
                 if (book.Value.sbmd.internalName.Equals(bookToLoad))
                 {
                     string bookPath = book.Value.sbmd.getCetProperty(ConfigEntryType.DATA_PATH).ToString().Substring(2);
+                    bool isIsoEncoding=!book.Value.sbmd.getCetProperty(ConfigEntryType.ENCODING).Equals("UTF-8");
                     try
                     {
-                        state.source = new BibleZtextReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code);
+                        state.source = new BibleZtextReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
                     }
                     catch (Exception)
                     {
@@ -96,8 +97,13 @@ namespace CrossConnect
         {
             if (state.source != null)
             {
-                string html = state.source.GetChapter(state.chapterNum);
-                webBrowser1.NavigateToString(html);
+                webBrowser1.NavigateToString(state.source.GetChapterHtml(
+                    state.chapterNum,
+                    GetBrowserColor("PhoneBackgroundColor"),
+                    GetBrowserColor("PhoneForegroundColor"),
+                    GetBrowserColor("PhoneAccentColor"),
+                    (double)Application.Current.Resources["PhoneFontSizeNormal"]));
+
                 int bookNum;
                 int relChaptNum;
                 string fullName;

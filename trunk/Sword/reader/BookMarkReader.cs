@@ -84,8 +84,8 @@ namespace SwordBackend
         /// we can later read the bzz file quickly and efficiently.
         /// </summary>
         /// <param name="path">The path to where the ot.bzs,ot.bzv and ot.bzz and nt files are</param>
-        public BookMarkReader(string path, string iso2DigitLangCode)
-            : base(path, iso2DigitLangCode)
+        public BookMarkReader(string path, string iso2DigitLangCode,bool isIsoEncoding)
+            : base(path, iso2DigitLangCode, isIsoEncoding)
         {
             this.iso2DigitLangCode = iso2DigitLangCode;
             this.path = path;
