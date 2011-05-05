@@ -39,7 +39,8 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <ScrollViewer Name="scrollViewer1" >
+        <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -51,10 +52,11 @@
             <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock x:Name="PageTitle" Text="Window settings" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
         </StackPanel>
-        <ScrollViewer  Grid.Row="1" Name="scrollViewer1" >
             <!--ContentPanel - place additional content here-->
-            <Grid x:Name="ContentPanel" >
+            <Grid Grid.Row="1" x:Name="ContentPanel" >
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -64,22 +66,23 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <toolkit:ListPicker Name="selectDocument"   Grid.Row="0"  Header="Select the document">
-                    <sys:String>dark</sys:String>
-                </toolkit:ListPicker>
-                <toolkit:ListPicker Name="selectDocumentType"  Grid.Row="1"  Header="Select the view">
+                <toolkit:ListPicker Name="selectDocumentType"  Grid.Row="0"  Header="Select the view">
                     <sys:String>Bible</sys:String>
                     <sys:String>Notes for this bible</sys:String>
                     <sys:String>History</sys:String>
                     <sys:String>Bookmarks</sys:String>
                 </toolkit:ListPicker>
+                <toolkit:ListPicker Name="selectDocument"   Grid.Row="1"  Header="Select the bible">
+                    <sys:String>dark</sys:String>
+                </toolkit:ListPicker>
                 <Button Content="Select book and chapter" Grid.Row="2"  Name="butSelectChapter"  Click="butSelectChapter_Click" />
                 <Button Content="Search" Grid.Row="3"  Name="butSearch"  Click="butSearch_Click" />
                 <Button Content="Add as a new window" Grid.Row="4"  Name="butAddNew"  Click="butAddNew_Click" />
-                <Button Content="Save" Grid.Row="5"  Name="butSave"  Click="butSave_Click" />
-                <Button Content="Cancel" Grid.Row="6"  Name="butCancel"  Click="butCancel_Click" />
+                <Button Content="Add to bookmarks" Grid.Row="5"  Name="butAddBookmarks"  Click="butAddBookmarks_Click" />
+                <Button Content="Save" Grid.Row="6"  Name="butSave"  Click="butSave_Click" />
+                <Button Content="Cancel" Grid.Row="7"  Name="butCancel"  Click="butCancel_Click" />
             </Grid>
-        </ScrollViewer>
     </Grid>
+    </ScrollViewer>
 
 </phone:PhoneApplicationPage>

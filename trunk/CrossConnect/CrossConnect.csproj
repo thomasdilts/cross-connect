@@ -63,12 +63,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BookMarkReader.cs" />
     <Compile Include="BrowserTitledWindow.xaml.cs">
       <DependentUpon>BrowserTitledWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="DownloadBooks.xaml.cs">
       <DependentUpon>DownloadBooks.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HistoryReader.cs" />
     <Compile Include="ImageButton.cs" />
     <Compile Include="InstalledBooks.cs" />
     <Compile Include="MainPageSplit.xaml.cs">

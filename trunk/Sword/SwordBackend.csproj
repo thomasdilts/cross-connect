@@ -63,8 +63,7 @@
     <Compile Include="ConfigEntry.cs" />
     <Compile Include="ConfigEntryTable.cs" />
     <Compile Include="ConfigEntryType.cs" />
-    <Compile Include="reader\BookMarkReader.cs" />
-    <Compile Include="reader\HistoryReader.cs" />
+    <Compile Include="reader\BibleNoteReader.cs" />
     <Compile Include="reader\SearchReader.cs" />
     <Compile Include="reader\IBrowserTextSource.cs" />
     <Compile Include="JSOtherMsg.cs" />

@@ -15,6 +15,10 @@ using Microsoft.Phone.Controls;
 using SwordBackend;
 using System.Runtime.Serialization;
 using System.Windows.Navigation;
+using System.IO.IsolatedStorage;
+using System.IO;
+using System.Windows.Media.Imaging;
+using System.Diagnostics;
 
 namespace CrossConnect
 {
@@ -41,7 +45,7 @@ namespace CrossConnect
             [DataMember]
             public int numRowsIown = 1;
             [DataMember]
-            public string bookToLoad = "";
+            public string bibleToLoad = "";
             [DataMember]
             public int bookNum = 1;
             [DataMember]
@@ -50,31 +54,80 @@ namespace CrossConnect
             public int verseNum = 1;
             [DataMember]
             public WINDOW_TYPE windowType = WINDOW_TYPE.WINDOW_BIBLE;
+            [DataMember]
+            public bool isSynchronized=true;
+            [DataMember]
+            public string extraHtmlUri="";
         }
         public SerializableWindowState state = new SerializableWindowState();
 
+        private string lastFileName="";
         public BrowserTitledWindow()
         {
             InitializeComponent();
         }
-        public void Initialize(string bookToLoad, int bookNum, int chapterNum, WINDOW_TYPE windowType)
+        public void SynchronizeWindow(int chapterNum, string verseNum)
         {
-            state.bookToLoad = bookToLoad;
+            if (state.isSynchronized)
+            {
+                if (this.state.chapterNum != chapterNum)
+                {
+                    this.state.chapterNum = chapterNum;
+                }
+                state.extraHtmlUri = "#VERSE_" + verseNum.Substring(6);
+                UpdateBrowser();
+            }
+        }
+        public void Initialize(string bibleToLoad, int bookNum, int chapterNum, WINDOW_TYPE windowType)
+        {
+            state.bibleToLoad = bibleToLoad;
             state.bookNum = bookNum;
             state.chapterNum = chapterNum;
             state.windowType = windowType;
-            foreach (var book in App.installedBooks.installedBooks)
+            foreach (var book in App.installedBibles.installedBibles)
             {
-                if (book.Value.sbmd.internalName.Equals(bookToLoad))
+                if (book.Value.sbmd.internalName.Equals(bibleToLoad))
                 {
                     string bookPath = book.Value.sbmd.getCetProperty(ConfigEntryType.DATA_PATH).ToString().Substring(2);
-                    bool isIsoEncoding=!book.Value.sbmd.getCetProperty(ConfigEntryType.ENCODING).Equals("UTF-8");
-                    try
+                    bool isIsoEncoding = !book.Value.sbmd.getCetProperty(ConfigEntryType.ENCODING).Equals("UTF-8");
+                    switch (windowType)
                     {
-                        state.source = new BibleZtextReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
-                    }
-                    catch (Exception)
-                    {
+                        case WINDOW_TYPE.WINDOW_BIBLE:
+                            try
+                            {
+                                state.source = new BibleZtextReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                            }
+                            catch (Exception)
+                            {
+                            }
+                            break;
+                        case WINDOW_TYPE.WINDOW_BIBLE_NOTES:
+                            try
+                            {
+                                state.source = new BibleNoteReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                            }
+                            catch (Exception)
+                            {
+                            }
+                            break;
+                        case WINDOW_TYPE.WINDOW_BOOKMARKS:
+                            try
+                            {
+                                state.source = new BookMarkReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                            }
+                            catch (Exception)
+                            {
+                            }
+                            break;
+                        case WINDOW_TYPE.WINDOW_HISTORY:
+                            try
+                            {
+                                state.source = new HistoryReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                            }
+                            catch (Exception)
+                            {
+                            }
+                            break;
                     }
                     
                     break;
@@ -82,33 +135,75 @@ namespace CrossConnect
             } 
         }
         private void webBrowser1_Loaded(object sender, RoutedEventArgs e)
-        {/*
-            string text = "";
-            for (int i = 1; i < 10; i++)
-            {
-                text += i + "<p>  <a class=\"normalcolor\"href=\"#\" onclick=\"window.external.Notify('hello=" + i + "'); event.returnValue=false; return false;\" >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet iaculis est. Aenean vitae sapien tellus, eu scelerisque ipsum. Morbi et vehicula massa. Sed ut diam eget sem ornare congue. Duis pulvinar mi et tellus ultrices ultrices vitae et metus. Etiam consequat, diam eu sollicitudin venenatis, metus magna auctor metus, et blandit nisi ligula non tortor. Duis nec libero eget magna tempor vulputate. Mauris bibendum pretium diam, nec rutrum tellus pretium ac. Sed id dapibus eros. Praesent rutrum accumsan semper. Cras eros dolor, adipiscing quis tempus a, sagittis sollicitudin sem.</a></p> ";
-            }
-
-            */
+        {
             UpdateBrowser();
 
+            //get all the right images
+            //figure out if this is a light color
+            var color = (Color)Application.Current.Resources["PhoneBackgroundColor"];
+            int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
+            string colorDir = lightColorCount >= 2 ? "light" : "dark";
+
+            butPrevious.Image=getImage("/Images/" + colorDir + "/appbar.people.2.rest.png");
+            butPrevious.PressedImage=getImage("/Images/" + colorDir + "/appbar.people.2.pressed.rest.png");
+
+            butNext.Image=getImage("/Images/" + colorDir + "/appbar.people.1.rest.png");
+            butNext.PressedImage=getImage("/Images/" + colorDir + "/appbar.people.1.rest.pressed.png");
+
+            butMenu.Image=getImage("/Images/" + colorDir + "/appbar.menu.rest.png");
+            butMenu.PressedImage=getImage("/Images/" + colorDir + "/appbar.menu.rest.pressed.png");
+
+            butLarger.Image=getImage("/Images/" + colorDir + "/appbar.feature.search.rest.png");
+            butLarger.PressedImage=getImage("/Images/" + colorDir + "/appbar.feature.search.rest.pressed.png");
+
+            butSmaller.Image=getImage("/Images/" + colorDir + "/appbar.minus.rest.png");
+            butSmaller.PressedImage=getImage("/Images/" + colorDir + "/appbar.minus.rest.pressed.png");
+
+            butClose.Image=getImage("/Images/" + colorDir + "/appbar.cancel.rest.png");
+            butClose.PressedImage=getImage("/Images/" + colorDir + "/appbar.cancel.rest.pressed.png");
+
+        }
+        private ImageSource getImage(string path)
+        {
+            Uri uri = new Uri(path, UriKind.Relative);
+            return (ImageSource)new BitmapImage(uri);
         }
         private void UpdateBrowser()
         {
+            
             if (state.source != null)
             {
-                webBrowser1.NavigateToString(state.source.GetChapterHtml(
+                var root=IsolatedStorageFile.GetUserStoreForApplication();
+                //Must change the file name, otherwise the browser may or may not update.
+                string file = "web" + (int)(new Random().NextDouble() * 10000) + ".html";
+                if (root.FileExists(App.WEB_DIR_ISOLATED + "/" + lastFileName))
+                {
+                    root.DeleteFile(App.WEB_DIR_ISOLATED + "/" + lastFileName);
+                }
+                lastFileName = file;
+                IsolatedStorageFileStream fs = root.CreateFile(App.WEB_DIR_ISOLATED + "/" + lastFileName);
+                System.IO.StreamWriter tw = new System.IO.StreamWriter(fs);
+                tw.Write(state.source.GetChapterHtml(
                     state.chapterNum,
                     GetBrowserColor("PhoneBackgroundColor"),
                     GetBrowserColor("PhoneForegroundColor"),
                     GetBrowserColor("PhoneAccentColor"),
-                    (double)Application.Current.Resources["PhoneFontSizeNormal"]));
+                    (double)Application.Current.Resources["PhoneFontSizeNormal"]/2));
+                tw.Close();
+                fs.Close();
+                webBrowser1.Base = App.WEB_DIR_ISOLATED;
+                Uri source = new Uri(file + state.extraHtmlUri, UriKind.Relative);
+                webBrowser1.Navigate(source);
 
-                int bookNum;
-                int relChaptNum;
-                string fullName;
-                state.source.getInfo(state.chapterNum, out bookNum, out relChaptNum, out fullName);
-                title.Text = fullName + " " + (relChaptNum + 1);
+                writeTitle();
+                //update the sync button image
+                state.isSynchronized = !state.isSynchronized;
+                butLink_Click(null,null);
+
+                System.Windows.Threading.DispatcherTimer tmr = new System.Windows.Threading.DispatcherTimer();
+                tmr.Interval = TimeSpan.FromSeconds(1);
+                tmr.Tick += OnTimerTick;
+                tmr.Start(); 
             }
         }
         private static string GetBrowserColor(string sourceResource)
@@ -116,77 +211,7 @@ namespace CrossConnect
             var color = (Color)Application.Current.Resources[sourceResource];
             return "#" + color.ToString().Substring(3, 6);
         }
-        public static string HtmlHeader(double viewportWidth)
-        {
-            var head = new StringBuilder();
-            head.Append("<head>");
-            head.Append(string.Format(
-                "<meta name=\"viewport\" value=\"width={0}\" user-scalable=\"no\">",
-                viewportWidth));
-            head.Append("<style>");
-            head.Append("html { -ms-text-size-adjust:150% }");
-            head.Append(string.Format(
-                "body {{background:{0};color:{1};font-family:'Segoe WP';font-size:{2}pt;margin:0;padding:0 }}",
-                GetBrowserColor("PhoneBackgroundColor"),
-                GetBrowserColor("PhoneForegroundColor"),
-                (double)Application.Current.Resources["PhoneFontSizeNormal"]));
-            head.Append(string.Format(
-                "a {{color:{0};text-decoration:none;}}",
-                GetBrowserColor("PhoneForegroundColor")));
-            //                GetBrowserColor("PhoneAccentColor")));
 
-
-            head.Append(string.Format(
-                ".highlightedcolor {{ color: {0}; }} .normalcolor:hover {{ color: {1}; }} ",
-                GetBrowserColor("PhoneAccentColor"),
-                GetBrowserColor("PhoneAccentColor")));
-
-            head.Append("</style>");
-            // head.Append(NotifyScript);
-            head.Append("</head>");
-            return head.ToString();
-        }
-        public static string WrapHtml(string htmlSubString, double viewportWidth)
-        {
-            var html = new StringBuilder();
-            html.Append("<html>");
-            html.Append(HtmlHeader(viewportWidth));
-            html.Append("<body>");
-            html.Append(htmlSubString);
-            html.Append("</body>");
-            html.Append("</html>");
-            return html.ToString();
-        }
-        public static string NotifyScript
-        {
-            get
-            {
-                return @"<script>
-window.onload = function()
-{
-  a = document.getElementsByTagName('a');
-  for(var i=0; i < a.length; i++)
-  {
-    a[i].onclick = notify;
-  };
-}
-function notify(e)
-{
-  window.external.Notify(this.href); 
-  event.returnValue=false;
-  return false;
-}
-</script>";
-            }
-        }
-
-
-        public static void OpenBrowser(string url)
-        {
-            //titles[0].Text = url;
-            // WebBrowserTask webBrowserTask = new WebBrowserTask { URL = url };
-            // webBrowserTask.Show();
-        }
 
         private void webBrowser1_ScriptNotify(object sender, Microsoft.Phone.Controls.NotifyEventArgs e)
         {
@@ -195,8 +220,26 @@ function notify(e)
             //webBrowser1.Dispatcher.BeginInvoke(
             //    () => OpenBrowser(e.Value)
             //    );
+            state.extraHtmlUri = "#VERSE_" + e.Value.Substring(6);
+            App.SynchronizeAllWindows(state.chapterNum, "" + e.Value, state.curIndex);
+            writeTitle();
+            App.AddHistory(state.chapterNum,state.verseNum);
         }
+        private void writeTitle()
+        {
+            int bookNum;
+            int relChaptNum;
+            string fullName;
+            state.source.getInfo(state.chapterNum, out bookNum, out relChaptNum, out fullName);
 
+            string verseNum = "1";
+            if (state.extraHtmlUri.Length > 7)
+            {
+                verseNum = state.extraHtmlUri.Substring(7);
+            }
+            int.TryParse(verseNum, out state.verseNum);
+            title.Text = fullName + " " + (relChaptNum + 1) + ":" + (state.verseNum+1);
+        }
         private SlideTransition SlideTransitionElement(string mode)
         {
             SlideTransitionMode slideTransitionMode = (SlideTransitionMode)Enum.Parse(typeof(SlideTransitionMode), mode, false);
@@ -207,6 +250,7 @@ function notify(e)
 
         private void butPrevious_Click(object sender, RoutedEventArgs e)
         {
+            state.extraHtmlUri = "#VERSE_0";
             state.chapterNum--;
             if (state.chapterNum < 0)
             {
@@ -241,6 +285,7 @@ function notify(e)
         private void butNext_Click(object sender, RoutedEventArgs e)
         {
             state.chapterNum++;
+            state.extraHtmlUri = "#VERSE_0";
             if (state.chapterNum >= (BibleZtextReader.CHAPTERS_IN_BIBLE-1))
             {
                 state.chapterNum = 0;
@@ -282,7 +327,24 @@ function notify(e)
 
         private void butLink_Click(object sender, RoutedEventArgs e)
         {
+            //get all the right images
+            //figure out if this is a light color
+            var color = (Color)Application.Current.Resources["PhoneBackgroundColor"];
+            int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
+            string colorDir = lightColorCount >= 2 ? "light" : "dark";
 
+            state.isSynchronized = !state.isSynchronized;
+            if (state.isSynchronized)
+            {
+                butLink.PressedImage = getImage("/Images/" + colorDir + "/appbar.linkto.rest.png");
+                butLink.Image = getImage("/Images/" + colorDir + "/appbar.linkto.rest.pressed.png");
+
+            }
+            else
+            {
+                butLink.Image = getImage("/Images/" + colorDir + "/appbar.linkto.rest.png");
+                butLink.PressedImage = getImage("/Images/" + colorDir + "/appbar.linkto.rest.pressed.png");
+            }
         }
         private void butLarger_Click(object sender, RoutedEventArgs e)
         {
@@ -302,6 +364,11 @@ function notify(e)
 
         private void butClose_Click(object sender, RoutedEventArgs e)
         {
+            var root = IsolatedStorageFile.GetUserStoreForApplication();
+            if (root.FileExists(App.WEB_DIR_ISOLATED + "/" + lastFileName))
+            {
+                root.DeleteFile(App.WEB_DIR_ISOLATED + "/" + lastFileName);
+            }
             if (HitButtonClose != null)
                 HitButtonClose(this, e);
         }
@@ -327,5 +394,18 @@ function notify(e)
                 butClose.Visibility = System.Windows.Visibility.Visible;
             }
         }
+
+        void OnTimerTick(object sender, EventArgs e)
+        {
+            //we must delay updating of this webbrowser...
+            ((System.Windows.Threading.DispatcherTimer)sender).Stop();
+            Uri source = new Uri(lastFileName + state.extraHtmlUri, UriKind.Relative);
+            try
+            {
+                webBrowser1.Navigate(source);
+            }
+            catch (Exception)
+            { }
+        } 
     }
 }

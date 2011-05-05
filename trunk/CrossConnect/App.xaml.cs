@@ -16,6 +16,7 @@ using System.IO.IsolatedStorage;
 using System.IO;
 using System.Xml;
 using System.Runtime.Serialization;
+using SwordBackend;
 
 namespace CrossConnect
 {
@@ -38,27 +39,25 @@ namespace CrossConnect
         }
         public static WindowSettingsSpec windowSettings;
 
-        [DataContract]
-        public class BiblePlaceMarker
-        {
-            [DataMember]
-            public int chapterNum = 1;
-            [DataMember]
-            public int verseNum = 1;
-        }
-        [DataContract]
+        [DataContract(IsReference = true)]
+        [KnownType(typeof(BiblePlaceMarker))]
         public class BiblePlaceMarkers
         {
             [DataMember]
-            public static List<BiblePlaceMarker> history = new List<BiblePlaceMarker>();
+            public List<BiblePlaceMarker> history = new List<BiblePlaceMarker>();
             [DataMember]
-            public static List<BiblePlaceMarker> bookmarks = new List<BiblePlaceMarker>();
+            public List<BiblePlaceMarker> bookmarks = new List<BiblePlaceMarker>();
         }
         public static BiblePlaceMarkers placeMarkers = new BiblePlaceMarkers();
 
         public const int MAX_NUM_WINDOWS = 10;
-        public static InstalledBooks installedBooks = new InstalledBooks();
+        public static InstalledBibles installedBibles = new InstalledBibles();
         public static List<BrowserTitledWindow> openWindows = new List<BrowserTitledWindow>();
+        public const string WEB_DIR_ISOLATED = "webtemporary";
+
+        public delegate void WindowSourceChanged();
+        public static event WindowSourceChanged BookMarksChanged;
+        public static event WindowSourceChanged HistoryChanged;
         
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
@@ -94,15 +93,59 @@ namespace CrossConnect
             // Phone-specific initialization
             InitializePhoneApplication();
         }
-        public static void AddWindow(string bookToLoad, int bookNum, int chapterNum, WINDOW_TYPE typeOfWindow)
+        public static void AddBookmark(int chapterNum, int verseNum)
+        {
+            placeMarkers.bookmarks.Add(new BiblePlaceMarker(chapterNum, verseNum, DateTime.Now));
+            if (BookMarksChanged != null)
+            {
+                BookMarksChanged();
+            }
+        }
+        public static void AddHistory(int chapterNum, int verseNum)
+        {
+            //stop repeats
+            if (placeMarkers.history.Count > 0)
+            {
+                BiblePlaceMarker last = placeMarkers.history[placeMarkers.history.Count - 1];
+                if (last.chapterNum == chapterNum && last.verseNum == verseNum)
+                {
+                    placeMarkers.history.RemoveAt(placeMarkers.history.Count - 1);
+                }
+            }
+            placeMarkers.history.Add(new BiblePlaceMarker(chapterNum, verseNum, DateTime.Now));
+            //don't let this get more then a 200
+            if (placeMarkers.history.Count > 200) 
+            {
+                placeMarkers.history.RemoveAt(0);
+            }
+            if (HistoryChanged != null)
+            {
+                HistoryChanged();
+            }
+        }
+        public static void AddWindow(string bibleToLoad, int bookNum, int chapterNum, WINDOW_TYPE typeOfWindow)
         {
             BrowserTitledWindow nextWindow = new BrowserTitledWindow();
-            nextWindow.Initialize(bookToLoad, bookNum, chapterNum, typeOfWindow);
+            nextWindow.Initialize(bibleToLoad, bookNum, chapterNum, typeOfWindow);
             nextWindow.state.curIndex = App.openWindows.Count();
             App.openWindows.Add(nextWindow);
         }
         public void LoadPersistantObjects()
         {
+            //make sure some important directories exist.
+            var root=IsolatedStorageFile.GetUserStoreForApplication();
+            if (!root.DirectoryExists(WEB_DIR_ISOLATED))
+            {
+                root.CreateDirectory(WEB_DIR_ISOLATED);
+            }
+            //clear web directory
+            string[] filenames = root.GetFileNames(WEB_DIR_ISOLATED+"/*.*");
+            foreach (string file in filenames)
+            {
+                root.DeleteFile(WEB_DIR_ISOLATED+"/"+file);
+            }
+
+            //get all windows
             for (int i = 0; i < MAX_NUM_WINDOWS; i++)
             {
                 string windowsXmlData = "";
@@ -118,13 +161,17 @@ namespace CrossConnect
                                 typeof(SwordBackend.BibleZtextReader.ChapterPos),
                                 typeof(SwordBackend.BibleZtextReader.BookPos),
                                 typeof(SwordBackend.BibleZtextReader),
+                                typeof(SwordBackend.BibleNoteReader),
+                                typeof(BookMarkReader),
+                                typeof(HistoryReader),
+                                typeof(SwordBackend.SearchReader),
                             };
                             DataContractSerializer ser = new DataContractSerializer(typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState), types);
                             BrowserTitledWindow nextWindow = new BrowserTitledWindow();
                             nextWindow.state = (CrossConnect.BrowserTitledWindow.SerializableWindowState)ser.ReadObject(reader);
                             nextWindow.state.source.ReloadSettingsFile();
                             openWindows.Add(nextWindow);
-                            nextWindow.Initialize(nextWindow.state.bookToLoad, nextWindow.state.bookNum, nextWindow.state.chapterNum, nextWindow.state.windowType);
+                            nextWindow.Initialize(nextWindow.state.bibleToLoad, nextWindow.state.bookNum, nextWindow.state.chapterNum, nextWindow.state.windowType);
                         }
                     }
 
@@ -181,6 +228,10 @@ namespace CrossConnect
                     typeof(SwordBackend.BibleZtextReader.ChapterPos),
                     typeof(SwordBackend.BibleZtextReader.BookPos),
                     typeof(SwordBackend.BibleZtextReader),
+                    typeof(SwordBackend.BibleNoteReader),
+                    typeof(BookMarkReader),
+                    typeof(HistoryReader),
+                    typeof(SwordBackend.SearchReader),
                 };
                 DataContractSerializer ser = new DataContractSerializer(typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState), types);
                 using (StringWriter sw = new StringWriter())
@@ -211,7 +262,16 @@ namespace CrossConnect
                 IsolatedStorageSettings.ApplicationSettings["BiblePlaceMarker"]= sw.ToString();
             }
         }
-
+        public static void SynchronizeAllWindows(int chapterNum, string verseNum, int curIndex)
+        {
+            for (int i = 0; i < openWindows.Count(); i++)
+            {
+                if (i != curIndex)
+                {
+                    openWindows[i].SynchronizeWindow(chapterNum, verseNum);
+                }
+            }
+        }
         // Code to execute when the application is launching (eg, from Start)
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)

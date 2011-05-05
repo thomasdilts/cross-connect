@@ -145,7 +145,7 @@ namespace CrossConnect
         {
             if (sb.isLoaded)
             {
-                App.installedBooks.AddBook(sb.sbmd.internalName);
+                App.installedBibles.AddBook(sb.sbmd.internalName);
                 sb = null;
             }
             this.NavigationService.GoBack();

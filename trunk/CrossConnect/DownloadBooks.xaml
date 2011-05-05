@@ -38,7 +38,8 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <ScrollViewer  Name="scrollViewer1" >
+        <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -50,9 +51,8 @@
             <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock x:Name="PageTitle" Text="Download books" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
         </StackPanel>
-        <ScrollViewer  Grid.Row="1" Name="scrollViewer1" >
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" >
+        <Grid  Grid.Row="1" x:Name="ContentPanel" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -94,8 +94,8 @@
             </Grid>
             <ProgressBar Grid.Row="5" Name="progressBarGetBook" Height="60" />
         </Grid>
-        </ScrollViewer>
     </Grid>
+    </ScrollViewer>
 
 
 

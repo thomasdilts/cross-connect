@@ -7,13 +7,13 @@ using SwordBackend;
 
 namespace CrossConnect
 {
-    public class InstalledBooks
+    public class InstalledBibles
     {
-        public Dictionary<string, SwordBook> installedBooks = new Dictionary<string, SwordBook>();
-        public InstalledBooks()
+        public Dictionary<string, SwordBook> installedBibles = new Dictionary<string, SwordBook>();
+        public InstalledBibles()
         {
             string sBooks = "";
-            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("InstalledBooks", out sBooks))
+            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("installedBibles", out sBooks))
             {
                 string[] books = sBooks.Split("¤".ToCharArray());
                 foreach (string book in books)
@@ -25,10 +25,10 @@ namespace CrossConnect
         }
         public void AddBook(string modPath, bool doSave = true)
         {
-            installedBooks[modPath] = new SwordBook(modPath);
-            if (!installedBooks[modPath].isLoaded)
+            installedBibles[modPath] = new SwordBook(modPath);
+            if (!installedBibles[modPath].isLoaded)
             {
-                installedBooks.Remove(modPath);
+                installedBibles.Remove(modPath);
             }
             if (doSave)
             {
@@ -39,7 +39,7 @@ namespace CrossConnect
         public void save()
         {
             string allBooks = "";
-            foreach(var book in installedBooks)
+            foreach(var book in installedBibles)
             {
                 if(allBooks.Length>0)
                 {
@@ -47,7 +47,7 @@ namespace CrossConnect
                 }
                 allBooks += book.Key;
             }
-            IsolatedStorageSettings.ApplicationSettings["InstalledBooks"]= allBooks;
+            IsolatedStorageSettings.ApplicationSettings["installedBibles"]= allBooks;
         }
     }
 }

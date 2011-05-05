@@ -38,9 +38,9 @@ namespace CrossConnect
             }
 
             canvas1.Margin = new Thickness(0, this.ActualHeight, 0, 0);
-            if (App.openWindows.Count() == 0 || App.installedBooks.installedBooks.Count() == 0)
+            if (App.openWindows.Count() == 0 || App.installedBibles.installedBibles.Count() == 0)
             {
-                if (App.installedBooks.installedBooks.Count() == 0)
+                if (App.installedBibles.installedBibles.Count() == 0)
                 {
                     //cant have any open windows if there are no books!
                     App.openWindows.Clear();
@@ -57,6 +57,12 @@ namespace CrossConnect
             {
                 ReDrawWindows();
             }
+            //figure out if this is a light color
+            var color = (Color)Application.Current.Resources["PhoneBackgroundColor"];
+            int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
+            string colorDir = lightColorCount >= 2 ? "light" : "dark";
+            ShowMenu.Image = new System.Windows.Media.Imaging.BitmapImage(new Uri("/Images/" + colorDir + "/appbar.menu.rest.png", UriKind.Relative));
+            ShowMenu.PressedImage = new System.Windows.Media.Imaging.BitmapImage(new Uri("/Images/" + colorDir + "/appbar.menu.rest.pressed.png", UriKind.Relative));
         }
 
         private void PhoneApplicationPage_Unloaded(object sender, RoutedEventArgs e)
