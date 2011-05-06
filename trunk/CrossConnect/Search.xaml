@@ -59,11 +59,9 @@
                 <RadioButton Margin="0,-10,0,-10" GroupName="SearchWhere" Content="Old Testement"  Name="oldTestement" />
                 <RadioButton Margin="0,-10,0,-10" GroupName="SearchWhere" Content="New Testement"  Name="newTEstement" />
                 <RadioButton Margin="0,-10,0,-10" GroupName="SearchWhere" Content="Chapter"  Name="Chapter" />
-                <TextBlock x:Name="SearchForText" Text="Search for" Margin="9,20,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
-                <RadioButton Margin="0,-10,0,-10" IsChecked="True" GroupName="SearchFor" Content="At least one word"  Name="AnyWord" />
-                <RadioButton Margin="0,-10,0,-10" GroupName="SearchFor" Content="All words"  Name="AllWords" />
-                <RadioButton Margin="0,-10,0,-10" GroupName="SearchFor" Content="Entire phrase"  Name="Phrase" />
-                <Button Content="Search" Grid.Row="3"  Name="butSearch"  Click="butSearch_Click" />
+                <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Ignore case" Name="IgnoreCase"/>
+                <Button Content="Search" Name="butSearch"  Click="butSearch_Click" />
+                <ProgressBar Minimum="0" Maximum="100" Name="progressBar1" Height="60" />
             </StackPanel>
     </Grid>
     </ScrollViewer>

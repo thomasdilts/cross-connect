@@ -75,61 +75,68 @@ namespace CrossConnect
                 UpdateBrowser();
             }
         }
-        public void Initialize(string bibleToLoad, int bookNum, int chapterNum, WINDOW_TYPE windowType)
+        public void Initialize(string bibleToLoad, int bookNum, int chapterNum, WINDOW_TYPE windowType, IBrowserTextSource source=null)
         {
             state.bibleToLoad = bibleToLoad;
             state.bookNum = bookNum;
             state.chapterNum = chapterNum;
             state.windowType = windowType;
-            foreach (var book in App.installedBibles.installedBibles)
+            if(source!=null)
             {
-                if (book.Value.sbmd.internalName.Equals(bibleToLoad))
+                state.source = source;
+            }
+            else
+            {
+                foreach (var book in App.installedBibles.installedBibles)
                 {
-                    string bookPath = book.Value.sbmd.getCetProperty(ConfigEntryType.DATA_PATH).ToString().Substring(2);
-                    bool isIsoEncoding = !book.Value.sbmd.getCetProperty(ConfigEntryType.ENCODING).Equals("UTF-8");
-                    switch (windowType)
+                    if (book.Value.sbmd.internalName.Equals(bibleToLoad))
                     {
-                        case WINDOW_TYPE.WINDOW_BIBLE:
-                            try
-                            {
-                                state.source = new BibleZtextReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
-                            }
-                            catch (Exception)
-                            {
-                            }
-                            break;
-                        case WINDOW_TYPE.WINDOW_BIBLE_NOTES:
-                            try
-                            {
-                                state.source = new BibleNoteReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
-                            }
-                            catch (Exception)
-                            {
-                            }
-                            break;
-                        case WINDOW_TYPE.WINDOW_BOOKMARKS:
-                            try
-                            {
-                                state.source = new BookMarkReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
-                            }
-                            catch (Exception)
-                            {
-                            }
-                            break;
-                        case WINDOW_TYPE.WINDOW_HISTORY:
-                            try
-                            {
-                                state.source = new HistoryReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
-                            }
-                            catch (Exception)
-                            {
-                            }
-                            break;
-                    }
+                        string bookPath = book.Value.sbmd.getCetProperty(ConfigEntryType.DATA_PATH).ToString().Substring(2);
+                        bool isIsoEncoding = !book.Value.sbmd.getCetProperty(ConfigEntryType.ENCODING).Equals("UTF-8");
+                        switch (windowType)
+                        {
+                            case WINDOW_TYPE.WINDOW_BIBLE:
+                                try
+                                {
+                                    state.source = new BibleZtextReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                }
+                                catch (Exception)
+                                {
+                                }
+                                break;
+                            case WINDOW_TYPE.WINDOW_BIBLE_NOTES:
+                                try
+                                {
+                                    state.source = new BibleNoteReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                }
+                                catch (Exception)
+                                {
+                                }
+                                break;
+                            case WINDOW_TYPE.WINDOW_BOOKMARKS:
+                                try
+                                {
+                                    state.source = new BookMarkReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                }
+                                catch (Exception)
+                                {
+                                }
+                                break;
+                            case WINDOW_TYPE.WINDOW_HISTORY:
+                                try
+                                {
+                                    state.source = new HistoryReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                }
+                                catch (Exception)
+                                {
+                                }
+                                break;
+                        }
                     
-                    break;
-                }
-            } 
+                        break;
+                    }
+                } 
+            }
         }
         private void webBrowser1_Loaded(object sender, RoutedEventArgs e)
         {

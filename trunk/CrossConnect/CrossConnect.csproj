@@ -80,6 +80,7 @@
     <Compile Include="Search.xaml.cs">
       <DependentUpon>Search.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SearchReader.cs" />
     <Compile Include="SelectBibleBook.xaml.cs">
       <DependentUpon>SelectBibleBook.xaml</DependentUpon>
     </Compile>
@@ -233,10 +234,6 @@
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lucerne\Lucerne.csproj">
-      <Project>{B577714C-3D44-4D40-BA9D-D501844CF2D5}</Project>
-      <Name>Lucerne</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Sword\SwordBackend.csproj">
       <Project>{CE4B6565-208F-41DA-B260-30C8758AD9F4}</Project>
       <Name>SwordBackend</Name>

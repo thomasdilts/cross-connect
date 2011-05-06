@@ -64,7 +64,6 @@
     <Compile Include="ConfigEntryTable.cs" />
     <Compile Include="ConfigEntryType.cs" />
     <Compile Include="reader\BibleNoteReader.cs" />
-    <Compile Include="reader\SearchReader.cs" />
     <Compile Include="reader\IBrowserTextSource.cs" />
     <Compile Include="JSOtherMsg.cs" />
     <Compile Include="FeatureType.cs" />
@@ -77,10 +76,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\Lucerne\Lucerne.csproj">
-      <Project>{B577714C-3D44-4D40-BA9D-D501844CF2D5}</Project>
-      <Name>Lucerne</Name>
-    </ProjectReference>
     <ProjectReference Include="..\zip2\Zip.csproj">
       <Project>{460C536A-FA50-46C0-B9DA-A0B4F8546AEE}</Project>
       <Name>Zip</Name>
