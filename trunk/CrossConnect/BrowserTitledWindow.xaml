@@ -39,7 +39,7 @@
             <local:ImageButton Click="butSmaller_Click" Image="/Images/dark/appbar.minus.rest.png" PressedImage="/Images/dark/appbar.minus.rest.pressed.png"  Grid.Column="6" Grid.Row="0"  x:Name="butSmaller" Template="{StaticResource ImageButtonControlTemplate}"/>
             <local:ImageButton Click="butClose_Click" Image="/Images/dark/appbar.cancel.rest.png" PressedImage="/Images/dark/appbar.cancel.rest.pressed.png"  Grid.Column="7" Grid.Row="0"  x:Name="butClose" Template="{StaticResource ImageButtonControlTemplate}"/>
             <Border BorderBrush="Silver" BorderThickness="1" Grid.ColumnSpan="8" Grid.Row="1" >
-                <phone:WebBrowser Margin="0 0 0 0" IsScriptEnabled="True" ScriptNotify="webBrowser1_ScriptNotify"  Loaded="webBrowser1_Loaded"  Name="webBrowser1"  />
+                <phone:WebBrowser  Margin="0 0 0 0" IsScriptEnabled="True" ScriptNotify="webBrowser1_ScriptNotify"  Unloaded="webBrowser1_Unloaded" Loaded="webBrowser1_Loaded"  Name="webBrowser1"  />
             </Border>
         </Grid>
     </Border>

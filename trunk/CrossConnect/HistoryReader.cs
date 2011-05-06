@@ -37,16 +37,25 @@ namespace CrossConnect
         {
             App.HistoryChanged -= App_HistoryChanged;
         }
-
+        public override bool isSynchronizeable { get { return false; } }
+        public override bool isSearchable { get { return false; } }
+        public override bool isPageable { get { return false; } }
+        public override bool isBookmarkable { get { return false; } }
         public void App_HistoryChanged()
         {
             displayText=makeListDisplayText(App.placeMarkers.history,htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
+            raiseSourceChangedEvent();
         }
 
+        public override void getInfo(int chaptNum,int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title)
+        {
+            base.getInfo(chaptNum, verseNum, out bookNum, out relChaptNum, out fullName, out title);
+            title = "History";
+        }
 
         public override string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize)
         {
-            bool mustUpdate = (htmlBackgroundColor.Length == 0);
+            bool mustUpdate = (this.htmlBackgroundColor.Length == 0);
             this.htmlBackgroundColor = htmlBackgroundColor;
             this.htmlForegroundColor = htmlForegroundColor;
             this.htmlPhoneAccentColor = htmlPhoneAccentColor;

@@ -118,6 +118,7 @@ namespace CrossConnect
                 chapter+=SwordBackend.BibleZtextReader.CHAPTERS_IN_BOOK[i];
             }
             App.openWindows[App.windowSettings.openWindowIndex].state.chapterNum = (int)((Button)sender).Tag + chapter;
+            App.openWindows[App.windowSettings.openWindowIndex].state.verseNum = 0; 
             App.windowSettings.skipWindowSettings = true;
             NavigationService.GoBack();
         }

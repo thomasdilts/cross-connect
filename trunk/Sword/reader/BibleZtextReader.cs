@@ -35,6 +35,8 @@ namespace SwordBackend
         [DataMember]
         public bool isIsoEncoding = false;
 
+        public event WindowSourceChanged SourceChanged;
+
         protected BibleNames bookNames=null;
 
         public string[] getAllShortNames()
@@ -45,6 +47,12 @@ namespace SwordBackend
             }
             return bookNames.getAllShortNames();
         }
+
+        public virtual bool isSynchronizeable { get { return true; } }
+        public virtual bool isSearchable { get { return true; } }
+        public virtual bool isPageable { get { return true; } }
+        public virtual bool isBookmarkable { get { return true; } }
+        public virtual bool isLocalChangeDuringLink { get { return true; } }
         public bool existsShortNames 
         {
             get
@@ -73,12 +81,31 @@ namespace SwordBackend
             return bookNames.getFullName(bookNum);
         }
 
-        public void getInfo(int chaptNum, out int bookNum, out int relChaptNum, out string fullName)
+        public virtual void getInfo(int chaptNum,int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title)
         {
             ChapterPos chaptPos= chapters[chaptNum];
             bookNum = chaptPos.booknum;
             relChaptNum = chaptPos.bookRelativeChapterNum;
             fullName=getFullName(bookNum);
+            title = fullName + " " + (relChaptNum + 1) + ":" + (verseNum + 1);
+        }
+        public void registerUpdateEvent(WindowSourceChanged sourceChangedMethod,bool isRegister=true)
+        {
+            if (isRegister)
+            {
+                SourceChanged += sourceChangedMethod;
+            }
+            else
+            {
+                SourceChanged -= sourceChangedMethod;
+            }
+        }
+        protected void raiseSourceChangedEvent()
+        {
+            if (SourceChanged != null)
+            {
+                SourceChanged();
+            }
         }
         public void ReloadSettingsFile()
         {
@@ -307,17 +334,22 @@ namespace SwordBackend
             string chapterEndHtml = "</body></html>";
             for (int i = 0; i < versesForChapterPositions.verses.Count; i++)
             {
+                string id = "CHAP_" + chapterNumber + "_VERS_" + i;
                 VersePos verse = versesForChapterPositions.verses[i];
-                string verseTxt = parseOsisText(" <sup>" + (i + 1) + "</sup><a name=\"VERSE_" 
-                    + i + "\"></a><a class=\"normalcolor\"href=\"#\" onclick=\"window.external.Notify('VERSE="
-                    + i + "'); event.returnValue=false; return false;\" > ", 
+                string restartText = "<a name=\"" + id
+                    + "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.Notify('" + id
+                    + "'); event.returnValue=false; return false;\" > ";
+                string startText = " <sup>" + (i + 1) + "</sup>" + restartText;
+                string verseTxt = parseOsisText(
+                    startText, 
+                    restartText,
                     chapterBuffer, 
                     (int)verse.startPos, 
                     verse.length, 
                     this.isIsoEncoding,
                     isNotesOnly,
                     false);
-                //string verseTxt = parseOsisText(" <sup>" + (i + 1) + "</sup><a name=\"VERSE_" + i + "\"></a><a class=\"normalcolor\"href=\"#VERSE_" + (i+5) + "\" > ", chapterBuffer, (int)verse.startPos, verse.length, this.isIsoEncoding);
+
                 //create the verse
                 htmlChapter.Append(
                     chapterStartHtml
@@ -352,30 +384,27 @@ namespace SwordBackend
                 return "";
             }
 
-            string chapterStartHtml = "<html>" + HtmlHeader(htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
+            string chapterStartHtml = HtmlHeader(htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
             string chapterEndHtml = "</body></html>";
             StringBuilder htmlListText = new StringBuilder(chapterStartHtml);
             for (int j = listToDisplay.Count - 1; j >= 0; j--)
             {
-                int bookNum;
-                int relChaptNum;
-                string fullName;
                 BiblePlaceMarker place = listToDisplay[j];
-                getInfo(place.chapterNum, out bookNum, out relChaptNum, out fullName);
-
+                ChapterPos chaptPos= chapters[place.chapterNum];
                 byte[] chapterBuffer = getChapterBytes(place.chapterNum);
                 // for debug string all = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
 
                 ChapterPos versesForChapterPositions = chapters[place.chapterNum];
 
-                string textId = "CHAPTER_" + place.chapterNum + "_VERSE_" + place.verseNum;
+                string textId = "CHAP_" + place.chapterNum + "_VERS_" + place.verseNum;
                 VersePos verse = versesForChapterPositions.verses[place.verseNum];
-                string verseTxt = parseOsisText("<p><sup>" + this.getFullName(bookNum) + " " +
-                    (relChaptNum + 1) + ":" +
+                string verseTxt = parseOsisText("<p><a name=\"" + textId +
+                    "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.Notify('" +
+                    textId + "'); event.returnValue=false; return false;\" ><sup>" + this.getFullName(chaptPos.booknum) + " " +
+                    (chaptPos.bookRelativeChapterNum + 1) + ":" +
                     (place.verseNum + 1) + "  " +
-                    place.when.ToShortDateString() + " " + place.when.ToShortTimeString() + "</sup><a name=\"" + textId +
-                    "\"></a><a class=\"normalcolor\"href=\"#\" onclick=\"window.external.Notify('" +
-                    textId + "'); event.returnValue=false; return false;\" > ",
+                    place.when.ToShortDateString() + " " + place.when.ToShortTimeString() + "</sup>",
+                    "",
                     chapterBuffer,
                     (int)verse.startPos,
                     verse.length,
@@ -384,12 +413,12 @@ namespace SwordBackend
                     true);
 
                 //create the verse
-                htmlListText.Append(verseTxt + "</a></p>");
+                htmlListText.Append(verseTxt + "</a></p><hr />");
             }
             htmlListText.Append(chapterEndHtml);
             return htmlListText.ToString();
         }
-        protected string parseOsisText(string chapterNumber, byte[] xmlbytes, int startPos, int length, bool isIsoText,bool isNotesOnly, bool noTitles)
+        protected string parseOsisText(string chapterNumber,string restartText, byte[] xmlbytes, int startPos, int length, bool isIsoText,bool isNotesOnly, bool noTitles)
         {
             MemoryStream ms = new MemoryStream();
             if(isIsoText)
@@ -412,6 +441,7 @@ namespace SwordBackend
             bool isInTitle = false;
             bool isChaptNumGiven = false;
             bool isChaptNumGivenNotes = false;
+            bool isReferenceLinked = false;
             using (XmlReader reader = XmlReader.Create(ms, settings))
             {
                 try
@@ -446,10 +476,26 @@ namespace SwordBackend
                                         isInTitle = true;
                                         if (!noTitles)
                                         {
-                                            appendText("<h2>", plainText, noteText, isInElement);
+                                            appendText("<h3>", plainText, noteText, isInElement);
                                         }
                                         break;
                                     case "reference":
+                                        if (reader.HasAttributes)
+                                        {
+                                            reader.MoveToFirstAttribute();
+                                            if (reader.Name.Equals("osisRef"))
+                                            {
+                                                int chaptNumLoc = 0;
+                                                int verseNumLoc = 0;
+                                                if (convertOsisRefToAbsoluteChaptVerse(reader.Value, out chaptNumLoc, out verseNumLoc))
+                                                {
+                                                    isReferenceLinked = true;
+                                                    string textId = "CHAP_" + chaptNumLoc + "_VERS_" + verseNumLoc;
+                                                    noteText.Append("</a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.Notify('" +
+                                                        textId + "'); event.returnValue=false; return false;\" >");
+                                                }
+                                            }
+                                        }
                                         noteText.Append("  [");
                                         break;
                                     case "lg":
@@ -493,12 +539,17 @@ namespace SwordBackend
                                     case "title":
                                         if (!noTitles)
                                         {
-                                            appendText("</h2>", plainText, noteText, isInElement);
+                                            appendText("</h3>", plainText, noteText, isInElement);
                                         }
                                         isInTitle = false;
                                         break;
                                     case "reference":
                                         noteText.Append("] ");
+                                        if (isReferenceLinked)
+                                        {
+                                            noteText.Append("</a>" + restartText);
+                                        }
+                                        isReferenceLinked = false;
                                         break;
                                     case "note":
                                         isInElement = false;
@@ -525,22 +576,77 @@ namespace SwordBackend
             }
             return plainText.ToString();
         }
-
-        protected static string HtmlHeader( string htmlBackgroundColor, string htmlForegroundColor,string htmlPhoneAccentColor, double htmlFontSize)
+        public static bool convertOsisRefToAbsoluteChaptVerse(string osisRef, out int chaptNumLoc, out int verseNumLoc)
+        {
+            chaptNumLoc=0;
+            verseNumLoc = 0;
+            if (osisRef.Contains(":"))
+            {
+                //remove everythign before :
+                osisRef = osisRef.Substring(osisRef.IndexOf(":") + 1);
+            }
+            if (osisRef.Contains("@"))
+            {
+                //remove everythign after @
+                osisRef = osisRef.Substring(0, osisRef.IndexOf("@"));
+            }
+            if (osisRef.Contains("-"))
+            {
+                //remove everythign after -
+                osisRef = osisRef.Substring(0, osisRef.IndexOf("-"));
+            }
+            string[] osis = osisRef.Split(".".ToCharArray());
+            if (osis.Length > 0)
+            {
+                if(osisBibeNamesToAbsoluteChapterNum.ContainsKey(osis[0].ToLower()))
+                {
+                    chaptNumLoc = osisBibeNamesToAbsoluteChapterNum[osis[0].ToLower()];
+                    if (osis.Length > 1)
+                    {
+                        int chapterRelative = 0;
+                        int.TryParse(osis[1], out chapterRelative);
+                        chapterRelative--;
+                        if (chapterRelative < 0) chapterRelative = 0;
+                        chaptNumLoc += chapterRelative;
+                    }
+                    if (osis.Length > 2)
+                    {
+                        int.TryParse(osis[2], out verseNumLoc);
+                        verseNumLoc--;
+                        if (verseNumLoc < 0) verseNumLoc = 0;
+                    }
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+        public static string HtmlHeader( string htmlBackgroundColor, string htmlForegroundColor,string htmlPhoneAccentColor, double htmlFontSize)
         {
             var head = new StringBuilder();
-            head.Append("<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-            /*head.Append(string.Format(
-                "<meta name=\"viewport\" value=\"width={0}\" user-scalable=\"no\">",
-                viewportWidth));*/
+            head.Append("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
+            //head.Append(string.Format(
+            //    "<meta name=\"viewport\" value=\"width={0}\" user-scalable=\"no\">",
+            //    480));
             head.Append("<style>");
-            head.Append("html { -ms-text-size-adjust:auto }");
-            //head.Append("html { -ms-text-size-adjust:150% }");
+            //head.Append("html { -ms-text-size-adjust:auto }");
+            //head.Append("html { -ms-text-size-adjust:100% }");
+
+            //head.Append(string.Format(
+            //    "body {{background:{0};color:{1};font-family:'Segoe WP';font-size:{2}pt;margin:0;padding:0 }}",
+            //    htmlBackgroundColor,
+            //    htmlForegroundColor,
+            //    htmlFontSize)); 
+            
             head.Append(string.Format(
-                "body {{background:{0};color:{1};font-family:'Segoe WP';font-size:{2}pt;margin:0;padding:0 }}",
+                "body {{background:{0};color:{1};font-size:{2}pt;margin:0;padding:0 }}",
                 htmlBackgroundColor,
                 htmlForegroundColor,
-                htmlFontSize));
+                htmlFontSize)); 
+
             head.Append(string.Format(
                 "a {{color:{0};text-decoration:none;}}",
                 htmlForegroundColor));
@@ -808,6 +914,76 @@ namespace SwordBackend
 
 		/// <summary> Constant for the number of verses in each chapter  </summary>
 		internal static readonly short[][] VERSES_IN_CHAPTER = { new short[] { 31, 25, 24, 26, 32, 22, 24, 22, 29, 32, 32, 20, 18, 24, 21, 16, 27, 33, 38, 18, 34, 24, 20, 67, 34, 35, 46, 22, 35, 43, 55, 32, 20, 31, 29, 43, 36, 30, 23, 23, 57, 38, 34, 34, 28, 34, 31, 22, 33, 26 }, new short[] { 22, 25, 22, 31, 23, 30, 25, 32, 35, 29, 10, 51, 22, 31, 27, 36, 16, 27, 25, 26, 36, 31, 33, 18, 40, 37, 21, 43, 46, 38, 18, 35, 23, 35, 35, 38, 29, 31, 43, 38 }, new short[] { 17, 16, 17, 35, 19, 30, 38, 36, 24, 20, 47, 8, 59, 57, 33, 34, 16, 30, 37, 27, 24, 33, 44, 23, 55, 46, 34 }, new short[] { 54, 34, 51, 49, 31, 27, 89, 26, 23, 36, 35, 16, 33, 45, 41, 50, 13, 32, 22, 29, 35, 41, 30, 25, 18, 65, 23, 31, 40, 16, 54, 42, 56, 29, 34, 13 }, new short[] { 46, 37, 29, 49, 33, 25, 26, 20, 29, 22, 32, 32, 18, 29, 23, 22, 20, 22, 21, 20, 23, 30, 25, 22, 19, 19, 26, 68, 29, 20, 30, 52, 29, 12 }, new short[] { 18, 24, 17, 24, 15, 27, 26, 35, 27, 43, 23, 24, 33, 15, 63, 10, 18, 28, 51, 9, 45, 34, 16, 33 }, new short[] { 36, 23, 31, 24, 31, 40, 25, 35, 57, 18, 40, 15, 25, 20, 20, 31, 13, 31, 30, 48, 25 }, new short[] { 22, 23, 18, 22 }, new short[] { 28, 36, 21, 22, 12, 21, 17, 22, 27, 27, 15, 25, 23, 52, 35, 23, 58, 30, 24, 42, 15, 23, 29, 22, 44, 25, 12, 25, 11, 31, 13 }, new short[] { 27, 32, 39, 12, 25, 23, 29, 18, 13, 19, 27, 31, 39, 33, 37, 23, 29, 33, 43, 26, 22, 51, 39, 25 }, new short[] { 53, 46, 28, 34, 18, 38, 51, 66, 28, 29, 43, 33, 34, 31, 34, 34, 24, 46, 21, 43, 29, 53 }, new short[] { 18, 25, 27, 44, 27, 33, 20, 29, 37, 36, 21, 21, 25, 29, 38, 20, 41, 37, 37, 21, 26, 20, 37, 20, 30 }, new short[] { 54, 55, 24, 43, 26, 81, 40, 40, 44, 14, 47, 40, 14, 17, 29, 43, 27, 17, 19, 8, 30, 19, 32, 31, 31, 32, 34, 21, 30 }, new short[] { 17, 18, 17, 22, 14, 42, 22, 18, 31, 19, 23, 16, 22, 15, 19, 14, 19, 34, 11, 37, 20, 12, 21, 27, 28, 23, 9, 27, 36, 27, 21, 33, 25, 33, 27, 23 }, new short[] { 11, 70, 13, 24, 17, 22, 28, 36, 15, 44 }, new short[] { 11, 20, 32, 23, 19, 19, 73, 18, 38, 39, 36, 47, 31 }, new short[] { 22, 23, 15, 17, 14, 14, 10, 17, 32, 3 }, new short[] { 22, 13, 26, 21, 27, 30, 21, 22, 35, 22, 20, 25, 28, 22, 35, 22, 16, 21, 29, 29, 34, 30, 17, 25, 6, 14, 23, 28, 25, 31, 40, 22, 33, 37, 16, 33, 24, 41, 30, 24, 34, 17 }, new short[] { 6, 12, 8, 8, 12, 10, 17, 9, 20, 18, 7, 8, 6, 7, 5, 11, 15, 50, 14, 9, 13, 31, 6, 10, 22, 12, 14, 9, 11, 12, 24, 11, 22, 22, 28, 12, 40, 22, 13, 17, 13, 11, 5, 26, 17, 11, 9, 14, 20, 23, 19, 9, 6, 7, 23, 13, 11, 11, 17, 12, 8, 12, 11, 10, 13, 20, 7, 35, 36, 5, 24, 20, 28, 23, 10, 12, 20, 72, 13, 19, 16, 8, 18, 12, 13, 17, 7, 18, 52, 17, 16, 15, 5, 23, 11, 13, 12, 9, 9, 5, 8, 28, 22, 35, 45, 48, 43, 13, 31, 7, 10, 10, 9, 8, 18, 19, 2, 29, 176, 7, 8, 9, 4, 8, 5, 6, 5, 6, 8, 8, 3, 18, 3, 3, 21, 26, 9, 8, 24, 13, 10, 7, 12, 15, 21, 10, 20, 14, 9, 6 }, new short[] { 33, 22, 35, 27, 23, 35, 27, 36, 18, 32, 31, 28, 25, 35, 33, 33, 28, 24, 29, 30, 31, 29, 35, 34, 28, 28, 27, 28, 27, 33, 31 }, new short[] { 18, 26, 22, 16, 20, 12, 29, 17, 18, 20, 10, 14 }, new short[] { 17, 17, 11, 16, 16, 13, 13, 14 }, new short[] { 31, 22, 26, 6, 30, 13, 25, 22, 21, 34, 16, 6, 22, 32, 9, 14, 14, 7, 25, 6, 17, 25, 18, 23, 12, 21, 13, 29, 24, 33, 9, 20, 24, 17, 10, 22, 38, 22, 8, 31, 29, 25, 28, 28, 25, 13, 15, 22, 26, 11, 23, 15, 12, 17, 13, 12, 21, 14, 21, 22, 11, 12, 19, 12, 25, 24 }, new short[] { 19, 37, 25, 31, 31, 30, 34, 22, 26, 25, 23, 17, 27, 22, 21, 21, 27, 23, 15, 18, 14, 30, 40, 10, 38, 24, 22, 17, 32, 24, 40, 44, 26, 22, 19, 32, 21, 28, 18, 16, 18, 22, 13, 30, 5, 28, 7, 47, 39, 46, 64, 34 }, new short[] { 22, 22, 66, 22, 22 }, new short[] { 28, 10, 27, 17, 17, 14, 27, 18, 11, 22, 25, 28, 23, 23, 8, 63, 24, 32, 14, 49, 32, 31, 49, 27, 17, 21, 36, 26, 21, 26, 18, 32, 33, 31, 15, 38, 28, 23, 29, 49, 26, 20, 27, 31, 25, 24, 23, 35 }, new short[] { 21, 49, 30, 37, 31, 28, 28, 27, 27, 21, 45, 13 }, new short[] { 11, 23, 5, 19, 15, 11, 16, 14, 17, 15, 12, 14, 16, 9 }, new short[] { 20, 32, 21 }, new short[] { 15, 16, 15, 13, 27, 14, 17, 14, 15 }, new short[] { 21 }, new short[] { 17, 10, 10, 11 }, new short[] { 16, 13, 12, 13, 15, 16, 20 }, new short[] { 15, 13, 19 }, new short[] { 17, 20, 19 }, new short[] { 18, 15, 20 }, new short[] { 15, 23 }, new short[] { 21, 13, 10, 14, 11, 15, 14, 23, 17, 12, 17, 14, 9, 21 }, new short[] { 14, 17, 18, 6 }, new short[] { 25, 23, 17, 25, 48, 34, 29, 34, 38, 42, 30, 50, 58, 36, 39, 28, 27, 35, 30, 34, 46, 46, 39, 51, 46, 75, 66, 20 }, new short[] { 45, 28, 35, 41, 43, 56, 37, 38, 50, 52, 33, 44, 37, 72, 47, 20 }, new short[] { 80, 52, 38, 44, 39, 49, 50, 56, 62, 42, 54, 59, 35, 35, 32, 31, 37, 43, 48, 47, 38, 71, 56, 53 }, new short[] { 51, 25, 36, 54, 47, 71, 53, 59, 41, 42, 57, 50, 38, 31, 27, 33, 26, 40, 42, 31, 25 }, new short[] { 26, 47, 26, 37, 42, 15, 60, 40, 43, 48, 30, 25, 52, 28, 41, 40, 34, 28, 41, 38, 40, 30, 35, 27, 27, 32, 44, 31 }, new short[] { 32, 29, 31, 25, 21, 23, 25, 39, 33, 21, 36, 21, 14, 23, 33, 27 }, new short[] { 31, 16, 23, 21, 13, 20, 40, 13, 27, 33, 34, 31, 13, 40, 58, 24 }, new short[] { 24, 17, 18, 18, 21, 18, 16, 24, 15, 18, 33, 21, 14 }, new short[] { 24, 21, 29, 31, 26, 18 }, new short[] { 23, 22, 21, 32, 33, 24 }, new short[] { 30, 30, 21, 23 }, new short[] { 29, 23, 25, 18 }, new short[] { 10, 20, 13, 18, 28 }, new short[] { 12, 17, 18 }, new short[] { 20, 15, 16, 16, 25, 21 }, new short[] { 18, 26, 17, 22 }, new short[] { 16, 15, 15 }, new short[] { 25 }, new short[] { 14, 18, 19, 16, 14, 20, 28, 13, 28, 39, 40, 29, 25 }, new short[] { 27, 26, 18, 17, 20 }, new short[] { 25, 25, 22, 19, 14 }, new short[] { 21, 22, 18 }, new short[] { 10, 29, 24, 21, 21 }, new short[] { 13 }, new short[] { 14 }, new short[] { 25 }, new short[] { 20, 29, 22, 11, 14, 17, 17, 13, 21, 11, 19, 17, 18, 20, 8, 21, 18, 24, 21, 15, 27, 21 } };
+
+        public static readonly Dictionary<string, int> osisBibeNamesToAbsoluteChapterNum = new Dictionary<string, int>
+        {
+            {"gen",0 },
+            {"exod",50 },
+            {"lev",90 },
+            {"num",117 },
+            {"deut",153 },
+            {"josh",187 },
+            {"judg",211 },
+            {"ruth",232 },
+            {"1sam",236 },
+            {"2sam",267 },
+            {"1kgs",291 },
+            {"2kgs",313 },
+            {"1chr",338 },
+            {"2chr",367 },
+            {"ezra",403 },
+            {"neh",413 },
+            {"esth",426 },
+            {"job",436 },
+            {"ps",478 },
+            {"prov",628 },
+            {"eccl",659 },
+            {"song",671 },
+            {"isa",679 },
+            {"jer",745 },
+            {"lam",797 },
+            {"ezek",802 },
+            {"dan",850 },
+            {"hos",862 },
+            {"joel",876 },
+            {"amos",879 },
+            {"obad",888 },
+            {"jonah",889 },
+            {"mic",893 },
+            {"nah",900 },
+            {"hab",903 },
+            {"zeph",906 },
+            {"hag",909 },
+            {"zech",911 },
+            {"mal",925 },
+            {"matt",929 },
+            {"mark",957 },
+            {"luke",973 },
+            {"john",997 },
+            {"acts",1018 },
+            {"rom",1046 },
+            {"1cor",1062 },
+            {"2cor",1078 },
+            {"gal",1091 },
+            {"eph",1097 },
+            {"phil",1103 },
+            {"col",1107 },
+            {"1thess",1111 },
+            {"2thess",1116 },
+            {"1tim",1119 },
+            {"2tim",1125 },
+            {"titus",1129 },
+            {"phlm",1132 },
+            {"heb",1133 },
+            {"jas",1146 },
+            {"1pet",1151 },
+            {"2pet",1156 },
+            {"1john",1159 },
+            {"2john",1164 },
+            {"3john",1165 },
+            {"jude",1166 },
+            {"rev",1167 },
+        };
     }
     [DataContract]
     public class BiblePlaceMarker

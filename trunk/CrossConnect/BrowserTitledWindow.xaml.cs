@@ -57,7 +57,7 @@ namespace CrossConnect
             [DataMember]
             public bool isSynchronized=true;
             [DataMember]
-            public string extraHtmlUri="";
+            public double htmlFontSize = 10;
         }
         public SerializableWindowState state = new SerializableWindowState();
 
@@ -66,15 +66,12 @@ namespace CrossConnect
         {
             InitializeComponent();
         }
-        public void SynchronizeWindow(int chapterNum, string verseNum)
+        public void SynchronizeWindow(int chapterNum, int verseNum)
         {
             if (state.isSynchronized)
             {
-                if (this.state.chapterNum != chapterNum)
-                {
-                    this.state.chapterNum = chapterNum;
-                }
-                state.extraHtmlUri = "#VERSE_" + verseNum.Substring(6);
+                this.state.chapterNum = chapterNum;
+                this.state.verseNum = verseNum;
                 UpdateBrowser();
             }
         }
@@ -144,11 +141,22 @@ namespace CrossConnect
             int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
             string colorDir = lightColorCount >= 2 ? "light" : "dark";
 
-            butPrevious.Image=getImage("/Images/" + colorDir + "/appbar.people.2.rest.png");
-            butPrevious.PressedImage=getImage("/Images/" + colorDir + "/appbar.people.2.pressed.rest.png");
+            if (state.source.isPageable)
+            {
+                butPrevious.Image = getImage("/Images/" + colorDir + "/appbar.people.2.rest.png");
+                butPrevious.PressedImage = getImage("/Images/" + colorDir + "/appbar.people.2.pressed.rest.png");
 
-            butNext.Image=getImage("/Images/" + colorDir + "/appbar.people.1.rest.png");
-            butNext.PressedImage=getImage("/Images/" + colorDir + "/appbar.people.1.rest.pressed.png");
+                butNext.Image = getImage("/Images/" + colorDir + "/appbar.people.1.rest.png");
+                butNext.PressedImage = getImage("/Images/" + colorDir + "/appbar.people.1.rest.pressed.png");
+            }
+            else
+            {
+                butPrevious.Image = null;
+                butPrevious.PressedImage = null;
+
+                butNext.Image = null;
+                butNext.PressedImage = null;
+            }
 
             butMenu.Image=getImage("/Images/" + colorDir + "/appbar.menu.rest.png");
             butMenu.PressedImage=getImage("/Images/" + colorDir + "/appbar.menu.rest.pressed.png");
@@ -162,6 +170,28 @@ namespace CrossConnect
             butClose.Image=getImage("/Images/" + colorDir + "/appbar.cancel.rest.png");
             butClose.PressedImage=getImage("/Images/" + colorDir + "/appbar.cancel.rest.pressed.png");
 
+            if (!state.source.isSynchronizeable)
+            {
+                butLink.Image = null;
+                butLink.PressedImage = null;
+            }
+
+            if (state != null && state.source != null)
+            {
+                state.source.registerUpdateEvent(source_Changed, true);
+            }
+
+        }
+        private void webBrowser1_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (state != null && state.source != null)
+            {
+                state.source.registerUpdateEvent(source_Changed, false);
+            }
+        }
+        private void source_Changed()
+        {
+            UpdateBrowser();
         }
         private ImageSource getImage(string path)
         {
@@ -188,11 +218,13 @@ namespace CrossConnect
                     GetBrowserColor("PhoneBackgroundColor"),
                     GetBrowserColor("PhoneForegroundColor"),
                     GetBrowserColor("PhoneAccentColor"),
-                    (double)Application.Current.Resources["PhoneFontSizeNormal"]/2));
+                    state.htmlFontSize));
                 tw.Close();
                 fs.Close();
+                webBrowser1.FontSize = state.htmlFontSize;
                 webBrowser1.Base = App.WEB_DIR_ISOLATED;
-                Uri source = new Uri(file + state.extraHtmlUri, UriKind.Relative);
+
+                Uri source = new Uri(file + "#CHAP_" + state.chapterNum + "_VERS_" + state.verseNum, UriKind.Relative);
                 webBrowser1.Navigate(source);
 
                 writeTitle();
@@ -206,7 +238,7 @@ namespace CrossConnect
                 tmr.Start(); 
             }
         }
-        private static string GetBrowserColor(string sourceResource)
+        public static string GetBrowserColor(string sourceResource)
         {
             var color = (Color)Application.Current.Resources[sourceResource];
             return "#" + color.ToString().Substring(3, 6);
@@ -215,30 +247,42 @@ namespace CrossConnect
 
         private void webBrowser1_ScriptNotify(object sender, Microsoft.Phone.Controls.NotifyEventArgs e)
         {
-            //PivotHolder.SelectedIndex = PivotHolder.SelectedIndex + 1;
-            //TextTitle1.Text = e.Value;
-            //webBrowser1.Dispatcher.BeginInvoke(
-            //    () => OpenBrowser(e.Value)
-            //    );
-            state.extraHtmlUri = "#VERSE_" + e.Value.Substring(6);
-            App.SynchronizeAllWindows(state.chapterNum, "" + e.Value, state.curIndex);
-            writeTitle();
-            App.AddHistory(state.chapterNum,state.verseNum);
+            string[] chapterVerse = e.Value.ToString().Split("_".ToArray());
+            int chapterNum= -1;
+            int verseNum = -1;
+            for(int i=0;i<chapterVerse.Length;i+=2)
+            {
+                switch(chapterVerse[i])
+                {
+                    case "CHAP":
+                        int.TryParse(chapterVerse[i + 1], out chapterNum);
+                        break;
+                    case "VERS":
+                        int.TryParse(chapterVerse[i + 1], out verseNum);
+                        break;
+                }
+            }
+            if (chapterNum >= 0 && verseNum >= 0)
+            {
+                if (state.source.isLocalChangeDuringLink)
+                {
+                    state.chapterNum = chapterNum;
+                    state.verseNum = verseNum;
+                    writeTitle();
+                }
+                App.SynchronizeAllWindows(chapterNum, verseNum, state.curIndex);
+
+                App.AddHistory(chapterNum, verseNum);
+            }
         }
         private void writeTitle()
         {
             int bookNum;
             int relChaptNum;
             string fullName;
-            state.source.getInfo(state.chapterNum, out bookNum, out relChaptNum, out fullName);
-
-            string verseNum = "1";
-            if (state.extraHtmlUri.Length > 7)
-            {
-                verseNum = state.extraHtmlUri.Substring(7);
-            }
-            int.TryParse(verseNum, out state.verseNum);
-            title.Text = fullName + " " + (relChaptNum + 1) + ":" + (state.verseNum+1);
+            string titleText;
+            state.source.getInfo(state.chapterNum, state.verseNum, out bookNum, out relChaptNum, out fullName, out titleText);
+            title.Text = titleText;
         }
         private SlideTransition SlideTransitionElement(string mode)
         {
@@ -250,7 +294,7 @@ namespace CrossConnect
 
         private void butPrevious_Click(object sender, RoutedEventArgs e)
         {
-            state.extraHtmlUri = "#VERSE_0";
+            state.verseNum = 0;
             state.chapterNum--;
             if (state.chapterNum < 0)
             {
@@ -285,7 +329,7 @@ namespace CrossConnect
         private void butNext_Click(object sender, RoutedEventArgs e)
         {
             state.chapterNum++;
-            state.extraHtmlUri = "#VERSE_0";
+            state.verseNum = 0;
             if (state.chapterNum >= (BibleZtextReader.CHAPTERS_IN_BIBLE-1))
             {
                 state.chapterNum = 0;
@@ -327,23 +371,26 @@ namespace CrossConnect
 
         private void butLink_Click(object sender, RoutedEventArgs e)
         {
-            //get all the right images
-            //figure out if this is a light color
-            var color = (Color)Application.Current.Resources["PhoneBackgroundColor"];
-            int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
-            string colorDir = lightColorCount >= 2 ? "light" : "dark";
-
-            state.isSynchronized = !state.isSynchronized;
-            if (state.isSynchronized)
+            if (state.source.isSynchronizeable)
             {
-                butLink.PressedImage = getImage("/Images/" + colorDir + "/appbar.linkto.rest.png");
-                butLink.Image = getImage("/Images/" + colorDir + "/appbar.linkto.rest.pressed.png");
+                //get all the right images
+                //figure out if this is a light color
+                var color = (Color)Application.Current.Resources["PhoneBackgroundColor"];
+                int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
+                string colorDir = lightColorCount >= 2 ? "light" : "dark";
 
-            }
-            else
-            {
-                butLink.Image = getImage("/Images/" + colorDir + "/appbar.linkto.rest.png");
-                butLink.PressedImage = getImage("/Images/" + colorDir + "/appbar.linkto.rest.pressed.png");
+                state.isSynchronized = !state.isSynchronized;
+                if (state.isSynchronized)
+                {
+                    butLink.PressedImage = getImage("/Images/" + colorDir + "/appbar.linkto.rest.png");
+                    butLink.Image = getImage("/Images/" + colorDir + "/appbar.linkto.rest.pressed.png");
+
+                }
+                else
+                {
+                    butLink.Image = getImage("/Images/" + colorDir + "/appbar.linkto.rest.png");
+                    butLink.PressedImage = getImage("/Images/" + colorDir + "/appbar.linkto.rest.pressed.png");
+                }
             }
         }
         private void butLarger_Click(object sender, RoutedEventArgs e)
@@ -399,13 +446,13 @@ namespace CrossConnect
         {
             //we must delay updating of this webbrowser...
             ((System.Windows.Threading.DispatcherTimer)sender).Stop();
-            Uri source = new Uri(lastFileName + state.extraHtmlUri, UriKind.Relative);
             try
             {
+                Uri source = new Uri(lastFileName + "#CHAP_" + state.chapterNum + "_VERS_" + state.verseNum, UriKind.Relative);
                 webBrowser1.Navigate(source);
             }
             catch (Exception)
             { }
-        } 
+        }
     }
 }

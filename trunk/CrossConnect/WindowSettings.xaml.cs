@@ -38,6 +38,7 @@ namespace CrossConnect
             var state=App.openWindows[App.windowSettings.openWindowIndex].state;
             state.windowType = selectedType;
             state.bibleToLoad = bookSelected.sbmd.internalName;
+            state.htmlFontSize = this.sliderTextSize.Value;
             App.openWindows[App.windowSettings.openWindowIndex].Initialize(state.bibleToLoad, state.bookNum, state.chapterNum, state.windowType);
         }
         private void GetSelectedData(out WINDOW_TYPE selectedType, out SwordBackend.SwordBook bookSelected)
@@ -95,10 +96,35 @@ namespace CrossConnect
             {
                 visibility=System.Windows.Visibility.Collapsed;
             }
-            butSelectChapter.Visibility=visibility;
-            butSearch.Visibility=visibility;
+            butSelectChapter.Visibility = visibility;
+            butSearch.Visibility = visibility;
             butSave.Visibility=visibility;
             butCancel.Visibility=visibility;
+            butAddBookmarks.Visibility = visibility;
+            sliderTextSize.Value = (double)Application.Current.Resources["PhoneFontSizeNormal"] / 2;
+            //must show the current window selections
+            if (App.openWindows.Count > 0)
+            {
+                butSelectChapter.Visibility = (App.openWindows[App.windowSettings.openWindowIndex].state.source.isPageable ? visibility : System.Windows.Visibility.Collapsed);
+                butSearch.Visibility = (App.openWindows[App.windowSettings.openWindowIndex].state.source.isSearchable ? visibility : System.Windows.Visibility.Collapsed);
+                butAddBookmarks.Visibility = (App.openWindows[App.windowSettings.openWindowIndex].state.source.isBookmarkable ? visibility : System.Windows.Visibility.Collapsed);
+                switch (App.openWindows[App.windowSettings.openWindowIndex].state.windowType)
+                {
+                    case WINDOW_TYPE.WINDOW_BIBLE:
+                        this.selectDocumentType.SelectedIndex = 0;
+                        break;
+                    case WINDOW_TYPE.WINDOW_BIBLE_NOTES:
+                        this.selectDocumentType.SelectedIndex = 1;
+                        break;
+                    case WINDOW_TYPE.WINDOW_BOOKMARKS:
+                        this.selectDocumentType.SelectedIndex = 2;
+                        break;
+                    case WINDOW_TYPE.WINDOW_HISTORY:
+                        this.selectDocumentType.SelectedIndex = 3;
+                        break;
+                }
+                sliderTextSize.Value = App.openWindows[App.windowSettings.openWindowIndex].state.htmlFontSize;
+            }
         }
 
         private void butSelectChapter_Click(object sender, RoutedEventArgs e)
@@ -120,6 +146,7 @@ namespace CrossConnect
             GetSelectedData(out selectedType, out bookSelected);
             App.AddWindow(bookSelected.sbmd.internalName, 0, 0, selectedType);
             this.NavigationService.GoBack();
+
         }
 
         private void butCancel_Click(object sender, RoutedEventArgs e)
@@ -138,6 +165,23 @@ namespace CrossConnect
             App.AddBookmark(App.openWindows[App.windowSettings.openWindowIndex].state.chapterNum,
                 App.openWindows[App.windowSettings.openWindowIndex].state.verseNum);
             this.NavigationService.GoBack();
+        }
+
+        private void sliderTextSize_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+            if (webBrowser1 != null)
+            {
+                webBrowser1.FontSize = e.NewValue;
+                webBrowser1.NavigateToString(
+                    SwordBackend.BibleZtextReader.HtmlHeader(
+                    BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"),
+                    BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
+                    BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
+                    e.NewValue) +
+                    "Text size" +
+                    "</body></html>");
+            }
         }
     }
 }

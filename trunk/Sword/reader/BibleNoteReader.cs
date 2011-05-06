@@ -27,10 +27,17 @@ namespace SwordBackend
             :base(path, iso2DigitLangCode, isIsoEncoding)
         {
         }
-
+        public override bool isSearchable { get { return false; } }
+        public override bool isBookmarkable { get { return false; } }
+        public override bool isLocalChangeDuringLink { get { return false; } }
         public override string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize)
         {
             return GetChapterHtml(chapterNumber, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, true);
+        }
+        public override void getInfo(int chaptNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title)
+        {
+            base.getInfo(chaptNum, verseNum, out bookNum, out relChaptNum, out fullName, out title);
+            title = "Notes " + fullName + ":" + (relChaptNum + 1);
         }
     }
 }

@@ -55,7 +55,6 @@ namespace CrossConnect
         public static List<BrowserTitledWindow> openWindows = new List<BrowserTitledWindow>();
         public const string WEB_DIR_ISOLATED = "webtemporary";
 
-        public delegate void WindowSourceChanged();
         public static event WindowSourceChanged BookMarksChanged;
         public static event WindowSourceChanged HistoryChanged;
         
@@ -259,10 +258,10 @@ namespace CrossConnect
                 //settings.NewLineOnAttributes = true;
                 using (XmlWriter writer = XmlWriter.Create(sw, settings))
                     ser2.WriteObject(writer, placeMarkers);
-                IsolatedStorageSettings.ApplicationSettings["BiblePlaceMarker"]= sw.ToString();
+                IsolatedStorageSettings.ApplicationSettings["BiblePlaceMarkers"] = sw.ToString();
             }
         }
-        public static void SynchronizeAllWindows(int chapterNum, string verseNum, int curIndex)
+        public static void SynchronizeAllWindows(int chapterNum, int verseNum, int curIndex)
         {
             for (int i = 0; i < openWindows.Count(); i++)
             {
