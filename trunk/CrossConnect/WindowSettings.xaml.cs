@@ -122,6 +122,11 @@ namespace CrossConnect
                     case WINDOW_TYPE.WINDOW_HISTORY:
                         this.selectDocumentType.SelectedIndex = 3;
                         break;
+                    case WINDOW_TYPE.WINDOW_SEARCH:
+                        this.selectDocumentType.Visibility=System.Windows.Visibility.Collapsed;
+                        this.selectDocument.Visibility = System.Windows.Visibility.Collapsed;
+                        butAddNew.Visibility = System.Windows.Visibility.Collapsed;
+                        break;
                 }
                 sliderTextSize.Value = App.openWindows[App.windowSettings.openWindowIndex].state.htmlFontSize;
             }
@@ -156,7 +161,14 @@ namespace CrossConnect
 
         private void butSave_Click(object sender, RoutedEventArgs e)
         {
-            SetBookChoosen();
+            if (App.openWindows[App.windowSettings.openWindowIndex].state.windowType == WINDOW_TYPE.WINDOW_SEARCH)
+            {
+                App.openWindows[App.windowSettings.openWindowIndex].state.htmlFontSize = this.sliderTextSize.Value;
+            }
+            else
+            {
+                SetBookChoosen();
+            }
             this.NavigationService.GoBack();
         }
 

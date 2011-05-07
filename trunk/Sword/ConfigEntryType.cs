@@ -173,10 +173,6 @@ namespace SwordBackend
             ///         
             private readonly string[] choiceArray;
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 5642668733730291463L;
         }
 
         ///    
@@ -208,10 +204,6 @@ namespace SwordBackend
                 }
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = -2468890875139856087L;
         }
 
         ///    
@@ -235,10 +227,6 @@ namespace SwordBackend
                 return true;
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3546926870244309296L;
         };
         public static readonly ConfigEntryType_DATA_PATH DATA_PATH = new ConfigEntryType_DATA_PATH();
 
@@ -314,10 +302,6 @@ namespace SwordBackend
                 }
             }
 
-            ///        
-            ///         <summary> * Comment for <code>serialVersionUID</code> </summary>
-            ///         
-            private const long serialVersionUID = 3978711675019212341L;
         }
 
         ///    
@@ -366,10 +350,6 @@ namespace SwordBackend
                 return true;
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3258417209599931960L;
         }
 
         ///    
@@ -446,10 +426,6 @@ namespace SwordBackend
                 }
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3979274654953451830L;
         }
 
         public static readonly ConfigEntryType_DISPLAY_LEVEL DISPLAY_LEVEL = new ConfigEntryType_DISPLAY_LEVEL();
@@ -482,10 +458,6 @@ namespace SwordBackend
                 return Convert.ToBoolean(input);
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3258412850174373936L;
         }
 
         ///    
@@ -514,10 +486,6 @@ namespace SwordBackend
                 return true;
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3833181424051172401L;
         }
 
         ///    
@@ -536,10 +504,6 @@ namespace SwordBackend
             {
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 6619179970516935818L;
 
             /*
              * (non-Javadoc)
@@ -582,11 +546,6 @@ namespace SwordBackend
             {
                 return new Language(input);
             }
-
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3273532519245386866L;
         }
 
         ///    
@@ -631,11 +590,6 @@ namespace SwordBackend
             {
                 return true;
             }
-
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3258416110121334073L;
         }
         ///    
         ///     <summary> * Contains rtf that describes the book. </summary>
@@ -666,10 +620,6 @@ namespace SwordBackend
 
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3256443616242055221L;
         }
         ///    
         ///     <summary> * An informational string indicating the current version of the book. </summary>
@@ -709,10 +659,6 @@ namespace SwordBackend
                 return false;
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3979272443195830835L;
         }
         ///    
         ///     <summary> * multiple values starting with History, some sort of change-log. In the
@@ -727,34 +673,6 @@ namespace SwordBackend
         /// book JSword does not use this value. </summary>
         ///     
         public static readonly ConfigEntryType MINIMUM_VERSION = new ConfigEntryType("MinimumVersion", "1.5.1a");
-
-
-        ///    
-        ///     <summary> * The Category of the book. Used on the web to classify books into a tree. </summary>
-        ///     
-        public class ConfigEntryType_CATEGORY : ConfigEntryType
-        {
-            public ConfigEntryType_CATEGORY()
-                : base("Category"/*, CATEGORY_PICKS*/, BookCategory.OTHER)
-            {
-            }
-
-
-            public override object convert(string input)
-            {
-                return BookCategory.fromString(input);
-            }
-
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3258412850174571569L;
-        }
-
-        ///    
-        ///     <summary> * The Category of the book. Used on the web to classify books into a tree. </summary>
-        ///     
-        public static readonly ConfigEntryType_CATEGORY CATEGORY = new ConfigEntryType_CATEGORY();
 
         ///    
         /// <summary>* Library of Congress Subject Heading. Typically this is of the form
@@ -778,10 +696,6 @@ namespace SwordBackend
                 return new Language(input);
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3257008752317379897L;
         }
 
         ///    
@@ -825,10 +739,6 @@ namespace SwordBackend
                 }
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3256720680388408370L;
         }
 
         ///    
@@ -856,10 +766,6 @@ namespace SwordBackend
 
             private string validDatePattern = "\\d{4}-\\d{2}-\\d{2}";
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3618697504682948150L;
         }
 
         ///    
@@ -890,10 +796,6 @@ namespace SwordBackend
                 return false;
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3258412850157400372L;
         }
 
         ///    
@@ -919,10 +821,6 @@ namespace SwordBackend
                 return true;
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3256441412957517110L;
         }
 
         ///    
@@ -956,10 +854,6 @@ namespace SwordBackend
 
             private string validDatePattern = "\\d{4}(\\s*-\\s*\\d{4})?(\\s*,\\s*\\d{4}(\\s*-\\s*\\d{4})?)*";
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3258126977217935671L;
         }
 
         ///    
@@ -989,10 +883,6 @@ namespace SwordBackend
                 return true;
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3906926794258199608L;
         }
 
         ///    
@@ -1021,10 +911,6 @@ namespace SwordBackend
                 return true;
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3257001060181620787L;
         }
 
         ///    
@@ -1053,10 +939,6 @@ namespace SwordBackend
                 return true;
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3257001060181620787L;
         }
 
         ///    
@@ -1084,10 +966,6 @@ namespace SwordBackend
                 return true;
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3256721784077365556L;
         }
 
         ///    
@@ -1132,10 +1010,6 @@ namespace SwordBackend
                 return true;
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3257005453916518196L;
         }
 
         ///    
@@ -1158,10 +1032,6 @@ namespace SwordBackend
                 return true;
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3258126968594772272L;
         }
 
         ///    
@@ -1185,10 +1055,6 @@ namespace SwordBackend
                 return true;
             }
 
-            ///        
-            ///         <summary> * Serialization ID </summary>
-            ///         
-            private const long serialVersionUID = 3763093051127904307L;
         }
 
         ///    
@@ -1457,7 +1323,7 @@ namespace SwordBackend
             return VALUES[obj];
         }
 
-        private static readonly ConfigEntryType[] VALUES = { INITIALS, DATA_PATH, DESCRIPTION, MOD_DRV, COMPRESS_TYPE, BLOCK_TYPE, BLOCK_COUNT, KEY_TYPE, CIPHER_KEY, VERSIFICATION, GLOBAL_OPTION_FILTER, DIRECTION, SOURCE_TYPE, ENCODING, DISPLAY_LEVEL, FONT, OSIS_Q_TO_TICK, FEATURE, GLOSSARY_FROM, GLOSSARY_TO, ABBREVIATION, ABOUT, VERSION, HISTORY, MINIMUM_VERSION, CATEGORY, LCSH, LANG, INSTALL_SIZE, SWORD_VERSION_DATE, OBSOLETES, COPYRIGHT, COPYRIGHT_HOLDER, COPYRIGHT_DATE, COPYRIGHT_NOTES, COPYRIGHT_CONTACT_NAME, COPYRIGHT_CONTACT_NOTES, COPYRIGHT_CONTACT_ADDRESS, COPYRIGHT_CONTACT_EMAIL, SHORT_PROMO, SHORT_COPYRIGHT, DISTRIBUTION_LICENSE, DISTRIBUTION_NOTES, TEXT_SOURCE, DISTRIBUTION_SOURCE, OSIS_VERSION, LIBRARY_URL, LOCATION_URL };
+        private static readonly ConfigEntryType[] VALUES = { INITIALS, DATA_PATH, DESCRIPTION, MOD_DRV, COMPRESS_TYPE, BLOCK_TYPE, BLOCK_COUNT, KEY_TYPE, CIPHER_KEY, VERSIFICATION, GLOBAL_OPTION_FILTER, DIRECTION, SOURCE_TYPE, ENCODING, DISPLAY_LEVEL, FONT, OSIS_Q_TO_TICK, FEATURE, GLOSSARY_FROM, GLOSSARY_TO, ABBREVIATION, ABOUT, VERSION, HISTORY, MINIMUM_VERSION, LCSH, LANG, INSTALL_SIZE, SWORD_VERSION_DATE, OBSOLETES, COPYRIGHT, COPYRIGHT_HOLDER, COPYRIGHT_DATE, COPYRIGHT_NOTES, COPYRIGHT_CONTACT_NAME, COPYRIGHT_CONTACT_NOTES, COPYRIGHT_CONTACT_ADDRESS, COPYRIGHT_CONTACT_EMAIL, SHORT_PROMO, SHORT_COPYRIGHT, DISTRIBUTION_LICENSE, DISTRIBUTION_NOTES, TEXT_SOURCE, DISTRIBUTION_SOURCE, OSIS_VERSION, LIBRARY_URL, LOCATION_URL };
     }
 
 }

@@ -67,6 +67,8 @@ namespace CrossConnect
 
         private void PhoneApplicationPage_Unloaded(object sender, RoutedEventArgs e)
         {
+            canvas1.Visibility = System.Windows.Visibility.Collapsed;
+            ShowMenu.Visibility = System.Windows.Visibility.Visible;
             foreach (var nextWindow in App.openWindows)
             {
                 nextWindow.HitButtonBigger -= HitButtonBigger;
@@ -135,7 +137,10 @@ namespace CrossConnect
             AppMenu.Items.Add("Add new window");
             AppMenu.Items.Add("Download bibles");
             AppMenu.Items.Add("Remove bibles");
+            AppMenu.Items.Add("Edit bookmarks");
+            AppMenu.Items.Add("Clear history");
             AppMenu.Items.Add("Help");
+            AppMenu.Items.Add("Exit");
             AppMenu.Items.Add("Cancel");
             menuUpAnimation = new System.Windows.Threading.DispatcherTimer();
             menuUpAnimation.Interval = new TimeSpan(0, 0, 0, 0, 15);
@@ -144,6 +149,7 @@ namespace CrossConnect
             AppMenu.Width = this.ActualWidth;
             canvas1.Width = this.ActualWidth;
             ShowMenu.Visibility = System.Windows.Visibility.Collapsed;
+            canvas1.Visibility = System.Windows.Visibility.Visible;
         }
 
 
@@ -202,7 +208,15 @@ namespace CrossConnect
                 menuDownAnimation.Stop();
                 menuDownAnimation = null;
                 ShowMenu.Visibility = System.Windows.Visibility.Visible;
+                canvas1.Visibility = System.Windows.Visibility.Collapsed;
             }
+        }
+
+        private void PhoneApplicationPage_OrientationChanged(object sender, OrientationChangedEventArgs e)
+        {
+            canvas1.Margin = new Thickness(0, this.ActualHeight, 0, 0);
+            canvas1.Visibility = System.Windows.Visibility.Collapsed;
+            ShowMenu.Visibility = System.Windows.Visibility.Visible;
         }
     }
 }

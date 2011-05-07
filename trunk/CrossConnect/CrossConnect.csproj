@@ -70,6 +70,9 @@
     <Compile Include="DownloadBooks.xaml.cs">
       <DependentUpon>DownloadBooks.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Help.xaml.cs">
+      <DependentUpon>Help.xaml</DependentUpon>
+    </Compile>
     <Compile Include="HistoryReader.cs" />
     <Compile Include="ImageButton.cs" />
     <Compile Include="InstalledBooks.cs" />
@@ -98,6 +101,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DownloadBooks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Help.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -231,6 +238,7 @@
     <Content Include="Images\light\appbar.share.rest.pressed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Properties\regex.html" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,7 @@ using System.IO.IsolatedStorage;
 using SwordBackend;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Threading;
 
 
 namespace CrossConnect
@@ -35,8 +36,8 @@ namespace CrossConnect
         public string searchText = "";
         [DataMember]
         public string displayText = "";
-            
-        public delegate void ShowProgress(double percent, int totalFound, bool isAbort);
+
+        public delegate void ShowProgress(double percent, int totalFound, bool isAbort, bool isFinished);
 
         public SearchReader(string path,
             string iso2DigitLangCode,
@@ -49,7 +50,7 @@ namespace CrossConnect
             int searchTypeIndex, 
             string searchText, 
             bool isIgnoreCase, 
-            List<int> chapters,
+            List<int> chaptListToSearch,
             ShowProgress progress)
         {
             this.searchChapter = searchChapter;
@@ -59,9 +60,11 @@ namespace CrossConnect
             StringBuilder displayTextBody = new StringBuilder();
             Regex regex = new Regex(searchText, isIgnoreCase ? RegexOptions.IgnoreCase : RegexOptions.None);
             int numFoundMatches = 0;
-            for (int i = 0; i < chapters.Count; i++)
+            int i = 0;
+            double lastProcent=0;
+            for (i = 0; i < chaptListToSearch.Count; i++)
             {
-                byte[] chapterBuffer=getChapterBytes(i);
+                byte[] chapterBuffer = getChapterBytes(chaptListToSearch[i]);
                 string chapter = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
                 var matches = regex.Matches(chapter);
                 if (matches != null && matches.Count > 0)
@@ -73,12 +76,12 @@ namespace CrossConnect
                         BibleZtextReader.VersePos verse=new BibleZtextReader.VersePos();
                         //find the verse!
                         int j=0;
-                        for(j=0;j<base.chapters[i].verses.Count;j++)
+                        for (j = 0; j < base.chapters[chaptListToSearch[i]].verses.Count; j++)
                         {
-                            if((base.chapters[i].verses[j].startPos + base.chapters[i].verses[j].length >match.Index))
+                            if ((base.chapters[chaptListToSearch[i]].verses[j].startPos + base.chapters[chaptListToSearch[i]].verses[j].length > match.Index))
                             {
                                 //we found it
-                                verse = base.chapters[i].verses[j];
+                                verse = base.chapters[chaptListToSearch[i]].verses[j];
                                 break;
                             }
                         }
@@ -94,11 +97,11 @@ namespace CrossConnect
                             continue;
                         }
                         //clean up the verse and make sure the text is still there.
-                        string textId = "CHAP_" + i + "_VERS_" + j;
+                        string textId = "CHAP_" + chaptListToSearch[i] + "_VERS_" + j;
                         string prefix="<p><a name=\"" + textId +
                             "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.Notify('" +
-                            textId + "'); event.returnValue=false; return false;\" ><sup>" + base.getFullName(base.chapters[i].booknum) + " " +
-                            (base.chapters[i].bookRelativeChapterNum + 1) + ":" +
+                            textId + "'); event.returnValue=false; return false;\" ><sup>" + base.getFullName(base.chapters[chaptListToSearch[i]].booknum) + " " +
+                            (base.chapters[chaptListToSearch[i]].bookRelativeChapterNum + 1) + ":" +
                             (j + 1) + " </sup>";
                         string suffix = "</a></p><hr />";
                         string verseTxt = base.parseOsisText(
@@ -133,14 +136,19 @@ namespace CrossConnect
                         }
                     }
                 }
-                progress(i * 100 / chapters.Count, numFoundMatches, false);
+                double procent = i * 100 / chaptListToSearch.Count;
+                if (((int)procent) != ((int)lastProcent))
+                {
+                    progress(procent, numFoundMatches, false, false);
+                }
+                lastProcent=procent;
                 if (numFoundMatches > 200)
                 {
-                    progress(i * 100 / chapters.Count, numFoundMatches, true);
                     break;
                 }
             }
             displayText = displayTextBody.ToString();
+            progress(100, numFoundMatches, chaptListToSearch.Count>i, true);
         }
 
         public override bool isSynchronizeable { get { return false; } }

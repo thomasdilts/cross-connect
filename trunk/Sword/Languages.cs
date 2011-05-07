@@ -68,7 +68,7 @@ namespace SwordBackend
 
                 return languages.ContainsKey(code);
 			}
-			catch (Exception e)
+			catch (Exception )
 			{
 				return false;
 			}
@@ -92,7 +92,7 @@ namespace SwordBackend
 			{
 				return languages[code];
 			}
-			catch (Exception e)
+			catch (Exception )
 			{
 				return code;
 			}

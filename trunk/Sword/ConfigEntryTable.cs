@@ -93,7 +93,6 @@ namespace SwordBackend
                 if (getValue(ConfigEntryType.ENCODING).Equals(ENCODING_LATIN1))
                 {
                     supported = true;
-                    bookType = null;
                     questionable = false;
                     readahead = null;
                     table.Clear();
@@ -106,7 +105,6 @@ namespace SwordBackend
                 }
                 adjustDataPath();
                 adjustLanguage();
-                adjustBookType();
                 adjustName();
                 validate();
             }
@@ -245,17 +243,6 @@ namespace SwordBackend
 			get
 			{
 				return extra.Keys;
-			}
-		}
-
-	///    
-	/// <summary>* Returns an Enumeration of all the keys found in the config file. </summary>
-	///     
-		public BookType BookType
-		{
-			get
-			{
-				return bookType;
 			}
 		}
 
@@ -668,46 +655,6 @@ namespace SwordBackend
 			}
 		}
 
-		private void adjustBookType()
-		{
-			// The book type represents the underlying category of book.
-			// Fine tune it here.
-			BookCategory focusedCategory = (BookCategory) getValue(ConfigEntryType.CATEGORY);
-			questionable = focusedCategory == BookCategory.QUESTIONABLE;
-
-			// From the config map, extract the important bean properties
-			string modTypeName = (string) getValue(ConfigEntryType.MOD_DRV);
-			if (modTypeName == null)
-			{
-				Logger.Fail("Book not supported: malformed conf file for " + @internal + " no " + ConfigEntryType.MOD_DRV.Name + " found");
-				supported = false;
-				return;
-			}
-
-			bookType = BookType.fromString(modTypeName);
-			if (BookType == null)
-			{
-				Logger.Fail("Book not supported: malformed conf file for " + @internal + " no book type found");
-				supported = false;
-				return;
-			}
-
-			BookCategory basicCategory = BookType.BookCategory;
-			if (basicCategory == null)
-			{
-				supported = false;
-				return;
-			}
-
-			// The book type represents the underlying category of book.
-			// Fine tune it here.
-			if (focusedCategory == BookCategory.OTHER || focusedCategory == BookCategory.QUESTIONABLE)
-			{
-				focusedCategory = BookType.BookCategory;
-			}
-
-			add(ConfigEntryType.CATEGORY, focusedCategory.Name);
-		}
         public string internalName
         {
             get
@@ -876,8 +823,6 @@ namespace SwordBackend
 		 * present in conf ConfigEntryType.DATA_PATH, ConfigEntryType.MOD_DRV, };
 		 */
 
-		private static readonly ConfigEntryType[] BASIC_INFO = { ConfigEntryType.INITIALS, ConfigEntryType.DESCRIPTION, ConfigEntryType.CATEGORY, ConfigEntryType.LCSH, ConfigEntryType.SWORD_VERSION_DATE, ConfigEntryType.VERSION, ConfigEntryType.HISTORY, ConfigEntryType.OBSOLETES, ConfigEntryType.INSTALL_SIZE };
-
 		private static readonly ConfigEntryType[] LANG_INFO = { ConfigEntryType.LANG, ConfigEntryType.GLOSSARY_FROM, ConfigEntryType.GLOSSARY_TO };
 
 		private static readonly ConfigEntryType[] COPYRIGHT_INFO = { ConfigEntryType.ABOUT, ConfigEntryType.SHORT_PROMO, ConfigEntryType.DISTRIBUTION_LICENSE, ConfigEntryType.DISTRIBUTION_NOTES, ConfigEntryType.DISTRIBUTION_SOURCE, ConfigEntryType.SHORT_COPYRIGHT, ConfigEntryType.COPYRIGHT, ConfigEntryType.COPYRIGHT_DATE, ConfigEntryType.COPYRIGHT_HOLDER, ConfigEntryType.COPYRIGHT_CONTACT_NAME, ConfigEntryType.COPYRIGHT_CONTACT_ADDRESS, ConfigEntryType.COPYRIGHT_CONTACT_EMAIL, ConfigEntryType.COPYRIGHT_CONTACT_NOTES, ConfigEntryType.COPYRIGHT_NOTES, ConfigEntryType.TEXT_SOURCE };
@@ -903,11 +848,6 @@ namespace SwordBackend
 	/// <summary>* A map of lists of unknown config entries. </summary>
 	///     
 		private Dictionary<string, ConfigEntry> extra;
-
-	///    
-	/// <summary>* The BookType for this ConfigEntry </summary>
-	///     
-		private BookType bookType;
 
 	///    
 	/// <summary>* True if this book's config type can be used by JSword. </summary>

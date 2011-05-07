@@ -184,7 +184,7 @@ namespace SwordBackend
                         SwordBook book = new SwordBook(buffer, @internal);
                         entries.Add(book.Name, book);
                     }
-                    catch (IOException ex)
+                    catch (IOException )
                     {
                         Logger.Fail("Failed to load config for entry: " + @internal);
                     }

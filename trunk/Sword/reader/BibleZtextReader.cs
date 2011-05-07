@@ -142,11 +142,16 @@ namespace SwordBackend
                         ChapterPos chapt = null;
                         int booknum = 0;
                         long startPos = 0;
+                        long lastNonZeroStartPos = 0;
                         int length = 0;
                         for (int k = 0; k < VERSES_IN_CHAPTER[i][j]; k++)
                         {
                             booknum = getByteFromStream(fs);
                             startPos = getInt48FromStream(fs);
+                            if (startPos != 0)
+                            {
+                                lastNonZeroStartPos = startPos;
+                            }
                             length = getShortIntFromStream(fs);
                             if (k == 0)
                             {
@@ -154,16 +159,23 @@ namespace SwordBackend
                                 chapt = new ChapterPos(chapterStartPos, i, j);
                                 bookPositions[i].chapters.Add(chapt);
                             }
-                            chapt.verses.Add(new VersePos(startPos - chapterStartPos, length, i));
+                            if (booknum == 0 && startPos == 0 && length == 0)
+                            {
+                                chapt.verses.Add(new VersePos(0, 0, i));
+                            }
+                            else
+                            {
+                                chapt.verses.Add(new VersePos(startPos - chapterStartPos, length, i));
+                            }
                         }
                         //update the chapter length now that we know it
-                        chapt.length = (int)(startPos - chapterStartPos) + length;
+                        chapt.length = (int)(lastNonZeroStartPos - chapterStartPos) + length;
 
                         chapters.Add(chapt);
 
                         //dump a post for the chapter break
                         getByteFromStream(fs);
-                        getInt48FromStream(fs);
+                        long x = getInt48FromStream(fs);
                         getShortIntFromStream(fs);
                     }
                     //dump a post for the book break
@@ -226,11 +238,16 @@ namespace SwordBackend
                         ChapterPos chapt = null;
                         int booknum = 0;
                         long startPos = 0;
+                        long lastNonZeroStartPos = 0;
                         int length = 0;
                         for (int k = 0; k < VERSES_IN_CHAPTER[i][j]; k++)
                         {
                             booknum = getByteFromStream(fs);
                             startPos = getInt48FromStream(fs);
+                            if (startPos != 0)
+                            {
+                                lastNonZeroStartPos = startPos;
+                            }
                             length = getShortIntFromStream(fs);
                             if (k == 0)
                             {
@@ -238,10 +255,17 @@ namespace SwordBackend
                                 chapt = new ChapterPos(chapterStartPos, i, j);
                                 bookPositions[i].chapters.Add(chapt);
                             }
-                            chapt.verses.Add(new VersePos(startPos - chapterStartPos, length, i));
+                            if (booknum == 0 && startPos == 0 && length == 0)
+                            {
+                                chapt.verses.Add(new VersePos(0, 0, i));
+                            }
+                            else
+                            {
+                                chapt.verses.Add(new VersePos(startPos - chapterStartPos, length, i));
+                            }
                         }
                         //update the chapter length now that we know it
-                        chapt.length = (int)(startPos - chapterStartPos) + length;
+                        chapt.length = (int)(lastNonZeroStartPos - chapterStartPos) + length;
 
                         chapters.Add(chapt);
 

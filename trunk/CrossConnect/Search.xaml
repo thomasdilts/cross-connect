@@ -53,15 +53,20 @@
         </StackPanel>
             <!--ContentPanel - place additional content here-->
             <StackPanel Grid.Row="1" x:Name="ContentPanel" >
+                <Button Content="Search" Name="butSearch"  Click="butSearch_Click" />
                 <TextBox  Name="SearchText" Text=""  />
                 <TextBlock x:Name="SearchWhereText" Text="Search there" Margin="9,0,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
                 <RadioButton Margin="0,-10,0,-10" IsChecked="True" GroupName="SearchWhere" Content="Whole bible"  Name="wholeBible" />
                 <RadioButton Margin="0,-10,0,-10" GroupName="SearchWhere" Content="Old Testement"  Name="oldTestement" />
                 <RadioButton Margin="0,-10,0,-10" GroupName="SearchWhere" Content="New Testement"  Name="newTEstement" />
                 <RadioButton Margin="0,-10,0,-10" GroupName="SearchWhere" Content="Chapter"  Name="Chapter" />
-                <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Ignore case" Name="IgnoreCase"/>
-                <Button Content="Search" Name="butSearch"  Click="butSearch_Click" />
+                <TextBlock x:Name="SearchByText" Text="Search by" Margin="9,0,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
+                <RadioButton Margin="0,-10,0,-10" IsChecked="True" GroupName="SearchBy" Content="One or more words"  Name="OneOrMoreWords" />
+                <!--<RadioButton Margin="0,-10,0,-10" GroupName="SearchBy" Content="All words (max 3 words)"  Name="AllWords" /> -->
+                <RadioButton Margin="0,-10,0,-10" GroupName="SearchBy" Content="Exact match (Regular expressions)"  Name="ExactMatch" />
+                <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Ignore case" IsChecked="true" Name="IgnoreCase"/>
                 <ProgressBar Minimum="0" Maximum="100" Name="progressBar1" Height="60" />
+                <Button Content="Help on regular expressions" Name="butHelp"  Click="butHelp_Click" />
             </StackPanel>
     </Grid>
     </ScrollViewer>

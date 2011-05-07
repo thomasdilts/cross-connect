@@ -57,6 +57,13 @@ namespace CrossConnect
 
         public static event WindowSourceChanged BookMarksChanged;
         public static event WindowSourceChanged HistoryChanged;
+
+        public class HelpStartValues
+        {
+            public string embeddedFilePath = "";
+            public string title = "";
+        }
+        public static HelpStartValues helpstart=new HelpStartValues();
         
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.

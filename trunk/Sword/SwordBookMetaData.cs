@@ -101,19 +101,6 @@ namespace SwordBackend
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.crosswire.jsword.book.BookMetaData#isSupported()
-		 */
-		public  bool isSupported
-		{
-			get
-			{
-				return cet.isSupported && cet.BookType.isSupported(this);
-			}
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
 		 * @see org.crosswire.jsword.book.BookMetaData#isEnciphered()
 		 */
 		public  bool isEnciphered
@@ -174,48 +161,6 @@ namespace SwordBackend
 			}
 		}
 
-	///    
-	/// <summary>* Returns the Charset of the book based on the encoding attribute
-	///  </summary>
-	/// <returns> the charset of the book. </returns>
-	///     
-        /*
-		public string BookCharset
-		{
-			get
-			{
-				return ENCODING_JAVA.get(getProperty(ConfigEntryType.ENCODING));
-			}
-		}*/
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.crosswire.jsword.book.basic.AbstractBookMetaData#getKeyType()
-		 */
-		public KeyType KeyType
-		{
-			get
-			{
-				BookType bookType = BookType;
-				if (bookType == null)
-				{
-					return null;
-				}
-				return bookType.KeyType;
-			}
-		}
-
-	///    
-	/// <summary>* Returns the Book Type. </summary>
-	///     
-		public BookType BookType
-		{
-			get
-			{
-				return cet.BookType;
-			}
-		}
 
 	///    
 	/// <summary>* Returns the sourceType. </summary>
@@ -246,21 +191,6 @@ namespace SwordBackend
                 return cet.internalName;
             }
         }
-		public BookCategory BookCategory
-		{
-			get
-			{
-				if (type == null)
-				{
-					type = (BookCategory) getProperty(ConfigEntryType.CATEGORY);
-					if (type == BookCategory.OTHER)
-					{
-						type = BookType.BookCategory;
-					}
-				}
-				return type;
-			}
-		}
 
 		public string Initials
 		{
@@ -305,32 +235,6 @@ namespace SwordBackend
     
 				return ConfigEntryType.DIRECTION_LTOR.Equals(dir);
 			}
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.crosswire.jsword.book.BookMetaData#hasFeature(org.crosswire.jsword
-		 * .book.FeatureType)
-		 */
-		public bool hasFeature(FeatureType feature)
-		{
-			if (cet.match(ConfigEntryType.FEATURE, feature.ToString()))
-			{
-				return true;
-			}
-			// Many "features" are GlobalOptionFilters, which in the Sword C++ API
-			// indicate a class to use for filtering.
-			// These mostly have the source type prepended to the feature
-            StringBuilder buffer = new StringBuilder((string)getProperty(ConfigEntryType.SOURCE_TYPE));
-			buffer.Append(feature);
-			if (cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, buffer.ToString()))
-			{
-				return true;
-			}
-			// But some do not
-			return cet.match(ConfigEntryType.GLOBAL_OPTION_FILTER, feature.ToString());
 		}
 
 		private void buildProperties()
@@ -426,7 +330,6 @@ namespace SwordBackend
 
         private Dictionary<string, object> prop = new Dictionary<string, object>();
         private ConfigEntryTable cet;
-		private BookCategory type;
 	}
 
 }
