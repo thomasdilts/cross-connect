@@ -51,6 +51,7 @@ namespace CrossConnect
         public static BiblePlaceMarkers placeMarkers = new BiblePlaceMarkers();
 
         public const int MAX_NUM_WINDOWS = 10;
+        public static MainPageSplit mainWindow=null;
         public static InstalledBibles installedBibles = new InstalledBibles();
         public static List<BrowserTitledWindow> openWindows = new List<BrowserTitledWindow>();
         public const string WEB_DIR_ISOLATED = "webtemporary";
@@ -107,6 +108,13 @@ namespace CrossConnect
                 BookMarksChanged();
             }
         }
+        public static void RaiseHistoryChangeEvent()
+        {
+            if (HistoryChanged != null)
+            {
+                HistoryChanged();
+            }
+        }
         public static void AddHistory(int chapterNum, int verseNum)
         {
             //stop repeats
@@ -124,10 +132,7 @@ namespace CrossConnect
             {
                 placeMarkers.history.RemoveAt(0);
             }
-            if (HistoryChanged != null)
-            {
-                HistoryChanged();
-            }
+            RaiseHistoryChangeEvent();
         }
         public static void AddWindow(string bibleToLoad, int bookNum, int chapterNum, WINDOW_TYPE typeOfWindow, IBrowserTextSource source=null)
         {

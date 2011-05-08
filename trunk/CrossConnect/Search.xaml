@@ -62,7 +62,7 @@
                 <RadioButton Margin="0,-10,0,-10" GroupName="SearchWhere" Content="Chapter"  Name="Chapter" />
                 <TextBlock x:Name="SearchByText" Text="Search by" Margin="9,0,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
                 <RadioButton Margin="0,-10,0,-10" IsChecked="True" GroupName="SearchBy" Content="One or more words"  Name="OneOrMoreWords" />
-                <!--<RadioButton Margin="0,-10,0,-10" GroupName="SearchBy" Content="All words (max 3 words)"  Name="AllWords" /> -->
+                <RadioButton Margin="0,-10,0,-10" GroupName="SearchBy" Content="All words (max 3 words)"  Name="AllWords" />
                 <RadioButton Margin="0,-10,0,-10" GroupName="SearchBy" Content="Exact match (Regular expressions)"  Name="ExactMatch" />
                 <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Ignore case" IsChecked="true" Name="IgnoreCase"/>
                 <ProgressBar Minimum="0" Maximum="100" Name="progressBar1" Height="60" />

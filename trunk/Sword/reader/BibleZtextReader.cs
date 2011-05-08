@@ -399,7 +399,35 @@ namespace SwordBackend
                 noteText.Append(text);
             }
         }
+        public List<string> makeListDisplayText(List<BiblePlaceMarker> listToDisplay)
+        {
+            List<string> returnList = new List<string>();
 
+            for (int j = listToDisplay.Count - 1; j >= 0; j--)
+            {
+                BiblePlaceMarker place = listToDisplay[j];
+                ChapterPos chaptPos = chapters[place.chapterNum];
+                byte[] chapterBuffer = getChapterBytes(place.chapterNum);
+
+                ChapterPos versesForChapterPositions = chapters[place.chapterNum];
+
+                VersePos verse = versesForChapterPositions.verses[place.verseNum];
+                string verseTxt = parseOsisText(
+                    this.getFullName(chaptPos.booknum) + " " +
+                    (chaptPos.bookRelativeChapterNum + 1) + ":" +
+                    (place.verseNum + 1) + "  " +
+                    place.when.ToShortDateString() + " " + place.when.ToShortTimeString() + "---",
+                    "",
+                    chapterBuffer,
+                    (int)verse.startPos,
+                    verse.length,
+                    this.isIsoEncoding,
+                    false,
+                    true);
+                returnList.Add(verseTxt);
+            }
+            return returnList;
+        }
         protected string makeListDisplayText(List<BiblePlaceMarker> listToDisplay, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize)
         {
             if (htmlBackgroundColor.Length == 0)

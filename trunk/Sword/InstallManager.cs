@@ -393,7 +393,24 @@ namespace SwordBackend
                 }
             }
         }
-
+        public void RemoveBible()
+        { 
+            IsolatedStorageFile root = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication();
+            string modFile=BibleZtextReader.DIR_CONF + '/' + sbmd.internalName.ToLower() + BibleZtextReader.EXTENSION_CONF;
+            string bookPath = sbmd.getCetProperty(ConfigEntryType.DATA_PATH).ToString().Substring(2);
+            string[] filesToDelete=new string[]{modFile,bookPath +"ot.bzs",bookPath +"ot.bzv",bookPath +"ot.bzz",bookPath +"nt.bzs",bookPath +"nt.bzv",bookPath +"nt.bzz" };
+            foreach(string file in filesToDelete)
+            {
+                if (root.FileExists(file))
+                {
+                    root.DeleteFile(file);
+                }
+            }
+            if (root.DirectoryExists(bookPath))
+            {
+                root.DeleteDirectory(bookPath.Substring(0,bookPath.Length-1));
+            }
+        }
         /// <summary>
         /// Create all the directories necesary to make the given path valid.
         /// </summary>

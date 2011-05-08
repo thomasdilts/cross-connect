@@ -29,7 +29,7 @@ namespace CrossConnect
         // Load data for the ViewModel Items
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-
+            App.mainWindow = this;
             foreach (var nextWindow in App.openWindows)
             {
                 nextWindow.HitButtonBigger += HitButtonBigger;
@@ -103,7 +103,7 @@ namespace CrossConnect
             App.openWindows.RemoveAt(((BrowserTitledWindow)sender).state.curIndex);
             ReDrawWindows();
         }
-        private void ReDrawWindows()
+        public void ReDrawWindows()
         {
             LayoutRoot.Children.Clear();
             LayoutRoot.ColumnDefinitions.Clear();
@@ -134,14 +134,14 @@ namespace CrossConnect
         private void ShowMenu_Click(object sender, RoutedEventArgs e)
         {
             AppMenu.Items.Clear();
-            AppMenu.Items.Add("Add new window");
-            AppMenu.Items.Add("Download bibles");
-            AppMenu.Items.Add("Remove bibles");
-            AppMenu.Items.Add("Edit bookmarks");
-            AppMenu.Items.Add("Clear history");
-            AppMenu.Items.Add("Help");
-            AppMenu.Items.Add("Exit");
-            AppMenu.Items.Add("Cancel");
+            AppMenu.Items.Add(createTextBlock("Add new window", "Add new window"));
+            AppMenu.Items.Add(createTextBlock("Download bibles", "Download bibles"));
+            AppMenu.Items.Add(createTextBlock("Remove bibles", "Remove bibles"));
+            AppMenu.Items.Add(createTextBlock("Edit bookmarks", "Edit bookmarks"));
+            AppMenu.Items.Add(createTextBlock("Clear history", "Clear history"));
+            AppMenu.Items.Add(createTextBlock("Help", "Help"));
+            AppMenu.Items.Add(createTextBlock("Cancel", "Cancel"));
+
             menuUpAnimation = new System.Windows.Threading.DispatcherTimer();
             menuUpAnimation.Interval = new TimeSpan(0, 0, 0, 0, 15);
             menuUpAnimation.Tick += new EventHandler(menuUpAnimation_Tick);
@@ -151,7 +151,13 @@ namespace CrossConnect
             ShowMenu.Visibility = System.Windows.Visibility.Collapsed;
             canvas1.Visibility = System.Windows.Visibility.Visible;
         }
-
+        private TextBlock createTextBlock(string text,string tag)
+        {
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = text;
+            textBlock.Tag = tag;
+            return textBlock;
+        }
 
         void menuUpAnimation_Tick(object sender, EventArgs e)
         {
@@ -171,7 +177,7 @@ namespace CrossConnect
         {
             if (e.AddedItems.Count > 0)
             {
-                switch ((string)e.AddedItems[0])
+                switch (((TextBlock)e.AddedItems[0]).Tag.ToString())
                 {
                     case "Add new window":
                         App.windowSettings.isAddNewWindowOnly = true;
@@ -182,8 +188,19 @@ namespace CrossConnect
                         this.NavigationService.Navigate(new Uri("/DownloadBooks.xaml", UriKind.Relative));
                         break;
                     case "Remove bibles":
+                        NavigationService.Navigate(new Uri("/RemoveBibles.xaml", UriKind.Relative));
+                        break;
+                    case "Edit bookmarks":
+                        NavigationService.Navigate(new Uri("/EditBookmarks.xaml", UriKind.Relative));
+                        break;
+                    case "Clear history":
+                        App.placeMarkers.history = new List<SwordBackend.BiblePlaceMarker>();
+                        App.RaiseHistoryChangeEvent();
                         break;
                     case "Help":
+                        App.helpstart.title="";
+                        App.helpstart.embeddedFilePath="CrossConnect.Properties.regex.html";
+                        NavigationService.Navigate(new Uri("/Help.xaml", UriKind.Relative));
                         break;
                     case "Cancel":
                         //just do nothing

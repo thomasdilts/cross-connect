@@ -69,36 +69,13 @@ namespace CrossConnect
                 var matches = regex.Matches(chapter);
                 if (matches != null && matches.Count > 0)
                 {
-                    BibleZtextReader.VersePos lastVerse=new BibleZtextReader.VersePos();
-                    lastVerse.startPos=-1;
-                    foreach (Match match in matches)
+                    //now we must search each verse in the chapter
+                    for (int j = 0; j < base.chapters[chaptListToSearch[i]].verses.Count; j++)
                     {
-                        BibleZtextReader.VersePos verse=new BibleZtextReader.VersePos();
-                        //find the verse!
-                        int j=0;
-                        for (j = 0; j < base.chapters[chaptListToSearch[i]].verses.Count; j++)
-                        {
-                            if ((base.chapters[chaptListToSearch[i]].verses[j].startPos + base.chapters[chaptListToSearch[i]].verses[j].length > match.Index))
-                            {
-                                //we found it
-                                verse = base.chapters[chaptListToSearch[i]].verses[j];
-                                break;
-                            }
-                        }
-                        //if it is the same as the last verse then skip it
-                        if (lastVerse.startPos == verse.startPos)
-                        {
-                            continue;
-                        }
-                        lastVerse = verse;
-                        //if the match goes over into the next verse then skip it
-                        if (match.Index + match.Length > verse.startPos + verse.length)
-                        {
-                            continue;
-                        }
+                        BibleZtextReader.VersePos verse = base.chapters[chaptListToSearch[i]].verses[j];
                         //clean up the verse and make sure the text is still there.
                         string textId = "CHAP_" + chaptListToSearch[i] + "_VERS_" + j;
-                        string prefix="<p><a name=\"" + textId +
+                        string prefix = "<p><a name=\"" + textId +
                             "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.Notify('" +
                             textId + "'); event.returnValue=false; return false;\" ><sup>" + base.getFullName(base.chapters[chaptListToSearch[i]].booknum) + " " +
                             (base.chapters[chaptListToSearch[i]].bookRelativeChapterNum + 1) + ":" +
@@ -112,25 +89,25 @@ namespace CrossConnect
                             verse.length,
                             base.isIsoEncoding,
                             false,
-                            true) ;
-                        var matches2 = regex.Matches(verseTxt);
-                        if (matches2 != null && matches2.Count > 0)
+                            true);
+                        matches = regex.Matches(verseTxt);
+                        Match lastMatch=null;
+                        bool foundMatch = false;
+                        foreach (Match match in matches)
                         {
-                            for (int k = matches2.Count-1; k >=0; k--)
+                            //if the match goes over into the previous match then skip it
+                            if (lastMatch!=null && (match.Index > lastMatch.Index && match.Index < lastMatch.Index + lastMatch.Length))
                             {
-                                //make sure the matches don't overlap.
-                                if (k != (matches2.Count - 1))
-                                {
-                                    if (matches2[k].Index + matches2[k].Length > matches2[k + 1].Index)
-                                    {
-                                        //the match overlaps, skip it
-                                        continue;
-                                    }
-                                }
-                                verseTxt = verseTxt.Substring(0, matches2[k].Index) + "<b>" + 
-                                    verseTxt.Substring(matches2[k].Index, matches2[k].Length) + "</b>" + 
-                                    verseTxt.Substring(matches2[k].Index+matches2[k].Length);
+                                continue;
                             }
+                            lastMatch=match;
+                            foundMatch = true;
+                            verseTxt = verseTxt.Substring(0,match.Index) + "<b>" + 
+                                verseTxt.Substring(match.Index, match.Length) + "</b>" + 
+                                verseTxt.Substring(match.Index+match.Length);
+                        }
+                        if (foundMatch)
+                        {
                             displayTextBody.Append(prefix + verseTxt + suffix);
                             numFoundMatches++;
                         }

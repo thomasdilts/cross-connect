@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Runtime.Serialization;
+using System.Collections.Generic;
 
 
 namespace SwordBackend
@@ -22,5 +23,6 @@ namespace SwordBackend
         bool isLocalChangeDuringLink { get; }
         string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize);
         void registerUpdateEvent(WindowSourceChanged sourceChangedMethod, bool isRegister = true);
+        List<string> makeListDisplayText(List<BiblePlaceMarker> listToDisplay);
     }
 }

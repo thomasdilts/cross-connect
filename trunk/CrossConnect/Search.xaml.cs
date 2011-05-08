@@ -76,30 +76,24 @@ namespace CrossConnect
                         searchText = searchText + "|" + goodParts[j];
                     }
                 }
-                //else if ((bool)AllWords.IsChecked)
-                //{
-                //    switch (goodParts.Count())
-                //    {
-                //        case 2:
-                //            searchText = "" + goodParts[0] + ".*?" + goodParts[1] + "|" + goodParts[1] + ".*?" + goodParts[0] + "";
-                //            break;
-                //        case 3:
-                //            searchText =
-                //                "" + goodParts[0] + ".*?" + goodParts[1] + ".*?" + goodParts[2] + "|" +
-                //                "" + goodParts[0] + ".*?" + goodParts[2] + ".*?" + goodParts[1] + "|" +
-                //                "" + goodParts[1] + ".*?" + goodParts[2] + ".*?" + goodParts[0] + "|" +
-                //                "" + goodParts[1] + ".*?" + goodParts[0] + ".*?" + goodParts[2] + "|" +
-                //                "" + goodParts[2] + ".*?" + goodParts[1] + ".*?" + goodParts[0] + "|" +
-                //                "" + goodParts[2] + ".*?" + goodParts[0] + ".*?" + goodParts[1] + "";
-                //                //"(" + goodParts[0] + ".*?" + goodParts[1] + ".*?" + goodParts[2] + ")|" +
-                //                //"(" + goodParts[0] + ".*?" + goodParts[2] + ".*?" + goodParts[1] + ")|" +
-                //                //"(" + goodParts[1] + ".*?" + goodParts[2] + ".*?" + goodParts[0] + ")|" +
-                //                //"(" + goodParts[1] + ".*?" + goodParts[0] + ".*?" + goodParts[2] + ")|" +
-                //                //"(" + goodParts[2] + ".*?" + goodParts[1] + ".*?" + goodParts[0] + ")|" +
-                //                //"(" + goodParts[2] + ".*?" + goodParts[0] + ".*?" + goodParts[1] + ")";
-                //            break;
-                //    }
-                //}
+                else if ((bool)AllWords.IsChecked)
+                {
+                    switch (goodParts.Count())
+                    {
+                        case 2:
+                            searchText = "(" + goodParts[0] + ".*?" + goodParts[1] + ")|(" + goodParts[1] + ".*?" + goodParts[0] + ")";
+                            break;
+                        case 3:
+                            searchText =
+                            "(" + goodParts[0] + ".*?" + goodParts[1] + ".*?" + goodParts[2] + ")|" +
+                            "(" + goodParts[0] + ".*?" + goodParts[2] + ".*?" + goodParts[1] + ")|" +
+                            "(" + goodParts[1] + ".*?" + goodParts[2] + ".*?" + goodParts[0] + ")|" +
+                            "(" + goodParts[1] + ".*?" + goodParts[0] + ".*?" + goodParts[2] + ")|" +
+                            "(" + goodParts[2] + ".*?" + goodParts[1] + ".*?" + goodParts[0] + ")|" +
+                            "(" + goodParts[2] + ".*?" + goodParts[0] + ".*?" + goodParts[1] + ")";
+                            break;
+                    }
+                }
             }
 
             isSearchFinished = false;
@@ -161,7 +155,7 @@ namespace CrossConnect
             PageTitle.Text = "Search";
             SearchByText.Visibility = isVis;
             OneOrMoreWords.Visibility = isVis;
-            //AllWords.Visibility = isVis;
+            AllWords.Visibility = isVis;
             ExactMatch.Visibility = isVis;
         }
         public void UpdateProgressBar()
