@@ -115,6 +115,13 @@ namespace CrossConnect
                 HistoryChanged();
             }
         }
+        public static void RaiseBookmarkChangeEvent()
+        {
+            if (BookMarksChanged != null)
+            {
+                BookMarksChanged();
+            }
+        }
         public static void AddHistory(int chapterNum, int verseNum)
         {
             //stop repeats

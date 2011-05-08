@@ -33,6 +33,7 @@ namespace CrossConnect
                 int index = (int)((TextBlock)e.AddedItems[0]).Tag;
                 App.placeMarkers.bookmarks.RemoveAt(index);
                 LoadList();
+                App.RaiseBookmarkChangeEvent();
             }
             else
             {
