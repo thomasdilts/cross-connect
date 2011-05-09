@@ -26,6 +26,13 @@ namespace CrossConnect
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
+            PageTitle.Text=Translations.translate("Download bibles");
+            selectServer.Header=Translations.translate("Select the server");
+            butDownload.Content=Translations.translate("Get bible list");
+            selectLangauge.Header=Translations.translate("Select the language");
+            selectBook.Header=Translations.translate("Select the bible");
+            butDownloadBook.Content = Translations.translate("Download bible");
+    
             butDownload.Visibility = System.Windows.Visibility.Visible;
             butDownloadBook.Visibility = System.Windows.Visibility.Collapsed;
             selectBook.Visibility = System.Windows.Visibility.Collapsed;

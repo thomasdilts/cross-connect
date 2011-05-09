@@ -75,6 +75,22 @@ namespace CrossConnect
         }
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
+            PageTitle.Text = Translations.translate("Settings");
+            selectDocumentType.Header = Translations.translate("Select the window type");
+            selectDocument.Header = Translations.translate("Select the bible");
+            butSelectChapter.Content = Translations.translate("Select book and chapter");
+            butSearch.Content= Translations.translate("Search");
+            butAddNew.Content = Translations.translate("Add new window");
+            butAddBookmarks.Content = Translations.translate("Add to bookmarks");
+            butSave.Content = Translations.translate("Save");
+            butCancel.Content = Translations.translate("Cancel");
+
+            selectDocumentType.Items.Clear();
+            selectDocumentType.Items.Add(Translations.translate("Bible"));
+            selectDocumentType.Items.Add(Translations.translate("Notes"));
+            selectDocumentType.Items.Add(Translations.translate("History"));
+            selectDocumentType.Items.Add(Translations.translate("Bookmarks"));
+
             if (App.windowSettings.skipWindowSettings)
             {
                 //request to skip this window.

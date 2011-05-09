@@ -50,7 +50,7 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" x:Name="TitlePanel" Margin="12,5,0,0" Height="63" VerticalAlignment="Top">
             <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="Window settings" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
+            <TextBlock x:Name="PageTitle" Text="Settings" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
         </StackPanel>
             <!--ContentPanel - place additional content here-->
             <Grid Grid.Row="1" x:Name="ContentPanel" >
@@ -67,9 +67,9 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <toolkit:ListPicker Name="selectDocumentType"  Grid.Row="0"  Header="Select the view">
+                <toolkit:ListPicker Name="selectDocumentType"  Grid.Row="0"  Header="Select the window type">
                     <sys:String>Bible</sys:String>
-                    <sys:String>Notes for this bible</sys:String>
+                    <sys:String>Notes</sys:String>
                     <sys:String>History</sys:String>
                     <sys:String>Bookmarks</sys:String>
                 </toolkit:ListPicker>

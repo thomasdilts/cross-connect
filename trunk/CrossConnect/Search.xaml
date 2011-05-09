@@ -55,12 +55,12 @@
             <StackPanel Grid.Row="1" x:Name="ContentPanel" >
                 <Button Content="Search" Name="butSearch"  Click="butSearch_Click" />
                 <TextBox  Name="SearchText" Text=""  />
-                <TextBlock x:Name="SearchWhereText" Text="Search there" Margin="9,0,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
+                <TextBlock x:Name="SearchWhereText" Text="Search where" Margin="9,0,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
                 <RadioButton Margin="0,-10,0,-10" IsChecked="True" GroupName="SearchWhere" Content="Whole bible"  Name="wholeBible" />
                 <RadioButton Margin="0,-10,0,-10" GroupName="SearchWhere" Content="Old Testement"  Name="oldTestement" />
                 <RadioButton Margin="0,-10,0,-10" GroupName="SearchWhere" Content="New Testement"  Name="newTEstement" />
-                <RadioButton Margin="0,-10,0,-10" GroupName="SearchWhere" Content="Chapter"  Name="Chapter" />
-                <TextBlock x:Name="SearchByText" Text="Search by" Margin="9,0,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
+                <RadioButton Margin="0,-10,0,-10" GroupName="SearchWhere" Content=""  Name="Chapter" />
+                <TextBlock x:Name="SearchByText" Text="Search conditions" Margin="9,0,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
                 <RadioButton Margin="0,-10,0,-10" IsChecked="True" GroupName="SearchBy" Content="One or more words"  Name="OneOrMoreWords" />
                 <RadioButton Margin="0,-10,0,-10" GroupName="SearchBy" Content="All words (max 3 words)"  Name="AllWords" />
                 <RadioButton Margin="0,-10,0,-10" GroupName="SearchBy" Content="Exact match (Regular expressions)"  Name="ExactMatch" />

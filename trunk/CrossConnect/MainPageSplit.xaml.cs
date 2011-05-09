@@ -134,13 +134,13 @@ namespace CrossConnect
         private void ShowMenu_Click(object sender, RoutedEventArgs e)
         {
             AppMenu.Items.Clear();
-            AppMenu.Items.Add(createTextBlock("Add new window", "Add new window"));
-            AppMenu.Items.Add(createTextBlock("Download bibles", "Download bibles"));
-            AppMenu.Items.Add(createTextBlock("Remove bibles", "Remove bibles"));
-            AppMenu.Items.Add(createTextBlock("Edit bookmarks", "Edit bookmarks"));
-            AppMenu.Items.Add(createTextBlock("Clear history", "Clear history"));
-            AppMenu.Items.Add(createTextBlock("Help", "Help"));
-            AppMenu.Items.Add(createTextBlock("Cancel", "Cancel"));
+            AppMenu.Items.Add(createTextBlock(Translations.translate("Add new window"), "Add new window"));
+            AppMenu.Items.Add(createTextBlock(Translations.translate("Download bibles"), "Download bibles"));
+            AppMenu.Items.Add(createTextBlock(Translations.translate("Select bible to delete"), "Select bible to delete"));
+            AppMenu.Items.Add(createTextBlock(Translations.translate("Select bookmark to delete"), "Select bookmark to delete"));
+            AppMenu.Items.Add(createTextBlock(Translations.translate("Clear history"), "Clear history"));
+            AppMenu.Items.Add(createTextBlock(Translations.translate("Help"), "Help"));
+            AppMenu.Items.Add(createTextBlock(Translations.translate("Cancel"), "Cancel"));
 
             menuUpAnimation = new System.Windows.Threading.DispatcherTimer();
             menuUpAnimation.Interval = new TimeSpan(0, 0, 0, 0, 15);
@@ -187,10 +187,10 @@ namespace CrossConnect
                     case "Download bibles":
                         this.NavigationService.Navigate(new Uri("/DownloadBooks.xaml", UriKind.Relative));
                         break;
-                    case "Remove bibles":
+                    case "Select bible to delete":
                         NavigationService.Navigate(new Uri("/RemoveBibles.xaml", UriKind.Relative));
                         break;
-                    case "Edit bookmarks":
+                    case "Select bookmark to delete":
                         NavigationService.Navigate(new Uri("/EditBookmarks.xaml", UriKind.Relative));
                         break;
                     case "Clear history":
@@ -198,7 +198,7 @@ namespace CrossConnect
                         App.RaiseHistoryChangeEvent();
                         break;
                     case "Help":
-                        App.helpstart.title="";
+                        App.helpstart.title=Translations.translate("Help");
                         App.helpstart.embeddedFilePath="CrossConnect.Properties.regex.html";
                         NavigationService.Navigate(new Uri("/Help.xaml", UriKind.Relative));
                         break;

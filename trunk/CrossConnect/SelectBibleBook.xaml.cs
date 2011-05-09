@@ -124,7 +124,7 @@ namespace CrossConnect
         }
         private void First_Click(object sender, RoutedEventArgs e)
         {
-            PageTitle.Text = "Select chapter";
+            PageTitle.Text = Translations.translate("Select chapter");
             //set up the array for the chapter selection
             int bookNum = (int)((Button)sender).Tag;
             App.openWindows[App.windowSettings.openWindowIndex].state.bookNum = bookNum;
@@ -174,7 +174,7 @@ namespace CrossConnect
         }
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
-            PageTitle.Text = "Select book";
+            PageTitle.Text = Translations.translate("Select book");
             reloadWindow(new ButtonWindowSpecs(
                 App.openWindows[App.windowSettings.openWindowIndex].state.source.existsShortNames?96:230,
                 70,

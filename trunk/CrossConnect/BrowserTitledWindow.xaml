@@ -31,7 +31,7 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <local:ImageButton Click="butPrevious_Click" Image="/Images/dark/appbar.people.2.rest.png" PressedImage="/Images/dark/appbar.people.2.pressed.rest.png"  Grid.Column="0" Grid.Row="0"  x:Name="butPrevious" Template="{StaticResource ImageButtonControlTemplate}"/>
-            <TextBlock Margin="7,0,0,0" Grid.Column="1" Grid.Row="0"  Name="title" Text="Now is the time for all good men to come"  />
+            <TextBlock Margin="7,0,0,0" Grid.Column="1" Grid.Row="0"  Name="title" Text=""  />
             <local:ImageButton Click="butNext_Click" Image="/Images/dark/appbar.people.1.rest.png" PressedImage="/Images/dark/appbar.people.1.rest.pressed.png"  Grid.Column="2" Grid.Row="0"  x:Name="butNext" Template="{StaticResource ImageButtonControlTemplate}"/>
             <local:ImageButton Click="butMenu_Click" Image="/Images/dark/appbar.menu.rest.png" PressedImage="/Images/dark/appbar.menu.rest.pressed.png"  Grid.Column="3" Grid.Row="0"  x:Name="butMenu" Template="{StaticResource ImageButtonControlTemplate}"/>
             <local:ImageButton Click="butLink_Click" Image="/Images/dark/appbar.linkto.rest.png" PressedImage="/Images/dark/appbar.linkto.rest.pressed.png"  Grid.Column="4" Grid.Row="0"  x:Name="butLink" Template="{StaticResource ImageButtonControlTemplate}"/>

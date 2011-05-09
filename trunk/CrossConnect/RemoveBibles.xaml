@@ -49,7 +49,7 @@
             <!--TitlePanel contains the name of the application and page title-->
             <StackPanel Grid.Row="0" x:Name="TitlePanel" Margin="12,5,0,0" Height="63" VerticalAlignment="Top">
                 <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}"/>
-                <TextBlock x:Name="PageTitle" Text="Select bible to remove" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
+            <TextBlock x:Name="PageTitle" Text="Select bible to delete" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
             </StackPanel>
             <ListBox Grid.Row="1" SelectionChanged="SelectList_SelectionChanged"  Name="SelectList" />
         </Grid>

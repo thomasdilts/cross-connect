@@ -49,7 +49,7 @@ namespace CrossConnect
         public override void getInfo(int chaptNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title)
         {
             base.getInfo(chaptNum, verseNum, out bookNum, out relChaptNum, out fullName, out title);
-            title = "Bookmarks";
+            title = Translations.translate("Bookmarks");
         }
 
         public override string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize)

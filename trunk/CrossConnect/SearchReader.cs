@@ -140,19 +140,19 @@ namespace CrossConnect
             switch (searchTypeIndex)
             {
                 case 0:
-                    extraText="Whole Bible";
+                    extraText = Translations.translate("Whole bible");
                     break;
                 case 1:
-                    extraText="Old Testement";
+                    extraText=Translations.translate("Old Testement");
                     break;
                 case 2:
-                    extraText="New Testement";
+                    extraText=Translations.translate("New Testement");
                     break;
                 case 3:
                     extraText = fullName;
                     break;
             }
-            title = "Search; " + searchText + "; " + extraText;
+            title = Translations.translate("Search") + "; " + searchText + "; " + extraText;
         }
 
         public override string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize)

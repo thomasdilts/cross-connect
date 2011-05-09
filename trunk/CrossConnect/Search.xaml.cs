@@ -34,6 +34,19 @@ namespace CrossConnect
             string text;
             App.openWindows[App.windowSettings.openWindowIndex].state.source.getInfo(state.chapterNum, state.verseNum, out dummy1, out dummy2, out Name, out text);
             Chapter.Content = Name;
+
+            PageTitle.Text = Translations.translate("Search");
+            butSearch.Content = Translations.translate("Search");
+            SearchWhereText.Text = Translations.translate("Search where");
+            wholeBible.Content = Translations.translate("Whole bible");
+            oldTestement.Content = Translations.translate("Old Testement");
+            newTEstement.Content = Translations.translate("New Testement");
+            SearchByText.Text = Translations.translate("Search conditions");
+            OneOrMoreWords.Content = Translations.translate("One or more words");
+            AllWords.Content = Translations.translate("All words (maximum 3 words)");
+            ExactMatch.Content = Translations.translate("Exact match") + " (Regular Expressions)";
+            IgnoreCase.Header = Translations.translate("Ignore case");
+            PageTitle.Text = Translations.translate("Help") + " (Regular Expressions)";
         }
 
         private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
@@ -172,14 +185,14 @@ namespace CrossConnect
                 Search.searchingObject.isSearchFinishedReported = true;
                 if (numFoundVerses == 0)
                 {
-                    MessageBox.Show("No matches found");
+                    MessageBox.Show("Nothing found");
                     ShowControls(true);
                 }
                 else
                 {
                     if (isAbort)
                     {
-                        MessageBox.Show("More then 200 items found. Search stopped");
+                        MessageBox.Show("Too many found. Search stopped");
                     } 
                     
                     App.AddWindow(App.openWindows[App.windowSettings.openWindowIndex].state.bibleToLoad, 0, 0, WINDOW_TYPE.WINDOW_SEARCH, sourceSearch);
@@ -218,7 +231,7 @@ namespace CrossConnect
 
         private void butHelp_Click(object sender, RoutedEventArgs e)
         {
-            App.helpstart.title="";
+            App.helpstart.title = Translations.translate("Help") + "(Regular Expressions)";  
             App.helpstart.embeddedFilePath="CrossConnect.Properties.regex.html";
             NavigationService.Navigate(new Uri("/Help.xaml", UriKind.Relative));
         }

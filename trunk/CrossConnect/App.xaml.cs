@@ -329,6 +329,13 @@ namespace CrossConnect
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
+            MessageBoxResult result = MessageBox.Show(Translations.translate("An error occured. Do you want to completely erase the memory for this program?"),"",MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK)
+            {
+                IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
+                root.Remove();
+                System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings.Clear();
+            }
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 // An unhandled exception has occurred; break into the debugger

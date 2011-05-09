@@ -27,7 +27,7 @@ namespace CrossConnect
                 return;
             }
             isInSelectionChanged = true;
-            MessageBoxResult result= MessageBox.Show("Delete?","", MessageBoxButton.OKCancel);
+            MessageBoxResult result= MessageBox.Show(Translations.translate("Delete?"),"", MessageBoxButton.OKCancel);
             if (result.Equals(MessageBoxResult.OK))
             {
                 int index = (int)((TextBlock)e.AddedItems[0]).Tag;
@@ -59,7 +59,9 @@ namespace CrossConnect
         }
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
-            
+            PageTitle.Text = Translations.translate("Select bookmark to delete");    
+        
+
             LoadList();
         }
     }

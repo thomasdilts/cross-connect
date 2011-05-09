@@ -49,7 +49,7 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel  Grid.Row="0" x:Name="TitlePanel" Margin="12,5,0,0" Height="63" VerticalAlignment="Top">
             <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="Download books" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
+                <TextBlock x:Name="PageTitle" Text="Download bibles" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
         </StackPanel>
         <!--ContentPanel - place additional content here-->
         <Grid  Grid.Row="1" x:Name="ContentPanel" >
@@ -69,7 +69,7 @@
                 <toolkit:ListPicker Name="selectServer"  SelectionChanged="selectServer_SelectionChanged" Grid.Column="0" Grid.Row="0"  Header="Select the server">
                     <sys:String>dark</sys:String>
                 </toolkit:ListPicker>
-                <Button Content="Get book list" Grid.Row="0" Grid.Column="1"  Name="butDownload"  Click="butDownload_Click" />
+                    <Button Content="Get bible list" Grid.Row="0" Grid.Column="1"  Name="butDownload"  Click="butDownload_Click" />
             </Grid>
             <ProgressBar Grid.Row="1" Name="progressBarGetBookList" Height="60" />
             <Grid x:Name="LanguagePanel" Grid.Row="2">
@@ -82,7 +82,7 @@
                 </toolkit:ListPicker>
             </Grid>
 
-            <toolkit:ListPicker Name="selectBook"  Grid.Column="0" Grid.Row="3"  Header="Select the book">
+                <toolkit:ListPicker Name="selectBook"  Grid.Column="0" Grid.Row="3"  Header="Select the bible">
                 <sys:String>dark</sys:String>
             </toolkit:ListPicker>
             <Grid x:Name="BookPanel" Grid.Row="4">
@@ -90,7 +90,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Button Content="Download book" Grid.Row="5" Grid.Column="1"  Name="butDownloadBook"  Click="butDownloadBook_Click" />
+                    <Button Content="Download bible" Grid.Row="5" Grid.Column="1"  Name="butDownloadBook"  Click="butDownloadBook_Click" />
             </Grid>
             <ProgressBar Grid.Row="5" Name="progressBarGetBook" Height="60" />
         </Grid>

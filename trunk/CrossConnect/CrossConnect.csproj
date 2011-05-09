@@ -63,6 +63,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Translations.cs" />
     <Compile Include="BookMarkReader.cs" />
     <Compile Include="BrowserTitledWindow.xaml.cs">
       <DependentUpon>BrowserTitledWindow.xaml</DependentUpon>
@@ -253,6 +254,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Properties\regex.html" />
+    <EmbeddedResource Include="Properties\crossc_en.xml" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
