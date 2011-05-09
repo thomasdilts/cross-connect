@@ -67,7 +67,7 @@ namespace CrossConnect
             string errMsg=webInst.reloadBookList();
             if (errMsg != null)
             {
-                MessageBox.Show(Translations.translate("An error occured trying to connect to the network. Try again later.") + "; " + errMsg);
+                MessageBox.Show(Translations.translate("An error occurred trying to connect to the network. Try again later.") + "; " + errMsg);
                 PhoneApplicationPage_Loaded(null, null);
             }
         }
@@ -79,7 +79,7 @@ namespace CrossConnect
         {
             if (sender != null)
             {
-                MessageBox.Show(Translations.translate("An error occured trying to connect to the network. Try again later.") + "; " + (string)sender);
+                MessageBox.Show(Translations.translate("An error occurred trying to connect to the network. Try again later.") + "; " + (string)sender);
                 PhoneApplicationPage_Loaded(null, null);
                 return;
             }
@@ -109,7 +109,7 @@ namespace CrossConnect
             }
             else
             {
-                MessageBox.Show(Translations.translate("An error occured trying to connect to the network. Try again later.") + "; " + e.Error.Message);
+                MessageBox.Show(Translations.translate("An error occurred trying to connect to the network. Try again later.") + "; " + e.Error.Message);
                 PhoneApplicationPage_Loaded(null, null);
             }
         }
@@ -151,7 +151,7 @@ namespace CrossConnect
             string errMsg=sb.downloadBookNow(webInst);
             if (errMsg != null)
             {
-                MessageBox.Show(Translations.translate("An error occured trying to connect to the network. Try again later.") + "; " + errMsg);
+                MessageBox.Show(Translations.translate("An error occurred trying to connect to the network. Try again later.") + "; " + errMsg);
                 PhoneApplicationPage_Loaded(null, null);
             }
         }
@@ -163,7 +163,7 @@ namespace CrossConnect
         {
             if (sender != null)
             {
-                MessageBox.Show(Translations.translate("An error occured trying to connect to the network. Try again later.") + "; " + (string)sender);
+                MessageBox.Show(Translations.translate("An error occurred trying to connect to the network. Try again later.") + "; " + (string)sender);
                 PhoneApplicationPage_Loaded(null, null);
                 return;
             }
