@@ -45,8 +45,8 @@ namespace CrossConnect
             OneOrMoreWords.Content = Translations.translate("One or more words");
             AllWords.Content = Translations.translate("All words (maximum 3 words)");
             ExactMatch.Content = Translations.translate("Exact match") + " (Regular Expressions)";
-            IgnoreCase.Header = Translations.translate("Ignore case");
-            PageTitle.Text = Translations.translate("Help") + " (Regular Expressions)";
+            IgnoreCase.Header = Translations.translate("Case insensitive");
+            butHelp.Content = Translations.translate("Help") + " (Regular Expressions)";
         }
 
         private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
@@ -165,7 +165,7 @@ namespace CrossConnect
             progressBar1.Value = 0;
             butSearch.Visibility = isVis;
             butHelp.Visibility = isVis;
-            PageTitle.Text = "Search";
+            PageTitle.Text = Translations.translate("Search");
             SearchByText.Visibility = isVis;
             OneOrMoreWords.Visibility = isVis;
             AllWords.Visibility = isVis;
@@ -179,20 +179,20 @@ namespace CrossConnect
                 return;
             }
             Search.searchingObject.progressBar1.Value = percent;
-            PageTitle.Text = "Search; Found; " + numFoundVerses;
+            PageTitle.Text = Translations.translate("Search") + "; " + Translations.translate("Found") + "; " + numFoundVerses;
             if (isSearchFinished)
             {
                 Search.searchingObject.isSearchFinishedReported = true;
                 if (numFoundVerses == 0)
                 {
-                    MessageBox.Show("Nothing found");
+                    MessageBox.Show(Translations.translate("Nothing found"));
                     ShowControls(true);
                 }
                 else
                 {
                     if (isAbort)
                     {
-                        MessageBox.Show("Too many found. Search stopped");
+                        MessageBox.Show(Translations.translate("Too many found. Search stopped"));
                     } 
                     
                     App.AddWindow(App.openWindows[App.windowSettings.openWindowIndex].state.bibleToLoad, 0, 0, WINDOW_TYPE.WINDOW_SEARCH, sourceSearch);

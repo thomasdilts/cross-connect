@@ -207,7 +207,7 @@ namespace CrossConnect
                     BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
                     BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
                     e.NewValue) +
-                    "Text size" +
+                    Translations.translate("Text size") +
                     "</body></html>");
             }
         }

@@ -36,6 +36,7 @@ namespace CrossConnect
             string name = CultureInfo.CurrentCulture.Name.Replace('-', '_');
             Stream stream = null;
             stream = assem.GetManifestResourceStream("CrossConnect.Properties.crossc_" + name + ".xml");
+
             if (stream==null)
             {
                 stream = assem.GetManifestResourceStream("CrossConnect.Properties.crossc_" + isocode + ".xml");

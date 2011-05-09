@@ -28,7 +28,7 @@ namespace CrossConnect
         {
             PageTitle.Text=Translations.translate("Download bibles");
             selectServer.Header=Translations.translate("Select the server");
-            butDownload.Content=Translations.translate("Get bible list");
+            butDownload.Content = Translations.translate("Download bible list");
             selectLangauge.Header=Translations.translate("Select the language");
             selectBook.Header=Translations.translate("Select the bible");
             butDownloadBook.Content = Translations.translate("Download bible");
@@ -90,7 +90,6 @@ namespace CrossConnect
                     
                 }
                 var list = allLanguages.OrderBy(t => t.Key).ToList();
-                selectLangauge.Items.Add("Touch here to select");
                 foreach (var x in list)
                 {
                     selectLangauge.Items.Add(x.Key);
@@ -104,15 +103,7 @@ namespace CrossConnect
         {
             if (selectLangauge!=null && selectLangauge.SelectedItem != null)
             {
-                if (selectLangauge.SelectedItem.Equals("Touch here to select"))
-                {
-                    //hide books and such
-                    butDownloadBook.Visibility = System.Windows.Visibility.Collapsed;
-                    selectBook.Visibility = System.Windows.Visibility.Collapsed;
-                    progressBarGetBookList.Visibility = System.Windows.Visibility.Collapsed;
-                    progressBarGetBook.Visibility = System.Windows.Visibility.Collapsed;
-                    return;
-                }
+
                 selectBook.Items.Clear();
                 //put in the books
                 Dictionary<string, string> allBooks = new Dictionary<string, string>();

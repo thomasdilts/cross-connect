@@ -255,6 +255,7 @@
     </Content>
     <EmbeddedResource Include="Properties\regex.html" />
     <EmbeddedResource Include="Properties\crossc_en.xml" />
+    <EmbeddedResource Include="Properties\crossc_sv.xml" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>

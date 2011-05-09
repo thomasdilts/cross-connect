@@ -107,7 +107,7 @@ namespace CrossConnect
                             case WINDOW_TYPE.WINDOW_BIBLE_NOTES:
                                 try
                                 {
-                                    state.source = new BibleNoteReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                    state.source = new BibleNoteReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding, Translations.translate("Notes"));
                                 }
                                 catch (Exception)
                                 {

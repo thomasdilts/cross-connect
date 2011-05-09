@@ -23,9 +23,11 @@ namespace SwordBackend
     [KnownType(typeof(VersePos))]
     public class BibleNoteReader : BibleZtextReader
     {
-        public BibleNoteReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
+        private string titleBrowserWindow = "";
+        public BibleNoteReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string titleBrowserWindow)
             :base(path, iso2DigitLangCode, isIsoEncoding)
         {
+            this.titleBrowserWindow = titleBrowserWindow;
         }
         public override bool isSearchable { get { return false; } }
         public override bool isBookmarkable { get { return false; } }
@@ -37,7 +39,7 @@ namespace SwordBackend
         public override void getInfo(int chaptNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title)
         {
             base.getInfo(chaptNum, verseNum, out bookNum, out relChaptNum, out fullName, out title);
-            title = "Notes " + fullName + ":" + (relChaptNum + 1);
+            title = titleBrowserWindow + " " + fullName + ":" + (relChaptNum + 1);
         }
     }
 }

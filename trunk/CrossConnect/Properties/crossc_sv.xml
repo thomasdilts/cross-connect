@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<translations isolang="sv" isolocale="" version="1.0">
+<string key="Add new window">Lägg till nya fönster</string>
+<string key="Add to bookmarks">Lägg till bokmärke</string>
+<string key="All words (maximum 3 words)">Alla ord (högst 3 ord)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">Ett fel uppstod. Vill du helt radera minnet för det här programmet?</string>
+<string key="Bible">Bibeln</string>
+<string key="Bookmarks">Bokmärken</string>
+<string key="Cancel">Avbryt</string>
+<string key="Clear history">Rensa historik</string>
+<string key="Delete?">Ta bort?</string>
+<string key="Download bible">Hämta bibel</string>
+<string key="Download bibles">Hämta biblar</string>
+<string key="Exact match">Exakt matchning</string>
+<string key="Found">Hittade</string>
+<string key="Download bible list">Hämta bibel lista</string>
+<string key="Help">Hjälp</string>
+<string key="History">Historia</string>
+<string key="Case insensitive">Skiftlägesokänslig</string>
+<string key="New Testement">Nya Testement</string>
+<string key="Notes">Anteckningar</string>
+<string key="Nothing found">Ingenting hittades</string>
+<string key="Old Testement">Gamla Testement</string>
+<string key="One or more words">Ett eller flera ord</string>
+<string key="Save">Spara</string>
+<string key="Search conditions">Sök villkor</string>
+<string key="Search where">Sök där</string>
+<string key="Search">Sök</string>
+<string key="Select bible to delete">Välj bibel för att radera</string>
+<string key="Select book and chapter">Välj bok och kapitel</string>
+<string key="Select book">Välj bok</string>
+<string key="Select bookmark to delete">Välj bokmärket för att radera</string>
+<string key="Select chapter">Välj kapitel</string>
+<string key="Select the bible">Välj bibeln</string>
+<string key="Select the language">Välj språk</string>
+<string key="Select the server">Välj servern</string>
+<string key="Select the window type">Välj fönstertyp</string>
+<string key="Settings">Inställningar</string>
+<string key="Text size">Textstorlek</string>
+<string key="Too many found. Search stopped">För många träffar. Sök stoppas</string>
+<string key="Whole bible">Hela bibeln</string>
+<string key="You must have at least one bible">Du måste ha minst en bibel</string>
+</translations>
