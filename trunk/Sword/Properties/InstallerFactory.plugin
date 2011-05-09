@@ -1,2 +1,0 @@
-#sword-ftp=org.crosswire.jsword.SwordBackend.sword.FtpSwordInstallerFactory
-sword-http=org.crosswire.jsword.SwordBackend.sword.HttpSwordInstallerFactory
