@@ -40,4 +40,5 @@
 <string key="Too many found. Search stopped">พบมากเกินไป ค้นหาหยุด</string>
 <string key="Whole bible">พระคัมภีร์ทั้ง</string>
 <string key="You must have at least one bible">คุณต้องมีอย่างน้อยหนึ่งพระคัมภีร์</string>
+<string key="An error occurred trying to connect to the network. Try again later.">เกิดข้อผิดพลาดพยายามเชื่อมต่อกับเครือข่าย ลองอีกครั้งในภายหลัง</string>
 </translations>

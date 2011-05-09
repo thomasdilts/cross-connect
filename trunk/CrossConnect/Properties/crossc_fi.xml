@@ -40,4 +40,5 @@
 <string key="Too many found. Search stopped">Liian monta löytyi. Etsi pysähtyi</string>
 <string key="Whole bible">Koko raamattu</string>
 <string key="You must have at least one bible">Sinulla on oltava vähintään yksi Raamatun</string>
+<string key="An error occurred trying to connect to the network. Try again later.">Virhe yhteydessä verkkoon. Yritä myöhemmin uudelleen.</string>
 </translations>

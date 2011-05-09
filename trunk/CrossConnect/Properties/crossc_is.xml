@@ -40,4 +40,5 @@
 <string key="Too many found. Search stopped">Of margir fundust. Leit hætt</string>
 <string key="Whole bible">Whole Biblíunni</string>
 <string key="You must have at least one bible">Þú verður að hafa að minnsta kosti einn Biblíuna</string>
+<string key="An error occurred trying to connect to the network. Try again later.">Villa kom upp þegar reynt að tengjast netinu. Reyndu aftur síðar.</string>
 </translations>

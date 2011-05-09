@@ -42,21 +42,26 @@ namespace CrossConnect
             {
                 if (App.installedBibles.installedBibles.Count() == 0)
                 {
-                    //cant have any open windows if there are no books!
-                    App.openWindows.Clear();
-                    //get some books.
-                    this.NavigationService.Navigate(new Uri("/DownloadBooks.xaml", UriKind.Relative));
+                    if (App.isFirstTimeInMainPageSplit==0)
+                    {
+                        //cant have any open windows if there are no books!
+                        App.openWindows.Clear();
+                        //get some books.
+                        this.NavigationService.Navigate(new Uri("/DownloadBooks.xaml", UriKind.Relative));
+                        App.isFirstTimeInMainPageSplit = 1;
+                    }
                 }
                 else
                 {
-                    App.windowSettings.skipWindowSettings = false;
-                    this.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
+                    if (App.isFirstTimeInMainPageSplit<=1)
+                    {
+                        App.windowSettings.skipWindowSettings = false;
+                        this.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
+                        App.isFirstTimeInMainPageSplit=2;
+                    }
                 }
             }
-            else
-            {
-                ReDrawWindows();
-            }
+            ReDrawWindows();
             //figure out if this is a light color
             var color = (Color)Application.Current.Resources["PhoneBackgroundColor"];
             int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
@@ -103,31 +108,84 @@ namespace CrossConnect
             App.openWindows.RemoveAt(((BrowserTitledWindow)sender).state.curIndex);
             ReDrawWindows();
         }
+        public void ShowEmptyWindow()
+        {
+            LayoutRoot.Children.Clear();
+            LayoutRoot.ColumnDefinitions.Clear();
+            LayoutRoot.RowDefinitions.Clear();
+
+        }
         public void ReDrawWindows()
         {
             LayoutRoot.Children.Clear();
             LayoutRoot.ColumnDefinitions.Clear();
             LayoutRoot.RowDefinitions.Clear();
-            int rowCount = 0;
-            for (int i = 0; i < App.openWindows.Count(); i++)
+            if (App.openWindows.Count() == 0)
             {
-                App.openWindows[i].state.curIndex = i;
-                for (int j = 0; j < App.openWindows[i].state.numRowsIown; j++)
+                RowDefinition row = new RowDefinition();
+                row.Height = GridLength.Auto;
+                LayoutRoot.RowDefinitions.Add(row);
+                row = new RowDefinition();
+                row.Height = GridLength.Auto;
+                LayoutRoot.RowDefinitions.Add(row);
+                row = new RowDefinition();
+                row.Height = new GridLength(0,GridUnitType.Star);
+                LayoutRoot.RowDefinitions.Add(row);
+
+                //show just a quick menu to add window or bibles
+                TextBlock text = new TextBlock();
+                text.Text = "Cross Connect";
+                text.FontSize = 40;
+                Grid.SetRow(text, 0);
+                LayoutRoot.Children.Add(text);
+                Button but = new Button();
+                Grid.SetRow(but, 1);
+                if (App.installedBibles.installedBibles.Count() == 0)
                 {
-                    RowDefinition row = new RowDefinition();
-                    LayoutRoot.RowDefinitions.Add(row);
+                    but.Content = Translations.translate("Download bibles");
+                    but.Click += butDownLoadBibles_Click;
                 }
-                Grid.SetRow(App.openWindows[i], rowCount);
-                Grid.SetRowSpan(App.openWindows[i], App.openWindows[i].state.numRowsIown);
-                Grid.SetColumn(App.openWindows[i], 0);
-                LayoutRoot.Children.Add(App.openWindows[i]);
-                rowCount += App.openWindows[i].state.numRowsIown;
-                App.openWindows[i].ShowSizeButtons(true);
+                else
+                {
+                    but.Content = Translations.translate("Add new window");
+                    but.Click += butAddWindow_Click; 
+                }
+                LayoutRoot.Children.Add(but);
             }
-            if (App.openWindows.Count() == 1)
+            else
             {
-                App.openWindows[0].ShowSizeButtons(false);
+
+                int rowCount = 0;
+                for (int i = 0; i < App.openWindows.Count(); i++)
+                {
+                    App.openWindows[i].state.curIndex = i;
+                    for (int j = 0; j < App.openWindows[i].state.numRowsIown; j++)
+                    {
+                        RowDefinition row = new RowDefinition();
+                        LayoutRoot.RowDefinitions.Add(row);
+                    }
+                    Grid.SetRow(App.openWindows[i], rowCount);
+                    Grid.SetRowSpan(App.openWindows[i], App.openWindows[i].state.numRowsIown);
+                    Grid.SetColumn(App.openWindows[i], 0);
+                    LayoutRoot.Children.Add(App.openWindows[i]);
+                    rowCount += App.openWindows[i].state.numRowsIown;
+                    App.openWindows[i].ShowSizeButtons(true);
+                }
+                if (App.openWindows.Count() == 1)
+                {
+                    App.openWindows[0].ShowSizeButtons(false);
+                }
             }
+        }
+        private void butAddWindow_Click(object sender, RoutedEventArgs e)
+        {
+            App.windowSettings.isAddNewWindowOnly = true;
+            App.windowSettings.skipWindowSettings = false;
+            this.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
+        }
+        private void butDownLoadBibles_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/DownloadBooks.xaml", UriKind.Relative));
         }
         System.Windows.Threading.DispatcherTimer menuDownAnimation = null;
         System.Windows.Threading.DispatcherTimer menuUpAnimation = null;

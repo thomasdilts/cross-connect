@@ -55,10 +55,9 @@ namespace CrossConnect
         public static InstalledBibles installedBibles = new InstalledBibles();
         public static List<BrowserTitledWindow> openWindows = new List<BrowserTitledWindow>();
         public const string WEB_DIR_ISOLATED = "webtemporary";
-
         public static event WindowSourceChanged BookMarksChanged;
         public static event WindowSourceChanged HistoryChanged;
-
+        public static int isFirstTimeInMainPageSplit = 0;
         public class HelpStartValues
         {
             public string embeddedFilePath = "";
@@ -329,18 +328,20 @@ namespace CrossConnect
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show(Translations.translate("An error occured. Do you want to completely erase the memory for this program?"),"",MessageBoxButton.OKCancel);
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                // An unhandled exception has occurred; break into the debugger
+                System.Diagnostics.Debugger.Break();
+            } 
+            
+            MessageBoxResult result = MessageBox.Show(Translations.translate("An error occured. Do you want to completely erase the memory for this program?"), "", MessageBoxButton.OKCancel);
             if (result == MessageBoxResult.OK)
             {
                 IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
                 root.Remove();
                 System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings.Clear();
             }
-            if (System.Diagnostics.Debugger.IsAttached)
-            {
-                // An unhandled exception has occurred; break into the debugger
-                System.Diagnostics.Debugger.Break();
-            }
+
         }
 
         #region Phone application initialization

@@ -40,4 +40,5 @@
 <string key="Too many found. Search stopped">Liiga palju leitud. Otsi peatunud</string>
 <string key="Whole bible">Terve piibel</string>
 <string key="You must have at least one bible">Sul peab olema vähemalt üks piibel</string>
+<string key="An error occurred trying to connect to the network. Try again later.">Tekkis viga üritab võrku. Proovige hiljem uuesti.</string>
 </translations>

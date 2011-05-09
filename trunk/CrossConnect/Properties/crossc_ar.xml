@@ -40,4 +40,5 @@
 <string key="Too many found. Search stopped">وجدت كثيرة جدا. توقف البحث</string>
 <string key="Whole bible">الكتاب المقدس كله</string>
 <string key="You must have at least one bible">يجب أن يكون لديك واحد على الأقل الكتاب المقدس</string>
+<string key="An error occurred trying to connect to the network. Try again later.">حدث خطأ أثناء محاولة الاتصال بالشبكة. المحاولة لاحقا.</string>
 </translations>

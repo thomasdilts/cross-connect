@@ -40,4 +40,5 @@
 <string key="Too many found. Search stopped">Túl sok találat. Keresés megállt</string>
 <string key="Whole bible">Egész Biblia</string>
 <string key="You must have at least one bible">Meg kell legalább egy bibliai</string>
+<string key="An error occurred trying to connect to the network. Try again later.">Hiba történt próbál csatlakozni a hálózathoz. Próbálja meg később.</string>
 </translations>

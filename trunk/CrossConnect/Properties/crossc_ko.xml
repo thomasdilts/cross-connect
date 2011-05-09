@@ -40,4 +40,5 @@
 <string key="Too many found. Search stopped">너무 많은 내용이 없습니다. 검색 중지</string>
 <string key="Whole bible">성경 전체를</string>
 <string key="You must have at least one bible">당신은 적어도 하나의 성경을해야합니다</string>
+<string key="An error occurred trying to connect to the network. Try again later.">오류가 네트워크에 연결하려고 발생했습니다. 나중에 다시 시도하십시오.</string>
 </translations>

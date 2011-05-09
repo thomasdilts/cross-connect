@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<translations isolang="de" isolocale="" version="1.0">
+<translations isolang="en" isolocale="" version="1.0">
 <string key="Add new window">Add new window</string>
 <string key="Add to bookmarks">Zu Lesezeichen hinzufügen</string>
 <string key="All words (maximum 3 words)">Alle Wörter (maximal 3 Worte)</string>
@@ -38,4 +38,7 @@
 <string key="Settings">Einstellungen</string>
 <string key="Text size">Schriftgröße</string>
 <string key="Too many found. Search stopped">Zu viele gefunden. Suche gestoppt</string>
-  <string key="Whole bible">
+<string key="Whole bible">Ganze Bibel</string>
+<string key="You must have at least one bible">Sie müssen mindestens eine Bibel</string>
+<string key="An error occurred trying to connect to the network. Try again later.">Ein Fehler aufgetreten mit dem Netzwerk verbinden. Versuchen Sie es später erneut.</string>
+</translations>

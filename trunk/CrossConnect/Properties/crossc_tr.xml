@@ -40,4 +40,5 @@
 <string key="Too many found. Search stopped">Çok fazla bulundu. Arama durdu</string>
 <string key="Whole bible">Bütün İncil</string>
 <string key="You must have at least one bible">En az bir İncil olmalıdır</string>
+<string key="An error occurred trying to connect to the network. Try again later.">Bir hata ağa bağlanmaya çalışıyor oluştu. Daha sonra tekrar deneyin.</string>
 </translations>

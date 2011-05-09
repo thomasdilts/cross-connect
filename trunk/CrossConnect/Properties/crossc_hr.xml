@@ -40,4 +40,5 @@
 <string key="Too many found. Search stopped">Previše pronađen. Traži zaustavljen</string>
 <string key="Whole bible">Cijele Biblije</string>
 <string key="You must have at least one bible">Morate imati barem jedan biblija</string>
+<string key="An error occurred trying to connect to the network. Try again later.">Došlo je do pogreške pokušava povezati na mrežu. Pokušajte ponovo kasnije.</string>
 </translations>

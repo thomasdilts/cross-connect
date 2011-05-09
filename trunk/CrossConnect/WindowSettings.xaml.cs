@@ -23,12 +23,7 @@ namespace CrossConnect
         
         private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            //we will assume this is the same as a CANCEL unless there are no windows defined.
-            if (App.openWindows.Count == 0)
-            {
-                //default is Add new window
-                butAddNew_Click(null, new RoutedEventArgs());
-            }
+
         }
         private void SetBookChoosen()
         {

@@ -40,4 +40,5 @@
 <string key="Too many found. Search stopped">Չափից շատ գտնվեց. Որոնել դադարեց</string>
 <string key="Whole bible">Ամբողջ Աստվածաշունչը</string>
 <string key="You must have at least one bible">Դուք պետք է ունենա առնվազն մեկ Աստվածաշունչը</string>
+<string key="An error occurred trying to connect to the network. Try again later.">Սխալ պատահեց փորձում է միանալ ցանցին. Ավելի ուշ փորձեք կրկին.</string>
 </translations>

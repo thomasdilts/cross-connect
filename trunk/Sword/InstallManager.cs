@@ -96,7 +96,7 @@ namespace SwordBackend
         private WebClient client = new WebClient();
         public event DownloadProgressChangedEventHandler progress_update;
         public event OpenReadCompletedEventHandler progress_completed;
-        private void download(Uri source)
+        private string download(Uri source)
         {
             try
             {
@@ -108,16 +108,16 @@ namespace SwordBackend
                 //client.DownloadStringAsync(source);
                 client.OpenReadAsync(source);
                 Logger.Debug("DownloadStringAsync returned");
-                
+                return null;
             }
             catch (Exception e)
             {
                 Logger.Fail(e.ToString());
+                return e.Message;
             };
         }
         private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            Logger.Debug("client_DownloadProgressChanged;" + e.ProgressPercentage + ";" + e.TotalBytesToReceive);
             if (progress_update != null)
             {
                 progress_update(sender,e);
@@ -125,9 +125,20 @@ namespace SwordBackend
         }
         private void client_OpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
         {
-            Logger.Debug("client_DownloadStringCompleted;" + e.Result.Length );
-
-            GZipInputStream gzip = new GZipInputStream(e.Result);
+            GZipInputStream gzip = null;
+            try
+            {
+                gzip = new GZipInputStream(e.Result);
+            }
+            catch(Exception)
+            {
+                if (progress_completed != null)
+                {
+                    progress_completed(e.Error.Message, e);
+                } 
+                loaded = false;
+                return;
+            }
             TarInputStream tin = new TarInputStream(gzip);
             entries.Clear();
             while (true)
@@ -184,9 +195,15 @@ namespace SwordBackend
                         SwordBook book = new SwordBook(buffer, @internal);
                         entries.Add(book.Name, book);
                     }
-                    catch (IOException )
+                    catch (Exception exp)
                     {
                         Logger.Fail("Failed to load config for entry: " + @internal);
+                        loaded = true;
+                        if (progress_completed != null)
+                        {
+                            progress_completed(exp.Message, e);
+                        }
+                        return;
                     }
                 }
             }
@@ -194,24 +211,21 @@ namespace SwordBackend
             loaded = true;
             if (progress_completed != null)
             {
-                progress_completed(sender, e);
+                progress_completed(null, e);
             }
         }
-        public bool reloadBookList()
+        public string reloadBookList()
         {
             books.Clear();
-            try
+            Uri uri = new Uri("http://" + host + "/" + catalogDirectory + "/" + FILE_LIST_GZ);
+            string errMsg=download(uri);
+            if(errMsg!=null)
             {
-                Uri uri = new Uri("http://" + host + "/" + catalogDirectory + "/" + FILE_LIST_GZ);
-                download(uri);
-            }catch(Exception e)
-            {
-                Logger.Fail(e.Message);
-                return loaded;
+                loaded = false;
+                return errMsg;
             }
-            
             loaded = true;
-            return loaded;
+            return null;
         }
 
 
@@ -316,7 +330,7 @@ namespace SwordBackend
             }
         }
         public const string ZIP_SUFFIX = ".zip";
-        public void downloadBookNow(WebInstaller iManager)
+        public string downloadBookNow(WebInstaller iManager)
         {
             try
             {
@@ -332,16 +346,16 @@ namespace SwordBackend
                 //client.DownloadStringAsync(source);
                 client.OpenReadAsync(source);
                 Logger.Debug("DownloadStringAsync returned");
-
+                return null;
             }
             catch (Exception e)
             {
                 Logger.Fail(e.ToString());
+                return e.Message;
             };
         }
         private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            Logger.Debug("client_DownloadProgressChanged;" + e.ProgressPercentage + ";" + e.TotalBytesToReceive);
             if (progress_update != null)
             {
                 progress_update(sender,e);
@@ -351,9 +365,19 @@ namespace SwordBackend
         {
             try
             {
-                Logger.Debug("client_DownloadStringCompleted;" + e.Result.Length);
-
-                ZipInputStream zipStream = new ZipInputStream(e.Result);
+                ZipInputStream zipStream = null;
+                try
+                {
+                    zipStream = new ZipInputStream(e.Result);
+                }
+                catch (Exception)
+                {
+                    if (progress_completed != null)
+                    {
+                        progress_completed(e.Error.Message, e);
+                    }
+                    return;
+                }
                 IsolatedStorageFile isolatedStorageRoot = IsolatedStorageFile.GetUserStoreForApplication();
                 while (true)
                 {
@@ -382,14 +406,14 @@ namespace SwordBackend
                 }
                 if (progress_completed != null)
                 {
-                    progress_completed(sender, e);
+                    progress_completed(null, e);
                 }
             }
-            catch (Exception)
+            catch (Exception exp)
             {
                 if (progress_completed != null)
                 {
-                    progress_completed(sender, e);
+                    progress_completed(exp.Message, e);
                 }
             }
         }

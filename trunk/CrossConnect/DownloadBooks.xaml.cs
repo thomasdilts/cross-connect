@@ -64,7 +64,12 @@ namespace CrossConnect
             webInst.progress_update += webInst_progress_update;
             webInst.progress_completed += webInst_progress_completed;
 
-            webInst.reloadBookList();
+            string errMsg=webInst.reloadBookList();
+            if (errMsg != null)
+            {
+                MessageBox.Show(Translations.translate("An error occured trying to connect to the network. Try again later.") + "; " + errMsg);
+                PhoneApplicationPage_Loaded(null, null);
+            }
         }
         private void webInst_progress_update(object sender, DownloadProgressChangedEventArgs e)
         {
@@ -72,6 +77,12 @@ namespace CrossConnect
         }
         private void webInst_progress_completed(object sender, OpenReadCompletedEventArgs e)
         {
+            if (sender != null)
+            {
+                MessageBox.Show(Translations.translate("An error occured trying to connect to the network. Try again later.") + "; " + (string)sender);
+                PhoneApplicationPage_Loaded(null, null);
+                return;
+            }
             progressBarGetBookList.Visibility = System.Windows.Visibility.Collapsed;
             //need to load the book selection with all the books.
             selectLangauge.Items.Clear();
@@ -87,16 +98,20 @@ namespace CrossConnect
                         Language lang = (Language)book.Value.sbmd.getProperty(ConfigEntryType.LANG);
                         allLanguages[lang.Name] = lang;
                     }
-                    
+
                 }
                 var list = allLanguages.OrderBy(t => t.Key).ToList();
                 foreach (var x in list)
                 {
                     selectLangauge.Items.Add(x.Key);
                 }
+                selectLangauge.Visibility = System.Windows.Visibility.Visible;
             }
-            selectLangauge.Visibility = System.Windows.Visibility.Visible;
-            
+            else
+            {
+                MessageBox.Show(Translations.translate("An error occured trying to connect to the network. Try again later.") + "; " + e.Error.Message);
+                PhoneApplicationPage_Loaded(null, null);
+            }
         }
 
         private void selectLangauge_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -133,7 +148,12 @@ namespace CrossConnect
             sb.progress_completed+=new OpenReadCompletedEventHandler(sb_progress_completed);
             sb.progress_update+=new DownloadProgressChangedEventHandler(sb_progress_update);
             progressBarGetBook.Visibility = System.Windows.Visibility.Visible;
-            sb.downloadBookNow(webInst);
+            string errMsg=sb.downloadBookNow(webInst);
+            if (errMsg != null)
+            {
+                MessageBox.Show(Translations.translate("An error occured trying to connect to the network. Try again later.") + "; " + errMsg);
+                PhoneApplicationPage_Loaded(null, null);
+            }
         }
         private void sb_progress_update(object sender, DownloadProgressChangedEventArgs e)
         {
@@ -141,11 +161,14 @@ namespace CrossConnect
         }
         private void sb_progress_completed(object sender, OpenReadCompletedEventArgs e)
         {
-            if (sb.isLoaded)
+            if (sender != null)
             {
-                App.installedBibles.AddBook(sb.sbmd.internalName);
-                sb = null;
+                MessageBox.Show(Translations.translate("An error occured trying to connect to the network. Try again later.") + "; " + (string)sender);
+                PhoneApplicationPage_Loaded(null, null);
+                return;
             }
+            App.installedBibles.AddBook(sb.sbmd.internalName);
+            sb = null;
             this.NavigationService.GoBack();
         }
         private void selectServer_SelectionChanged(object sender, SelectionChangedEventArgs e)

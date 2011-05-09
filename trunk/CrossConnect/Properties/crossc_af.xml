@@ -40,4 +40,5 @@
 <string key="Too many found. Search stopped">Te veel gevind nie. Soek gestop</string>
 <string key="Whole bible">Hele Bybel</string>
 <string key="You must have at least one bible">Jy moet ten minste een Bybel</string>
+<string key="An error occurred trying to connect to the network. Try again later.">'N fout probeer om toegang tot die netwerk. Probeer later weer.</string>
 </translations>

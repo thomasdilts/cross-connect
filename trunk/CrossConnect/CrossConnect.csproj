@@ -293,6 +293,7 @@
     <EmbeddedResource Include="Properties\crossc_uk.xml" />
     <EmbeddedResource Include="Properties\crossc_zh.xml" />
     <EmbeddedResource Include="Properties\crossc_zh_cn.xml" />
+    <EmbeddedResource Include="Properties\crossc_da.xml" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
