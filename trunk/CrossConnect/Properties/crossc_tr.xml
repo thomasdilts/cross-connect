@@ -1,0 +1,42 @@
+<translations isolang="tr" isolocale="" version="1.0">
+<string key="Add new window">yeni pencerede ekle</string>
+<string key="Add to bookmarks">imlerine ekle</string>
+<string key="All words (maximum 3 words)">Bütün kelimeler (en fazla 3 kelime)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">Bir hata oluştu. Tamamen bu program için hafıza silmek istiyor musunuz?</string>
+<string key="Bible">İncil</string>
+<string key="Bookmarks">Imleri</string>
+<string key="Cancel">Iptal</string>
+<string key="Case insensitive">Büyük küçük harf</string>
+<string key="Clear history">Açık tarih</string>
+<string key="Delete?">Silinsin mi?</string>
+<string key="Download bible list">Download İncil listesi</string>
+<string key="Download bible">Download İncil</string>
+<string key="Download bibles">Download Bibles</string>
+<string key="Exact match">Tam eşleşme</string>
+<string key="Found">Bulundu</string>
+<string key="Help">Yardım</string>
+<string key="History">Geçmişi</string>
+<string key="New Testement">Yeni Testement</string>
+<string key="Notes">Notlar</string>
+<string key="Nothing found">Hiçbir şey bulunamadı</string>
+<string key="Old Testement">Eski Testement</string>
+<string key="One or more words">Bir veya birkaç sözcük</string>
+<string key="Save">Kaydetmek</string>
+<string key="Search conditions">Arama koşulları</string>
+<string key="Search where">Arama nerede</string>
+<string key="Search">Arama</string>
+<string key="Select bible to delete">Text = &quot;Select İncil silmek için</string>
+<string key="Select book and chapter">Seçmek kitap ve bölüm</string>
+<string key="Select book">Seçmek kitap</string>
+<string key="Select bookmark to delete">Seçmek imini silmek için</string>
+<string key="Select chapter">Seçmek bölüm</string>
+<string key="Select the bible">İncil seçin</string>
+<string key="Select the language">Dil seçin</string>
+<string key="Select the server">sunucusunu seçin</string>
+<string key="Select the window type">pencere tipi seçin</string>
+<string key="Settings">Ayarları</string>
+<string key="Text size">Metin boyutunu</string>
+<string key="Too many found. Search stopped">Çok fazla bulundu. Arama durdu</string>
+<string key="Whole bible">Bütün İncil</string>
+<string key="You must have at least one bible">En az bir İncil olmalıdır</string>
+</translations>

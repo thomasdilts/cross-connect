@@ -1,0 +1,42 @@
+<translations isolang="th" isolocale="" version="1.0">
+<string key="Add new window">เพิ่มหน้าต่างใหม่</string>
+<string key="Add to bookmarks">เพิ่มไปยังบุ๊คมาร์ค</string>
+<string key="All words (maximum 3 words)">ทุกคำ (ไม่เกิน 3 คำ)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">เกิดข้อผิดพลาด คุณต้องการลบหน่วยความจำอย่างสมบูรณ์สำหรับโปรแกรมนี้</string>
+<string key="Bible">คัมภีร์ไบเบิล</string>
+<string key="Bookmarks">บุ๊คมาร์ค</string>
+<string key="Cancel">ยกเลิก</string>
+<string key="Case insensitive">กรณีตาย</string>
+<string key="Clear history">ลบประวัติ</string>
+<string key="Delete?">ลบ?</string>
+<string key="Download bible list">ดาวน์โหลดรายชื่อพระคัมภีร์</string>
+<string key="Download bible">ดาวน์โหลดพระคัมภีร์</string>
+<string key="Download bibles">ดาวน์โหลด Bibles</string>
+<string key="Exact match">การจับคู่แบบตรงทั้งหมด</string>
+<string key="Found">พบ</string>
+<string key="Help">ความช่วยเหลือ</string>
+<string key="History">ประวัติ</string>
+<string key="New Testement">Testement ใหม่</string>
+<string key="Notes">Notes</string>
+<string key="Nothing found">ไม่มีพบ</string>
+<string key="Old Testement">Testement เก่า</string>
+<string key="One or more words">หนึ่งหรือหลายคำ</string>
+<string key="Save">บันทึก</string>
+<string key="Search conditions">เงื่อนไขการค้นหา</string>
+<string key="Search where">ค้นหาจาก</string>
+<string key="Search">Search</string>
+<string key="Select bible to delete">Text =&quot;พระคัมภีร์เลือกที่จะลบ</string>
+<string key="Select book and chapter">เลือกหนังสือและบท</string>
+<string key="Select book">เลือกหนังสือ</string>
+<string key="Select bookmark to delete">บุ๊คมาร์คเลือกที่จะลบ</string>
+<string key="Select chapter">บทที่เลือก</string>
+<string key="Select the bible">เลือกพระคัมภีร์</string>
+<string key="Select the language">เลือกภาษา</string>
+<string key="Select the server">เลือกเซิร์ฟเวอร์</string>
+<string key="Select the window type">เลือกชนิดของหน้าต่าง</string>
+<string key="Settings">การตั้งค่า</string>
+<string key="Text size">ขนาดตัวอักษร</string>
+<string key="Too many found. Search stopped">พบมากเกินไป ค้นหาหยุด</string>
+<string key="Whole bible">พระคัมภีร์ทั้ง</string>
+<string key="You must have at least one bible">คุณต้องมีอย่างน้อยหนึ่งพระคัมภีร์</string>
+</translations>

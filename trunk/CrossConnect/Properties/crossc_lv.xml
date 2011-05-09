@@ -1,0 +1,42 @@
+<translations isolang="lv" isolocale="" version="1.0">
+<string key="Add new window">Pievienot jaunu logu</string>
+<string key="Add to bookmarks">Pievienot grāmatzīmēm</string>
+<string key="All words (maximum 3 words)">Visi vārdi (ne vairāk kā 3 vārdi)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">Kļūda. Vai jūs vēlaties pilnībā izdzēst atmiņas par šo programmu?</string>
+<string key="Bible">Bībele</string>
+<string key="Bookmarks">Grāmatzīmes</string>
+<string key="Cancel">Atcelt</string>
+<string key="Case insensitive">Jūtīgs pret burtu izmēru</string>
+<string key="Clear history">Notīrīt vēsturi</string>
+<string key="Delete?">Dzēst?</string>
+<string key="Download bible list">Lejupielādēt bible sarakstu</string>
+<string key="Download bible">Lejupielādēt bible</string>
+<string key="Download bibles">Lejupielādēt Bībeles</string>
+<string key="Exact match">Precīza atbilstība</string>
+<string key="Found">Atrasts</string>
+<string key="Help">Palīdzība</string>
+<string key="History">Vēsture</string>
+<string key="New Testement">Jaunu Testement</string>
+<string key="Notes">Atzīmē,</string>
+<string key="Nothing found">Nekas nav atrasts</string>
+<string key="Old Testement">Old Testement</string>
+<string key="One or more words">Vienu vai vairākus vārdus</string>
+<string key="Save">Saglabāt</string>
+<string key="Search conditions">Meklēt nosacījumi</string>
+<string key="Search where">Kur meklēt</string>
+<string key="Search">Meklēšana</string>
+<string key="Select bible to delete">Text = &quot;Izvēlieties Bībeles izdzēst</string>
+<string key="Select book and chapter">Izvēlieties grāmatu un nodaļas</string>
+<string key="Select book">Izvēlieties grāmatu</string>
+<string key="Select bookmark to delete">Izvēlieties grāmatzīmi, lai dzēstu</string>
+<string key="Select chapter">Izvēlieties sadaļu</string>
+<string key="Select the bible">Izvēlieties bible</string>
+<string key="Select the language">Izvēlies informācijas atspoguļošanas valodu</string>
+<string key="Select the server">Izvēlieties serveris</string>
+<string key="Select the window type">Izvēlieties loga veidu</string>
+<string key="Settings">Uzstādījumi</string>
+<string key="Text size">Teksta lielumu</string>
+<string key="Too many found. Search stopped">Pārāk daudz nav atrasti. Meklēšana pārtraukta</string>
+<string key="Whole bible">Visa Bībele</string>
+<string key="You must have at least one bible">Jums jābūt vismaz vienam bible</string>
+</translations>

@@ -1,0 +1,42 @@
+<translations isolang="af" isolocale="" version="1.0">
+<string key="Add new window">Voeg nuwe venster</string>
+<string key="Add to bookmarks">Voeg by gunstelinge</string>
+<string key="All words (maximum 3 words)">Alle woorde (maksimum 3 woorde)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">&#39;N fout het voorgekom. Wil jy heeltemal vee die geheue vir hierdie program?</string>
+<string key="Bible">Bybel</string>
+<string key="Bookmarks">Email</string>
+<string key="Cancel">Kanselleer</string>
+<string key="Case insensitive">Kassensitief</string>
+<string key="Clear history">Duidelike geskiedenis</string>
+<string key="Delete?">Verwyder?</string>
+<string key="Download bible list">Download Bybel lys</string>
+<string key="Download bible">Download Bybel</string>
+<string key="Download bibles">Bybels vir Aflaai</string>
+<string key="Exact match">Presies ooreenstem</string>
+<string key="Found">Gevind</string>
+<string key="Help">Help</string>
+<string key="History">Geskiedenis</string>
+<string key="New Testement">Nuwe Testement</string>
+<string key="Notes">Notas</string>
+<string key="Nothing found">Niks gevind nie</string>
+<string key="Old Testement">Ou Testement</string>
+<string key="One or more words">Een of meer woorde</string>
+<string key="Save">Slaan</string>
+<string key="Search conditions">Soek voorwaardes</string>
+<string key="Search where">Soek waar</string>
+<string key="Search">Soek</string>
+<string key="Select bible to delete">Text = &quot;Kies Bybel te verwyder</string>
+<string key="Select book and chapter">Kies boek en hoofstuk</string>
+<string key="Select book">Kies boek</string>
+<string key="Select bookmark to delete">Kies bookmark te verwyder</string>
+<string key="Select chapter">Kies hoofstuk</string>
+<string key="Select the bible">Kies die Bybel</string>
+<string key="Select the language">Kies die taal wat</string>
+<string key="Select the server">Kies die bediener</string>
+<string key="Select the window type">Kies die venster tik</string>
+<string key="Settings">Instellings</string>
+<string key="Text size">Teks grootte</string>
+<string key="Too many found. Search stopped">Te veel gevind nie. Soek gestop</string>
+<string key="Whole bible">Hele Bybel</string>
+<string key="You must have at least one bible">Jy moet ten minste een Bybel</string>
+</translations>

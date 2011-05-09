@@ -1,0 +1,42 @@
+<translations isolang="es" isolocale="" version="1.0">
+<string key="Add new window">Añadir una nueva ventana</string>
+<string key="Add to bookmarks">Añadir a favoritos</string>
+<string key="All words (maximum 3 words)">Todas las palabras (máximo 3 palabras)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">Se produjo un error. ¿Desea borrar por completo la memoria de este programa?</string>
+<string key="Bible">Biblia</string>
+<string key="Bookmarks">Marcadores</string>
+<string key="Cancel">Cancelar</string>
+<string key="Case insensitive">Entre mayúsculas y minúsculas</string>
+<string key="Clear history">Borrar el historial</string>
+<string key="Delete?">Eliminar?</string>
+<string key="Download bible list">Descargar biblia lista</string>
+<string key="Download bible">Descargar biblia</string>
+<string key="Download bibles">Descargar biblias</string>
+<string key="Exact match">Búsqueda exacta</string>
+<string key="Found">Que se encuentran</string>
+<string key="Help">Ayuda</string>
+<string key="History">Historia</string>
+<string key="New Testement">Nueva Testement</string>
+<string key="Notes">Notas</string>
+<string key="Nothing found">No he encontrado nada</string>
+<string key="Old Testement">Antiguo Testement</string>
+<string key="One or more words">Una o más palabras</string>
+<string key="Save">Guardar</string>
+<string key="Search conditions">Las condiciones de búsqueda</string>
+<string key="Search where">Buscar en</string>
+<string key="Search">Búsqueda</string>
+<string key="Select bible to delete">Text = &quot;biblia Seleccionar para eliminar</string>
+<string key="Select book and chapter">Seleccione el libro y el capítulo</string>
+<string key="Select book">Seleccione libro</string>
+<string key="Select bookmark to delete">Seleccione el marcador para eliminar</string>
+<string key="Select chapter">Seleccione el capítulo</string>
+<string key="Select the bible">Seleccione la Biblia</string>
+<string key="Select the language">Seleccione el idioma</string>
+<string key="Select the server">Seleccione el servidor</string>
+<string key="Select the window type">Seleccione el tipo de ventana</string>
+<string key="Settings">Configuración</string>
+<string key="Text size">Tamaño del texto</string>
+<string key="Too many found. Search stopped">Se han encontrado demasiados. Buscar detenido</string>
+<string key="Whole bible">Toda la Biblia</string>
+<string key="You must have at least one bible">Usted debe tener por lo menos una Biblia</string>
+</translations>

@@ -1,0 +1,42 @@
+<translations isolang="hu" isolocale="" version="1.0">
+<string key="Add new window">Új ablak</string>
+<string key="Add to bookmarks">Add hozzá a könyvjelzők</string>
+<string key="All words (maximum 3 words)">Minden szó (legfeljebb 3 szó)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">Hiba történt. Szeretné, hogy teljesen törli a memóriát a program?</string>
+<string key="Bible">Biblia</string>
+<string key="Bookmarks">Könyvjelzők</string>
+<string key="Cancel">Mégsem</string>
+<string key="Case insensitive">Kis-és nagybetűket</string>
+<string key="Clear history">Előzmények törlése</string>
+<string key="Delete?">Törlés?</string>
+<string key="Download bible list">Letöltés Biblia lista</string>
+<string key="Download bible">Letöltés Biblia</string>
+<string key="Download bibles">Letöltés Bibliák</string>
+<string key="Exact match">Pontos egyezés</string>
+<string key="Found">Talált</string>
+<string key="Help">Segítség</string>
+<string key="History">Története</string>
+<string key="New Testement">Új Testement</string>
+<string key="Notes">Notes</string>
+<string key="Nothing found">Semmi nem talált</string>
+<string key="Old Testement">Régi Testement</string>
+<string key="One or more words">Egy vagy több szó</string>
+<string key="Save">Mentés</string>
+<string key="Search conditions">Keresés a feltételek</string>
+<string key="Search where">Keresés helye</string>
+<string key="Search">Keresés</string>
+<string key="Select bible to delete">Text = &quot;Válassza ki a Biblia törölni</string>
+<string key="Select book and chapter">Válassza ki a könyv és fejezet</string>
+<string key="Select book">Válassza ki a könyv</string>
+<string key="Select bookmark to delete">Válassza ki a könyvjelző törlése</string>
+<string key="Select chapter">Válassza ki a fejezet</string>
+<string key="Select the bible">Válassza ki a Biblia</string>
+<string key="Select the language">Válassza ki a nyelvet</string>
+<string key="Select the server">Válassza ki a szerver</string>
+<string key="Select the window type">Válassza ki az ablak típusa</string>
+<string key="Settings">Beállítások</string>
+<string key="Text size">Szöveg méret</string>
+<string key="Too many found. Search stopped">Túl sok találat. Keresés megállt</string>
+<string key="Whole bible">Egész Biblia</string>
+<string key="You must have at least one bible">Meg kell legalább egy bibliai</string>
+</translations>

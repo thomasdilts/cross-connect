@@ -1,0 +1,42 @@
+<translations isolang="bg" isolocale="" version="1.0">
+<string key="Add new window">Добавяне на нов прозорец</string>
+<string key="Add to bookmarks">Добави в любими</string>
+<string key="All words (maximum 3 words)">Всички думи (максимум 3 думи)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">Възникнала е грешка. Искате ли напълно да заличи паметта за тази програма?</string>
+<string key="Bible">Библията</string>
+<string key="Bookmarks">Bookmarks</string>
+<string key="Cancel">Отказ</string>
+<string key="Case insensitive">Нечувствителен</string>
+<string key="Clear history">Изчистване на историята</string>
+<string key="Delete?">Изтриване?</string>
+<string key="Download bible list">Изтегляне библия списък</string>
+<string key="Download bible">Изтегляне на Библията</string>
+<string key="Download bibles">Изтегляне на библии</string>
+<string key="Exact match">Точно съвпадение</string>
+<string key="Found">Намерени</string>
+<string key="Help">Помощ</string>
+<string key="History">История</string>
+<string key="New Testement">Нова Testement</string>
+<string key="Notes">Отбелязва</string>
+<string key="Nothing found">Нищо не намери</string>
+<string key="Old Testement">Стара Testement</string>
+<string key="One or more words">Един или повече думи</string>
+<string key="Save">Запази</string>
+<string key="Search conditions">Условия за търсене</string>
+<string key="Search where">Търсене в</string>
+<string key="Search">Търсене</string>
+<string key="Select bible to delete">Текст = &quot;Избор на Библията, за да изтриете</string>
+<string key="Select book and chapter">Изберете книга и глава</string>
+<string key="Select book">Изберете книга</string>
+<string key="Select bookmark to delete">Изберете маркер, за да изтриете</string>
+<string key="Select chapter">Изберете глава</string>
+<string key="Select the bible">Изберете библия</string>
+<string key="Select the language">Изберете език</string>
+<string key="Select the server">Изберете сървъра</string>
+<string key="Select the window type">Изберете тип прозорец</string>
+<string key="Settings">Настройки</string>
+<string key="Text size">Размер на текста</string>
+<string key="Too many found. Search stopped">Твърде много е намерен. Търсене спря</string>
+<string key="Whole bible">Цялата библия</string>
+<string key="You must have at least one bible">Трябва да имате поне една библия</string>
+</translations>

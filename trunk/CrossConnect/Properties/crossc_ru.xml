@@ -1,0 +1,42 @@
+<translations isolang="ru" isolocale="" version="1.0">
+<string key="Add new window">Добавить новом окне</string>
+<string key="Add to bookmarks">Добавить в избранное</string>
+<string key="All words (maximum 3 words)">Все слова (не более 3 слов)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">Произошла ошибка. Вы хотите, чтобы полностью стереть память для этой программы?</string>
+<string key="Bible">Библия</string>
+<string key="Bookmarks">Закладки</string>
+<string key="Cancel">Отменить</string>
+<string key="Case insensitive">Без учета регистра</string>
+<string key="Clear history">Очистить историю</string>
+<string key="Delete?">Удалить?</string>
+<string key="Download bible list">Скачать Библию список</string>
+<string key="Download bible">Скачать Библию</string>
+<string key="Download bibles">Скачать библии</string>
+<string key="Exact match">Точное соответствие</string>
+<string key="Found">Найдено</string>
+<string key="Help">Справка</string>
+<string key="History">История</string>
+<string key="New Testement">Новые Testement</string>
+<string key="Notes">Примечания</string>
+<string key="Nothing found">Ничего не найдено</string>
+<string key="Old Testement">Старый Testement</string>
+<string key="One or more words">Один или несколько слов</string>
+<string key="Save">Сохранить</string>
+<string key="Search conditions">Условия поиска</string>
+<string key="Search where">Поиск где</string>
+<string key="Search">Поиск</string>
+<string key="Select bible to delete">Text = &quot;Выберите Библия для удаления</string>
+<string key="Select book and chapter">Выберите книгу и главу</string>
+<string key="Select book">Выберите книгу</string>
+<string key="Select bookmark to delete">Выберите закладку для удаления</string>
+<string key="Select chapter">Выбор раздела</string>
+<string key="Select the bible">Выберите Библии</string>
+<string key="Select the language">Выберите язык</string>
+<string key="Select the server">Выбор сервера</string>
+<string key="Select the window type">Выберите тип окна</string>
+<string key="Settings">Настройки</string>
+<string key="Text size">Размер текста</string>
+<string key="Too many found. Search stopped">Слишком много найдено. Поиск остановился</string>
+<string key="Whole bible">Вся Библия</string>
+<string key="You must have at least one bible">Вы должны иметь по крайней мере одна Библия</string>
+</translations>

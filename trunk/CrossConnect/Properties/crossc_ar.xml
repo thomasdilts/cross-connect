@@ -1,0 +1,42 @@
+<translations isolang="ar" isolocale="" version="1.0">
+<string key="Add new window">أضف نافذة جديدة</string>
+<string key="Add to bookmarks">أضف إلى المواقع المفضلة</string>
+<string key="All words (maximum 3 words)">كل الكلمات (أقصى 3 كلمات)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">حدث خطأ. هل تريد محو الذاكرة تماما لهذا البرنامج؟</string>
+<string key="Bible">الكتاب المقدس</string>
+<string key="Bookmarks">العلامات</string>
+<string key="Cancel">إلغاء</string>
+<string key="Case insensitive">قضية حساسة</string>
+<string key="Clear history">واضح التاريخ</string>
+<string key="Delete?">حذف؟</string>
+<string key="Download bible list">قائمة التحميل الكتاب المقدس</string>
+<string key="Download bible">تنزيل الكتاب المقدس</string>
+<string key="Download bibles">تنزيل الكتاب المقدس</string>
+<string key="Exact match">مطابقة تامة</string>
+<string key="Found">وجدت</string>
+<string key="Help">مساعدة</string>
+<string key="History">التاريخ</string>
+<string key="New Testement">جديد Testement</string>
+<string key="Notes">تلاحظ</string>
+<string key="Nothing found">العثور على أي شيء</string>
+<string key="Old Testement">العمر Testement</string>
+<string key="One or more words">واحد أو أكثر من الكلمات</string>
+<string key="Save">حفظ</string>
+<string key="Search conditions">شروط البحث</string>
+<string key="Search where">حيث البحث</string>
+<string key="Search">البحث</string>
+<string key="Select bible to delete">نص الكتاب المقدس = حدد &quot;حذف</string>
+<string key="Select book and chapter">حدد الكتاب والفصل</string>
+<string key="Select book">حدد الكتاب</string>
+<string key="Select bookmark to delete">تحديد مرجعية لحذف</string>
+<string key="Select chapter">حدد الفصل</string>
+<string key="Select the bible">حدد الكتاب المقدس</string>
+<string key="Select the language">حدد اللغة</string>
+<string key="Select the server">حدد الملقم</string>
+<string key="Select the window type">حدد نوع النافذة</string>
+<string key="Settings">إعدادات</string>
+<string key="Text size">حجم النص</string>
+<string key="Too many found. Search stopped">وجدت كثيرة جدا. توقف البحث</string>
+<string key="Whole bible">الكتاب المقدس كله</string>
+<string key="You must have at least one bible">يجب أن يكون لديك واحد على الأقل الكتاب المقدس</string>
+</translations>

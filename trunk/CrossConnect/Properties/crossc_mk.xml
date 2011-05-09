@@ -1,0 +1,42 @@
+<translations isolang="mk" isolocale="" version="1.0">
+<string key="Add new window">Додај нов прозорец</string>
+<string key="Add to bookmarks">Додади во обележувачи</string>
+<string key="All words (maximum 3 words)">Сите зборови (максимум 3 збора)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">Се случи грешка. Дали сакате целосно да се избрише споменот за оваа програма?</string>
+<string key="Bible">Библијата</string>
+<string key="Bookmarks">Bookmarks</string>
+<string key="Cancel">Откажи</string>
+<string key="Case insensitive">Случај нечувствителен</string>
+<string key="Clear history">Исчисти историја</string>
+<string key="Delete?">Избришете?</string>
+<string key="Download bible list">Преземи листа библија</string>
+<string key="Download bible">Преземи библија</string>
+<string key="Download bibles">Преземи Библии</string>
+<string key="Exact match">Точно одговараат</string>
+<string key="Found">Пронајдовме</string>
+<string key="Help">Помош</string>
+<string key="History">Историја</string>
+<string key="New Testement">Нов Testement</string>
+<string key="Notes">Белешки</string>
+<string key="Nothing found">Ништо не е пронајдено</string>
+<string key="Old Testement">Стари Testement</string>
+<string key="One or more words">Еден или повеќе зборови</string>
+<string key="Save">Зачувај</string>
+<string key="Search conditions">Пребарување услови</string>
+<string key="Search where">Барај каде</string>
+<string key="Search">Пребарување</string>
+<string key="Select bible to delete">Текст = &quot;Изберете библијата да ја избришете</string>
+<string key="Select book and chapter">Одберете книга и глава</string>
+<string key="Select book">Одберете книга</string>
+<string key="Select bookmark to delete">Одберете ознаката за бришење</string>
+<string key="Select chapter">Одберете глава</string>
+<string key="Select the bible">Одберете библијата</string>
+<string key="Select the language">Одберете јазик</string>
+<string key="Select the server">Изберете го серверот</string>
+<string key="Select the window type">Изберете го овој тип на прозорец</string>
+<string key="Settings">Подесувања</string>
+<string key="Text size">Големина на текст</string>
+<string key="Too many found. Search stopped">Премногу е пронајден. Пребарување запре</string>
+<string key="Whole bible">Целата библија</string>
+<string key="You must have at least one bible">Мора да имате барем една библија</string>
+</translations>

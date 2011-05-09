@@ -1,0 +1,42 @@
+<translations isolang="hi" isolocale="" version="1.0">
+<string key="Add new window">नई विंडो में जोड़ें</string>
+<string key="Add to bookmarks">बुकमार्क में जोड़ें</string>
+<string key="All words (maximum 3 words)">सभी शब्दों (अधिकतम 3 शब्द)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">एक त्रुटि हो गई. क्या आप पूरी तरह से इस कार्यक्रम के लिए स्मृति मिटाना चाहते हैं?</string>
+<string key="Bible">बाइबिल</string>
+<string key="Bookmarks">बुकमार्क्स</string>
+<string key="Cancel">रद्द</string>
+<string key="Case insensitive">असंवेदनशील प्रकरण</string>
+<string key="Clear history">साफ इतिहास</string>
+<string key="Delete?">हटाना चाहते हैं?</string>
+<string key="Download bible list">डाउनलोड बाईबल सूची</string>
+<string key="Download bible">डाउनलोड बाईबल</string>
+<string key="Download bibles">डाउनलोड bibles</string>
+<string key="Exact match">सटीक मिलान</string>
+<string key="Found">पाया</string>
+<string key="Help">मदद</string>
+<string key="History">इतिहास</string>
+<string key="New Testement">नई Testement</string>
+<string key="Notes">नोट्स</string>
+<string key="Nothing found">कुछ भी नहीं मिला</string>
+<string key="Old Testement">पुराने Testement</string>
+<string key="One or more words">एक या अधिक शब्दों</string>
+<string key="Save">सहेजें</string>
+<string key="Search conditions">खोज शर्तें</string>
+<string key="Search where">खोज जहाँ</string>
+<string key="Search">खोज</string>
+<string key="Select bible to delete">पाठ = &quot;चुनें बाईबल नष्ट करने के लिए</string>
+<string key="Select book and chapter">चयन किताब और अध्याय</string>
+<string key="Select book">पुस्तक चयन</string>
+<string key="Select bookmark to delete">चयन बुकमार्क नष्ट करने के लिए</string>
+<string key="Select chapter">चयन अध्याय</string>
+<string key="Select the bible">बाईबल का चयन करें</string>
+<string key="Select the language">भाषा चुनें</string>
+<string key="Select the server">सर्वर का चयन</string>
+<string key="Select the window type">विंडो प्रकार का चयन करें</string>
+<string key="Settings">सेटिंग्स</string>
+<string key="Text size">पाठ का आकार</string>
+<string key="Too many found. Search stopped">बहुत अधिक पाया गया. खोज रोका</string>
+<string key="Whole bible">पूरे बाइबल</string>
+<string key="You must have at least one bible">आपको कम से कम बाईबल होगा</string>
+</translations>

@@ -1,0 +1,42 @@
+<translations isolang="hy" isolocale="" version="1.0">
+<string key="Add new window">Ավելացնել նոր պատուհանում</string>
+<string key="Add to bookmarks">Ավելացնել էջանիշ</string>
+<string key="All words (maximum 3 words)">Բոլոր բառերով (առավելագույնը 3 բառ)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">Սխալ պատահեց. Արդյոք ցանկանում եք ամբողջությամբ ջնջել հիշատակին Սույն ծրագրի շրջանակներում:</string>
+<string key="Bible">Աստվածաշունչ</string>
+<string key="Bookmarks">Էջանիշեր</string>
+<string key="Cancel">Վերացնել</string>
+<string key="Case insensitive">Գործը անզգա</string>
+<string key="Clear history">Մաքրել պատմությունը</string>
+<string key="Delete?">Ջնջել?</string>
+<string key="Download bible list">Download Աստվածաշնչի ցանկ</string>
+<string key="Download bible">Download Աստվածաշունչը</string>
+<string key="Download bibles">Download bibles</string>
+<string key="Exact match">Ճշգրիտ համընկնում</string>
+<string key="Found">Հայտնաբերել</string>
+<string key="Help">Օգնություն</string>
+<string key="History">Պատմություն</string>
+<string key="New Testement">Նոր Testement</string>
+<string key="Notes">Նշումներ</string>
+<string key="Nothing found">Ոչինչ չենք գտել</string>
+<string key="Old Testement">Հին Testement</string>
+<string key="One or more words">Մեկ կամ մեկից ավելի բառերի</string>
+<string key="Save">Պահպանել</string>
+<string key="Search conditions">Որոնել պայմանները</string>
+<string key="Search where">Որոնել, որտեղ</string>
+<string key="Search">Որոնել</string>
+<string key="Select bible to delete">Text = &quot;Ընտրել Աստվածաշունչը ջնջել</string>
+<string key="Select book and chapter">Ընտրել գիրքը եւ գլուխ</string>
+<string key="Select book">Ընտրել գրքույկ</string>
+<string key="Select bookmark to delete">Ընտրել Էջանիշ ջնջել</string>
+<string key="Select chapter">Ընտրել գլուխ</string>
+<string key="Select the bible">Ընտրել են Աստվածաշունչը</string>
+<string key="Select the language">Ընտրել լեզուն</string>
+<string key="Select the server">Ընտրեք սերվերի</string>
+<string key="Select the window type">Ընտրել պատուհանը տեսակը</string>
+<string key="Settings">Պարամետրեր</string>
+<string key="Text size">Տեքստի չափը</string>
+<string key="Too many found. Search stopped">Չափից շատ գտնվեց. Որոնել դադարեց</string>
+<string key="Whole bible">Ամբողջ Աստվածաշունչը</string>
+<string key="You must have at least one bible">Դուք պետք է ունենա առնվազն մեկ Աստվածաշունչը</string>
+</translations>

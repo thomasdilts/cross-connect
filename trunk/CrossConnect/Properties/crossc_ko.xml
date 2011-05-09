@@ -1,0 +1,42 @@
+<translations isolang="ko" isolocale="" version="1.0">
+<string key="Add new window">새 창에서 추가</string>
+<string key="Add to bookmarks">즐겨찾기에 추가</string>
+<string key="All words (maximum 3 words)">모든 단어 (최대 3 words)를</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">오류가 발생했습니다. 당신은 완전히이 프로그램에 메모리를 지우시겠습니까?</string>
+<string key="Bible">성경</string>
+<string key="Bookmarks">즐겨찾기</string>
+<string key="Cancel">취소</string>
+<string key="Case insensitive">대소문자를 구분하지</string>
+<string key="Clear history">지우기</string>
+<string key="Delete?">삭제하시겠습니까?</string>
+<string key="Download bible list">다운로드 성경 목록</string>
+<string key="Download bible">다운로드 성경</string>
+<string key="Download bibles">다운로드 성경</string>
+<string key="Exact match">일치 검색</string>
+<string key="Found">발견</string>
+<string key="Help">도움말</string>
+<string key="History">역사</string>
+<string key="New Testement">새로운 Testement</string>
+<string key="Notes">노트</string>
+<string key="Nothing found">아무것도 발견</string>
+<string key="Old Testement">올드 Testement</string>
+<string key="One or more words">하나 이상의 단어</string>
+<string key="Save">저장</string>
+<string key="Search conditions">검색 조건</string>
+<string key="Search where">검색 어디에</string>
+<string key="Search">검색</string>
+<string key="Select bible to delete">텍스트 = &quot;선택 성경 삭제</string>
+<string key="Select book and chapter">선택 책과 장</string>
+<string key="Select book">선택 도서</string>
+<string key="Select bookmark to delete">선택 즐겨찾기 삭제</string>
+<string key="Select chapter">선택 장</string>
+<string key="Select the bible">성경 선택</string>
+<string key="Select the language">언어를 선택하십시오</string>
+<string key="Select the server">서버를 선택하십시오</string>
+<string key="Select the window type">창 유형을 선택하십시오</string>
+<string key="Settings">설정</string>
+<string key="Text size">텍스트 크기</string>
+<string key="Too many found. Search stopped">너무 많은 내용이 없습니다. 검색 중지</string>
+<string key="Whole bible">성경 전체를</string>
+<string key="You must have at least one bible">당신은 적어도 하나의 성경을해야합니다</string>
+</translations>

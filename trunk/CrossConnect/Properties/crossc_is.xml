@@ -1,0 +1,42 @@
+<translations isolang="is" isolocale="" version="1.0">
+<string key="Add new window">Bæta við nýjum glugga</string>
+<string key="Add to bookmarks">Bæta við bókamerki</string>
+<string key="All words (maximum 3 words)">Öll orð (hámark 3 orð)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">Villa kom upp. Ert þú vilt alveg eyða minni fyrir þetta forrit?</string>
+<string key="Bible">Biblían</string>
+<string key="Bookmarks">Bókamerki</string>
+<string key="Cancel">Hætta við</string>
+<string key="Case insensitive">Case særandi</string>
+<string key="Clear history">Clear History</string>
+<string key="Delete?">Eyða?</string>
+<string key="Download bible list">Download biblía lista</string>
+<string key="Download bible">Download Biblíunni</string>
+<string key="Download bibles">Download bibles</string>
+<string key="Exact match">Nákvæm leit</string>
+<string key="Found">Found</string>
+<string key="Help">Hjálp</string>
+<string key="History">Saga</string>
+<string key="New Testement">New Testement</string>
+<string key="Notes">Skýringar</string>
+<string key="Nothing found">Ekkert fannst</string>
+<string key="Old Testement">Old Testement</string>
+<string key="One or more words">Eitt eða fleiri orð</string>
+<string key="Save">Vista</string>
+<string key="Search conditions">Leita skilyrði</string>
+<string key="Search where">Leit þar</string>
+<string key="Search">Leita</string>
+<string key="Select bible to delete">Text = &quot;Veldu Biblíunni til að eyða</string>
+<string key="Select book and chapter">Veldu bók og kafla</string>
+<string key="Select book">Velja bók</string>
+<string key="Select bookmark to delete">Veldu bókamerki til að eyða</string>
+<string key="Select chapter">Velja kafla</string>
+<string key="Select the bible">Veldu Biblíunni</string>
+<string key="Select the language">Veldu tungumál</string>
+<string key="Select the server">Veldu miðlara</string>
+<string key="Select the window type">Veldu glugga tegund</string>
+<string key="Settings">Stillingar</string>
+<string key="Text size">Letur</string>
+<string key="Too many found. Search stopped">Of margir fundust. Leit hætt</string>
+<string key="Whole bible">Whole Biblíunni</string>
+<string key="You must have at least one bible">Þú verður að hafa að minnsta kosti einn Biblíuna</string>
+</translations>

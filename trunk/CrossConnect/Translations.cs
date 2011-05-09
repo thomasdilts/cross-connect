@@ -33,7 +33,7 @@ namespace CrossConnect
         {
             Assembly assem = Assembly.GetExecutingAssembly();
             string isocode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLower();
-            string name = CultureInfo.CurrentCulture.Name.Replace('-', '_');
+            string name = CultureInfo.CurrentCulture.Name.Replace('-', '_').ToLower();
             Stream stream = null;
             stream = assem.GetManifestResourceStream("CrossConnect.Properties.crossc_" + name + ".xml");
 

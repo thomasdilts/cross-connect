@@ -1,0 +1,42 @@
+<translations isolang="pl" isolocale="" version="1.0">
+<string key="Add new window">Dodaj nowym oknie</string>
+<string key="Add to bookmarks">Dodaj do ulubionych</string>
+<string key="All words (maximum 3 words)">Wszystkie słowa (maksymalnie 3 słowa)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">Wystąpił błąd. Czy chcesz, aby całkowicie wymazać pamięć do tego programu?</string>
+<string key="Bible">Biblia</string>
+<string key="Bookmarks">Zakładki</string>
+<string key="Cancel">Anuluj</string>
+<string key="Case insensitive">Wielkość liter</string>
+<string key="Clear history">Wyczyść historię</string>
+<string key="Delete?">Usuń?</string>
+<string key="Download bible list">Pobierz Biblii listy</string>
+<string key="Download bible">Biblia Download</string>
+<string key="Download bibles">Pobierz Biblii</string>
+<string key="Exact match">Dokładne dopasowanie</string>
+<string key="Found">Znalezione</string>
+<string key="Help">Pomoc</string>
+<string key="History">Historia</string>
+<string key="New Testement">Nowe Testement</string>
+<string key="Notes">Notes</string>
+<string key="Nothing found">Nic nie znaleziono</string>
+<string key="Old Testement">Old Testement</string>
+<string key="One or more words">Jeden lub więcej słów</string>
+<string key="Save">Zapisz</string>
+<string key="Search conditions">Warunki wyszukiwania</string>
+<string key="Search where">Szukaj w</string>
+<string key="Search">Szukaj</string>
+<string key="Select bible to delete">Text = &quot;Wybierz, aby usunąć Biblii</string>
+<string key="Select book and chapter">Wybierz książki i rozdziału</string>
+<string key="Select book">Wybierz książkę</string>
+<string key="Select bookmark to delete">Wybierz zakładkę do usunięcia</string>
+<string key="Select chapter">Wybierz rozdział</string>
+<string key="Select the bible">Wybierz Biblii</string>
+<string key="Select the language">Wybierz język</string>
+<string key="Select the server">Wybierz serwer</string>
+<string key="Select the window type">Wybierz typ okna</string>
+<string key="Settings">Ustawienia</string>
+<string key="Text size">Rozmiar tekstu</string>
+<string key="Too many found. Search stopped">Zbyt wiele znaleźć. Szukaj zatrzymany</string>
+<string key="Whole bible">Całej Biblii</string>
+<string key="You must have at least one bible">Musisz mieć co najmniej jeden Biblii</string>
+</translations>

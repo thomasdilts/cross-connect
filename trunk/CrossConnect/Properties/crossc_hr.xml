@@ -1,0 +1,42 @@
+<translations isolang="hr" isolocale="" version="1.0">
+<string key="Add new window">Dodati novi prozor</string>
+<string key="Add to bookmarks">Dodaj u oznake</string>
+<string key="All words (maximum 3 words)">Sve riječi (maksimalno 3 riječi)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">Došlo je do pogreške. Želite li potpuno izbrisati sjećanje za ovaj program?</string>
+<string key="Bible">Biblija</string>
+<string key="Bookmarks">Favoriti</string>
+<string key="Cancel">Otkazati</string>
+<string key="Case insensitive">Velika i mala slova</string>
+<string key="Clear history">Brisanje povijesti</string>
+<string key="Delete?">Brisanje?</string>
+<string key="Download bible list">Preuzimanje bible popis</string>
+<string key="Download bible">Preuzimanje bible</string>
+<string key="Download bibles">Preuzimanje Biblije</string>
+<string key="Exact match">Točno podudaranje</string>
+<string key="Found">Pronađen</string>
+<string key="Help">Pomoć</string>
+<string key="History">Povijest</string>
+<string key="New Testement">Novi Testement</string>
+<string key="Notes">Bilješke</string>
+<string key="Nothing found">Ništa pronađena</string>
+<string key="Old Testement">Post Testement</string>
+<string key="One or more words">Jedna ili više riječi</string>
+<string key="Save">Spasiti</string>
+<string key="Search conditions">Uvjeti pretrage</string>
+<string key="Search where">Traži gdje</string>
+<string key="Search">Traži</string>
+<string key="Select bible to delete">Tekst = &quot;Odaberite bibliju za brisanje</string>
+<string key="Select book and chapter">Odaberite knjigu i poglavlje</string>
+<string key="Select book">Odaberite knjiga</string>
+<string key="Select bookmark to delete">Odaberite oznaku za brisanje</string>
+<string key="Select chapter">Odaberite poglavlje</string>
+<string key="Select the bible">Odaberite Biblija</string>
+<string key="Select the language">Odaberite jezik</string>
+<string key="Select the server">Odaberite poslužitelj</string>
+<string key="Select the window type">Odaberite vrstu prozoru</string>
+<string key="Settings">Postavke</string>
+<string key="Text size">Veličinu teksta</string>
+<string key="Too many found. Search stopped">Previše pronađen. Traži zaustavljen</string>
+<string key="Whole bible">Cijele Biblije</string>
+<string key="You must have at least one bible">Morate imati barem jedan biblija</string>
+</translations>

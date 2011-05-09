@@ -1,0 +1,42 @@
+<translations isolang="no" isolocale="" version="1.0">
+<string key="Add new window">Legg til nytt vindu</string>
+<string key="Add to bookmarks">Legg til i bokmerker</string>
+<string key="All words (maximum 3 words)">Alle ordene (maks 3 ord)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">En feil oppstod. Vil du helt slette minnet for dette programmet?</string>
+<string key="Bible">Bibelen</string>
+<string key="Bookmarks">Bokmerker</string>
+<string key="Cancel">Avbryt</string>
+<string key="Case insensitive">Case insensitive</string>
+<string key="Clear history">Tøm historie</string>
+<string key="Delete?">Slett?</string>
+<string key="Download bible list">Last ned bible liste</string>
+<string key="Download bible">Last ned bible</string>
+<string key="Download bibles">Last ned bibler</string>
+<string key="Exact match">Eksakt match</string>
+<string key="Found">Fant</string>
+<string key="Help">Hjelp</string>
+<string key="History">Historie</string>
+<string key="New Testement">Ny Testement</string>
+<string key="Notes">Notes</string>
+<string key="Nothing found">Ingenting funnet</string>
+<string key="Old Testement">Gamle Testement</string>
+<string key="One or more words">En eller flere ord</string>
+<string key="Save">Lagre</string>
+<string key="Search conditions">Søk forhold</string>
+<string key="Search where">Søk hvor</string>
+<string key="Search">Søk</string>
+<string key="Select bible to delete">Text = &quot;Velg bibelen for å slette</string>
+<string key="Select book and chapter">Velg bok og kapittel</string>
+<string key="Select book">Velg bok</string>
+<string key="Select bookmark to delete">Velg bokmerket for å slette</string>
+<string key="Select chapter">Velg kapittel</string>
+<string key="Select the bible">Velg bibelen</string>
+<string key="Select the language">Velg språk</string>
+<string key="Select the server">Velg server</string>
+<string key="Select the window type">Velg vinduet type</string>
+<string key="Settings">Innstillinger</string>
+<string key="Text size">Tekststørrelse</string>
+<string key="Too many found. Search stopped">For mange funnet. Søk stoppet</string>
+<string key="Whole bible">Hele Bibelen</string>
+<string key="You must have at least one bible">Du må ha minst én bibel</string>
+</translations>

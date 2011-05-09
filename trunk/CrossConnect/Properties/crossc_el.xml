@@ -1,0 +1,42 @@
+<translations isolang="el" isolocale="" version="1.0">
+<string key="Add new window">Προσθέστε νέο παράθυρο</string>
+<string key="Add to bookmarks">Προσθήκη στους σελιδοδείκτες</string>
+<string key="All words (maximum 3 words)">Όλες οι λέξεις (κατ &#39;ανώτατο όριο 3 λέξεις)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">Παρουσιάστηκε σφάλμα. Θέλετε να σβήσει εντελώς η μνήμη για αυτό το πρόγραμμα;</string>
+<string key="Bible">Αγία Γραφή</string>
+<string key="Bookmarks">Σελιδοδείκτες</string>
+<string key="Cancel">Ακύρωση</string>
+<string key="Case insensitive">Υπόθεση αδρανείς</string>
+<string key="Clear history">Εκκαθάριση ιστορικού</string>
+<string key="Delete?">Διαγραφή;</string>
+<string key="Download bible list">Λήψη Βίβλος λίστα</string>
+<string key="Download bible">Λήψη Βίβλος</string>
+<string key="Download bibles">Λήψη βίβλους</string>
+<string key="Exact match">Ακριβής αντιστοίχιση</string>
+<string key="Found">Βρέθηκαν</string>
+<string key="Help">Βοήθεια</string>
+<string key="History">Ιστορία</string>
+<string key="New Testement">Νέα Διαθήκη</string>
+<string key="Notes">Σημειώσεις</string>
+<string key="Nothing found">Τίποτα δεν βρέθηκε</string>
+<string key="Old Testement">Παλαιά Διαθήκη</string>
+<string key="One or more words">Μία ή περισσότερες λέξεις</string>
+<string key="Save">Αποθήκευση</string>
+<string key="Search conditions">Αναζήτηση όρων</string>
+<string key="Search where">Αναζήτηση όπου</string>
+<string key="Search">Αναζήτηση</string>
+<string key="Select bible to delete">Κείμενο = &quot;bible Επιλέξτε για να διαγράψετε</string>
+<string key="Select book and chapter">Επιλέξτε το βιβλίο και το κεφάλαιο</string>
+<string key="Select book">Επιλέξτε το βιβλίο</string>
+<string key="Select bookmark to delete">Επιλέξτε το σελιδοδείκτη για να διαγράψετε</string>
+<string key="Select chapter">Επιλέξτε το κεφάλαιο</string>
+<string key="Select the bible">Επιλέξτε τη Βίβλο</string>
+<string key="Select the language">Επιλέξτε τη γλώσσα</string>
+<string key="Select the server">Επιλέξτε το διακομιστή</string>
+<string key="Select the window type">Επιλέξτε τον τύπο παράθυρο</string>
+<string key="Settings">Ρυθμίσεις</string>
+<string key="Text size">Μέγεθος κειμένου</string>
+<string key="Too many found. Search stopped">Πάρα πολλοί που βρέθηκαν. Αναζήτηση σταμάτησε</string>
+<string key="Whole bible">Ολόκληρη την Αγία Γραφή</string>
+<string key="You must have at least one bible">Πρέπει να έχετε τουλάχιστον ένα Βιβλικό</string>
+</translations>

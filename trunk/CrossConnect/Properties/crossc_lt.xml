@@ -1,0 +1,42 @@
+<translations isolang="lt" isolocale="" version="1.0">
+<string key="Add new window">Pridėti naują langą</string>
+<string key="Add to bookmarks">Pridėti į Favoritus</string>
+<string key="All words (maximum 3 words)">Visi žodžiai (ne daugiau kaip 3 žodžiai)</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">Įvyko klaida. Ar norite visiškai ištrinti atmintį šią programą?</string>
+<string key="Bible">Biblija</string>
+<string key="Bookmarks">Žymės</string>
+<string key="Cancel">Atšaukti</string>
+<string key="Case insensitive">Byla nejautrus</string>
+<string key="Clear history">Valyti istoriją</string>
+<string key="Delete?">Ištrinti?</string>
+<string key="Download bible list">Parsisiųsti biblija sąrašas</string>
+<string key="Download bible">Parsisiųsti Biblija</string>
+<string key="Download bibles">Parsisiųsti Biblijoje</string>
+<string key="Exact match">Tiksli frazė</string>
+<string key="Found">Rasta</string>
+<string key="Help">Pagalba</string>
+<string key="History">Istorija</string>
+<string key="New Testement">Naujas Testement</string>
+<string key="Notes">Pastabos</string>
+<string key="Nothing found">Nieko nerasta</string>
+<string key="Old Testement">Senas Testement</string>
+<string key="One or more words">Vienas ar daugiau žodžių</string>
+<string key="Save">Prisiminti</string>
+<string key="Search conditions">Paieška sąlygos</string>
+<string key="Search where">Ieškoti, kur</string>
+<string key="Search">Paieška</string>
+<string key="Select bible to delete">Tekstas = &quot;Pasirinkite biblija ištrinti</string>
+<string key="Select book and chapter">Pasirinkite knygą ir skyrių</string>
+<string key="Select book">Pasirinkite knygos</string>
+<string key="Select bookmark to delete">Pasirinkite ¾ ym ± i ¹ trinti</string>
+<string key="Select chapter">Pasirinkite skyrių</string>
+<string key="Select the bible">Pasirinkite Biblija</string>
+<string key="Select the language">Pasirinkite kalbą</string>
+<string key="Select the server">Pasirinkite serverį</string>
+<string key="Select the window type">Pasirinkite lango tipas</string>
+<string key="Settings">Nustatymai</string>
+<string key="Text size">Teksto dydis</string>
+<string key="Too many found. Search stopped">Per daug nerasta. Paieška sustabdyta</string>
+<string key="Whole bible">Visa Biblija</string>
+<string key="You must have at least one bible">Jūs turite turėti bent vieną Biblija</string>
+</translations>

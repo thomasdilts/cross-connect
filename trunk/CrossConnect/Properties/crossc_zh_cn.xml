@@ -1,0 +1,42 @@
+<translations isolang="zh" isolocale="cn" version="1.0">
+<string key="Add new window">添加新的窗口</string>
+<string key="Add to bookmarks">添加到书签</string>
+<string key="All words (maximum 3 words)">全部词（最多3个字）</string>
+<string key="An error occured. Do you want to completely erase the memory for this program?">发生错误。你要完全抹掉这个项目的记忆？</string>
+<string key="Bible">圣经</string>
+<string key="Bookmarks">书签</string>
+<string key="Cancel">取消</string>
+<string key="Case insensitive">大小写不敏感</string>
+<string key="Clear history">清除历史记录</string>
+<string key="Delete?">删除？</string>
+<string key="Download bible list">下载圣经名单</string>
+<string key="Download bible">下载圣经</string>
+<string key="Download bibles">下载圣经</string>
+<string key="Exact match">精确匹配</string>
+<string key="Found">发现</string>
+<string key="Help">帮助</string>
+<string key="History">历史</string>
+<string key="New Testement">新Testement</string>
+<string key="Notes">注释</string>
+<string key="Nothing found">没有找到</string>
+<string key="Old Testement">旧Testement</string>
+<string key="One or more words">一个或多个字</string>
+<string key="Save">保存</string>
+<string key="Search conditions">搜索条件</string>
+<string key="Search where">搜索区域</string>
+<string key="Search">搜索</string>
+<string key="Select bible to delete">文字=“选择要删除圣经</string>
+<string key="Select book and chapter">选择书籍和章节</string>
+<string key="Select book">选择书</string>
+<string key="Select bookmark to delete">选择要删除书签</string>
+<string key="Select chapter">选择章节</string>
+<string key="Select the bible">选择圣经</string>
+<string key="Select the language">选择语言</string>
+<string key="Select the server">选择服务器</string>
+<string key="Select the window type">选择窗口类型</string>
+<string key="Settings">设置</string>
+<string key="Text size">文字大小</string>
+<string key="Too many found. Search stopped">太多发现。搜索停止</string>
+<string key="Whole bible">整本圣经</string>
+<string key="You must have at least one bible">你必须至少有一个圣经</string>
+</translations>
