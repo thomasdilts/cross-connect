@@ -30,16 +30,16 @@
                 <RowDefinition   Height="30" ></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <local:ImageButton Click="butPrevious_Click" Image="/Images/dark/appbar.people.2.rest.png" PressedImage="/Images/dark/appbar.people.2.pressed.rest.png"  Grid.Column="0" Grid.Row="0"  x:Name="butPrevious" Template="{StaticResource ImageButtonControlTemplate}"/>
+            <local:ImageButton Click="ButPrevious_Click" Image="/Images/dark/appbar.people.2.rest.png" PressedImage="/Images/dark/appbar.people.2.pressed.rest.png"  Grid.Column="0" Grid.Row="0"  x:Name="butPrevious" Template="{StaticResource ImageButtonControlTemplate}"/>
             <TextBlock Margin="7,0,0,0" Grid.Column="1" Grid.Row="0"  Name="title" Text=""  />
-            <local:ImageButton Click="butNext_Click" Image="/Images/dark/appbar.people.1.rest.png" PressedImage="/Images/dark/appbar.people.1.rest.pressed.png"  Grid.Column="2" Grid.Row="0"  x:Name="butNext" Template="{StaticResource ImageButtonControlTemplate}"/>
-            <local:ImageButton Click="butMenu_Click" Image="/Images/dark/appbar.menu.rest.png" PressedImage="/Images/dark/appbar.menu.rest.pressed.png"  Grid.Column="3" Grid.Row="0"  x:Name="butMenu" Template="{StaticResource ImageButtonControlTemplate}"/>
-            <local:ImageButton Click="butLink_Click" Image="/Images/dark/appbar.linkto.rest.png" PressedImage="/Images/dark/appbar.linkto.rest.pressed.png"  Grid.Column="4" Grid.Row="0"  x:Name="butLink" Template="{StaticResource ImageButtonControlTemplate}"/>
-            <local:ImageButton Click="butLarger_Click" Image="/Images/dark/appbar.feature.search.rest.png" PressedImage="/Images/dark/appbar.feature.search.rest.pressed.png"  Grid.Column="5" Grid.Row="0"  x:Name="butLarger" Template="{StaticResource ImageButtonControlTemplate}"/>
-            <local:ImageButton Click="butSmaller_Click" Image="/Images/dark/appbar.minus.rest.png" PressedImage="/Images/dark/appbar.minus.rest.pressed.png"  Grid.Column="6" Grid.Row="0"  x:Name="butSmaller" Template="{StaticResource ImageButtonControlTemplate}"/>
-            <local:ImageButton Click="butClose_Click" Image="/Images/dark/appbar.cancel.rest.png" PressedImage="/Images/dark/appbar.cancel.rest.pressed.png"  Grid.Column="7" Grid.Row="0"  x:Name="butClose" Template="{StaticResource ImageButtonControlTemplate}"/>
+            <local:ImageButton Click="ButNext_Click" Image="/Images/dark/appbar.people.1.rest.png" PressedImage="/Images/dark/appbar.people.1.rest.pressed.png"  Grid.Column="2" Grid.Row="0"  x:Name="butNext" Template="{StaticResource ImageButtonControlTemplate}"/>
+            <local:ImageButton Click="ButMenu_Click" Image="/Images/dark/appbar.menu.rest.png" PressedImage="/Images/dark/appbar.menu.rest.pressed.png"  Grid.Column="3" Grid.Row="0"  x:Name="butMenu" Template="{StaticResource ImageButtonControlTemplate}"/>
+            <local:ImageButton Click="ButLink_Click" Image="/Images/dark/appbar.linkto.rest.png" PressedImage="/Images/dark/appbar.linkto.rest.pressed.png"  Grid.Column="4" Grid.Row="0"  x:Name="butLink" Template="{StaticResource ImageButtonControlTemplate}"/>
+            <local:ImageButton Click="ButLarger_Click" Image="/Images/dark/appbar.feature.search.rest.png" PressedImage="/Images/dark/appbar.feature.search.rest.pressed.png"  Grid.Column="5" Grid.Row="0"  x:Name="butLarger" Template="{StaticResource ImageButtonControlTemplate}"/>
+            <local:ImageButton Click="ButSmaller_Click" Image="/Images/dark/appbar.minus.rest.png" PressedImage="/Images/dark/appbar.minus.rest.pressed.png"  Grid.Column="6" Grid.Row="0"  x:Name="butSmaller" Template="{StaticResource ImageButtonControlTemplate}"/>
+            <local:ImageButton Click="ButClose_Click" Image="/Images/dark/appbar.cancel.rest.png" PressedImage="/Images/dark/appbar.cancel.rest.pressed.png"  Grid.Column="7" Grid.Row="0"  x:Name="butClose" Template="{StaticResource ImageButtonControlTemplate}"/>
             <Border BorderBrush="Silver" BorderThickness="1" Grid.ColumnSpan="8" Grid.Row="1" >
-                <phone:WebBrowser  Margin="0 0 0 0" IsScriptEnabled="True" ScriptNotify="webBrowser1_ScriptNotify"  Unloaded="webBrowser1_Unloaded" Loaded="webBrowser1_Loaded"  Name="webBrowser1"  />
+                <phone:WebBrowser  Margin="0 0 0 0" IsScriptEnabled="True" ScriptNotify="WebBrowser1_ScriptNotify"  Unloaded="WebBrowser1_Unloaded" Loaded="WebBrowser1_Loaded"  Name="webBrowser1"  />
             </Border>
         </Grid>
     </Border>

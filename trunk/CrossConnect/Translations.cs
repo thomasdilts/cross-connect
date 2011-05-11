@@ -1,14 +1,6 @@
-﻿using System;
-using System.Net;
-using System.IO;
-using System.Reflection;
-using System.Globalization;
-using System.IO.IsolatedStorage;
-using System.Xml;
-using System.Collections.Generic;
-///
-/// <summary> Distribution License:
-/// JSword is free software; you can redistribute it and/or modify it under
+﻿/// <summary>
+/// Distribution License:
+/// CrossConnect is free software; you can redistribute it and/or modify it under
 /// the terms of the GNU General Public License, version 3 as published by
 /// the Free Software Foundation. This program is distributed in the hope
 /// that it will be useful, but WITHOUT ANY WARRANTY; without even the
@@ -21,29 +13,46 @@ using System.Collections.Generic;
 ///      Free Software Foundation, Inc.
 ///      59 Temple Place - Suite 330
 ///      Boston, MA 02111-1307, USA
-///
-/// Copyright: 2011
-///     The copyright to this program is held by Thomas Dilts
-///  
+/// </summary>
+/// <copyright file="THIS_FILE.cs" company="Thomas Dilts">
+///     Thomas Dilts. All rights reserved.
+/// </copyright>
+/// <author>Thomas Dilts</author>
 namespace CrossConnect
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.IO.IsolatedStorage;
+    using System.Net;
+    using System.Reflection;
+    using System.Xml;
+
     public class Translations
     {
-        private static Dictionary<string,string> translations=null;
+        #region Fields
+
+        private static Dictionary<string, string> translations = null;
+
+        #endregion Fields
+
+        #region Methods
 
         public static string translate(string key)
         {
-            if(translations==null)
+            if (translations == null)
             {
                 translations = new Dictionary<string, string>();
                 readTranslationsFromFile();
             }
 
-            string translation="";
-            if(!translations.TryGetValue(key,out translation))
+            string translation = string.Empty;
+            if (!translations.TryGetValue(key, out translation))
             {
-                translation=key;
+                translation = key;
             }
+
             return translation;
         }
 
@@ -55,7 +64,7 @@ namespace CrossConnect
             Stream stream = null;
             stream = assem.GetManifestResourceStream("CrossConnect.Properties.crossc_" + name + ".xml");
 
-            if (stream==null)
+            if (stream == null)
             {
                 stream = assem.GetManifestResourceStream("CrossConnect.Properties.crossc_" + isocode + ".xml");
                 if (stream == null)
@@ -66,18 +75,18 @@ namespace CrossConnect
 
             using (XmlReader reader = XmlReader.Create(stream))
             {
-                string key = "";
-                string translation = "";
+                string key = string.Empty;
+                string translation = string.Empty;
                 // Parse the file and get each of the nodes.
                 while (reader.Read())
                 {
-                    switch(reader.NodeType)
+                    switch (reader.NodeType)
                     {
                         case XmlNodeType.Element:
                             if (reader.Name.ToLower().Equals("string") && reader.HasAttributes)
                             {
-                                translation = "";
-                                key = "";
+                                translation = string.Empty;
+                                key = string.Empty;
                                 reader.MoveToFirstAttribute();
                                 do
                                 {
@@ -87,7 +96,8 @@ namespace CrossConnect
                                             key = reader.Value;
                                             break;
                                     }
-                                } while (reader.MoveToNextAttribute());
+                                }
+                                while (reader.MoveToNextAttribute());
                             }
                             break;
                         case XmlNodeType.EndElement:
@@ -102,7 +112,10 @@ namespace CrossConnect
                     }
                 }
             }
+
             stream.Close();
         }
+
+        #endregion Methods
     }
 }

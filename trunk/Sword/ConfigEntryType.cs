@@ -1,6 +1,6 @@
 ///
 /// <summary> Distribution License:
-/// JSword is free software; you can redistribute it and/or modify it under
+/// CrossConnect is free software; you can redistribute it and/or modify it under
 /// the terms of the GNU Lesser General Public License, version 2.1 as published by
 /// the Free Software Foundation. This program is distributed in the hope
 /// that it will be useful, but WITHOUT ANY WARRANTY; without even the
@@ -24,8 +24,7 @@
 /// 
 namespace SwordBackend
 {
-
-/*
+    /*
     using Language = org.crosswire.common.util.Language;
     using BookCategory = org.crosswire.jsword.book.BookCategory;
     using System.Runtime.Serialization;*/
@@ -47,262 +46,27 @@ namespace SwordBackend
     /// @author Joe Walker [joe at eireneh dot com]
     /// @author DM Smith [dmsmith555 at yahoo dot com] </seealso>
     /// 
-    public class ConfigEntryType 
+    public class ConfigEntryType
     {
+        #region Fields
+
+        public const string DIRECTION_BIDI = "bidi";
+
         ///    
         /// <summary>* Constants for direction </summary>
         ///     
         public const string DIRECTION_LTOR = "LtoR";
         public const string DIRECTION_RTOL = "RtoL";
-        public const string DIRECTION_BIDI = "bidi";
-
-        private static readonly string[] BLOCK_TYPE_PICKS = new string[] { "BOOK", "CHAPTER", "VERSE" };
-
-        private static readonly string[] BOOLEAN_PICKS = new string[] { "true", "false" };
-
-        private static readonly string[] CATEGORY_PICKS = new string[] { "Daily Devotional", "Glossaries", "Cults / Unorthodox / Questionable Material", "Essays", "Maps", "Images", "Biblical Texts", "Commentaries", "Lexicons / Dictionaries", "Generic Books" };
-
-        private static readonly string[] COMPRESS_TYPE_PICKS = new string[] { "LZSS", "ZIP" };
-
-        private static readonly string[] DIRECTION_PICKS = new string[] { DIRECTION_LTOR, DIRECTION_RTOL, DIRECTION_BIDI };
-
-        private static readonly string[] KEY_TYPE_PICKS = new string[] { "TreeKey", "VerseKey" };
-
-        private static readonly string[] FEATURE_PICKS = new string[] { "StrongsNumbers", "GreekDef", "HebrewDef", "GreekParse", "HebrewParse", "DailyDevotion", "Glossary", "Images" };
-
-        private static readonly string[] GLOBAL_OPTION_FILTER_PICKS = new string[] { "GBFStrongs", "GBFFootnotes", "GBFScripref", "GBFMorph", "GBFHeadings", "GBFRedLetterWords", "ThMLStrongs", "ThMLFootnotes", "ThMLScripref", "ThMLMorph", "ThMLHeadings", "ThMLVariants", "ThMLLemma", "UTF8Cantillation", "UTF8GreekAccents", "UTF8HebrewPoints", "OSISStrongs", "OSISFootnotes", "OSISScripref", "OSISMorph", "OSISHeadings", "OSISRedLetterWords", "OSISLemma", "OSISRuby" };
-
-        private static readonly string[] LICENSE_PICKS = new string[] { "Public Domain", "Copyrighted", "Copyrighted; Free non-commercial distribution", "Copyrighted; Permission to distribute granted to CrossWire", "Copyrighted; Freely distributable", "Copyrighted; Permission granted to distribute non-commercially in Sword format", "GFDL", "GPL", "Creative Commons: by-nc-nd", "Creative Commons: by-nc-sa", "Creative Commons: by-nc", "Creative Commons: by-nd", "Creative Commons: by-sa", "Creative Commons: by" };
-
-        private static readonly string[] ENCODING_PICKS = new string[] { "Latin-1", "UTF-8" };
-
-        private static readonly string[] MOD_DRV_PICKS = new string[] { "RawText", "zText", "RawCom", "RawCom4", "zCom", "HREFCom", "RawFiles", "RawLD", "RawLD4", "zLD", "RawGenBook" };
-
-        private static readonly string[] SOURCE_TYPE_PICKS = new string[] { "Plaintext", "GBF", "ThML", "OSIS", "TEI", "OSIS", "TEI" };
-
-        private static readonly string[] VERSIFICATION_PICKS = new string[] { "KJV", "KJVA", "NRSV", "NRSVA", "Leningrad", "MT" };
 
         ///    
-        /// <summary>* A ConfigEntryPickType is a ConfigEntryType that allows values from a pick
-        /// list. Matching is expected to be case-sensitive, but data problems
-        /// dictate a more flexible approach.
-        ///  </summary>
+        /// <summary>* The short name of this book. </summary>
         ///     
-        public class ConfigEntryPickType : ConfigEntryType
-        {
-            ///        
-            ///         <summary> * Simple ctor </summary>
-            ///         
-            public ConfigEntryPickType(string name, string[] picks)
-                : this(name, picks, null)
-            {
-            }
-
-            ///        
-            ///         <summary> * Simple ctor </summary>
-            ///         
-            public ConfigEntryPickType(string name, string[] picks, object defaultPick)
-                : base(name, defaultPick)
-            {
-                choiceArray = (string[])picks.Clone();
-            }
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
-             */
-            protected internal override bool hasChoices()
-            {
-                return true;
-            }
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang
-             * .String)
-             */
-            public override bool isAllowed(string value)
-            {
-                for (int i = 0; i < choiceArray.Length; i++)
-                {
-                    if (choiceArray[i].ToUpper() == value.ToUpper())
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.crosswire.jsword.book.sword.ConfigEntryType#filter(java.lang.
-             * string)
-             */
-            public override string filter(string value)
-            {
-                // Do we have an exact match?
-                for (int i = 0; i < choiceArray.Length; i++)
-                {
-                    if (choiceArray[i].Equals(value))
-                    {
-                        return value;
-                    }
-                }
-
-                // Do we have a case insensitive match?
-                for (int i = 0; i < choiceArray.Length; i++)
-                {
-                    if (choiceArray[i].ToUpper() == value.ToUpper())
-                    {
-                        return choiceArray[i];
-                    }
-                }
-
-                // No match at all!
-                return value;
-            }
-
-            ///        
-            ///         <summary> * The array of choices. </summary>
-            ///         
-            private readonly string[] choiceArray;
-
-        }
+        public static readonly ConfigEntryType ABBREVIATION = new ConfigEntryType("Abbreviation");
 
         ///    
-        /// <summary>* Represents a ConfigEntryType that is not actually represented by the
-        /// Sword Config file.
-        ///  </summary>
+        ///     <summary> * Contains rtf that describes the book. </summary>
         ///     
-        public class ConfigEntrySyntheticType : ConfigEntryType
-        {
-            ///        
-            ///         <summary> * Simple ctor </summary>
-            ///         
-            //JAVA TO VB & C# CONVERTER TODO TASK: C# doesn't allow accessing outer class instance members within a nested class:
-            public ConfigEntrySyntheticType(string name)
-                : base(name)
-            {
-            }
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.crosswire.jsword.book.sword.ConfigEntryType#isSynthetic()
-             */
-            public override bool isSynthetic
-            {
-                get
-                {
-                    return true;
-                }
-            }
-
-        }
-
-        ///    
-        /// <summary>* The abbreviated name by which this book is known. This is in the [] on
-        /// the first non-blank line of the conf. JSword uses this for display and
-        /// access purposes. </summary>
-        ///     
-        public static readonly ConfigEntryType INITIALS = new ConfigEntrySyntheticType("Initials");
-
-        ///    
-        /// <summary>* Relative path to the data files, some issues with this </summary>
-        ///     
-        public class ConfigEntryType_DATA_PATH : ConfigEntryType
-        {
-            public ConfigEntryType_DATA_PATH()
-                : base("DataPath")
-            {
-            }
-            public override bool isAllowed(string value)
-            {
-                return true;
-            }
-
-        };
-        public static readonly ConfigEntryType_DATA_PATH DATA_PATH = new ConfigEntryType_DATA_PATH();
-
-        ///    
-        /// <summary>* The full name of this book </summary>
-        ///     
-        public static readonly ConfigEntryType DESCRIPTION = new ConfigEntryType("Description");
-
-        ///    
-        /// <summary>* This indicates how the book was stored. </summary>
-        ///     
-        public static readonly ConfigEntryType MOD_DRV = new ConfigEntryPickType("ModDrv", MOD_DRV_PICKS);
-
-        ///    
-        /// <summary>* The type of compression in use. JSword does not support LZSS. While it is
-        /// the default, it is not used. At least so far. </summary>
-        ///     
-        public static readonly ConfigEntryType COMPRESS_TYPE = new ConfigEntryPickType("CompressType", COMPRESS_TYPE_PICKS, COMPRESS_TYPE_PICKS[0]);
-
-        ///    
-        /// <summary>* The level at which compression is applied, BOOK, CHAPTER, or VERSE </summary>
-        ///     
-        public static readonly ConfigEntryType BLOCK_TYPE = new ConfigEntryPickType("BlockType", BLOCK_TYPE_PICKS, BLOCK_TYPE_PICKS[0]);
-
-
-        ///    
-        ///     <summary> * single value integer, unknown use, some indications that we ought to be
-        ///     * using it </summary>
-        ///     
-        public class ConfigEntryType_BLOCK_COUNT : ConfigEntryType
-        {
-            public ConfigEntryType_BLOCK_COUNT()
-                : base("BlockCount", 200)
-            {
-            }
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang
-             * .String)
-             */
-            public override bool isAllowed(string aValue)
-            {
-                try
-                {
-                    Convert.ToInt32(aValue);
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-            }
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang
-             * .String)
-             */
-            public override object convert(string input)
-            {
-                try
-                {
-                    return Convert.ToInt32(input);
-                }
-                catch (Exception)
-                {
-                    return Default;
-                }
-            }
-
-        }
+        public static readonly ConfigEntryType_ABOUT ABOUT = new ConfigEntryType_ABOUT();
 
         ///    
         ///     <summary> * single value integer, unknown use, some indications that we ought to be
@@ -310,12 +74,10 @@ namespace SwordBackend
         ///     
         public static readonly ConfigEntryType_BLOCK_COUNT BLOCK_COUNT = new ConfigEntryType_BLOCK_COUNT();
 
-
-
         ///    
-        /// <summary>* The kind of key that a Generic Book uses. </summary>
+        /// <summary>* The level at which compression is applied, BOOK, CHAPTER, or VERSE </summary>
         ///     
-        public static readonly ConfigEntryType KEY_TYPE = new ConfigEntryPickType("KeyType", KEY_TYPE_PICKS, KEY_TYPE_PICKS[0]);
+        public static readonly ConfigEntryType BLOCK_TYPE = new ConfigEntryPickType("BlockType", BLOCK_TYPE_PICKS, BLOCK_TYPE_PICKS[0]);
 
         ///    
         /// <summary>* If this exists in the conf, then the book is encrypted. The value is used
@@ -324,40 +86,57 @@ namespace SwordBackend
         public static readonly ConfigEntryType CIPHER_KEY = new ConfigEntryType("CipherKey");
 
         ///    
-        /// <summary>* This indicates the versification of the book, with KJV being the default. </summary>
+        /// <summary>* The type of compression in use. JSword does not support LZSS. While it is
+        /// the default, it is not used. At least so far. </summary>
         ///     
-        public static readonly ConfigEntryType VERSIFICATION = new ConfigEntryPickType("Versification", VERSIFICATION_PICKS);
-
+        public static readonly ConfigEntryType COMPRESS_TYPE = new ConfigEntryPickType("CompressType", COMPRESS_TYPE_PICKS, COMPRESS_TYPE_PICKS[0]);
 
         ///    
-        ///     <summary> * Global Option Filters are the names of routines in Sword that can be used
-        ///     * to display the data. These are not used by JSword. </summary>
+        ///     <summary> * Informational copyright notice. </summary>
         ///     
-        public class ConfigEntryType_GLOBAL_OPTION_FILTER : ConfigEntryPickType
-        {
-            public ConfigEntryType_GLOBAL_OPTION_FILTER()
-                : base("GlobalOptionFilter", GLOBAL_OPTION_FILTER_PICKS)
-            {
-            }
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.crosswire.jsword.book.sword.ConfigEntryType#mayRepeat()
-             */
-            public override bool mayRepeat()
-            {
-                return true;
-            }
-
-        }
+        public static readonly ConfigEntryType_COPYRIGHT COPYRIGHT = new ConfigEntryType_COPYRIGHT();
 
         ///    
-        ///     <summary> * Global Option Filters are the names of routines in Sword that can be used
-        ///     * to display the data. These are not used by JSword. </summary>
-        ///     
-        public static readonly ConfigEntryType_GLOBAL_OPTION_FILTER GLOBAL_OPTION_FILTER = new ConfigEntryType_GLOBAL_OPTION_FILTER();
+        ///     <summary> * Copyright info. Informational only. </summary>
+        ///
+        public static readonly ConfigEntryType_COPYRIGHT_CONTACT_ADDRESS COPYRIGHT_CONTACT_ADDRESS = new ConfigEntryType_COPYRIGHT_CONTACT_ADDRESS();
 
+        ///    
+        /// <summary>* Copyright info. Informational only. </summary>
+        ///     
+        public static readonly ConfigEntryType COPYRIGHT_CONTACT_EMAIL = new ConfigEntryType("CopyrightContactEmail");
+
+        ///    
+        ///     <summary> * Copyright info. Informational only. </summary>
+        ///
+        public static readonly ConfigEntryType_COPYRIGHT_CONTACT_NAME COPYRIGHT_CONTACT_NAME = new ConfigEntryType_COPYRIGHT_CONTACT_NAME();
+
+        ///    
+        ///     <summary> * Copyright info. Informational only. </summary>
+        ///
+        public static readonly ConfigEntryType_COPYRIGHT_CONTACT_NOTES COPYRIGHT_CONTACT_NOTES = new ConfigEntryType_COPYRIGHT_CONTACT_NOTES();
+
+        ///    
+        ///     <summary> * Copyright info. Informational only. This is a year, a year range or a
+        ///     * comma separated list of these. </summary>
+        ///     
+        public static readonly ConfigEntryType_COPYRIGHT_DATE COPYRIGHT_DATE = new ConfigEntryType_COPYRIGHT_DATE();
+
+        ///    
+        /// <summary>* single value string, unknown use </summary>
+        ///     
+        public static readonly ConfigEntryType COPYRIGHT_HOLDER = new ConfigEntryType("CopyrightHolder");
+
+        ///    
+        ///     <summary> * Copyright info. Informational only. </summary>
+        ///     
+        public static readonly ConfigEntryType_COPYRIGHT_NOTES COPYRIGHT_NOTES = new ConfigEntryType_COPYRIGHT_NOTES();
+        public static readonly ConfigEntryType_DATA_PATH DATA_PATH = new ConfigEntryType_DATA_PATH();
+
+        ///    
+        /// <summary>* The full name of this book </summary>
+        ///     
+        public static readonly ConfigEntryType DESCRIPTION = new ConfigEntryType("Description");
 
         ///    
         /// <summary>* The layout direction of the text in the book. Hebrew, Arabic and Farsi
@@ -365,11 +144,23 @@ namespace SwordBackend
         /// hebrew-english glossary. </summary>
         ///     
         public static readonly ConfigEntryType DIRECTION = new ConfigEntryPickType("Direction", DIRECTION_PICKS, DIRECTION_PICKS[0]);
+        public static readonly ConfigEntryType_DISPLAY_LEVEL DISPLAY_LEVEL = new ConfigEntryType_DISPLAY_LEVEL();
 
         ///    
-        /// <summary>* This indicates the kind of markup used for the book. </summary>
+        /// <summary>* Copyright info. Informational only. </summary>
         ///     
-        public static readonly ConfigEntryType SOURCE_TYPE = new ConfigEntryPickType("SourceType", SOURCE_TYPE_PICKS, SOURCE_TYPE_PICKS[0]);
+        public static readonly ConfigEntryType DISTRIBUTION_LICENSE = new ConfigEntryPickType("DistributionLicense", LICENSE_PICKS, LICENSE_PICKS[0]);
+
+        ///    
+        ///     <summary> * Copyright info. Informational only. </summary>
+        ///
+        public static readonly ConfigEntryType_DISTRIBUTION_NOTES DISTRIBUTION_NOTES = new ConfigEntryType_DISTRIBUTION_NOTES();
+
+        ///    
+        ///     <summary> * Similar to DataPath. It gives where on the CrossWire server the book can
+        ///     * be found. Informational only. </summary>
+        ///
+        public static readonly ConfigEntryType_DISTRIBUTION_SOURCE DISTRIBUTION_SOURCE = new ConfigEntryType_DISTRIBUTION_SOURCE();
 
         ///    
         /// <summary>* The character encoding. Only Latin-1 and UTF-8 are supported. </summary>
@@ -377,58 +168,9 @@ namespace SwordBackend
         public static readonly ConfigEntryType ENCODING = new ConfigEntryPickType("Encoding", ENCODING_PICKS, ENCODING_PICKS[0]);
 
         ///    
-        ///     <summary> * Display level is used by GenBooks to do auto expansion in the tree. A
-        ///     * level of 2 indicates that the first two levels should be shown. </summary>
+        ///     <summary> * A Feature describes a characteristic of the Book. </summary>
         ///     
-        public class ConfigEntryType_DISPLAY_LEVEL : ConfigEntryType
-        {
-            public ConfigEntryType_DISPLAY_LEVEL()
-                : base("DisplayLevel")
-            {
-            }
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang
-             * .String)
-             */
-            public override bool isAllowed(string value)
-            {
-                try
-                {
-                    Convert.ToInt32(value);
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-            }
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang
-             * .String)
-             */
-            public override object convert(string input)
-            {
-                try
-                {
-                    return Convert.ToInt32(input);
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
-            }
-
-        }
-
-        public static readonly ConfigEntryType_DISPLAY_LEVEL DISPLAY_LEVEL = new ConfigEntryType_DISPLAY_LEVEL();
+        public static readonly ConfigEntryType_FEATURE FEATURE = new ConfigEntryType_FEATURE();
 
         ///    
         /// <summary>* A recommended font to use for the book. </summary>
@@ -436,88 +178,11 @@ namespace SwordBackend
         public static readonly ConfigEntryType FONT = new ConfigEntryType("Font");
 
         ///    
-        ///     <summary> * When false do not show quotation marks for OSIS text that has <q>
-        ///     * elements. </summary>
+        ///     <summary> * Global Option Filters are the names of routines in Sword that can be used
+        ///     * to display the data. These are not used by JSword. </summary>
         ///     
-        public class ConfigEntryType_OSIS_Q_TO_TICK : ConfigEntryPickType
-        {
-            public ConfigEntryType_OSIS_Q_TO_TICK()
-                : base("OSISqToTick", BOOLEAN_PICKS, true)
-            {
-            }
+        public static readonly ConfigEntryType_GLOBAL_OPTION_FILTER GLOBAL_OPTION_FILTER = new ConfigEntryType_GLOBAL_OPTION_FILTER();
 
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang
-             * .String)
-             */
-            public override object convert(string input)
-            {
-                return Convert.ToBoolean(input);
-            }
-
-        }
-
-        ///    
-        ///     <summary> * When false do not show quotation marks for OSIS text that has <q>
-        ///     * elements. </summary>
-        ///     
-        public static readonly ConfigEntryType_OSIS_Q_TO_TICK OSIS_Q_TO_TICK = new ConfigEntryType_OSIS_Q_TO_TICK();
-
-        ///    
-        ///     <summary> * A Feature describes a characteristic of the Book. </summary>
-        ///     
-        public class ConfigEntryType_FEATURE : ConfigEntryPickType
-        {
-            public ConfigEntryType_FEATURE()
-                : base("Feature", FEATURE_PICKS)
-            {
-            }
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.crosswire.jsword.book.sword.ConfigEntryType#mayRepeat()
-             */
-            public override bool mayRepeat()
-            {
-                return true;
-            }
-
-        }
-
-        ///    
-        ///     <summary> * A Feature describes a characteristic of the Book. </summary>
-        ///     
-        public static readonly ConfigEntryType_FEATURE FEATURE = new ConfigEntryType_FEATURE();
-
-        ///    
-        ///     <summary> * Books with a Feature of Glossary are used to map words FROM one language
-        ///     * TO another. </summary>
-        ///     
-        public class ConfigEntryType_GLOSSARY_FROM : ConfigEntryType
-        {
-            public ConfigEntryType_GLOSSARY_FROM()
-                : base("GlossaryFrom")
-            {
-            }
-
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang
-             * .String)
-             */
-            public override object convert(string input)
-            {
-                return new Language(input);
-            }
-
-        }
         ///    
         ///     <summary> * Books with a Feature of Glossary are used to map words FROM one language
         ///     * TO another. </summary>
@@ -528,138 +193,8 @@ namespace SwordBackend
         ///     <summary> * Books with a Feature of Glossary are used to map words FROM one language
         ///     * TO another. </summary>
         ///     
-        public class ConfigEntryType_GLOSSARY_TO : ConfigEntryType
-        {
-            public ConfigEntryType_GLOSSARY_TO()
-                : base("GlossaryTo")
-            {
-            }
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang
-             * .String)
-             */
-            public override object convert(string input)
-            {
-                return new Language(input);
-            }
-        }
-
-        ///    
-        ///     <summary> * Books with a Feature of Glossary are used to map words FROM one language
-        ///     * TO another. </summary>
-        ///     
         public static readonly ConfigEntryType_GLOSSARY_TO GLOSSARY_TO = new ConfigEntryType_GLOSSARY_TO();
 
-
-        ///    
-        /// <summary>* The short name of this book. </summary>
-        ///     
-        public static readonly ConfigEntryType ABBREVIATION = new ConfigEntryType("Abbreviation");
-
-        ///    
-        ///     <summary> * Contains rtf that describes the book. </summary>
-        ///     
-        public class ConfigEntryType_ABOUT : ConfigEntryType
-        {
-            public ConfigEntryType_ABOUT()
-                : base("About")
-            {
-            }
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see
-             * org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
-             */
-            public override bool allowsContinuation()
-            {
-                return true;
-            }
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsRTF()
-             */
-            public override bool allowsRTF()
-            {
-                return true;
-            }
-        }
-        ///    
-        ///     <summary> * Contains rtf that describes the book. </summary>
-        ///     
-        public static readonly ConfigEntryType_ABOUT ABOUT = new ConfigEntryType_ABOUT();
-
-        ///    
-        ///     <summary> * An informational string indicating the current version of the book. </summary>
-        ///     
-        public class ConfigEntryType_VERSION : ConfigEntryType
-        {
-            public ConfigEntryType_VERSION()
-                : base("Version", "1.0")
-            {
-            }
-
-            public override bool isAllowed(string aValue)
-            {
-                try
-                {
-                    Convert.ToSingle(aValue);
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-
-            }
-
-        }
-        ///    
-        ///     <summary> * An informational string indicating the current version of the book. </summary>
-        ///     
-        public static readonly ConfigEntryType_VERSION VERSION = new ConfigEntryType_VERSION();
-
-        ///    
-        ///     <summary> * multiple values starting with History, some sort of change-log. In the
-        ///     * conf these are of the form History_x.y. We strip off the x.y and prefix
-        ///     * the value with it. The x.y corresponds to a current or prior Version
-        ///     * value. </summary>
-        ///     
-        public class ConfigEntryType_HISTORY : ConfigEntryType
-        {
-            public ConfigEntryType_HISTORY()
-                : base("History")
-            {
-            }
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.crosswire.jsword.book.sword.ConfigEntryType#mayRepeat()
-             */
-            public override bool mayRepeat()
-            {
-                return true;
-            }
-
-            /*
-             * (non-Javadoc)
-             * 
-             * @see org.crosswire.jsword.book.sword.ConfigEntryType#reportDetails()
-             */
-            public override bool reportDetails()
-            {
-                return false;
-            }
-
-        }
         ///    
         ///     <summary> * multiple values starting with History, some sort of change-log. In the
         ///     * conf these are of the form History_x.y. We strip off the x.y and prefix
@@ -669,77 +204,11 @@ namespace SwordBackend
         public static readonly ConfigEntryType_HISTORY HISTORY = new ConfigEntryType_HISTORY();
 
         ///    
-        /// <summary>* single value version number, lowest sword c++ version that can read this
-        /// book JSword does not use this value. </summary>
+        /// <summary>* The abbreviated name by which this book is known. This is in the [] on
+        /// the first non-blank line of the conf. JSword uses this for display and
+        /// access purposes. </summary>
         ///     
-        public static readonly ConfigEntryType MINIMUM_VERSION = new ConfigEntryType("MinimumVersion", "1.5.1a");
-
-        ///    
-        /// <summary>* Library of Congress Subject Heading. Typically this is of the form
-        /// BookCategory Scope Language, where scope is typically O.T., N.T. </summary>
-        ///     
-        public static readonly ConfigEntryType LCSH = new ConfigEntryType("LCSH");
-
-        ///    
-        ///     <summary> * single value string, defaults to en, the language of the book </summary>
-        ///     
-        public class ConfigEntryType_LANG : ConfigEntryType
-        {
-            public ConfigEntryType_LANG()
-                : base("Lang", new Language(null))
-            {
-            }
-
-
-            public override object convert(string input)
-            {
-                return new Language(input);
-            }
-
-        }
-
-        ///    
-        ///     <summary> * single value string, defaults to en, the language of the book </summary>
-        ///     
-        public static readonly ConfigEntryType_LANG LANG = new ConfigEntryType_LANG();
-
-        ///    
-        ///     <summary> * The installed size of the book in bytes. This is not the size of the zip
-        ///     * that is downloaded. </summary>
-        ///     
-        public class ConfigEntryType_INSTALL_SIZE : ConfigEntryType
-        {
-            public ConfigEntryType_INSTALL_SIZE()
-                : base("InstallSize")
-            {
-            }
-
-            public override bool isAllowed(string value)
-            {
-                try
-                {
-                    Convert.ToInt32(value);
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-            }
-
-            public override object convert(string input)
-            {
-                try
-                {
-                    return Convert.ToInt32(input);
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
-            }
-
-        }
+        public static readonly ConfigEntryType INITIALS = new ConfigEntrySyntheticType("Initials");
 
         ///    
         ///     <summary> * The installed size of the book in bytes. This is not the size of the zip
@@ -748,327 +217,20 @@ namespace SwordBackend
         public static readonly ConfigEntryType_INSTALL_SIZE INSTALL_SIZE = new ConfigEntryType_INSTALL_SIZE();
 
         ///    
-        ///     <summary> * The date that this version of the book was last updated. Informational
-        ///     * only. </summary>
+        /// <summary>* The kind of key that a Generic Book uses. </summary>
         ///     
-        public class ConfigEntryType_SWORD_VERSION_DATE : ConfigEntryType
-        {
-            public ConfigEntryType_SWORD_VERSION_DATE()
-                : base("SwordVersionDate")
-            {
-            }
-
-            public override bool isAllowed(string value)
-            {
-                Regex regx = new Regex(validDatePattern); 
-                return regx.IsMatch(value);
-            }
-
-            private string validDatePattern = "\\d{4}-\\d{2}-\\d{2}";
-
-        }
+        public static readonly ConfigEntryType KEY_TYPE = new ConfigEntryPickType("KeyType", KEY_TYPE_PICKS, KEY_TYPE_PICKS[0]);
 
         ///    
-        ///     <summary> * The date that this version of the book was last updated. Informational
-        ///     * only. </summary>
-        ///
-        public static readonly ConfigEntryType_SWORD_VERSION_DATE SWORD_VERSION_DATE = new ConfigEntryType_SWORD_VERSION_DATE();
-
-        ///    
-        ///     <summary> * A list of prior "initials" for the current book.
-        ///     * TODO(dms): when a user installs a book with an obsoletes that matches
-        ///     * an installed book, offer the user the opportunity to delete the old book. </summary>
+        ///     <summary> * single value string, defaults to en, the language of the book </summary>
         ///     
-        public class ConfigEntryType_OBSOLETES : ConfigEntryType
-        {
-            public ConfigEntryType_OBSOLETES()
-                : base("Obsoletes")
-            {
-            }
-
-            public override bool mayRepeat()
-            {
-                return true;
-            }
-
-            public override bool reportDetails()
-            {
-                return false;
-            }
-
-        }
+        public static readonly ConfigEntryType_LANG LANG = new ConfigEntryType_LANG();
 
         ///    
-        ///     <summary> * A list of prior "initials" for the current book.
-        ///     * TODO(dms): when a user installs a book with an obsoletes that matches
-        ///     * an installed book, offer the user the opportunity to delete the old book. </summary>
+        /// <summary>* Library of Congress Subject Heading. Typically this is of the form
+        /// BookCategory Scope Language, where scope is typically O.T., N.T. </summary>
         ///     
-        public static readonly ConfigEntryType_OBSOLETES OBSOLETES = new ConfigEntryType_OBSOLETES();
-
-        ///    
-        ///     <summary> * Informational copyright notice. </summary>
-        ///     
-        public class ConfigEntryType_COPYRIGHT : ConfigEntryType
-        {
-            public ConfigEntryType_COPYRIGHT()
-                : base("Copyright")
-            {
-            }
-
-
-            public override bool allowsContinuation()
-            {
-                return true;
-            }
-
-        }
-
-        ///    
-        ///     <summary> * Informational copyright notice. </summary>
-        ///     
-        public static readonly ConfigEntryType_COPYRIGHT COPYRIGHT = new ConfigEntryType_COPYRIGHT();
-
-
-        ///    
-        /// <summary>* single value string, unknown use </summary>
-        ///     
-        public static readonly ConfigEntryType COPYRIGHT_HOLDER = new ConfigEntryType("CopyrightHolder");
-
-        ///    
-        ///     <summary> * Copyright info. Informational only. This is a year, a year range or a
-        ///     * comma separated list of these. </summary>
-        ///     
-        public class ConfigEntryType_COPYRIGHT_DATE : ConfigEntryType
-        {
-            public ConfigEntryType_COPYRIGHT_DATE()
-                : base("CopyrightDate")
-            {
-            }
-
-
-            public override bool isAllowed(string value)
-            {
-                Regex regx = new Regex(validDatePattern);
-                return regx.IsMatch(value);
-            }
-
-            private string validDatePattern = "\\d{4}(\\s*-\\s*\\d{4})?(\\s*,\\s*\\d{4}(\\s*-\\s*\\d{4})?)*";
-
-        }
-
-        ///    
-        ///     <summary> * Copyright info. Informational only. This is a year, a year range or a
-        ///     * comma separated list of these. </summary>
-        ///     
-        public static readonly ConfigEntryType_COPYRIGHT_DATE COPYRIGHT_DATE = new ConfigEntryType_COPYRIGHT_DATE();
-
-        ///    
-        ///     <summary> * Copyright info. Informational only. </summary>
-        ///     
-        public class ConfigEntryType_COPYRIGHT_NOTES : ConfigEntryType
-        {
-            public ConfigEntryType_COPYRIGHT_NOTES()
-                : base("CopyrightNotes")
-            {
-            }
-
-
-            public override bool allowsContinuation()
-            {
-                return true;
-            }
-
-            public override bool allowsRTF()
-            {
-                return true;
-            }
-
-        }
-
-        ///    
-        ///     <summary> * Copyright info. Informational only. </summary>
-        ///     
-        public static readonly ConfigEntryType_COPYRIGHT_NOTES COPYRIGHT_NOTES = new ConfigEntryType_COPYRIGHT_NOTES();
-
-        ///    
-        ///     <summary> * Copyright info. Informational only. </summary>
-        ///     
-        public class ConfigEntryType_COPYRIGHT_CONTACT_NAME : ConfigEntryType
-        {
-            public ConfigEntryType_COPYRIGHT_CONTACT_NAME()
-                : base("CopyrightContactName")
-            {
-            }
-
-
-            public override bool allowsContinuation()
-            {
-                return true;
-            }
-
-            public override bool allowsRTF()
-            {
-                return true;
-            }
-
-        }
-
-        ///    
-        ///     <summary> * Copyright info. Informational only. </summary>
-        ///
-        public static readonly ConfigEntryType_COPYRIGHT_CONTACT_NAME COPYRIGHT_CONTACT_NAME = new ConfigEntryType_COPYRIGHT_CONTACT_NAME();
-
-        ///    
-        ///     <summary> * Copyright info. Informational only. </summary>
-        ///     
-        public class ConfigEntryType_COPYRIGHT_CONTACT_NOTES : ConfigEntryType
-        {
-            public ConfigEntryType_COPYRIGHT_CONTACT_NOTES()
-                : base("CopyrightContactNotes")
-            {
-            }
-
-
-            public override bool allowsContinuation()
-            {
-                return true;
-            }
-
-            public override bool allowsRTF()
-            {
-                return true;
-            }
-
-        }
-
-        ///    
-        ///     <summary> * Copyright info. Informational only. </summary>
-        ///
-        public static readonly ConfigEntryType_COPYRIGHT_CONTACT_NOTES COPYRIGHT_CONTACT_NOTES = new ConfigEntryType_COPYRIGHT_CONTACT_NOTES();
-
-        ///    
-        ///     <summary> * Copyright info. Informational only. </summary>
-        ///     
-        public class ConfigEntryType_COPYRIGHT_CONTACT_ADDRESS : ConfigEntryType
-        {
-            public ConfigEntryType_COPYRIGHT_CONTACT_ADDRESS()
-                : base("CopyrightContactAddress")
-            {
-            }
-
-            public override bool allowsContinuation()
-            {
-                return true;
-            }
-
-            public override bool allowsRTF()
-            {
-                return true;
-            }
-
-        }
-
-        ///    
-        ///     <summary> * Copyright info. Informational only. </summary>
-        ///
-        public static readonly ConfigEntryType_COPYRIGHT_CONTACT_ADDRESS COPYRIGHT_CONTACT_ADDRESS = new ConfigEntryType_COPYRIGHT_CONTACT_ADDRESS();
-
-
-        ///    
-        /// <summary>* Copyright info. Informational only. </summary>
-        ///     
-        public static readonly ConfigEntryType COPYRIGHT_CONTACT_EMAIL = new ConfigEntryType("CopyrightContactEmail");
-
-        ///    
-        /// <summary>* A one line promo statement, required by Lockman for NASB </summary>
-        ///     
-        public static readonly ConfigEntryType SHORT_PROMO = new ConfigEntryType("ShortPromo");
-
-        ///    
-        /// <summary>* A one line copyright statement, required by Lockman for NASB </summary>
-        ///     
-        public static readonly ConfigEntryType SHORT_COPYRIGHT = new ConfigEntryType("ShortCopyright");
-
-        ///    
-        /// <summary>* Copyright info. Informational only. </summary>
-        ///     
-        public static readonly ConfigEntryType DISTRIBUTION_LICENSE = new ConfigEntryPickType("DistributionLicense", LICENSE_PICKS, LICENSE_PICKS[0]);
-
-        ///    
-        ///     <summary> * Copyright info. Informational only. </summary>
-        ///     
-        public class ConfigEntryType_DISTRIBUTION_NOTES : ConfigEntryType
-        {
-            public ConfigEntryType_DISTRIBUTION_NOTES()
-                : base("DistributionNotes")
-            {
-            }
-
-
-            public override bool allowsContinuation()
-            {
-                return true;
-            }
-
-        }
-
-        ///    
-        ///     <summary> * Copyright info. Informational only. </summary>
-        ///
-        public static readonly ConfigEntryType_DISTRIBUTION_NOTES DISTRIBUTION_NOTES = new ConfigEntryType_DISTRIBUTION_NOTES();
-
-        ///    
-        ///     <summary> * Information on where the book's text was obtained. </summary>
-        ///     
-        public class ConfigEntryType_TEXT_SOURCE : ConfigEntryType
-        {
-            public ConfigEntryType_TEXT_SOURCE()
-                : base("TextSource")
-            {
-            }
-
-            public override bool allowsContinuation()
-            {
-                return true;
-            }
-
-        }
-
-        ///    
-        ///     <summary> * Information on where the book's text was obtained. </summary>
-        ///
-        public static readonly ConfigEntryType_TEXT_SOURCE TEXT_SOURCE = new ConfigEntryType_TEXT_SOURCE();
-
-        ///    
-        ///     <summary> * Similar to DataPath. It gives where on the CrossWire server the book can
-        ///     * be found. Informational only. </summary>
-        ///     
-        public class ConfigEntryType_DISTRIBUTION_SOURCE : ConfigEntryType
-        {
-            public ConfigEntryType_DISTRIBUTION_SOURCE()
-                : base("DistributionSource")
-            {
-            }
-
-            public override bool allowsContinuation()
-            {
-                return true;
-            }
-
-        }
-
-        ///    
-        ///     <summary> * Similar to DataPath. It gives where on the CrossWire server the book can
-        ///     * be found. Informational only. </summary>
-        ///
-        public static readonly ConfigEntryType_DISTRIBUTION_SOURCE DISTRIBUTION_SOURCE = new ConfigEntryType_DISTRIBUTION_SOURCE();
-
-
-        ///    
-        /// <summary>* single value version number, lowest sword c++ version that can read this
-        /// book JSword does not use this value. </summary>
-        ///     
-        public static readonly ConfigEntryType OSIS_VERSION = new ConfigEntryType("OSISVersion", "2.0");
+        public static readonly ConfigEntryType LCSH = new ConfigEntryType("LCSH");
 
         ///    
         /// <summary>* The location of a collection of modules. JSword uses this to install and
@@ -1080,6 +242,111 @@ namespace SwordBackend
         /// <summary>* The location of the module. JSword uses this to access a module. </summary>
         ///     
         public static readonly ConfigEntryType LOCATION_URL = new ConfigEntrySyntheticType("LocationURL");
+
+        ///    
+        /// <summary>* single value version number, lowest sword c++ version that can read this
+        /// book JSword does not use this value. </summary>
+        ///     
+        public static readonly ConfigEntryType MINIMUM_VERSION = new ConfigEntryType("MinimumVersion", "1.5.1a");
+
+        ///    
+        /// <summary>* This indicates how the book was stored. </summary>
+        ///     
+        public static readonly ConfigEntryType MOD_DRV = new ConfigEntryPickType("ModDrv", MOD_DRV_PICKS);
+
+        ///    
+        ///     <summary> * A list of prior "initials" for the current book.
+        ///     * TODO(dms): when a user installs a book with an obsoletes that matches
+        ///     * an installed book, offer the user the opportunity to delete the old book. </summary>
+        ///     
+        public static readonly ConfigEntryType_OBSOLETES OBSOLETES = new ConfigEntryType_OBSOLETES();
+
+        ///    
+        ///     <summary> * When false do not show quotation marks for OSIS text that has <q>
+        ///     * elements. </summary>
+        ///     
+        public static readonly ConfigEntryType_OSIS_Q_TO_TICK OSIS_Q_TO_TICK = new ConfigEntryType_OSIS_Q_TO_TICK();
+
+        ///    
+        /// <summary>* single value version number, lowest sword c++ version that can read this
+        /// book JSword does not use this value. </summary>
+        ///     
+        public static readonly ConfigEntryType OSIS_VERSION = new ConfigEntryType("OSISVersion", "2.0");
+
+        ///    
+        /// <summary>* A one line copyright statement, required by Lockman for NASB </summary>
+        ///     
+        public static readonly ConfigEntryType SHORT_COPYRIGHT = new ConfigEntryType("ShortCopyright");
+
+        ///    
+        /// <summary>* A one line promo statement, required by Lockman for NASB </summary>
+        ///     
+        public static readonly ConfigEntryType SHORT_PROMO = new ConfigEntryType("ShortPromo");
+
+        ///    
+        /// <summary>* This indicates the kind of markup used for the book. </summary>
+        ///     
+        public static readonly ConfigEntryType SOURCE_TYPE = new ConfigEntryPickType("SourceType", SOURCE_TYPE_PICKS, SOURCE_TYPE_PICKS[0]);
+
+        ///    
+        ///     <summary> * The date that this version of the book was last updated. Informational
+        ///     * only. </summary>
+        ///
+        public static readonly ConfigEntryType_SWORD_VERSION_DATE SWORD_VERSION_DATE = new ConfigEntryType_SWORD_VERSION_DATE();
+
+        ///    
+        ///     <summary> * Information on where the book's text was obtained. </summary>
+        ///
+        public static readonly ConfigEntryType_TEXT_SOURCE TEXT_SOURCE = new ConfigEntryType_TEXT_SOURCE();
+
+        ///    
+        /// <summary>* This indicates the versification of the book, with KJV being the default. </summary>
+        ///     
+        public static readonly ConfigEntryType VERSIFICATION = new ConfigEntryPickType("Versification", VERSIFICATION_PICKS);
+
+        ///    
+        ///     <summary> * An informational string indicating the current version of the book. </summary>
+        ///     
+        public static readonly ConfigEntryType_VERSION VERSION = new ConfigEntryType_VERSION();
+
+        ///    
+        /// <summary>* Serialization ID </summary>
+        ///     
+        private const long serialVersionUID = 3258125873411273014L;
+
+        private static readonly string[] BLOCK_TYPE_PICKS = new string[] { "BOOK", "CHAPTER", "VERSE" };
+        private static readonly string[] BOOLEAN_PICKS = new string[] { "true", "false" };
+        private static readonly string[] CATEGORY_PICKS = new string[] { "Daily Devotional", "Glossaries", "Cults / Unorthodox / Questionable Material", "Essays", "Maps", "Images", "Biblical Texts", "Commentaries", "Lexicons / Dictionaries", "Generic Books" };
+        private static readonly string[] COMPRESS_TYPE_PICKS = new string[] { "LZSS", "ZIP" };
+        private static readonly string[] DIRECTION_PICKS = new string[] { DIRECTION_LTOR, DIRECTION_RTOL, DIRECTION_BIDI };
+        private static readonly string[] ENCODING_PICKS = new string[] { "Latin-1", "UTF-8" };
+        private static readonly string[] FEATURE_PICKS = new string[] { "StrongsNumbers", "GreekDef", "HebrewDef", "GreekParse", "HebrewParse", "DailyDevotion", "Glossary", "Images" };
+        private static readonly string[] GLOBAL_OPTION_FILTER_PICKS = new string[] { "GBFStrongs", "GBFFootnotes", "GBFScripref", "GBFMorph", "GBFHeadings", "GBFRedLetterWords", "ThMLStrongs", "ThMLFootnotes", "ThMLScripref", "ThMLMorph", "ThMLHeadings", "ThMLVariants", "ThMLLemma", "UTF8Cantillation", "UTF8GreekAccents", "UTF8HebrewPoints", "OSISStrongs", "OSISFootnotes", "OSISScripref", "OSISMorph", "OSISHeadings", "OSISRedLetterWords", "OSISLemma", "OSISRuby" };
+        private static readonly string[] KEY_TYPE_PICKS = new string[] { "TreeKey", "VerseKey" };
+        private static readonly string[] LICENSE_PICKS = new string[] { "Public Domain", "Copyrighted", "Copyrighted; Free non-commercial distribution", "Copyrighted; Permission to distribute granted to CrossWire", "Copyrighted; Freely distributable", "Copyrighted; Permission granted to distribute non-commercially in Sword format", "GFDL", "GPL", "Creative Commons: by-nc-nd", "Creative Commons: by-nc-sa", "Creative Commons: by-nc", "Creative Commons: by-nd", "Creative Commons: by-sa", "Creative Commons: by" };
+        private static readonly string[] MOD_DRV_PICKS = new string[] { "RawText", "zText", "RawCom", "RawCom4", "zCom", "HREFCom", "RawFiles", "RawLD", "RawLD4", "zLD", "RawGenBook" };
+        private static readonly string[] SOURCE_TYPE_PICKS = new string[] { "Plaintext", "GBF", "ThML", "OSIS", "TEI", "OSIS", "TEI" };
+        private static readonly ConfigEntryType[] VALUES = { INITIALS, DATA_PATH, DESCRIPTION, MOD_DRV, COMPRESS_TYPE, BLOCK_TYPE, BLOCK_COUNT, KEY_TYPE, CIPHER_KEY, VERSIFICATION, GLOBAL_OPTION_FILTER, DIRECTION, SOURCE_TYPE, ENCODING, DISPLAY_LEVEL, FONT, OSIS_Q_TO_TICK, FEATURE, GLOSSARY_FROM, GLOSSARY_TO, ABBREVIATION, ABOUT, VERSION, HISTORY, MINIMUM_VERSION, LCSH, LANG, INSTALL_SIZE, SWORD_VERSION_DATE, OBSOLETES, COPYRIGHT, COPYRIGHT_HOLDER, COPYRIGHT_DATE, COPYRIGHT_NOTES, COPYRIGHT_CONTACT_NAME, COPYRIGHT_CONTACT_NOTES, COPYRIGHT_CONTACT_ADDRESS, COPYRIGHT_CONTACT_EMAIL, SHORT_PROMO, SHORT_COPYRIGHT, DISTRIBUTION_LICENSE, DISTRIBUTION_NOTES, TEXT_SOURCE, DISTRIBUTION_SOURCE, OSIS_VERSION, LIBRARY_URL, LOCATION_URL };
+        private static readonly string[] VERSIFICATION_PICKS = new string[] { "KJV", "KJVA", "NRSV", "NRSVA", "Leningrad", "MT" };
+
+        private readonly int obj = nextObj++;
+
+        // Support for serialization
+        private static int nextObj;
+
+        ///    
+        /// <summary>* The default for the ConfigEntryType </summary>
+        ///     
+        private object defaultValue;
+
+        ///    
+        /// <summary>* The name of the ConfigEntryType </summary>
+        ///     
+        private string name;
+
+        #endregion Fields
+
+        #region Constructors
 
         ///    
         /// <summary>* Simple ctor </summary>
@@ -1098,112 +365,9 @@ namespace SwordBackend
             this.defaultValue = defaultValue;
         }
 
-        ///    
-        /// <summary>* Returns the normalized name of this ConfigEntry.
-        ///  </summary>
-        /// <returns> the name </returns>
-        ///     
-        public virtual string Name
-        {
-            get
-            {
-                return name;
-            }
-        }
+        #endregion Constructors
 
-        ///    
-        /// <summary>* Determines whether the string is allowed. For some config entries, the
-        /// value is expected to be one of a group, for others the format is defined.
-        ///  </summary>
-        /// <param name="value">
-        ///            the string to be checked </param>
-        /// <returns> true if the string is allowed </returns>
-        ///     
-        public virtual bool isAllowed(string value)
-        {
-            return value != null;
-        }
-
-        ///    
-        /// <summary>* Modify the value if necessary.
-        ///  </summary>
-        /// <param name="value">
-        ///            the input </param>
-        /// <returns> either value or a modified version of it. </returns>
-        ///     
-        public virtual string filter(string value)
-        {
-            return value;
-        }
-
-        ///    
-        /// <summary>* RTF is allowed in a few config entries.
-        ///  </summary>
-        /// <returns> true if rtf is allowed </returns>
-        ///     
-        public virtual bool allowsRTF()
-        {
-            return false;
-        }
-
-        ///    
-        /// <summary>* While most fields are single line or single value, some allow
-        /// continuation. A continuation mark is a backslash at the end of a line. It
-        /// is not to be followed by whitespace.
-        ///  </summary>
-        /// <returns> true if continuation is allowed </returns>
-        ///     
-        public virtual bool allowsContinuation()
-        {
-            return false;
-        }
-
-        ///    
-        /// <summary>* Some keys can repeat. When this happens each is a single value pick from
-        /// a list of choices.
-        ///  </summary>
-        /// <returns> true if this ConfigEntryType can occur more than once </returns>
-        ///     
-        public virtual bool mayRepeat()
-        {
-            return false;
-        }
-
-        ///    
-        /// <summary>* Determines the level of detail stored in the histogram.
-        ///  </summary>
-        /// <returns> true if the ConfigEntry should report histogram for repetitions </returns>
-        ///     
-        public virtual bool reportDetails()
-        {
-            return true;
-        }
-
-        ///    
-        /// <summary>* Some keys can repeat. When this happens each is a single value pick from
-        /// a list of choices.
-        ///  </summary>
-        /// <returns> true if this ConfigEntryType can occur more than once </returns>
-        ///     
-        protected internal virtual bool hasChoices()
-        {
-            return false;
-        }
-
-        ///    
-        /// <summary>* Synthetic keys are those that are not in the Sword Book's conf, but are
-        /// needed by the program. Typically, these are derived by the program from
-        /// the other entries.
-        ///  </summary>
-        /// <returns> true if this is synthetic </returns>
-        ///     
-        public virtual bool isSynthetic
-		{
-			get
-			{
-				return false;
-			}
-		}
+        #region Properties
 
         ///    
         /// <summary>* Some ConfigEntryTypes have defaults.
@@ -1219,14 +383,43 @@ namespace SwordBackend
         }
 
         ///    
-        /// <summary>* Convert the string value from the conf into the representation of this
-        /// ConfigEntryType.
+        /// <summary>* Synthetic keys are those that are not in the Sword Book's conf, but are
+        /// needed by the program. Typically, these are derived by the program from
+        /// the other entries.
         ///  </summary>
-        /// <returns> the converted object </returns>
+        /// <returns> true if this is synthetic </returns>
         ///     
-        public virtual object convert(string input)
+        public virtual bool isSynthetic
         {
-            return input;
+            get
+            {
+                return false;
+            }
+        }
+
+        ///    
+        /// <summary>* Returns the normalized name of this ConfigEntry.
+        ///  </summary>
+        /// <returns> the name </returns>
+        ///     
+        public virtual string Name
+        {
+            get
+            {
+                return name;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        ///    
+        /// <summary>* Lookup method to convert from an integer </summary>
+        ///     
+        public static ConfigEntryType fromInteger(int i)
+        {
+            return VALUES[i];
         }
 
         ///    
@@ -1260,11 +453,36 @@ namespace SwordBackend
         }
 
         ///    
-        /// <summary>* Lookup method to convert from an integer </summary>
+        /// <summary>* While most fields are single line or single value, some allow
+        /// continuation. A continuation mark is a backslash at the end of a line. It
+        /// is not to be followed by whitespace.
+        ///  </summary>
+        /// <returns> true if continuation is allowed </returns>
         ///     
-        public static ConfigEntryType fromInteger(int i)
+        public virtual bool allowsContinuation()
         {
-            return VALUES[i];
+            return false;
+        }
+
+        ///    
+        /// <summary>* RTF is allowed in a few config entries.
+        ///  </summary>
+        /// <returns> true if rtf is allowed </returns>
+        ///     
+        public virtual bool allowsRTF()
+        {
+            return false;
+        }
+
+        ///    
+        /// <summary>* Convert the string value from the conf into the representation of this
+        /// ConfigEntryType.
+        ///  </summary>
+        /// <returns> the converted object </returns>
+        ///     
+        public virtual object convert(string input)
+        {
+            return input;
         }
 
         ///    
@@ -1279,6 +497,18 @@ namespace SwordBackend
         }
 
         ///    
+        /// <summary>* Modify the value if necessary.
+        ///  </summary>
+        /// <param name="value">
+        ///            the input </param>
+        /// <returns> either value or a modified version of it. </returns>
+        ///     
+        public virtual string filter(string value)
+        {
+            return value;
+        }
+
+        ///    
         /// <summary>* Prevent subclasses from overriding canonical identity based Object
         /// methods
         ///  </summary>
@@ -1289,9 +519,43 @@ namespace SwordBackend
             return base.GetHashCode();
         }
 
+        ///    
+        /// <summary>* Determines whether the string is allowed. For some config entries, the
+        /// value is expected to be one of a group, for others the format is defined.
+        ///  </summary>
+        /// <param name="value">
+        ///            the string to be checked </param>
+        /// <returns> true if the string is allowed </returns>
+        ///     
+        public virtual bool isAllowed(string value)
+        {
+            return value != null;
+        }
+
+        ///    
+        /// <summary>* Some keys can repeat. When this happens each is a single value pick from
+        /// a list of choices.
+        ///  </summary>
+        /// <returns> true if this ConfigEntryType can occur more than once </returns>
+        ///     
+        public virtual bool mayRepeat()
+        {
+            return false;
+        }
+
+        ///    
+        /// <summary>* Determines the level of detail stored in the histogram.
+        ///  </summary>
+        /// <returns> true if the ConfigEntry should report histogram for repetitions </returns>
+        ///     
+        public virtual bool reportDetails()
+        {
+            return true;
+        }
+
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.lang.Object#toString()
          */
         public override string ToString()
@@ -1300,30 +564,955 @@ namespace SwordBackend
         }
 
         ///    
-        /// <summary>* The name of the ConfigEntryType </summary>
+        /// <summary>* Some keys can repeat. When this happens each is a single value pick from
+        /// a list of choices.
+        ///  </summary>
+        /// <returns> true if this ConfigEntryType can occur more than once </returns>
         ///     
-        private string name;
-
-        ///    
-        /// <summary>* The default for the ConfigEntryType </summary>
-        ///     
-        private object defaultValue;
-
-        ///    
-        /// <summary>* Serialization ID </summary>
-        ///     
-        private const long serialVersionUID = 3258125873411273014L;
-
-        // Support for serialization
-        private static int nextObj;
-        private readonly int obj = nextObj++;
+        protected internal virtual bool hasChoices()
+        {
+            return false;
+        }
 
         internal virtual object readResolve()
         {
             return VALUES[obj];
         }
 
-        private static readonly ConfigEntryType[] VALUES = { INITIALS, DATA_PATH, DESCRIPTION, MOD_DRV, COMPRESS_TYPE, BLOCK_TYPE, BLOCK_COUNT, KEY_TYPE, CIPHER_KEY, VERSIFICATION, GLOBAL_OPTION_FILTER, DIRECTION, SOURCE_TYPE, ENCODING, DISPLAY_LEVEL, FONT, OSIS_Q_TO_TICK, FEATURE, GLOSSARY_FROM, GLOSSARY_TO, ABBREVIATION, ABOUT, VERSION, HISTORY, MINIMUM_VERSION, LCSH, LANG, INSTALL_SIZE, SWORD_VERSION_DATE, OBSOLETES, COPYRIGHT, COPYRIGHT_HOLDER, COPYRIGHT_DATE, COPYRIGHT_NOTES, COPYRIGHT_CONTACT_NAME, COPYRIGHT_CONTACT_NOTES, COPYRIGHT_CONTACT_ADDRESS, COPYRIGHT_CONTACT_EMAIL, SHORT_PROMO, SHORT_COPYRIGHT, DISTRIBUTION_LICENSE, DISTRIBUTION_NOTES, TEXT_SOURCE, DISTRIBUTION_SOURCE, OSIS_VERSION, LIBRARY_URL, LOCATION_URL };
-    }
+        #endregion Methods
 
+        #region Nested Types
+
+        ///    
+        /// <summary>* A ConfigEntryPickType is a ConfigEntryType that allows values from a pick
+        /// list. Matching is expected to be case-sensitive, but data problems
+        /// dictate a more flexible approach.
+        ///  </summary>
+        ///     
+        public class ConfigEntryPickType : ConfigEntryType
+        {
+            #region Fields
+
+            ///        
+            ///         <summary> * The array of choices. </summary>
+            ///         
+            private readonly string[] choiceArray;
+
+            #endregion Fields
+
+            #region Constructors
+
+            ///        
+            ///         <summary> * Simple ctor </summary>
+            ///         
+            public ConfigEntryPickType(string name, string[] picks)
+                : this(name, picks, null)
+            {
+            }
+
+            ///        
+            ///         <summary> * Simple ctor </summary>
+            ///         
+            public ConfigEntryPickType(string name, string[] picks, object defaultPick)
+                : base(name, defaultPick)
+            {
+                choiceArray = (string[])picks.Clone();
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see
+             * org.crosswire.jsword.book.sword.ConfigEntryType#filter(java.lang.
+             * string)
+             */
+            public override string filter(string value)
+            {
+                // Do we have an exact match?
+                for (int i = 0; i < choiceArray.Length; i++)
+                {
+                    if (choiceArray[i].Equals(value))
+                    {
+                        return value;
+                    }
+                }
+
+                // Do we have a case insensitive match?
+                for (int i = 0; i < choiceArray.Length; i++)
+                {
+                    if (choiceArray[i].ToUpper() == value.ToUpper())
+                    {
+                        return choiceArray[i];
+                    }
+                }
+
+                // No match at all!
+                return value;
+            }
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see
+             * org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang
+             * .String)
+             */
+            public override bool isAllowed(string value)
+            {
+                for (int i = 0; i < choiceArray.Length; i++)
+                {
+                    if (choiceArray[i].ToUpper() == value.ToUpper())
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see org.crosswire.jsword.book.sword.ConfigEntryType#hasChoices()
+             */
+            protected internal override bool hasChoices()
+            {
+                return true;
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        /// <summary>* Represents a ConfigEntryType that is not actually represented by the
+        /// Sword Config file.
+        ///  </summary>
+        ///     
+        public class ConfigEntrySyntheticType : ConfigEntryType
+        {
+            #region Constructors
+
+            ///        
+            ///         <summary> * Simple ctor </summary>
+            ///         
+            // JAVA TO VB & C# CONVERTER TODO TASK: C# doesn't allow accessing outer class instance members within a nested class:
+            public ConfigEntrySyntheticType(string name)
+                : base(name)
+            {
+            }
+
+            #endregion Constructors
+
+            #region Properties
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see org.crosswire.jsword.book.sword.ConfigEntryType#isSynthetic()
+             */
+            public override bool isSynthetic
+            {
+                get
+                {
+                    return true;
+                }
+            }
+
+            #endregion Properties
+        }
+
+        ///    
+        ///     <summary> * Contains rtf that describes the book. </summary>
+        ///     
+        public class ConfigEntryType_ABOUT : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_ABOUT()
+                : base("About")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see
+             * org.crosswire.jsword.book.sword.ConfigEntryType#allowsContinuation()
+             */
+            public override bool allowsContinuation()
+            {
+                return true;
+            }
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see org.crosswire.jsword.book.sword.ConfigEntryType#allowsRTF()
+             */
+            public override bool allowsRTF()
+            {
+                return true;
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * single value integer, unknown use, some indications that we ought to be
+        ///     * using it </summary>
+        ///     
+        public class ConfigEntryType_BLOCK_COUNT : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_BLOCK_COUNT()
+                : base("BlockCount", 200)
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see
+             * org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang
+             * .String)
+             */
+            public override object convert(string input)
+            {
+                try
+                {
+                    return Convert.ToInt32(input);
+                }
+                catch (Exception)
+                {
+                    return Default;
+                }
+            }
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see
+             * org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang
+             * .String)
+             */
+            public override bool isAllowed(string aValue)
+            {
+                try
+                {
+                    Convert.ToInt32(aValue);
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * Informational copyright notice. </summary>
+        ///     
+        public class ConfigEntryType_COPYRIGHT : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_COPYRIGHT()
+                : base("Copyright")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            public override bool allowsContinuation()
+            {
+                return true;
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * Copyright info. Informational only. </summary>
+        ///     
+        public class ConfigEntryType_COPYRIGHT_CONTACT_ADDRESS : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_COPYRIGHT_CONTACT_ADDRESS()
+                : base("CopyrightContactAddress")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            public override bool allowsContinuation()
+            {
+                return true;
+            }
+
+            public override bool allowsRTF()
+            {
+                return true;
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * Copyright info. Informational only. </summary>
+        ///     
+        public class ConfigEntryType_COPYRIGHT_CONTACT_NAME : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_COPYRIGHT_CONTACT_NAME()
+                : base("CopyrightContactName")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            public override bool allowsContinuation()
+            {
+                return true;
+            }
+
+            public override bool allowsRTF()
+            {
+                return true;
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * Copyright info. Informational only. </summary>
+        ///     
+        public class ConfigEntryType_COPYRIGHT_CONTACT_NOTES : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_COPYRIGHT_CONTACT_NOTES()
+                : base("CopyrightContactNotes")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            public override bool allowsContinuation()
+            {
+                return true;
+            }
+
+            public override bool allowsRTF()
+            {
+                return true;
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * Copyright info. Informational only. This is a year, a year range or a
+        ///     * comma separated list of these. </summary>
+        ///     
+        public class ConfigEntryType_COPYRIGHT_DATE : ConfigEntryType
+        {
+            #region Fields
+
+            private string validDatePattern = "\\d{4}(\\s*-\\s*\\d{4})?(\\s*,\\s*\\d{4}(\\s*-\\s*\\d{4})?)*";
+
+            #endregion Fields
+
+            #region Constructors
+
+            public ConfigEntryType_COPYRIGHT_DATE()
+                : base("CopyrightDate")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            public override bool isAllowed(string value)
+            {
+                Regex regx = new Regex(validDatePattern);
+                return regx.IsMatch(value);
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * Copyright info. Informational only. </summary>
+        ///     
+        public class ConfigEntryType_COPYRIGHT_NOTES : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_COPYRIGHT_NOTES()
+                : base("CopyrightNotes")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            public override bool allowsContinuation()
+            {
+                return true;
+            }
+
+            public override bool allowsRTF()
+            {
+                return true;
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        /// <summary>* Relative path to the data files, some issues with this </summary>
+        ///     
+        public class ConfigEntryType_DATA_PATH : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_DATA_PATH()
+                : base("DataPath")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            public override bool isAllowed(string value)
+            {
+                return true;
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * Display level is used by GenBooks to do auto expansion in the tree. A
+        ///     * level of 2 indicates that the first two levels should be shown. </summary>
+        ///     
+        public class ConfigEntryType_DISPLAY_LEVEL : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_DISPLAY_LEVEL()
+                : base("DisplayLevel")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see
+             * org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang
+             * .String)
+             */
+            public override object convert(string input)
+            {
+                try
+                {
+                    return Convert.ToInt32(input);
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see
+             * org.crosswire.jsword.book.sword.ConfigEntryType#isAllowed(java.lang
+             * .String)
+             */
+            public override bool isAllowed(string value)
+            {
+                try
+                {
+                    Convert.ToInt32(value);
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * Copyright info. Informational only. </summary>
+        ///     
+        public class ConfigEntryType_DISTRIBUTION_NOTES : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_DISTRIBUTION_NOTES()
+                : base("DistributionNotes")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            public override bool allowsContinuation()
+            {
+                return true;
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * Similar to DataPath. It gives where on the CrossWire server the book can
+        ///     * be found. Informational only. </summary>
+        ///     
+        public class ConfigEntryType_DISTRIBUTION_SOURCE : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_DISTRIBUTION_SOURCE()
+                : base("DistributionSource")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            public override bool allowsContinuation()
+            {
+                return true;
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * A Feature describes a characteristic of the Book. </summary>
+        ///     
+        public class ConfigEntryType_FEATURE : ConfigEntryPickType
+        {
+            #region Constructors
+
+            public ConfigEntryType_FEATURE()
+                : base("Feature", FEATURE_PICKS)
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see org.crosswire.jsword.book.sword.ConfigEntryType#mayRepeat()
+             */
+            public override bool mayRepeat()
+            {
+                return true;
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * Global Option Filters are the names of routines in Sword that can be used
+        ///     * to display the data. These are not used by JSword. </summary>
+        ///     
+        public class ConfigEntryType_GLOBAL_OPTION_FILTER : ConfigEntryPickType
+        {
+            #region Constructors
+
+            public ConfigEntryType_GLOBAL_OPTION_FILTER()
+                : base("GlobalOptionFilter", GLOBAL_OPTION_FILTER_PICKS)
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see org.crosswire.jsword.book.sword.ConfigEntryType#mayRepeat()
+             */
+            public override bool mayRepeat()
+            {
+                return true;
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * Books with a Feature of Glossary are used to map words FROM one language
+        ///     * TO another. </summary>
+        ///     
+        public class ConfigEntryType_GLOSSARY_FROM : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_GLOSSARY_FROM()
+                : base("GlossaryFrom")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see
+             * org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang
+             * .String)
+             */
+            public override object convert(string input)
+            {
+                return new Language(input);
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * Books with a Feature of Glossary are used to map words FROM one language
+        ///     * TO another. </summary>
+        ///     
+        public class ConfigEntryType_GLOSSARY_TO : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_GLOSSARY_TO()
+                : base("GlossaryTo")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see
+             * org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang
+             * .String)
+             */
+            public override object convert(string input)
+            {
+                return new Language(input);
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * multiple values starting with History, some sort of change-log. In the
+        ///     * conf these are of the form History_x.y. We strip off the x.y and prefix
+        ///     * the value with it. The x.y corresponds to a current or prior Version
+        ///     * value. </summary>
+        ///     
+        public class ConfigEntryType_HISTORY : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_HISTORY()
+                : base("History")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see org.crosswire.jsword.book.sword.ConfigEntryType#mayRepeat()
+             */
+            public override bool mayRepeat()
+            {
+                return true;
+            }
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see org.crosswire.jsword.book.sword.ConfigEntryType#reportDetails()
+             */
+            public override bool reportDetails()
+            {
+                return false;
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * The installed size of the book in bytes. This is not the size of the zip
+        ///     * that is downloaded. </summary>
+        ///     
+        public class ConfigEntryType_INSTALL_SIZE : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_INSTALL_SIZE()
+                : base("InstallSize")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            public override object convert(string input)
+            {
+                try
+                {
+                    return Convert.ToInt32(input);
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+
+            public override bool isAllowed(string value)
+            {
+                try
+                {
+                    Convert.ToInt32(value);
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * single value string, defaults to en, the language of the book </summary>
+        ///     
+        public class ConfigEntryType_LANG : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_LANG()
+                : base("Lang", new Language(null))
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            public override object convert(string input)
+            {
+                return new Language(input);
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * A list of prior "initials" for the current book.
+        ///     * TODO(dms): when a user installs a book with an obsoletes that matches
+        ///     * an installed book, offer the user the opportunity to delete the old book. </summary>
+        ///     
+        public class ConfigEntryType_OBSOLETES : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_OBSOLETES()
+                : base("Obsoletes")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            public override bool mayRepeat()
+            {
+                return true;
+            }
+
+            public override bool reportDetails()
+            {
+                return false;
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * When false do not show quotation marks for OSIS text that has <q>
+        ///     * elements. </summary>
+        ///     
+        public class ConfigEntryType_OSIS_Q_TO_TICK : ConfigEntryPickType
+        {
+            #region Constructors
+
+            public ConfigEntryType_OSIS_Q_TO_TICK()
+                : base("OSISqToTick", BOOLEAN_PICKS, true)
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            /*
+             * (non-Javadoc)
+             *
+             * @see
+             * org.crosswire.jsword.book.sword.ConfigEntryType#convert(java.lang
+             * .String)
+             */
+            public override object convert(string input)
+            {
+                return Convert.ToBoolean(input);
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * The date that this version of the book was last updated. Informational
+        ///     * only. </summary>
+        ///     
+        public class ConfigEntryType_SWORD_VERSION_DATE : ConfigEntryType
+        {
+            #region Fields
+
+            private string validDatePattern = "\\d{4}-\\d{2}-\\d{2}";
+
+            #endregion Fields
+
+            #region Constructors
+
+            public ConfigEntryType_SWORD_VERSION_DATE()
+                : base("SwordVersionDate")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            public override bool isAllowed(string value)
+            {
+                Regex regx = new Regex(validDatePattern);
+                return regx.IsMatch(value);
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * Information on where the book's text was obtained. </summary>
+        ///     
+        public class ConfigEntryType_TEXT_SOURCE : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_TEXT_SOURCE()
+                : base("TextSource")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            public override bool allowsContinuation()
+            {
+                return true;
+            }
+
+            #endregion Methods
+        }
+
+        ///    
+        ///     <summary> * An informational string indicating the current version of the book. </summary>
+        ///     
+        public class ConfigEntryType_VERSION : ConfigEntryType
+        {
+            #region Constructors
+
+            public ConfigEntryType_VERSION()
+                : base("Version", "1.0")
+            {
+            }
+
+            #endregion Constructors
+
+            #region Methods
+
+            public override bool isAllowed(string aValue)
+            {
+                try
+                {
+                    Convert.ToSingle(aValue);
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+
+            #endregion Methods
+        }
+
+        #endregion Nested Types
+    }
 }

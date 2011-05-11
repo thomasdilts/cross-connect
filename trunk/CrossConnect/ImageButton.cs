@@ -1,16 +1,6 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-///
-/// <summary> Distribution License:
-/// JSword is free software; you can redistribute it and/or modify it under
+﻿/// <summary>
+/// Distribution License:
+/// CrossConnect is free software; you can redistribute it and/or modify it under
 /// the terms of the GNU General Public License, version 3 as published by
 /// the Free Software Foundation. This program is distributed in the hope
 /// that it will be useful, but WITHOUT ANY WARRANTY; without even the
@@ -23,17 +13,45 @@ using System.Windows.Shapes;
 ///      Free Software Foundation, Inc.
 ///      59 Temple Place - Suite 330
 ///      Boston, MA 02111-1307, USA
-///
-/// Copyright: 2011
-///     The copyright to this program is held by Thomas Dilts
-///  
+/// </summary>
+/// <copyright file="THIS_FILE.cs" company="Thomas Dilts">
+///     Thomas Dilts. All rights reserved.
+/// </copyright>
+/// <author>Thomas Dilts</author>
 namespace CrossConnect
 {
+    using System;
+    using System.Net;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Documents;
+    using System.Windows.Ink;
+    using System.Windows.Input;
+    using System.Windows.Media;
+    using System.Windows.Media.Animation;
+    using System.Windows.Shapes;
+
     /// <summary>
     /// ImageButton control
     /// </summary>
     public class ImageButton : Button
     {
+        #region Fields
+
+        /// <summary>
+        /// Normal State Image dependency property
+        /// </summary>
+        public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(ImageSource), typeof(ImageButton), null);
+
+        /// <summary>
+        /// Pressed State Image dependency property
+        /// </summary>
+        public static readonly DependencyProperty PressedImageProperty = DependencyProperty.Register("PressedImage", typeof(ImageSource), typeof(ImageButton), null);
+
+        #endregion Fields
+
+        #region Constructors
+
         /// <summary>
         /// Initializes new instance of ImageButton class
         /// </summary>
@@ -43,10 +61,9 @@ namespace CrossConnect
             DefaultStyleKey = typeof(ImageButton);
         }
 
-        /// <summary>
-        /// Normal State Image dependency property
-        /// </summary>
-        public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(ImageSource), typeof(ImageButton), null);
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// Normal State Image property
@@ -55,13 +72,7 @@ namespace CrossConnect
         {
             get { return (ImageSource)this.GetValue(ImageProperty); }
             set { this.SetValue(ImageProperty, value); }
-
         }
-
-        /// <summary>
-        /// Pressed State Image dependency property
-        /// </summary>
-        public static readonly DependencyProperty PressedImageProperty = DependencyProperty.Register("PressedImage", typeof(ImageSource), typeof(ImageButton), null);
 
         /// <summary>
         /// Pressed State Image property
@@ -70,8 +81,8 @@ namespace CrossConnect
         {
             get { return (ImageSource)this.GetValue(PressedImageProperty); }
             set { this.SetValue(PressedImageProperty, value); }
-
         }
-        
+
+        #endregion Properties
     }
 }

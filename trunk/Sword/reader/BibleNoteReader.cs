@@ -1,15 +1,6 @@
-﻿using System;
-using System.Net;
-using System.Collections.Generic;
-using System.IO;
-using ComponentAce.Compression.Libs.zlib;
-using System.Globalization;
-using System.Runtime.Serialization;
-using System.IO.IsolatedStorage;
-using System.Text;
-///
-/// <summary> Distribution License:
-/// JSword is free software; you can redistribute it and/or modify it under
+﻿/// <summary>
+/// Distribution License:
+/// CrossConnect is free software; you can redistribute it and/or modify it under
 /// the terms of the GNU General Public License, version 3 as published by
 /// the Free Software Foundation. This program is distributed in the hope
 /// that it will be useful, but WITHOUT ANY WARRANTY; without even the
@@ -22,13 +13,23 @@ using System.Text;
 ///      Free Software Foundation, Inc.
 ///      59 Temple Place - Suite 330
 ///      Boston, MA 02111-1307, USA
-///
-/// Copyright: 2011
-///     The copyright to this program is held by Thomas Dilts
-///  
-
+/// </summary>
+/// <copyright file="THIS_FILE.cs" company="Thomas Dilts">
+///     Thomas Dilts. All rights reserved.
+/// </copyright>
+/// <author>Thomas Dilts</author>
 namespace SwordBackend
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.IO.IsolatedStorage;
+    using System.Net;
+    using System.Runtime.Serialization;
+    using System.Text;
+
+    using ComponentAce.Compression.Libs.zlib;
 
     /// <summary>
     /// Load from a file all the book and verse pointers to the bzz file so that
@@ -41,23 +42,63 @@ namespace SwordBackend
     [KnownType(typeof(VersePos))]
     public class BibleNoteReader : BibleZtextReader
     {
-        private string titleBrowserWindow = "";
+        #region Fields
+
+        private string titleBrowserWindow = string.Empty;
+
+        #endregion Fields
+
+        #region Constructors
+
         public BibleNoteReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string titleBrowserWindow)
-            :base(path, iso2DigitLangCode, isIsoEncoding)
+            : base(path, iso2DigitLangCode, isIsoEncoding)
         {
             this.titleBrowserWindow = titleBrowserWindow;
         }
-        public override bool isSearchable { get { return false; } }
-        public override bool isBookmarkable { get { return false; } }
-        public override bool isLocalChangeDuringLink { get { return false; } }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public override bool IsBookmarkable
+        {
+            get
+            {
+            return false;
+             }
+        }
+
+        public override bool IsLocalChangeDuringLink
+        {
+            get
+            {
+            return false;
+             }
+        }
+
+        public override bool IsSearchable
+        {
+            get
+            {
+            return false;
+             }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
         public override string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize)
         {
             return GetChapterHtml(chapterNumber, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, true);
         }
-        public override void getInfo(int chaptNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title)
+
+        public override void GetInfo(int chaptNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title)
         {
-            base.getInfo(chaptNum, verseNum, out bookNum, out relChaptNum, out fullName, out title);
+            base.GetInfo(chaptNum, verseNum, out bookNum, out relChaptNum, out fullName, out title);
             title = titleBrowserWindow + " " + fullName + ":" + (relChaptNum + 1);
         }
+
+        #endregion Methods
     }
 }

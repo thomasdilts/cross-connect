@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
-///
-/// <summary> Distribution License:
-/// JSword is free software; you can redistribute it and/or modify it under
+﻿/// <summary>
+/// Distribution License:
+/// CrossConnect is free software; you can redistribute it and/or modify it under
 /// the terms of the GNU General Public License, version 3 as published by
 /// the Free Software Foundation. This program is distributed in the hope
 /// that it will be useful, but WITHOUT ANY WARRANTY; without even the
@@ -25,19 +13,69 @@ using Microsoft.Phone.Controls;
 ///      Free Software Foundation, Inc.
 ///      59 Temple Place - Suite 330
 ///      Boston, MA 02111-1307, USA
-///
-/// Copyright: 2011
-///     The copyright to this program is held by Thomas Dilts
-///  
+/// </summary>
+/// <copyright file="THIS_FILE.cs" company="Thomas Dilts">
+///     Thomas Dilts. All rights reserved.
+/// </copyright>
+/// <author>Thomas Dilts</author>
 namespace CrossConnect
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Documents;
+    using System.Windows.Input;
+    using System.Windows.Media;
+    using System.Windows.Media.Animation;
+    using System.Windows.Shapes;
+
+    using Microsoft.Phone.Controls;
+
     public partial class EditBookmarks : PhoneApplicationPage
     {
+        #region Fields
+
+        private bool isInSelectionChanged = false;
+
+        #endregion Fields
+
+        #region Constructors
+
         public EditBookmarks()
         {
             InitializeComponent();
         }
-        private bool isInSelectionChanged=false;
+
+        #endregion Constructors
+
+        #region Methods
+
+        private void LoadList()
+        {
+            SelectList.Items.Clear();
+            List<string> allBookmarks = App.openWindows[0].state.source.MakeListDisplayText(App.placeMarkers.bookmarks);
+            // the list is a reversed list from the original list. So we must mark it with the correct reversed index.
+            int j = allBookmarks.Count - 1;
+            for (int i = 0; i < allBookmarks.Count; i++)
+            {
+                TextBlock block = new TextBlock();
+                block.Text = allBookmarks[i].Replace("<p>", "").Replace("</p>", "");
+                block.Tag = j--;
+                block.TextWrapping = TextWrapping.Wrap;
+                SelectList.Items.Add(block);
+            }
+        }
+
+        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            PageTitle.Text = Translations.translate("Select bookmark to delete");
+
+            LoadList();
+        }
+
         private void SelectList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (isInSelectionChanged)
@@ -60,27 +98,6 @@ namespace CrossConnect
             isInSelectionChanged = false;
         }
 
-        private void LoadList()
-        {
-            SelectList.Items.Clear();
-            List<string> allBookmarks = App.openWindows[0].state.source.makeListDisplayText(App.placeMarkers.bookmarks);
-            //the list is a reversed list from the original list. So we must mark it with the correct reversed index.
-            int j = allBookmarks.Count - 1;
-            for (int i = 0; i < allBookmarks.Count; i++)
-            {
-                TextBlock block = new TextBlock();
-                block.Text = allBookmarks[i].Replace("<p>", "").Replace("</p>", "");
-                block.Tag = j--;
-                block.TextWrapping = TextWrapping.Wrap;
-                SelectList.Items.Add(block);
-            }
-        }
-        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            PageTitle.Text = Translations.translate("Select bookmark to delete");    
-        
-
-            LoadList();
-        }
+        #endregion Methods
     }
 }

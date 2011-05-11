@@ -1,16 +1,6 @@
-﻿using System;
-using System.Net;
-using System.Collections.Generic;
-using System.IO;
-using ComponentAce.Compression.Libs.zlib;
-using System.Globalization;
-using System.Runtime.Serialization;
-using System.IO.IsolatedStorage;
-using SwordBackend;
-using System.Text;
-///
-/// <summary> Distribution License:
-/// JSword is free software; you can redistribute it and/or modify it under
+﻿/// <summary>
+/// Distribution License:
+/// CrossConnect is free software; you can redistribute it and/or modify it under
 /// the terms of the GNU General Public License, version 3 as published by
 /// the Free Software Foundation. This program is distributed in the hope
 /// that it will be useful, but WITHOUT ANY WARRANTY; without even the
@@ -23,12 +13,25 @@ using System.Text;
 ///      Free Software Foundation, Inc.
 ///      59 Temple Place - Suite 330
 ///      Boston, MA 02111-1307, USA
-///
-/// Copyright: 2011
-///     The copyright to this program is held by Thomas Dilts
-///     .
+/// </summary>
+/// <copyright file="BookMarkReader.cs" company="Thomas Dilts">
+///     Thomas Dilts. All rights reserved.
+/// </copyright>
+/// <author>Thomas Dilts</author>
 namespace CrossConnect
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.IO.IsolatedStorage;
+    using System.Net;
+    using System.Runtime.Serialization;
+    using System.Text;
+
+    using ComponentAce.Compression.Libs.zlib;
+
+    using SwordBackend;
 
     /// <summary>
     /// Load from a file all the book and verse pointers to the bzz file so that
@@ -41,47 +44,97 @@ namespace CrossConnect
     [KnownType(typeof(VersePos))]
     public class BookMarkReader : BibleZtextReader
     {
-        private string displayText = "";
-        private string htmlBackgroundColor="";
-        private string htmlForegroundColor = "";
-        private string htmlPhoneAccentColor = "";
-        private double htmlFontSize=0;
+        #region Fields
+
+        private string displayText = string.Empty;
+        private string htmlBackgroundColor = string.Empty;
+        private double htmlFontSize = 0;
+        private string htmlForegroundColor = string.Empty;
+        private string htmlPhoneAccentColor = string.Empty;
+
+        #endregion Fields
+
+        #region Constructors
+
         public BookMarkReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
-            :base(path, iso2DigitLangCode, isIsoEncoding)
+            : base(path, iso2DigitLangCode, isIsoEncoding)
         {
-            App.BookMarksChanged+=App_BookMarksChanged;
+            App.BookMarksChanged += this.App_BookMarksChanged;
         }
-        ~BookMarkReader()  // destructor
+
+        // destructor
+        ~BookMarkReader()
         {
-            App.BookMarksChanged -= App_BookMarksChanged;
+            App.BookMarksChanged -= this.App_BookMarksChanged;
         }
-        public override bool isSynchronizeable { get { return false; } }
-        public override bool isSearchable { get { return false; } }
-        public override bool isPageable { get { return false; } }
-        public override bool isBookmarkable { get { return false; } }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public override bool IsBookmarkable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public override bool IsPageable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public override bool IsSearchable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public override bool IsSynchronizeable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
         public void App_BookMarksChanged()
         {
-            displayText=makeListDisplayText(App.placeMarkers.bookmarks,htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
+            this.displayText = MakeListDisplayText(App.placeMarkers.bookmarks, this.htmlBackgroundColor, this.htmlForegroundColor, this.htmlPhoneAccentColor, this.htmlFontSize);
             raiseSourceChangedEvent();
-        }
-        public override void getInfo(int chaptNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title)
-        {
-            base.getInfo(chaptNum, verseNum, out bookNum, out relChaptNum, out fullName, out title);
-            title = Translations.translate("Bookmarks");
         }
 
         public override string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize)
         {
-            bool mustUpdate = (this.htmlBackgroundColor.Length == 0);
+            bool mustUpdate = this.htmlBackgroundColor.Length == 0;
             this.htmlBackgroundColor = htmlBackgroundColor;
             this.htmlForegroundColor = htmlForegroundColor;
             this.htmlPhoneAccentColor = htmlPhoneAccentColor;
             this.htmlFontSize = htmlFontSize;
             if (mustUpdate)
             {
-                displayText = makeListDisplayText(App.placeMarkers.bookmarks, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
+                this.displayText = MakeListDisplayText(App.placeMarkers.bookmarks, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
             }
-            return displayText;
+
+            return this.displayText;
         }
+
+        public override void GetInfo(int chaptNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title)
+        {
+            base.GetInfo(chaptNum, verseNum, out bookNum, out relChaptNum, out fullName, out title);
+            title = Translations.translate("Bookmarks");
+        }
+
+        #endregion Methods
     }
 }

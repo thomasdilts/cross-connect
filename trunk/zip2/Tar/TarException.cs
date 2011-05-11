@@ -1,3 +1,5 @@
+#region Header
+
 // TarException.cs
 //
 // Copyright 2004 John Reilly
@@ -20,7 +22,7 @@
 // making a combined work based on this library.  Thus, the terms and
 // conditions of the GNU General Public License cover the whole
 // combination.
-// 
+//
 // As a special exception, the copyright holders of this library give you
 // permission to link this library with independent modules to produce an
 // executable, regardless of the license terms of these independent
@@ -33,42 +35,45 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
-using System;
+#endregion Header
 
+namespace ICSharpCode.SharpZipLib.Tar
+{
+    using System;
 
+    /// <summary>
+    /// TarExceptions are used for exceptions specific to tar classes and code.	
+    /// </summary>
+    public class TarException : SharpZipBaseException
+    {
+        #region Constructors
 
-namespace ICSharpCode.SharpZipLib.Tar {
-	
-	/// <summary>
-	/// TarExceptions are used for exceptions specific to tar classes and code.	
-	/// </summary>
-	public class TarException : SharpZipBaseException
-	{
+        /// <summary>
+        /// Initialises a new instance of the TarException class.
+        /// </summary>
+        public TarException()
+        {
+        }
 
-		/// <summary>
-		/// Initialises a new instance of the TarException class.
-		/// </summary>
-		public TarException()
-		{
-		}
-		
-		/// <summary>
-		/// Initialises a new instance of the TarException class with a specified message.
-		/// </summary>
-		/// <param name="message">The message that describes the error.</param>
-		public TarException(string message)
-			: base(message)
-		{
-		}
+        /// <summary>
+        /// Initialises a new instance of the TarException class with a specified message.
+        /// </summary>
+        /// <param name="message">The message that describes the error.</param>
+        public TarException(string message)
+            : base(message)
+        {
+        }
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="message">A message describing the error.</param>
-		/// <param name="exception">The exception that is the cause of the current exception.</param>
-		public TarException(string message, Exception exception)
-			: base(message, exception)
-		{
-		}
-	}
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message">A message describing the error.</param>
+        /// <param name="exception">The exception that is the cause of the current exception.</param>
+        public TarException(string message, Exception exception)
+            : base(message, exception)
+        {
+        }
+
+        #endregion Constructors
+    }
 }

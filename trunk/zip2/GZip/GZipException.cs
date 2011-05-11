@@ -1,3 +1,5 @@
+#region Header
+
 // GZipException.cs
 //
 // Copyright 2004 John Reilly
@@ -20,7 +22,7 @@
 // making a combined work based on this library.  Thus, the terms and
 // conditions of the GNU General Public License cover the whole
 // combination.
-// 
+//
 // As a special exception, the copyright holders of this library give you
 // permission to link this library with independent modules to produce an
 // executable, regardless of the license terms of these independent
@@ -33,42 +35,45 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
-using System;
-
+#endregion Header
 
 namespace ICSharpCode.SharpZipLib.GZip
 {
-	/// <summary>
-	/// GZipException represents a Gzip specific exception	
-	/// </summary>
+    using System;
 
-	public class GZipException : SharpZipBaseException
-	{
+    /// <summary>
+    /// GZipException represents a Gzip specific exception	
+    /// </summary>
+    public class GZipException : SharpZipBaseException
+    {
+        #region Constructors
 
-		/// <summary>
-		/// Initialise a new instance of GZipException
-		/// </summary>
-		public GZipException()
-		{
-		}
-		
-		/// <summary>
-		/// Initialise a new instance of GZipException with its message string.
-		/// </summary>
-		/// <param name="message">A <see cref="string"/> that describes the error.</param>
-		public GZipException(string message)
-			: base(message)
-		{
-		}
-		
-		/// <summary>
-		/// Initialise a new instance of <see cref="GZipException"></see>.
-		/// </summary>
-		/// <param name="message">A <see cref="string"/> that describes the error.</param>
-		/// <param name="innerException">The <see cref="Exception"/> that caused this exception.</param>
-		public GZipException(string message, Exception innerException)
-			: base (message, innerException)
-		{	
-		}
-	}
+        /// <summary>
+        /// Initialise a new instance of GZipException
+        /// </summary>
+        public GZipException()
+        {
+        }
+
+        /// <summary>
+        /// Initialise a new instance of GZipException with its message string.
+        /// </summary>
+        /// <param name="message">A <see cref="string"/> that describes the error.</param>
+        public GZipException(string message)
+            : base(message)
+        {
+        }
+
+        /// <summary>
+        /// Initialise a new instance of <see cref="GZipException"></see>.
+        /// </summary>
+        /// <param name="message">A <see cref="string"/> that describes the error.</param>
+        /// <param name="innerException">The <see cref="Exception"/> that caused this exception.</param>
+        public GZipException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
+        #endregion Constructors
+    }
 }

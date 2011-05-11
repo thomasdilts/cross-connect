@@ -1,18 +1,6 @@
-﻿using System;
-using System.Net;
-using System.Collections.Generic;
-using System.IO;
-using ComponentAce.Compression.Libs.zlib;
-using System.Globalization;
-using System.Runtime.Serialization;
-using System.IO.IsolatedStorage;
-using SwordBackend;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Windows.Threading;
-///
-/// <summary> Distribution License:
-/// JSword is free software; you can redistribute it and/or modify it under
+﻿/// <summary>
+/// Distribution License:
+/// CrossConnect is free software; you can redistribute it and/or modify it under
 /// the terms of the GNU General Public License, version 3 as published by
 /// the Free Software Foundation. This program is distributed in the hope
 /// that it will be useful, but WITHOUT ANY WARRANTY; without even the
@@ -25,13 +13,27 @@ using System.Windows.Threading;
 ///      Free Software Foundation, Inc.
 ///      59 Temple Place - Suite 330
 ///      Boston, MA 02111-1307, USA
-///
-/// Copyright: 2011
-///     The copyright to this program is held by Thomas Dilts
-///  
-
+/// </summary>
+/// <copyright file="THIS_FILE.cs" company="Thomas Dilts">
+///     Thomas Dilts. All rights reserved.
+/// </copyright>
+/// <author>Thomas Dilts</author>
 namespace CrossConnect
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.IO.IsolatedStorage;
+    using System.Net;
+    using System.Runtime.Serialization;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Windows.Threading;
+
+    using ComponentAce.Compression.Libs.zlib;
+
+    using SwordBackend;
 
     /// <summary>
     /// Load from a file all the book and verse pointers to the bzz file so that
@@ -44,18 +46,22 @@ namespace CrossConnect
     [KnownType(typeof(VersePos))]
     public class SearchReader : BibleZtextReader
     {
+        #region Fields
+
         [DataMember]
-        public string displayTextHtmlBody="";
+        public string displayText = string.Empty;
+        [DataMember]
+        public string displayTextHtmlBody = string.Empty;
         [DataMember]
         public int searchChapter = 0;
         [DataMember]
+        public string searchText = string.Empty;
+        [DataMember]
         public int searchTypeIndex = 0;
-        [DataMember]
-        public string searchText = "";
-        [DataMember]
-        public string displayText = "";
 
-        public delegate void ShowProgress(double percent, int totalFound, bool isAbort, bool isFinished);
+        #endregion Fields
+
+        #region Constructors
 
         public SearchReader(string path,
             string iso2DigitLangCode,
@@ -63,11 +69,58 @@ namespace CrossConnect
             : base(path, iso2DigitLangCode, isIsoEncoding)
         {
         }
+
+        #endregion Constructors
+
+        #region Delegates
+
+        public delegate void ShowProgress(double percent, int totalFound, bool isAbort, bool isFinished);
+
+        #endregion Delegates
+
+        #region Properties
+
+        public override bool IsBookmarkable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public override bool IsPageable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public override bool IsSearchable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public override bool IsSynchronizeable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
         public void doSearch(
-            int searchChapter, 
-            int searchTypeIndex, 
-            string searchText, 
-            bool isIgnoreCase, 
+            int searchChapter,
+            int searchTypeIndex,
+            string searchText,
+            bool isIgnoreCase,
             List<int> chaptListToSearch,
             ShowProgress progress)
         {
@@ -79,7 +132,7 @@ namespace CrossConnect
             Regex regex = new Regex(searchText, isIgnoreCase ? RegexOptions.IgnoreCase : RegexOptions.None);
             int numFoundMatches = 0;
             int i = 0;
-            double lastProcent=0;
+            double lastProcent = 0;
             for (i = 0; i < chaptListToSearch.Count; i++)
             {
                 byte[] chapterBuffer = getChapterBytes(chaptListToSearch[i]);
@@ -87,11 +140,11 @@ namespace CrossConnect
                 var matches = regex.Matches(chapter);
                 if (matches != null && matches.Count > 0)
                 {
-                    //now we must search each verse in the chapter
-                    for (int j = 0; j < base.chapters[chaptListToSearch[i]].verses.Count; j++)
+                    // now we must search each verse in the chapter
+                    for (int j = 0; j < this.chapters[chaptListToSearch[i]].verses.Count; j++)
                     {
                         BibleZtextReader.VersePos verse = base.chapters[chaptListToSearch[i]].verses[j];
-                        //clean up the verse and make sure the text is still there.
+                        // clean up the verse and make sure the text is still there.
                         string textId = "CHAP_" + chaptListToSearch[i] + "_VERS_" + j;
                         string prefix = "<p><a name=\"" + textId +
                             "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.Notify('" +
@@ -99,30 +152,30 @@ namespace CrossConnect
                             (base.chapters[chaptListToSearch[i]].bookRelativeChapterNum + 1) + ":" +
                             (j + 1) + " </sup>";
                         string suffix = "</a></p><hr />";
-                        string verseTxt = base.parseOsisText(
+                        string verseTxt = parseOsisText(
                             "",
                             "",
                             chapterBuffer,
                             (int)verse.startPos,
                             verse.length,
-                            base.isIsoEncoding,
+                            isIsoEncoding,
                             false,
                             true);
                         matches = regex.Matches(verseTxt);
-                        Match lastMatch=null;
+                        Match lastMatch = null;
                         bool foundMatch = false;
                         foreach (Match match in matches)
                         {
-                            //if the match goes over into the previous match then skip it
-                            if (lastMatch!=null && (match.Index > lastMatch.Index && match.Index < lastMatch.Index + lastMatch.Length))
+                            // if the match goes over into the previous match then skip it
+                            if (lastMatch != null && (match.Index > lastMatch.Index && match.Index < lastMatch.Index + lastMatch.Length))
                             {
                                 continue;
                             }
-                            lastMatch=match;
+                            lastMatch = match;
                             foundMatch = true;
-                            verseTxt = verseTxt.Substring(0,match.Index) + "<b>" + 
-                                verseTxt.Substring(match.Index, match.Length) + "</b>" + 
-                                verseTxt.Substring(match.Index+match.Length);
+                            verseTxt = verseTxt.Substring(0, match.Index) + "<b>" +
+                                verseTxt.Substring(match.Index, match.Length) + "</b>" +
+                                verseTxt.Substring(match.Index + match.Length);
                         }
                         if (foundMatch)
                         {
@@ -131,46 +184,22 @@ namespace CrossConnect
                         }
                     }
                 }
+
                 double procent = i * 100 / chaptListToSearch.Count;
                 if (((int)procent) != ((int)lastProcent))
                 {
                     progress(procent, numFoundMatches, false, false);
                 }
-                lastProcent=procent;
+
+                lastProcent = procent;
                 if (numFoundMatches > 200)
                 {
                     break;
                 }
             }
-            displayText = displayTextBody.ToString();
-            progress(100, numFoundMatches, chaptListToSearch.Count>i, true);
-        }
 
-        public override bool isSynchronizeable { get { return false; } }
-        public override bool isSearchable { get { return false; } }
-        public override bool isPageable { get { return false; } }
-        public override bool isBookmarkable { get { return false; } }
-
-        public override void getInfo(int chaptNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title)
-        {
-            base.getInfo(searchChapter, verseNum, out bookNum, out relChaptNum, out fullName, out title);
-            string extraText="";
-            switch (searchTypeIndex)
-            {
-                case 0:
-                    extraText = Translations.translate("Whole bible");
-                    break;
-                case 1:
-                    extraText=Translations.translate("Old Testement");
-                    break;
-                case 2:
-                    extraText=Translations.translate("New Testement");
-                    break;
-                case 3:
-                    extraText = fullName;
-                    break;
-            }
-            title = Translations.translate("Search") + "; " + searchText + "; " + extraText;
+            this.displayText = displayTextBody.ToString();
+            progress(100, numFoundMatches, chaptListToSearch.Count > i, true);
         }
 
         public override string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize)
@@ -179,5 +208,30 @@ namespace CrossConnect
             return HtmlHeader(htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize)
                 + displayText + "</body></html>";
         }
+
+        public override void GetInfo(int chaptNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title)
+        {
+            base.GetInfo(searchChapter, verseNum, out bookNum, out relChaptNum, out fullName, out title);
+            string extraText = string.Empty;
+            switch (searchTypeIndex)
+            {
+                case 0:
+                    extraText = Translations.translate("Whole bible");
+                    break;
+                case 1:
+                    extraText = Translations.translate("Old Testement");
+                    break;
+                case 2:
+                    extraText = Translations.translate("New Testement");
+                    break;
+                case 3:
+                    extraText = fullName;
+                    break;
+            }
+
+            title = Translations.translate("Search") + "; " + searchText + "; " + extraText;
+        }
+
+        #endregion Methods
     }
 }

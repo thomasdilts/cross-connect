@@ -1,14 +1,6 @@
-﻿using System;
-using System.Net;
-using System.IO;
-using System.Reflection;
-using System.Globalization;
-using System.IO.IsolatedStorage;
-using System.Xml;
-using System.Collections.Generic;
-///
-/// <summary> Distribution License:
-/// JSword is free software; you can redistribute it and/or modify it under
+﻿/// <summary>
+/// Distribution License:
+/// CrossConnect is free software; you can redistribute it and/or modify it under
 /// the terms of the GNU General Public License, version 3 as published by
 /// the Free Software Foundation. This program is distributed in the hope
 /// that it will be useful, but WITHOUT ANY WARRANTY; without even the
@@ -21,43 +13,48 @@ using System.Collections.Generic;
 ///      Free Software Foundation, Inc.
 ///      59 Temple Place - Suite 330
 ///      Boston, MA 02111-1307, USA
-///
-/// Copyright: 2011
-///     The copyright to this program is held by Thomas Dilts
-///  
+/// </summary>
+/// <copyright file="THIS_FILE.cs" company="Thomas Dilts">
+///     Thomas Dilts. All rights reserved.
+/// </copyright>
+/// <author>Thomas Dilts</author>
 namespace SwordBackend
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.IO.IsolatedStorage;
+    using System.Net;
+    using System.Reflection;
+    using System.Xml;
+
     public class BibleNames
     {
-        private string[] shortNames = new string[BibleZtextReader.BOOKS_IN_BIBLE];
-        private string[] fullNames = new string[BibleZtextReader.BOOKS_IN_BIBLE];
-        private bool isShortNamesExisting=true;
+        #region Fields
 
-        public bool existsShortNames
-        {
-            get
-            {
-                return isShortNamesExisting;
-            }
-        }
-        public string[] getAllShortNames()
-        {
-            return shortNames;
-        }
+        private string[] fullNames = new string[BibleZtextReader.BOOKS_IN_BIBLE];
+        private bool isShortNamesExisting = true;
+        private string[] shortNames = new string[BibleZtextReader.BOOKS_IN_BIBLE];
+
+        #endregion Fields
+
+        #region Constructors
+
         public BibleNames(string isoLang2digitCode)
         {
             Assembly assem = Assembly.GetExecutingAssembly();
             string isocode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLower();
             string name = CultureInfo.CurrentCulture.Name.Replace('-', '_');
             Stream stream = null;
-            
+
             if (isocode.Equals(isoLang2digitCode))
             {
-                //here we have the same language as the phone standard langauge
+                // here we have the same language as the phone standard langauge
                 //
-                //Because none of the bibles have a culture code, but bible names have culturecodes, we
-                //will attempt to get the culture code of the phones standard language.
-                //try to get the culture code if it exists
+                // Because none of the bibles have a culture code, but bible names have culturecodes, we
+                // will attempt to get the culture code of the phones standard language.
+                // try to get the culture code if it exists
                 stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + name + ".xml");
             }
 
@@ -111,13 +108,38 @@ namespace SwordBackend
             stream.Close();
             isShortNamesExisting = numberBadShortNames < 10;
         }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public bool existsShortNames
+        {
+            get
+            {
+                return isShortNamesExisting;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        public string[] getAllShortNames()
+        {
+            return shortNames;
+        }
+
         public string getFullName(int bookNum)
         {
             return fullNames[bookNum];
         }
+
         public string getShortName(int bookNum)
         {
             return shortNames[bookNum];
         }
+
+        #endregion Methods
     }
 }

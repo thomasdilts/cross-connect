@@ -1,11 +1,6 @@
-﻿using System;
-using System.Net;
-using System.Runtime.Serialization;
-using System.Collections.Generic;
-
-///
-/// <summary> Distribution License:
-/// JSword is free software; you can redistribute it and/or modify it under
+﻿/// <summary>
+/// Distribution License:
+/// CrossConnect is free software; you can redistribute it and/or modify it under
 /// the terms of the GNU General Public License, version 3 as published by
 /// the Free Software Foundation. This program is distributed in the hope
 /// that it will be useful, but WITHOUT ANY WARRANTY; without even the
@@ -18,29 +13,76 @@ using System.Collections.Generic;
 ///      Free Software Foundation, Inc.
 ///      59 Temple Place - Suite 330
 ///      Boston, MA 02111-1307, USA
-///
-/// Copyright: 2011
-///     The copyright to this program is held by Thomas Dilts
-///  
+/// </summary>
+/// <copyright file="THIS_FILE.cs" company="Thomas Dilts">
+///     Thomas Dilts. All rights reserved.
+/// </copyright>
+/// <author>Thomas Dilts</author>
 namespace SwordBackend
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Runtime.Serialization;
+
+    #region Delegates
+
     public delegate void WindowSourceChanged();
+
+    #endregion Delegates
 
     public interface IBrowserTextSource
     {
-        //string getShortName(int bookNum);
-        //string getFullName(int bookNum);
-        void getInfo(int chaptNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title);
+        #region Properties
+
+        bool existsShortNames
+        {
+            get;
+        }
+
+        bool IsBookmarkable
+        {
+            get;
+        }
+
+        bool IsLocalChangeDuringLink
+        {
+            get;
+        }
+
+        bool IsPageable
+        {
+            get;
+        }
+
+        bool IsSearchable
+        {
+            get;
+        }
+
+        bool IsSynchronizeable
+        {
+            get;
+        }
+
+        #endregion Properties
+
+        #region Methods
+
         string[] getAllShortNames();
-        void ReloadSettingsFile();
-        bool existsShortNames { get; }
-        bool isSynchronizeable { get; }
-        bool isSearchable { get; }
-        bool isPageable { get; }
-        bool isBookmarkable { get; }
-        bool isLocalChangeDuringLink { get; }
+
         string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize);
-        void registerUpdateEvent(WindowSourceChanged sourceChangedMethod, bool isRegister = true);
-        List<string> makeListDisplayText(List<BiblePlaceMarker> listToDisplay);
+
+        // string getShortName(int bookNum);
+        // string getFullName(int bookNum);
+        void GetInfo(int chaptNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title);
+
+        List<string> MakeListDisplayText(List<BiblePlaceMarker> listToDisplay);
+
+        void RegisterUpdateEvent(WindowSourceChanged sourceChangedMethod, bool isRegister = true);
+
+        void ReloadSettingsFile();
+
+        #endregion Methods
     }
 }

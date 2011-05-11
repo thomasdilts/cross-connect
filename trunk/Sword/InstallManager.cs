@@ -1,13 +1,6 @@
-using System;
-using System.Runtime.CompilerServices;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-
-///
-/// <summary> Distribution License:
-/// JSword is free software; you can redistribute it and/or modify it under
+/// <summary>
+/// Distribution License:
+/// CrossConnect is free software; you can redistribute it and/or modify it under
 /// the terms of the GNU General Public License, version 3 as published by
 /// the Free Software Foundation. This program is distributed in the hope
 /// that it will be useful, but WITHOUT ANY WARRANTY; without even the
@@ -20,39 +13,47 @@ using System.IO;
 ///      Free Software Foundation, Inc.
 ///      59 Temple Place - Suite 330
 ///      Boston, MA 02111-1307, USA
-///
-/// Copyright: 2011
-///     The copyright to this program is held by Thomas Dilts
-///  
+/// </summary>
+/// <copyright file="THIS_FILE.cs" company="Thomas Dilts">
+///     Thomas Dilts. All rights reserved.
+/// </copyright>
+/// <author>Thomas Dilts</author>
 namespace SwordBackend
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.IO.IsolatedStorage;
+    using System.Net;
+    using System.Reflection;
+    using System.Runtime.CompilerServices;
+    using System.Text;
+
+    using ICSharpCode.SharpZipLib.GZip;
+    using ICSharpCode.SharpZipLib.Tar;
+    using ICSharpCode.SharpZipLib.Zip;
 
     using javaprops;
-    using System.Reflection;
-    using System.Net;
-    using ICSharpCode.SharpZipLib.Tar;
-    using ICSharpCode.SharpZipLib.GZip;
-    using ICSharpCode.SharpZipLib.Zip;
-    using System.IO.IsolatedStorage;
 
-    //using Ionic.Zlib;
+    /// <summary>
+    /// Main entry into the world of Sword for downloading books
+    /// </summary>
+    public class InstallManager
+    {
+        #region Fields
 
-	///
-	/// <summary> A manager to abstract out the non-view specific book installation tasks.
-	///  </summary>
-	/// <seealso cref= gnu.lgpl.License for license details.<br>
-	///      The copyright to this program is held by it's authors.
-	/// @author Joe Walker [joe at eireneh dot com]
-	/// @author DM Smith [dmsmith555 at yahoo dot com] </seealso>
-	/// 
-	public class InstallManager
-	{
-        private Dictionary<string, WebInstaller> installers=new Dictionary<string, WebInstaller>();
-	///    
-	/// <summary>* Simple ctor </summary>
-	///     
-		public InstallManager()
-		{
+        private Dictionary<string, WebInstaller> installers = new Dictionary<string, WebInstaller>();
+
+        #endregion Fields
+
+        #region Constructors
+
+        ///    
+        /// <summary>* Simple ctor </summary>
+        ///     
+        public InstallManager()
+        {
             JavaProperties sitemap = new JavaProperties("InstallManager.plugin",false);
 
             foreach (var site in sitemap.Values)
@@ -65,234 +66,57 @@ namespace SwordBackend
                 string catalogDirectory = parts[4];
                 installers[name] = new WebInstaller(host, packageDirectory, catalogDirectory);
             }
-		}
+        }
+
+        #endregion Constructors
+
+        #region Properties
+
         public Dictionary<string, WebInstaller> Installers
         {
             get { return installers; }
         }
 
-	}
-    public class WebInstaller
-    {
-        private Dictionary<string, SwordBook> books = new Dictionary<string, SwordBook>();
-        public bool isLoaded
-        {
-            get 
-            {
-                return loaded;
-            }
-        }
-        public WebInstaller(string host, string packageDirectory, string catalogDirectory)
-        {
-            this.host = host;
-            this.packageDirectory = packageDirectory;
-            this.catalogDirectory = catalogDirectory;
-        }
-        private WebClient client = new WebClient();
-        public event DownloadProgressChangedEventHandler progress_update;
-        public event OpenReadCompletedEventHandler progress_completed;
-        private string download(Uri source)
-        {
-            try
-            {
-                client = new WebClient();
-                client.Encoding = Encoding.BigEndianUnicode;
-                client.DownloadProgressChanged+=new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
-                client.OpenReadCompleted+=new OpenReadCompletedEventHandler(client_OpenReadCompleted);
-                Logger.Debug("download start");
-                //client.DownloadStringAsync(source);
-                client.OpenReadAsync(source);
-                Logger.Debug("DownloadStringAsync returned");
-                return null;
-            }
-            catch (Exception e)
-            {
-                Logger.Fail(e.ToString());
-                return e.Message;
-            };
-        }
-        private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            if (progress_update != null)
-            {
-                progress_update(sender,e);
-            }
-        }
-        private void client_OpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
-        {
-            GZipInputStream gzip = null;
-            try
-            {
-                gzip = new GZipInputStream(e.Result);
-            }
-            catch(Exception)
-            {
-                if (progress_completed != null)
-                {
-                    progress_completed(e.Error.Message, e);
-                } 
-                loaded = false;
-                return;
-            }
-            TarInputStream tin = new TarInputStream(gzip);
-            entries.Clear();
-            while (true)
-            {
-                TarEntry entry = tin.GetNextEntry();
-                if (entry == null)
-                {
-                    break;
-                }
-
-                string @internal = entry.Name;
-                if (!entry.IsDirectory)
-                {
-                    try
-                    {
-                        int size = (int)entry.Size;
-
-                        // Every now and then an empty entry sneaks in
-                        if (size == 0)
-                        {
-                            Logger.Fail("Empty entry: " + @internal);
-                            continue;
-                        }
-
-                        byte[] buffer = new byte[size];
-                        MemoryStream ms = new MemoryStream(buffer);
-                        ms.Position = 0;
-                        tin.CopyEntryContents(ms);
-                        if (ms.Position != size)
-                        {
-                            // This should not happen, but if it does then skip
-                            // it.
-                            Logger.Fail("Did not read all that was expected " + @internal);
-                            continue;
-                        }
-
-                        if (@internal.EndsWith(BibleZtextReader.EXTENSION_CONF))
-                        {
-                            @internal = @internal.Substring(0, @internal.Length - 5);
-                        }
-                        else
-                        {
-                            Logger.Fail("Not a SWORD config file: " + @internal);
-                            continue;
-                        }
-
-                        if (@internal.StartsWith(BibleZtextReader.DIR_CONF + '/'))
-                        {
-                            @internal = @internal.Substring(7);
-                        }
-
-                        
-                        //sbmd.Driver = fake;
-                        SwordBook book = new SwordBook(buffer, @internal);
-                        entries.Add(book.Name, book);
-                    }
-                    catch (Exception exp)
-                    {
-                        Logger.Fail("Failed to load config for entry: " + @internal);
-                        loaded = true;
-                        if (progress_completed != null)
-                        {
-                            progress_completed(exp.Message, e);
-                        }
-                        return;
-                    }
-                }
-            }
-
-            loaded = true;
-            if (progress_completed != null)
-            {
-                progress_completed(null, e);
-            }
-        }
-        public string reloadBookList()
-        {
-            books.Clear();
-            Uri uri = new Uri("http://" + host + "/" + catalogDirectory + "/" + FILE_LIST_GZ);
-            string errMsg=download(uri);
-            if(errMsg!=null)
-            {
-                loaded = false;
-                return errMsg;
-            }
-            loaded = true;
-            return null;
-        }
-
-
-        ///    
-        /// <summary>* A map of the books in this download area </summary>
-        ///     
-        public Dictionary<string, SwordBook> entries = new Dictionary<string, SwordBook>();
-
-        ///    
-        /// <summary>* The remote hostname. </summary>
-        ///     
-        public string host;
-
-        ///    
-        /// <summary>* The remote proxy hostname. </summary>
-        ///     
-        protected internal string proxyHost;
-
-        ///    
-        /// <summary>* The remote proxy port. </summary>
-        ///     
-        protected internal int? proxyPort;
-
-        ///    
-        /// <summary>* The directory containing zipped books on the <code>host</code>. </summary>
-        ///     
-        protected internal string packageDirectory = "";
-
-        ///    
-        /// <summary>* The directory containing the catalog of all books on the
-        /// <code>host</code>. </summary>
-        ///     
-        public string catalogDirectory = "";
-
-        ///    
-        /// <summary>* The directory containing the catalog of all books on the
-        /// <code>host</code>. </summary>
-        ///     
-        protected internal string indexDirectory = "";
-
-        ///    
-        /// <summary>* Do we need to reload the index file </summary>
-        ///     
-        protected internal bool loaded;
-
-        ///    
-        /// <summary>* The sword index file </summary>
-        ///     
-        protected internal const string FILE_LIST_GZ = "mods.d.tar.gz";
-
-        ///    
-        /// <summary>* The suffix of zip books on this server </summary>
-        ///     
-        protected internal const string ZIP_SUFFIX = ".zip";
-
-        ///    
-        /// <summary>* The relative path of the dir holding the search index files </summary>
-        ///     
-        protected internal const string SEARCH_DIR = "search/jsword/L1";
-
-        ///    
-        /// <summary>* When we cache a download index </summary>
-        ///     
-        protected internal const string DOWNLOAD_PREFIX = "download-";
-
+        #endregion Properties
     }
+
+    public class Logger
+    {
+        #region Methods
+
+        public static void Debug(string message)
+        {
+            System.Diagnostics.Debug.WriteLine(DateTime.Now + " " + message);
+        }
+
+        public static void Fail(string message)
+        {
+            System.Diagnostics.Debug.WriteLine(DateTime.Now + " " + message);
+        }
+
+        public static void Warn(string message)
+        {
+            System.Diagnostics.Debug.WriteLine(DateTime.Now + " " + message);
+        }
+
+        #endregion Methods
+    }
+
     public class SwordBook
     {
-        private WebClient client = new WebClient();
-        public event DownloadProgressChangedEventHandler progress_update;
-        public event OpenReadCompletedEventHandler progress_completed;
+        #region Fields
+
+        public const string ZIP_SUFFIX = ".zip";
+
+        public bool isLoaded = false;
         public SwordBookMetaData sbmd = null;
+
+        private WebClient client = new WebClient();
+
+        #endregion Fields
+
+        #region Constructors
+
         public SwordBook(string internalName)
         {
             isLoaded = false;
@@ -309,22 +133,38 @@ namespace SwordBackend
             catch (Exception)
             {
             }
-            
         }
+
         public SwordBook(byte[] buffer, string bookName)
         {
             sbmd = new SwordBookMetaData(buffer, bookName);
             isLoaded = true;
         }
-        public bool isLoaded = false;
+
+        #endregion Constructors
+
+        #region Events
+
+        public event OpenReadCompletedEventHandler progress_completed;
+
+        public event DownloadProgressChangedEventHandler progress_update;
+
+        #endregion Events
+
+        #region Properties
+
         public string Name
         {
-            get 
+            get
             {
                 return sbmd.Name;
             }
         }
-        public const string ZIP_SUFFIX = ".zip";
+
+        #endregion Properties
+
+        #region Methods
+
         public string downloadBookNow(WebInstaller iManager)
         {
             try
@@ -338,7 +178,7 @@ namespace SwordBackend
                 client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
                 client.OpenReadCompleted += new OpenReadCompletedEventHandler(client_OpenReadCompleted);
                 Logger.Debug("download start");
-                //client.DownloadStringAsync(source);
+                // client.DownloadStringAsync(source);
                 client.OpenReadAsync(source);
                 Logger.Debug("DownloadStringAsync returned");
                 return null;
@@ -349,6 +189,26 @@ namespace SwordBackend
                 return e.Message;
             };
         }
+
+        public void RemoveBible()
+        {
+            IsolatedStorageFile root = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication();
+            string modFile=BibleZtextReader.DIR_CONF + '/' + sbmd.internalName.ToLower() + BibleZtextReader.EXTENSION_CONF;
+            string bookPath = sbmd.getCetProperty(ConfigEntryType.DATA_PATH).ToString().Substring(2);
+            string[] filesToDelete=new string[]{modFile,bookPath +"ot.bzs",bookPath +"ot.bzv",bookPath +"ot.bzz",bookPath +"nt.bzs",bookPath +"nt.bzv",bookPath +"nt.bzz" };
+            foreach(string file in filesToDelete)
+            {
+                if (root.FileExists(file))
+                {
+                    root.DeleteFile(file);
+                }
+            }
+            if (root.DirectoryExists(bookPath))
+            {
+                root.DeleteDirectory(bookPath.Substring(0,bookPath.Length-1));
+            }
+        }
+
         private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             if (progress_update != null)
@@ -356,6 +216,7 @@ namespace SwordBackend
                 progress_update(sender,e);
             }
         }
+
         private void client_OpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
         {
             try
@@ -412,24 +273,7 @@ namespace SwordBackend
                 }
             }
         }
-        public void RemoveBible()
-        { 
-            IsolatedStorageFile root = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication();
-            string modFile=BibleZtextReader.DIR_CONF + '/' + sbmd.internalName.ToLower() + BibleZtextReader.EXTENSION_CONF;
-            string bookPath = sbmd.getCetProperty(ConfigEntryType.DATA_PATH).ToString().Substring(2);
-            string[] filesToDelete=new string[]{modFile,bookPath +"ot.bzs",bookPath +"ot.bzv",bookPath +"ot.bzz",bookPath +"nt.bzs",bookPath +"nt.bzv",bookPath +"nt.bzz" };
-            foreach(string file in filesToDelete)
-            {
-                if (root.FileExists(file))
-                {
-                    root.DeleteFile(file);
-                }
-            }
-            if (root.DirectoryExists(bookPath))
-            {
-                root.DeleteDirectory(bookPath.Substring(0,bookPath.Length-1));
-            }
-        }
+
         /// <summary>
         /// Create all the directories necesary to make the given path valid.
         /// </summary>
@@ -455,22 +299,248 @@ namespace SwordBackend
                 }
             }
         }
+
+        #endregion Methods
     }
 
-    public class Logger
+    public class WebInstaller
     {
-        public static void Warn(string message)
-        {
-            System.Diagnostics.Debug.WriteLine(DateTime.Now + " " + message);
-        }
-        public static void Fail(string message)
-        {
-            System.Diagnostics.Debug.WriteLine(DateTime.Now + " " + message);
-        }
-        public static void Debug(string message)
-        {
-            System.Diagnostics.Debug.WriteLine(DateTime.Now + " " + message);
-        }
-    }
+        #region Fields
 
+        ///    
+        /// <summary>* The directory containing the catalog of all books on the
+        /// <code>host</code>. </summary>
+        ///     
+        public string catalogDirectory = string.Empty;
+
+        ///    
+        /// <summary>* A map of the books in this download area </summary>
+        ///     
+        public Dictionary<string, SwordBook> entries = new Dictionary<string, SwordBook>();
+
+        ///    
+        /// <summary>* The remote hostname. </summary>
+        ///     
+        public string host;
+
+        ///    
+        /// <summary>* When we cache a download index </summary>
+        ///     
+        protected internal const string DOWNLOAD_PREFIX = "download-";
+
+        ///    
+        /// <summary>* The sword index file </summary>
+        ///     
+        protected internal const string FILE_LIST_GZ = "mods.d.tar.gz";
+
+        ///    
+        /// <summary>* The relative path of the dir holding the search index files </summary>
+        ///     
+        protected internal const string SEARCH_DIR = "search/jsword/L1";
+
+        ///    
+        /// <summary>* The suffix of zip books on this server </summary>
+        ///     
+        protected internal const string ZIP_SUFFIX = ".zip";
+
+        ///    
+        /// <summary>* The directory containing the catalog of all books on the
+        /// <code>host</code>. </summary>
+        ///     
+        protected internal string indexDirectory = string.Empty;
+
+        ///    
+        /// <summary>* Do we need to reload the index file </summary>
+        ///     
+        protected internal bool loaded;
+
+        ///    
+        /// <summary>* The directory containing zipped books on the <code>host</code>. </summary>
+        ///     
+        protected internal string packageDirectory = string.Empty;
+
+        ///    
+        /// <summary>* The remote proxy hostname. </summary>
+        ///     
+        protected internal string proxyHost;
+
+        ///    
+        /// <summary>* The remote proxy port. </summary>
+        ///     
+        protected internal int? proxyPort;
+
+        private Dictionary<string, SwordBook> books = new Dictionary<string, SwordBook>();
+        private WebClient client = new WebClient();
+
+        #endregion Fields
+
+        #region Constructors
+
+        public WebInstaller(string host, string packageDirectory, string catalogDirectory)
+        {
+            this.host = host;
+            this.packageDirectory = packageDirectory;
+            this.catalogDirectory = catalogDirectory;
+        }
+
+        #endregion Constructors
+
+        #region Events
+
+        public event OpenReadCompletedEventHandler progress_completed;
+
+        public event DownloadProgressChangedEventHandler progress_update;
+
+        #endregion Events
+
+        #region Properties
+
+        public bool isLoaded
+        {
+            get
+            {
+                return loaded;
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        public string reloadBookList()
+        {
+            books.Clear();
+            Uri uri = new Uri("http://" + host + "/" + catalogDirectory + "/" + FILE_LIST_GZ);
+            string errMsg=download(uri);
+            if(errMsg!=null)
+            {
+                loaded = false;
+                return errMsg;
+            }
+            loaded = true;
+            return null;
+        }
+
+        private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            if (progress_update != null)
+            {
+                progress_update(sender,e);
+            }
+        }
+
+        private void client_OpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
+        {
+            GZipInputStream gzip = null;
+            try
+            {
+                gzip = new GZipInputStream(e.Result);
+            }
+            catch(Exception)
+            {
+                if (progress_completed != null)
+                {
+                    progress_completed(e.Error.Message, e);
+                }
+                loaded = false;
+                return;
+            }
+            TarInputStream tin = new TarInputStream(gzip);
+            entries.Clear();
+            while (true)
+            {
+                TarEntry entry = tin.GetNextEntry();
+                if (entry == null)
+                {
+                    break;
+                }
+
+                string @internal = entry.Name;
+                if (!entry.IsDirectory)
+                {
+                    try
+                    {
+                        int size = (int)entry.Size;
+
+                        // Every now and then an empty entry sneaks in
+                        if (size == 0)
+                        {
+                            Logger.Fail("Empty entry: " + @internal);
+                            continue;
+                        }
+
+                        byte[] buffer = new byte[size];
+                        MemoryStream ms = new MemoryStream(buffer);
+                        ms.Position = 0;
+                        tin.CopyEntryContents(ms);
+                        if (ms.Position != size)
+                        {
+                            // This should not happen, but if it does then skip
+                            // it.
+                            Logger.Fail("Did not read all that was expected " + @internal);
+                            continue;
+                        }
+
+                        if (@internal.EndsWith(BibleZtextReader.EXTENSION_CONF))
+                        {
+                            @internal = @internal.Substring(0, @internal.Length - 5);
+                        }
+                        else
+                        {
+                            Logger.Fail("Not a SWORD config file: " + @internal);
+                            continue;
+                        }
+
+                        if (@internal.StartsWith(BibleZtextReader.DIR_CONF + '/'))
+                        {
+                            @internal = @internal.Substring(7);
+                        }
+
+                        // sbmd.Driver = fake;
+                        SwordBook book = new SwordBook(buffer, @internal);
+                        entries.Add(book.Name, book);
+                    }
+                    catch (Exception exp)
+                    {
+                        Logger.Fail("Failed to load config for entry: " + @internal);
+                        loaded = true;
+                        if (progress_completed != null)
+                        {
+                            progress_completed(exp.Message, e);
+                        }
+                        return;
+                    }
+                }
+            }
+
+            loaded = true;
+            if (progress_completed != null)
+            {
+                progress_completed(null, e);
+            }
+        }
+
+        private string download(Uri source)
+        {
+            try
+            {
+                client = new WebClient();
+                client.Encoding = Encoding.BigEndianUnicode;
+                client.DownloadProgressChanged+=new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
+                client.OpenReadCompleted+=new OpenReadCompletedEventHandler(client_OpenReadCompleted);
+                Logger.Debug("download start");
+                // client.DownloadStringAsync(source);
+                client.OpenReadAsync(source);
+                Logger.Debug("DownloadStringAsync returned");
+                return null;
+            }
+            catch (Exception e)
+            {
+                Logger.Fail(e.ToString());
+                return e.Message;
+            };
+        }
+
+        #endregion Methods
+    }
 }

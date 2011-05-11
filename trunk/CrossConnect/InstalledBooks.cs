@@ -1,12 +1,6 @@
-﻿using System;
-using System.Net;
-
-using System.IO.IsolatedStorage;
-using System.Collections.Generic;
-using SwordBackend;
-///
-/// <summary> Distribution License:
-/// JSword is free software; you can redistribute it and/or modify it under
+﻿/// <summary>
+/// Distribution License:
+/// CrossConnect is free software; you can redistribute it and/or modify it under
 /// the terms of the GNU General Public License, version 3 as published by
 /// the Free Software Foundation. This program is distributed in the hope
 /// that it will be useful, but WITHOUT ANY WARRANTY; without even the
@@ -19,18 +13,33 @@ using SwordBackend;
 ///      Free Software Foundation, Inc.
 ///      59 Temple Place - Suite 330
 ///      Boston, MA 02111-1307, USA
-///
-/// Copyright: 2011
-///     The copyright to this program is held by Thomas Dilts
-///  
+/// </summary>
+/// <copyright file="THIS_FILE.cs" company="Thomas Dilts">
+///     Thomas Dilts. All rights reserved.
+/// </copyright>
+/// <author>Thomas Dilts</author>
 namespace CrossConnect
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO.IsolatedStorage;
+    using System.Net;
+
+    using SwordBackend;
+
     public class InstalledBibles
     {
+        #region Fields
+
         public Dictionary<string, SwordBook> installedBibles = new Dictionary<string, SwordBook>();
+
+        #endregion Fields
+
+        #region Constructors
+
         public InstalledBibles()
         {
-            string sBooks = "";
+            string sBooks = string.Empty;
             if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("installedBibles", out sBooks))
             {
                 string[] books = sBooks.Split("¤".ToCharArray());
@@ -39,8 +48,12 @@ namespace CrossConnect
                     AddBook(book,false);
                 }
             }
-
         }
+
+        #endregion Constructors
+
+        #region Methods
+
         public void AddBook(string modPath, bool doSave = true)
         {
             installedBibles[modPath] = new SwordBook(modPath);
@@ -54,9 +67,10 @@ namespace CrossConnect
                 IsolatedStorageSettings.ApplicationSettings.Save();
             }
         }
+
         public void save()
         {
-            string allBooks = "";
+            string allBooks = string.Empty;
             foreach(var book in installedBibles)
             {
                 if(allBooks.Length>0)
@@ -67,5 +81,7 @@ namespace CrossConnect
             }
             IsolatedStorageSettings.ApplicationSettings["installedBibles"]= allBooks;
         }
+
+        #endregion Methods
     }
 }
