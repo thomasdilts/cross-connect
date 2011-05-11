@@ -836,7 +836,7 @@ namespace SwordBackend
                 string restartText = "<a name=\"" + id
                     + "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.Notify('" + id
                     + "'); event.returnValue=false; return false;\" > ";
-                string startText = " <sup>" + (i + 1) + "</sup>" + restartText;
+                string startText = " <sup style=\"font-size: .83em\">" + (i + 1) + "</sup>" + restartText;
                 string verseTxt = parseOsisText(
                     startText,
                     restartText,

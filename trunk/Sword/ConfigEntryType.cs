@@ -67,6 +67,18 @@ namespace SwordBackend
         ///     <summary> * Contains rtf that describes the book. </summary>
         ///     
         public static readonly ConfigEntryType_ABOUT ABOUT = new ConfigEntryType_ABOUT();
+        public static readonly string[] A_BLOCK_TYPE_PICKS = new string[] { "BOOK", "CHAPTER", "VERSE" };
+        public static readonly string[] A_COMPRESS_TYPE_PICKS = new string[] { "LZSS", "ZIP" };
+        public static readonly ConfigEntryType_DATA_PATH A_DATA_PATH = new ConfigEntryType_DATA_PATH();
+        public static readonly string[] A_DIRECTION_PICKS = new string[] { DIRECTION_LTOR, DIRECTION_RTOL, DIRECTION_BIDI };
+        public static readonly string[] A_ENCODING_PICKS = new string[] { "Latin-1", "UTF-8" };
+        public static readonly string[] A_FEATURE_PICKS = new string[] { "StrongsNumbers", "GreekDef", "HebrewDef", "GreekParse", "HebrewParse", "DailyDevotion", "Glossary", "Images" };
+        public static readonly string[] A_GLOBAL_OPTION_FILTER_PICKS = new string[] { "GBFStrongs", "GBFFootnotes", "GBFScripref", "GBFMorph", "GBFHeadings", "GBFRedLetterWords", "ThMLStrongs", "ThMLFootnotes", "ThMLScripref", "ThMLMorph", "ThMLHeadings", "ThMLVariants", "ThMLLemma", "UTF8Cantillation", "UTF8GreekAccents", "UTF8HebrewPoints", "OSISStrongs", "OSISFootnotes", "OSISScripref", "OSISMorph", "OSISHeadings", "OSISRedLetterWords", "OSISLemma", "OSISRuby" };
+        public static readonly string[] A_KEY_TYPE_PICKS = new string[] { "TreeKey", "VerseKey" };
+        public static readonly string[] A_LICENSE_PICKS = new string[] { "Public Domain", "Copyrighted", "Copyrighted; Free non-commercial distribution", "Copyrighted; Permission to distribute granted to CrossWire", "Copyrighted; Freely distributable", "Copyrighted; Permission granted to distribute non-commercially in Sword format", "GFDL", "GPL", "Creative Commons: by-nc-nd", "Creative Commons: by-nc-sa", "Creative Commons: by-nc", "Creative Commons: by-nd", "Creative Commons: by-sa", "Creative Commons: by" };
+        public static readonly string[] A_MOD_DRV_PICKS = new string[] { "RawText", "zText", "RawCom", "RawCom4", "zCom", "HREFCom", "RawFiles", "RawLD", "RawLD4", "zLD", "RawGenBook" };
+        public static readonly string[] A_SOURCE_TYPE_PICKS = new string[] { "Plaintext", "GBF", "ThML", "OSIS", "TEI", "OSIS", "TEI" };
+        public static readonly string[] A_VERSIFICATION_PICKS = new string[] { "KJV", "KJVA", "NRSV", "NRSVA", "Leningrad", "MT" };
 
         ///    
         ///     <summary> * single value integer, unknown use, some indications that we ought to be
@@ -77,7 +89,9 @@ namespace SwordBackend
         ///    
         /// <summary>* The level at which compression is applied, BOOK, CHAPTER, or VERSE </summary>
         ///     
-        public static readonly ConfigEntryType BLOCK_TYPE = new ConfigEntryPickType("BlockType", BLOCK_TYPE_PICKS, BLOCK_TYPE_PICKS[0]);
+        public static readonly ConfigEntryType BLOCK_TYPE = new ConfigEntryPickType("BlockType", A_BLOCK_TYPE_PICKS, A_BLOCK_TYPE_PICKS[0]);
+        public static readonly string[] BOOLEAN_PICKS = new string[] { "true", "false" };
+        public static readonly string[] CATEGORY_PICKS = new string[] { "Daily Devotional", "Glossaries", "Cults / Unorthodox / Questionable Material", "Essays", "Maps", "Images", "Biblical Texts", "Commentaries", "Lexicons / Dictionaries", "Generic Books" };
 
         ///    
         /// <summary>* If this exists in the conf, then the book is encrypted. The value is used
@@ -89,7 +103,7 @@ namespace SwordBackend
         /// <summary>* The type of compression in use. JSword does not support LZSS. While it is
         /// the default, it is not used. At least so far. </summary>
         ///     
-        public static readonly ConfigEntryType COMPRESS_TYPE = new ConfigEntryPickType("CompressType", COMPRESS_TYPE_PICKS, COMPRESS_TYPE_PICKS[0]);
+        public static readonly ConfigEntryType COMPRESS_TYPE = new ConfigEntryPickType("CompressType", A_COMPRESS_TYPE_PICKS, A_COMPRESS_TYPE_PICKS[0]);
 
         ///    
         ///     <summary> * Informational copyright notice. </summary>
@@ -131,7 +145,6 @@ namespace SwordBackend
         ///     <summary> * Copyright info. Informational only. </summary>
         ///     
         public static readonly ConfigEntryType_COPYRIGHT_NOTES COPYRIGHT_NOTES = new ConfigEntryType_COPYRIGHT_NOTES();
-        public static readonly ConfigEntryType_DATA_PATH DATA_PATH = new ConfigEntryType_DATA_PATH();
 
         ///    
         /// <summary>* The full name of this book </summary>
@@ -143,13 +156,13 @@ namespace SwordBackend
         /// RtoL. Most are 'LtoR'. Some are 'bidi', bi-directional. E.g.
         /// hebrew-english glossary. </summary>
         ///     
-        public static readonly ConfigEntryType DIRECTION = new ConfigEntryPickType("Direction", DIRECTION_PICKS, DIRECTION_PICKS[0]);
+        public static readonly ConfigEntryType DIRECTION = new ConfigEntryPickType("Direction", A_DIRECTION_PICKS, A_DIRECTION_PICKS[0]);
         public static readonly ConfigEntryType_DISPLAY_LEVEL DISPLAY_LEVEL = new ConfigEntryType_DISPLAY_LEVEL();
 
         ///    
         /// <summary>* Copyright info. Informational only. </summary>
         ///     
-        public static readonly ConfigEntryType DISTRIBUTION_LICENSE = new ConfigEntryPickType("DistributionLicense", LICENSE_PICKS, LICENSE_PICKS[0]);
+        public static readonly ConfigEntryType DISTRIBUTION_LICENSE = new ConfigEntryPickType("DistributionLicense", A_LICENSE_PICKS, A_LICENSE_PICKS[0]);
 
         ///    
         ///     <summary> * Copyright info. Informational only. </summary>
@@ -165,7 +178,7 @@ namespace SwordBackend
         ///    
         /// <summary>* The character encoding. Only Latin-1 and UTF-8 are supported. </summary>
         ///     
-        public static readonly ConfigEntryType ENCODING = new ConfigEntryPickType("Encoding", ENCODING_PICKS, ENCODING_PICKS[0]);
+        public static readonly ConfigEntryType ENCODING = new ConfigEntryPickType("Encoding", A_ENCODING_PICKS, A_ENCODING_PICKS[0]);
 
         ///    
         ///     <summary> * A Feature describes a characteristic of the Book. </summary>
@@ -219,7 +232,7 @@ namespace SwordBackend
         ///    
         /// <summary>* The kind of key that a Generic Book uses. </summary>
         ///     
-        public static readonly ConfigEntryType KEY_TYPE = new ConfigEntryPickType("KeyType", KEY_TYPE_PICKS, KEY_TYPE_PICKS[0]);
+        public static readonly ConfigEntryType KEY_TYPE = new ConfigEntryPickType("KeyType", A_KEY_TYPE_PICKS, A_KEY_TYPE_PICKS[0]);
 
         ///    
         ///     <summary> * single value string, defaults to en, the language of the book </summary>
@@ -252,7 +265,7 @@ namespace SwordBackend
         ///    
         /// <summary>* This indicates how the book was stored. </summary>
         ///     
-        public static readonly ConfigEntryType MOD_DRV = new ConfigEntryPickType("ModDrv", MOD_DRV_PICKS);
+        public static readonly ConfigEntryType MOD_DRV = new ConfigEntryPickType("ModDrv", A_MOD_DRV_PICKS);
 
         ///    
         ///     <summary> * A list of prior "initials" for the current book.
@@ -286,7 +299,7 @@ namespace SwordBackend
         ///    
         /// <summary>* This indicates the kind of markup used for the book. </summary>
         ///     
-        public static readonly ConfigEntryType SOURCE_TYPE = new ConfigEntryPickType("SourceType", SOURCE_TYPE_PICKS, SOURCE_TYPE_PICKS[0]);
+        public static readonly ConfigEntryType SOURCE_TYPE = new ConfigEntryPickType("SourceType", A_SOURCE_TYPE_PICKS, A_SOURCE_TYPE_PICKS[0]);
 
         ///    
         ///     <summary> * The date that this version of the book was last updated. Informational
@@ -302,32 +315,14 @@ namespace SwordBackend
         ///    
         /// <summary>* This indicates the versification of the book, with KJV being the default. </summary>
         ///     
-        public static readonly ConfigEntryType VERSIFICATION = new ConfigEntryPickType("Versification", VERSIFICATION_PICKS);
+        public static readonly ConfigEntryType VERSIFICATION = new ConfigEntryPickType("Versification", A_VERSIFICATION_PICKS);
 
         ///    
         ///     <summary> * An informational string indicating the current version of the book. </summary>
         ///     
         public static readonly ConfigEntryType_VERSION VERSION = new ConfigEntryType_VERSION();
 
-        ///    
-        /// <summary>* Serialization ID </summary>
-        ///     
-        private const long serialVersionUID = 3258125873411273014L;
-
-        private static readonly string[] BLOCK_TYPE_PICKS = new string[] { "BOOK", "CHAPTER", "VERSE" };
-        private static readonly string[] BOOLEAN_PICKS = new string[] { "true", "false" };
-        private static readonly string[] CATEGORY_PICKS = new string[] { "Daily Devotional", "Glossaries", "Cults / Unorthodox / Questionable Material", "Essays", "Maps", "Images", "Biblical Texts", "Commentaries", "Lexicons / Dictionaries", "Generic Books" };
-        private static readonly string[] COMPRESS_TYPE_PICKS = new string[] { "LZSS", "ZIP" };
-        private static readonly string[] DIRECTION_PICKS = new string[] { DIRECTION_LTOR, DIRECTION_RTOL, DIRECTION_BIDI };
-        private static readonly string[] ENCODING_PICKS = new string[] { "Latin-1", "UTF-8" };
-        private static readonly string[] FEATURE_PICKS = new string[] { "StrongsNumbers", "GreekDef", "HebrewDef", "GreekParse", "HebrewParse", "DailyDevotion", "Glossary", "Images" };
-        private static readonly string[] GLOBAL_OPTION_FILTER_PICKS = new string[] { "GBFStrongs", "GBFFootnotes", "GBFScripref", "GBFMorph", "GBFHeadings", "GBFRedLetterWords", "ThMLStrongs", "ThMLFootnotes", "ThMLScripref", "ThMLMorph", "ThMLHeadings", "ThMLVariants", "ThMLLemma", "UTF8Cantillation", "UTF8GreekAccents", "UTF8HebrewPoints", "OSISStrongs", "OSISFootnotes", "OSISScripref", "OSISMorph", "OSISHeadings", "OSISRedLetterWords", "OSISLemma", "OSISRuby" };
-        private static readonly string[] KEY_TYPE_PICKS = new string[] { "TreeKey", "VerseKey" };
-        private static readonly string[] LICENSE_PICKS = new string[] { "Public Domain", "Copyrighted", "Copyrighted; Free non-commercial distribution", "Copyrighted; Permission to distribute granted to CrossWire", "Copyrighted; Freely distributable", "Copyrighted; Permission granted to distribute non-commercially in Sword format", "GFDL", "GPL", "Creative Commons: by-nc-nd", "Creative Commons: by-nc-sa", "Creative Commons: by-nc", "Creative Commons: by-nd", "Creative Commons: by-sa", "Creative Commons: by" };
-        private static readonly string[] MOD_DRV_PICKS = new string[] { "RawText", "zText", "RawCom", "RawCom4", "zCom", "HREFCom", "RawFiles", "RawLD", "RawLD4", "zLD", "RawGenBook" };
-        private static readonly string[] SOURCE_TYPE_PICKS = new string[] { "Plaintext", "GBF", "ThML", "OSIS", "TEI", "OSIS", "TEI" };
-        private static readonly ConfigEntryType[] VALUES = { INITIALS, DATA_PATH, DESCRIPTION, MOD_DRV, COMPRESS_TYPE, BLOCK_TYPE, BLOCK_COUNT, KEY_TYPE, CIPHER_KEY, VERSIFICATION, GLOBAL_OPTION_FILTER, DIRECTION, SOURCE_TYPE, ENCODING, DISPLAY_LEVEL, FONT, OSIS_Q_TO_TICK, FEATURE, GLOSSARY_FROM, GLOSSARY_TO, ABBREVIATION, ABOUT, VERSION, HISTORY, MINIMUM_VERSION, LCSH, LANG, INSTALL_SIZE, SWORD_VERSION_DATE, OBSOLETES, COPYRIGHT, COPYRIGHT_HOLDER, COPYRIGHT_DATE, COPYRIGHT_NOTES, COPYRIGHT_CONTACT_NAME, COPYRIGHT_CONTACT_NOTES, COPYRIGHT_CONTACT_ADDRESS, COPYRIGHT_CONTACT_EMAIL, SHORT_PROMO, SHORT_COPYRIGHT, DISTRIBUTION_LICENSE, DISTRIBUTION_NOTES, TEXT_SOURCE, DISTRIBUTION_SOURCE, OSIS_VERSION, LIBRARY_URL, LOCATION_URL };
-        private static readonly string[] VERSIFICATION_PICKS = new string[] { "KJV", "KJVA", "NRSV", "NRSVA", "Leningrad", "MT" };
+        private static readonly ConfigEntryType[] VALUES = { INITIALS, A_DATA_PATH, DESCRIPTION, MOD_DRV, COMPRESS_TYPE, BLOCK_TYPE, BLOCK_COUNT, KEY_TYPE, CIPHER_KEY, VERSIFICATION, GLOBAL_OPTION_FILTER, DIRECTION, SOURCE_TYPE, ENCODING, DISPLAY_LEVEL, FONT, OSIS_Q_TO_TICK, FEATURE, GLOSSARY_FROM, GLOSSARY_TO, ABBREVIATION, ABOUT, VERSION, HISTORY, MINIMUM_VERSION, LCSH, LANG, INSTALL_SIZE, SWORD_VERSION_DATE, OBSOLETES, COPYRIGHT, COPYRIGHT_HOLDER, COPYRIGHT_DATE, COPYRIGHT_NOTES, COPYRIGHT_CONTACT_NAME, COPYRIGHT_CONTACT_NOTES, COPYRIGHT_CONTACT_ADDRESS, COPYRIGHT_CONTACT_EMAIL, SHORT_PROMO, SHORT_COPYRIGHT, DISTRIBUTION_LICENSE, DISTRIBUTION_NOTES, TEXT_SOURCE, DISTRIBUTION_SOURCE, OSIS_VERSION, LIBRARY_URL, LOCATION_URL };
 
         private readonly int obj = nextObj++;
 
@@ -1136,7 +1131,7 @@ namespace SwordBackend
             #region Constructors
 
             public ConfigEntryType_FEATURE()
-                : base("Feature", FEATURE_PICKS)
+                : base("Feature", A_FEATURE_PICKS)
             {
             }
 
@@ -1166,7 +1161,7 @@ namespace SwordBackend
             #region Constructors
 
             public ConfigEntryType_GLOBAL_OPTION_FILTER()
-                : base("GlobalOptionFilter", GLOBAL_OPTION_FILTER_PICKS)
+                : base("GlobalOptionFilter", A_GLOBAL_OPTION_FILTER_PICKS)
             {
             }
 

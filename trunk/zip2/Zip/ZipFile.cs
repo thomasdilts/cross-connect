@@ -948,6 +948,7 @@ namespace ICSharpCode.SharpZipLib.Zip
         string name_;
         ZipString newComment_;
         long offsetOfFirstEntry;
+
         // string rawPassword_;
         long updateCount_; // Count is managed manually as updates_ can contain nulls!
         IDynamicDataSource updateDataSource_;

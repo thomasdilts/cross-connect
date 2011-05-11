@@ -92,7 +92,7 @@ namespace SwordBackend
          * present in conf ConfigEntryType.DATA_PATH, ConfigEntryType.MOD_DRV, };
          */
         private static readonly ConfigEntryType[] LANG_INFO = { ConfigEntryType.LANG, ConfigEntryType.GLOSSARY_FROM, ConfigEntryType.GLOSSARY_TO };
-        private static readonly ConfigEntryType[] SYSTEM_INFO = { ConfigEntryType.DATA_PATH, ConfigEntryType.MOD_DRV, ConfigEntryType.SOURCE_TYPE, ConfigEntryType.BLOCK_TYPE, ConfigEntryType.BLOCK_COUNT, ConfigEntryType.COMPRESS_TYPE, ConfigEntryType.ENCODING, ConfigEntryType.MINIMUM_VERSION, ConfigEntryType.OSIS_VERSION, ConfigEntryType.OSIS_Q_TO_TICK, ConfigEntryType.DIRECTION, ConfigEntryType.KEY_TYPE, ConfigEntryType.DISPLAY_LEVEL };
+        private static readonly ConfigEntryType[] SYSTEM_INFO = { ConfigEntryType.A_DATA_PATH, ConfigEntryType.MOD_DRV, ConfigEntryType.SOURCE_TYPE, ConfigEntryType.BLOCK_TYPE, ConfigEntryType.BLOCK_COUNT, ConfigEntryType.COMPRESS_TYPE, ConfigEntryType.ENCODING, ConfigEntryType.MINIMUM_VERSION, ConfigEntryType.OSIS_VERSION, ConfigEntryType.OSIS_Q_TO_TICK, ConfigEntryType.DIRECTION, ConfigEntryType.KEY_TYPE, ConfigEntryType.DISPLAY_LEVEL };
 
         ///    
         /// <summary>* The original name of this config file from mods.d. This is only used for
@@ -380,7 +380,7 @@ namespace SwordBackend
 
         private void adjustDataPath()
         {
-            string datapath = (string) getValue(ConfigEntryType.DATA_PATH);
+            string datapath = (string) getValue(ConfigEntryType.A_DATA_PATH);
             if (datapath == null)
             {
                 datapath = string.Empty;
@@ -389,7 +389,7 @@ namespace SwordBackend
             {
                 datapath = datapath.Substring(2);
             }
-            add(ConfigEntryType.DATA_PATH, datapath);
+            add(ConfigEntryType.A_DATA_PATH, datapath);
         }
 
         private void adjustLanguage()

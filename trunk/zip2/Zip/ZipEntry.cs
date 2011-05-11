@@ -160,7 +160,7 @@ namespace ICSharpCode.SharpZipLib.Zip
         /// <summary>
         /// AES unsupported prior to .NET 2.0
         /// </summary>
-        internal int AESKeySize=0;
+        internal int AESKeySize = 0;
 
         string comment;
         ulong compressedSize;

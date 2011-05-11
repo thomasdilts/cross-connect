@@ -99,7 +99,7 @@ namespace CrossConnect
                 {
                     if (book.Value.sbmd.internalName.Equals(bibleToLoad))
                     {
-                        string bookPath = book.Value.sbmd.getCetProperty(ConfigEntryType.DATA_PATH).ToString().Substring(2);
+                        string bookPath = book.Value.sbmd.getCetProperty(ConfigEntryType.A_DATA_PATH).ToString().Substring(2);
                         bool isIsoEncoding = !book.Value.sbmd.getCetProperty(ConfigEntryType.ENCODING).Equals("UTF-8");
                         switch (windowType)
                         {

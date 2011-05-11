@@ -170,7 +170,7 @@ namespace SwordBackend
             try
             {
 
-                string relativePath = (string)sbmd.getProperty(ConfigEntryType.DATA_PATH);
+                string relativePath = (string)sbmd.getProperty(ConfigEntryType.A_DATA_PATH);
                 string pathToHost = "http://" + iManager.host  + iManager.packageDirectory + "/" + sbmd.Initials + ZIP_SUFFIX;
                 Uri source = new Uri(pathToHost);
 
@@ -194,7 +194,7 @@ namespace SwordBackend
         {
             IsolatedStorageFile root = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication();
             string modFile=BibleZtextReader.DIR_CONF + '/' + sbmd.internalName.ToLower() + BibleZtextReader.EXTENSION_CONF;
-            string bookPath = sbmd.getCetProperty(ConfigEntryType.DATA_PATH).ToString().Substring(2);
+            string bookPath = sbmd.getCetProperty(ConfigEntryType.A_DATA_PATH).ToString().Substring(2);
             string[] filesToDelete=new string[]{modFile,bookPath +"ot.bzs",bookPath +"ot.bzv",bookPath +"ot.bzz",bookPath +"nt.bzs",bookPath +"nt.bzv",bookPath +"nt.bzz" };
             foreach(string file in filesToDelete)
             {
