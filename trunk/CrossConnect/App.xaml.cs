@@ -179,7 +179,7 @@ namespace CrossConnect
             {
                 root.DeleteFile(WEB_DIR_ISOLATED+"/"+file);
             }
-
+            openWindows.Clear();
             //get all windows
             for (int i = 0; i < MAX_NUM_WINDOWS; i++)
             {
@@ -318,6 +318,7 @@ namespace CrossConnect
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
+            LoadPersistantObjects();
         }
 
         // Code to execute when the application is deactivated (sent to background)

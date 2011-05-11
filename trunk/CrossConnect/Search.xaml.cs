@@ -42,15 +42,15 @@ namespace CrossConnect
         {
             InitializeComponent();
         }
-
+        private int currentBookNum;
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
             var state = App.openWindows[App.windowSettings.openWindowIndex].state;
-            int dummy1;
+            
             int dummy2;
             string Name;
             string text;
-            App.openWindows[App.windowSettings.openWindowIndex].state.source.getInfo(state.chapterNum, state.verseNum, out dummy1, out dummy2, out Name, out text);
+            App.openWindows[App.windowSettings.openWindowIndex].state.source.getInfo(state.chapterNum, state.verseNum, out currentBookNum, out dummy2, out Name, out text);
             Chapter.Content = Name;
 
             PageTitle.Text = Translations.translate("Search");
@@ -84,6 +84,7 @@ namespace CrossConnect
         public bool isAbort = false;
         private void butSearch_Click(object sender, RoutedEventArgs e)
         {
+            chapters.Clear();
             ShowControls(false);
             searchingObject = this;
             ignoreCase = (bool)IgnoreCase.IsChecked;
@@ -156,7 +157,20 @@ namespace CrossConnect
             }
             else
             {
-                chapters.Add(App.openWindows[App.windowSettings.openWindowIndex].state.chapterNum);
+                //we must find the first chapter in the current book.
+                int chapter = 0;
+                for (int i = 0; i < currentBookNum; i++)
+                {
+                    chapter += SwordBackend.BibleZtextReader.CHAPTERS_IN_BOOK[i];
+                }
+                //add all the chapters up to the last chapter in the book.
+                int lastChapterInBook = chapter + SwordBackend.BibleZtextReader.CHAPTERS_IN_BOOK[currentBookNum];
+                for (int i = chapter; i < lastChapterInBook; i++)
+                {
+                    chapters.Add(i);
+                }
+
+                
                 searchTypeIndex = 3;
                 searchChapter = App.openWindows[App.windowSettings.openWindowIndex].state.chapterNum;
             }
