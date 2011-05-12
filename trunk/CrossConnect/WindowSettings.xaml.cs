@@ -62,7 +62,7 @@ namespace CrossConnect
             WINDOW_TYPE selectedType;
             SwordBackend.SwordBook bookSelected;
             GetSelectedData(out selectedType, out bookSelected);
-            App.AddWindow(bookSelected.sbmd.internalName, 0, 0, selectedType);
+            App.AddWindow(bookSelected.sbmd.internalName, 0, 0, selectedType,(double)sliderTextSize.Value);
             if (NavigationService.CanGoBack)
             {
                 NavigationService.GoBack();
@@ -148,7 +148,7 @@ namespace CrossConnect
             selectDocumentType.Header = Translations.translate("Select the window type");
             selectDocument.Header = Translations.translate("Select the bible");
             butSelectChapter.Content = Translations.translate("Select book and chapter");
-            butSearch.Content= Translations.translate("Search");
+            butSearch.Content = Translations.translate("Search");
             butAddNew.Content = Translations.translate("Add new window");
             butAddBookmarks.Content = Translations.translate("Add to bookmarks");
             butSave.Content = Translations.translate("Save");
@@ -180,17 +180,17 @@ namespace CrossConnect
                     selectDocument.SelectedIndex = selectDocument.Items.Count - 1;
                 }
             }
-            System.Windows.Visibility visibility= System.Windows.Visibility.Visible;
-            if(App.openWindows.Count == 0 || App.windowSettings.isAddNewWindowOnly)
+            System.Windows.Visibility visibility = System.Windows.Visibility.Visible;
+            if (App.openWindows.Count == 0 || App.windowSettings.isAddNewWindowOnly)
             {
-                visibility=System.Windows.Visibility.Collapsed;
+                visibility = System.Windows.Visibility.Collapsed;
             }
             butSelectChapter.Visibility = visibility;
             butSearch.Visibility = visibility;
-            butSave.Visibility=visibility;
-            butCancel.Visibility=visibility;
+            butSave.Visibility = visibility;
+            butCancel.Visibility = visibility;
             butAddBookmarks.Visibility = visibility;
-            sliderTextSize.Value = (double)Application.Current.Resources["PhoneFontSizeNormal"] / 2;
+            sliderTextSize.Value = (double)Application.Current.Resources["PhoneFontSizeNormal"] * 5 / 8;
             // must show the current window selections
             if (App.openWindows.Count > 0)
             {
@@ -212,7 +212,7 @@ namespace CrossConnect
                         this.selectDocumentType.SelectedIndex = 3;
                         break;
                     case WINDOW_TYPE.WINDOW_SEARCH:
-                        this.selectDocumentType.Visibility=System.Windows.Visibility.Collapsed;
+                        this.selectDocumentType.Visibility = System.Windows.Visibility.Collapsed;
                         this.selectDocument.Visibility = System.Windows.Visibility.Collapsed;
                         butAddNew.Visibility = System.Windows.Visibility.Collapsed;
                         break;
@@ -226,7 +226,7 @@ namespace CrossConnect
             WINDOW_TYPE selectedType;
             SwordBackend.SwordBook bookSelected;
             GetSelectedData(out selectedType, out bookSelected);
-            var state=App.openWindows[App.windowSettings.openWindowIndex].state;
+            var state = App.openWindows[App.windowSettings.openWindowIndex].state;
             state.windowType = selectedType;
             state.bibleToLoad = bookSelected.sbmd.internalName;
             state.htmlFontSize = this.sliderTextSize.Value;

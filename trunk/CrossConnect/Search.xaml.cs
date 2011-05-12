@@ -128,7 +128,13 @@ namespace CrossConnect
                         MessageBox.Show(Translations.translate("Too many found. Search stopped"));
                     }
 
-                    App.AddWindow(App.openWindows[App.windowSettings.openWindowIndex].state.bibleToLoad, 0, 0, WINDOW_TYPE.WINDOW_SEARCH, sourceSearch);
+                    App.AddWindow(
+                        App.openWindows[App.windowSettings.openWindowIndex].state.bibleToLoad, 
+                        0, 
+                        0, 
+                        WINDOW_TYPE.WINDOW_SEARCH, 
+                        App.openWindows[App.windowSettings.openWindowIndex].state.htmlFontSize,
+                        sourceSearch);
                     App.windowSettings.skipWindowSettings = true;
                     if (NavigationService.CanGoBack)
                     {
