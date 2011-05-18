@@ -33,6 +33,7 @@ namespace CrossConnect
     using System.Windows.Shapes;
 
     using Microsoft.Phone.Controls;
+    using Microsoft.Phone.Tasks;
 
     public partial class WindowSettings : PhoneApplicationPage
     {
@@ -77,6 +78,24 @@ namespace CrossConnect
             }
         }
 
+        private void butEmail_Click(object sender, RoutedEventArgs e)
+        {
+            var state = App.openWindows[App.windowSettings.openWindowIndex].state;
+            int bookNum;
+            int relChaptNum;
+            string fullName;
+            string titleText;
+            state.source.GetInfo(state.chapterNum, state.verseNum, out bookNum, out relChaptNum, out fullName, out titleText);
+            string title = titleText + " - " + state.bibleToLoad;
+            string verseText = state.source.GetVerseTextOnly(state.chapterNum, state.verseNum);
+            EmailComposeTask emailComposeTask = new EmailComposeTask();
+            //emailComposeTask.To = "user@example.com";
+            emailComposeTask.Body = verseText;
+            //emailComposeTask.Cc = "user2@example.com";
+            emailComposeTask.Subject = titleText;
+            emailComposeTask.Show();
+        }
+
         private void butSave_Click(object sender, RoutedEventArgs e)
         {
             if (App.openWindows[App.windowSettings.openWindowIndex].state.windowType == WINDOW_TYPE.WINDOW_SEARCH)
@@ -103,6 +122,22 @@ namespace CrossConnect
         {
             SetBookChoosen();
             this.NavigationService.Navigate(new Uri("/SelectBibleBook.xaml", UriKind.Relative));
+        }
+
+        private void butSMS_Click(object sender, RoutedEventArgs e)
+        {
+            var state= App.openWindows[App.windowSettings.openWindowIndex].state;
+            int bookNum;
+            int relChaptNum;
+            string fullName;
+            string titleText;
+            state.source.GetInfo(state.chapterNum, state.verseNum, out bookNum, out relChaptNum, out fullName, out titleText);
+            string title = titleText + " - " + state.bibleToLoad;
+            string verseText = state.source.GetVerseTextOnly(state.chapterNum, state.verseNum);
+            SmsComposeTask smsComposeTask = new SmsComposeTask();
+            //smsComposeTask.To = "5555555555";
+            smsComposeTask.Body = verseText + "\n" + title;
+            smsComposeTask.Show();
         }
 
         private void GetSelectedData(out WINDOW_TYPE selectedType, out SwordBackend.SwordBook bookSelected)
@@ -188,16 +223,29 @@ namespace CrossConnect
             butSelectChapter.Visibility = visibility;
             butSearch.Visibility = visibility;
             butSave.Visibility = visibility;
+            butSMS.Visibility = visibility;
+            butEmail.Visibility = visibility;
             butCancel.Visibility = visibility;
             butAddBookmarks.Visibility = visibility;
             sliderTextSize.Value = (double)Application.Current.Resources["PhoneFontSizeNormal"] * 5 / 8;
             // must show the current window selections
             if (App.openWindows.Count > 0)
             {
-                butSelectChapter.Visibility = (App.openWindows[App.windowSettings.openWindowIndex].state.source.IsPageable ? visibility : System.Windows.Visibility.Collapsed);
-                butSearch.Visibility = (App.openWindows[App.windowSettings.openWindowIndex].state.source.IsSearchable ? visibility : System.Windows.Visibility.Collapsed);
-                butAddBookmarks.Visibility = (App.openWindows[App.windowSettings.openWindowIndex].state.source.IsBookmarkable ? visibility : System.Windows.Visibility.Collapsed);
-                switch (App.openWindows[App.windowSettings.openWindowIndex].state.windowType)
+                var state= App.openWindows[App.windowSettings.openWindowIndex].state;
+                int bookNum;
+                int relChaptNum;
+                string fullName;
+                string titleText;
+                state.source.GetInfo(state.chapterNum, state.verseNum, out bookNum, out relChaptNum, out fullName, out titleText);
+                string title = titleText + " - " + state.bibleToLoad;
+
+                butSMS.Content = Translations.translate("SMS - " + title);
+                butEmail.Content = Translations.translate("Email - " + title);
+
+                butSelectChapter.Visibility = (state.source.IsPageable ? visibility : System.Windows.Visibility.Collapsed);
+                butSearch.Visibility = (state.source.IsSearchable ? visibility : System.Windows.Visibility.Collapsed);
+                butAddBookmarks.Visibility = (state.source.IsBookmarkable ? visibility : System.Windows.Visibility.Collapsed);
+                switch (state.windowType)
                 {
                     case WINDOW_TYPE.WINDOW_BIBLE:
                         this.selectDocumentType.SelectedIndex = 0;
@@ -217,7 +265,7 @@ namespace CrossConnect
                         butAddNew.Visibility = System.Windows.Visibility.Collapsed;
                         break;
                 }
-                sliderTextSize.Value = App.openWindows[App.windowSettings.openWindowIndex].state.htmlFontSize;
+                sliderTextSize.Value = state.htmlFontSize;
             }
         }
 

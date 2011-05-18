@@ -496,7 +496,7 @@ namespace CrossConnect
             string fullName;
             string titleText;
             this.state.source.GetInfo(this.state.chapterNum, this.state.verseNum, out bookNum, out relChaptNum, out fullName, out titleText);
-            title.Text = titleText;
+            title.Text = titleText + " - " + this.state.bibleToLoad;
         }
 
         #endregion Methods

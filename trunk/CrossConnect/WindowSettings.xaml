@@ -64,6 +64,8 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -82,8 +84,10 @@
                 <Button Content="Add to bookmarks" Grid.Row="5"  Name="butAddBookmarks"  Click="butAddBookmarks_Click" />
                 <Button Content="Save" Grid.Row="6"  Name="butSave"  Click="butSave_Click" />
                 <Button Content="Cancel" Grid.Row="7"  Name="butCancel"  Click="butCancel_Click" />
-                <phone:WebBrowser Grid.Row="8" Margin="0 0 0 0"  Name="webBrowser1"  MinHeight="50" />
-                <Slider Grid.Row="9" Maximum="37.0" Minimum="5.0" ValueChanged="sliderTextSize_ValueChanged" Name="sliderTextSize" />
+                <Button Content="SMS" Grid.Row="8"  Name="butSMS"  Click="butSMS_Click" />
+                <Button Content="Email" Grid.Row="9"  Name="butEmail"  Click="butEmail_Click" />
+                <phone:WebBrowser Grid.Row="10" Margin="0 0 0 0"  Name="webBrowser1"  MinHeight="50" />
+                <Slider Grid.Row="11" Maximum="37.0" Minimum="5.0" ValueChanged="sliderTextSize_ValueChanged" Name="sliderTextSize" />
             </Grid>
     </Grid>
     </ScrollViewer>

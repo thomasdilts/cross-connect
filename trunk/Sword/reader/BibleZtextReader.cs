@@ -463,11 +463,21 @@ namespace SwordBackend
         /// <param name="chapterNumber">Chaptern number beginning with zero for the first chapter and 1188 for the last chapter in the bible.</param>
         /// <param name="verseNumber">Verse number beginning with zero for the first verse</param>
         /// <returns>Verse raw</returns>   
-        public string GetVerseRaw(int chapterNumber,int verseNumber)
+        public virtual string GetVerseTextOnly(int chapterNumber, int verseNumber)
         {
             byte[] chapterBuffer = getChapterBytes(chapterNumber);
-            VersePos verse = chapters[chapterNumber].verses[verseNumber];
-            return System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, (int)verse.startPos, verse.length);
+            string chapter = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
+            BibleZtextReader.VersePos verse = chapters[chapterNumber].verses[verseNumber];
+            return parseOsisText(
+                "",
+                "",
+                chapterBuffer,
+                (int)verse.startPos,
+                verse.length,
+                isIsoEncoding,
+                false,
+                true,
+                true);
         }
 
         public List<string> MakeListDisplayText(List<BiblePlaceMarker> listToDisplay)
@@ -823,10 +833,11 @@ namespace SwordBackend
         protected string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,bool isNotesOnly)
         {
             byte[] chapterBuffer = getChapterBytes(chapterNumber);
-            // for debug string all = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
+            // for debug
+            string alltext = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
             StringBuilder htmlChapter = new StringBuilder();
             ChapterPos versesForChapterPositions = chapters[chapterNumber];
-
+            alltext = alltext+"";
             string chapterStartHtml = "<html>" + HtmlHeader(htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
             string chapterEndHtml = "</body></html>";
             for (int i = 0; i < versesForChapterPositions.verses.Count; i++)
@@ -895,7 +906,8 @@ namespace SwordBackend
                 BiblePlaceMarker place = listToDisplay[j];
                 ChapterPos chaptPos= chapters[place.chapterNum];
                 byte[] chapterBuffer = getChapterBytes(place.chapterNum);
-                // for debug string all = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
+                // for debug
+                //string all = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
 
                 ChapterPos versesForChapterPositions = chapters[place.chapterNum];
 
@@ -922,7 +934,7 @@ namespace SwordBackend
             return htmlListText.ToString();
         }
 
-        protected string parseOsisText(string chapterNumber,string restartText, byte[] xmlbytes, int startPos, int length, bool isIsoText,bool isNotesOnly, bool noTitles)
+        protected string parseOsisText(string chapterNumber,string restartText, byte[] xmlbytes, int startPos, int length, bool isIsoText,bool isNotesOnly, bool noTitles, bool isRaw=false)
         {
             MemoryStream ms = new MemoryStream();
             if(isIsoText)
@@ -959,8 +971,14 @@ namespace SwordBackend
                                 switch (reader.Name)
                                 {
 
+                                    case "CM":
+                                        if (!isRaw)
+                                        {
+                                            appendText("<br />", plainText, noteText, isInElement);
+                                        }
+                                        break;
                                     case "lb":
-                                        if (reader.HasAttributes)
+                                        if (reader.HasAttributes && !isRaw)
                                         {
                                             reader.MoveToFirstAttribute();
                                             if (reader.Name.Equals("type"))
@@ -978,7 +996,7 @@ namespace SwordBackend
                                         break;
                                     case "title":
                                         isInTitle = true;
-                                        if (!noTitles)
+                                        if (!noTitles && !isRaw)
                                         {
                                             appendText("<h3>", plainText, noteText, isInElement);
                                         }
@@ -1004,8 +1022,10 @@ namespace SwordBackend
                                         break;
                                     case "lg":
                                         break;
+                                    case "FI":
+                                    case "RF":
                                     case "note":
-                                        if (!isChaptNumGivenNotes)
+                                        if (!isChaptNumGivenNotes && !isRaw)
                                         {
                                             noteText.Append("<p>" + chapterNumber);
                                             isChaptNumGivenNotes = true;
@@ -1013,7 +1033,14 @@ namespace SwordBackend
                                         isInElement = true;
                                         break;
                                     case "hi":
-                                        appendText("<i>", plainText, noteText, isInElement);
+                                        if (!isRaw)
+                                        {
+                                            appendText("<i>", plainText, noteText, isInElement);
+                                        }
+                                        break;
+                                    case "Rf":
+                                    case "Fi":
+                                        isInElement = false;
                                         break;
                                 }
                                 break;
@@ -1032,16 +1059,17 @@ namespace SwordBackend
                                 {
                                     text = "*error*";
                                 }
-                                if (!noTitles || !isInTitle)
+                                if ((!noTitles || !isInTitle) && text.Length>0)
                                 {
-                                    appendText(text, plainText, noteText, isInElement);
+                                    char firstChar = text[0];
+                                    appendText(((!firstChar.Equals(',') && !firstChar.Equals('.') && !firstChar.Equals(':') && !firstChar.Equals(';'))?" ":"") + text, plainText, noteText, isInElement);
                                 }
                                 break;
                             case XmlNodeType.EndElement:
                                 switch (reader.Name)
                                 {
                                     case "title":
-                                        if (!noTitles)
+                                        if (!noTitles && !isRaw)
                                         {
                                             appendText("</h3>", plainText, noteText, isInElement);
                                         }
@@ -1059,7 +1087,10 @@ namespace SwordBackend
                                         isInElement = false;
                                         break;
                                     case "hi":
-                                        appendText("</i>", plainText, noteText, isInElement);
+                                        if (!isRaw)
+                                        {
+                                            appendText("</i>", plainText, noteText, isInElement);
+                                        }
                                         break;
                                 }
                                 break;
@@ -1070,7 +1101,7 @@ namespace SwordBackend
 
                 }
             }
-            if(isNotesOnly)
+            if (isNotesOnly && !isRaw)
             {
                 if (noteText.Length > 0)
                 {

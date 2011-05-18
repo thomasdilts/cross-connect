@@ -38,6 +38,7 @@ namespace CrossConnect
     using System.Xml;
 
     using Microsoft.Phone.Controls;
+    using Microsoft.Phone.Tasks;
 
     public partial class MainPageSplit : PhoneApplicationPage
     {
@@ -171,10 +172,18 @@ namespace CrossConnect
                         App.RaiseHistoryChangeEvent();
                         break;
                     case "Help":
-                        App.helpstart.title=Translations.translate("Help");
-                        App.helpstart.embeddedFilePath="CrossConnect.Properties.regex.html";
-                        NavigationService.Navigate(new Uri("/Help.xaml", UriKind.Relative));
-                        break;
+                        //App.helpstart.title=Translations.translate("Help");
+                        //App.helpstart.embeddedFilePath="CrossConnect.Properties.regex.html";
+                        canvas1.Margin = new Thickness(0, this.ActualHeight, 0, 0);
+                        canvas1.Visibility = System.Windows.Visibility.Collapsed;
+                        ShowMenu.Visibility = System.Windows.Visibility.Visible;
+                        WebBrowserTask webBrowserTask = new WebBrowserTask();
+
+                        string version = "1.0.0.1";
+                        webBrowserTask.URL = @"http://www.lazy8.nu/crossconnect/help?version=" + version;
+                        webBrowserTask.Show();
+                        return;
+                        //break;
                     case "Cancel":
                         // just do nothing
                         break;
@@ -317,8 +326,7 @@ namespace CrossConnect
             AppMenu.Items.Add(createTextBlock(Translations.translate("Select bible to delete"), "Select bible to delete"));
             AppMenu.Items.Add(createTextBlock(Translations.translate("Select bookmark to delete"), "Select bookmark to delete"));
             AppMenu.Items.Add(createTextBlock(Translations.translate("Clear history"), "Clear history"));
-            // No help page done yet.
-            // AppMenu.Items.Add(createTextBlock(Translations.translate("Help"), "Help"));
+            AppMenu.Items.Add(createTextBlock(Translations.translate("Help"), "Help"));
             AppMenu.Items.Add(createTextBlock(Translations.translate("Cancel"), "Cancel"));
 
             menuUpAnimation = new System.Windows.Threading.DispatcherTimer();

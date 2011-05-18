@@ -77,6 +77,8 @@ namespace SwordBackend
         // string getFullName(int bookNum);
         void GetInfo(int chaptNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title);
 
+        string GetVerseTextOnly(int chapterNumber, int verseNum);
+
         List<string> MakeListDisplayText(List<BiblePlaceMarker> listToDisplay);
 
         void RegisterUpdateEvent(WindowSourceChanged sourceChangedMethod, bool isRegister = true);

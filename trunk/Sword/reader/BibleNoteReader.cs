@@ -99,6 +99,23 @@ namespace SwordBackend
             title = titleBrowserWindow + " " + fullName + ":" + (relChaptNum + 1);
         }
 
+        public override string GetVerseTextOnly(int chapterNumber, int verseNumber)
+        {
+            //give them the notes if you can.
+            byte[] chapterBuffer = getChapterBytes(chapterNumber);
+            string chapter = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
+            BibleZtextReader.VersePos verse = chapters[chapterNumber].verses[verseNumber];
+            return parseOsisText(
+                "",
+                "",
+                chapterBuffer,
+                (int)verse.startPos,
+                verse.length,
+                isIsoEncoding,
+                true,
+                true);
+        }
+
         #endregion Methods
     }
 }
