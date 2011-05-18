@@ -180,7 +180,7 @@ namespace CrossConnect
                         WebBrowserTask webBrowserTask = new WebBrowserTask();
 
                         string version = "1.0.0.1";
-                        webBrowserTask.URL = @"http://www.lazy8.nu/crossconnect/help?version=" + version;
+                        webBrowserTask.URL = @"http://www.chaniel.se/crossconnect/help?version=" + version;
                         webBrowserTask.Show();
                         return;
                         //break;
