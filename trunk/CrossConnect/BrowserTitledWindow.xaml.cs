@@ -378,7 +378,7 @@ namespace CrossConnect
                     this.state.htmlFontSize));
                 tw.Close();
                 fs.Close();
-                webBrowser1.FontSize = this.state.htmlFontSize;
+                //webBrowser1.FontSize = this.state.htmlFontSize;
                 webBrowser1.Base = App.WEB_DIR_ISOLATED;
 
                 Uri source = new Uri(file + "#CHAP_" + this.state.chapterNum + "_VERS_" + this.state.verseNum, UriKind.Relative);

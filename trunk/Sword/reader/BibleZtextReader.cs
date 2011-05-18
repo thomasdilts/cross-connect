@@ -360,29 +360,18 @@ namespace SwordBackend
         {
             var head = new StringBuilder();
             head.Append("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-            // head.Append(string.Format(
-            //    "<meta name=\"viewport\" value=\"width={0}\" user-scalable=\"no\">",
-            //    480));
-            head.Append("<style>");
-            // head.Append("html { -ms-text-size-adjust:auto }");
-            // head.Append("html { -ms-text-size-adjust:100% }");
 
-            // head.Append(string.Format(
-            //    "body {{background:{0};color:{1};font-family:'Segoe WP';font-size:{2}pt;margin:0;padding:0 }}",
-            //    htmlBackgroundColor,
-            //    htmlForegroundColor,
-            //    htmlFontSize));
+            head.Append("<style>");
 
             head.Append(string.Format(
                 "body {{background:{0};color:{1};font-size:{2}pt;margin:0;padding:0 }}",
                 htmlBackgroundColor,
                 htmlForegroundColor,
-                htmlFontSize));
+                (int)htmlFontSize));
 
             head.Append(string.Format(
                 "a {{color:{0};text-decoration:none;}}",
                 htmlForegroundColor));
-            //                GetBrowserColor("PhoneAccentColor")));
 
             head.Append(string.Format(
                 ".highlightedcolor {{ color: {0}; }} .normalcolor:hover {{ color: {1}; }} ",
@@ -390,7 +379,7 @@ namespace SwordBackend
                 htmlPhoneAccentColor));
 
             head.Append("</style>");
-            // head.Append(NotifyScript);
+
             head.Append("</head>");
             return head.ToString();
         }
@@ -834,11 +823,10 @@ namespace SwordBackend
         {
             byte[] chapterBuffer = getChapterBytes(chapterNumber);
             // for debug
-            string alltext = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
+            // string alltext = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
             StringBuilder htmlChapter = new StringBuilder();
             ChapterPos versesForChapterPositions = chapters[chapterNumber];
-            alltext = alltext+"";
-            string chapterStartHtml = "<html>" + HtmlHeader(htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
+            string chapterStartHtml = "<html>" + HtmlHeader(htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize) ;
             string chapterEndHtml = "</body></html>";
             for (int i = 0; i < versesForChapterPositions.verses.Count; i++)
             {
