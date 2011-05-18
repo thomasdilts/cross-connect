@@ -51,6 +51,9 @@ namespace CrossConnect
         public SerializableWindowState state = new SerializableWindowState();
 
         private string lastFileName = string.Empty;
+        private DateTime lastManipulationKillTime = DateTime.Now;
+        private System.Windows.Threading.DispatcherTimer manipulationTimer = null;
+        private ManipulationCompletedEventArgs manipulationToProcess = null;
 
         #endregion Fields
 
@@ -185,8 +188,14 @@ namespace CrossConnect
             }
         }
 
+        private void border1_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
+        }
+
         private void ButClose_Click(object sender, RoutedEventArgs e)
         {
+            killManipulation();
             var root = IsolatedStorageFile.GetUserStoreForApplication();
 
             if (root.FileExists(App.WEB_DIR_ISOLATED + "/" + this.lastFileName))
@@ -200,8 +209,14 @@ namespace CrossConnect
             }
         }
 
+        private void butClose_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
+        }
+
         private void ButLarger_Click(object sender, RoutedEventArgs e)
         {
+            killManipulation();
             this.state.numRowsIown++;
             ShowSizeButtons();
             if (this.HitButtonBigger != null)
@@ -210,8 +225,14 @@ namespace CrossConnect
             }
         }
 
+        private void butLarger_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
+        }
+
         private void ButLink_Click(object sender, RoutedEventArgs e)
         {
+            killManipulation();
             if (this.state.source.IsSynchronizeable)
             {
                 // get all the right images
@@ -234,17 +255,29 @@ namespace CrossConnect
             }
         }
 
+        private void butLink_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
+        }
+
         private void ButMenu_Click(object sender, RoutedEventArgs e)
         {
+            killManipulation();
             App.windowSettings.openWindowIndex = this.state.curIndex;
             App.windowSettings.isAddNewWindowOnly = false;
-            MainPageSplit parent = (MainPageSplit)((Grid)((Grid)this.Parent).Parent).Parent;
+            MainPageSplit parent = (MainPageSplit)((Grid)(Grid)this.Parent).Parent;
             App.windowSettings.skipWindowSettings = false;
             parent.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
         }
 
+        private void butMenu_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
+        }
+
         private void ButNext_Click(object sender, RoutedEventArgs e)
         {
+            killManipulation();
             this.state.chapterNum++;
             this.state.verseNum = 0;
             if (this.state.chapterNum >= (BibleZtextReader.CHAPTERS_IN_BIBLE - 1))
@@ -280,6 +313,7 @@ namespace CrossConnect
 
         private void ButPrevious_Click(object sender, RoutedEventArgs e)
         {
+            killManipulation();
             this.state.verseNum = 0;
             this.state.chapterNum--;
             if (this.state.chapterNum < 0)
@@ -315,6 +349,7 @@ namespace CrossConnect
 
         private void ButSmaller_Click(object sender, RoutedEventArgs e)
         {
+            killManipulation();
             this.state.numRowsIown--;
             ShowSizeButtons();
             if (this.HitButtonSmaller != null)
@@ -323,10 +358,61 @@ namespace CrossConnect
             }
         }
 
+        private void butSmaller_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
+        }
+
+        private void DoManipulation(ManipulationCompletedEventArgs e)
+        {
+            if (manipulationTimer == null && lastManipulationKillTime.AddSeconds(1).CompareTo(DateTime.Now) < 0)
+            {
+                manipulationToProcess = e;
+                //start timer
+                manipulationTimer = new System.Windows.Threading.DispatcherTimer();
+                manipulationTimer.Interval = TimeSpan.FromMilliseconds(200);
+                manipulationTimer.Tick += this.DoManipulationTimerTick;
+                manipulationTimer.Start();
+            }
+        }
+
+        private void DoManipulationTimerTick(object sender, EventArgs e)
+        {
+            // we must delay updating of this webbrowser...
+            killManipulation();
+
+            System.Windows.Point pt = manipulationToProcess.FinalVelocities.LinearVelocity;
+            if (pt.X > 700)
+            {
+                //next
+                ButNext_Click(null, null);
+            }
+            else if (pt.X < -700)
+            {
+                //previous
+                ButPrevious_Click(null, null);
+            }
+        }
+
         private ImageSource GetImage(string path)
         {
             Uri uri = new Uri(path, UriKind.Relative);
             return (ImageSource)new BitmapImage(uri);
+        }
+
+        private void grid1_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
+        }
+
+        private void killManipulation()
+        {
+            if (manipulationTimer != null)
+            {
+                manipulationTimer.Stop();
+                manipulationTimer = null;
+            }
+            lastManipulationKillTime = DateTime.Now;
         }
 
         private void OnTimerTick(object sender, EventArgs e)
@@ -352,6 +438,11 @@ namespace CrossConnect
         private void Source_Changed()
         {
             this.UpdateBrowser();
+        }
+
+        private void title_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
         }
 
         private void UpdateBrowser()
@@ -409,11 +500,11 @@ namespace CrossConnect
 
             if (this.state.source.IsPageable)
             {
-                butPrevious.Image = this.GetImage("/Images/" + colorDir + "/appbar.people.2.rest.png");
-                butPrevious.PressedImage = this.GetImage("/Images/" + colorDir + "/appbar.people.2.pressed.rest.png");
+                butPrevious.Image = this.GetImage("/Images/" + colorDir + "/appbar.prev.rest.png");
+                butPrevious.PressedImage = this.GetImage("/Images/" + colorDir + "/appbar.prev.rest.press.png");
 
-                butNext.Image = this.GetImage("/Images/" + colorDir + "/appbar.people.1.rest.png");
-                butNext.PressedImage = this.GetImage("/Images/" + colorDir + "/appbar.people.1.rest.pressed.png");
+                butNext.Image = this.GetImage("/Images/" + colorDir + "/appbar.next.rest.png");
+                butNext.PressedImage = this.GetImage("/Images/" + colorDir + "/appbar.next.rest.press.png");
             }
             else
             {

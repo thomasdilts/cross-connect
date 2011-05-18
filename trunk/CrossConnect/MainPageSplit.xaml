@@ -6,7 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768" 
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696" 
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -15,7 +15,7 @@
     xmlns:local="clr-namespace:CrossConnect"
     shell:SystemTray.IsVisible="True" xmlns:my="clr-namespace:CrossConnect"  
     Unloaded="PhoneApplicationPage_Unloaded"
-    Loaded="MainPage_Loaded" OrientationChanged="PhoneApplicationPage_OrientationChanged">
+    Loaded="MainPage_Loaded" OrientationChanged="PhoneApplicationPage_OrientationChanged" >
     
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -40,23 +40,22 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
 
-    <Grid Name="grid1" >
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="35"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" ></RowDefinition>
-            <RowDefinition x:Name="MenuRow" Height="35"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid x:Name="LayoutRoot" Background="Transparent" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
+
+    <Grid x:Name="LayoutRoot" Background="Transparent" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
             
-        </Grid>
-        <local:ImageButton Click="ShowMenu_Click" Image="/Images/dark/appbar.people.2.rest.png" PressedImage="/Images/dark/appbar.people.2.pressed.rest.png"  Grid.Column="1" Grid.Row="1"  x:Name="ShowMenu" Template="{StaticResource ImageButtonControlTemplate}"/>
-        <Canvas Opacity="1" Background="Gray" Height="223" HorizontalAlignment="Left"  Margin="83,800,0,0" Name="canvas1" VerticalAlignment="Top" Width="299" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" >
-            <ListBox Opacity="1"  SelectionChanged="AppMenu_SelectionChanged" Height="223" HorizontalAlignment="Left" Name="AppMenu" VerticalAlignment="Top" Width="299"  />
-        </Canvas>
-
-
     </Grid>
+
+    <!--Sample code showing usage of ApplicationBar-->
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton Click="butDownload_Click" x:Name="butDownload" IconUri="/Images/dark/appbar.download.rest.png" Text="Download bibles"/>
+            <shell:ApplicationBarIconButton Click="butNewWindow_Click" x:Name="butNewWindow" IconUri="/Images/dark/appbar.new.rest.png" Text="New window"/>
+            <shell:ApplicationBarIconButton Click="butHelp_Click" x:Name="butHelp" IconUri="/Images/dark/appbar.questionmark.rest.png" Text="Help"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Click="menuDeleteBible_Click" x:Name="menuDeleteBible" Text="Select bible to delete"/>
+                <shell:ApplicationBarMenuItem Click="menuDeleteBookmark_Click" x:Name="menuDeleteBookmark" Text="Select bookmark to delete"/>
+                <shell:ApplicationBarMenuItem Click="menuClearHistory_Click" x:Name="menuClearHistory" Text="Clear history"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

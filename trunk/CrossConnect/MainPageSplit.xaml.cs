@@ -38,6 +38,7 @@ namespace CrossConnect
     using System.Xml;
 
     using Microsoft.Phone.Controls;
+    using Microsoft.Phone.Shell;
     using Microsoft.Phone.Tasks;
 
     public partial class MainPageSplit : PhoneApplicationPage
@@ -142,61 +143,6 @@ namespace CrossConnect
             LayoutRoot.RowDefinitions.Clear();
         }
 
-        private void ApplicationBar_StateChanged(object sender, Microsoft.Phone.Shell.ApplicationBarStateChangedEventArgs e)
-        {
-            ApplicationBar.Opacity = e.IsMenuVisible ? 1 : 0;
-        }
-
-        private void AppMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.AddedItems.Count > 0)
-            {
-                switch (((TextBlock)e.AddedItems[0]).Tag.ToString())
-                {
-                    case "Add new window":
-                        App.windowSettings.isAddNewWindowOnly = true;
-                        App.windowSettings.skipWindowSettings = false;
-                        this.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
-                        break;
-                    case "Download bibles":
-                        this.NavigationService.Navigate(new Uri("/DownloadBooks.xaml", UriKind.Relative));
-                        break;
-                    case "Select bible to delete":
-                        NavigationService.Navigate(new Uri("/RemoveBibles.xaml", UriKind.Relative));
-                        break;
-                    case "Select bookmark to delete":
-                        NavigationService.Navigate(new Uri("/EditBookmarks.xaml", UriKind.Relative));
-                        break;
-                    case "Clear history":
-                        App.placeMarkers.history = new List<SwordBackend.BiblePlaceMarker>();
-                        App.RaiseHistoryChangeEvent();
-                        break;
-                    case "Help":
-                        //App.helpstart.title=Translations.translate("Help");
-                        //App.helpstart.embeddedFilePath="CrossConnect.Properties.regex.html";
-                        canvas1.Margin = new Thickness(0, this.ActualHeight, 0, 0);
-                        canvas1.Visibility = System.Windows.Visibility.Collapsed;
-                        ShowMenu.Visibility = System.Windows.Visibility.Visible;
-                        WebBrowserTask webBrowserTask = new WebBrowserTask();
-
-                        string version = "1.0.0.1";
-                        webBrowserTask.URL = @"http://www.chaniel.se/crossconnect/help?version=" + version;
-                        webBrowserTask.Show();
-                        return;
-                        //break;
-                    case "Cancel":
-                        // just do nothing
-                        break;
-                }
-                menuDownAnimation = new System.Windows.Threading.DispatcherTimer();
-                menuDownAnimation.Interval = new TimeSpan(0, 0, 0, 0, 15);
-                menuDownAnimation.Tick += new EventHandler(menuDownAnimation_Tick);
-                menuDownAnimation.Start();
-                AppMenu.Width = this.ActualWidth;
-                canvas1.Width = this.ActualWidth;
-            }
-        }
-
         private void butAddWindow_Click(object sender, RoutedEventArgs e)
         {
             App.windowSettings.isAddNewWindowOnly = true;
@@ -207,6 +153,26 @@ namespace CrossConnect
         private void butDownLoadBibles_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new Uri("/DownloadBooks.xaml", UriKind.Relative));
+        }
+
+        private void butDownload_Click(object sender, EventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/DownloadBooks.xaml", UriKind.Relative));
+        }
+
+        private void butHelp_Click(object sender, EventArgs e)
+        {
+            WebBrowserTask webBrowserTask = new WebBrowserTask();
+            string version = "1.0.0.1";
+            webBrowserTask.URL = @"http://www.chaniel.se/crossconnect/help?version=" + version;
+            webBrowserTask.Show();
+        }
+
+        private void butNewWindow_Click(object sender, EventArgs e)
+        {
+            App.windowSettings.isAddNewWindowOnly = true;
+            App.windowSettings.skipWindowSettings = false;
+            this.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
         }
 
         private TextBlock createTextBlock(string text,string tag)
@@ -238,7 +204,13 @@ namespace CrossConnect
         {
             App.mainWindow = this;
 
-            canvas1.Margin = new Thickness(0, this.ActualHeight, 0, 0);
+            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[0]).Text = Translations.translate("Download bibles");
+            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[1]).Text = Translations.translate("Add new window");
+            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[2]).Text = Translations.translate("Help");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[0]).Text = Translations.translate("Select bible to delete");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[1]).Text = Translations.translate("Select bookmark to delete");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[2]).Text = Translations.translate("Clear history");
+
             if (App.openWindows.Count() == 0 || App.installedBibles.installedBibles.Count() == 0)
             {
                 if (App.installedBibles.installedBibles.Count() == 0)
@@ -267,76 +239,36 @@ namespace CrossConnect
             var color = (Color)Application.Current.Resources["PhoneBackgroundColor"];
             int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
             string colorDir = lightColorCount >= 2 ? "light" : "dark";
-            ShowMenu.Image = new System.Windows.Media.Imaging.BitmapImage(new Uri("/Images/" + colorDir + "/appbar.menu.rest.png", UriKind.Relative));
-            ShowMenu.PressedImage = new System.Windows.Media.Imaging.BitmapImage(new Uri("/Images/" + colorDir + "/appbar.menu.rest.pressed.png", UriKind.Relative));
         }
 
-        void menuDownAnimation_Tick(object sender, EventArgs e)
+        private void menuClearHistory_Click(object sender, EventArgs e)
         {
-            // Do Stuff here.
-            Thickness but = canvas1.Margin;
-            canvas1.Margin = new Thickness(0, but.Top + 10, 0, 0);
-            // this.UpdateLayout();
-            if (this.ActualHeight < but.Top)
-            {
-                menuDownAnimation.Stop();
-                menuDownAnimation = null;
-                ShowMenu.Visibility = System.Windows.Visibility.Visible;
-                canvas1.Visibility = System.Windows.Visibility.Collapsed;
-            }
+            App.placeMarkers.history = new List<SwordBackend.BiblePlaceMarker>();
+            App.RaiseHistoryChangeEvent();
         }
 
-        void menuUpAnimation_Tick(object sender, EventArgs e)
+        private void menuDeleteBible_Click(object sender, EventArgs e)
         {
-            // Do Stuff here.
-            Thickness but = canvas1.Margin;
-            canvas1.Margin = new Thickness(0, but.Top - 10, 0, 0);
-            // this.UpdateLayout();
-            if ((this.ActualHeight-but.Top)>200)
-            {
-                menuUpAnimation.Stop();
-                menuUpAnimation = null;
-            }
+            NavigationService.Navigate(new Uri("/RemoveBibles.xaml", UriKind.Relative));
+        }
+
+        private void menuDeleteBookmark_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/EditBookmarks.xaml", UriKind.Relative));
         }
 
         private void PhoneApplicationPage_OrientationChanged(object sender, OrientationChangedEventArgs e)
         {
-            canvas1.Margin = new Thickness(0, this.ActualHeight, 0, 0);
-            canvas1.Visibility = System.Windows.Visibility.Collapsed;
-            ShowMenu.Visibility = System.Windows.Visibility.Visible;
         }
 
         private void PhoneApplicationPage_Unloaded(object sender, RoutedEventArgs e)
         {
-            canvas1.Visibility = System.Windows.Visibility.Collapsed;
-            ShowMenu.Visibility = System.Windows.Visibility.Visible;
             foreach (var nextWindow in App.openWindows)
             {
                 nextWindow.HitButtonBigger -= HitButtonBigger;
                 nextWindow.HitButtonSmaller -= HitButtonSmaller;
                 nextWindow.HitButtonClose -= HitButtonClose;
             }
-        }
-
-        private void ShowMenu_Click(object sender, RoutedEventArgs e)
-        {
-            AppMenu.Items.Clear();
-            AppMenu.Items.Add(createTextBlock(Translations.translate("Add new window"), "Add new window"));
-            AppMenu.Items.Add(createTextBlock(Translations.translate("Download bibles"), "Download bibles"));
-            AppMenu.Items.Add(createTextBlock(Translations.translate("Select bible to delete"), "Select bible to delete"));
-            AppMenu.Items.Add(createTextBlock(Translations.translate("Select bookmark to delete"), "Select bookmark to delete"));
-            AppMenu.Items.Add(createTextBlock(Translations.translate("Clear history"), "Clear history"));
-            AppMenu.Items.Add(createTextBlock(Translations.translate("Help"), "Help"));
-            AppMenu.Items.Add(createTextBlock(Translations.translate("Cancel"), "Cancel"));
-
-            menuUpAnimation = new System.Windows.Threading.DispatcherTimer();
-            menuUpAnimation.Interval = new TimeSpan(0, 0, 0, 0, 15);
-            menuUpAnimation.Tick += new EventHandler(menuUpAnimation_Tick);
-            menuUpAnimation.Start();
-            AppMenu.Width = this.ActualWidth;
-            canvas1.Width = this.ActualWidth;
-            ShowMenu.Visibility = System.Windows.Visibility.Collapsed;
-            canvas1.Visibility = System.Windows.Visibility.Visible;
         }
 
         private TurnstileTransition TurnstileTransitionElement(string mode)
