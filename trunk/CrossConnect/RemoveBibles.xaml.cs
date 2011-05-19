@@ -34,7 +34,7 @@ namespace CrossConnect
 
     using Microsoft.Phone.Controls;
 
-    public partial class RemoveBibles : PhoneApplicationPage
+    public partial class RemoveBibles : AutoRotatePage
     {
         #region Fields
 

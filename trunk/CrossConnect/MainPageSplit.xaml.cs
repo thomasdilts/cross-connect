@@ -41,12 +41,10 @@ namespace CrossConnect
     using Microsoft.Phone.Shell;
     using Microsoft.Phone.Tasks;
 
-    public partial class MainPageSplit : PhoneApplicationPage
+    public partial class MainPageSplit : AutoRotatePage
     {
         #region Fields
 
-        System.Windows.Threading.DispatcherTimer menuDownAnimation = null;
-        System.Windows.Threading.DispatcherTimer menuUpAnimation = null;
         WindowSettings settings = new WindowSettings();
 
         #endregion Fields
@@ -259,6 +257,11 @@ namespace CrossConnect
 
         private void PhoneApplicationPage_OrientationChanged(object sender, OrientationChangedEventArgs e)
         {
+            //redraw the browsers
+            for (int i = 0; i < App.openWindows.Count(); i++)
+            {
+                App.openWindows[i].UpdateBrowser();
+            }
         }
 
         private void PhoneApplicationPage_Unloaded(object sender, RoutedEventArgs e)

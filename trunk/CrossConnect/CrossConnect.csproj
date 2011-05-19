@@ -63,6 +63,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AutoRotatePage.cs" />
     <Compile Include="Translations.cs" />
     <Compile Include="BookMarkReader.cs" />
     <Compile Include="BrowserTitledWindow.xaml.cs">

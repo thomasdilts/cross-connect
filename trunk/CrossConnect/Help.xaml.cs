@@ -37,7 +37,7 @@ namespace CrossConnect
 
     using SwordBackend;
 
-    public partial class Help : PhoneApplicationPage
+    public partial class Help : AutoRotatePage
     {
         #region Constructors
 

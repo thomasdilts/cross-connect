@@ -34,7 +34,7 @@ namespace CrossConnect
 
     using Microsoft.Phone.Controls;
 
-    public partial class SelectBibleBook : PhoneApplicationPage
+    public partial class SelectBibleBook : AutoRotatePage
     {
         #region Fields
 

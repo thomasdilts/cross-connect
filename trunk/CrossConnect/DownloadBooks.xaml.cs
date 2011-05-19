@@ -36,7 +36,7 @@ namespace CrossConnect
 
     using SwordBackend;
 
-    public partial class DownloadBooks : PhoneApplicationPage
+    public partial class DownloadBooks : AutoRotatePage
     {
         #region Fields
 

@@ -35,7 +35,9 @@ namespace CrossConnect
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Tasks;
 
-    public partial class WindowSettings : PhoneApplicationPage
+    using SwordBackend;
+
+    public partial class WindowSettings : AutoRotatePage
     {
         #region Constructors
 
@@ -80,19 +82,14 @@ namespace CrossConnect
 
         private void butEmail_Click(object sender, RoutedEventArgs e)
         {
-            var state = App.openWindows[App.windowSettings.openWindowIndex].state;
-            int bookNum;
-            int relChaptNum;
-            string fullName;
-            string titleText;
-            state.source.GetInfo(state.chapterNum, state.verseNum, out bookNum, out relChaptNum, out fullName, out titleText);
-            string title = titleText + " - " + state.bibleToLoad;
-            string verseText = state.source.GetVerseTextOnly(state.chapterNum, state.verseNum);
+            string textsWithTitles;
+            string titlesOnly;
+            GetLast3SecondsChosenVerses(out textsWithTitles, out titlesOnly);
             EmailComposeTask emailComposeTask = new EmailComposeTask();
             //emailComposeTask.To = "user@example.com";
-            emailComposeTask.Body = verseText;
+            emailComposeTask.Body = textsWithTitles;
             //emailComposeTask.Cc = "user2@example.com";
-            emailComposeTask.Subject = titleText;
+            emailComposeTask.Subject = titlesOnly;
             emailComposeTask.Show();
         }
 
@@ -126,18 +123,61 @@ namespace CrossConnect
 
         private void butSMS_Click(object sender, RoutedEventArgs e)
         {
-            var state= App.openWindows[App.windowSettings.openWindowIndex].state;
-            int bookNum;
-            int relChaptNum;
-            string fullName;
-            string titleText;
-            state.source.GetInfo(state.chapterNum, state.verseNum, out bookNum, out relChaptNum, out fullName, out titleText);
-            string title = titleText + " - " + state.bibleToLoad;
-            string verseText = state.source.GetVerseTextOnly(state.chapterNum, state.verseNum);
+            string textsWithTitles;
+            string titlesOnly;
+            GetLast3SecondsChosenVerses(out textsWithTitles, out titlesOnly);
             SmsComposeTask smsComposeTask = new SmsComposeTask();
             //smsComposeTask.To = "5555555555";
-            smsComposeTask.Body = verseText + "\n" + title;
+            smsComposeTask.Body = textsWithTitles;
             smsComposeTask.Show();
+        }
+
+        private void GetLast3SecondsChosenVerses(out string textsWithTitles, out string titlesOnly)
+        {
+            textsWithTitles="";
+            titlesOnly = "";
+            DateTime? firstFound=null;
+            List<BiblePlaceMarker> foundVerses = new List<BiblePlaceMarker>();
+            for (int j = App.placeMarkers.history.Count - 1; j >= 0; j--)
+            {
+                BiblePlaceMarker place = App.placeMarkers.history[j];
+                if(firstFound==null)
+                {
+                    firstFound=place.when;
+                    foundVerses.Add(place);
+                }
+                else if(firstFound.Value.AddSeconds(-3).CompareTo(place.when)<0)
+                {
+                    foundVerses.Add(place);
+                }
+                else
+                {
+                    //we found all the verses, get out.
+                    break;
+                }
+            }
+
+            var state= App.openWindows[App.windowSettings.openWindowIndex].state;
+            //they are in reverse order again,
+            for (int j = foundVerses.Count - 1; j >= 0; j--)
+            {
+                BiblePlaceMarker place = foundVerses[j];
+                int bookNum;
+                int relChaptNum;
+                string fullName;
+                string titleText;
+                state.source.GetInfo(place.chapterNum, place.verseNum, out bookNum, out relChaptNum, out fullName, out titleText);
+                string title = titleText + " - " + state.bibleToLoad;
+                string verseText = state.source.GetVerseTextOnly(place.chapterNum, place.verseNum);
+
+                if(!string.IsNullOrEmpty(titlesOnly))
+                {
+                    textsWithTitles+="\n";
+                    titlesOnly+= ", ";
+                }
+                titlesOnly += title;
+                textsWithTitles += verseText.Replace("<p>", "").Replace("</p>", "").Replace("<br />", "").Replace("\n", " ") + "\n-" + title;
+            }
         }
 
         private void GetSelectedData(out WINDOW_TYPE selectedType, out SwordBackend.SwordBook bookSelected)

@@ -40,7 +40,7 @@ namespace CrossConnect
 
     using SwordBackend;
 
-    public partial class Search : PhoneApplicationPage
+    public partial class Search : AutoRotatePage
     {
         #region Fields
 

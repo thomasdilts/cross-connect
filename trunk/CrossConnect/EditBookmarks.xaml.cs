@@ -34,7 +34,7 @@ namespace CrossConnect
 
     using Microsoft.Phone.Controls;
 
-    public partial class EditBookmarks : PhoneApplicationPage
+    public partial class EditBookmarks : AutoRotatePage
     {
         #region Fields
 

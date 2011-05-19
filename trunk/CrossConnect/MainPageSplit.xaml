@@ -1,4 +1,4 @@
-﻿<phone:PhoneApplicationPage 
+﻿<local:AutoRotatePage
     x:Class="CrossConnect.MainPageSplit"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,13 +6,13 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:local="clr-namespace:CrossConnect"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696" 
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    xmlns:local="clr-namespace:CrossConnect"
     shell:SystemTray.IsVisible="True" xmlns:my="clr-namespace:CrossConnect"  
     Unloaded="PhoneApplicationPage_Unloaded"
     Loaded="MainPage_Loaded" OrientationChanged="PhoneApplicationPage_OrientationChanged" >
@@ -46,7 +46,7 @@
     </Grid>
 
     <!--Sample code showing usage of ApplicationBar-->
-    <phone:PhoneApplicationPage.ApplicationBar>
+    <local:AutoRotatePage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBarIconButton Click="butDownload_Click" x:Name="butDownload" IconUri="/Images/dark/appbar.download.rest.png" Text="Download bibles"/>
             <shell:ApplicationBarIconButton Click="butNewWindow_Click" x:Name="butNewWindow" IconUri="/Images/dark/appbar.new.rest.png" Text="New window"/>
@@ -57,5 +57,5 @@
                 <shell:ApplicationBarMenuItem Click="menuClearHistory_Click" x:Name="menuClearHistory" Text="Clear history"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>
-</phone:PhoneApplicationPage>
+    </local:AutoRotatePage.ApplicationBar>
+</local:AutoRotatePage>

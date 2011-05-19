@@ -188,6 +188,58 @@ namespace CrossConnect
             }
         }
 
+        public void UpdateBrowser()
+        {
+            if (this.state.source != null)
+            {
+                var root = IsolatedStorageFile.GetUserStoreForApplication();
+
+                // Must change the file name, otherwise the browser may or may not update.
+                string file = "web" + (int)(new Random().NextDouble() * 10000) + ".html";
+                if (root.FileExists(App.WEB_DIR_ISOLATED + "/" + this.lastFileName))
+                {
+                    root.DeleteFile(App.WEB_DIR_ISOLATED + "/" + this.lastFileName);
+                }
+                double fontSizeMultiplier = 1;
+                MainPageSplit parent = (MainPageSplit)((Grid)(Grid)this.Parent).Parent;
+                if (parent.Orientation == PageOrientation.Landscape
+                    || parent.Orientation == PageOrientation.LandscapeLeft
+                    || parent.Orientation == PageOrientation.LandscapeRight)
+                {
+                    //we must adjust the font size for the new orientation. otherwise the font is too big.
+                    fontSizeMultiplier = parent.ActualHeight / parent.ActualWidth;
+                }
+
+                this.lastFileName = file;
+                IsolatedStorageFileStream fs = root.CreateFile(App.WEB_DIR_ISOLATED + "/" + this.lastFileName);
+                System.IO.StreamWriter tw = new System.IO.StreamWriter(fs);
+                tw.Write(this.state.source.GetChapterHtml(
+                    this.state.chapterNum,
+                    GetBrowserColor("PhoneBackgroundColor"),
+                    GetBrowserColor("PhoneForegroundColor"),
+                    GetBrowserColor("PhoneAccentColor"),
+                    this.state.htmlFontSize * fontSizeMultiplier));
+                tw.Close();
+                fs.Close();
+                //webBrowser1.FontSize = this.state.htmlFontSize;
+                webBrowser1.Base = App.WEB_DIR_ISOLATED;
+
+                Uri source = new Uri(file + "#CHAP_" + this.state.chapterNum + "_VERS_" + this.state.verseNum, UriKind.Relative);
+                webBrowser1.Navigate(source);
+
+                this.WriteTitle();
+
+                // update the sync button image
+                this.state.isSynchronized = !this.state.isSynchronized;
+                this.ButLink_Click(null, null);
+
+                System.Windows.Threading.DispatcherTimer tmr = new System.Windows.Threading.DispatcherTimer();
+                tmr.Interval = TimeSpan.FromSeconds(1);
+                tmr.Tick += this.OnTimerTick;
+                tmr.Start();
+            }
+        }
+
         private void border1_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
         {
             DoManipulation(e);
@@ -443,49 +495,6 @@ namespace CrossConnect
         private void title_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
         {
             DoManipulation(e);
-        }
-
-        private void UpdateBrowser()
-        {
-            if (this.state.source != null)
-            {
-                var root = IsolatedStorageFile.GetUserStoreForApplication();
-
-                // Must change the file name, otherwise the browser may or may not update.
-                string file = "web" + (int)(new Random().NextDouble() * 10000) + ".html";
-                if (root.FileExists(App.WEB_DIR_ISOLATED + "/" + this.lastFileName))
-                {
-                    root.DeleteFile(App.WEB_DIR_ISOLATED + "/" + this.lastFileName);
-                }
-
-                this.lastFileName = file;
-                IsolatedStorageFileStream fs = root.CreateFile(App.WEB_DIR_ISOLATED + "/" + this.lastFileName);
-                System.IO.StreamWriter tw = new System.IO.StreamWriter(fs);
-                tw.Write(this.state.source.GetChapterHtml(
-                    this.state.chapterNum,
-                    GetBrowserColor("PhoneBackgroundColor"),
-                    GetBrowserColor("PhoneForegroundColor"),
-                    GetBrowserColor("PhoneAccentColor"),
-                    this.state.htmlFontSize));
-                tw.Close();
-                fs.Close();
-                //webBrowser1.FontSize = this.state.htmlFontSize;
-                webBrowser1.Base = App.WEB_DIR_ISOLATED;
-
-                Uri source = new Uri(file + "#CHAP_" + this.state.chapterNum + "_VERS_" + this.state.verseNum, UriKind.Relative);
-                webBrowser1.Navigate(source);
-
-                this.WriteTitle();
-
-                // update the sync button image
-                this.state.isSynchronized = !this.state.isSynchronized;
-                this.ButLink_Click(null, null);
-
-                System.Windows.Threading.DispatcherTimer tmr = new System.Windows.Threading.DispatcherTimer();
-                tmr.Interval = TimeSpan.FromSeconds(1);
-                tmr.Tick += this.OnTimerTick;
-                tmr.Start();
-            }
         }
 
         private void WebBrowser1_Loaded(object sender, RoutedEventArgs e)
