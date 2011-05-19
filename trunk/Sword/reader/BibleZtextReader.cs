@@ -1050,7 +1050,7 @@ namespace SwordBackend
                                 if ((!noTitles || !isInTitle) && text.Length>0)
                                 {
                                     char firstChar = text[0];
-                                    appendText(((!firstChar.Equals(',') && !firstChar.Equals('.') && !firstChar.Equals(':') && !firstChar.Equals(';'))?" ":"") + text, plainText, noteText, isInElement);
+                                    appendText(((!firstChar.Equals(',') && !firstChar.Equals('.') && !firstChar.Equals(':') && !firstChar.Equals(';') && !firstChar.Equals('?')) ? " " : "") + text, plainText, noteText, isInElement);
                                 }
                                 break;
                             case XmlNodeType.EndElement:
