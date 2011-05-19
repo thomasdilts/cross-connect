@@ -365,7 +365,7 @@ namespace CrossConnect
 
         private void DoManipulation(ManipulationCompletedEventArgs e)
         {
-            if (manipulationTimer == null && lastManipulationKillTime.AddSeconds(1).CompareTo(DateTime.Now) < 0)
+            if (manipulationTimer == null && lastManipulationKillTime.AddMilliseconds(400).CompareTo(DateTime.Now) < 0)
             {
                 manipulationToProcess = e;
                 //start timer
