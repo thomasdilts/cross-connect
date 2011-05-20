@@ -457,7 +457,7 @@ namespace SwordBackend
             byte[] chapterBuffer = getChapterBytes(chapterNumber);
             string chapter = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
             //debug only
-            string all = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length); 
+            //string all = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length); 
             BibleZtextReader.VersePos verse = chapters[chapterNumber].verses[verseNumber];
             return parseOsisText(
                 "",
