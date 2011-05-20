@@ -33,6 +33,7 @@ namespace CrossConnect
     using System.Windows.Shapes;
 
     using Microsoft.Phone.Controls;
+    using Microsoft.Phone.Shell;
 
     public partial class SelectBibleBook : AutoRotatePage
     {
@@ -124,7 +125,12 @@ namespace CrossConnect
             PageTitle.Text = Translations.translate("Select chapter");
             // set up the array for the chapter selection
             int bookNum = (int)((Button)sender).Tag;
-            App.openWindows[App.windowSettings.openWindowIndex].state.bookNum = bookNum;
+            object openWindowIndex = null;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            {
+                openWindowIndex = (int)0;
+            }
+            App.openWindows[(int)openWindowIndex].state.bookNum = bookNum;
             int chapters = SwordBackend.BibleZtextReader.CHAPTERS_IN_BOOK[bookNum];
             int butWidth = 96;
             int butHeight = 70;
@@ -140,7 +146,7 @@ namespace CrossConnect
             }
             if (chapters == 1)
             {
-                App.openWindows[App.windowSettings.openWindowIndex].state.chapterNum = 0;
+                App.openWindows[(int)openWindowIndex].state.chapterNum = 0;
                 Button but=new Button();
                 but.Tag=0;
                 Second_Click(but,new RoutedEventArgs());
@@ -168,9 +174,14 @@ namespace CrossConnect
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
+            object openWindowIndex = null;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            {
+                openWindowIndex = (int)0;
+            }
             PageTitle.Text = Translations.translate("Select book");
             reloadWindow(new ButtonWindowSpecs(
-                App.openWindows[App.windowSettings.openWindowIndex].state.source.existsShortNames?96:230,
+                App.openWindows[(int)openWindowIndex].state.source.existsShortNames ? 96 : 230,
                 70,
                 66,
                 new Color[] { Colors.Blue, Colors.Blue, Colors.Blue, Colors.Blue, Colors.Blue,
@@ -183,7 +194,7 @@ namespace CrossConnect
                 Colors.Purple,Colors.Purple,Colors.Purple,Colors.Purple,Colors.Purple,Colors.Purple,Colors.Purple,Colors.Purple,Colors.Purple,Colors.Purple,Colors.Purple,Colors.Purple,Colors.Purple,
                 Colors.Red,Colors.Red,Colors.Red,Colors.Red,Colors.Red,Colors.Red,Colors.Red,Colors.Red,
                 Colors.Yellow},
-                App.openWindows[App.windowSettings.openWindowIndex].state.source.getAllShortNames(),
+                App.openWindows[(int)openWindowIndex].state.source.getAllShortNames(),
                 First_Click));
         }
 
@@ -194,14 +205,20 @@ namespace CrossConnect
 
         private void Second_Click(object sender, RoutedEventArgs e)
         {
-            int chapter=0;
-            for (int i = 0; i < App.openWindows[App.windowSettings.openWindowIndex].state.bookNum; i++)
+            object openWindowIndex = null;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            {
+                openWindowIndex = (int)0;
+            }
+
+            int chapter = 0;
+            for (int i = 0; i < App.openWindows[(int)openWindowIndex].state.bookNum; i++)
             {
                 chapter+=SwordBackend.BibleZtextReader.CHAPTERS_IN_BOOK[i];
             }
-            App.openWindows[App.windowSettings.openWindowIndex].state.chapterNum = (int)((Button)sender).Tag + chapter;
-            App.openWindows[App.windowSettings.openWindowIndex].state.verseNum = 0;
-            App.windowSettings.skipWindowSettings = true;
+            App.openWindows[(int)openWindowIndex].state.chapterNum = (int)((Button)sender).Tag + chapter;
+            App.openWindows[(int)openWindowIndex].state.verseNum = 0;
+            PhoneApplicationService.Current.State["skipWindowSettings"] = true;
             if (NavigationService.CanGoBack)
             {
                 NavigationService.GoBack();

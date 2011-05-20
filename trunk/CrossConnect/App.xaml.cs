@@ -62,13 +62,11 @@ namespace CrossConnect
         public const int MAX_NUM_WINDOWS = 10;
         public const string WEB_DIR_ISOLATED = "webtemporary";
 
-        public static HelpStartValues helpstart = new HelpStartValues();
         public static InstalledBibles installedBibles = new InstalledBibles();
         public static int isFirstTimeInMainPageSplit = 0;
         public static MainPageSplit mainWindow = null;
         public static List<BrowserTitledWindow> openWindows = new List<BrowserTitledWindow>();
         public static BiblePlaceMarkers placeMarkers = new BiblePlaceMarkers();
-        public static WindowSettingsSpec windowSettings;
 
         /// <summary>
         /// Avoid double-initialization
@@ -395,13 +393,13 @@ namespace CrossConnect
                 System.Diagnostics.Debugger.Break();
             }
 
-            MessageBoxResult result = MessageBox.Show(Translations.translate("An error occured. Do you want to completely erase the memory for this program?"), string.Empty, MessageBoxButton.OKCancel);
-            if (result == MessageBoxResult.OK)
-            {
-                IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
-                root.Remove();
-                System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings.Clear();
-            }
+            //MessageBoxResult result = MessageBox.Show(Translations.translate("An error occured. Do you want to completely erase the memory for this program?"), string.Empty, MessageBoxButton.OKCancel);
+            //if (result == MessageBoxResult.OK)
+            //{
+            //    IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
+            //    root.Remove();
+            //    System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings.Clear();
+            //}
         }
 
         // Do not add any additional code to this method
@@ -451,17 +449,6 @@ namespace CrossConnect
 
         #region Nested Types
 
-        public struct WindowSettingsSpec
-        {
-            #region Fields
-
-            public bool isAddNewWindowOnly;
-            public int openWindowIndex;
-            public bool skipWindowSettings;
-
-            #endregion Fields
-        }
-
         [DataContract(IsReference = true)]
         [KnownType(typeof(BiblePlaceMarker))]
         public class BiblePlaceMarkers
@@ -472,16 +459,6 @@ namespace CrossConnect
             public List<BiblePlaceMarker> bookmarks = new List<BiblePlaceMarker>();
             [DataMember]
             public List<BiblePlaceMarker> history = new List<BiblePlaceMarker>();
-
-            #endregion Fields
-        }
-
-        public class HelpStartValues
-        {
-            #region Fields
-
-            public string embeddedFilePath = string.Empty;
-            public string title = string.Empty;
 
             #endregion Fields
         }

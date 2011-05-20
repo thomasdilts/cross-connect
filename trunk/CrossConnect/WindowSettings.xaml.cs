@@ -33,6 +33,7 @@ namespace CrossConnect
     using System.Windows.Shapes;
 
     using Microsoft.Phone.Controls;
+    using Microsoft.Phone.Shell;
     using Microsoft.Phone.Tasks;
 
     using SwordBackend;
@@ -52,8 +53,14 @@ namespace CrossConnect
 
         private void butAddBookmarks_Click(object sender, RoutedEventArgs e)
         {
-            App.AddBookmark(App.openWindows[App.windowSettings.openWindowIndex].state.chapterNum,
-                App.openWindows[App.windowSettings.openWindowIndex].state.verseNum);
+            object openWindowIndex = null;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            {
+                openWindowIndex = (int)0;
+            }
+
+            App.AddBookmark(App.openWindows[(int)openWindowIndex].state.chapterNum,
+                App.openWindows[(int)openWindowIndex].state.verseNum);
             if (NavigationService.CanGoBack)
             {
                 NavigationService.GoBack();
@@ -95,9 +102,15 @@ namespace CrossConnect
 
         private void butSave_Click(object sender, RoutedEventArgs e)
         {
-            if (App.openWindows[App.windowSettings.openWindowIndex].state.windowType == WINDOW_TYPE.WINDOW_SEARCH)
+            object openWindowIndex = null;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
             {
-                App.openWindows[App.windowSettings.openWindowIndex].state.htmlFontSize = this.sliderTextSize.Value;
+                openWindowIndex = (int)0;
+            }
+
+            if (App.openWindows[(int)openWindowIndex].state.windowType == WINDOW_TYPE.WINDOW_SEARCH)
+            {
+                App.openWindows[(int)openWindowIndex].state.htmlFontSize = this.sliderTextSize.Value;
             }
             else
             {
@@ -156,8 +169,13 @@ namespace CrossConnect
                     break;
                 }
             }
+            object openWindowIndex = null;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            {
+                openWindowIndex = (int)0;
+            }
 
-            var state= App.openWindows[App.windowSettings.openWindowIndex].state;
+            var state = App.openWindows[(int)openWindowIndex].state;
             //they are in reverse order again,
             for (int j = foundVerses.Count - 1; j >= 0; j--)
             {
@@ -235,7 +253,23 @@ namespace CrossConnect
             selectDocumentType.Items.Add(Translations.translate("History"));
             selectDocumentType.Items.Add(Translations.translate("Bookmarks"));
 
-            if (App.windowSettings.skipWindowSettings)
+            object isAddNewWindowOnly = null;
+            object skipWindowSettings = null;
+            object openWindowIndex = null;
+            if (!PhoneApplicationService.Current.State.TryGetValue("isAddNewWindowOnly", out isAddNewWindowOnly))
+            {
+                isAddNewWindowOnly = false;
+            }
+            if (!PhoneApplicationService.Current.State.TryGetValue("skipWindowSettings", out skipWindowSettings))
+            {
+                skipWindowSettings = false;
+            }
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            {
+                openWindowIndex = 0;
+            }
+
+            if ((bool)skipWindowSettings)
             {
                 // request to skip this window.
                 if (NavigationService.CanGoBack)
@@ -250,13 +284,13 @@ namespace CrossConnect
             foreach (var book in App.installedBibles.installedBibles)
             {
                 selectDocument.Items.Add(book.Value.Name);
-                if (App.windowSettings.isAddNewWindowOnly == false && App.openWindows.Count > 0 && App.openWindows[App.windowSettings.openWindowIndex].state.bibleToLoad.Equals(book.Value.sbmd.internalName))
+                if ((bool)isAddNewWindowOnly == false && App.openWindows.Count > 0 && App.openWindows[(int)openWindowIndex].state.bibleToLoad.Equals(book.Value.sbmd.internalName))
                 {
                     selectDocument.SelectedIndex = selectDocument.Items.Count - 1;
                 }
             }
             System.Windows.Visibility visibility = System.Windows.Visibility.Visible;
-            if (App.openWindows.Count == 0 || App.windowSettings.isAddNewWindowOnly)
+            if (App.openWindows.Count == 0 || (bool)isAddNewWindowOnly)
             {
                 visibility = System.Windows.Visibility.Collapsed;
             }
@@ -271,7 +305,7 @@ namespace CrossConnect
             // must show the current window selections
             if (App.openWindows.Count > 0)
             {
-                var state= App.openWindows[App.windowSettings.openWindowIndex].state;
+                var state= App.openWindows[(int)openWindowIndex].state;
                 int bookNum;
                 int relChaptNum;
                 string fullName;
@@ -314,11 +348,16 @@ namespace CrossConnect
             WINDOW_TYPE selectedType;
             SwordBackend.SwordBook bookSelected;
             GetSelectedData(out selectedType, out bookSelected);
-            var state = App.openWindows[App.windowSettings.openWindowIndex].state;
+            object openWindowIndex = null;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            {
+                openWindowIndex = (int)0;
+            }
+            var state = App.openWindows[(int)openWindowIndex].state;
             state.windowType = selectedType;
             state.bibleToLoad = bookSelected.sbmd.internalName;
             state.htmlFontSize = this.sliderTextSize.Value;
-            App.openWindows[App.windowSettings.openWindowIndex].Initialize(state.bibleToLoad, state.bookNum, state.chapterNum, state.windowType);
+            App.openWindows[(int)openWindowIndex].Initialize(state.bibleToLoad, state.bookNum, state.chapterNum, state.windowType);
         }
 
         private void sliderTextSize_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

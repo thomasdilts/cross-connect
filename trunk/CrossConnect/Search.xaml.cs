@@ -37,6 +37,7 @@ namespace CrossConnect
     using System.Windows.Shapes;
 
     using Microsoft.Phone.Controls;
+    using Microsoft.Phone.Shell;
 
     using SwordBackend;
 
@@ -127,15 +128,18 @@ namespace CrossConnect
                     {
                         MessageBox.Show(Translations.translate("Too many found. Search stopped"));
                     }
-
-                    App.AddWindow(
-                        App.openWindows[App.windowSettings.openWindowIndex].state.bibleToLoad,
-                        0,
-                        0,
-                        WINDOW_TYPE.WINDOW_SEARCH,
-                        App.openWindows[App.windowSettings.openWindowIndex].state.htmlFontSize,
-                        sourceSearch);
-                    App.windowSettings.skipWindowSettings = true;
+                    object openWindowIndex = null;
+                    if (PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+                    {
+                        App.AddWindow(
+                            App.openWindows[(int)openWindowIndex].state.bibleToLoad,
+                            0,
+                            0,
+                            WINDOW_TYPE.WINDOW_SEARCH,
+                            App.openWindows[(int)openWindowIndex].state.htmlFontSize,
+                            sourceSearch);
+                    }
+                    PhoneApplicationService.Current.State["skipWindowSettings"] = true;
                     if (NavigationService.CanGoBack)
                     {
                         NavigationService.GoBack();
@@ -146,8 +150,9 @@ namespace CrossConnect
 
         private void butHelp_Click(object sender, RoutedEventArgs e)
         {
-            App.helpstart.title = Translations.translate("Help") + "(Regular Expressions)";
-            App.helpstart.embeddedFilePath="CrossConnect.Properties.regex.html";
+            PhoneApplicationService.Current.State["HelpWindowFileToLoad"] = "CrossConnect.Properties.regex.html";
+            PhoneApplicationService.Current.State["HelpWindowTitle"]= Translations.translate("Help") + "(Regular Expressions)";
+
             NavigationService.Navigate(new Uri("/Help.xaml", UriKind.Relative));
         }
 
@@ -199,6 +204,11 @@ namespace CrossConnect
 
             isSearchFinished = false;
             isSearchFinishedReported = false;
+            object openWindowIndex = null;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            {
+                openWindowIndex = (int)0;
+            }
 
             if ((bool)wholeBible.IsChecked)
             {
@@ -240,9 +250,9 @@ namespace CrossConnect
                 }
 
                 searchTypeIndex = 3;
-                searchChapter = App.openWindows[App.windowSettings.openWindowIndex].state.chapterNum;
+                searchChapter = App.openWindows[(int)openWindowIndex].state.chapterNum;
             }
-            BibleZtextReader source = (BibleZtextReader)App.openWindows[App.windowSettings.openWindowIndex].state.source;
+            BibleZtextReader source = (BibleZtextReader)App.openWindows[(int)openWindowIndex].state.source;
             sourceSearch = new SearchReader(
                 source.path,
                 source.iso2DigitLangCode,
@@ -272,12 +282,17 @@ namespace CrossConnect
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
-            var state = App.openWindows[App.windowSettings.openWindowIndex].state;
+            object openWindowIndex = null;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            {
+                openWindowIndex = (int)0;
+            }
+            var state = App.openWindows[(int)openWindowIndex].state;
 
             int dummy2;
             string Name;
             string text;
-            App.openWindows[App.windowSettings.openWindowIndex].state.source.GetInfo(state.chapterNum, state.verseNum, out currentBookNum, out dummy2, out Name, out text);
+            App.openWindows[(int)openWindowIndex].state.source.GetInfo(state.chapterNum, state.verseNum, out currentBookNum, out dummy2, out Name, out text);
             Chapter.Content = Name;
 
             PageTitle.Text = Translations.translate("Search");

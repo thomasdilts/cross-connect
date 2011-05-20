@@ -367,7 +367,7 @@ namespace SwordBackend
                 "body {{background:{0};color:{1};font-size:{2}pt;margin:0;padding:0 }}",
                 htmlBackgroundColor,
                 htmlForegroundColor,
-                (int)htmlFontSize));
+                (int)(htmlFontSize + 0.5))); //old fashioned way to round an integer
 
             head.Append(string.Format(
                 "a {{color:{0};text-decoration:none;}}",
@@ -457,7 +457,7 @@ namespace SwordBackend
             byte[] chapterBuffer = getChapterBytes(chapterNumber);
             string chapter = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
             //debug only
-            //string all = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length); 
+            //string all = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
             BibleZtextReader.VersePos verse = chapters[chapterNumber].verses[verseNumber];
             return parseOsisText(
                 "",

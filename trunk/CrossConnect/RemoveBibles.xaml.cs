@@ -95,7 +95,7 @@ namespace CrossConnect
                         {
                             for (int i = App.openWindows.Count()-1; i >=0 ; i--)
                             {
-                                if (App.openWindows[i].state.bibleToLoad.Equals(book.Value.sbmd.internalName))
+                                if (App.openWindows[i].state.bibleToLoad.Equals(book.Value.sbmd.internalName) && App.mainWindow!=null)
                                 {
                                     App.openWindows.RemoveAt(i);
                                     App.mainWindow.ReDrawWindows();

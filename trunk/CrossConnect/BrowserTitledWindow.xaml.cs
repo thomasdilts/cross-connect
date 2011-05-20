@@ -41,6 +41,7 @@ namespace CrossConnect
     using System.Windows.Shapes;
 
     using Microsoft.Phone.Controls;
+    using Microsoft.Phone.Shell;
 
     using SwordBackend;
 
@@ -190,7 +191,7 @@ namespace CrossConnect
 
         public void UpdateBrowser()
         {
-            if (this.state.source != null)
+            if (this.state.source != null && this.Parent != null)
             {
                 var root = IsolatedStorageFile.GetUserStoreForApplication();
 
@@ -201,15 +202,17 @@ namespace CrossConnect
                     root.DeleteFile(App.WEB_DIR_ISOLATED + "/" + this.lastFileName);
                 }
                 double fontSizeMultiplier = 1;
-                MainPageSplit parent = (MainPageSplit)((Grid)(Grid)this.Parent).Parent;
-                if (parent.Orientation == PageOrientation.Landscape
-                    || parent.Orientation == PageOrientation.LandscapeLeft
-                    || parent.Orientation == PageOrientation.LandscapeRight)
+                if (this.Parent != null && ((Grid)(Grid)this.Parent).Parent != null)
                 {
-                    //we must adjust the font size for the new orientation. otherwise the font is too big.
-                    fontSizeMultiplier = parent.ActualHeight / parent.ActualWidth;
+                    MainPageSplit parent = (MainPageSplit)((Grid)(Grid)this.Parent).Parent;
+                    if (parent.Orientation == PageOrientation.Landscape
+                        || parent.Orientation == PageOrientation.LandscapeLeft
+                        || parent.Orientation == PageOrientation.LandscapeRight)
+                    {
+                        //we must adjust the font size for the new orientation. otherwise the font is too big.
+                        fontSizeMultiplier = parent.ActualHeight / parent.ActualWidth;
+                    }
                 }
-
                 this.lastFileName = file;
                 IsolatedStorageFileStream fs = root.CreateFile(App.WEB_DIR_ISOLATED + "/" + this.lastFileName);
                 System.IO.StreamWriter tw = new System.IO.StreamWriter(fs);
@@ -315,10 +318,12 @@ namespace CrossConnect
         private void ButMenu_Click(object sender, RoutedEventArgs e)
         {
             killManipulation();
-            App.windowSettings.openWindowIndex = this.state.curIndex;
-            App.windowSettings.isAddNewWindowOnly = false;
+
+            PhoneApplicationService.Current.State["isAddNewWindowOnly"] = false;
+            PhoneApplicationService.Current.State["skipWindowSettings"] = false;
+            PhoneApplicationService.Current.State["openWindowIndex"] = this.state.curIndex;
+
             MainPageSplit parent = (MainPageSplit)((Grid)(Grid)this.Parent).Parent;
-            App.windowSettings.skipWindowSettings = false;
             parent.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
         }
 

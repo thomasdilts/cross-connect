@@ -34,6 +34,7 @@ namespace CrossConnect
     using System.Windows.Shapes;
 
     using Microsoft.Phone.Controls;
+    using Microsoft.Phone.Shell;
 
     using SwordBackend;
 
@@ -52,10 +53,26 @@ namespace CrossConnect
 
         private void WebBrowser_Loaded(object sender, RoutedEventArgs e)
         {
-            PageTitle.Text = App.helpstart.title;
-            Stream st=this.GetType().Assembly.GetManifestResourceStream(App.helpstart.embeddedFilePath);
+            object filePath = null;
+            object title = null;
+            object openWindowIndex = null;
+            PhoneApplicationService.Current.State.TryGetValue("HelpWindowFileToLoad", out filePath);
+            PhoneApplicationService.Current.State.TryGetValue("HelpWindowTitle", out title);
+            PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex);
+
+            if (string.IsNullOrEmpty((string)filePath) || string.IsNullOrEmpty((string)title) || openWindowIndex==null)
+            {
+                if (this.NavigationService.CanGoBack)
+                {
+                    this.NavigationService.GoBack();
+                }
+                return;
+            }
+            PageTitle.Text = (string)title;
+            Stream st = this.GetType().Assembly.GetManifestResourceStream((string)filePath);
             StreamReader sr = new StreamReader(st);
-            var state = App.openWindows[App.windowSettings.openWindowIndex].state;
+
+            var state = App.openWindows[(int)openWindowIndex].state;
             webBrowser1.NavigateToString(BibleZtextReader.HtmlHeader(
                 BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"),
                 BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),

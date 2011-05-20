@@ -143,8 +143,9 @@ namespace CrossConnect
 
         private void butAddWindow_Click(object sender, RoutedEventArgs e)
         {
-            App.windowSettings.isAddNewWindowOnly = true;
-            App.windowSettings.skipWindowSettings = false;
+            PhoneApplicationService.Current.State["isAddNewWindowOnly"] = true;
+            PhoneApplicationService.Current.State["skipWindowSettings"] = false;
+            PhoneApplicationService.Current.State["openWindowIndex"] = 0;
             this.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
         }
 
@@ -168,8 +169,8 @@ namespace CrossConnect
 
         private void butNewWindow_Click(object sender, EventArgs e)
         {
-            App.windowSettings.isAddNewWindowOnly = true;
-            App.windowSettings.skipWindowSettings = false;
+            PhoneApplicationService.Current.State["isAddNewWindowOnly"] = true;
+            PhoneApplicationService.Current.State["skipWindowSettings"] = false;
             this.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
         }
 
@@ -226,7 +227,7 @@ namespace CrossConnect
                 {
                     if (App.isFirstTimeInMainPageSplit<=1)
                     {
-                        App.windowSettings.skipWindowSettings = false;
+                        PhoneApplicationService.Current.State["skipWindowSettings"] = false;
                         this.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
                         App.isFirstTimeInMainPageSplit=2;
                     }
