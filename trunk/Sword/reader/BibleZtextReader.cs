@@ -456,6 +456,8 @@ namespace SwordBackend
         {
             byte[] chapterBuffer = getChapterBytes(chapterNumber);
             string chapter = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
+            //debug only
+            string all = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length); 
             BibleZtextReader.VersePos verse = chapters[chapterNumber].verses[verseNumber];
             return parseOsisText(
                 "",
@@ -942,6 +944,7 @@ namespace SwordBackend
             XmlReaderSettings settings = new XmlReaderSettings();
             settings.IgnoreWhitespace=false;
             bool isInElement = false;
+            bool isInInjectionElement = false;
             bool isInTitle = false;
             bool isChaptNumGiven = false;
             bool isChaptNumGivenNotes = false;
@@ -1011,6 +1014,14 @@ namespace SwordBackend
                                     case "lg":
                                         break;
                                     case "FI":
+                                        if (!isChaptNumGivenNotes && !isRaw)
+                                        {
+                                            noteText.Append("<p>" + chapterNumber);
+                                            isChaptNumGivenNotes = true;
+                                        }
+                                        noteText.Append("(");
+                                        isInInjectionElement = true;
+                                        break;
                                     case "RF":
                                     case "note":
                                         if (!isChaptNumGivenNotes && !isRaw)
@@ -1027,13 +1038,16 @@ namespace SwordBackend
                                         }
                                         break;
                                     case "Rf":
-                                    case "Fi":
                                         isInElement = false;
+                                        break;
+                                    case "Fi":
+                                        noteText.Append(") ");
+                                        isInInjectionElement = false;
                                         break;
                                 }
                                 break;
                             case XmlNodeType.Text:
-                                if (!isInElement && chapterNumber.Length > 0 && !isInTitle && !isChaptNumGiven)
+                                if (!isInElement && !isInInjectionElement && chapterNumber.Length > 0 && !isInTitle && !isChaptNumGiven)
                                 {
                                     plainText.Append(chapterNumber);
                                     isChaptNumGiven = true;
@@ -1050,7 +1064,7 @@ namespace SwordBackend
                                 if ((!noTitles || !isInTitle) && text.Length>0)
                                 {
                                     char firstChar = text[0];
-                                    appendText(((!firstChar.Equals(',') && !firstChar.Equals('.') && !firstChar.Equals(':') && !firstChar.Equals(';') && !firstChar.Equals('?')) ? " " : "") + text, plainText, noteText, isInElement);
+                                    appendText(((!firstChar.Equals(',') && !firstChar.Equals('.') && !firstChar.Equals(':') && !firstChar.Equals(';') && !firstChar.Equals('?')) ? " " : "") + text, plainText, noteText, isInElement || isInInjectionElement);
                                 }
                                 break;
                             case XmlNodeType.EndElement:
@@ -1097,7 +1111,8 @@ namespace SwordBackend
                 }
                 return noteText.ToString();
             }
-            return plainText.ToString();
+            //this replace fixes a character translation problem for slanted apostrophy
+            return plainText.ToString().Replace('\x92', '\'');
         }
 
         protected void raiseSourceChangedEvent()
