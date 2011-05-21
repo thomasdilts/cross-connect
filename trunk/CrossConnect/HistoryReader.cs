@@ -119,12 +119,12 @@ namespace CrossConnect
             this.htmlBackgroundColor = htmlBackgroundColor;
             this.htmlForegroundColor = htmlForegroundColor;
             this.htmlPhoneAccentColor = htmlPhoneAccentColor;
-            this.htmlFontSize = htmlFontSize;
-            if (mustUpdate)
+            
+            if (mustUpdate || this.htmlFontSize != htmlFontSize)
             {
                 this.displayText = MakeListDisplayText(App.placeMarkers.history, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
             }
-
+            this.htmlFontSize = htmlFontSize;
             return this.displayText;
         }
 
