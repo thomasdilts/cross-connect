@@ -441,13 +441,13 @@ namespace CrossConnect
             System.Windows.Point pt = manipulationToProcess.FinalVelocities.LinearVelocity;
             if (pt.X > 700)
             {
-                //next
-                ButNext_Click(null, null);
+                //previous
+                ButPrevious_Click(null, null);
             }
             else if (pt.X < -700)
             {
-                //previous
-                ButPrevious_Click(null, null);
+                //next
+                ButNext_Click(null, null);
             }
         }
 
