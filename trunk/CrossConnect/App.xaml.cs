@@ -249,6 +249,7 @@ namespace CrossConnect
                             BrowserTitledWindow nextWindow = new BrowserTitledWindow();
                             nextWindow.state = (CrossConnect.BrowserTitledWindow.SerializableWindowState)ser.ReadObject(reader);
                             nextWindow.state.source.ReloadSettingsFile();
+                            nextWindow.state.isResume = true;
                             openWindows.Add(nextWindow);
                             nextWindow.Initialize(nextWindow.state.bibleToLoad, nextWindow.state.bookNum, nextWindow.state.chapterNum, nextWindow.state.windowType);
                         }

@@ -236,8 +236,10 @@ namespace CrossConnect
                 this.state.isSynchronized = !this.state.isSynchronized;
                 this.ButLink_Click(null, null);
 
+                //The window wont show the correct verse if we dont wait a few seconds before showing it.
                 System.Windows.Threading.DispatcherTimer tmr = new System.Windows.Threading.DispatcherTimer();
-                tmr.Interval = TimeSpan.FromSeconds(1);
+                tmr.Interval = TimeSpan.FromSeconds(state.isResume?3:1.5);
+                state.isResume = false;
                 tmr.Tick += this.OnTimerTick;
                 tmr.Start();
             }
@@ -638,6 +640,7 @@ namespace CrossConnect
             [DataMember]
             public WINDOW_TYPE windowType = WINDOW_TYPE.WINDOW_BIBLE;
 
+            public bool isResume = false;
             #endregion Fields
         }
 
