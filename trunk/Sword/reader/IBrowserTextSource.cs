@@ -69,6 +69,10 @@ namespace SwordBackend
 
         #region Methods
 
+        int getMaxNumChapters();
+
+        int getChapterStartNumber();
+
         string[] getAllShortNames();
 
         string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize);

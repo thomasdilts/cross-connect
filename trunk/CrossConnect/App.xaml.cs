@@ -51,6 +51,7 @@ namespace CrossConnect
         WINDOW_SEARCH,
         WINDOW_HISTORY,
         WINDOW_BOOKMARKS,
+        WINDOW_DAILY_PLAN,
     }
 
     #endregion Enumerations
@@ -164,7 +165,7 @@ namespace CrossConnect
             RaiseHistoryChangeEvent();
         }
 
-        public static void AddWindow(string bibleToLoad, int bookNum, int chapterNum, WINDOW_TYPE typeOfWindow,double textSize, IBrowserTextSource source = null)
+        public static void AddWindow(string bibleToLoad, int bookNum, int chapterNum, WINDOW_TYPE typeOfWindow, double textSize, IBrowserTextSource source = null)
         {
             BrowserTitledWindow nextWindow = new BrowserTitledWindow();
             nextWindow.Initialize(bibleToLoad, bookNum, chapterNum, typeOfWindow, source);
@@ -220,6 +221,30 @@ namespace CrossConnect
                 root.DeleteFile(WEB_DIR_ISOLATED + "/" + file);
             }
 
+            //get the daily plan first
+            string dailyPlanXmlData;
+            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("DailyPlan", out dailyPlanXmlData))
+            {
+                using (StringReader sr = new StringReader(dailyPlanXmlData))
+                {
+                    XmlReaderSettings settings = new XmlReaderSettings();
+                    using (XmlReader reader = XmlReader.Create(sr, settings))
+                    {
+                        Type[] types = new Type[]
+                        {
+                            typeof(SerializableDailyPlan),
+                            };
+                        DataContractSerializer ser = new DataContractSerializer(typeof(SerializableDailyPlan), types);
+                        dailyPlan = (SerializableDailyPlan)ser.ReadObject(reader);
+                    }
+                }
+            }
+
+            if (dailyPlan == null)
+            {
+                dailyPlan = new SerializableDailyPlan();
+            } 
+            
             openWindows.Clear();
 
             // get all windows
@@ -244,6 +269,7 @@ namespace CrossConnect
                                 typeof(BookMarkReader),
                                 typeof(HistoryReader),
                                 typeof(SearchReader),
+                                typeof(SwordBackend.DailyPlanReader),
                             };
                             DataContractSerializer ser = new DataContractSerializer(typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState), types);
                             BrowserTitledWindow nextWindow = new BrowserTitledWindow();
@@ -318,6 +344,7 @@ namespace CrossConnect
                     typeof(BookMarkReader),
                     typeof(HistoryReader),
                     typeof(SearchReader),
+                    typeof(SwordBackend.DailyPlanReader),
                 };
                 DataContractSerializer ser = new DataContractSerializer(typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState), types);
                 using (StringWriter sw = new StringWriter())
@@ -355,6 +382,26 @@ namespace CrossConnect
 
                 IsolatedStorageSettings.ApplicationSettings["BiblePlaceMarkers"] = sw.ToString();
             }
+
+            Type[] types3 = new Type[]
+            {
+                typeof(SerializableDailyPlan),
+            };
+
+            DataContractSerializer ser3 = new DataContractSerializer(typeof(SerializableDailyPlan), types3);
+            using (StringWriter sw = new StringWriter())
+            {
+                XmlWriterSettings settings = new XmlWriterSettings();
+                settings.OmitXmlDeclaration = true;
+                settings.Indent = true;
+                settings.NamespaceHandling = NamespaceHandling.OmitDuplicates;
+                using (XmlWriter writer = XmlWriter.Create(sw, settings))
+                {
+                    ser3.WriteObject(writer, dailyPlan);
+                }
+
+                IsolatedStorageSettings.ApplicationSettings["DailyPlan"] = sw.ToString();
+            }        
         }
 
         // Code to execute when the application is activated (brought to foreground)
@@ -464,6 +511,23 @@ namespace CrossConnect
             #endregion Fields
         }
 
+        [DataContract]
+        public class SerializableDailyPlan
+        {
+            #region Fields
+
+            [DataMember]
+            public DateTime planStartDate = DateTime.Now;
+            [DataMember]
+            public int planNumber = 0;
+            [DataMember]
+            public int planDayNumber = 0;
+
+            #endregion Fields
+        }
         #endregion Nested Types
+
+        public static SerializableDailyPlan dailyPlan=new SerializableDailyPlan();
+
     }
 }

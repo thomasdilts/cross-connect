@@ -18,7 +18,7 @@
 ///     Thomas Dilts. All rights reserved.
 /// </copyright>
 /// <author>Thomas Dilts</author>
-namespace CrossConnect
+namespace SwordBackend
 {
     using System;
     using System.Collections.Generic;
@@ -31,6 +31,7 @@ namespace CrossConnect
     using ComponentAce.Compression.Libs.zlib;
 
     using SwordBackend;
+    using System.Text;
 
     /// <summary>
     /// Load from a file all the book and verse pointers to the bzz file so that
@@ -41,30 +42,29 @@ namespace CrossConnect
     [KnownType(typeof(ChapterPos))]
     [KnownType(typeof(BookPos))]
     [KnownType(typeof(VersePos))]
-    public class HistoryReader : BibleZtextReader
+    public class DailyPlanReader : BibleZtextReader
     {
         #region Fields
 
-        private string displayText = string.Empty;
-        private string htmlBackgroundColor = string.Empty;
-        private double htmlFontSize = 0;
-        private string htmlForegroundColor = string.Empty;
-        private string htmlPhoneAccentColor = string.Empty;
+        private int dailyPlanNumber = 0;
+        private string transDay = "Day";
+        private string dailyPlanText = "Daily reading";
+        private DateTime startPlan;
+
+        BibleNames bibleNames=null;
 
         #endregion Fields
 
         #region Constructors
 
-        public HistoryReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
+        public DailyPlanReader(string path, string iso2DigitLangCode, bool isIsoEncoding, int dailyPlanNumber, string dailyPlanText, string transDay, DateTime startPlan)
             : base(path, iso2DigitLangCode, isIsoEncoding)
         {
-            App.HistoryChanged += this.App_HistoryChanged;
-        }
-
-        // destructor
-        ~HistoryReader()
-        {
-            App.HistoryChanged -= this.App_HistoryChanged;
+            this.dailyPlanNumber = dailyPlanNumber;
+            this.dailyPlanText = dailyPlanText;
+            this.startPlan = startPlan;
+            this.transDay = transDay;
+            bibleNames = new BibleNames(iso2DigitLangCode);
         }
 
         #endregion Constructors
@@ -75,7 +75,7 @@ namespace CrossConnect
         {
             get
             {
-                return false;
+                return true;
             }
         }
 
@@ -83,7 +83,7 @@ namespace CrossConnect
         {
             get
             {
-                return false;
+                return true;
             }
         }
 
@@ -107,31 +107,48 @@ namespace CrossConnect
 
         #region Methods
 
-        public void App_HistoryChanged()
+        public override int getChapterStartNumber()
         {
-            this.displayText = MakeListDisplayText(App.placeMarkers.history, this.htmlBackgroundColor, this.htmlForegroundColor, this.htmlPhoneAccentColor, this.htmlFontSize);
-            raiseSourceChangedEvent();
+            DateTime now=DateTime.Now;
+            TimeSpan ts=now.Subtract(startPlan);
+            int days = ts.Days;
+            if (days < 0)
+            {
+                days = -days;
+            }
+            int returnNum = days % getMaxNumChapters();
+            return days % getMaxNumChapters();
         }
 
         public override string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize)
         {
-            bool mustUpdate = this.htmlBackgroundColor.Length == 0;
-            this.htmlBackgroundColor = htmlBackgroundColor;
-            this.htmlForegroundColor = htmlForegroundColor;
-            this.htmlPhoneAccentColor = htmlPhoneAccentColor;
-
-            if (mustUpdate || this.htmlFontSize != htmlFontSize)
+            string chapterStartHtml = "<html>" + HtmlHeader(htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
+            string chapterEndHtml = "</body></html>";
+            StringBuilder sb = new StringBuilder(chapterStartHtml);
+            int bookNum;
+            int relChaptNum;
+            string fullName;
+            string title;
+            sb.Append("<h3>" + transDay + " " + (chapterNumber + 1) + " " + startPlan.AddDays(chapterNumber).ToShortDateString() + "</h3>");
+            for (int i = 0; i <= DailyPlans.zAllPlans[dailyPlanNumber][chapterNumber].GetUpperBound(0); i++)
             {
-                this.displayText = MakeListDisplayText(App.placeMarkers.history, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
+                base.GetInfo(DailyPlans.zAllPlans[dailyPlanNumber][chapterNumber][i], 0, out bookNum, out relChaptNum, out fullName, out title);
+                sb.Append("<h2>" + fullName + " " + (relChaptNum + 1) + "</h2>");
+                sb.Append(base.GetChapterHtml(DailyPlans.zAllPlans[dailyPlanNumber][chapterNumber][i], htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, false, false));
             }
-            this.htmlFontSize = htmlFontSize;
-            return this.displayText;
+            sb.Append(chapterEndHtml);
+            return sb.ToString();
         }
 
         public override void GetInfo(int chaptNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title)
         {
             base.GetInfo(chaptNum, verseNum, out bookNum, out relChaptNum, out fullName, out title);
-            title = Translations.translate("History");
+            title = startPlan.AddDays(chaptNum).ToShortDateString() + " " + dailyPlanText;
+        }
+
+        public override int getMaxNumChapters()
+        {
+            return DailyPlans.zAllPlans[dailyPlanNumber].GetUpperBound(0)+1;
         }
 
         #endregion Methods

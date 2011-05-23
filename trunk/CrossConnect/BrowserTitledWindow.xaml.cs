@@ -147,6 +147,17 @@ namespace CrossConnect
                                 }
 
                                 break;
+                            case WINDOW_TYPE.WINDOW_DAILY_PLAN:
+                                try
+                                {
+                                    this.state.source = new DailyPlanReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding, App.dailyPlan.planNumber, Translations.translate("Daily plan"), Translations.translate("Day"), App.dailyPlan.planStartDate);
+                                }
+                                catch (Exception)
+                                {
+                                }
+
+                                break;
+
                         }
 
                         break;
@@ -339,7 +350,7 @@ namespace CrossConnect
             killManipulation();
             this.state.chapterNum++;
             this.state.verseNum = 0;
-            if (this.state.chapterNum >= (BibleZtextReader.CHAPTERS_IN_BIBLE - 1))
+            if (this.state.chapterNum >= (this.state.source.getMaxNumChapters() - 1))
             {
                 this.state.chapterNum = 0;
             }
@@ -377,7 +388,7 @@ namespace CrossConnect
             this.state.chapterNum--;
             if (this.state.chapterNum < 0)
             {
-                this.state.chapterNum = BibleZtextReader.CHAPTERS_IN_BIBLE - 1;
+                this.state.chapterNum = this.state.source.getMaxNumChapters() - 1;
             }
 
             string mode = "SlideRightFadeOut";
@@ -629,6 +640,7 @@ namespace CrossConnect
             public int curIndex = 0;
             [DataMember]
             public double htmlFontSize = 10;
+            public bool isResume = false;
             [DataMember]
             public bool isSynchronized = true;
             [DataMember]
@@ -640,7 +652,6 @@ namespace CrossConnect
             [DataMember]
             public WINDOW_TYPE windowType = WINDOW_TYPE.WINDOW_BIBLE;
 
-            public bool isResume = false;
             #endregion Fields
         }
 

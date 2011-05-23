@@ -241,6 +241,11 @@ namespace SwordBackend
             ReloadSettingsFile();
         }
 
+        public virtual int getMaxNumChapters()
+        {
+            return BibleZtextReader.CHAPTERS_IN_BIBLE;
+        }
+
         #endregion Constructors
 
         #region Events
@@ -821,15 +826,25 @@ namespace SwordBackend
             return chapterBuffer;
         }
 
-        protected string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,bool isNotesOnly)
+        public virtual int getChapterStartNumber()
+        {
+            return 0;
+        }
+        protected string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,bool isNotesOnly, bool addStartFinishHtml=true)
         {
             byte[] chapterBuffer = getChapterBytes(chapterNumber);
             // for debug
             // string alltext = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
             StringBuilder htmlChapter = new StringBuilder();
             ChapterPos versesForChapterPositions = chapters[chapterNumber];
-            string chapterStartHtml = "<html>" + HtmlHeader(htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize) ;
-            string chapterEndHtml = "</body></html>";
+            string chapterStartHtml = "" ;
+            string chapterEndHtml = "";
+            if (addStartFinishHtml)
+            {
+                chapterStartHtml = "<html>" + HtmlHeader(htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
+                chapterEndHtml = "</body></html>";
+            }
+
             for (int i = 0; i < versesForChapterPositions.verses.Count; i++)
             {
                 string id = "CHAP_" + chapterNumber + "_VERS_" + i;

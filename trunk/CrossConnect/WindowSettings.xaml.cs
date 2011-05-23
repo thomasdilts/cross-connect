@@ -72,7 +72,16 @@ namespace CrossConnect
             WINDOW_TYPE selectedType;
             SwordBackend.SwordBook bookSelected;
             GetSelectedData(out selectedType, out bookSelected);
-            App.AddWindow(bookSelected.sbmd.internalName, 0, 0, selectedType,(double)sliderTextSize.Value);
+            if (selectDocumentType.SelectedIndex == 4)
+            {
+
+                if (this.planStartDate.Value != null)
+                {
+                    App.dailyPlan.planStartDate = (DateTime)this.planStartDate.Value;
+                }
+                App.dailyPlan.planNumber = this.selectPlanType.SelectedIndex;
+            }
+            App.AddWindow(bookSelected.sbmd.internalName, 0, 0, selectedType, (double)sliderTextSize.Value);
             if (NavigationService.CanGoBack)
             {
                 NavigationService.GoBack();
@@ -228,6 +237,9 @@ namespace CrossConnect
                 case 3:
                     selectedType = WINDOW_TYPE.WINDOW_BOOKMARKS;
                     break;
+                case 4:
+                    selectedType = WINDOW_TYPE.WINDOW_DAILY_PLAN;
+                    break;
             }
         }
 
@@ -246,12 +258,15 @@ namespace CrossConnect
             butAddBookmarks.Content = Translations.translate("Add to bookmarks");
             butSave.Content = Translations.translate("Save");
             butCancel.Content = Translations.translate("Cancel");
+            planStartDateCaption.Text= Translations.translate("Select the daily plan start date");
+            selectPlanType.Header= Translations.translate("Select the daily plan");
 
             selectDocumentType.Items.Clear();
             selectDocumentType.Items.Add(Translations.translate("Bible"));
             selectDocumentType.Items.Add(Translations.translate("Notes"));
             selectDocumentType.Items.Add(Translations.translate("History"));
             selectDocumentType.Items.Add(Translations.translate("Bookmarks"));
+            selectDocumentType.Items.Add(Translations.translate("Daily plan"));
 
             object isAddNewWindowOnly = null;
             object skipWindowSettings = null;
@@ -301,6 +316,10 @@ namespace CrossConnect
             butEmail.Visibility = visibility;
             butCancel.Visibility = visibility;
             butAddBookmarks.Visibility = visibility;
+
+            DateSelectPanel.Visibility = System.Windows.Visibility.Collapsed;
+            selectPlanType.Visibility = System.Windows.Visibility.Collapsed;
+            
             sliderTextSize.Value = (double)Application.Current.Resources["PhoneFontSizeNormal"] * 5 / 8;
             // must show the current window selections
             if (App.openWindows.Count > 0)
@@ -327,11 +346,16 @@ namespace CrossConnect
                     case WINDOW_TYPE.WINDOW_BIBLE_NOTES:
                         this.selectDocumentType.SelectedIndex = 1;
                         break;
-                    case WINDOW_TYPE.WINDOW_BOOKMARKS:
+                    case WINDOW_TYPE.WINDOW_HISTORY:
                         this.selectDocumentType.SelectedIndex = 2;
                         break;
-                    case WINDOW_TYPE.WINDOW_HISTORY:
+                    case WINDOW_TYPE.WINDOW_BOOKMARKS:
                         this.selectDocumentType.SelectedIndex = 3;
+                        break;
+                    case WINDOW_TYPE.WINDOW_DAILY_PLAN:
+                        this.selectDocumentType.SelectedIndex = 4;
+                        selectPlanType.SelectedIndex = App.dailyPlan.planNumber;
+                        planStartDate.Value = App.dailyPlan.planStartDate;
                         break;
                     case WINDOW_TYPE.WINDOW_SEARCH:
                         this.selectDocumentType.Visibility = System.Windows.Visibility.Collapsed;
@@ -357,6 +381,14 @@ namespace CrossConnect
             state.windowType = selectedType;
             state.bibleToLoad = bookSelected.sbmd.internalName;
             state.htmlFontSize = this.sliderTextSize.Value;
+            if (selectDocumentType.SelectedIndex == 4)
+            {
+                if (this.planStartDate.Value != null)
+                {
+                    App.dailyPlan.planStartDate = (DateTime)this.planStartDate.Value;
+                }
+                App.dailyPlan.planNumber = this.selectPlanType.SelectedIndex;
+            }
             App.openWindows[(int)openWindowIndex].Initialize(state.bibleToLoad, state.bookNum, state.chapterNum, state.windowType);
         }
 
@@ -377,5 +409,23 @@ namespace CrossConnect
         }
 
         #endregion Methods
+
+        private void selectDocumentType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (selectDocumentType.SelectedIndex == 4)
+            {
+                //prefill and show the next 2 fields.
+                selectPlanType.Items.Clear();
+                for (int i = 0; i < DailyPlans.zzAllPlansNames.Length; i++)
+                {
+                    selectPlanType.Items.Add(Translations.translate(DailyPlans.zzAllPlansNames[i]));
+                }
+                selectPlanType.SelectedIndex = App.dailyPlan.planNumber;
+                planStartDate.Value = App.dailyPlan.planStartDate;
+            }
+            System.Windows.Visibility visibility = selectDocumentType.SelectedIndex == 4 ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+            DateSelectPanel.Visibility = visibility;
+            selectPlanType.Visibility = visibility;
+        }
     }
 }

@@ -120,7 +120,7 @@ namespace CrossConnect
             this.htmlBackgroundColor = htmlBackgroundColor;
             this.htmlForegroundColor = htmlForegroundColor;
             this.htmlPhoneAccentColor = htmlPhoneAccentColor;
-            
+
             if (mustUpdate || this.htmlFontSize != htmlFontSize)
             {
                 this.displayText = MakeListDisplayText(App.placeMarkers.bookmarks, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
