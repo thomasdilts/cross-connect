@@ -2395,6 +2395,23 @@ namespace SwordBackend
             printoutPlan(fast30dayNT, "fast30dayNT");
         }
 
+        private void getBookAndRelChaptFromChapter(int chapterNum, out string BookName, out int chapterNumRel,string[] bookNames)
+        {
+            BookName = "";
+            chapterNumRel = 0;
+            int sumChapters = 0;
+            for (int i = 0; i < CHAPTERS_IN_BOOK.Length; i++)
+            {
+                sumChapters += CHAPTERS_IN_BOOK[i];
+                if (sumChapters > chapterNum)
+                {
+                    BookName = bookNames[i];
+                    chapterNumRel = chapterNum - (sumChapters - CHAPTERS_IN_BOOK[i]) + 1;
+                    break;
+                }
+            }
+        }
+
         private int GetVersesInChapterNum(int chapt)
         {
             int countedChapters = 0;
@@ -2411,6 +2428,83 @@ namespace SwordBackend
             }
 
             return 0;
+        }
+
+        private void PrintOutDailyPlansInHtml()
+        {
+            BibleNames bn = new BibleNames("en");
+            for (int i = 0; i < zzAllPlansNames.Length; i++)
+            {
+                Debug.WriteLine("<h2>" + zzAllPlansNames[i] + "</h2>");
+                Debug.WriteLine("<table>");
+                for (int j = 0; j <= zAllPlans[i].GetUpperBound(0); j++)
+                {
+                    string row = "";
+                    string lastBook = "";
+                    int lastChapter = 0;
+                    string savedBook = "";
+                    int savedChapt = 0;
+                    for (int k = 0; k <= zAllPlans[i][j].GetUpperBound(0); k++)
+                    {
+                        string bookName;
+                        int relChapter;
+                        this.getBookAndRelChaptFromChapter(zAllPlans[i][j][k], out bookName, out relChapter, bn.getAllFullNames());
+                        if (lastBook.Equals(bookName) && (lastChapter + 1) == relChapter)
+                        {
+                            savedBook = bookName;
+                            if (savedChapt == 0)
+                            {
+                                savedChapt = lastChapter;
+                            }
+                        }
+                        else if (!string.IsNullOrEmpty(savedBook))
+                        {
+                            if (!string.IsNullOrEmpty(row))
+                            {
+                                row += ", ";
+                            }
+                            row += savedBook + " " + savedChapt + "-" + lastChapter;
+                            savedBook = "";
+                            savedChapt = 0;
+                        }
+                        else if (!string.IsNullOrEmpty(lastBook))
+                        {
+                            if (!string.IsNullOrEmpty(row))
+                            {
+                                row += ", ";
+                            }
+                            row += lastBook + " " + lastChapter;
+
+                        }
+
+                        lastBook = bookName;
+                        lastChapter = relChapter;
+
+                        if (k == zAllPlans[i][j].GetUpperBound(0))
+                        {
+                            //must write out the remaining
+                            if (!string.IsNullOrEmpty(savedBook))
+                            {
+                                if (!string.IsNullOrEmpty(row))
+                                {
+                                    row += ", ";
+                                }
+                                row += savedBook + " " + savedChapt + "-" + lastChapter;
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrEmpty(row))
+                                {
+                                    row += ", ";
+                                }
+                                row += lastBook + " " + lastChapter;
+                            }
+                        }
+                    }
+                    Debug.WriteLine("<tr><td>" + (j + 1).ToString() + "</td><td>" + row + "</td></tr>");
+                }
+                Debug.WriteLine("</table>");
+            }
         }
 
         private void printoutPlan(List<int>[] plan, string name)

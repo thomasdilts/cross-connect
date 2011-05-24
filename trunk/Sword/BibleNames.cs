@@ -125,6 +125,11 @@ namespace SwordBackend
 
         #region Methods
 
+        public string[] getAllFullNames()
+        {
+            return fullNames;
+        }
+
         public string[] getAllShortNames()
         {
             return shortNames;
