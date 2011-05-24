@@ -4,11 +4,13 @@
 <string key="Add to bookmarks">Zu Lesezeichen hinzufügen</string>
 <string key="All words (maximum 3 words)">Alle Wörter (maximal 3 Worte)</string>
 <string key="An error occured. Do you want to completely erase the memory for this program?">Ist ein Fehler aufgetreten. Wollen Sie komplett löschen die Erinnerung für dieses Programm?</string>
+<string key="An error occurred trying to connect to the network. Try again later.">Ein Fehler aufgetreten mit dem Netzwerk verbinden. Versuchen Sie es später erneut.</string>
 <string key="Bible">Bibel</string>
 <string key="Bookmarks">Lesezeichen</string>
-<string key="Cancel">Abbrechen</string>
 <string key="Case insensitive">Groß-und Kleinschreibung</string>
 <string key="Clear history">Löschen des Verlaufs</string>
+<string key="Daily plan">Tagesplan</string>
+<string key="Day">Day</string>
 <string key="Delete?">Löschen?</string>
 <string key="Download bible list">Download Bibel Liste</string>
 <string key="Download bible">Download Bibel</string>
@@ -22,7 +24,13 @@
 <string key="Nothing found">Nichts gefunden</string>
 <string key="Old Testement">Alte Testement</string>
 <string key="One or more words">Ein oder mehrere Wörter</string>
-<string key="Save">Speichern</string>
+<string key="Read the New Testement in 30 days">Lesen Sie den neuen Testement in 30 Tagen</string>
+<string key="Read the New Testement, Psalms and Proverbs in one year">Lesen Sie den neuen Testement, Psalmen und Sprüche in einem Jahr</string>
+<string key="Read the Old and New Testement each day in one year">Lesen Sie das Alte und Neue Testement jeden Tag in einem Jahr</string>
+<string key="Read the bible in 90 days">Lesen Sie die Bibel in 90 Tagen</string>
+<string key="Read the bible in one year by random chapters">Lesen Sie die Bibel in einem Jahr durch zufällige Kapiteln</string>
+<string key="Read the bible in one year by topic">Lesen Sie die Bibel in einem Jahr nach Thema</string>
+<string key="Read the bible in one year">Lesen Sie die Bibel in einem Jahr</string>
 <string key="Search conditions">Suche Bedingungen</string>
 <string key="Search where">Suche in</string>
 <string key="Search">Suche</string>
@@ -32,13 +40,16 @@
 <string key="Select bookmark to delete">Wählen Sie Lesezeichen zu löschen</string>
 <string key="Select chapter">Kapitel wählen</string>
 <string key="Select the bible">Wählen Sie die Bibel</string>
+<string key="Select the daily plan start date">Wählen Sie den Tagesplan Starttermin</string>
+<string key="Select the daily plan">Wählen Sie den Tagesplan</string>
 <string key="Select the language">Wählen Sie die Sprache</string>
 <string key="Select the server">Wählen Sie den Server</string>
 <string key="Select the window type">Wählen Sie das Fenster Typ</string>
+<string key="Send mail">E-Mail senden</string>
+<string key="Send message">Nachricht senden</string>
 <string key="Settings">Einstellungen</string>
 <string key="Text size">Schriftgröße</string>
 <string key="Too many found. Search stopped">Zu viele gefunden. Suche gestoppt</string>
 <string key="Whole bible">Ganze Bibel</string>
 <string key="You must have at least one bible">Sie müssen mindestens eine Bibel</string>
-<string key="An error occurred trying to connect to the network. Try again later.">Ein Fehler aufgetreten mit dem Netzwerk verbinden. Versuchen Sie es später erneut.</string>
 </translations>

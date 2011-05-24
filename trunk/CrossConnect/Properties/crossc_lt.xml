@@ -4,11 +4,13 @@
 <string key="Add to bookmarks">Pridėti į Favoritus</string>
 <string key="All words (maximum 3 words)">Visi žodžiai (ne daugiau kaip 3 žodžiai)</string>
 <string key="An error occured. Do you want to completely erase the memory for this program?">Įvyko klaida. Ar norite visiškai ištrinti atmintį šią programą?</string>
+<string key="An error occurred trying to connect to the network. Try again later.">Įvyko klaida bandant prisijungti prie tinklo. Bandykite dar kartą vėliau.</string>
 <string key="Bible">Biblija</string>
 <string key="Bookmarks">Žymės</string>
-<string key="Cancel">Atšaukti</string>
 <string key="Case insensitive">Byla nejautrus</string>
 <string key="Clear history">Valyti istoriją</string>
+<string key="Daily plan">Dienos planas</string>
+<string key="Day">Diena</string>
 <string key="Delete?">Ištrinti?</string>
 <string key="Download bible list">Parsisiųsti biblija sąrašas</string>
 <string key="Download bible">Parsisiųsti Biblija</string>
@@ -22,7 +24,13 @@
 <string key="Nothing found">Nieko nerasta</string>
 <string key="Old Testement">Senas Testement</string>
 <string key="One or more words">Vienas ar daugiau žodžių</string>
-<string key="Save">Prisiminti</string>
+<string key="Read the New Testement in 30 days">Skaityti Naujas Testement per 30 dienų</string>
+<string key="Read the New Testement, Psalms and Proverbs in one year">Skaityti Naujas Testement, Psalmių ir Patarlių per vienerius metus</string>
+<string key="Read the Old and New Testement each day in one year">Skaityti Senojo ir Naujojo Testement kiekvieną per vieną dieną metų</string>
+<string key="Read the bible in 90 days">Skaityti Bibliją 90 dienų</string>
+<string key="Read the bible in one year by random chapters">Skaityti per vienerius metus biblija atsitiktinai skyriuose</string>
+<string key="Read the bible in one year by topic">Skaityti per vienerius metus Biblija pagal temą</string>
+<string key="Read the bible in one year">Skaityti vienoje Biblijos metai</string>
 <string key="Search conditions">Paieška sąlygos</string>
 <string key="Search where">Ieškoti, kur</string>
 <string key="Search">Paieška</string>
@@ -32,13 +40,16 @@
 <string key="Select bookmark to delete">Pasirinkite ¾ ym ± i ¹ trinti</string>
 <string key="Select chapter">Pasirinkite skyrių</string>
 <string key="Select the bible">Pasirinkite Biblija</string>
+<string key="Select the daily plan start date">Pasirinkite dieną planą pradžios data</string>
+<string key="Select the daily plan">Pasirinkite kasdien planas</string>
 <string key="Select the language">Pasirinkite kalbą</string>
 <string key="Select the server">Pasirinkite serverį</string>
 <string key="Select the window type">Pasirinkite lango tipas</string>
+<string key="Send mail">Siųsti laišką</string>
+<string key="Send message">Siųsti žinutę</string>
 <string key="Settings">Nustatymai</string>
 <string key="Text size">Teksto dydis</string>
 <string key="Too many found. Search stopped">Per daug nerasta. Paieška sustabdyta</string>
 <string key="Whole bible">Visa Biblija</string>
 <string key="You must have at least one bible">Jūs turite turėti bent vieną Biblija</string>
-<string key="An error occurred trying to connect to the network. Try again later.">Įvyko klaida bandant prisijungti prie tinklo. Bandykite dar kartą vėliau.</string>
 </translations>

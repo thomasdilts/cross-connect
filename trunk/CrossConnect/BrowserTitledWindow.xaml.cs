@@ -150,7 +150,8 @@ namespace CrossConnect
                             case WINDOW_TYPE.WINDOW_DAILY_PLAN:
                                 try
                                 {
-                                    this.state.source = new DailyPlanReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding, App.dailyPlan.planNumber, Translations.translate("Daily plan"), Translations.translate("Day"), App.dailyPlan.planStartDate);
+                                    this.state.source = new DailyPlanReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                    this.state.chapterNum = App.dailyPlan.planDayNumber;
                                 }
                                 catch (Exception)
                                 {
@@ -192,7 +193,7 @@ namespace CrossConnect
 
         public void SynchronizeWindow(int chapterNum, int verseNum)
         {
-            if (this.state.isSynchronized)
+            if (this.state.isSynchronized && this.state.source.IsSynchronizeable)
             {
                 this.state.chapterNum = chapterNum;
                 this.state.verseNum = verseNum;
@@ -238,7 +239,12 @@ namespace CrossConnect
                 //webBrowser1.FontSize = this.state.htmlFontSize;
                 webBrowser1.Base = App.WEB_DIR_ISOLATED;
 
-                Uri source = new Uri(file + "#CHAP_" + this.state.chapterNum + "_VERS_" + this.state.verseNum, UriKind.Relative);
+                Uri source = new Uri(file, UriKind.Relative);
+                if (this.state.source.IsSynchronizeable)
+                {
+                    source = new Uri(file + "#CHAP_" + this.state.chapterNum + "_VERS_" + this.state.verseNum, UriKind.Relative);
+                }
+
                 webBrowser1.Navigate(source);
 
                 this.WriteTitle();
@@ -247,12 +253,15 @@ namespace CrossConnect
                 this.state.isSynchronized = !this.state.isSynchronized;
                 this.ButLink_Click(null, null);
 
-                //The window wont show the correct verse if we dont wait a few seconds before showing it.
-                System.Windows.Threading.DispatcherTimer tmr = new System.Windows.Threading.DispatcherTimer();
-                tmr.Interval = TimeSpan.FromSeconds(state.isResume?3:1.5);
-                state.isResume = false;
-                tmr.Tick += this.OnTimerTick;
-                tmr.Start();
+                if (this.state.source.IsSynchronizeable)
+                {
+                    //The window wont show the correct verse if we dont wait a few seconds before showing it.
+                    System.Windows.Threading.DispatcherTimer tmr = new System.Windows.Threading.DispatcherTimer();
+                    tmr.Interval = TimeSpan.FromSeconds(state.isResume ? 3 : 1.5);
+                    state.isResume = false;
+                    tmr.Tick += this.OnTimerTick;
+                    tmr.Start();
+                }
             }
         }
 
@@ -335,6 +344,7 @@ namespace CrossConnect
             PhoneApplicationService.Current.State["isAddNewWindowOnly"] = false;
             PhoneApplicationService.Current.State["skipWindowSettings"] = false;
             PhoneApplicationService.Current.State["openWindowIndex"] = this.state.curIndex;
+            PhoneApplicationService.Current.State["InitializeWindowSettings"] = true;
 
             MainPageSplit parent = (MainPageSplit)((Grid)(Grid)this.Parent).Parent;
             parent.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));

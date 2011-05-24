@@ -2000,15 +2000,14 @@ namespace SwordBackend
         };
         public static string[] zzAllPlansNames = 
         {
-            "The bible straight through in one year",
-            "The Old and New Testement each day in one year",
-            "The New Testement plus Proverbs and Psalms in one year",
-            "The bible in one year by topic",
-            "The bible in one year by random chapters",
-            "The bible in 90 days",
-            "The New Testement in 30 days",
+            "Read the bible in one year",
+            "Read the Old and New Testement each day in one year",
+            "Read the New Testement, Psalms and Proverbs in one year",
+            "Read the bible in one year by topic",
+            "Read the bible in one year by random chapters",
+            "Read the bible in 90 days",
+            "Read the New Testement in 30 days",
         };
-
 
         /// <summary> Constant for the number of books in the Bible  </summary>
         private const int BOOKS_IN_BIBLE = 66;

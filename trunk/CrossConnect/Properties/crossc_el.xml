@@ -4,11 +4,13 @@
 <string key="Add to bookmarks">Προσθήκη στους σελιδοδείκτες</string>
 <string key="All words (maximum 3 words)">Όλες οι λέξεις (κατ &#39;ανώτατο όριο 3 λέξεις)</string>
 <string key="An error occured. Do you want to completely erase the memory for this program?">Παρουσιάστηκε σφάλμα. Θέλετε να σβήσει εντελώς η μνήμη για αυτό το πρόγραμμα;</string>
+<string key="An error occurred trying to connect to the network. Try again later.">Ένα σφάλμα κατά την προσπάθεια να συνδεθεί με το δίκτυο. Προσπαθήστε ξανά αργότερα.</string>
 <string key="Bible">Αγία Γραφή</string>
 <string key="Bookmarks">Σελιδοδείκτες</string>
-<string key="Cancel">Ακύρωση</string>
 <string key="Case insensitive">Υπόθεση αδρανείς</string>
 <string key="Clear history">Εκκαθάριση ιστορικού</string>
+<string key="Daily plan">Ημερήσιο πρόγραμμα</string>
+<string key="Day">Ημέρα</string>
 <string key="Delete?">Διαγραφή;</string>
 <string key="Download bible list">Λήψη Βίβλος λίστα</string>
 <string key="Download bible">Λήψη Βίβλος</string>
@@ -22,7 +24,13 @@
 <string key="Nothing found">Τίποτα δεν βρέθηκε</string>
 <string key="Old Testement">Παλαιά Διαθήκη</string>
 <string key="One or more words">Μία ή περισσότερες λέξεις</string>
-<string key="Save">Αποθήκευση</string>
+<string key="Read the New Testement in 30 days">Διαβάστε τη Νέα Διαθήκη σε 30 μέρες</string>
+<string key="Read the New Testement, Psalms and Proverbs in one year">Διαβάστε τη Νέα Διαθήκη, Ψαλμοί Παροιμίες και σε ένα χρόνο</string>
+<string key="Read the Old and New Testement each day in one year">Διαβάστε την Παλαιά και την Καινή Διαθήκη κάθε μέρα μέσα σε ένα χρόνο</string>
+<string key="Read the bible in 90 days">Διαβάστε τη Βίβλο σε 90 ημέρες</string>
+<string key="Read the bible in one year by random chapters">Διαβάστε τη Βίβλο σε ένα έτος από την τυχαία κεφάλαια</string>
+<string key="Read the bible in one year by topic">Διαβάστε τη Βίβλο σε ένα έτος από το θέμα</string>
+<string key="Read the bible in one year">Διαβάστε τη Βίβλο σε ένα χρόνο</string>
 <string key="Search conditions">Αναζήτηση όρων</string>
 <string key="Search where">Αναζήτηση όπου</string>
 <string key="Search">Αναζήτηση</string>
@@ -32,13 +40,16 @@
 <string key="Select bookmark to delete">Επιλέξτε το σελιδοδείκτη για να διαγράψετε</string>
 <string key="Select chapter">Επιλέξτε το κεφάλαιο</string>
 <string key="Select the bible">Επιλέξτε τη Βίβλο</string>
+<string key="Select the daily plan start date">Επιλέξτε την καθημερινή ημερομηνία έναρξης σχεδίου</string>
+<string key="Select the daily plan">Επιλέξτε το ημερήσιο πρόγραμμα</string>
 <string key="Select the language">Επιλέξτε τη γλώσσα</string>
 <string key="Select the server">Επιλέξτε το διακομιστή</string>
 <string key="Select the window type">Επιλέξτε τον τύπο παράθυρο</string>
+<string key="Send mail">Αποστολή μηνυμάτων ηλεκτρονικού ταχυδρομείου</string>
+<string key="Send message">Αποστολή μηνύματος</string>
 <string key="Settings">Ρυθμίσεις</string>
 <string key="Text size">Μέγεθος κειμένου</string>
 <string key="Too many found. Search stopped">Πάρα πολλοί που βρέθηκαν. Αναζήτηση σταμάτησε</string>
 <string key="Whole bible">Ολόκληρη την Αγία Γραφή</string>
 <string key="You must have at least one bible">Πρέπει να έχετε τουλάχιστον ένα Βιβλικό</string>
-<string key="An error occurred trying to connect to the network. Try again later.">Ένα σφάλμα κατά την προσπάθεια να συνδεθεί με το δίκτυο. Προσπαθήστε ξανά αργότερα.</string>
 </translations>

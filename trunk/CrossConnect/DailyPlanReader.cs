@@ -18,7 +18,7 @@
 ///     Thomas Dilts. All rights reserved.
 /// </copyright>
 /// <author>Thomas Dilts</author>
-namespace SwordBackend
+namespace CrossConnect
 {
     using System;
     using System.Collections.Generic;
@@ -27,11 +27,11 @@ namespace SwordBackend
     using System.IO.IsolatedStorage;
     using System.Net;
     using System.Runtime.Serialization;
+    using System.Text;
 
     using ComponentAce.Compression.Libs.zlib;
 
     using SwordBackend;
-    using System.Text;
 
     /// <summary>
     /// Load from a file all the book and verse pointers to the bzz file so that
@@ -46,24 +46,15 @@ namespace SwordBackend
     {
         #region Fields
 
-        private int dailyPlanNumber = 0;
-        private string transDay = "Day";
-        private string dailyPlanText = "Daily reading";
-        private DateTime startPlan;
-
-        BibleNames bibleNames=null;
+        BibleNames bibleNames = null;
 
         #endregion Fields
 
         #region Constructors
 
-        public DailyPlanReader(string path, string iso2DigitLangCode, bool isIsoEncoding, int dailyPlanNumber, string dailyPlanText, string transDay, DateTime startPlan)
+        public DailyPlanReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
             : base(path, iso2DigitLangCode, isIsoEncoding)
         {
-            this.dailyPlanNumber = dailyPlanNumber;
-            this.dailyPlanText = dailyPlanText;
-            this.startPlan = startPlan;
-            this.transDay = transDay;
             bibleNames = new BibleNames(iso2DigitLangCode);
         }
 
@@ -76,6 +67,14 @@ namespace SwordBackend
             get
             {
                 return true;
+            }
+        }
+
+        public override bool IsLocalChangeDuringLink
+        {
+            get
+            {
+                return false;
             }
         }
 
@@ -107,21 +106,9 @@ namespace SwordBackend
 
         #region Methods
 
-        public override int getChapterStartNumber()
-        {
-            DateTime now=DateTime.Now;
-            TimeSpan ts=now.Subtract(startPlan);
-            int days = ts.Days;
-            if (days < 0)
-            {
-                days = -days;
-            }
-            int returnNum = days % getMaxNumChapters();
-            return days % getMaxNumChapters();
-        }
-
         public override string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize)
         {
+            App.dailyPlan.planDayNumber = chapterNumber;
             string chapterStartHtml = "<html>" + HtmlHeader(htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
             string chapterEndHtml = "</body></html>";
             StringBuilder sb = new StringBuilder(chapterStartHtml);
@@ -129,12 +116,14 @@ namespace SwordBackend
             int relChaptNum;
             string fullName;
             string title;
-            sb.Append("<h3>" + transDay + " " + (chapterNumber + 1) + " " + startPlan.AddDays(chapterNumber).ToShortDateString() + "</h3>");
-            for (int i = 0; i <= DailyPlans.zAllPlans[dailyPlanNumber][chapterNumber].GetUpperBound(0); i++)
+
+            sb.Append("<h3>" + Translations.translate("Day") + " " + (chapterNumber + 1) + ", " + App.dailyPlan.planStartDate.AddDays(chapterNumber).ToShortDateString() + "</h3>");
+            sb.Append("<h3>" + Translations.translate(DailyPlans.zzAllPlansNames[App.dailyPlan.planNumber]) + "</h3>");
+            for (int i = 0; i <= DailyPlans.zAllPlans[App.dailyPlan.planNumber][chapterNumber].GetUpperBound(0); i++)
             {
-                base.GetInfo(DailyPlans.zAllPlans[dailyPlanNumber][chapterNumber][i], 0, out bookNum, out relChaptNum, out fullName, out title);
+                base.GetInfo(DailyPlans.zAllPlans[App.dailyPlan.planNumber][chapterNumber][i], 0, out bookNum, out relChaptNum, out fullName, out title);
                 sb.Append("<h2>" + fullName + " " + (relChaptNum + 1) + "</h2>");
-                sb.Append(base.GetChapterHtml(DailyPlans.zAllPlans[dailyPlanNumber][chapterNumber][i], htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, false, false));
+                sb.Append(base.GetChapterHtml(DailyPlans.zAllPlans[App.dailyPlan.planNumber][chapterNumber][i], htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, false, false));
             }
             sb.Append(chapterEndHtml);
             return sb.ToString();
@@ -143,12 +132,12 @@ namespace SwordBackend
         public override void GetInfo(int chaptNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title)
         {
             base.GetInfo(chaptNum, verseNum, out bookNum, out relChaptNum, out fullName, out title);
-            title = startPlan.AddDays(chaptNum).ToShortDateString() + " " + dailyPlanText;
+            title = App.dailyPlan.planStartDate.AddDays(chaptNum).ToShortDateString() + " " + Translations.translate("Daily plan");
         }
 
         public override int getMaxNumChapters()
         {
-            return DailyPlans.zAllPlans[dailyPlanNumber].GetUpperBound(0)+1;
+            return DailyPlans.zAllPlans[App.dailyPlan.planNumber].GetUpperBound(0) + 1;
         }
 
         #endregion Methods

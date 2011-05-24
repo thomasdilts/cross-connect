@@ -63,6 +63,7 @@ namespace CrossConnect
         public const int MAX_NUM_WINDOWS = 10;
         public const string WEB_DIR_ISOLATED = "webtemporary";
 
+        public static SerializableDailyPlan dailyPlan = new SerializableDailyPlan();
         public static InstalledBibles installedBibles = new InstalledBibles();
         public static int isFirstTimeInMainPageSplit = 0;
         public static MainPageSplit mainWindow = null;
@@ -139,6 +140,34 @@ namespace CrossConnect
             if (BookMarksChanged != null)
             {
                 BookMarksChanged();
+            }
+        }
+
+        public static void AddBookmark()
+        {
+            //we take from the history and add to the bookmark
+            if (placeMarkers.history.Count > 0)
+            {
+                // stop repeats
+                BiblePlaceMarker last = placeMarkers.history[placeMarkers.history.Count - 1];
+                if (placeMarkers.bookmarks.Count > 0)
+                {
+                    BiblePlaceMarker lastBookmark = placeMarkers.bookmarks[placeMarkers.bookmarks.Count - 1];
+                    if (last.chapterNum == lastBookmark.chapterNum && last.verseNum == lastBookmark.verseNum)
+                    {
+                        placeMarkers.bookmarks.RemoveAt(placeMarkers.bookmarks.Count - 1);
+                    }
+                }
+
+                placeMarkers.bookmarks.Add(new BiblePlaceMarker(last.chapterNum, last.verseNum, DateTime.Now));
+
+                // don't let this get more then a 200
+                if (placeMarkers.bookmarks.Count > 200)
+                {
+                    placeMarkers.bookmarks.RemoveAt(0);
+                }
+
+                RaiseBookmarkChangeEvent();
             }
         }
 
@@ -220,7 +249,7 @@ namespace CrossConnect
             {
                 root.DeleteFile(WEB_DIR_ISOLATED + "/" + file);
             }
-
+            PhoneApplicationService.Current.State["InitializeWindowSettings"] = true;
             //get the daily plan first
             string dailyPlanXmlData;
             if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("DailyPlan", out dailyPlanXmlData))
@@ -243,8 +272,8 @@ namespace CrossConnect
             if (dailyPlan == null)
             {
                 dailyPlan = new SerializableDailyPlan();
-            } 
-            
+            }
+
             openWindows.Clear();
 
             // get all windows
@@ -269,7 +298,7 @@ namespace CrossConnect
                                 typeof(BookMarkReader),
                                 typeof(HistoryReader),
                                 typeof(SearchReader),
-                                typeof(SwordBackend.DailyPlanReader),
+                                typeof(DailyPlanReader),
                             };
                             DataContractSerializer ser = new DataContractSerializer(typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState), types);
                             BrowserTitledWindow nextWindow = new BrowserTitledWindow();
@@ -344,7 +373,7 @@ namespace CrossConnect
                     typeof(BookMarkReader),
                     typeof(HistoryReader),
                     typeof(SearchReader),
-                    typeof(SwordBackend.DailyPlanReader),
+                    typeof(DailyPlanReader),
                 };
                 DataContractSerializer ser = new DataContractSerializer(typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState), types);
                 using (StringWriter sw = new StringWriter())
@@ -401,7 +430,7 @@ namespace CrossConnect
                 }
 
                 IsolatedStorageSettings.ApplicationSettings["DailyPlan"] = sw.ToString();
-            }        
+            }
         }
 
         // Code to execute when the application is activated (brought to foreground)
@@ -517,17 +546,15 @@ namespace CrossConnect
             #region Fields
 
             [DataMember]
-            public DateTime planStartDate = DateTime.Now;
+            public int planDayNumber = 0;
             [DataMember]
             public int planNumber = 0;
             [DataMember]
-            public int planDayNumber = 0;
+            public DateTime planStartDate = DateTime.Now;
 
             #endregion Fields
         }
+
         #endregion Nested Types
-
-        public static SerializableDailyPlan dailyPlan=new SerializableDailyPlan();
-
     }
 }

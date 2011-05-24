@@ -4,11 +4,13 @@
 <string key="Add to bookmarks">Tilføj til bogmærker</string>
 <string key="All words (maximum 3 words)">Alle ord (højst 3 ord)</string>
 <string key="An error occured. Do you want to completely erase the memory for this program?">Der opstod en fejl. Vil du helt slette hukommelsen for dette program?</string>
+<string key="An error occurred trying to connect to the network. Try again later.">Der opstod en fejl at forsøge at oprette forbindelse til netværket. Prøv igen senere.</string>
 <string key="Bible">Bibel</string>
 <string key="Bookmarks">Bogmærker</string>
-<string key="Cancel">Annuller</string>
 <string key="Case insensitive">Sag ufølsom</string>
 <string key="Clear history">Ryd historik</string>
+<string key="Daily plan">Daglig plan</string>
+<string key="Day">Dag</string>
 <string key="Delete?">Slet?</string>
 <string key="Download bible list">Download bibel liste</string>
 <string key="Download bible">Download bibel</string>
@@ -22,7 +24,13 @@
 <string key="Nothing found">Intet fundet</string>
 <string key="Old Testement">Gamle Testement</string>
 <string key="One or more words">Et eller flere ord</string>
-<string key="Save">Gem</string>
+<string key="Read the New Testement in 30 days">Læs den nye Testement i 30 dage</string>
+<string key="Read the New Testement, Psalms and Proverbs in one year">Læs den nye Testement, Salmerne og Ordsprogene på et år</string>
+<string key="Read the Old and New Testement each day in one year">Læs de gamle og det nye Testement hver dag i et år</string>
+<string key="Read the bible in 90 days">Læs Bibelen på 90 dage</string>
+<string key="Read the bible in one year by random chapters">Læs Bibelen på et år ved tilfældige kapitler</string>
+<string key="Read the bible in one year by topic">Læs Bibelen på et år efter emne</string>
+<string key="Read the bible in one year">Læs Bibelen på et år</string>
 <string key="Search conditions">Søgebetingelser</string>
 <string key="Search where">Søg hvor</string>
 <string key="Search">Søg</string>
@@ -32,13 +40,16 @@
 <string key="Select bookmark to delete">Vælg bogmærke for at slette</string>
 <string key="Select chapter">Vælg kapitel</string>
 <string key="Select the bible">Vælg Bibelen</string>
+<string key="Select the daily plan start date">Vælg den daglige plan startdato</string>
+<string key="Select the daily plan">Vælg den daglige plan</string>
 <string key="Select the language">Vælg sprog</string>
 <string key="Select the server">Vælg den server</string>
 <string key="Select the window type">Vælg vinduet type</string>
+<string key="Send mail">Send mail</string>
+<string key="Send message">Send besked</string>
 <string key="Settings">Indstillinger</string>
 <string key="Text size">Tekststørrelse</string>
 <string key="Too many found. Search stopped">For mange fundet. Søg stoppet</string>
 <string key="Whole bible">Hele bibel</string>
 <string key="You must have at least one bible">Du skal have mindst én bibel</string>
-<string key="An error occurred trying to connect to the network. Try again later.">Der opstod en fejl at forsøge at oprette forbindelse til netværket. Prøv igen senere.</string>
 </translations>

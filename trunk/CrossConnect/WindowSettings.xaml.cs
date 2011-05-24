@@ -51,80 +51,8 @@ namespace CrossConnect
 
         #region Methods
 
-        private void butAddBookmarks_Click(object sender, RoutedEventArgs e)
-        {
-            object openWindowIndex = null;
-            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
-            {
-                openWindowIndex = (int)0;
-            }
-
-            App.AddBookmark(App.openWindows[(int)openWindowIndex].state.chapterNum,
-                App.openWindows[(int)openWindowIndex].state.verseNum);
-            if (NavigationService.CanGoBack)
-            {
-                NavigationService.GoBack();
-            }
-        }
-
-        private void butAddNew_Click(object sender, RoutedEventArgs e)
-        {
-            WINDOW_TYPE selectedType;
-            SwordBackend.SwordBook bookSelected;
-            GetSelectedData(out selectedType, out bookSelected);
-            if (selectDocumentType.SelectedIndex == 4)
-            {
-
-                if (this.planStartDate.Value != null)
-                {
-                    App.dailyPlan.planStartDate = (DateTime)this.planStartDate.Value;
-                }
-                App.dailyPlan.planNumber = this.selectPlanType.SelectedIndex;
-            }
-            App.AddWindow(bookSelected.sbmd.internalName, 0, 0, selectedType, (double)sliderTextSize.Value);
-            if (NavigationService.CanGoBack)
-            {
-                NavigationService.GoBack();
-            }
-        }
-
         private void butCancel_Click(object sender, RoutedEventArgs e)
         {
-            if (NavigationService.CanGoBack)
-            {
-                NavigationService.GoBack();
-            }
-        }
-
-        private void butEmail_Click(object sender, RoutedEventArgs e)
-        {
-            string textsWithTitles;
-            string titlesOnly;
-            GetLast3SecondsChosenVerses(out textsWithTitles, out titlesOnly);
-            EmailComposeTask emailComposeTask = new EmailComposeTask();
-            //emailComposeTask.To = "user@example.com";
-            emailComposeTask.Body = textsWithTitles;
-            //emailComposeTask.Cc = "user2@example.com";
-            emailComposeTask.Subject = titlesOnly;
-            emailComposeTask.Show();
-        }
-
-        private void butSave_Click(object sender, RoutedEventArgs e)
-        {
-            object openWindowIndex = null;
-            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
-            {
-                openWindowIndex = (int)0;
-            }
-
-            if (App.openWindows[(int)openWindowIndex].state.windowType == WINDOW_TYPE.WINDOW_SEARCH)
-            {
-                App.openWindows[(int)openWindowIndex].state.htmlFontSize = this.sliderTextSize.Value;
-            }
-            else
-            {
-                SetBookChoosen();
-            }
             if (NavigationService.CanGoBack)
             {
                 NavigationService.GoBack();
@@ -141,70 +69,6 @@ namespace CrossConnect
         {
             SetBookChoosen();
             this.NavigationService.Navigate(new Uri("/SelectBibleBook.xaml", UriKind.Relative));
-        }
-
-        private void butSMS_Click(object sender, RoutedEventArgs e)
-        {
-            string textsWithTitles;
-            string titlesOnly;
-            GetLast3SecondsChosenVerses(out textsWithTitles, out titlesOnly);
-            SmsComposeTask smsComposeTask = new SmsComposeTask();
-            //smsComposeTask.To = "5555555555";
-            smsComposeTask.Body = textsWithTitles;
-            smsComposeTask.Show();
-        }
-
-        private void GetLast3SecondsChosenVerses(out string textsWithTitles, out string titlesOnly)
-        {
-            textsWithTitles="";
-            titlesOnly = "";
-            DateTime? firstFound=null;
-            List<BiblePlaceMarker> foundVerses = new List<BiblePlaceMarker>();
-            for (int j = App.placeMarkers.history.Count - 1; j >= 0; j--)
-            {
-                BiblePlaceMarker place = App.placeMarkers.history[j];
-                if(firstFound==null)
-                {
-                    firstFound=place.when;
-                    foundVerses.Add(place);
-                }
-                else if(firstFound.Value.AddSeconds(-3).CompareTo(place.when)<0)
-                {
-                    foundVerses.Add(place);
-                }
-                else
-                {
-                    //we found all the verses, get out.
-                    break;
-                }
-            }
-            object openWindowIndex = null;
-            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
-            {
-                openWindowIndex = (int)0;
-            }
-
-            var state = App.openWindows[(int)openWindowIndex].state;
-            //they are in reverse order again,
-            for (int j = foundVerses.Count - 1; j >= 0; j--)
-            {
-                BiblePlaceMarker place = foundVerses[j];
-                int bookNum;
-                int relChaptNum;
-                string fullName;
-                string titleText;
-                state.source.GetInfo(place.chapterNum, place.verseNum, out bookNum, out relChaptNum, out fullName, out titleText);
-                string title = titleText + " - " + state.bibleToLoad;
-                string verseText = state.source.GetVerseTextOnly(place.chapterNum, place.verseNum);
-
-                if(!string.IsNullOrEmpty(titlesOnly))
-                {
-                    textsWithTitles+="\n";
-                    titlesOnly+= ", ";
-                }
-                titlesOnly += title;
-                textsWithTitles += verseText.Replace("<p>", "").Replace("</p>", "").Replace("<br />", "").Replace("\n", " ") + "\n-" + title;
-            }
         }
 
         private void GetSelectedData(out WINDOW_TYPE selectedType, out SwordBackend.SwordBook bookSelected)
@@ -245,19 +109,126 @@ namespace CrossConnect
 
         private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            object isAddNewWindowOnly = null;
+            if (!PhoneApplicationService.Current.State.TryGetValue("isAddNewWindowOnly", out isAddNewWindowOnly))
+            {
+                isAddNewWindowOnly = false;
+            }
+            if ((bool)isAddNewWindowOnly)
+            {
+                WINDOW_TYPE selectedType;
+                SwordBackend.SwordBook bookSelected;
+                GetSelectedData(out selectedType, out bookSelected);
+                if (selectDocumentType.SelectedIndex == 4)
+                {
+                    if (this.planStartDate.Value != null)
+                    {
+                        App.dailyPlan.planStartDate = (DateTime)this.planStartDate.Value;
+                    }
+                    App.dailyPlan.planNumber = this.selectPlanType.SelectedIndex;
+                }
+                App.AddWindow(bookSelected.sbmd.internalName, 0, 0, selectedType, (double)sliderTextSize.Value);
+                if (NavigationService.CanGoBack)
+                {
+                    NavigationService.GoBack();
+                }
+            }
+            else
+            {
+                object openWindowIndex = null;
+                if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+                {
+                    openWindowIndex = (int)0;
+                }
+
+                if (App.openWindows[(int)openWindowIndex].state.windowType == WINDOW_TYPE.WINDOW_SEARCH)
+                {
+                    App.openWindows[(int)openWindowIndex].state.htmlFontSize = this.sliderTextSize.Value;
+                }
+                else
+                {
+                    SetBookChoosen();
+                }
+                if (NavigationService.CanGoBack)
+                {
+                    NavigationService.GoBack();
+                }
+            }
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            object InitializeWindow = null;
+            if (!PhoneApplicationService.Current.State.TryGetValue("InitializeWindowSettings", out InitializeWindow))
+            {
+                InitializeWindow = false;
+            }
+
+            if ((bool)InitializeWindow)
+            {
+                SetupEntirePage();
+                PhoneApplicationService.Current.State["InitializeWindowSettings"] = false;
+            }
+        }
+
+        private void selectDocumentType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (selectDocumentType.SelectedIndex == 4)
+            {
+                //prefill and show the next 2 fields.
+                selectPlanType.Items.Clear();
+                for (int i = 0; i < DailyPlans.zzAllPlansNames.Length; i++)
+                {
+                    selectPlanType.Items.Add(Translations.translate(DailyPlans.zzAllPlansNames[i]));
+                }
+                selectPlanType.SelectedIndex = App.dailyPlan.planNumber;
+                planStartDate.Value = App.dailyPlan.planStartDate;
+            }
+            object isAddNewWindowOnly = null;
+            if (!PhoneApplicationService.Current.State.TryGetValue("isAddNewWindowOnly", out isAddNewWindowOnly))
+            {
+                isAddNewWindowOnly = false;
+            }
+            System.Windows.Visibility visibility = selectDocumentType.SelectedIndex == 0 && !(bool)isAddNewWindowOnly ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+            butSelectChapter.Visibility = visibility;
+            butSearch.Visibility = visibility;
+            visibility = selectDocumentType.SelectedIndex == 4 ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+            DateSelectPanel.Visibility = visibility;
+            selectPlanType.Visibility = visibility;
+        }
+
+        private void SetBookChoosen()
+        {
+            WINDOW_TYPE selectedType;
+            SwordBackend.SwordBook bookSelected;
+            GetSelectedData(out selectedType, out bookSelected);
+            object openWindowIndex = null;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            {
+                openWindowIndex = (int)0;
+            }
+            var state = App.openWindows[(int)openWindowIndex].state;
+            state.windowType = selectedType;
+            state.bibleToLoad = bookSelected.sbmd.internalName;
+            state.htmlFontSize = this.sliderTextSize.Value;
+            if (selectDocumentType.SelectedIndex == 4)
+            {
+                if (this.planStartDate.Value != null)
+                {
+                    App.dailyPlan.planStartDate = (DateTime)this.planStartDate.Value;
+                }
+                App.dailyPlan.planNumber = this.selectPlanType.SelectedIndex;
+            }
+            App.openWindows[(int)openWindowIndex].Initialize(state.bibleToLoad, state.bookNum, state.chapterNum, state.windowType);
+        }
+
+        private void SetupEntirePage()
         {
             PageTitle.Text = Translations.translate("Settings");
             selectDocumentType.Header = Translations.translate("Select the window type");
             selectDocument.Header = Translations.translate("Select the bible");
             butSelectChapter.Content = Translations.translate("Select book and chapter");
             butSearch.Content = Translations.translate("Search");
-            butAddNew.Content = Translations.translate("Add new window");
-            butAddBookmarks.Content = Translations.translate("Add to bookmarks");
-            butSave.Content = Translations.translate("Save");
-            butCancel.Content = Translations.translate("Cancel");
             planStartDateCaption.Text= Translations.translate("Select the daily plan start date");
             selectPlanType.Header= Translations.translate("Select the daily plan");
 
@@ -311,18 +282,13 @@ namespace CrossConnect
             }
             butSelectChapter.Visibility = visibility;
             butSearch.Visibility = visibility;
-            butSave.Visibility = visibility;
-            butSMS.Visibility = visibility;
-            butEmail.Visibility = visibility;
-            butCancel.Visibility = visibility;
-            butAddBookmarks.Visibility = visibility;
 
             DateSelectPanel.Visibility = System.Windows.Visibility.Collapsed;
             selectPlanType.Visibility = System.Windows.Visibility.Collapsed;
-            
+
             sliderTextSize.Value = (double)Application.Current.Resources["PhoneFontSizeNormal"] * 5 / 8;
             // must show the current window selections
-            if (App.openWindows.Count > 0)
+            if (App.openWindows.Count > 0 && !(bool)isAddNewWindowOnly)
             {
                 var state= App.openWindows[(int)openWindowIndex].state;
                 int bookNum;
@@ -332,64 +298,44 @@ namespace CrossConnect
                 state.source.GetInfo(state.chapterNum, state.verseNum, out bookNum, out relChaptNum, out fullName, out titleText);
                 string title = titleText + " - " + state.bibleToLoad;
 
-                butSMS.Content = Translations.translate("SMS - " + title);
-                butEmail.Content = Translations.translate("Email - " + title);
-
                 butSelectChapter.Visibility = (state.source.IsPageable ? visibility : System.Windows.Visibility.Collapsed);
                 butSearch.Visibility = (state.source.IsSearchable ? visibility : System.Windows.Visibility.Collapsed);
-                butAddBookmarks.Visibility = (state.source.IsBookmarkable ? visibility : System.Windows.Visibility.Collapsed);
                 switch (state.windowType)
                 {
                     case WINDOW_TYPE.WINDOW_BIBLE:
                         this.selectDocumentType.SelectedIndex = 0;
                         break;
                     case WINDOW_TYPE.WINDOW_BIBLE_NOTES:
+                        butSelectChapter.Visibility = System.Windows.Visibility.Collapsed;
+                        butSearch.Visibility = System.Windows.Visibility.Collapsed;
                         this.selectDocumentType.SelectedIndex = 1;
                         break;
                     case WINDOW_TYPE.WINDOW_HISTORY:
+                        butSelectChapter.Visibility = System.Windows.Visibility.Collapsed;
+                        butSearch.Visibility = System.Windows.Visibility.Collapsed;
                         this.selectDocumentType.SelectedIndex = 2;
                         break;
                     case WINDOW_TYPE.WINDOW_BOOKMARKS:
+                        butSelectChapter.Visibility = System.Windows.Visibility.Collapsed;
+                        butSearch.Visibility = System.Windows.Visibility.Collapsed;
                         this.selectDocumentType.SelectedIndex = 3;
                         break;
                     case WINDOW_TYPE.WINDOW_DAILY_PLAN:
+                        butSelectChapter.Visibility = System.Windows.Visibility.Collapsed;
+                        butSearch.Visibility = System.Windows.Visibility.Collapsed;
                         this.selectDocumentType.SelectedIndex = 4;
                         selectPlanType.SelectedIndex = App.dailyPlan.planNumber;
                         planStartDate.Value = App.dailyPlan.planStartDate;
                         break;
                     case WINDOW_TYPE.WINDOW_SEARCH:
+                        butSelectChapter.Visibility = System.Windows.Visibility.Collapsed;
+                        butSearch.Visibility = System.Windows.Visibility.Collapsed;
                         this.selectDocumentType.Visibility = System.Windows.Visibility.Collapsed;
                         this.selectDocument.Visibility = System.Windows.Visibility.Collapsed;
-                        butAddNew.Visibility = System.Windows.Visibility.Collapsed;
                         break;
                 }
                 sliderTextSize.Value = state.htmlFontSize;
             }
-        }
-
-        private void SetBookChoosen()
-        {
-            WINDOW_TYPE selectedType;
-            SwordBackend.SwordBook bookSelected;
-            GetSelectedData(out selectedType, out bookSelected);
-            object openWindowIndex = null;
-            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
-            {
-                openWindowIndex = (int)0;
-            }
-            var state = App.openWindows[(int)openWindowIndex].state;
-            state.windowType = selectedType;
-            state.bibleToLoad = bookSelected.sbmd.internalName;
-            state.htmlFontSize = this.sliderTextSize.Value;
-            if (selectDocumentType.SelectedIndex == 4)
-            {
-                if (this.planStartDate.Value != null)
-                {
-                    App.dailyPlan.planStartDate = (DateTime)this.planStartDate.Value;
-                }
-                App.dailyPlan.planNumber = this.selectPlanType.SelectedIndex;
-            }
-            App.openWindows[(int)openWindowIndex].Initialize(state.bibleToLoad, state.bookNum, state.chapterNum, state.windowType);
         }
 
         private void sliderTextSize_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -409,23 +355,5 @@ namespace CrossConnect
         }
 
         #endregion Methods
-
-        private void selectDocumentType_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (selectDocumentType.SelectedIndex == 4)
-            {
-                //prefill and show the next 2 fields.
-                selectPlanType.Items.Clear();
-                for (int i = 0; i < DailyPlans.zzAllPlansNames.Length; i++)
-                {
-                    selectPlanType.Items.Add(Translations.translate(DailyPlans.zzAllPlansNames[i]));
-                }
-                selectPlanType.SelectedIndex = App.dailyPlan.planNumber;
-                planStartDate.Value = App.dailyPlan.planStartDate;
-            }
-            System.Windows.Visibility visibility = selectDocumentType.SelectedIndex == 4 ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
-            DateSelectPanel.Visibility = visibility;
-            selectPlanType.Visibility = visibility;
-        }
     }
 }

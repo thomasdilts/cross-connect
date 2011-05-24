@@ -4,11 +4,13 @@
   <string key="Add to bookmarks">Add to bookmarks</string>
   <string key="All words (maximum 3 words)">All words (maximum 3 words)</string>
   <string key="An error occured. Do you want to completely erase the memory for this program?">An error occured. Do you want to completely erase the memory for this program?</string>
+  <string key="An error occurred trying to connect to the network. Try again later.">An error occurred trying to connect to the network. Try again later.</string>
   <string key="Bible">Bible</string>
   <string key="Bookmarks">Bookmarks</string>
-  <string key="Cancel">Cancel</string>
   <string key="Case insensitive">Case insensitive</string>
   <string key="Clear history">Clear history</string>
+  <string key="Daily plan">Daily plan</string>
+  <string key="Day">Day</string>
   <string key="Delete?">Delete?</string>
   <string key="Download bible list">Download bible list</string>
   <string key="Download bible">Download bible</string>
@@ -22,7 +24,13 @@
   <string key="Nothing found">Nothing found</string>
   <string key="Old Testement">Old Testement</string>
   <string key="One or more words">One or more words</string>
-  <string key="Save">Save</string>
+  <string key="Read the New Testement in 30 days">Read the New Testement in 30 days</string>
+  <string key="Read the New Testement, Psalms and Proverbs in one year">Read the New Testement, Psalms and Proverbs in one year</string>
+  <string key="Read the Old and New Testement each day in one year">Read the Old and New Testement each day in one year</string>
+  <string key="Read the bible in 90 days">Read the bible in 90 days</string>
+  <string key="Read the bible in one year by random chapters">Read the bible in one year by random chapters</string>
+  <string key="Read the bible in one year by topic">Read the bible in one year by topic</string>
+  <string key="Read the bible in one year">Read the bible in one year</string>
   <string key="Search conditions">Search conditions</string>
   <string key="Search where">Search where</string>
   <string key="Search">Search</string>
@@ -32,13 +40,16 @@
   <string key="Select bookmark to delete">Select bookmark to delete</string>
   <string key="Select chapter">Select chapter</string>
   <string key="Select the bible">Select the bible</string>
+  <string key="Select the daily plan start date">Select the daily plan start date</string>
+  <string key="Select the daily plan">Select the daily plan</string>
   <string key="Select the language">Select the language</string>
   <string key="Select the server">Select the server</string>
   <string key="Select the window type">Select the window type</string>
+  <string key="Send mail">Send mail</string>
+  <string key="Send message">Send message</string>
   <string key="Settings">Settings</string>
   <string key="Text size">Text size</string>
   <string key="Too many found. Search stopped">Too many found. Search stopped</string>
   <string key="Whole bible">Whole bible</string>
   <string key="You must have at least one bible">You must have at least one bible</string>
-<string key="An error occurred trying to connect to the network. Try again later.">An error occurred trying to connect to the network. Try again later.</string>
-</translations>
+  </translations>

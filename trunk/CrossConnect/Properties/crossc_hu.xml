@@ -4,11 +4,13 @@
 <string key="Add to bookmarks">Add hozzá a könyvjelzők</string>
 <string key="All words (maximum 3 words)">Minden szó (legfeljebb 3 szó)</string>
 <string key="An error occured. Do you want to completely erase the memory for this program?">Hiba történt. Szeretné, hogy teljesen törli a memóriát a program?</string>
+<string key="An error occurred trying to connect to the network. Try again later.">Hiba történt próbál csatlakozni a hálózathoz. Próbálja meg később.</string>
 <string key="Bible">Biblia</string>
 <string key="Bookmarks">Könyvjelzők</string>
-<string key="Cancel">Mégsem</string>
 <string key="Case insensitive">Kis-és nagybetűket</string>
 <string key="Clear history">Előzmények törlése</string>
+<string key="Daily plan">Napi terv</string>
+<string key="Day">Nap</string>
 <string key="Delete?">Törlés?</string>
 <string key="Download bible list">Letöltés Biblia lista</string>
 <string key="Download bible">Letöltés Biblia</string>
@@ -22,7 +24,13 @@
 <string key="Nothing found">Semmi nem talált</string>
 <string key="Old Testement">Régi Testement</string>
 <string key="One or more words">Egy vagy több szó</string>
-<string key="Save">Mentés</string>
+<string key="Read the New Testement in 30 days">Olvassa el a New Testement 30 nap alatt</string>
+<string key="Read the New Testement, Psalms and Proverbs in one year">Olvassa el a New Testement, Zsolt és Péld egy év alatt</string>
+<string key="Read the Old and New Testement each day in one year">Olvassa el a régi és az új Testement minden nap egy év alatt</string>
+<string key="Read the bible in 90 days">Olvassa el a Biblia 90 napon belül</string>
+<string key="Read the bible in one year by random chapters">Olvassa el a Biblia egy év alatt véletlenszerűen fejezetek</string>
+<string key="Read the bible in one year by topic">Olvassa el a Biblia egy év alatt a témában</string>
+<string key="Read the bible in one year">Olvassa el a Biblia egy év alatt</string>
 <string key="Search conditions">Keresés a feltételek</string>
 <string key="Search where">Keresés helye</string>
 <string key="Search">Keresés</string>
@@ -32,13 +40,16 @@
 <string key="Select bookmark to delete">Válassza ki a könyvjelző törlése</string>
 <string key="Select chapter">Válassza ki a fejezet</string>
 <string key="Select the bible">Válassza ki a Biblia</string>
+<string key="Select the daily plan start date">Válassza ki a napi terv kezdő időpontja</string>
+<string key="Select the daily plan">Válassza ki a napi terv</string>
 <string key="Select the language">Válassza ki a nyelvet</string>
 <string key="Select the server">Válassza ki a szerver</string>
 <string key="Select the window type">Válassza ki az ablak típusa</string>
+<string key="Send mail">E-mail küldése</string>
+<string key="Send message">Üzenet küldése</string>
 <string key="Settings">Beállítások</string>
 <string key="Text size">Szöveg méret</string>
 <string key="Too many found. Search stopped">Túl sok találat. Keresés megállt</string>
 <string key="Whole bible">Egész Biblia</string>
 <string key="You must have at least one bible">Meg kell legalább egy bibliai</string>
-<string key="An error occurred trying to connect to the network. Try again later.">Hiba történt próbál csatlakozni a hálózathoz. Próbálja meg később.</string>
 </translations>

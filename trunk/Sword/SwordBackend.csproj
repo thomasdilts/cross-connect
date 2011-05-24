@@ -63,7 +63,6 @@
     <Compile Include="ConfigEntryTable.cs" />
     <Compile Include="ConfigEntryType.cs" />
     <Compile Include="reader\BibleNoteReader.cs" />
-    <Compile Include="reader\DailyPlanReader.cs" />
     <Compile Include="reader\IBrowserTextSource.cs" />
     <Compile Include="InstallManager.cs" />
     <Compile Include="Language.cs" />

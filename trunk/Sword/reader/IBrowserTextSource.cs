@@ -69,10 +69,6 @@ namespace SwordBackend
 
         #region Methods
 
-        int getMaxNumChapters();
-
-        int getChapterStartNumber();
-
         string[] getAllShortNames();
 
         string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize);
@@ -80,6 +76,8 @@ namespace SwordBackend
         // string getShortName(int bookNum);
         // string getFullName(int bookNum);
         void GetInfo(int chaptNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title);
+
+        int getMaxNumChapters();
 
         string GetVerseTextOnly(int chapterNumber, int verseNum);
 

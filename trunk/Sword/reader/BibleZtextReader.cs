@@ -241,11 +241,6 @@ namespace SwordBackend
             ReloadSettingsFile();
         }
 
-        public virtual int getMaxNumChapters()
-        {
-            return BibleZtextReader.CHAPTERS_IN_BIBLE;
-        }
-
         #endregion Constructors
 
         #region Events
@@ -440,6 +435,11 @@ namespace SwordBackend
             relChaptNum = chaptPos.bookRelativeChapterNum;
             fullName=getFullName(bookNum);
             title = fullName + " " + (relChaptNum + 1) + ":" + (verseNum + 1);
+        }
+
+        public virtual int getMaxNumChapters()
+        {
+            return BibleZtextReader.CHAPTERS_IN_BIBLE;
         }
 
         public string getShortName(int bookNum)
@@ -826,10 +826,6 @@ namespace SwordBackend
             return chapterBuffer;
         }
 
-        public virtual int getChapterStartNumber()
-        {
-            return 0;
-        }
         protected string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,bool isNotesOnly, bool addStartFinishHtml=true)
         {
             byte[] chapterBuffer = getChapterBytes(chapterNumber);

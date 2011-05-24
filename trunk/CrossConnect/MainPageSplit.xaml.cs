@@ -41,6 +41,8 @@ namespace CrossConnect
     using Microsoft.Phone.Shell;
     using Microsoft.Phone.Tasks;
 
+    using SwordBackend;
+
     public partial class MainPageSplit : AutoRotatePage
     {
         #region Fields
@@ -89,7 +91,7 @@ namespace CrossConnect
                 if (App.installedBibles.installedBibles.Count() == 0)
                 {
                     but.Content = Translations.translate("Download bibles");
-                    but.Click += butDownLoadBibles_Click;
+                    but.Click += menuDownloadBible_Click;
                 }
                 else
                 {
@@ -141,17 +143,18 @@ namespace CrossConnect
             LayoutRoot.RowDefinitions.Clear();
         }
 
-        private void butAddWindow_Click(object sender, RoutedEventArgs e)
+        private void butAddBookmark_Click(object sender, EventArgs e)
+        {
+            App.AddBookmark();
+        }
+
+        private void butAddWindow_Click(object sender, EventArgs e)
         {
             PhoneApplicationService.Current.State["isAddNewWindowOnly"] = true;
             PhoneApplicationService.Current.State["skipWindowSettings"] = false;
             PhoneApplicationService.Current.State["openWindowIndex"] = 0;
+            PhoneApplicationService.Current.State["InitializeWindowSettings"] = true;
             this.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
-        }
-
-        private void butDownLoadBibles_Click(object sender, RoutedEventArgs e)
-        {
-            this.NavigationService.Navigate(new Uri("/DownloadBooks.xaml", UriKind.Relative));
         }
 
         private void butDownload_Click(object sender, EventArgs e)
@@ -159,19 +162,25 @@ namespace CrossConnect
             this.NavigationService.Navigate(new Uri("/DownloadBooks.xaml", UriKind.Relative));
         }
 
+        private void butGoToPlan_Click(object sender, EventArgs e)
+        {
+            if (App.openWindows.Count() > 0)
+            {
+                //take the present window and show the plan if it exists.
+                var state = App.openWindows[0].state;
+                state.windowType = WINDOW_TYPE.WINDOW_DAILY_PLAN;
+                state.chapterNum = App.dailyPlan.planDayNumber;
+                App.openWindows[0].Initialize(state.bibleToLoad, state.bookNum, state.chapterNum, state.windowType);
+                ReDrawWindows();
+            }
+        }
+
         private void butHelp_Click(object sender, EventArgs e)
         {
             WebBrowserTask webBrowserTask = new WebBrowserTask();
-            string version = "1.0.0.1";
+            string version = "1.0.0.2";
             webBrowserTask.URL = @"http://www.chaniel.se/crossconnect/help?version=" + version;
             webBrowserTask.Show();
-        }
-
-        private void butNewWindow_Click(object sender, EventArgs e)
-        {
-            PhoneApplicationService.Current.State["isAddNewWindowOnly"] = true;
-            PhoneApplicationService.Current.State["skipWindowSettings"] = false;
-            this.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
         }
 
         private TextBlock createTextBlock(string text,string tag)
@@ -180,6 +189,59 @@ namespace CrossConnect
             textBlock.Text = text;
             textBlock.Tag = tag;
             return textBlock;
+        }
+
+        private void GetLast3SecondsChosenVerses(out string textsWithTitles, out string titlesOnly)
+        {
+            textsWithTitles = "";
+            titlesOnly = "";
+            DateTime? firstFound = null;
+            List<BiblePlaceMarker> foundVerses = new List<BiblePlaceMarker>();
+            for (int j = App.placeMarkers.history.Count - 1; j >= 0; j--)
+            {
+                BiblePlaceMarker place = App.placeMarkers.history[j];
+                if (firstFound == null)
+                {
+                    firstFound = place.when;
+                    foundVerses.Add(place);
+                }
+                else if (firstFound.Value.AddSeconds(-3).CompareTo(place.when) < 0)
+                {
+                    foundVerses.Add(place);
+                }
+                else
+                {
+                    //we found all the verses, get out.
+                    break;
+                }
+            }
+            object openWindowIndex = null;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            {
+                openWindowIndex = (int)0;
+            }
+
+            var state = App.openWindows[(int)openWindowIndex].state;
+            //they are in reverse order again,
+            for (int j = foundVerses.Count - 1; j >= 0; j--)
+            {
+                BiblePlaceMarker place = foundVerses[j];
+                int bookNum;
+                int relChaptNum;
+                string fullName;
+                string titleText;
+                state.source.GetInfo(place.chapterNum, place.verseNum, out bookNum, out relChaptNum, out fullName, out titleText);
+                string title = fullName + " " + (relChaptNum + 1) + ":" + (place.verseNum + 1) + " - " + state.bibleToLoad;
+                string verseText = state.source.GetVerseTextOnly(place.chapterNum, place.verseNum);
+
+                if (!string.IsNullOrEmpty(titlesOnly))
+                {
+                    textsWithTitles += "\n";
+                    titlesOnly += ", ";
+                }
+                titlesOnly += title;
+                textsWithTitles += verseText.Replace("<p>", "").Replace("</p>", "").Replace("<br />", "").Replace("\n", " ") + "\n-" + title;
+            }
         }
 
         private void HitButtonBigger(object sender, EventArgs e)
@@ -203,12 +265,21 @@ namespace CrossConnect
         {
             App.mainWindow = this;
 
-            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[0]).Text = Translations.translate("Download bibles");
-            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[1]).Text = Translations.translate("Add new window");
-            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[2]).Text = Translations.translate("Help");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[0]).Text = Translations.translate("Select bible to delete");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[1]).Text = Translations.translate("Select bookmark to delete");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[2]).Text = Translations.translate("Clear history");
+            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[0]).Text = Translations.translate("Add new window");
+            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[1]).Text = Translations.translate("Add to bookmarks");
+            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[2]).Text = Translations.translate("Daily plan");
+            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[3]).Text = Translations.translate("Help");
+
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[0]).Text = Translations.translate("Download bibles");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[1]).Text = Translations.translate("Select bible to delete");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[2]).Text = Translations.translate("Select bookmark to delete");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[3]).Text = Translations.translate("Clear history");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[4]).Text = Translations.translate("Send message");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[5]).Text = Translations.translate("Send mail");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[6]).Text = Translations.translate("Add new window");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[7]).Text = Translations.translate("Add to bookmarks");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[8]).Text = Translations.translate("Daily plan");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[9]).Text = Translations.translate("Help");
 
             if (App.openWindows.Count() == 0 || App.installedBibles.installedBibles.Count() == 0)
             {
@@ -228,6 +299,8 @@ namespace CrossConnect
                     if (App.isFirstTimeInMainPageSplit<=1)
                     {
                         PhoneApplicationService.Current.State["skipWindowSettings"] = false;
+                        PhoneApplicationService.Current.State["isAddNewWindowOnly"] = true;
+                        PhoneApplicationService.Current.State["InitializeWindowSettings"] = true;
                         this.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
                         App.isFirstTimeInMainPageSplit=2;
                     }
@@ -254,6 +327,35 @@ namespace CrossConnect
         private void menuDeleteBookmark_Click(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/EditBookmarks.xaml", UriKind.Relative));
+        }
+
+        private void menuDownloadBible_Click(object sender, EventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/DownloadBooks.xaml", UriKind.Relative));
+        }
+
+        private void menuMail_Click(object sender, EventArgs e)
+        {
+            string textsWithTitles;
+            string titlesOnly;
+            GetLast3SecondsChosenVerses(out textsWithTitles, out titlesOnly);
+            EmailComposeTask emailComposeTask = new EmailComposeTask();
+            //emailComposeTask.To = "user@example.com";
+            emailComposeTask.Body = textsWithTitles;
+            //emailComposeTask.Cc = "user2@example.com";
+            emailComposeTask.Subject = titlesOnly;
+            emailComposeTask.Show();
+        }
+
+        private void menuMessage_Click(object sender, EventArgs e)
+        {
+            string textsWithTitles;
+            string titlesOnly;
+            GetLast3SecondsChosenVerses(out textsWithTitles, out titlesOnly);
+            SmsComposeTask smsComposeTask = new SmsComposeTask();
+            //smsComposeTask.To = "5555555555";
+            smsComposeTask.Body = textsWithTitles;
+            smsComposeTask.Show();
         }
 
         private void PhoneApplicationPage_OrientationChanged(object sender, OrientationChangedEventArgs e)

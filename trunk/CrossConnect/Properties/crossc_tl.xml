@@ -4,11 +4,13 @@
 <string key="Add to bookmarks">Idagdag sa mga bookmark</string>
 <string key="All words (maximum 3 words)">Lahat ng mga salita (hanggang 3 salita)</string>
 <string key="An error occured. Do you want to completely erase the memory for this program?">May naganap na error. Gusto mong ganap na burahin ang memorya para sa programang ito?</string>
+<string key="An error occurred trying to connect to the network. Try again later.">May naganap na error sinusubukan upang kumonekta sa network. Subukan muli mamaya.</string>
 <string key="Bible">Bible</string>
 <string key="Bookmarks">Bookmarks</string>
-<string key="Cancel">Kanselahin</string>
 <string key="Case insensitive">Case insensitive</string>
 <string key="Clear history">Limasin ang kasaysayan</string>
+<string key="Daily plan">Araw-araw na plano</string>
+<string key="Day">Araw</string>
 <string key="Delete?">Tanggalin?</string>
 <string key="Download bible list">Download bible listahan</string>
 <string key="Download bible">Download bible</string>
@@ -22,7 +24,13 @@
 <string key="Nothing found">Walang natagpuan</string>
 <string key="Old Testement">Old Testement</string>
 <string key="One or more words">Isa o higit pang mga salita</string>
-<string key="Save">Iligtas</string>
+<string key="Read the New Testement in 30 days">Basahin ang New Testement sa 30 araw</string>
+<string key="Read the New Testement, Psalms and Proverbs in one year">Basahin ang New Testement, Mga Awit at Kawikaan sa isang taon</string>
+<string key="Read the Old and New Testement each day in one year">Basahin ang Old at New Testement sa bawat araw sa isang taon</string>
+<string key="Read the bible in 90 days">Basahin ang Biblia sa 90 na araw</string>
+<string key="Read the bible in one year by random chapters">Basahin ang Biblia sa isang taon sa pamamagitan ng random na mga kabanata</string>
+<string key="Read the bible in one year by topic">Basahin ang Biblia sa isang taon sa pamamagitan ng paksa</string>
+<string key="Read the bible in one year">Basahin ang Biblia sa isang taon</string>
 <string key="Search conditions">Search kondisyon</string>
 <string key="Search where">Search saan</string>
 <string key="Search">Paghahanap</string>
@@ -32,13 +40,16 @@
 <string key="Select bookmark to delete">Piliin ang bookmark upang tanggalin</string>
 <string key="Select chapter">Piliin kabanata</string>
 <string key="Select the bible">Piliin ang bible</string>
+<string key="Select the daily plan start date">Piliin ang araw-araw na plano petsa ng simula</string>
+<string key="Select the daily plan">Piliin ang araw-araw na plano</string>
 <string key="Select the language">Piliin ang wika</string>
 <string key="Select the server">Piliin ang server</string>
 <string key="Select the window type">Piliin ang window type</string>
+<string key="Send mail">Magpadala ng mail</string>
+<string key="Send message">Magpadala ng mensahe</string>
 <string key="Settings">Setting</string>
 <string key="Text size">Laki ng teksto</string>
 <string key="Too many found. Search stopped">Masyadong maraming mga natagpuan. Search tumigil</string>
 <string key="Whole bible">Buong biblia</string>
 <string key="You must have at least one bible">Kailangan ay mayroon kang hindi bababa sa isang bible</string>
-<string key="An error occurred trying to connect to the network. Try again later.">May naganap na error sinusubukan upang kumonekta sa network. Subukan muli mamaya.</string>
 </translations>

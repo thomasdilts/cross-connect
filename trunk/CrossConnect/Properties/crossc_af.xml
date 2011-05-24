@@ -4,11 +4,13 @@
 <string key="Add to bookmarks">Voeg by gunstelinge</string>
 <string key="All words (maximum 3 words)">Alle woorde (maksimum 3 woorde)</string>
 <string key="An error occured. Do you want to completely erase the memory for this program?">&#39;N fout het voorgekom. Wil jy heeltemal vee die geheue vir hierdie program?</string>
+<string key="An error occurred trying to connect to the network. Try again later.">&#39;N fout probeer om toegang tot die netwerk. Probeer later weer.</string>
 <string key="Bible">Bybel</string>
 <string key="Bookmarks">Email</string>
-<string key="Cancel">Kanselleer</string>
 <string key="Case insensitive">Kassensitief</string>
 <string key="Clear history">Duidelike geskiedenis</string>
+<string key="Daily plan">Daaglikse plan</string>
+<string key="Day">Dag</string>
 <string key="Delete?">Verwyder?</string>
 <string key="Download bible list">Download Bybel lys</string>
 <string key="Download bible">Download Bybel</string>
@@ -22,7 +24,13 @@
 <string key="Nothing found">Niks gevind nie</string>
 <string key="Old Testement">Ou Testement</string>
 <string key="One or more words">Een of meer woorde</string>
-<string key="Save">Slaan</string>
+<string key="Read the New Testement in 30 days">Lees die Nuwe Testement in 30 dae</string>
+<string key="Read the New Testement, Psalms and Proverbs in one year">Lees die Nuwe Testement, Psalms en Spreuke in een jaar</string>
+<string key="Read the Old and New Testement each day in one year">Lees die Ou en Nuwe Testement elke dag in een jaar</string>
+<string key="Read the bible in 90 days">Lees die Bybel in 90 dae</string>
+<string key="Read the bible in one year by random chapters">Lees die Bybel in een jaar deur ewekansige hoofstukke</string>
+<string key="Read the bible in one year by topic">Lees die Bybel in een jaar deur die onderwerp</string>
+<string key="Read the bible in one year">Lees die Bybel in een jaar</string>
 <string key="Search conditions">Soek voorwaardes</string>
 <string key="Search where">Soek waar</string>
 <string key="Search">Soek</string>
@@ -32,13 +40,16 @@
 <string key="Select bookmark to delete">Kies bookmark te verwyder</string>
 <string key="Select chapter">Kies hoofstuk</string>
 <string key="Select the bible">Kies die Bybel</string>
+<string key="Select the daily plan start date">Kies die daaglikse plan begin datum</string>
+<string key="Select the daily plan">Kies die daaglikse plan</string>
 <string key="Select the language">Kies die taal wat</string>
 <string key="Select the server">Kies die bediener</string>
 <string key="Select the window type">Kies die venster tik</string>
+<string key="Send mail">E-pos stuur</string>
+<string key="Send message">Stuur boodskap</string>
 <string key="Settings">Instellings</string>
 <string key="Text size">Teks grootte</string>
 <string key="Too many found. Search stopped">Te veel gevind nie. Soek gestop</string>
 <string key="Whole bible">Hele Bybel</string>
 <string key="You must have at least one bible">Jy moet ten minste een Bybel</string>
-<string key="An error occurred trying to connect to the network. Try again later.">'N fout probeer om toegang tot die netwerk. Probeer later weer.</string>
 </translations>

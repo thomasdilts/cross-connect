@@ -48,13 +48,21 @@
     <!--Sample code showing usage of ApplicationBar-->
     <local:AutoRotatePage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton Click="butDownload_Click" x:Name="butDownload" IconUri="/Images/dark/appbar.download.rest.png" Text="Download bibles"/>
-            <shell:ApplicationBarIconButton Click="butNewWindow_Click" x:Name="butNewWindow" IconUri="/Images/dark/appbar.new.rest.png" Text="New window"/>
+            <shell:ApplicationBarIconButton Click="butAddWindow_Click" x:Name="butNewWindow" IconUri="/Images/dark/appbar.new.rest.png" Text="New window"/>
+            <shell:ApplicationBarIconButton Click="butAddBookmark_Click" x:Name="butAddBookmark" IconUri="/Images/dark/appbar.favs.addto.rest.png" Text="New window"/>
+            <shell:ApplicationBarIconButton Click="butGoToPlan_Click" x:Name="butGoToPlan" IconUri="/Images/dark/appbar.gotodate.rest.png" Text="New window"/>
             <shell:ApplicationBarIconButton Click="butHelp_Click" x:Name="butHelp" IconUri="/Images/dark/appbar.questionmark.rest.png" Text="Help"/>
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Click="menuDeleteBible_Click" x:Name="menuDeleteBible" Text="Select bible to delete"/>
+                <shell:ApplicationBarMenuItem Click="menuDownloadBible_Click" x:Name="menuDownloadBible" Text="Select bible to delete"/>
+                <shell:ApplicationBarMenuItem Click="menuDeleteBible_Click" x:Name="menuDeleteBible" Text="Download bibles"/>
                 <shell:ApplicationBarMenuItem Click="menuDeleteBookmark_Click" x:Name="menuDeleteBookmark" Text="Select bookmark to delete"/>
                 <shell:ApplicationBarMenuItem Click="menuClearHistory_Click" x:Name="menuClearHistory" Text="Clear history"/>
+                <shell:ApplicationBarMenuItem Click="menuMessage_Click" x:Name="menuMessage" Text="Send message"/>
+                <shell:ApplicationBarMenuItem Click="menuMail_Click" x:Name="menuMail" Text="Send mail"/>
+                <shell:ApplicationBarMenuItem Click="butAddWindow_Click" x:Name="menuNewWindow" Text="Add new window"/>
+                <shell:ApplicationBarMenuItem Click="butAddBookmark_Click" x:Name="menuAddBookmark" Text="Add bookmark"/>
+                <shell:ApplicationBarMenuItem Click="butGoToPlan_Click" x:Name="menuGoToPlan" Text="Daily plan"/>
+                <shell:ApplicationBarMenuItem Click="butHelp_Click" x:Name="menuHelp" Text="help"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </local:AutoRotatePage.ApplicationBar>
