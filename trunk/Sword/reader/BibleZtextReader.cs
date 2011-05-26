@@ -407,6 +407,30 @@ namespace SwordBackend
             return GetChapterHtml( chapterNumber, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize,false);
         }
 
+        public virtual void putHtmlTofile(int chapterNumber, string htmlBackgroundColor, 
+            string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,
+            string fileErase,string fileCreate)
+        {
+            var root = IsolatedStorageFile.GetUserStoreForApplication();
+
+            // Must change the file name, otherwise the browser may or may not update.
+            string file = "web" + (int)(new Random().NextDouble() * 10000) + ".html";
+            if (root.FileExists( fileErase))
+            {
+                root.DeleteFile(fileErase);
+            }
+
+            IsolatedStorageFileStream fs = root.CreateFile(fileCreate);
+            System.IO.StreamWriter tw = new System.IO.StreamWriter(fs);
+            tw.Write(GetChapterHtml(
+                chapterNumber,
+                htmlBackgroundColor,
+                htmlForegroundColor,
+                htmlPhoneAccentColor,
+                htmlFontSize));
+            tw.Close();
+            fs.Close();
+        }
         /// <summary>
         /// Return the entire chapter
         /// </summary>

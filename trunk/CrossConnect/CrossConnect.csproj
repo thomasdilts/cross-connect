@@ -65,6 +65,7 @@
     </Compile>
     <Compile Include="AutoRotatePage.cs" />
     <Compile Include="DailyPlanReader.cs" />
+    <Compile Include="OperationContext.cs" />
     <Compile Include="Translations.cs" />
     <Compile Include="BookMarkReader.cs" />
     <Compile Include="BrowserTitledWindow.xaml.cs">

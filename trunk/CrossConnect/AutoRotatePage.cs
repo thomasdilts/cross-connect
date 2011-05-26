@@ -10,6 +10,7 @@
     using System.Windows.Media;
     using System.Windows.Media.Animation;
     using System.Windows.Shapes;
+    using System.Threading;
 
     using Microsoft.Phone.Controls;
 
@@ -92,6 +93,8 @@
 
             _previousOrientation = e.Orientation;
         }
+
+
 
         #endregion Methods
     }

@@ -201,18 +201,43 @@ namespace CrossConnect
             }
         }
 
+        public void CallbackFromUpdate(IAsyncResult ar)
+        {
+
+            //webBrowser1.FontSize = this.state.htmlFontSize;
+            webBrowser1.Base = App.WEB_DIR_ISOLATED;
+
+            Uri source = new Uri(this.lastFileName, UriKind.Relative);
+            if (this.state.source.IsSynchronizeable)
+            {
+                source = new Uri(this.lastFileName + "#CHAP_" + this.state.chapterNum + "_VERS_" + this.state.verseNum, UriKind.Relative);
+            }
+
+            webBrowser1.Navigate(source);
+
+            this.WriteTitle();
+
+            // update the sync button image
+            this.state.isSynchronized = !this.state.isSynchronized;
+            this.ButLink_Click(null, null);
+
+            if (this.state.source.IsSynchronizeable)
+            {
+                //The window wont show the correct verse if we dont wait a few seconds before showing it.
+                System.Windows.Threading.DispatcherTimer tmr = new System.Windows.Threading.DispatcherTimer();
+                tmr.Interval = TimeSpan.FromSeconds(state.isResume ? 2.5 : 1);
+                state.isResume = false;
+                tmr.Tick += this.OnTimerTick;
+                tmr.Start();
+            }
+        }
         public void UpdateBrowser()
         {
             if (this.state.source != null && this.Parent != null)
             {
-                var root = IsolatedStorageFile.GetUserStoreForApplication();
-
                 // Must change the file name, otherwise the browser may or may not update.
                 string file = "web" + (int)(new Random().NextDouble() * 10000) + ".html";
-                if (root.FileExists(App.WEB_DIR_ISOLATED + "/" + this.lastFileName))
-                {
-                    root.DeleteFile(App.WEB_DIR_ISOLATED + "/" + this.lastFileName);
-                }
+
                 double fontSizeMultiplier = 1;
                 if (this.Parent != null && ((Grid)(Grid)this.Parent).Parent != null)
                 {
@@ -224,44 +249,22 @@ namespace CrossConnect
                         //we must adjust the font size for the new orientation. otherwise the font is too big.
                         fontSizeMultiplier = parent.ActualHeight / parent.ActualWidth;
                     }
-                }
+                } 
+                var backcolor=GetBrowserColor("PhoneBackgroundColor");
+                var forecolor=GetBrowserColor("PhoneForegroundColor");
+                var accentcolor = GetBrowserColor("PhoneAccentColor");
+                Do(() =>
+                        {
+                        this.state.source.putHtmlTofile(
+                            this.state.chapterNum,
+                            backcolor,
+                            forecolor,
+                            accentcolor,
+                            this.state.htmlFontSize * fontSizeMultiplier,
+                            App.WEB_DIR_ISOLATED + "/" + this.lastFileName,
+                            App.WEB_DIR_ISOLATED + "/" + file);}
+                            , CallbackFromUpdate);
                 this.lastFileName = file;
-                IsolatedStorageFileStream fs = root.CreateFile(App.WEB_DIR_ISOLATED + "/" + this.lastFileName);
-                System.IO.StreamWriter tw = new System.IO.StreamWriter(fs);
-                tw.Write(this.state.source.GetChapterHtml(
-                    this.state.chapterNum,
-                    GetBrowserColor("PhoneBackgroundColor"),
-                    GetBrowserColor("PhoneForegroundColor"),
-                    GetBrowserColor("PhoneAccentColor"),
-                    this.state.htmlFontSize * fontSizeMultiplier));
-                tw.Close();
-                fs.Close();
-                //webBrowser1.FontSize = this.state.htmlFontSize;
-                webBrowser1.Base = App.WEB_DIR_ISOLATED;
-
-                Uri source = new Uri(file, UriKind.Relative);
-                if (this.state.source.IsSynchronizeable)
-                {
-                    source = new Uri(file + "#CHAP_" + this.state.chapterNum + "_VERS_" + this.state.verseNum, UriKind.Relative);
-                }
-
-                webBrowser1.Navigate(source);
-
-                this.WriteTitle();
-
-                // update the sync button image
-                this.state.isSynchronized = !this.state.isSynchronized;
-                this.ButLink_Click(null, null);
-
-                if (this.state.source.IsSynchronizeable)
-                {
-                    //The window wont show the correct verse if we dont wait a few seconds before showing it.
-                    System.Windows.Threading.DispatcherTimer tmr = new System.Windows.Threading.DispatcherTimer();
-                    tmr.Interval = TimeSpan.FromSeconds(state.isResume ? 3 : 1.5);
-                    state.isResume = false;
-                    tmr.Tick += this.OnTimerTick;
-                    tmr.Start();
-                }
             }
         }
 
@@ -575,6 +578,24 @@ namespace CrossConnect
                 this.state.source.RegisterUpdateEvent(this.Source_Changed, true);
             }
         }
+
+        public void Do(Action action, AsyncCallback callback)
+        {
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                try
+                {
+                    action();
+                    Deployment.Current.Dispatcher.BeginInvoke(() => callback(null));
+                }
+                catch (Exception)
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() => callback(null));
+                    return;
+                }
+            });
+        }
+
 
         private void WebBrowser1_ScriptNotify(object sender, Microsoft.Phone.Controls.NotifyEventArgs e)
         {

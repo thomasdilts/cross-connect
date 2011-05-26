@@ -87,6 +87,8 @@ namespace SwordBackend
 
         void ReloadSettingsFile();
 
+        void putHtmlTofile(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fileErase, string fileCreate);
+
         #endregion Methods
     }
 }
