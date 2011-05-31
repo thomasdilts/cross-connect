@@ -169,8 +169,7 @@ namespace CrossConnect
                 //take the present window and show the plan if it exists.
                 var state = App.openWindows[0].state;
                 state.windowType = WINDOW_TYPE.WINDOW_DAILY_PLAN;
-                state.chapterNum = App.dailyPlan.planDayNumber;
-                App.openWindows[0].Initialize(state.bibleToLoad, state.bookNum, state.chapterNum, state.windowType);
+                App.openWindows[0].Initialize(state.bibleToLoad, state.windowType);
                 ReDrawWindows();
             }
         }
@@ -178,7 +177,7 @@ namespace CrossConnect
         private void butHelp_Click(object sender, EventArgs e)
         {
             WebBrowserTask webBrowserTask = new WebBrowserTask();
-            string version = "1.0.0.2";
+            string version = "1.0.0.3";
             webBrowserTask.URL = @"http://www.chaniel.se/crossconnect/help?version=" + version;
             webBrowserTask.Show();
         }
@@ -230,7 +229,7 @@ namespace CrossConnect
                 int relChaptNum;
                 string fullName;
                 string titleText;
-                state.source.GetInfo(place.chapterNum, place.verseNum, out bookNum, out relChaptNum, out fullName, out titleText);
+                ((BibleZtextReader)state.source).GetInfo(place.chapterNum, place.verseNum, out bookNum, out relChaptNum, out fullName, out titleText);
                 string title = fullName + " " + (relChaptNum + 1) + ":" + (place.verseNum + 1) + " - " + state.bibleToLoad;
                 string verseText = state.source.GetVerseTextOnly(place.chapterNum, place.verseNum);
 

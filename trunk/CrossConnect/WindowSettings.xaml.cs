@@ -127,7 +127,7 @@ namespace CrossConnect
                     }
                     App.dailyPlan.planNumber = this.selectPlanType.SelectedIndex;
                 }
-                App.AddWindow(bookSelected.sbmd.internalName, 0, 0, selectedType, (double)sliderTextSize.Value);
+                App.AddWindow(bookSelected.sbmd.internalName,selectedType, (double)sliderTextSize.Value);
                 if (NavigationService.CanGoBack)
                 {
                     NavigationService.GoBack();
@@ -158,6 +158,20 @@ namespace CrossConnect
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
+            object skipWindowSettings = null;
+            if (PhoneApplicationService.Current.State.TryGetValue("skipWindowSettings", out skipWindowSettings))
+            {
+                if ((bool)skipWindowSettings)
+                {
+                    PhoneApplicationService.Current.State["skipWindowSettings"] = false;
+                    // request to skip this window.
+                    if (NavigationService.CanGoBack)
+                    {
+                        NavigationService.GoBack();
+                    }
+                }
+            }
+
             object InitializeWindow = null;
             if (!PhoneApplicationService.Current.State.TryGetValue("InitializeWindowSettings", out InitializeWindow))
             {
@@ -189,9 +203,25 @@ namespace CrossConnect
             {
                 isAddNewWindowOnly = false;
             }
-            System.Windows.Visibility visibility = selectDocumentType.SelectedIndex == 0 && !(bool)isAddNewWindowOnly ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
-            butSelectChapter.Visibility = visibility;
-            butSearch.Visibility = visibility;
+            object openWindowIndex = null;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            {
+                openWindowIndex = 0;
+            }
+            bool IsPageable = false;
+            bool IsSearchable = false;
+            WINDOW_TYPE windowType = WINDOW_TYPE.WINDOW_BIBLE;
+            if (App.openWindows.Count>0 && App.openWindows[(int)openWindowIndex].state != null)
+            {
+                var state = App.openWindows[(int)openWindowIndex].state;
+                IsPageable = state.source.IsPageable;
+                IsSearchable = state.source.IsSearchable;
+                windowType = state.windowType;
+            }
+            System.Windows.Visibility visibility = (selectDocumentType.SelectedIndex + 1) == (int)windowType && !(bool)isAddNewWindowOnly ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+            butSelectChapter.Visibility = (IsPageable ? visibility : System.Windows.Visibility.Collapsed);
+            butSearch.Visibility = (IsSearchable ? visibility : System.Windows.Visibility.Collapsed);
+
             visibility = selectDocumentType.SelectedIndex == 4 ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
             DateSelectPanel.Visibility = visibility;
             selectPlanType.Visibility = visibility;
@@ -208,18 +238,17 @@ namespace CrossConnect
                 openWindowIndex = (int)0;
             }
             var state = App.openWindows[(int)openWindowIndex].state;
-            state.windowType = selectedType;
-            state.bibleToLoad = bookSelected.sbmd.internalName;
-            state.htmlFontSize = this.sliderTextSize.Value;
-            if (selectDocumentType.SelectedIndex == 4)
+            if (!state.bibleToLoad.Equals(bookSelected.sbmd.internalName) || state.windowType != selectedType)
             {
-                if (this.planStartDate.Value != null)
-                {
-                    App.dailyPlan.planStartDate = (DateTime)this.planStartDate.Value;
-                }
-                App.dailyPlan.planNumber = this.selectPlanType.SelectedIndex;
+                state.windowType = selectedType;
+                state.bibleToLoad = bookSelected.sbmd.internalName;
+                state.htmlFontSize = this.sliderTextSize.Value;
+                App.openWindows[(int)openWindowIndex].Initialize(state.bibleToLoad, state.windowType);
             }
-            App.openWindows[(int)openWindowIndex].Initialize(state.bibleToLoad, state.bookNum, state.chapterNum, state.windowType);
+            else
+            {
+                state.htmlFontSize = this.sliderTextSize.Value;
+            }
         }
 
         private void SetupEntirePage()
@@ -240,29 +269,14 @@ namespace CrossConnect
             selectDocumentType.Items.Add(Translations.translate("Daily plan"));
 
             object isAddNewWindowOnly = null;
-            object skipWindowSettings = null;
             object openWindowIndex = null;
             if (!PhoneApplicationService.Current.State.TryGetValue("isAddNewWindowOnly", out isAddNewWindowOnly))
             {
                 isAddNewWindowOnly = false;
             }
-            if (!PhoneApplicationService.Current.State.TryGetValue("skipWindowSettings", out skipWindowSettings))
-            {
-                skipWindowSettings = false;
-            }
             if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
             {
                 openWindowIndex = 0;
-            }
-
-            if ((bool)skipWindowSettings)
-            {
-                // request to skip this window.
-                if (NavigationService.CanGoBack)
-                {
-                    NavigationService.GoBack();
-                }
-
             }
 
             selectDocument.Items.Clear();
@@ -293,9 +307,11 @@ namespace CrossConnect
                 var state= App.openWindows[(int)openWindowIndex].state;
                 int bookNum;
                 int relChaptNum;
+                int absoluteChaptNum;
+                int verseNum;
                 string fullName;
                 string titleText;
-                state.source.GetInfo(state.chapterNum, state.verseNum, out bookNum, out relChaptNum, out fullName, out titleText);
+                state.source.GetInfo(out bookNum,out absoluteChaptNum, out relChaptNum,out verseNum, out fullName, out titleText);
                 string title = titleText + " - " + state.bibleToLoad;
 
                 butSelectChapter.Visibility = (state.source.IsPageable ? visibility : System.Windows.Visibility.Collapsed);
@@ -306,30 +322,20 @@ namespace CrossConnect
                         this.selectDocumentType.SelectedIndex = 0;
                         break;
                     case WINDOW_TYPE.WINDOW_BIBLE_NOTES:
-                        butSelectChapter.Visibility = System.Windows.Visibility.Collapsed;
-                        butSearch.Visibility = System.Windows.Visibility.Collapsed;
                         this.selectDocumentType.SelectedIndex = 1;
                         break;
                     case WINDOW_TYPE.WINDOW_HISTORY:
-                        butSelectChapter.Visibility = System.Windows.Visibility.Collapsed;
-                        butSearch.Visibility = System.Windows.Visibility.Collapsed;
                         this.selectDocumentType.SelectedIndex = 2;
                         break;
                     case WINDOW_TYPE.WINDOW_BOOKMARKS:
-                        butSelectChapter.Visibility = System.Windows.Visibility.Collapsed;
-                        butSearch.Visibility = System.Windows.Visibility.Collapsed;
                         this.selectDocumentType.SelectedIndex = 3;
                         break;
                     case WINDOW_TYPE.WINDOW_DAILY_PLAN:
-                        butSelectChapter.Visibility = System.Windows.Visibility.Collapsed;
-                        butSearch.Visibility = System.Windows.Visibility.Collapsed;
                         this.selectDocumentType.SelectedIndex = 4;
                         selectPlanType.SelectedIndex = App.dailyPlan.planNumber;
                         planStartDate.Value = App.dailyPlan.planStartDate;
                         break;
                     case WINDOW_TYPE.WINDOW_SEARCH:
-                        butSelectChapter.Visibility = System.Windows.Visibility.Collapsed;
-                        butSearch.Visibility = System.Windows.Visibility.Collapsed;
                         this.selectDocumentType.Visibility = System.Windows.Visibility.Collapsed;
                         this.selectDocument.Visibility = System.Windows.Visibility.Collapsed;
                         break;

@@ -64,10 +64,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AutoRotatePage.cs" />
-    <Compile Include="DailyPlanReader.cs" />
+    <Compile Include="InstallManager.cs" />
+    <Compile Include="readers\DailyPlanReader.cs" />
     <Compile Include="OperationContext.cs" />
     <Compile Include="Translations.cs" />
-    <Compile Include="BookMarkReader.cs" />
+    <Compile Include="readers\BookMarkReader.cs" />
     <Compile Include="BrowserTitledWindow.xaml.cs">
       <DependentUpon>BrowserTitledWindow.xaml</DependentUpon>
     </Compile>
@@ -80,7 +81,7 @@
     <Compile Include="Help.xaml.cs">
       <DependentUpon>Help.xaml</DependentUpon>
     </Compile>
-    <Compile Include="HistoryReader.cs" />
+    <Compile Include="readers\HistoryReader.cs" />
     <Compile Include="ImageButton.cs" />
     <Compile Include="InstalledBooks.cs" />
     <Compile Include="MainPageSplit.xaml.cs">
@@ -93,7 +94,7 @@
     <Compile Include="Search.xaml.cs">
       <DependentUpon>Search.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SearchReader.cs" />
+    <Compile Include="readers\SearchReader.cs" />
     <Compile Include="SelectBibleBook.xaml.cs">
       <DependentUpon>SelectBibleBook.xaml</DependentUpon>
     </Compile>

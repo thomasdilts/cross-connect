@@ -194,10 +194,10 @@ namespace CrossConnect
             RaiseHistoryChangeEvent();
         }
 
-        public static void AddWindow(string bibleToLoad, int bookNum, int chapterNum, WINDOW_TYPE typeOfWindow, double textSize, IBrowserTextSource source = null)
+        public static void AddWindow(string bibleToLoad, WINDOW_TYPE typeOfWindow, double textSize, IBrowserTextSource source = null)
         {
             BrowserTitledWindow nextWindow = new BrowserTitledWindow();
-            nextWindow.Initialize(bibleToLoad, bookNum, chapterNum, typeOfWindow, source);
+            nextWindow.Initialize(bibleToLoad, typeOfWindow, source);
             nextWindow.state.curIndex = App.openWindows.Count();
             nextWindow.state.htmlFontSize = textSize;
             App.openWindows.Add(nextWindow);
@@ -295,6 +295,7 @@ namespace CrossConnect
                                 typeof(SwordBackend.BibleZtextReader.BookPos),
                                 typeof(SwordBackend.BibleZtextReader),
                                 typeof(SwordBackend.BibleNoteReader),
+                                typeof(SwordBackend.BibleZtextReaderSerialData),
                                 typeof(BookMarkReader),
                                 typeof(HistoryReader),
                                 typeof(SearchReader),
@@ -303,10 +304,10 @@ namespace CrossConnect
                             DataContractSerializer ser = new DataContractSerializer(typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState), types);
                             BrowserTitledWindow nextWindow = new BrowserTitledWindow();
                             nextWindow.state = (CrossConnect.BrowserTitledWindow.SerializableWindowState)ser.ReadObject(reader);
-                            nextWindow.state.source.ReloadSettingsFile();
+                            nextWindow.state.source.Resume();
                             nextWindow.state.isResume = true;
                             openWindows.Add(nextWindow);
-                            nextWindow.Initialize(nextWindow.state.bibleToLoad, nextWindow.state.bookNum, nextWindow.state.chapterNum, nextWindow.state.windowType);
+                            //nextWindow.Initialize(nextWindow.state.bibleToLoad, nextWindow.state.windowType);
                         }
                     }
                 }
@@ -370,6 +371,7 @@ namespace CrossConnect
                     typeof(SwordBackend.BibleZtextReader.BookPos),
                     typeof(SwordBackend.BibleZtextReader),
                     typeof(SwordBackend.BibleNoteReader),
+                    typeof(SwordBackend.BibleZtextReaderSerialData),
                     typeof(BookMarkReader),
                     typeof(HistoryReader),
                     typeof(SearchReader),
@@ -384,6 +386,7 @@ namespace CrossConnect
                     settings.NamespaceHandling = NamespaceHandling.OmitDuplicates;
                     using (XmlWriter writer = XmlWriter.Create(sw, settings))
                     {
+                        openWindows[i].state.source.SerialSave();
                         ser.WriteObject(writer, openWindows[i].state);
                     }
 
@@ -545,6 +548,10 @@ namespace CrossConnect
         {
             #region Fields
 
+            [DataMember]
+            public int currentChapterNumber = 0;
+            [DataMember]
+            public int currentVerseNumber = 0;
             [DataMember]
             public int planDayNumber = 0;
             [DataMember]

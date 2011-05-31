@@ -24,6 +24,7 @@ namespace CrossConnect
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
+    using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Documents;
@@ -56,6 +57,27 @@ namespace CrossConnect
         #endregion Constructors
 
         #region Methods
+
+        public void CallbackFromUpdate(IAsyncResult ar)
+        {
+        }
+
+        public void Do(Action action)
+        {
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                try
+                {
+                    action();
+                    //Deployment.Current.Dispatcher.BeginInvoke(() => callback(null));
+                }
+                catch (Exception)
+                {
+                    //Deployment.Current.Dispatcher.BeginInvoke(() => callback(null));
+                    return;
+                }
+            });
+        }
 
         private void butDownloadBook_Click(object sender, RoutedEventArgs e)
         {
@@ -91,6 +113,7 @@ namespace CrossConnect
             {
                 MessageBox.Show(Translations.translate("An error occurred trying to connect to the network. Try again later.") + "; " + errMsg);
                 PhoneApplicationPage_Loaded(null, null);
+                return;
             }
         }
 
@@ -190,6 +213,23 @@ namespace CrossConnect
                 PhoneApplicationPage_Loaded(null, null);
                 return;
             }
+            webInst.progress_completed -= webInst_progress_completed;
+            webInst.progress_completed += webInst_progress_completed_unzipped;
+            Do(() =>
+            {
+                webInst.unzipBookList();
+            });
+        }
+
+        private void webInst_progress_completed_unzipped(object sender, OpenReadCompletedEventArgs e)
+        {
+            if (sender != null)
+            {
+                MessageBox.Show(Translations.translate("An error occurred trying to connect to the network. Try again later.") + "; " + (string)sender);
+                PhoneApplicationPage_Loaded(null, null);
+                return;
+            }
+
             progressBarGetBookList.Visibility = System.Windows.Visibility.Collapsed;
             // need to load the book selection with all the books.
             selectLangauge.Items.Clear();
@@ -223,7 +263,7 @@ namespace CrossConnect
 
         private void webInst_progress_update(object sender, DownloadProgressChangedEventArgs e)
         {
-            progressBarGetBookList.Value = e.ProgressPercentage;
+            progressBarGetBookList.Value = (double)sender;
         }
 
         #endregion Methods

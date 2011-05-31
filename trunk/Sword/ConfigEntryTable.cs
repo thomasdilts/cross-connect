@@ -410,7 +410,7 @@ namespace SwordBackend
             {
                 if (langFrom == null)
                 {
-                    Logger.Warn("Missing data for " + @internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.Name + '=' + Languages.DEFAULT_LANG_CODE);
+                    //Logger.Warn("Missing data for " + @internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.Name + '=' + Languages.DEFAULT_LANG_CODE);
                     langFrom = Language.DEFAULT_LANG;
                     add(ConfigEntryType.GLOSSARY_FROM, lang.Code);
                 }
@@ -418,7 +418,7 @@ namespace SwordBackend
 
                 if (langTo == null)
                 {
-                    Logger.Warn("Missing data for " + @internal + ". Assuming " + ConfigEntryType.GLOSSARY_TO.Name + '=' + Languages.DEFAULT_LANG_CODE);
+                    //Logger.Warn("Missing data for " + @internal + ". Assuming " + ConfigEntryType.GLOSSARY_TO.Name + '=' + Languages.DEFAULT_LANG_CODE);
                     langTo = Language.DEFAULT_LANG;
                     add(ConfigEntryType.GLOSSARY_TO, lang.Code);
                 }
@@ -427,13 +427,13 @@ namespace SwordBackend
                 // At least one of the two languages should match the lang entry
                 if (!langFrom.Equals(lang) && !langTo.Equals(lang))
                 {
-                    Logger.Fail("Data error in " + @internal + ". Neither " + ConfigEntryType.GLOSSARY_FROM.Name + " or " + ConfigEntryType.GLOSSARY_FROM.Name + " match " + ConfigEntryType.LANG.Name);
+                    //Logger.Fail("Data error in " + @internal + ". Neither " + ConfigEntryType.GLOSSARY_FROM.Name + " or " + ConfigEntryType.GLOSSARY_FROM.Name + " match " + ConfigEntryType.LANG.Name);
                 }
                 else if (!langFrom.Equals(lang))
                 {
                     // The LANG field should match the GLOSSARY_FROM field
                     /*
-                     * Logger.Fail("Data error in " + internal + ". " +
+                     * //Logger.Fail("Data error in " + internal + ". " +
                      * ConfigEntryType.GLOSSARY_FROM.getName() + " ("
                      * + langFrom.getCode() + ") does not match " +
                      * ConfigEntryType.LANG.getName() + " (" + lang.getCode() +
@@ -450,7 +450,7 @@ namespace SwordBackend
             // If there is no name then use the internal name
             if (table[ConfigEntryType.DESCRIPTION] == null)
             {
-                Logger.Fail("Malformed conf file for " + @internal + " no " + ConfigEntryType.DESCRIPTION.Name + " found. Using internal of " + @internal);
+                //Logger.Fail("Malformed conf file for " + @internal + " no " + ConfigEntryType.DESCRIPTION.Name + " found. Using internal of " + @internal);
                 add(ConfigEntryType.DESCRIPTION, @internal);
             }
         }
@@ -503,7 +503,7 @@ namespace SwordBackend
             else
             {
                 // should never happen
-                Logger.Fail("Backup an empty string for " + @internal);
+                //Logger.Fail("Backup an empty string for " + @internal);
             }
         }
 
@@ -529,7 +529,7 @@ namespace SwordBackend
                 {
                     if (continuation_expected)
                     {
-                        Logger.Warn(report("Continuation followed by key for", configEntry.Name, line));
+                        //Logger.Warn(report("Continuation followed by key for", configEntry.Name, line));
                     }
 
                     backup(line);
@@ -537,12 +537,12 @@ namespace SwordBackend
                 }
                 else if (!continuation_expected)
                 {
-                    Logger.Warn(report("Line without previous continuation for", configEntry.Name, line));
+                    //Logger.Warn(report("Line without previous continuation for", configEntry.Name, line));
                 }
 
                 if (!configEntry.allowsContinuation())
                 {
-                    Logger.Warn(report("Ignoring unexpected additional line for", configEntry.Name, line));
+                    //Logger.Warn(report("Ignoring unexpected additional line for", configEntry.Name, line));
                 }
                 else
                 {
@@ -658,7 +658,7 @@ namespace SwordBackend
                 Match matcher = KEY_VALUE_PATTERN.Match(line);
                 if (matcher==null)
                 {
-                    Logger.Fail("Expected to see '=' in " + @internal + ": " + line);
+                    //Logger.Fail("Expected to see '=' in " + @internal + ": " + line);
                     continue;
                 }
 
@@ -667,7 +667,7 @@ namespace SwordBackend
                 // Only CIPHER_KEYS that are empty are not ignored
                 if (value.Length == 0 && !ConfigEntryType.CIPHER_KEY.Name.Equals(key))
                 {
-                    Logger.Warn("Ignoring empty entry in " + @internal + ": " + line);
+                    //Logger.Warn("Ignoring empty entry in " + @internal + ": " + line);
                     continue;
                 }
 
@@ -685,12 +685,12 @@ namespace SwordBackend
                 {
                     if (type == null)
                     {
-                        Logger.Warn("Extra entry in " + @internal + " of " + configEntry.Name);
+                        //Logger.Warn("Extra entry in " + @internal + " of " + configEntry.Name);
                         extra.Add(key, configEntry);
                     }
                     else if (type.isSynthetic)
                     {
-                        Logger.Warn("Ignoring unexpected entry in " + @internal + " of " + configEntry.Name);
+                        //Logger.Warn("Ignoring unexpected entry in " + @internal + " of " + configEntry.Name);
                     }
                     else
                     {
@@ -740,7 +740,7 @@ namespace SwordBackend
             }
             if (initials == null)
             {
-                Logger.Fail("Malformed conf file for " + @internal + " no initials found. Using internal of " + @internal);
+                //Logger.Fail("Malformed conf file for " + @internal + " no initials found. Using internal of " + @internal);
                 initials = @internal;
             }
             add(ConfigEntryType.INITIALS, initials);
@@ -861,7 +861,7 @@ namespace SwordBackend
         {
             if (!lang.isValidLanguage)
             {
-                Logger.Warn("Unknown language " + lang.Code + " in book " + initials);
+                //Logger.Warn("Unknown language " + lang.Code + " in book " + initials);
             }
         }
 

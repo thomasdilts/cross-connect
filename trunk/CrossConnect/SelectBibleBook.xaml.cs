@@ -35,9 +35,27 @@ namespace CrossConnect
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Shell;
 
+    using SwordBackend;
+
     public partial class SelectBibleBook : AutoRotatePage
     {
         #region Fields
+
+        private static Color[] colorConversionScheme = 
+        {
+            (Color)Application.Current.Resources["PhoneForegroundColor"],
+            Color.FromArgb(255,0xD2,0x69,0x1E), //chochlate
+            Color.FromArgb(255,0x00,0xce,0xd1), //dark turqoise
+            Color.FromArgb(255,0xff,0x14,0x39), //deep pink
+            Color.FromArgb(255,0xa9,0xa9,0xa9), //darkgrey
+            Color.FromArgb(255,0xb8,0x86,0x0b), //darkgoldenrod
+            Color.FromArgb(255,0x8f,0xbc,0x8f), //dark seagreen
+            Color.FromArgb(255,0x8a,0x2b,0xe2), //blueviolet
+            Color.FromArgb(255,0xff,0x8c,0x00), //dark orange
+            Color.FromArgb(255,0x00,0xbf,0xff), //deep skyblue
+            Color.FromArgb(255,0xdc,0x14,0x3c), //crimson
+
+        };
 
         private ButtonWindowSpecs usingNowSpec = null;
 
@@ -56,6 +74,33 @@ namespace CrossConnect
 
         public void reloadWindow(ButtonWindowSpecs buttonWindow)
         {
+            int butWidth = 96;
+            int butHeight = 70;
+            switch (buttonWindow.butSize)
+            {
+                case ButtonSize.LARGE:
+                    butWidth = 200;
+                    butHeight = 70;
+                    break;
+                case ButtonSize.MEDIUM:
+                    butWidth = 96;
+                    butHeight = 70;
+                    break;
+                case ButtonSize.SMALL:
+                    if (buttonWindow.NumButtons < 50)
+                    {
+                        double sideLength = System.Math.Sqrt(((double)(App.Current.Host.Content.ActualWidth * (double)App.Current.Host.Content.ActualHeight) / buttonWindow.NumButtons)) / 1.15;
+                        if (sideLength * 2 > (App.Current.Host.Content.ActualWidth > App.Current.Host.Content.ActualHeight ? App.Current.Host.Content.ActualHeight : App.Current.Host.Content.ActualWidth))
+                        {
+                            sideLength = sideLength / 2;
+                        }
+                        butWidth = (int)sideLength;
+                        butHeight = (int)sideLength;
+                    }
+                    break;
+            }
+
+            PageTitle.Text = Translations.translate(buttonWindow.title);
             usingNowSpec = buttonWindow;
             ScrollContentGrid.Children.Clear();
             ScrollContentGrid.ColumnDefinitions.Clear();
@@ -74,7 +119,7 @@ namespace CrossConnect
                 screenHeight = App.Current.Host.Content.ActualWidth;
             }
 
-            int numCols = (int)screenWidth / buttonWindow.ButtonWidth;
+            int numCols = (int)screenWidth / butWidth;
             if (numCols == 0)
             {
                 numCols = 1;
@@ -83,8 +128,8 @@ namespace CrossConnect
             for (int i = 0; i <= numRows; i++)
             {
                 RowDefinition row = new RowDefinition();
-                ScrollContentGrid.RowDefinitions.Add(row);
                 row.Height = GridLength.Auto;
+                ScrollContentGrid.RowDefinitions.Add(row);
 
                 for (int j = 0; j < numCols && ((i*numCols)+j)<buttonWindow.NumButtons; j++)
                 {
@@ -94,82 +139,52 @@ namespace CrossConnect
                     Button but = new Button();
                     but.Content = buttonWindow.text[(i*numCols)+j];
                     but.Margin = new Thickness(-9,-9,-9,-9);
-                    but.MaxHeight = buttonWindow.ButtonHeight;
-                    but.MinHeight = buttonWindow.ButtonHeight;
-                    but.MaxWidth = buttonWindow.ButtonWidth;
-                    but.MinWidth = buttonWindow.ButtonWidth;
-                    but.FontSize = (int)((double)buttonWindow.ButtonHeight / 3.5);
+                    but.MaxHeight = butHeight;
+                    but.MinHeight = butHeight;
+                    but.MaxWidth = butWidth;
+                    but.MinWidth = butWidth;
+                    but.FontSize = (int)((double)butHeight / 3.5);
                     but.Visibility = System.Windows.Visibility.Visible;
                     if (buttonWindow.colors != null)
                     {
-                        but.Foreground = new SolidColorBrush(buttonWindow.colors[(i*numCols)+j]);
+                        but.Foreground = new SolidColorBrush(colorConversionScheme[buttonWindow.colors[(i * numCols) + j]]);
                     }
 
                     Grid.SetRow(but, i);
                     Grid.SetColumn(but, j);
                     ScrollContentGrid.Children.Add(but);
-                    but.Click += new RoutedEventHandler(buttonWindow.but_Click);
-                    but.Tag = ((i*numCols)+j);
+                    but.Click += new RoutedEventHandler(buttonWindow.stage == 0 ? (RoutedEventHandler)First_Click : (RoutedEventHandler)Second_Click);
+                    but.Tag = buttonWindow.value[(i * numCols) + j];
                 }
-                LayoutRoot.UpdateLayout();
-                scrollViewer1.UpdateLayout();
-                ScrollContentGrid.UpdateLayout();
-                LayoutRoot.UpdateLayout();
-                scrollViewer1.UpdateLayout();
-                ScrollContentGrid.UpdateLayout();
             }
+            LayoutRoot.UpdateLayout();
+            scrollViewer1.UpdateLayout();
+            ScrollContentGrid.UpdateLayout();
         }
 
         private void First_Click(object sender, RoutedEventArgs e)
         {
-            PageTitle.Text = Translations.translate("Select chapter");
-            // set up the array for the chapter selection
-            int bookNum = (int)((Button)sender).Tag;
+            PhoneApplicationService.Current.State["SelectBibleBookFirsSelection"] = 0;
             object openWindowIndex = null;
             if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
             {
                 openWindowIndex = (int)0;
             }
-            App.openWindows[(int)openWindowIndex].state.bookNum = bookNum;
-            int chapters = SwordBackend.BibleZtextReader.CHAPTERS_IN_BOOK[bookNum];
-            int butWidth = 96;
-            int butHeight = 70;
-            if (chapters < 50)
+            ButtonWindowSpecs specs = App.openWindows[(int)openWindowIndex].state.source.GetButtonWindowSpecs(1, (int)((Button)sender).Tag);
+            if (specs != null)
             {
-                double sideLength = System.Math.Sqrt(((double)(App.Current.Host.Content.ActualWidth * (double)App.Current.Host.Content.ActualHeight) /  chapters))/1.15;
-                if (sideLength * 2 > (App.Current.Host.Content.ActualWidth > App.Current.Host.Content.ActualHeight ? App.Current.Host.Content.ActualHeight : App.Current.Host.Content.ActualWidth))
+                PhoneApplicationService.Current.State["SelectBibleBookFirsSelection"]=(int)((Button)sender).Tag;
+                reloadWindow(specs);
+            }
+            else
+            {
+                App.openWindows[(int)openWindowIndex].state.source.moveChapterVerse((int)((Button)sender).Tag,0,false);
+                PhoneApplicationService.Current.State["skipWindowSettings"] = true;
+                if (NavigationService.CanGoBack)
                 {
-                    sideLength = sideLength / 2;
+                    NavigationService.GoBack();
                 }
-                butWidth = (int)sideLength;
-                butHeight = (int)sideLength;
             }
-            if (chapters == 1)
-            {
-                App.openWindows[(int)openWindowIndex].state.chapterNum = 0;
-                Button but=new Button();
-                but.Tag=0;
-                Second_Click(but,new RoutedEventArgs());
-                return;
-            }
-            Color butColor=(Color)Application.Current.Resources["PhoneForegroundColor"];
-            Color[] butColors = new Color[chapters];
-            string[] butText = new string[chapters];
-            for (int i = 0; i < chapters; i++)
-            {
-                butColors[i] = butColor;
-                butText[i] = (i+1).ToString();
-            }
-
-            // do a nice transition
-
-            reloadWindow(new ButtonWindowSpecs(
-                butWidth,
-                butHeight,
-                chapters,
-                butColors,
-                butText,
-                Second_Click));
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
@@ -179,23 +194,7 @@ namespace CrossConnect
             {
                 openWindowIndex = (int)0;
             }
-            PageTitle.Text = Translations.translate("Select book");
-            reloadWindow(new ButtonWindowSpecs(
-                App.openWindows[(int)openWindowIndex].state.source.existsShortNames ? 96 : 230,
-                70,
-                66,
-                new Color[] { Colors.Red, Colors.Red, Colors.Red, Colors.Red, Colors.Red,
-                Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,
-                Colors.Green,Colors.Green,Colors.Green,Colors.Green,Colors.Green,
-                Colors.Red,Colors.Red,Colors.Red,Colors.Red,Colors.Red,
-                Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,
-                Colors.Green,Colors.Green,Colors.Green,Colors.Green,
-                Colors.Red,
-                Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,Colors.Magenta,
-                Colors.Green,Colors.Green,Colors.Green,Colors.Green,Colors.Green,Colors.Green,Colors.Green,Colors.Green,
-                Colors.Red},
-                App.openWindows[(int)openWindowIndex].state.source.getAllShortNames(),
-                First_Click));
+            reloadWindow(App.openWindows[(int)openWindowIndex].state.source.GetButtonWindowSpecs(0,0));
         }
 
         private void PhoneApplicationPage_OrientationChanged(object sender, OrientationChangedEventArgs e)
@@ -210,14 +209,13 @@ namespace CrossConnect
             {
                 openWindowIndex = (int)0;
             }
-
-            int chapter = 0;
-            for (int i = 0; i < App.openWindows[(int)openWindowIndex].state.bookNum; i++)
+            object SelectBibleBookFirsSelection = null;
+            int selectBibleBookFirsSelection = 0;
+            if (PhoneApplicationService.Current.State.TryGetValue("SelectBibleBookFirsSelection", out SelectBibleBookFirsSelection))
             {
-                chapter+=SwordBackend.BibleZtextReader.CHAPTERS_IN_BOOK[i];
+                selectBibleBookFirsSelection = (int)PhoneApplicationService.Current.State["SelectBibleBookFirsSelection"];
             }
-            App.openWindows[(int)openWindowIndex].state.chapterNum = (int)((Button)sender).Tag + chapter;
-            App.openWindows[(int)openWindowIndex].state.verseNum = 0;
+            App.openWindows[(int)openWindowIndex].state.source.moveChapterVerse((int)((Button)sender).Tag + selectBibleBookFirsSelection, 0,false);
             PhoneApplicationService.Current.State["skipWindowSettings"] = true;
             if (NavigationService.CanGoBack)
             {
@@ -226,43 +224,5 @@ namespace CrossConnect
         }
 
         #endregion Methods
-
-        #region Nested Types
-
-        public class ButtonWindowSpecs
-        {
-            #region Fields
-
-            public int ButtonHeight;
-            public int ButtonWidth;
-            public RoutedEventHandler but_Click;
-            public Color[] colors;
-            public int NumButtons;
-            public string[] text;
-
-            #endregion Fields
-
-            #region Constructors
-
-            public ButtonWindowSpecs(
-                int ButtonWidth,
-                int ButtonHeight,
-                int NumButtons,
-                Color[] colors,
-                string[] text,
-                RoutedEventHandler but_Click)
-            {
-                this.ButtonWidth = ButtonWidth;
-                this.ButtonHeight = ButtonHeight;
-                this.NumButtons = NumButtons;
-                this.colors = colors;
-                this.text = text;
-                this.but_Click = but_Click;
-            }
-
-            #endregion Constructors
-        }
-
-        #endregion Nested Types
     }
 }

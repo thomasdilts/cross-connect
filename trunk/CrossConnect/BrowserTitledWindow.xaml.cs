@@ -87,11 +87,63 @@ namespace CrossConnect
             return "#" + color.ToString().Substring(3, 6);
         }
 
-        public void Initialize(string bibleToLoad, int bookNum, int chapterNum, WINDOW_TYPE windowType, IBrowserTextSource source = null)
+        public void CallbackFromUpdate(IAsyncResult ar)
+        {
+            //webBrowser1.FontSize = this.state.htmlFontSize;
+            webBrowser1.Base = App.WEB_DIR_ISOLATED;
+
+            Uri source = new Uri(this.lastFileName, UriKind.Relative);
+            if (this.state.source.IsSynchronizeable || this.state.source.IsLocalChangeDuringLink)
+            {
+                int bookNum;
+                int absoluteChaptNum;
+                int relChaptNum;
+                int verseNum;
+                string fullName;
+                string titleText;
+                this.state.source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum,out verseNum, out fullName, out titleText);
+                source = new Uri(this.lastFileName + "#CHAP_" + absoluteChaptNum + "_VERS_" + verseNum, UriKind.Relative);
+            }
+
+            webBrowser1.Navigate(source);
+
+            this.WriteTitle();
+
+            // update the sync button image
+            this.state.isSynchronized = !this.state.isSynchronized;
+            this.ButLink_Click(null, null);
+
+            if (this.state.source.IsSynchronizeable || this.state.source.IsLocalChangeDuringLink)
+            {
+                //The window wont show the correct verse if we dont wait a few seconds before showing it.
+                System.Windows.Threading.DispatcherTimer tmr = new System.Windows.Threading.DispatcherTimer();
+                tmr.Interval = TimeSpan.FromSeconds(state.isResume ? 2.5 : 1);
+                state.isResume = false;
+                tmr.Tick += this.OnTimerTick;
+                tmr.Start();
+            }
+        }
+
+        public void Do(Action action, AsyncCallback callback)
+        {
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                try
+                {
+                    action();
+                    Deployment.Current.Dispatcher.BeginInvoke(() => callback(null));
+                }
+                catch (Exception)
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() => callback(null));
+                    return;
+                }
+            });
+        }
+
+        public void Initialize(string bibleToLoad, WINDOW_TYPE windowType, IBrowserTextSource source = null)
         {
             this.state.bibleToLoad = bibleToLoad;
-            this.state.bookNum = bookNum;
-            this.state.chapterNum = chapterNum;
             this.state.windowType = windowType;
             if (source != null)
             {
@@ -151,7 +203,6 @@ namespace CrossConnect
                                 try
                                 {
                                     this.state.source = new DailyPlanReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
-                                    this.state.chapterNum = App.dailyPlan.planDayNumber;
                                 }
                                 catch (Exception)
                                 {
@@ -160,7 +211,6 @@ namespace CrossConnect
                                 break;
 
                         }
-
                         break;
                     }
                 }
@@ -195,42 +245,11 @@ namespace CrossConnect
         {
             if (this.state.isSynchronized && this.state.source.IsSynchronizeable)
             {
-                this.state.chapterNum = chapterNum;
-                this.state.verseNum = verseNum;
+                this.state.source.moveChapterVerse(chapterNum, verseNum,false);
                 this.UpdateBrowser();
             }
         }
 
-        public void CallbackFromUpdate(IAsyncResult ar)
-        {
-
-            //webBrowser1.FontSize = this.state.htmlFontSize;
-            webBrowser1.Base = App.WEB_DIR_ISOLATED;
-
-            Uri source = new Uri(this.lastFileName, UriKind.Relative);
-            if (this.state.source.IsSynchronizeable)
-            {
-                source = new Uri(this.lastFileName + "#CHAP_" + this.state.chapterNum + "_VERS_" + this.state.verseNum, UriKind.Relative);
-            }
-
-            webBrowser1.Navigate(source);
-
-            this.WriteTitle();
-
-            // update the sync button image
-            this.state.isSynchronized = !this.state.isSynchronized;
-            this.ButLink_Click(null, null);
-
-            if (this.state.source.IsSynchronizeable)
-            {
-                //The window wont show the correct verse if we dont wait a few seconds before showing it.
-                System.Windows.Threading.DispatcherTimer tmr = new System.Windows.Threading.DispatcherTimer();
-                tmr.Interval = TimeSpan.FromSeconds(state.isResume ? 2.5 : 1);
-                state.isResume = false;
-                tmr.Tick += this.OnTimerTick;
-                tmr.Start();
-            }
-        }
         public void UpdateBrowser()
         {
             if (this.state.source != null && this.Parent != null)
@@ -249,14 +268,13 @@ namespace CrossConnect
                         //we must adjust the font size for the new orientation. otherwise the font is too big.
                         fontSizeMultiplier = parent.ActualHeight / parent.ActualWidth;
                     }
-                } 
+                }
                 var backcolor=GetBrowserColor("PhoneBackgroundColor");
                 var forecolor=GetBrowserColor("PhoneForegroundColor");
                 var accentcolor = GetBrowserColor("PhoneAccentColor");
                 Do(() =>
                         {
                         this.state.source.putHtmlTofile(
-                            this.state.chapterNum,
                             backcolor,
                             forecolor,
                             accentcolor,
@@ -361,12 +379,7 @@ namespace CrossConnect
         private void ButNext_Click(object sender, RoutedEventArgs e)
         {
             killManipulation();
-            this.state.chapterNum++;
-            this.state.verseNum = 0;
-            if (this.state.chapterNum >= (this.state.source.getMaxNumChapters() - 1))
-            {
-                this.state.chapterNum = 0;
-            }
+            this.state.source.moveNext();
 
             string mode = "SlideLeftFadeOut";
             TransitionElement transitionElement = null;
@@ -397,12 +410,7 @@ namespace CrossConnect
         private void ButPrevious_Click(object sender, RoutedEventArgs e)
         {
             killManipulation();
-            this.state.verseNum = 0;
-            this.state.chapterNum--;
-            if (this.state.chapterNum < 0)
-            {
-                this.state.chapterNum = this.state.source.getMaxNumChapters() - 1;
-            }
+            this.state.source.movePrevious();
 
             string mode = "SlideRightFadeOut";
             TransitionElement transitionElement = null;
@@ -504,7 +512,14 @@ namespace CrossConnect
             ((System.Windows.Threading.DispatcherTimer)sender).Stop();
             try
             {
-                Uri source = new Uri(this.lastFileName + "#CHAP_" + this.state.chapterNum + "_VERS_" + this.state.verseNum, UriKind.Relative);
+                int bookNum;
+                int absoluteChaptNum;
+                int relChaptNum;
+                int verseNum;
+                string fullName;
+                string titleText;
+                this.state.source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum,out verseNum, out fullName, out titleText);
+                Uri source = new Uri(this.lastFileName + "#CHAP_" + absoluteChaptNum + "_VERS_" + verseNum, UriKind.Relative);
                 webBrowser1.Navigate(source);
             }
             catch (Exception)
@@ -579,24 +594,6 @@ namespace CrossConnect
             }
         }
 
-        public void Do(Action action, AsyncCallback callback)
-        {
-            ThreadPool.QueueUserWorkItem(_ =>
-            {
-                try
-                {
-                    action();
-                    Deployment.Current.Dispatcher.BeginInvoke(() => callback(null));
-                }
-                catch (Exception)
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() => callback(null));
-                    return;
-                }
-            });
-        }
-
-
         private void WebBrowser1_ScriptNotify(object sender, Microsoft.Phone.Controls.NotifyEventArgs e)
         {
             string[] chapterVerse = e.Value.ToString().Split("_".ToArray());
@@ -619,8 +616,7 @@ namespace CrossConnect
             {
                 if (this.state.source.IsLocalChangeDuringLink)
                 {
-                    this.state.chapterNum = chapterNum;
-                    this.state.verseNum = verseNum;
+                    this.state.source.moveChapterVerse(chapterNum, verseNum, true);
                     this.WriteTitle();
                 }
 
@@ -641,10 +637,12 @@ namespace CrossConnect
         private void WriteTitle()
         {
             int bookNum;
+            int absoluteChaptNum;
             int relChaptNum;
+            int verseNum;
             string fullName;
             string titleText;
-            this.state.source.GetInfo(this.state.chapterNum, this.state.verseNum, out bookNum, out relChaptNum, out fullName, out titleText);
+            this.state.source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
             title.Text = titleText + " - " + this.state.bibleToLoad;
         }
 
@@ -657,16 +655,18 @@ namespace CrossConnect
         /// cannot be serialized.
         /// </summary>
         [DataContract]
+        [KnownType(typeof(DailyPlanReader))]
+        [KnownType(typeof(BookMarkReader))]
+        [KnownType(typeof(HistoryReader))]
+        [KnownType(typeof(SearchReader))]
+        [KnownType(typeof(BibleNoteReader))]
+        [KnownType(typeof(BibleZtextReader))]
         public class SerializableWindowState
         {
             #region Fields
 
             [DataMember]
             public string bibleToLoad = string.Empty;
-            [DataMember]
-            public int bookNum = 1;
-            [DataMember]
-            public int chapterNum = 1;
             [DataMember]
             public int curIndex = 0;
             [DataMember]
@@ -678,8 +678,6 @@ namespace CrossConnect
             public int numRowsIown = 1;
             [DataMember]
             public IBrowserTextSource source = null;
-            [DataMember]
-            public int verseNum = 1;
             [DataMember]
             public WINDOW_TYPE windowType = WINDOW_TYPE.WINDOW_BIBLE;
 

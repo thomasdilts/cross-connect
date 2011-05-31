@@ -52,7 +52,6 @@ namespace CrossConnect
         public bool isAbort = false;
         public bool isSearchFinished = false;
         public bool isSearchFinishedReported = false;
-        public int searchChapter = 0;
         public string searchText = string.Empty;
         public int searchTypeIndex = 0;
         public SearchReader sourceSearch = null;
@@ -133,8 +132,6 @@ namespace CrossConnect
                     {
                         App.AddWindow(
                             App.openWindows[(int)openWindowIndex].state.bibleToLoad,
-                            0,
-                            0,
                             WINDOW_TYPE.WINDOW_SEARCH,
                             App.openWindows[(int)openWindowIndex].state.htmlFontSize,
                             sourceSearch);
@@ -250,13 +247,12 @@ namespace CrossConnect
                 }
 
                 searchTypeIndex = 3;
-                searchChapter = App.openWindows[(int)openWindowIndex].state.chapterNum;
             }
             BibleZtextReader source = (BibleZtextReader)App.openWindows[(int)openWindowIndex].state.source;
             sourceSearch = new SearchReader(
-                source.path,
-                source.iso2DigitLangCode,
-                source.isIsoEncoding);
+                source.serial.path,
+                source.serial.iso2DigitLangCode,
+                source.serial.isIsoEncoding);
 
             System.Threading.Timer tmr = new System.Threading.Timer(new System.Threading.TimerCallback(OnTimerTick));
             tmr.Change(300, System.Threading.Timeout.Infinite);
@@ -268,7 +264,6 @@ namespace CrossConnect
             ((System.Threading.Timer)state).Dispose();
 
             sourceSearch.doSearch(
-                Search.searchingObject.searchChapter,
                 Search.searchingObject.searchTypeIndex,
                 Search.searchingObject.searchText,
                 Search.searchingObject.ignoreCase,
@@ -292,7 +287,9 @@ namespace CrossConnect
             int dummy2;
             string Name;
             string text;
-            App.openWindows[(int)openWindowIndex].state.source.GetInfo(state.chapterNum, state.verseNum, out currentBookNum, out dummy2, out Name, out text);
+            int verseNum;
+            int absoluteChaptNum;
+            App.openWindows[(int)openWindowIndex].state.source.GetInfo(out currentBookNum,out absoluteChaptNum, out dummy2, out verseNum, out Name, out text);
             Chapter.Content = Name;
 
             PageTitle.Text = Translations.translate("Search");

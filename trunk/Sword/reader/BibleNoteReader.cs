@@ -36,13 +36,16 @@ namespace SwordBackend
     /// we can later read the bzz file quickly and efficiently.
     /// </summary>
     /// <param name="path">The path to where the ot.bzs,ot.bzv and ot.bzz and nt files are</param>
-    [DataContract]
+    [DataContract(Name = "BibleNoteReader")]
     [KnownType(typeof(ChapterPos))]
     [KnownType(typeof(BookPos))]
     [KnownType(typeof(VersePos))]
     public class BibleNoteReader : BibleZtextReader
     {
         #region Fields
+
+        [DataMember]
+        public BibleZtextReaderSerialData serial2 = new BibleZtextReaderSerialData(false,"","",0,0);
 
         private string titleBrowserWindow = string.Empty;
 
@@ -53,6 +56,7 @@ namespace SwordBackend
         public BibleNoteReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string titleBrowserWindow)
             : base(path, iso2DigitLangCode, isIsoEncoding)
         {
+            this.serial2.cloneFrom(base.serial);
             this.titleBrowserWindow = titleBrowserWindow;
         }
 
@@ -88,14 +92,11 @@ namespace SwordBackend
 
         #region Methods
 
-        public override string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize)
+        public override void GetInfo(out int bookNum, out int absoluteChaptNum, out int relChaptNum, out int verseNum, out string fullName, out string title)
         {
-            return GetChapterHtml(chapterNumber, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, true);
-        }
-
-        public override void GetInfo(int chaptNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title)
-        {
-            base.GetInfo(chaptNum, verseNum, out bookNum, out relChaptNum, out fullName, out title);
+            verseNum=this.serial.posVerseNum;
+            absoluteChaptNum = this.serial.posChaptNum;
+            base.GetInfo(this.serial.posChaptNum, this.serial.posVerseNum, out bookNum, out relChaptNum, out fullName, out title);
             title = titleBrowserWindow + " " + fullName + ":" + (relChaptNum + 1);
         }
 
@@ -111,9 +112,25 @@ namespace SwordBackend
                 chapterBuffer,
                 (int)verse.startPos,
                 verse.length,
-                isIsoEncoding,
+                serial.isIsoEncoding,
                 true,
                 true);
+        }
+
+        public override void Resume()
+        {
+            base.serial.cloneFrom(this.serial2);
+            base.Resume();
+        }
+
+        public override void SerialSave()
+        {
+            this.serial2.cloneFrom(base.serial);
+        }
+
+        protected override string GetChapterHtml(string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml = true)
+        {
+            return GetChapterHtml(serial.posChaptNum, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize,true, addStartFinishHtml);
         }
 
         #endregion Methods

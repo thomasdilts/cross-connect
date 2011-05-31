@@ -64,9 +64,6 @@ namespace SwordBackend
     /// </summary>
     /// <param name="path">The path to where the ot.bzs,ot.bzv and ot.bzz and nt files are</param>
     [DataContract]
-    [KnownType(typeof(ChapterPos))]
-    [KnownType(typeof(BookPos))]
-    [KnownType(typeof(VersePos))]
     public class BibleZtextReader : IBrowserTextSource
     {
         #region Fields
@@ -203,14 +200,12 @@ namespace SwordBackend
         //[DataMember] Tried it but it took 10 times longer then re-reading the mod-file
         public List<ChapterPos> chapters = new List<ChapterPos>();
         [DataMember]
-        public bool isIsoEncoding = false;
-        [DataMember]
-        public string iso2DigitLangCode = string.Empty;
-        [DataMember]
-        public string path = string.Empty;
+        public BibleZtextReaderSerialData serial = new BibleZtextReaderSerialData(false,"","",0,0);
 
         /// <summary> Constant for the number of verses in the Bible  </summary>
         internal const short VERSES_IN_BIBLE = 31102;
+
+        internal static readonly short[] FIRST_CHAPTERNUM_IN_BOOK = { 0, 50, 90, 117, 153, 187, 211, 232, 236, 267, 291, 313, 338, 367, 403, 413, 426, 436, 478, 628, 659, 671, 679, 745, 797, 802, 850, 862, 876, 879, 888, 889, 893, 900, 903, 906, 909, 911, 925, 929, 957, 973, 997, 1018, 1046, 1062, 1078, 1091, 1097, 1103, 1107, 1111, 1116, 1119, 1125, 1129, 1132, 1133, 1146, 1151, 1156, 1159, 1164, 1165, 1166, 1167 };
 
         /// <summary> Constant for the number of verses in each book  </summary>
         internal static readonly short[] VERSES_IN_BOOK = { 1533, 1213, 859, 1288, 959, 658, 618, 85, 810, 695, 816, 719, 942, 822, 280, 406, 167, 1070, 2461, 915, 222, 117, 1292, 1364, 154, 1273, 357, 197, 73, 146, 21, 48, 105, 47, 56, 53, 38, 211, 55, 1071, 678, 1151, 879, 1007, 433, 437, 257, 149, 155, 104, 95, 89, 47, 113, 83, 46, 25, 303, 108, 105, 61, 105, 13, 14, 25, 404 };
@@ -235,10 +230,11 @@ namespace SwordBackend
         /// <param name="path">The path to where the ot.bzs,ot.bzv and ot.bzz and nt files are</param>
         public BibleZtextReader(string path, string iso2DigitLangCode,bool isIsoEncoding)
         {
-            this.iso2DigitLangCode = iso2DigitLangCode;
-            this.path = path;
-            this.isIsoEncoding = isIsoEncoding;
+            this.serial.iso2DigitLangCode = iso2DigitLangCode;
+            this.serial.path = path;
+            this.serial.isIsoEncoding = isIsoEncoding;
             ReloadSettingsFile();
+            SetToFirstChapter();
         }
 
         #endregion Constructors
@@ -257,7 +253,7 @@ namespace SwordBackend
             {
                 if (bookNames == null)
                 {
-                    bookNames = new BibleNames(iso2DigitLangCode);
+                    bookNames = new BibleNames(serial.iso2DigitLangCode);
                 }
                 return bookNames.existsShortNames;
             }
@@ -384,53 +380,94 @@ namespace SwordBackend
             return head.ToString();
         }
 
-        public string[] getAllShortNames()
+        public virtual ButtonWindowSpecs GetButtonWindowSpecs(int stage,int lastSelectedButton)
         {
-            if (bookNames == null)
+            if (stage == 0)
             {
-                bookNames = new BibleNames(iso2DigitLangCode);
+                int[] buttonCategoryColor= { 1, 1, 1, 1, 1,
+                    2,2,2,2,2,2,2,2,2,2,2,2,
+                    3,3,3,3,3,
+                    4,4,4,4,4,
+                    5,5,5,5,5,5,5,5,5,5,5,5,
+                    6,6,6,6,
+                    7,
+                    8,8,8,8,8,8,8,8,8,8,8,8,8,
+                    9,9,9,9,9,9,9,9,
+                    10};
+                List<int> colors=new List<int>();
+                List<int> values = new List<int>();
+                List<string> buttonNames = new List<string>();
+                if (bookNames == null)
+                {
+                    bookNames = new BibleNames(serial.iso2DigitLangCode);
+                }
+                string[] buttonNamesStart = bookNames.getAllShortNames();
+                if (!bookNames.existsShortNames)
+                {
+                    buttonNamesStart = bookNames.getAllFullNames();
+                }
+                //assumption. if the first chapter in the book does not exist then the book does not exist
+                for (int i = 0; i < BOOKS_IN_BIBLE; i++)
+                {
+                    if(chapters[FIRST_CHAPTERNUM_IN_BOOK[i]].length!=0)
+                    {
+                        colors.Add(buttonCategoryColor[i]);
+                        values.Add(FIRST_CHAPTERNUM_IN_BOOK[i]);
+                        buttonNames.Add(buttonNamesStart[i]);
+                    }
+                }
+                return new ButtonWindowSpecs(
+                    stage,
+                    "Select book",
+                    colors.Count,
+                    colors.ToArray(),
+                    buttonNames.ToArray(),
+                    values.ToArray(),
+                    !bookNames.existsShortNames?ButtonSize.LARGE:ButtonSize.MEDIUM);
             }
-            return bookNames.getAllShortNames();
-        }
-
-        /// <summary>
-        /// Return the entire chapter without notes and with lots of html markup
-        /// </summary>
-        /// <param name="bookNumber">Chaptern number beginning with zero for the first chapter and 1188 for the last chapter in the bible.</param>
-        /// <param name="htmlBackgroundColor"></param>
-        /// <param name="htmlForegroundColor"></param>
-        /// <param name="htmlFontSize"></param>
-        /// <param name="htmlPhoneAccentColor"></param>
-        /// <returns>Entire Chapter without notes and with lots of html markup for each verse</returns>
-        public virtual string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize)
-        {
-            return GetChapterHtml( chapterNumber, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize,false);
-        }
-
-        public virtual void putHtmlTofile(int chapterNumber, string htmlBackgroundColor, 
-            string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,
-            string fileErase,string fileCreate)
-        {
-            var root = IsolatedStorageFile.GetUserStoreForApplication();
-
-            // Must change the file name, otherwise the browser may or may not update.
-            string file = "web" + (int)(new Random().NextDouble() * 10000) + ".html";
-            if (root.FileExists( fileErase))
+            else
             {
-                root.DeleteFile(fileErase);
-            }
+                int booknum = 0;
+                for (int i = 0; i < BOOKS_IN_BIBLE; i++)
+                {
+                    if (lastSelectedButton==FIRST_CHAPTERNUM_IN_BOOK[i])
+                    {
+                        booknum = i;
+                        break;
+                    }
+                }
 
-            IsolatedStorageFileStream fs = root.CreateFile(fileCreate);
-            System.IO.StreamWriter tw = new System.IO.StreamWriter(fs);
-            tw.Write(GetChapterHtml(
-                chapterNumber,
-                htmlBackgroundColor,
-                htmlForegroundColor,
-                htmlPhoneAccentColor,
-                htmlFontSize));
-            tw.Close();
-            fs.Close();
+                // set up the array for the chapter selection
+                int numOfChapters = SwordBackend.BibleZtextReader.CHAPTERS_IN_BOOK[booknum];
+
+                if (numOfChapters <= 1)
+                {
+                    return null;
+                }
+                //Color butColor = (Color)Application.Current.Resources["PhoneForegroundColor"];
+                int[] butColors = new int[numOfChapters];
+                int[] values = new int[numOfChapters];
+                string[] butText = new string[numOfChapters];
+                for (int i = 0; i < numOfChapters; i++)
+                {
+                    butColors[i] = 0;
+                    butText[i] = (i + 1).ToString();
+                    values[i] = i;
+                }
+
+                // do a nice transition
+
+                return new ButtonWindowSpecs(
+                    stage,
+                    "Select chapter",
+                    numOfChapters,
+                    butColors,
+                    butText,
+                    values,
+                    ButtonSize.SMALL);
+            }
         }
+
         /// <summary>
         /// Return the entire chapter
         /// </summary>
@@ -447,30 +484,47 @@ namespace SwordBackend
         {
             if (bookNames == null)
             {
-                bookNames = new BibleNames(iso2DigitLangCode);
+                bookNames = new BibleNames(serial.iso2DigitLangCode);
             }
             return bookNames.getFullName(bookNum);
         }
 
-        public virtual void GetInfo(int chaptNum,int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title)
+        public virtual void GetInfo( out int bookNum,out int absoluteChaptNum, out int relChaptNum,out int verseNum, out string fullName, out string title)
         {
-            ChapterPos chaptPos= chapters[chaptNum];
-            bookNum = chaptPos.booknum;
-            relChaptNum = chaptPos.bookRelativeChapterNum;
-            fullName=getFullName(bookNum);
-            title = fullName + " " + (relChaptNum + 1) + ":" + (verseNum + 1);
+            verseNum = serial.posVerseNum;
+            absoluteChaptNum=serial.posChaptNum;
+            GetInfo(serial.posChaptNum, serial.posVerseNum, out bookNum, out relChaptNum, out fullName, out title);
         }
 
-        public virtual int getMaxNumChapters()
+        public void GetInfo(int chapterNum,int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title)
         {
-            return BibleZtextReader.CHAPTERS_IN_BIBLE;
+            ChapterPos chaptPos = null;
+            bookNum = 0;
+            relChaptNum = 0;
+            bookNum =0;
+            relChaptNum = 0;
+            fullName = "";
+            title = "";
+            try
+            {
+                chaptPos = chapters[chapterNum];
+                bookNum = chaptPos.booknum;
+                relChaptNum = chaptPos.bookRelativeChapterNum;
+                bookNum = chaptPos.booknum;
+                relChaptNum = chaptPos.bookRelativeChapterNum;
+                fullName = getFullName(bookNum);
+                title = fullName + " " + (relChaptNum + 1) + ":" + (verseNum + 1);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         public string getShortName(int bookNum)
         {
             if (bookNames == null)
             {
-                bookNames = new BibleNames(iso2DigitLangCode);
+                bookNames = new BibleNames(serial.iso2DigitLangCode);
             }
             return bookNames.getShortName(bookNum);
         }
@@ -494,7 +548,7 @@ namespace SwordBackend
                 chapterBuffer,
                 (int)verse.startPos,
                 verse.length,
-                isIsoEncoding,
+                serial.isIsoEncoding,
                 false,
                 true,
                 true);
@@ -522,12 +576,93 @@ namespace SwordBackend
                     chapterBuffer,
                     (int)verse.startPos,
                     verse.length,
-                    this.isIsoEncoding,
+                    this.serial.isIsoEncoding,
                     false,
                     true);
                 returnList.Add(verseTxt);
             }
             return returnList;
+        }
+
+        public virtual void moveChapterVerse(int chapter, int verse, bool isLocalLinkChange)
+        {
+            //see if the chapter exists, if not, then don't do anything.
+            if (chapters[chapter].length > 0)
+            {
+                serial.posChaptNum = chapter;
+                serial.posVerseNum = verse;
+            }
+        }
+
+        public virtual void moveNext()
+        {
+            serial.posChaptNum++;
+            if (serial.posChaptNum >= chapters.Count)
+            {
+                serial.posChaptNum = 0;
+            }
+            for (; serial.posChaptNum < chapters.Count && chapters[serial.posChaptNum].length == 0; serial.posChaptNum++)
+            {
+            }
+            if (serial.posChaptNum >= chapters.Count)
+            {
+                serial.posChaptNum = 0;
+            }
+            else
+            {
+                return;
+            }
+            for (; serial.posChaptNum < chapters.Count && chapters[serial.posChaptNum].length == 0; serial.posChaptNum++)
+            {
+            }
+        }
+
+        public virtual void movePrevious()
+        {
+            serial.posChaptNum--;
+            if (serial.posChaptNum < 0)
+            {
+                serial.posChaptNum = chapters.Count - 1;
+            }
+            for (; serial.posChaptNum >= 0 && chapters[serial.posChaptNum].length == 0; serial.posChaptNum--)
+            {
+            }
+            if (serial.posChaptNum < 0)
+            {
+                serial.posChaptNum = chapters.Count - 1;
+            }
+            else
+            {
+                return;
+            }
+            for (; serial.posChaptNum >= 0 && chapters[serial.posChaptNum].length == 0; serial.posChaptNum--)
+            {
+            }
+        }
+
+        public virtual void putHtmlTofile(string htmlBackgroundColor, 
+            string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,
+            string fileErase,string fileCreate)
+        {
+            var root = IsolatedStorageFile.GetUserStoreForApplication();
+
+            // Must change the file name, otherwise the browser may or may not update.
+            string file = "web" + (int)(new Random().NextDouble() * 10000) + ".html";
+            if (root.FileExists( fileErase))
+            {
+                root.DeleteFile(fileErase);
+            }
+
+            IsolatedStorageFileStream fs = root.CreateFile(fileCreate);
+            System.IO.StreamWriter tw = new System.IO.StreamWriter(fs);
+            tw.Write(GetChapterHtml(
+                htmlBackgroundColor,
+                htmlForegroundColor,
+                htmlPhoneAccentColor,
+                htmlFontSize,
+                false));
+            tw.Close();
+            fs.Close();
         }
 
         public void RegisterUpdateEvent(WindowSourceChanged sourceChangedMethod,bool isRegister=true)
@@ -542,202 +677,26 @@ namespace SwordBackend
             }
         }
 
-        public void ReloadSettingsFile()
+        public virtual void Resume()
         {
-            IsolatedStorageFile fileStorage = IsolatedStorageFile.GetUserStoreForApplication();
-            bookPositions = new List<BookPos>();
-            chapters = new List<ChapterPos>();
-            FileStream fs = null;
-            // read the Sword index to the ot bzz file which is the bzs file
-            try
+            ReloadSettingsFile();
+        }
+
+        public virtual void SerialSave()
+        {
+        }
+
+        public virtual void SetToFirstChapter()
+        {
+            // find the first available chapter.
+            this.serial.posChaptNum = 0;
+            moveNext();
+            if (this.serial.posChaptNum == 1)
             {
-                fs = fileStorage.OpenFile(path + "ot.bzs", FileMode.Open, FileAccess.Read);
-                for (int i = 0; i < BOOKS_IN_OT; i++)
+                movePrevious();
+                if (this.serial.posChaptNum != 0)
                 {
-                    bookPositions.Add(new BookPos(getintFromStream(fs), getintFromStream(fs), getintFromStream(fs)));
-                }
-                fs.Close();
-
-                // read the verse holder for versification bzv file old testememt
-                fs = fileStorage.OpenFile(path + "ot.bzv", FileMode.Open, FileAccess.Read);
-                // dump the first 4 posts
-                for (int i = 0; i < 4; i++)
-                {
-                    int booknum = getByteFromStream(fs);
-                    long startPos = getInt48FromStream(fs);
-                    int length = getShortIntFromStream(fs);
-                }
-
-                // now start getting old testament
-                for (int i = 0; i < BOOKS_IN_OT; i++)
-                {
-                    for (int j = 0; j < CHAPTERS_IN_BOOK[i]; j++)
-                    {
-                        long chapterStartPos = 0;
-                        ChapterPos chapt = null;
-                        int booknum = 0;
-                        long startPos = 0;
-                        long lastNonZeroStartPos = 0;
-                        int length = 0;
-                        for (int k = 0; k < VERSES_IN_CHAPTER[i][j]; k++)
-                        {
-                            booknum = getByteFromStream(fs);
-                            startPos = getInt48FromStream(fs);
-                            if (startPos != 0)
-                            {
-                                lastNonZeroStartPos = startPos;
-                            }
-                            length = getShortIntFromStream(fs);
-                            if (k == 0)
-                            {
-                                chapterStartPos = startPos;
-                                chapt = new ChapterPos(chapterStartPos, i, j);
-                                bookPositions[i].chapters.Add(chapt);
-                            }
-                            if (booknum == 0 && startPos == 0 && length == 0)
-                            {
-                                chapt.verses.Add(new VersePos(0, 0, i));
-                            }
-                            else
-                            {
-                                chapt.verses.Add(new VersePos(startPos - chapterStartPos, length, i));
-                            }
-                        }
-                        // update the chapter length now that we know it
-                        chapt.length = (int)(lastNonZeroStartPos - chapterStartPos) + length;
-
-                        chapters.Add(chapt);
-
-                        // dump a post for the chapter break
-                        getByteFromStream(fs);
-                        long x = getInt48FromStream(fs);
-                        getShortIntFromStream(fs);
-                    }
-                    // dump a post for the book break
-                    getByteFromStream(fs);
-                    getInt48FromStream(fs);
-                    getShortIntFromStream(fs);
-                }
-                fs.Close();
-            }
-            catch (Exception)
-            {
-                // failed to load old testement.  Maybe it does not exist.
-                // fill with fake data
-                for (int i = 0; i < BOOKS_IN_OT; i++)
-                {
-                    bookPositions.Add(new BookPos(0, 0, 0));
-                }
-                for (int i = 0; i < BOOKS_IN_OT; i++)
-                {
-                    for (int j = 0; j < CHAPTERS_IN_BOOK[i]; j++)
-                    {
-                        ChapterPos chapt = new ChapterPos(0, i, j);
-                        for (int k = 0; k < VERSES_IN_CHAPTER[i][j]; k++)
-                        {
-                            chapt.verses.Add(new VersePos(0, 0, i));
-                        }
-                        // update the chapter length now that we know it
-                        chapt.length =0;
-                        chapters.Add(chapt);
-                        bookPositions[i].chapters.Add(chapt);
-                    }
-                }
-            }
-            try
-            {
-                // do it for the new testement
-                fs = fileStorage.OpenFile(path + "nt.bzs", FileMode.Open, FileAccess.Read);
-                for (int i = 0; i < BOOKS_IN_NT; i++)
-                {
-                    bookPositions.Add(new BookPos(getintFromStream(fs), getintFromStream(fs), getintFromStream(fs)));
-                }
-                fs.Close();
-
-                // read the verse holder for versification bzv file new testememt
-                fs = fileStorage.OpenFile(path + "nt.bzv", FileMode.Open, FileAccess.Read);
-                // dump the first 4 posts
-                for (int i = 0; i < 4; i++)
-                {
-                    int booknum = getByteFromStream(fs);
-                    long startPos = getInt48FromStream(fs);
-                    int length = getShortIntFromStream(fs);
-                }
-
-                // now start getting new testament
-                for (int i = BOOKS_IN_OT; i < (BOOKS_IN_OT + BOOKS_IN_NT); i++)
-                {
-                    for (int j = 0; j < CHAPTERS_IN_BOOK[i]; j++)
-                    {
-                        long chapterStartPos = 0;
-                        ChapterPos chapt = null;
-                        int booknum = 0;
-                        long startPos = 0;
-                        long lastNonZeroStartPos = 0;
-                        int length = 0;
-                        for (int k = 0; k < VERSES_IN_CHAPTER[i][j]; k++)
-                        {
-                            booknum = getByteFromStream(fs);
-                            startPos = getInt48FromStream(fs);
-                            if (startPos != 0)
-                            {
-                                lastNonZeroStartPos = startPos;
-                            }
-                            length = getShortIntFromStream(fs);
-                            if (k == 0)
-                            {
-                                chapterStartPos = startPos;
-                                chapt = new ChapterPos(chapterStartPos, i, j);
-                                bookPositions[i].chapters.Add(chapt);
-                            }
-                            if (booknum == 0 && startPos == 0 && length == 0)
-                            {
-                                chapt.verses.Add(new VersePos(0, 0, i));
-                            }
-                            else
-                            {
-                                chapt.verses.Add(new VersePos(startPos - chapterStartPos, length, i));
-                            }
-                        }
-                        // update the chapter length now that we know it
-                        chapt.length = (int)(lastNonZeroStartPos - chapterStartPos) + length;
-
-                        chapters.Add(chapt);
-
-                        // dump a post for the chapter break
-                        getByteFromStream(fs);
-                        long x = getInt48FromStream(fs);
-                        getShortIntFromStream(fs);
-                    }
-                    // dump a post for the book break
-                    getByteFromStream(fs);
-                    getInt48FromStream(fs);
-                    getShortIntFromStream(fs);
-                }
-                fs.Close();
-            }
-            catch (Exception)
-            {
-                // failed to load new testement.  Maybe it does not exist.
-                // fill with fake data
-                for (int i = 0; i < BOOKS_IN_NT; i++)
-                {
-                    bookPositions.Add(new BookPos(0, 0, 0));
-                }
-                for (int i = BOOKS_IN_OT; i < (BOOKS_IN_OT + BOOKS_IN_NT); i++)
-                {
-                    for (int j = 0; j < CHAPTERS_IN_BOOK[i]; j++)
-                    {
-                        ChapterPos chapt = new ChapterPos(0, i, j);
-                        for (int k = 0; k < VERSES_IN_CHAPTER[i][j]; k++)
-                        {
-                            chapt.verses.Add(new VersePos(0, 0, i));
-                        }
-                        // update the chapter length now that we know it
-                        chapt.length = 0;
-                        chapters.Add(chapt);
-                        bookPositions[i].chapters.Add(chapt);
-                    }
+                    moveNext();
                 }
             }
         }
@@ -752,6 +711,15 @@ namespace SwordBackend
             {
                 noteText.Append(text);
             }
+        }
+
+        protected string[] getAllShortNames()
+        {
+            if (bookNames == null)
+            {
+                bookNames = new BibleNames(serial.iso2DigitLangCode);
+            }
+            return bookNames.getAllShortNames();
         }
 
         protected int getByteFromStream(FileStream fs)
@@ -772,7 +740,7 @@ namespace SwordBackend
             {
                 try
                 {
-                    fs = fileStorage.OpenFile(path + "ot.bzz", FileMode.Open, FileAccess.Read);
+                    fs = fileStorage.OpenFile(serial.path + "ot.bzz", FileMode.Open, FileAccess.Read);
                 }
                 catch (Exception)
                 {
@@ -784,7 +752,7 @@ namespace SwordBackend
             {
                 try
                 {
-                    fs = fileStorage.OpenFile(path + "nt.bzz", FileMode.Open, FileAccess.Read);
+                    fs = fileStorage.OpenFile(serial.path + "nt.bzz", FileMode.Open, FileAccess.Read);
                 }
                 catch (Exception)
                 {
@@ -850,14 +818,23 @@ namespace SwordBackend
             return chapterBuffer;
         }
 
-        protected string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,bool isNotesOnly, bool addStartFinishHtml=true)
+        /// <summary>
+        /// Return the entire chapter without notes and with lots of html markup
+        /// </summary>
+        /// <param name="bookNumber">Chaptern number beginning with zero for the first chapter and 1188 for the last chapter in the bible.</param>
+        /// <param name="htmlBackgroundColor"></param>
+        /// <param name="htmlForegroundColor"></param>
+        /// <param name="htmlFontSize"></param>
+        /// <param name="htmlPhoneAccentColor"></param>
+        /// <returns>Entire Chapter without notes and with lots of html markup for each verse</returns>        
+        protected string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml = true)
         {
             byte[] chapterBuffer = getChapterBytes(chapterNumber);
             // for debug
-            // string alltext = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
+             string alltext = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
             StringBuilder htmlChapter = new StringBuilder();
             ChapterPos versesForChapterPositions = chapters[chapterNumber];
-            string chapterStartHtml = "" ;
+            string chapterStartHtml = "";
             string chapterEndHtml = "";
             if (addStartFinishHtml)
             {
@@ -879,7 +856,7 @@ namespace SwordBackend
                     chapterBuffer,
                     (int)verse.startPos,
                     verse.length,
-                    this.isIsoEncoding,
+                    this.serial.isIsoEncoding,
                     isNotesOnly,
                     false);
 
@@ -887,11 +864,16 @@ namespace SwordBackend
                 htmlChapter.Append(
                     chapterStartHtml
                     + verseTxt
-                    + (verseTxt.Length>0?"</a>":""));
+                    + (verseTxt.Length > 0 ? "</a>" : ""));
                 chapterStartHtml = string.Empty;
             }
             htmlChapter.Append(chapterEndHtml);
             return htmlChapter.ToString();
+        }
+
+        protected virtual string GetChapterHtml(string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,bool isNotesOnly, bool addStartFinishHtml=true)
+        {
+            return GetChapterHtml(serial.posChaptNum, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, isNotesOnly, addStartFinishHtml );
         }
 
         protected long getInt48FromStream(FileStream fs)
@@ -948,7 +930,7 @@ namespace SwordBackend
                     chapterBuffer,
                     (int)verse.startPos,
                     verse.length,
-                    this.isIsoEncoding,
+                    this.serial.isIsoEncoding,
                     false,
                     true);
 
@@ -1158,6 +1140,206 @@ namespace SwordBackend
             }
         }
 
+        private void ReloadSettingsFile()
+        {
+            IsolatedStorageFile fileStorage = IsolatedStorageFile.GetUserStoreForApplication();
+            bookPositions = new List<BookPos>();
+            chapters = new List<ChapterPos>();
+            FileStream fs = null;
+            // read the Sword index to the ot bzz file which is the bzs file
+            try
+            {
+                fs = fileStorage.OpenFile(serial.path + "ot.bzs", FileMode.Open, FileAccess.Read);
+                for (int i = 0; i < BOOKS_IN_OT; i++)
+                {
+                    bookPositions.Add(new BookPos(getintFromStream(fs), getintFromStream(fs), getintFromStream(fs)));
+                }
+                fs.Close();
+
+                // read the verse holder for versification bzv file old testememt
+                fs = fileStorage.OpenFile(serial.path + "ot.bzv", FileMode.Open, FileAccess.Read);
+                // dump the first 4 posts
+                for (int i = 0; i < 4; i++)
+                {
+                    int booknum = getByteFromStream(fs);
+                    long startPos = getInt48FromStream(fs);
+                    int length = getShortIntFromStream(fs);
+                }
+
+                // now start getting old testament
+                for (int i = 0; i < BOOKS_IN_OT; i++)
+                {
+                    for (int j = 0; j < CHAPTERS_IN_BOOK[i]; j++)
+                    {
+                        long chapterStartPos = 0;
+                        ChapterPos chapt = null;
+                        int booknum = 0;
+                        long startPos = 0;
+                        long lastNonZeroStartPos = 0;
+                        int length = 0;
+                        for (int k = 0; k < VERSES_IN_CHAPTER[i][j]; k++)
+                        {
+                            booknum = getByteFromStream(fs);
+                            startPos = getInt48FromStream(fs);
+                            if (startPos != 0)
+                            {
+                                lastNonZeroStartPos = startPos;
+                            }
+                            length = getShortIntFromStream(fs);
+                            if (k == 0)
+                            {
+                                chapterStartPos = startPos;
+                                chapt = new ChapterPos(chapterStartPos, i, j);
+                                bookPositions[i].chapters.Add(chapt);
+                            }
+                            if (booknum == 0 && startPos == 0 && length == 0)
+                            {
+                                chapt.verses.Add(new VersePos(0, 0, i));
+                            }
+                            else
+                            {
+                                chapt.verses.Add(new VersePos(startPos - chapterStartPos, length, i));
+                            }
+                        }
+                        // update the chapter length now that we know it
+                        chapt.length = (int)(lastNonZeroStartPos - chapterStartPos) + length;
+
+                        chapters.Add(chapt);
+
+                        // dump a post for the chapter break
+                        getByteFromStream(fs);
+                        long x = getInt48FromStream(fs);
+                        getShortIntFromStream(fs);
+                    }
+                    // dump a post for the book break
+                    getByteFromStream(fs);
+                    getInt48FromStream(fs);
+                    getShortIntFromStream(fs);
+                }
+                fs.Close();
+            }
+            catch (Exception)
+            {
+                // failed to load old testement.  Maybe it does not exist.
+                // fill with fake data
+                for (int i = 0; i < BOOKS_IN_OT; i++)
+                {
+                    bookPositions.Add(new BookPos(0, 0, 0));
+                }
+                for (int i = 0; i < BOOKS_IN_OT; i++)
+                {
+                    for (int j = 0; j < CHAPTERS_IN_BOOK[i]; j++)
+                    {
+                        ChapterPos chapt = new ChapterPos(0, i, j);
+                        for (int k = 0; k < VERSES_IN_CHAPTER[i][j]; k++)
+                        {
+                            chapt.verses.Add(new VersePos(0, 0, i));
+                        }
+                        // update the chapter length now that we know it
+                        chapt.length =0;
+                        chapters.Add(chapt);
+                        bookPositions[i].chapters.Add(chapt);
+                    }
+                }
+            }
+            try
+            {
+                // do it for the new testement
+                fs = fileStorage.OpenFile(serial.path + "nt.bzs", FileMode.Open, FileAccess.Read);
+                for (int i = 0; i < BOOKS_IN_NT; i++)
+                {
+                    bookPositions.Add(new BookPos(getintFromStream(fs), getintFromStream(fs), getintFromStream(fs)));
+                }
+                fs.Close();
+
+                // read the verse holder for versification bzv file new testememt
+                fs = fileStorage.OpenFile(serial.path + "nt.bzv", FileMode.Open, FileAccess.Read);
+                // dump the first 4 posts
+                for (int i = 0; i < 4; i++)
+                {
+                    int booknum = getByteFromStream(fs);
+                    long startPos = getInt48FromStream(fs);
+                    int length = getShortIntFromStream(fs);
+                }
+
+                // now start getting new testament
+                for (int i = BOOKS_IN_OT; i < (BOOKS_IN_OT + BOOKS_IN_NT); i++)
+                {
+                    for (int j = 0; j < CHAPTERS_IN_BOOK[i]; j++)
+                    {
+                        long chapterStartPos = 0;
+                        ChapterPos chapt = null;
+                        int booknum = 0;
+                        long startPos = 0;
+                        long lastNonZeroStartPos = 0;
+                        int length = 0;
+                        for (int k = 0; k < VERSES_IN_CHAPTER[i][j]; k++)
+                        {
+                            booknum = getByteFromStream(fs);
+                            startPos = getInt48FromStream(fs);
+                            if (startPos != 0)
+                            {
+                                lastNonZeroStartPos = startPos;
+                            }
+                            length = getShortIntFromStream(fs);
+                            if (k == 0)
+                            {
+                                chapterStartPos = startPos;
+                                chapt = new ChapterPos(chapterStartPos, i, j);
+                                bookPositions[i].chapters.Add(chapt);
+                            }
+                            if (booknum == 0 && startPos == 0 && length == 0)
+                            {
+                                chapt.verses.Add(new VersePos(0, 0, i));
+                            }
+                            else
+                            {
+                                chapt.verses.Add(new VersePos(startPos - chapterStartPos, length, i));
+                            }
+                        }
+                        // update the chapter length now that we know it
+                        chapt.length = (int)(lastNonZeroStartPos - chapterStartPos) + length;
+
+                        chapters.Add(chapt);
+
+                        // dump a post for the chapter break
+                        getByteFromStream(fs);
+                        long x = getInt48FromStream(fs);
+                        getShortIntFromStream(fs);
+                    }
+                    // dump a post for the book break
+                    getByteFromStream(fs);
+                    getInt48FromStream(fs);
+                    getShortIntFromStream(fs);
+                }
+                fs.Close();
+            }
+            catch (Exception)
+            {
+                // failed to load new testement.  Maybe it does not exist.
+                // fill with fake data
+                for (int i = 0; i < BOOKS_IN_NT; i++)
+                {
+                    bookPositions.Add(new BookPos(0, 0, 0));
+                }
+                for (int i = BOOKS_IN_OT; i < (BOOKS_IN_OT + BOOKS_IN_NT); i++)
+                {
+                    for (int j = 0; j < CHAPTERS_IN_BOOK[i]; j++)
+                    {
+                        ChapterPos chapt = new ChapterPos(0, i, j);
+                        for (int k = 0; k < VERSES_IN_CHAPTER[i][j]; k++)
+                        {
+                            chapt.verses.Add(new VersePos(0, 0, i));
+                        }
+                        // update the chapter length now that we know it
+                        chapt.length = 0;
+                        chapters.Add(chapt);
+                        bookPositions[i].chapters.Add(chapt);
+                    }
+                }
+            }
+        }
+
         #endregion Methods
 
         #region Nested Types
@@ -1249,5 +1431,55 @@ namespace SwordBackend
         }
 
         #endregion Nested Types
+    }
+
+    [DataContract]
+    public class BibleZtextReaderSerialData
+    {
+        #region Fields
+
+        [DataMember]
+        public bool isIsoEncoding = false;
+        [DataMember]
+        public string iso2DigitLangCode = string.Empty;
+        [DataMember]
+        public string path = string.Empty;
+        [DataMember]
+        public int posChaptNum = 0;
+        [DataMember]
+        public int posVerseNum = 0;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public BibleZtextReaderSerialData(BibleZtextReaderSerialData from)
+        {
+            cloneFrom(from);
+        }
+
+        public BibleZtextReaderSerialData(bool isIsoEncoding,string iso2DigitLangCode,string path,int posChaptNum,int posVerseNum)
+        {
+            this.isIsoEncoding = isIsoEncoding;
+            this.iso2DigitLangCode=iso2DigitLangCode;
+            this.path=path;
+            this.posChaptNum=posChaptNum;
+            this.posVerseNum=posVerseNum;
+        }
+
+        #endregion Constructors
+
+        #region Methods
+
+        public void cloneFrom(BibleZtextReaderSerialData from)
+        {
+            this.isIsoEncoding=from.isIsoEncoding;
+            this.iso2DigitLangCode=from.iso2DigitLangCode;
+            this.path=from.path;
+            this.posChaptNum=from.posChaptNum;
+            this.posVerseNum=from.posVerseNum;
+        }
+
+        #endregion Methods
     }
 }

@@ -180,7 +180,7 @@ namespace SwordBackend
             // Report on fields that shouldn't have RTF but do
             if (!allowsRTF() && RTF_PATTERN.IsMatch(aValue))
             {
-                Logger.Debug(report("Ignoring unexpected RTF for", Name, aValue));
+                //Logger.Debug(report("Ignoring unexpected RTF for", Name, aValue));
             }
 
             if (mayRepeat())
@@ -196,7 +196,7 @@ namespace SwordBackend
                 }
                 if (!isAllowed(aValue))
                 {
-                    Logger.Debug(report("Ignoring unknown config value for", confEntryName, aValue));
+                    //Logger.Debug(report("Ignoring unknown config value for", confEntryName, aValue));
                     return;
                 }
                 values.Add(aValue);
@@ -205,7 +205,7 @@ namespace SwordBackend
             {
                 if (value != null)
                 {
-                    Logger.Debug(report("Ignoring unexpected additional entry for", confEntryName, aValue));
+                    //Logger.Debug(report("Ignoring unexpected additional entry for", confEntryName, aValue));
                 }
                 else
                 {
@@ -216,7 +216,7 @@ namespace SwordBackend
                     }
                     if (!isAllowed(aValue))
                     {
-                        Logger.Debug(report("Ignoring unknown config value for", confEntryName, aValue));
+                        //Logger.Debug(report("Ignoring unknown config value for", confEntryName, aValue));
                         return;
                     }
                     value = type.convert(aValue);

@@ -41,7 +41,6 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -53,7 +52,7 @@
 
         <!--ContentPanel - place additional content here-->
 
-        <ScrollViewer  Grid.Row="1" Name="scrollViewer1" >
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Name="scrollViewer1" >
             <Grid x:Name="ScrollContentGrid" Background="Transparent">
 
 

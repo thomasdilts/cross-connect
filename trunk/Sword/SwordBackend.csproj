@@ -64,7 +64,6 @@
     <Compile Include="ConfigEntryType.cs" />
     <Compile Include="reader\BibleNoteReader.cs" />
     <Compile Include="reader\IBrowserTextSource.cs" />
-    <Compile Include="InstallManager.cs" />
     <Compile Include="Language.cs" />
     <Compile Include="Languages.cs" />
     <Compile Include="SwordBookMetaData.cs" />

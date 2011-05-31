@@ -25,6 +25,17 @@ namespace SwordBackend
     using System.Net;
     using System.Runtime.Serialization;
 
+    #region Enumerations
+
+    public enum ButtonSize
+    {
+        SMALL,
+        MEDIUM,
+        LARGE
+    }
+
+    #endregion Enumerations
+
     #region Delegates
 
     public delegate void WindowSourceChanged();
@@ -69,26 +80,69 @@ namespace SwordBackend
 
         #region Methods
 
-        string[] getAllShortNames();
+        ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton);
 
-        string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize);
-
+        //string[] getAllShortNames();
+        //string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize);
         // string getShortName(int bookNum);
         // string getFullName(int bookNum);
-        void GetInfo(int chaptNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title);
-
-        int getMaxNumChapters();
+        void GetInfo(out int bookNum,out int absoluteChaptNum, out int relChaptNum, out int verseNum, out string fullName, out string title);
 
         string GetVerseTextOnly(int chapterNumber, int verseNum);
 
         List<string> MakeListDisplayText(List<BiblePlaceMarker> listToDisplay);
 
+        void moveChapterVerse(int chapter, int verse, bool isLocalLinkChange);
+
+        void moveNext();
+
+        void movePrevious();
+
+        void putHtmlTofile( string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fileErase, string fileCreate);
+
         void RegisterUpdateEvent(WindowSourceChanged sourceChangedMethod, bool isRegister = true);
 
-        void ReloadSettingsFile();
+        void Resume();
 
-        void putHtmlTofile(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fileErase, string fileCreate);
+        void SerialSave();
 
         #endregion Methods
+    }
+
+    public class ButtonWindowSpecs
+    {
+        #region Fields
+
+        public ButtonSize butSize;
+        public int[] colors;
+        public int NumButtons;
+        public int stage;
+        public string[] text;
+        public string title;
+        public int[] value;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public ButtonWindowSpecs(
+            int stage,
+            string title,
+            int NumButtons,
+            int[] colors,
+            string[] text,
+            int[] value,
+            ButtonSize butSize)
+        {
+            this.stage = stage;
+            this.title = title;
+            this.NumButtons = NumButtons;
+            this.colors = colors;
+            this.text = text;
+            this.value = value;
+            this.butSize = butSize;
+        }
+
+        #endregion Constructors
     }
 }
