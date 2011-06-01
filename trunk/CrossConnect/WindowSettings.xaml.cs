@@ -109,6 +109,15 @@ namespace CrossConnect
 
         private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if (selectDocumentType.SelectedIndex == 4)
+            {
+                if (this.planStartDate.Value != null)
+                {
+                    App.dailyPlan.planStartDate = (DateTime)this.planStartDate.Value;
+                }
+                App.dailyPlan.planNumber = this.selectPlanType.SelectedIndex;
+            } 
+            
             object isAddNewWindowOnly = null;
             if (!PhoneApplicationService.Current.State.TryGetValue("isAddNewWindowOnly", out isAddNewWindowOnly))
             {
@@ -119,14 +128,7 @@ namespace CrossConnect
                 WINDOW_TYPE selectedType;
                 SwordBackend.SwordBook bookSelected;
                 GetSelectedData(out selectedType, out bookSelected);
-                if (selectDocumentType.SelectedIndex == 4)
-                {
-                    if (this.planStartDate.Value != null)
-                    {
-                        App.dailyPlan.planStartDate = (DateTime)this.planStartDate.Value;
-                    }
-                    App.dailyPlan.planNumber = this.selectPlanType.SelectedIndex;
-                }
+
                 App.AddWindow(bookSelected.sbmd.internalName,selectedType, (double)sliderTextSize.Value);
                 if (NavigationService.CanGoBack)
                 {

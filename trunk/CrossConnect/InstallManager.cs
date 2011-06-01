@@ -529,6 +529,14 @@ namespace SwordBackend
 
         private void client_OpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
         {
+            if (e.Error!=null)
+            {
+                if (progress_completed != null)
+                {
+                    progress_completed(e.Error.Message, null);
+                } 
+                return;
+            }
             resultStream = e.Result;
             if (progress_completed != null)
             {

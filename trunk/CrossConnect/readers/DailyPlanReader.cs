@@ -139,7 +139,12 @@ namespace CrossConnect
 
         public override void GetInfo(out int bookNum, out int absoluteChaptNum, out int relChaptNum, out int verseNum, out string fullName, out string title)
         {
-            base.GetInfo(out bookNum,out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out title);
+            int count = DailyPlans.zAllPlans[App.dailyPlan.planNumber].GetUpperBound(0) + 1;
+            if (App.dailyPlan.planDayNumber >= count)
+            {
+                App.dailyPlan.planDayNumber = 0;
+            }
+            base.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out title);
             title = App.dailyPlan.planStartDate.AddDays(App.dailyPlan.planDayNumber).ToShortDateString() + " " + Translations.translate("Daily plan");
         }
 
@@ -189,7 +194,11 @@ namespace CrossConnect
 
         public override void SetToFirstChapter()
         {
-            App.dailyPlan.planDayNumber = 0;
+            int count = DailyPlans.zAllPlans[App.dailyPlan.planNumber].GetUpperBound(0) + 1;
+            if (App.dailyPlan.planDayNumber >= count)
+            {
+                App.dailyPlan.planDayNumber = 0;
+            }
         }
 
         protected override string GetChapterHtml(string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml)
