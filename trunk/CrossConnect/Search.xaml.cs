@@ -14,7 +14,7 @@
 ///      59 Temple Place - Suite 330
 ///      Boston, MA 02111-1307, USA
 /// </summary>
-/// <copyright file="THIS_FILE.cs" company="Thomas Dilts">
+/// <copyright file="Search.xaml.cs" company="Thomas Dilts">
 ///     Thomas Dilts. All rights reserved.
 /// </copyright>
 /// <author>Thomas Dilts</author>
@@ -296,8 +296,8 @@ namespace CrossConnect
             butSearch.Content = Translations.translate("Search");
             SearchWhereText.Text = Translations.translate("Search where");
             wholeBible.Content = Translations.translate("Whole bible");
-            oldTestement.Content = Translations.translate("Old Testement");
-            newTEstement.Content = Translations.translate("New Testement");
+            oldTestement.Content = Translations.translate("The Old Testement");
+            newTEstement.Content = Translations.translate("The New Testement");
             SearchByText.Text = Translations.translate("Search conditions");
             OneOrMoreWords.Content = Translations.translate("One or more words");
             AllWords.Content = Translations.translate("All words (maximum 3 words)");

@@ -14,7 +14,7 @@
 ///      59 Temple Place - Suite 330
 ///      Boston, MA 02111-1307, USA
 /// </summary>
-/// <copyright file="THIS_FILE.cs" company="Thomas Dilts">
+/// <copyright file="InstalledBooks.cs" company="Thomas Dilts">
 ///     Thomas Dilts. All rights reserved.
 /// </copyright>
 /// <author>Thomas Dilts</author>

@@ -14,7 +14,7 @@
 ///      59 Temple Place - Suite 330
 ///      Boston, MA 02111-1307, USA
 /// </summary>
-/// <copyright file="App.xaml.cs" company="Thomas Dilts">
+/// <copyright file="DailyPlanReader.cs" company="Thomas Dilts">
 ///     Thomas Dilts. All rights reserved.
 /// </copyright>
 /// <author>Thomas Dilts</author>
@@ -124,7 +124,7 @@ namespace CrossConnect
 
                 return new ButtonWindowSpecs(
                     stage,
-                    "Select chapter",
+                    "Select day",
                     count,
                     butColors,
                     butText,
@@ -212,7 +212,7 @@ namespace CrossConnect
             string title;
 
             sb.Append("<h3>" + Translations.translate("Day") + " " + (App.dailyPlan.planDayNumber + 1) + ", " + App.dailyPlan.planStartDate.AddDays(App.dailyPlan.planDayNumber).ToShortDateString() + "</h3>");
-            sb.Append("<h3>" + Translations.translate(DailyPlans.zzAllPlansNames[App.dailyPlan.planNumber]) + "</h3>");
+            sb.Append("<h3>" + Translations.translate(DailyPlans.zzAllPlansNames[App.dailyPlan.planNumber][0]) + "; " + DailyPlans.zzAllPlansNames[App.dailyPlan.planNumber][1] + " " + Translations.translate("days") + "</h3>");
             for (int i = 0; i <= DailyPlans.zAllPlans[App.dailyPlan.planNumber][App.dailyPlan.planDayNumber].GetUpperBound(0); i++)
             {
                 base.GetInfo(DailyPlans.zAllPlans[App.dailyPlan.planNumber][App.dailyPlan.planDayNumber][i], 0, out bookNum, out relChaptNum, out fullName, out title);

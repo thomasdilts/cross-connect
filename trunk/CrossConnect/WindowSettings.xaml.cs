@@ -14,9 +14,10 @@
 ///      59 Temple Place - Suite 330
 ///      Boston, MA 02111-1307, USA
 /// </summary>
-/// Copyright: 2011
-///     The copyright to this program is held by Thomas Dilts
-///
+/// <copyright file="WindowSettings.xaml.cs" company="Thomas Dilts">
+///     Thomas Dilts. All rights reserved.
+/// </copyright>
+/// <author>Thomas Dilts</author>
 namespace CrossConnect
 {
     using System;
@@ -116,8 +117,8 @@ namespace CrossConnect
                     App.dailyPlan.planStartDate = (DateTime)this.planStartDate.Value;
                 }
                 App.dailyPlan.planNumber = this.selectPlanType.SelectedIndex;
-            } 
-            
+            }
+
             object isAddNewWindowOnly = null;
             if (!PhoneApplicationService.Current.State.TryGetValue("isAddNewWindowOnly", out isAddNewWindowOnly))
             {
@@ -193,9 +194,9 @@ namespace CrossConnect
             {
                 //prefill and show the next 2 fields.
                 selectPlanType.Items.Clear();
-                for (int i = 0; i < DailyPlans.zzAllPlansNames.Length; i++)
+                for (int i = 0; i <= DailyPlans.zzAllPlansNames.GetUpperBound(0); i++)
                 {
-                    selectPlanType.Items.Add(Translations.translate(DailyPlans.zzAllPlansNames[i]));
+                    selectPlanType.Items.Add(Translations.translate(DailyPlans.zzAllPlansNames[i][0]) + "; " + DailyPlans.zzAllPlansNames[i][1] + " " + Translations.translate("days") + "; " + DailyPlans.zzAllPlansNames[i][2] + " " + Translations.translate("minutes/day"));
                 }
                 selectPlanType.SelectedIndex = App.dailyPlan.planNumber;
                 planStartDate.Value = App.dailyPlan.planStartDate;

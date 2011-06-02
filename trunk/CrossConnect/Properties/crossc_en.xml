@@ -17,20 +17,12 @@
   <string key="Download bibles">Download bibles</string>
   <string key="Exact match">Exact match</string>
   <string key="Found">Found</string>
+  <string key="From the beginning to the end">From the beginning to the end</string>
   <string key="Help">Help</string>
   <string key="History">History</string>
-  <string key="New Testement">New Testement</string>
   <string key="Notes">Notes</string>
   <string key="Nothing found">Nothing found</string>
-  <string key="Old Testement">Old Testement</string>
   <string key="One or more words">One or more words</string>
-  <string key="Read the New Testement in 30 days">Read the New Testement in 30 days</string>
-  <string key="Read the New Testement, Psalms and Proverbs in one year">Read the New Testement, Psalms and Proverbs in one year</string>
-  <string key="Read the Old and New Testement each day in one year">Read the Old and New Testement each day in one year</string>
-  <string key="Read the bible in 90 days">Read the bible in 90 days</string>
-  <string key="Read the bible in one year by random chapters">Read the bible in one year by random chapters</string>
-  <string key="Read the bible in one year by topic">Read the bible in one year by topic</string>
-  <string key="Read the bible in one year">Read the bible in one year</string>
   <string key="Search conditions">Search conditions</string>
   <string key="Search where">Search where</string>
   <string key="Search">Search</string>
@@ -39,6 +31,7 @@
   <string key="Select book">Select book</string>
   <string key="Select bookmark to delete">Select bookmark to delete</string>
   <string key="Select chapter">Select chapter</string>
+  <string key="Select day">Select day</string>
   <string key="Select the bible">Select the bible</string>
   <string key="Select the daily plan start date">Select the daily plan start date</string>
   <string key="Select the daily plan">Select the daily plan</string>
@@ -49,7 +42,15 @@
   <string key="Send message">Send message</string>
   <string key="Settings">Settings</string>
   <string key="Text size">Text size</string>
+  <string key="The New Testement">The New Testement</string>
+  <string key="The New Testement, Psalms, Proverbs">The New Testement, Psalms, Proverbs</string>
+  <string key="The Old Testement">The Old Testement</string>
+  <string key="The Old and New Testement each day">The Old and New Testement each day</string>
+  <string key="The bible by random chapters">The bible by random chapters</string>
+  <string key="The bible by topic">The bible by topic</string>
   <string key="Too many found. Search stopped">Too many found. Search stopped</string>
   <string key="Whole bible">Whole bible</string>
   <string key="You must have at least one bible">You must have at least one bible</string>
-  </translations>
+  <string key="days">days</string>
+  <string key="minutes/day">minutes per day</string>
+</translations>
