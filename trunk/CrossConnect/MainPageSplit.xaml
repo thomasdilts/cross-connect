@@ -62,6 +62,7 @@
                 <shell:ApplicationBarMenuItem Click="butAddWindow_Click" x:Name="menuNewWindow" Text="Add new window"/>
                 <shell:ApplicationBarMenuItem Click="butAddBookmark_Click" x:Name="menuAddBookmark" Text="Add bookmark"/>
                 <shell:ApplicationBarMenuItem Click="butGoToPlan_Click" x:Name="menuGoToPlan" Text="Daily plan"/>
+                <shell:ApplicationBarMenuItem Click="menuLanguage_Click" x:Name="menuLanguage" Text="Select language"/>
                 <shell:ApplicationBarMenuItem Click="butHelp_Click" x:Name="menuHelp" Text="help"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>

@@ -66,6 +66,9 @@
     <Compile Include="AutoRotatePage.cs" />
     <Compile Include="InstallManager.cs" />
     <Compile Include="readers\DailyPlanReader.cs" />
+    <Compile Include="SelectLanguage.xaml.cs">
+      <DependentUpon>SelectLanguage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Translations.cs" />
     <Compile Include="readers\BookMarkReader.cs" />
     <Compile Include="BrowserTitledWindow.xaml.cs">
@@ -135,6 +138,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SelectBibleBook.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SelectLanguage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

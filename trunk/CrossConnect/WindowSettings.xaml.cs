@@ -52,14 +52,6 @@ namespace CrossConnect
 
         #region Methods
 
-        private void butCancel_Click(object sender, RoutedEventArgs e)
-        {
-            if (NavigationService.CanGoBack)
-            {
-                NavigationService.GoBack();
-            }
-        }
-
         private void butSearch_Click(object sender, RoutedEventArgs e)
         {
             SetBookChoosen();

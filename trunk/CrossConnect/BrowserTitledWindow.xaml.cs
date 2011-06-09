@@ -87,8 +87,9 @@ namespace CrossConnect
             return "#" + color.ToString().Substring(3, 6);
         }
 
-        public void CallbackFromUpdate(IAsyncResult ar)
+        public void CallbackFromUpdate(string createdFileName)
         {
+            this.lastFileName = createdFileName;
             //webBrowser1.FontSize = this.state.htmlFontSize;
             webBrowser1.Base = App.WEB_DIR_ISOLATED;
 
@@ -122,23 +123,6 @@ namespace CrossConnect
                 tmr.Tick += this.OnTimerTick;
                 tmr.Start();
             }
-        }
-
-        public void Do(Action action, AsyncCallback callback)
-        {
-            ThreadPool.QueueUserWorkItem(_ =>
-            {
-                try
-                {
-                    action();
-                    Deployment.Current.Dispatcher.BeginInvoke(() => callback(null));
-                }
-                catch (Exception)
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() => callback(null));
-                    return;
-                }
-            });
         }
 
         public void Initialize(string bibleToLoad, WINDOW_TYPE windowType, IBrowserTextSource source = null)
@@ -254,9 +238,6 @@ namespace CrossConnect
         {
             if (this.state.source != null && this.Parent != null)
             {
-                // Must change the file name, otherwise the browser may or may not update.
-                string file = "web" + (int)(new Random().NextDouble() * 10000) + ".html";
-
                 double fontSizeMultiplier = 1;
                 if (this.Parent != null && ((Grid)(Grid)this.Parent).Parent != null)
                 {
@@ -272,17 +253,12 @@ namespace CrossConnect
                 var backcolor=GetBrowserColor("PhoneBackgroundColor");
                 var forecolor=GetBrowserColor("PhoneForegroundColor");
                 var accentcolor = GetBrowserColor("PhoneAccentColor");
-                Do(() =>
-                        {
-                        this.state.source.putHtmlTofile(
-                            backcolor,
+
+                GetHtmlAsynchronously(backcolor,
                             forecolor,
                             accentcolor,
                             this.state.htmlFontSize * fontSizeMultiplier,
-                            App.WEB_DIR_ISOLATED + "/" + this.lastFileName,
-                            App.WEB_DIR_ISOLATED + "/" + file);}
-                            , CallbackFromUpdate);
-                this.lastFileName = file;
+                            App.WEB_DIR_ISOLATED + "/" + this.lastFileName);
             }
         }
 
@@ -483,6 +459,30 @@ namespace CrossConnect
                 //next
                 ButNext_Click(null, null);
             }
+        }
+
+        private void GetHtmlAsynchronously( string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fileErase)
+        {
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                try
+                {
+                    string createdFileName=this.state.source.putHtmlTofile(
+                        htmlBackgroundColor,
+                        htmlForegroundColor,
+                        htmlPhoneAccentColor,
+                        htmlFontSize,
+                        fileErase,
+                        App.WEB_DIR_ISOLATED);
+
+                    Deployment.Current.Dispatcher.BeginInvoke(() => CallbackFromUpdate(createdFileName));
+                }
+                catch (Exception)
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() => CallbackFromUpdate(""));
+                    return;
+                }
+            });
         }
 
         private ImageSource GetImage(string path)

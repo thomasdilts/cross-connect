@@ -640,20 +640,27 @@ namespace SwordBackend
             }
         }
 
-        public virtual void putHtmlTofile(string htmlBackgroundColor, 
+        public virtual string putHtmlTofile(string htmlBackgroundColor, 
             string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,
-            string fileErase,string fileCreate)
+            string fileErase, string filePath)
         {
             var root = IsolatedStorageFile.GetUserStoreForApplication();
 
-            // Must change the file name, otherwise the browser may or may not update.
-            string file = "web" + (int)(new Random().NextDouble() * 10000) + ".html";
             if (root.FileExists( fileErase))
             {
                 root.DeleteFile(fileErase);
             }
 
-            IsolatedStorageFileStream fs = root.CreateFile(fileCreate);
+            // Must change the file name, otherwise the browser may or may not update.
+            string fileCreate = "web" + (int)(new Random().NextDouble() * 10000) + ".html";
+
+            //the name must be unique of course
+            while (root.FileExists(filePath + "/" + fileCreate))
+            {
+                fileCreate = "web" + (int)(new Random().NextDouble() * 10000) + ".html";
+            }
+
+            IsolatedStorageFileStream fs = root.CreateFile(filePath + "/" + fileCreate);
             System.IO.StreamWriter tw = new System.IO.StreamWriter(fs);
             tw.Write(GetChapterHtml(
                 htmlBackgroundColor,
@@ -663,6 +670,7 @@ namespace SwordBackend
                 false));
             tw.Close();
             fs.Close();
+            return fileCreate;
         }
 
         public void RegisterUpdateEvent(WindowSourceChanged sourceChangedMethod,bool isRegister=true)

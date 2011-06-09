@@ -1,0 +1,101 @@
+﻿<local:AutoRotatePage 
+    x:Class="CrossConnect.SelectLanguage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:local="clr-namespace:CrossConnect"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    shell:SystemTray.IsVisible="True" xmlns:my="clr-namespace:CrossConnect"
+    Loaded="AutoRotatePage_Loaded" >
+
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel Grid.Row="0" x:Name="TitlePanel" Margin="12,5,0,0" Height="63" VerticalAlignment="Top">
+            <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="Select Language" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
+        </StackPanel>
+        <!--ContentPanel - place additional content here-->
+        <ListBox Grid.Row="1" SelectionChanged="SelectList_SelectionChanged"  Name="SelectList" >
+            <sys:String>zzDefault system language</sys:String>
+            <sys:String>Afrikaans (af)</sys:String>
+            <sys:String>العربية (Arabic ar)</sys:String>
+            <sys:String>Беларускі (Belarussian be)</sys:String>
+            <sys:String>Български (Bulgarian bg)</sys:String>
+            <sys:String>Čeština (Czech cs)</sys:String>
+            <sys:String>Dansk (Danish da)</sys:String>
+            <sys:String>Deutsch (German de)</sys:String>
+            <sys:String>Ελληνικά (Greek el)</sys:String>
+            <sys:String>English (en)</sys:String>
+            <sys:String>Español (Spanish es)</sys:String>
+            <sys:String>Eesti Keel (Estonian et)</sys:String>
+            <sys:String>Suomi (Finish fi)</sys:String>
+            <sys:String>Français (French fr)</sys:String>
+            <sys:String>हिन्दी (Hindi hi)</sys:String>
+            <sys:String>Hrvatski (Croatian hr)</sys:String>
+            <sys:String>Magyar (Hungarian hu)</sys:String>
+            <sys:String>Հայերեն (hy Armenian)</sys:String>
+            <sys:String>Bahasa Indonesia (Indonesian id)</sys:String>
+            <sys:String>Íslenska (Icelandic is)</sys:String>
+            <sys:String>Italiano (Italian it)</sys:String>
+            <sys:String>日本 (Japanese ja)</sys:String>
+            <sys:String>한국어 (Korean ko)</sys:String>
+            <sys:String>Lietuvių (Lithuanian lt)</sys:String>
+            <sys:String>Latviešu (Latvian lv)</sys:String>
+            <sys:String>Македонски (Macedonian mk)</sys:String>
+            <sys:String>Malaysia (Malaysian ms)</sys:String>
+            <sys:String>Malti (Maltese mt)</sys:String>
+            <sys:String>Nederlands (Dutch nl)</sys:String>
+            <sys:String>Norske (Norwegian no)</sys:String>
+            <sys:String>Polszczyzna (Polish pl)</sys:String>
+            <sys:String>Português (Portuguese pt)</sys:String>
+            <sys:String>Русский (Russian ru)</sys:String>
+            <sys:String>Shqip (Albanian sq)</sys:String>
+            <sys:String>Svenska (Swedish sv)</sys:String>
+            <sys:String>ภาษาไทย (Thai th)</sys:String>
+            <sys:String>Wikang Tagalog (Tagalog tl)</sys:String>
+            <sys:String>Türk (Turkish tr)</sys:String>
+            <sys:String>Українська (Ukrainian uk)</sys:String>
+            <sys:String>簡化字 (Traditional Chinese zh)</sys:String>
+            <sys:String>简化字 (Simplified Chinese zh_cn)</sys:String>
+        </ListBox>
+    </Grid>
+
+
+</local:AutoRotatePage>

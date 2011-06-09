@@ -177,7 +177,7 @@ namespace CrossConnect
         private void butHelp_Click(object sender, EventArgs e)
         {
             WebBrowserTask webBrowserTask = new WebBrowserTask();
-            string version = "1.0.0.4";
+            string version = "1.0.0.5";
             webBrowserTask.URL = @"http://www.chaniel.se/crossconnect/help?version=" + version;
             webBrowserTask.Show();
         }
@@ -278,7 +278,8 @@ namespace CrossConnect
             ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[6]).Text = Translations.translate("Add new window");
             ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[7]).Text = Translations.translate("Add to bookmarks");
             ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[8]).Text = Translations.translate("Daily plan");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[9]).Text = Translations.translate("Help");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[9]).Text = Translations.translate("Select language");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[10]).Text = Translations.translate("Help");
 
             if (App.openWindows.Count() == 0 || App.installedBibles.installedBibles.Count() == 0)
             {
@@ -331,6 +332,11 @@ namespace CrossConnect
         private void menuDownloadBible_Click(object sender, EventArgs e)
         {
             this.NavigationService.Navigate(new Uri("/DownloadBooks.xaml", UriKind.Relative));
+        }
+
+        private void menuLanguage_Click(object sender, EventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/SelectLanguage.xaml", UriKind.Relative));
         }
 
         private void menuMail_Click(object sender, EventArgs e)

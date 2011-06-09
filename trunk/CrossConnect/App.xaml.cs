@@ -341,6 +341,10 @@ namespace CrossConnect
             {
                 placeMarkers = new BiblePlaceMarkers();
             }
+            if (!IsolatedStorageSettings.ApplicationSettings.Contains("LanguageIsoCode"))
+            {
+                IsolatedStorageSettings.ApplicationSettings["LanguageIsoCode"] = "default";
+            }
         }
 
         public void SavePersistantObjects()

@@ -37,6 +37,51 @@ namespace CrossConnect
 
         #endregion Fields
 
+        #region Properties
+
+        public static string isoLanguageCode
+        {
+            get
+            {
+                Assembly assem = Assembly.GetExecutingAssembly();
+                string isocode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLower();
+                string name = CultureInfo.CurrentCulture.Name.Replace('-', '_').ToLower();
+                if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("LanguageIsoCode", out name))
+                {
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        name = CultureInfo.CurrentCulture.Name.Replace('-', '_').ToLower();
+                    }
+                }
+                Stream stream = null;
+                stream = assem.GetManifestResourceStream("CrossConnect.Properties.crossc_" + name + ".xml");
+
+                if (stream == null)
+                {
+                    name = isocode;
+                    stream = assem.GetManifestResourceStream("CrossConnect.Properties.crossc_" + name + ".xml");
+                    if (stream == null)
+                    {
+                        name = "en";
+                    }
+                }
+                if (stream != null)
+                {
+                    stream.Close();
+                }
+                return name;
+            }
+            set
+            {
+                IsolatedStorageSettings.ApplicationSettings["LanguageIsoCode"] = value;
+                IsolatedStorageSettings.ApplicationSettings.Save();
+                translations = new Dictionary<string, string>();
+                readTranslationsFromFile();
+            }
+        }
+
+        #endregion Properties
+
         #region Methods
 
         public static string translate(string key)
@@ -59,19 +104,7 @@ namespace CrossConnect
         private static void readTranslationsFromFile()
         {
             Assembly assem = Assembly.GetExecutingAssembly();
-            string isocode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLower();
-            string name = CultureInfo.CurrentCulture.Name.Replace('-', '_').ToLower();
-            Stream stream = null;
-            stream = assem.GetManifestResourceStream("CrossConnect.Properties.crossc_" + name + ".xml");
-
-            if (stream == null)
-            {
-                stream = assem.GetManifestResourceStream("CrossConnect.Properties.crossc_" + isocode + ".xml");
-                if (stream == null)
-                {
-                    stream = assem.GetManifestResourceStream("CrossConnect.Properties.crossc_en.xml");
-                }
-            }
+            Stream stream = assem.GetManifestResourceStream("CrossConnect.Properties.crossc_" + isoLanguageCode + ".xml");
 
             using (XmlReader reader = XmlReader.Create(stream))
             {

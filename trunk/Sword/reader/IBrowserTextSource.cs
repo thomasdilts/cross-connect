@@ -82,10 +82,6 @@ namespace SwordBackend
 
         ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton);
 
-        //string[] getAllShortNames();
-        //string GetChapterHtml(int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize);
-        // string getShortName(int bookNum);
-        // string getFullName(int bookNum);
         void GetInfo(out int bookNum,out int absoluteChaptNum, out int relChaptNum, out int verseNum, out string fullName, out string title);
 
         string GetVerseTextOnly(int chapterNumber, int verseNum);
@@ -98,7 +94,7 @@ namespace SwordBackend
 
         void movePrevious();
 
-        void putHtmlTofile( string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fileErase, string fileCreate);
+        string putHtmlTofile( string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fileErase, string filePath);
 
         void RegisterUpdateEvent(WindowSourceChanged sourceChangedMethod, bool isRegister = true);
 
