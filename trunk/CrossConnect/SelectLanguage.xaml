@@ -56,6 +56,7 @@
             <sys:String>zzDefault system language</sys:String>
             <sys:String>Afrikaans (af)</sys:String>
             <sys:String>العربية (Arabic ar)</sys:String>
+            <sys:String>Azərbaycan (Azerbaijani az)</sys:String>
             <sys:String>Беларускі (Belarussian be)</sys:String>
             <sys:String>Български (Bulgarian bg)</sys:String>
             <sys:String>Čeština (Czech cs)</sys:String>
@@ -65,12 +66,13 @@
             <sys:String>English (en)</sys:String>
             <sys:String>Español (Spanish es)</sys:String>
             <sys:String>Eesti Keel (Estonian et)</sys:String>
+            <sys:String>فارسی (Persian fa)</sys:String>
             <sys:String>Suomi (Finish fi)</sys:String>
             <sys:String>Français (French fr)</sys:String>
             <sys:String>हिन्दी (Hindi hi)</sys:String>
             <sys:String>Hrvatski (Croatian hr)</sys:String>
             <sys:String>Magyar (Hungarian hu)</sys:String>
-            <sys:String>Հայերեն (hy Armenian)</sys:String>
+            <sys:String>Հայերեն (Armenian hy)</sys:String>
             <sys:String>Bahasa Indonesia (Indonesian id)</sys:String>
             <sys:String>Íslenska (Icelandic is)</sys:String>
             <sys:String>Italiano (Italian it)</sys:String>
@@ -85,13 +87,20 @@
             <sys:String>Norske (Norwegian no)</sys:String>
             <sys:String>Polszczyzna (Polish pl)</sys:String>
             <sys:String>Português (Portuguese pt)</sys:String>
+            <sys:String>Română (Romanian ro)</sys:String>
             <sys:String>Русский (Russian ru)</sys:String>
+            <sys:String>Slovenskom jazyku (Slovakian sk)</sys:String>
+            <sys:String>Slovenščina (Slovenian sl)</sys:String>
             <sys:String>Shqip (Albanian sq)</sys:String>
+            <sys:String>Српска (Serbian sr)</sys:String>
+            <sys:String>Swahili (sw)</sys:String>
             <sys:String>Svenska (Swedish sv)</sys:String>
             <sys:String>ภาษาไทย (Thai th)</sys:String>
             <sys:String>Wikang Tagalog (Tagalog tl)</sys:String>
             <sys:String>Türk (Turkish tr)</sys:String>
             <sys:String>Українська (Ukrainian uk)</sys:String>
+            <sys:String>اردو (Urdu ur)</sys:String>
+            <sys:String>Việt (Vietnamese vi)</sys:String>
             <sys:String>簡化字 (Traditional Chinese zh)</sys:String>
             <sys:String>简化字 (Simplified Chinese zh_cn)</sys:String>
         </ListBox>

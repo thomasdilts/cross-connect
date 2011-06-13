@@ -248,6 +248,15 @@
     <Content Include="Images\dark\appbar.share.rest.pressed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Properties\crossc_az.xml" />
+    <EmbeddedResource Include="Properties\crossc_fa.xml" />
+    <EmbeddedResource Include="Properties\crossc_ro.xml" />
+    <EmbeddedResource Include="Properties\crossc_sk.xml" />
+    <EmbeddedResource Include="Properties\crossc_sl.xml" />
+    <EmbeddedResource Include="Properties\crossc_sr.xml" />
+    <EmbeddedResource Include="Properties\crossc_sw.xml" />
+    <EmbeddedResource Include="Properties\crossc_ur.xml" />
+    <EmbeddedResource Include="Properties\crossc_vi.xml" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <EmbeddedResource Include="Properties\regex.html" />
