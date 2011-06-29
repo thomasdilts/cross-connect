@@ -97,6 +97,9 @@ namespace CrossConnect
                 case 4:
                     selectedType = WINDOW_TYPE.WINDOW_DAILY_PLAN;
                     break;
+                case 5:
+                    selectedType = WINDOW_TYPE.WINDOW_ADDED_NOTES;
+                    break;
             }
         }
 
@@ -188,7 +191,7 @@ namespace CrossConnect
                 selectPlanType.Items.Clear();
                 for (int i = 0; i <= DailyPlans.zzAllPlansNames.GetUpperBound(0); i++)
                 {
-                    selectPlanType.Items.Add(Translations.translate(DailyPlans.zzAllPlansNames[i][0]) + "; " + DailyPlans.zzAllPlansNames[i][1] + " " + Translations.translate("days") + "; " + DailyPlans.zzAllPlansNames[i][2] + " " + Translations.translate("minutes/day"));
+                    selectPlanType.Items.Add(Translations.translate(DailyPlans.zzAllPlansNames[i][0]) + "; " + DailyPlans.zzAllPlansNames[i][1] + " " + Translations.translate("Days") + "; " + DailyPlans.zzAllPlansNames[i][2] + " " + Translations.translate("Minutes/Day"));
                 }
                 selectPlanType.SelectedIndex = App.dailyPlan.planNumber;
                 planStartDate.Value = App.dailyPlan.planStartDate;
@@ -262,6 +265,7 @@ namespace CrossConnect
             selectDocumentType.Items.Add(Translations.translate("History"));
             selectDocumentType.Items.Add(Translations.translate("Bookmarks"));
             selectDocumentType.Items.Add(Translations.translate("Daily plan"));
+            selectDocumentType.Items.Add(Translations.translate("Added notes"));
 
             object isAddNewWindowOnly = null;
             object openWindowIndex = null;
@@ -330,6 +334,13 @@ namespace CrossConnect
                         selectPlanType.SelectedIndex = App.dailyPlan.planNumber;
                         planStartDate.Value = App.dailyPlan.planStartDate;
                         break;
+                    case WINDOW_TYPE.WINDOW_ADDED_NOTES:
+                        this.selectDocumentType.SelectedIndex = 5;
+                        break;
+                    case WINDOW_TYPE.WINDOW_INTERNET_LINK:
+                        this.selectDocumentType.Visibility = System.Windows.Visibility.Collapsed;
+                        this.selectDocument.Visibility = System.Windows.Visibility.Collapsed;
+                        break;
                     case WINDOW_TYPE.WINDOW_SEARCH:
                         this.selectDocumentType.Visibility = System.Windows.Visibility.Collapsed;
                         this.selectDocument.Visibility = System.Windows.Visibility.Collapsed;
@@ -346,11 +357,12 @@ namespace CrossConnect
                 webBrowser1.FontSize = e.NewValue;
                 webBrowser1.NavigateToString(
                     SwordBackend.BibleZtextReader.HtmlHeader(
+                    App.displaySettings,
                     BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"),
                     BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
                     BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
                     e.NewValue) +
-                    "<a href=\"#\">" + Translations.translate("Text size") + "</a>" +
+                    "<a class=\"normalcolor\" href=\"#\">" + Translations.translate("Text size") + "</a>" +
                     "</body></html>");
             }
         }

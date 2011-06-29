@@ -51,7 +51,7 @@ namespace SwordBackend
             get;
         }
 
-        bool IsBookmarkable
+        bool IsExternalLink
         {
             get;
         }
@@ -82,11 +82,13 @@ namespace SwordBackend
 
         ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton);
 
+        string getExternalLink(DisplaySettings displaySettings);
+
         void GetInfo(out int bookNum,out int absoluteChaptNum, out int relChaptNum, out int verseNum, out string fullName, out string title);
 
-        string GetVerseTextOnly(int chapterNumber, int verseNum);
+        string GetVerseTextOnly(DisplaySettings displaySettings, int chapterNumber, int verseNum);
 
-        List<string> MakeListDisplayText(List<BiblePlaceMarker> listToDisplay);
+        List<string> MakeListDisplayText(DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay);
 
         void moveChapterVerse(int chapter, int verse, bool isLocalLinkChange);
 
@@ -94,7 +96,7 @@ namespace SwordBackend
 
         void movePrevious();
 
-        string putHtmlTofile( string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fileErase, string filePath);
+        string putHtmlTofile(DisplaySettings displaySettings,  string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fileErase, string filePath);
 
         void RegisterUpdateEvent(WindowSourceChanged sourceChangedMethod, bool isRegister = true);
 

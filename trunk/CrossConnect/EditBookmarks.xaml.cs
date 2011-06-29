@@ -56,7 +56,7 @@ namespace CrossConnect
         private void LoadList()
         {
             SelectList.Items.Clear();
-            List<string> allBookmarks = App.openWindows[0].state.source.MakeListDisplayText(App.placeMarkers.bookmarks);
+            List<string> allBookmarks = App.openWindows[0].state.source.MakeListDisplayText(App.displaySettings, App.placeMarkers.bookmarks);
             // the list is a reversed list from the original list. So we must mark it with the correct reversed index.
             int j = allBookmarks.Count - 1;
             for (int i = 0; i < allBookmarks.Count; i++)

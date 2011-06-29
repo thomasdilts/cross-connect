@@ -75,14 +75,6 @@ namespace CrossConnect
 
         #region Properties
 
-        public override bool IsBookmarkable
-        {
-            get
-            {
-                return false;
-            }
-        }
-
         public override bool IsPageable
         {
             get
@@ -113,7 +105,7 @@ namespace CrossConnect
 
         public void App_HistoryChanged()
         {
-            this.displayText = MakeListDisplayText(App.placeMarkers.history, this.htmlBackgroundColor, this.htmlForegroundColor, this.htmlPhoneAccentColor, this.htmlFontSize);
+            this.displayText = MakeListDisplayText(App.displaySettings, App.placeMarkers.history, this.htmlBackgroundColor, this.htmlForegroundColor, this.htmlPhoneAccentColor, this.htmlFontSize,false,"");
             raiseSourceChangedEvent();
         }
 
@@ -130,6 +122,8 @@ namespace CrossConnect
         public override void Resume()
         {
             base.serial.cloneFrom(this.serial2);
+            App.HistoryChanged += this.App_HistoryChanged;
+            base.Resume();
         }
 
         public override void SerialSave()
@@ -137,16 +131,16 @@ namespace CrossConnect
             this.serial2.cloneFrom(base.serial);
         }
 
-        protected override string GetChapterHtml(string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,bool isNotesOnly, bool addStartFinishHtml=true)
+        protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,bool isNotesOnly, bool addStartFinishHtml=true)
         {
-            bool mustUpdate = this.htmlBackgroundColor.Length == 0;
+            bool mustUpdate = string.IsNullOrEmpty(this.htmlBackgroundColor);
             this.htmlBackgroundColor = htmlBackgroundColor;
             this.htmlForegroundColor = htmlForegroundColor;
             this.htmlPhoneAccentColor = htmlPhoneAccentColor;
 
             if (mustUpdate || this.htmlFontSize != htmlFontSize)
             {
-                this.displayText = MakeListDisplayText(App.placeMarkers.history, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
+                this.displayText = MakeListDisplayText(displaySettings, App.placeMarkers.history, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize,false,"");
             }
             this.htmlFontSize = htmlFontSize;
             return this.displayText;

@@ -90,7 +90,7 @@
 
         private void AutoRotatePage_Loaded(object sender, RoutedEventArgs e)
         {
-            PageTitle.Text = Translations.translate("Select language");
+            PageTitle.Text = Translations.translate("Select the language");
             SelectList.Items.RemoveAt(0);
             SelectList.Items.Insert(0, Translations.translate("Default system language"));
 

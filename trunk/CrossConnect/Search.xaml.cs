@@ -264,6 +264,7 @@ namespace CrossConnect
             ((System.Threading.Timer)state).Dispose();
 
             sourceSearch.doSearch(
+                App.displaySettings,
                 Search.searchingObject.searchTypeIndex,
                 Search.searchingObject.searchText,
                 Search.searchingObject.ignoreCase,

@@ -60,14 +60,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddNote.xaml.cs">
+      <DependentUpon>AddNote.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AutoRotatePage.cs" />
     <Compile Include="InstallManager.cs" />
+    <Compile Include="MorphologyTranslator.cs" />
     <Compile Include="readers\DailyPlanReader.cs" />
+    <Compile Include="readers\InternetLinkReader.cs" />
+    <Compile Include="readers\PersonalNotesReader.cs" />
     <Compile Include="SelectLanguage.xaml.cs">
       <DependentUpon>SelectLanguage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Translations.cs" />
     <Compile Include="readers\BookMarkReader.cs" />
@@ -109,6 +118,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="AddNote.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="BrowserTitledWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -142,6 +155,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SelectLanguage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

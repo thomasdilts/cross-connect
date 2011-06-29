@@ -60,14 +60,6 @@ namespace CrossConnect
 
         #region Properties
 
-        public override bool IsBookmarkable
-        {
-            get
-            {
-                return true;
-            }
-        }
-
         public override bool IsLocalChangeDuringLink
         {
             get
@@ -201,9 +193,9 @@ namespace CrossConnect
             }
         }
 
-        protected override string GetChapterHtml(string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml)
+        protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml)
         {
-            string chapterStartHtml = "<html>" + HtmlHeader(htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
+            string chapterStartHtml = "<html>" + HtmlHeader(displaySettings, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
             string chapterEndHtml = "</body></html>";
             StringBuilder sb = new StringBuilder(chapterStartHtml);
             int bookNum;
@@ -212,12 +204,12 @@ namespace CrossConnect
             string title;
 
             sb.Append("<h3>" + Translations.translate("Day") + " " + (App.dailyPlan.planDayNumber + 1) + ", " + App.dailyPlan.planStartDate.AddDays(App.dailyPlan.planDayNumber).ToShortDateString() + "</h3>");
-            sb.Append("<h3>" + Translations.translate(DailyPlans.zzAllPlansNames[App.dailyPlan.planNumber][0]) + "; " + DailyPlans.zzAllPlansNames[App.dailyPlan.planNumber][1] + " " + Translations.translate("days") + "</h3>");
+            sb.Append("<h3>" + Translations.translate(DailyPlans.zzAllPlansNames[App.dailyPlan.planNumber][0]) + "; " + DailyPlans.zzAllPlansNames[App.dailyPlan.planNumber][1] + " " + Translations.translate("Days") + "</h3>");
             for (int i = 0; i <= DailyPlans.zAllPlans[App.dailyPlan.planNumber][App.dailyPlan.planDayNumber].GetUpperBound(0); i++)
             {
                 base.GetInfo(DailyPlans.zAllPlans[App.dailyPlan.planNumber][App.dailyPlan.planDayNumber][i], 0, out bookNum, out relChaptNum, out fullName, out title);
                 sb.Append("<h2>" + fullName + " " + (relChaptNum + 1) + "</h2>");
-                sb.Append(base.GetChapterHtml(DailyPlans.zAllPlans[App.dailyPlan.planNumber][App.dailyPlan.planDayNumber][i], htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, false, false));
+                sb.Append(base.GetChapterHtml(displaySettings, DailyPlans.zAllPlans[App.dailyPlan.planNumber][App.dailyPlan.planDayNumber][i], htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, false, false));
             }
             sb.Append(chapterEndHtml);
             return sb.ToString();

@@ -102,7 +102,7 @@ namespace CrossConnect
                 int verseNum;
                 string fullName;
                 string titleText;
-                this.state.source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum,out verseNum, out fullName, out titleText);
+                this.state.source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
                 source = new Uri(this.lastFileName + "#CHAP_" + absoluteChaptNum + "_VERS_" + verseNum, UriKind.Relative);
             }
 
@@ -118,7 +118,7 @@ namespace CrossConnect
             {
                 //The window wont show the correct verse if we dont wait a few seconds before showing it.
                 System.Windows.Threading.DispatcherTimer tmr = new System.Windows.Threading.DispatcherTimer();
-                tmr.Interval = TimeSpan.FromSeconds(state.isResume ? 2.5 : 1);
+                tmr.Interval = TimeSpan.FromSeconds(state.isResume ? 2.5 : 1.5);
                 state.isResume = false;
                 tmr.Tick += this.OnTimerTick;
                 tmr.Start();
@@ -141,59 +141,32 @@ namespace CrossConnect
                     {
                         string bookPath = book.Value.sbmd.getCetProperty(ConfigEntryType.A_DATA_PATH).ToString().Substring(2);
                         bool isIsoEncoding = !book.Value.sbmd.getCetProperty(ConfigEntryType.ENCODING).Equals("UTF-8");
-                        switch (windowType)
+                        try
                         {
-                            case WINDOW_TYPE.WINDOW_BIBLE:
-                                try
-                                {
+                            switch (windowType)
+                            {
+                                case WINDOW_TYPE.WINDOW_BIBLE:
                                     this.state.source = new BibleZtextReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
-                                }
-                                catch (Exception)
-                                {
-                                }
-
-                                break;
-                            case WINDOW_TYPE.WINDOW_BIBLE_NOTES:
-                                try
-                                {
+                                    break;
+                                case WINDOW_TYPE.WINDOW_BIBLE_NOTES:
                                     this.state.source = new BibleNoteReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding, Translations.translate("Notes"));
-                                }
-                                catch (Exception)
-                                {
-                                }
-
-                                break;
-                            case WINDOW_TYPE.WINDOW_BOOKMARKS:
-                                try
-                                {
+                                    break;
+                                case WINDOW_TYPE.WINDOW_BOOKMARKS:
                                     this.state.source = new BookMarkReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
-                                }
-                                catch (Exception)
-                                {
-                                }
-
-                                break;
-                            case WINDOW_TYPE.WINDOW_HISTORY:
-                                try
-                                {
+                                    break;
+                                case WINDOW_TYPE.WINDOW_HISTORY:
                                     this.state.source = new HistoryReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
-                                }
-                                catch (Exception)
-                                {
-                                }
-
-                                break;
-                            case WINDOW_TYPE.WINDOW_DAILY_PLAN:
-                                try
-                                {
+                                    break;
+                                case WINDOW_TYPE.WINDOW_DAILY_PLAN:
                                     this.state.source = new DailyPlanReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
-                                }
-                                catch (Exception)
-                                {
-                                }
-
-                                break;
-
+                                    break;
+                                case WINDOW_TYPE.WINDOW_ADDED_NOTES:
+                                    this.state.source = new PersonalNotesReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                    break;
+                            }
+                        }
+                        catch (Exception)
+                        {//should never be an exception here.
                         }
                         break;
                     }
@@ -229,7 +202,7 @@ namespace CrossConnect
         {
             if (this.state.isSynchronized && this.state.source.IsSynchronizeable)
             {
-                this.state.source.moveChapterVerse(chapterNum, verseNum,false);
+                this.state.source.moveChapterVerse(chapterNum, verseNum, false);
                 this.UpdateBrowser();
             }
         }
@@ -238,27 +211,44 @@ namespace CrossConnect
         {
             if (this.state.source != null && this.Parent != null)
             {
-                double fontSizeMultiplier = 1;
-                if (this.Parent != null && ((Grid)(Grid)this.Parent).Parent != null)
+                if (this.state.source.IsExternalLink)
                 {
-                    MainPageSplit parent = (MainPageSplit)((Grid)(Grid)this.Parent).Parent;
-                    if (parent.Orientation == PageOrientation.Landscape
-                        || parent.Orientation == PageOrientation.LandscapeLeft
-                        || parent.Orientation == PageOrientation.LandscapeRight)
+                    try
                     {
-                        //we must adjust the font size for the new orientation. otherwise the font is too big.
-                        fontSizeMultiplier = parent.ActualHeight / parent.ActualWidth;
+
+                        Uri source = new Uri(this.state.source.getExternalLink(App.displaySettings));
+                        webBrowser1.Base = "";
+                        webBrowser1.Navigate(source);
+                        WriteTitle();
+                    }
+                    catch (Exception)
+                    {
                     }
                 }
-                var backcolor=GetBrowserColor("PhoneBackgroundColor");
-                var forecolor=GetBrowserColor("PhoneForegroundColor");
-                var accentcolor = GetBrowserColor("PhoneAccentColor");
+                else
+                {
+                    double fontSizeMultiplier = 1;
+                    if (this.Parent != null && ((Grid)(Grid)this.Parent).Parent != null)
+                    {
+                        MainPageSplit parent = (MainPageSplit)((Grid)(Grid)this.Parent).Parent;
+                        if (parent.Orientation == PageOrientation.Landscape
+                            || parent.Orientation == PageOrientation.LandscapeLeft
+                            || parent.Orientation == PageOrientation.LandscapeRight)
+                        {
+                            //we must adjust the font size for the new orientation. otherwise the font is too big.
+                            fontSizeMultiplier = parent.ActualHeight / parent.ActualWidth;
+                        }
+                    }
+                    var backcolor = GetBrowserColor("PhoneBackgroundColor");
+                    var forecolor = GetBrowserColor("PhoneForegroundColor");
+                    var accentcolor = GetBrowserColor("PhoneAccentColor");
 
-                GetHtmlAsynchronously(backcolor,
-                            forecolor,
-                            accentcolor,
-                            this.state.htmlFontSize * fontSizeMultiplier,
-                            App.WEB_DIR_ISOLATED + "/" + this.lastFileName);
+                    GetHtmlAsynchronously(backcolor,
+                                forecolor,
+                                accentcolor,
+                                this.state.htmlFontSize * fontSizeMultiplier,
+                                App.WEB_DIR_ISOLATED + "/" + this.lastFileName);
+                }
             }
         }
 
@@ -430,6 +420,16 @@ namespace CrossConnect
             DoManipulation(e);
         }
 
+        private void DoAsynchronAddWindow(string link)
+        {
+            App.AddWindow(
+                "",
+                WINDOW_TYPE.WINDOW_SEARCH,
+                10,
+                new InternetLinkReader("","",false));
+            Deployment.Current.Dispatcher.BeginInvoke(() => showInternetLinkWindow(link));
+        }
+
         private void DoManipulation(ManipulationCompletedEventArgs e)
         {
             if (manipulationTimer == null && lastManipulationKillTime.AddMilliseconds(400).CompareTo(DateTime.Now) < 0)
@@ -461,13 +461,13 @@ namespace CrossConnect
             }
         }
 
-        private void GetHtmlAsynchronously( string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fileErase)
+        private void GetHtmlAsynchronously(string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fileErase)
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 try
                 {
-                    string createdFileName=this.state.source.putHtmlTofile(
+                    string createdFileName = this.state.source.putHtmlTofile(App.displaySettings,
                         htmlBackgroundColor,
                         htmlForegroundColor,
                         htmlPhoneAccentColor,
@@ -518,13 +518,29 @@ namespace CrossConnect
                 int verseNum;
                 string fullName;
                 string titleText;
-                this.state.source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum,out verseNum, out fullName, out titleText);
+                this.state.source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
                 Uri source = new Uri(this.lastFileName + "#CHAP_" + absoluteChaptNum + "_VERS_" + verseNum, UriKind.Relative);
                 webBrowser1.Navigate(source);
             }
             catch (Exception)
             {
             }
+        }
+
+        private void showInternetLinkWindow(string link)
+        {
+            InternetLinkReader linkReader = null;
+            foreach(var win in App.openWindows)
+            {
+                if (win.state.source is InternetLinkReader)
+                {
+                    linkReader = (InternetLinkReader)win.state.source;
+                    linkReader.ShowLink(link);
+                    win.UpdateBrowser();
+                    return;
+                }
+            }
+            Deployment.Current.Dispatcher.BeginInvoke(() => DoAsynchronAddWindow(link));
         }
 
         private SlideTransition SlideTransitionElement(string mode)
@@ -553,7 +569,7 @@ namespace CrossConnect
             int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
             string colorDir = lightColorCount >= 2 ? "light" : "dark";
 
-            if (this.state.source.IsPageable)
+            if (this.state != null && this.state.source != null && this.state.source.IsPageable)
             {
                 butPrevious.Image = this.GetImage("/Images/" + colorDir + "/appbar.prev.rest.png");
                 butPrevious.PressedImage = this.GetImage("/Images/" + colorDir + "/appbar.prev.rest.press.png");
@@ -582,7 +598,7 @@ namespace CrossConnect
             butClose.Image = this.GetImage("/Images/" + colorDir + "/appbar.cancel.rest.png");
             butClose.PressedImage = this.GetImage("/Images/" + colorDir + "/appbar.cancel.rest.pressed.png");
 
-            if (!this.state.source.IsSynchronizeable)
+            if (this.state != null && this.state.source != null && !this.state.source.IsSynchronizeable)
             {
                 butLink.Image = null;
                 butLink.PressedImage = null;
@@ -609,6 +625,13 @@ namespace CrossConnect
                     case "VERS":
                         int.TryParse(chapterVerse[i + 1], out verseNum);
                         break;
+                    case "STRONG":
+                        showInternetLinkWindow(chapterVerse[i + 1]);
+                        return;
+                    case "MORPH":
+                        string morphology = MorphologyTranslator.ParseRobinson(chapterVerse[i + 1]);
+                        MessageBox.Show(morphology);
+                        return;
                 }
             }
 

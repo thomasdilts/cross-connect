@@ -52,6 +52,8 @@ namespace CrossConnect
         WINDOW_HISTORY,
         WINDOW_BOOKMARKS,
         WINDOW_DAILY_PLAN,
+        WINDOW_ADDED_NOTES,
+        WINDOW_INTERNET_LINK,
     }
 
     #endregion Enumerations
@@ -64,6 +66,7 @@ namespace CrossConnect
         public const string WEB_DIR_ISOLATED = "webtemporary";
 
         public static SerializableDailyPlan dailyPlan = new SerializableDailyPlan();
+        public static DisplaySettings displaySettings = new DisplaySettings();
         public static InstalledBibles installedBibles = new InstalledBibles();
         public static int isFirstTimeInMainPageSplit = 0;
         public static MainPageSplit mainWindow = null;
@@ -116,6 +119,8 @@ namespace CrossConnect
 
         public static event WindowSourceChanged HistoryChanged;
 
+        public static event WindowSourceChanged PersonalNotesChanged;
+
         #endregion Events
 
         #region Properties
@@ -161,10 +166,13 @@ namespace CrossConnect
 
                 placeMarkers.bookmarks.Add(new BiblePlaceMarker(last.chapterNum, last.verseNum, DateTime.Now));
 
-                // don't let this get more then a 200
-                if (placeMarkers.bookmarks.Count > 200)
+                // don't let this get more then a 100
+                if (placeMarkers.bookmarks.Count > 100)
                 {
-                    placeMarkers.bookmarks.RemoveAt(0);
+                    for (int i = 0; i < placeMarkers.bookmarks.Count - 100; i++)
+                    {
+                        placeMarkers.bookmarks.RemoveAt(0);
+                    }
                 }
 
                 RaiseBookmarkChangeEvent();
@@ -185,10 +193,13 @@ namespace CrossConnect
 
             placeMarkers.history.Add(new BiblePlaceMarker(chapterNum, verseNum, DateTime.Now));
 
-            // don't let this get more then a 200
-            if (placeMarkers.history.Count > 200)
+            // don't let this get more then a 100
+            if (placeMarkers.history.Count > 100)
             {
-                placeMarkers.history.RemoveAt(0);
+                for (int i = 0; i < placeMarkers.history.Count - 100; i++)
+                {
+                    placeMarkers.history.RemoveAt(0);
+                }
             }
 
             RaiseHistoryChangeEvent();
@@ -220,6 +231,14 @@ namespace CrossConnect
             if (HistoryChanged != null)
             {
                 HistoryChanged();
+            }
+        }
+
+        public static void RaisePersonalNotesChangeEvent()
+        {
+            if (PersonalNotesChanged != null)
+            {
+                PersonalNotesChanged();
             }
         }
 
@@ -300,6 +319,8 @@ namespace CrossConnect
                                 typeof(HistoryReader),
                                 typeof(SearchReader),
                                 typeof(DailyPlanReader),
+                                typeof(PersonalNotesReader),
+                                typeof(InternetLinkReader),
                             };
                             DataContractSerializer ser = new DataContractSerializer(typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState), types);
                             BrowserTitledWindow nextWindow = new BrowserTitledWindow();
@@ -345,6 +366,29 @@ namespace CrossConnect
             {
                 IsolatedStorageSettings.ApplicationSettings["LanguageIsoCode"] = "default";
             }
+
+            markerXmlData="";
+            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("DisplaySettings", out markerXmlData))
+            {
+                using (StringReader sr = new StringReader(markerXmlData))
+                {
+                    XmlReaderSettings settings = new XmlReaderSettings();
+                    using (XmlReader reader = XmlReader.Create(sr, settings))
+                    {
+                        Type[] types = new Type[]
+                        {
+                            typeof(DisplaySettings)
+                            };
+                        DataContractSerializer ser = new DataContractSerializer(typeof(DisplaySettings), types);
+                        displaySettings = (DisplaySettings)ser.ReadObject(reader);
+                    }
+                }
+            }
+
+            if (displaySettings == null)
+            {
+                displaySettings = new DisplaySettings();
+            }
         }
 
         public void SavePersistantObjects()
@@ -380,6 +424,8 @@ namespace CrossConnect
                     typeof(HistoryReader),
                     typeof(SearchReader),
                     typeof(DailyPlanReader),
+                    typeof(PersonalNotesReader),
+                    typeof(InternetLinkReader),
                 };
                 DataContractSerializer ser = new DataContractSerializer(typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState), types);
                 using (StringWriter sw = new StringWriter())
@@ -417,6 +463,26 @@ namespace CrossConnect
                 }
 
                 IsolatedStorageSettings.ApplicationSettings["BiblePlaceMarkers"] = sw.ToString();
+            }
+
+            Type[] types4 = new Type[]
+            {
+                typeof(DisplaySettings)
+            };
+
+            DataContractSerializer ser4 = new DataContractSerializer(typeof(DisplaySettings), types2);
+            using (StringWriter sw = new StringWriter())
+            {
+                XmlWriterSettings settings = new XmlWriterSettings();
+                settings.OmitXmlDeclaration = true;
+                settings.Indent = true;
+                settings.NamespaceHandling = NamespaceHandling.OmitDuplicates;
+                using (XmlWriter writer = XmlWriter.Create(sw, settings))
+                {
+                    ser4.WriteObject(writer, displaySettings);
+                }
+
+                IsolatedStorageSettings.ApplicationSettings["DisplaySettings"] = sw.ToString();
             }
 
             Type[] types3 = new Type[]
@@ -556,6 +622,8 @@ namespace CrossConnect
             public int currentChapterNumber = 0;
             [DataMember]
             public int currentVerseNumber = 0;
+            [DataMember]
+            public Dictionary<int, Dictionary<int, BiblePlaceMarker>> personalNotes = new Dictionary<int, Dictionary<int, BiblePlaceMarker>>();
             [DataMember]
             public int planDayNumber = 0;
             [DataMember]

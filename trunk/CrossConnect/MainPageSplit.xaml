@@ -54,6 +54,7 @@
             <shell:ApplicationBarIconButton Click="butHelp_Click" x:Name="butHelp" IconUri="/Images/dark/appbar.questionmark.rest.png" Text="Help"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Click="menuDownloadBible_Click" x:Name="menuDownloadBible" Text="Select bible to delete"/>
+                <shell:ApplicationBarMenuItem Click="menuAddNote_Click" x:Name="menuAddNote" Text="Add a note"/>
                 <shell:ApplicationBarMenuItem Click="menuDeleteBible_Click" x:Name="menuDeleteBible" Text="Download bibles"/>
                 <shell:ApplicationBarMenuItem Click="menuDeleteBookmark_Click" x:Name="menuDeleteBookmark" Text="Select bookmark to delete"/>
                 <shell:ApplicationBarMenuItem Click="menuClearHistory_Click" x:Name="menuClearHistory" Text="Clear history"/>
@@ -62,6 +63,7 @@
                 <shell:ApplicationBarMenuItem Click="butAddWindow_Click" x:Name="menuNewWindow" Text="Add new window"/>
                 <shell:ApplicationBarMenuItem Click="butAddBookmark_Click" x:Name="menuAddBookmark" Text="Add bookmark"/>
                 <shell:ApplicationBarMenuItem Click="butGoToPlan_Click" x:Name="menuGoToPlan" Text="Daily plan"/>
+                <shell:ApplicationBarMenuItem Click="menuSettings_Click" x:Name="menuSettings" Text="Settings"/>
                 <shell:ApplicationBarMenuItem Click="menuLanguage_Click" x:Name="menuLanguage" Text="Select language"/>
                 <shell:ApplicationBarMenuItem Click="butHelp_Click" x:Name="menuHelp" Text="help"/>
             </shell:ApplicationBar.MenuItems>

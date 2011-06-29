@@ -83,14 +83,6 @@ namespace CrossConnect
 
         #region Properties
 
-        public override bool IsBookmarkable
-        {
-            get
-            {
-                return false;
-            }
-        }
-
         public override bool IsPageable
         {
             get
@@ -120,6 +112,7 @@ namespace CrossConnect
         #region Methods
 
         public void doSearch(
+            DisplaySettings displaySettings,
             int searchTypeIndex,
             string searchText,
             bool isIgnoreCase,
@@ -149,11 +142,12 @@ namespace CrossConnect
                         string textId = "CHAP_" + chaptListToSearch[i] + "_VERS_" + j;
                         string prefix = "<p><a name=\"" + textId +
                             "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.Notify('" +
-                            textId + "'); event.returnValue=false; return false;\" ><sup>" + base.getFullName(base.chapters[chaptListToSearch[i]].booknum) + " " +
+                            textId + "'); event.returnValue=false; return false;\" >" + (displaySettings.smallVerseNumbers ? "<sup>" : "(") + base.getFullName(base.chapters[chaptListToSearch[i]].booknum) + " " +
                             (base.chapters[chaptListToSearch[i]].bookRelativeChapterNum + 1) + ":" +
-                            (j + 1) + " </sup>";
+                            (j + 1) + (displaySettings.smallVerseNumbers ? " </sup>" : ")");
                         string suffix = "</a></p><hr />";
-                        string verseTxt = parseOsisText(
+                        int noteMarker = 'a';
+                        string verseTxt = parseOsisText(displaySettings,
                             "",
                             "",
                             chapterBuffer,
@@ -161,7 +155,8 @@ namespace CrossConnect
                             verse.length,
                             base.serial.isIsoEncoding,
                             false,
-                            true);
+                            true,
+                            ref noteMarker);
                         matches = regex.Matches(verseTxt);
                         Match lastMatch = null;
                         bool foundMatch = false;
@@ -240,10 +235,9 @@ namespace CrossConnect
             this.serial2.cloneFrom(base.serial);
         }
 
-        protected override string GetChapterHtml(string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml = true)
+        protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml = true)
         {
-            string chapterStartHtml = HtmlHeader(htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
-            return HtmlHeader(htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize)
+            return HtmlHeader(displaySettings, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize)
                 + displayText + "</body></html>";
         }
 

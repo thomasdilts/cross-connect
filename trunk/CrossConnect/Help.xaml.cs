@@ -74,6 +74,7 @@ namespace CrossConnect
 
             var state = App.openWindows[(int)openWindowIndex].state;
             webBrowser1.NavigateToString(BibleZtextReader.HtmlHeader(
+                App.displaySettings,
                 BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"),
                 BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
                 BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),

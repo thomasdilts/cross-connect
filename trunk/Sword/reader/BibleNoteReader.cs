@@ -47,6 +47,7 @@ namespace SwordBackend
         [DataMember]
         public BibleZtextReaderSerialData serial2 = new BibleZtextReaderSerialData(false,"","",0,0);
 
+        [DataMember]
         private string titleBrowserWindow = string.Empty;
 
         #endregion Fields
@@ -63,14 +64,6 @@ namespace SwordBackend
         #endregion Constructors
 
         #region Properties
-
-        public override bool IsBookmarkable
-        {
-            get
-            {
-            return false;
-             }
-        }
 
         public override bool IsLocalChangeDuringLink
         {
@@ -100,13 +93,14 @@ namespace SwordBackend
             title = titleBrowserWindow + " " + fullName + ":" + (relChaptNum + 1);
         }
 
-        public override string GetVerseTextOnly(int chapterNumber, int verseNumber)
+        public override string GetVerseTextOnly(DisplaySettings displaySettings, int chapterNumber, int verseNumber)
         {
             //give them the notes if you can.
             byte[] chapterBuffer = getChapterBytes(chapterNumber);
             string chapter = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
             BibleZtextReader.VersePos verse = chapters[chapterNumber].verses[verseNumber];
-            return parseOsisText(
+            int noteMarker = 'a';
+            return parseOsisText(displaySettings,
                 "",
                 "",
                 chapterBuffer,
@@ -114,7 +108,8 @@ namespace SwordBackend
                 verse.length,
                 serial.isIsoEncoding,
                 true,
-                true);
+                true,
+                ref noteMarker);
         }
 
         public override void Resume()
@@ -128,11 +123,48 @@ namespace SwordBackend
             this.serial2.cloneFrom(base.serial);
         }
 
-        protected override string GetChapterHtml(string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml = true)
+        protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml = true)
         {
-            return GetChapterHtml(serial.posChaptNum, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize,true, addStartFinishHtml);
+            return GetChapterHtml(displaySettings, serial.posChaptNum, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize,true, addStartFinishHtml);
         }
 
         #endregion Methods
+    }
+
+    [DataContract(Name = "DisplaySettings")]
+    public class DisplaySettings
+    {
+        #region Fields
+
+        [DataMember]
+        public bool eachVerseNewLine = false;
+        [DataMember]
+        public string greekDictionaryLink = @"http://www.eliyah.com/cgi-bin/strongs.cgi?file=greeklexicon&isindex={0}";
+        [DataMember]
+        public string hebrewDictionaryLink = @"http://www.eliyah.com/cgi-bin/strongs.cgi?file=hebrewlexicon&isindex={0}";
+        [DataMember]
+        public bool highlightMarkings = false;
+        [DataMember]
+        public bool showAddedNotesByChapter = false;
+        [DataMember]
+        public bool showBookName = false;
+        [DataMember]
+        public bool showChapterNumber = false;
+        [DataMember]
+        public bool showHeadings = true;
+        [DataMember]
+        public bool showMorphology = false;
+        [DataMember]
+        public bool showNotePositions = false;
+        [DataMember]
+        public bool showStrongsNumbers = false;
+        [DataMember]
+        public bool showVerseNumber = true;
+        [DataMember]
+        public bool smallVerseNumbers = true;
+        [DataMember]
+        public bool wordsOfChristRed = false;
+
+        #endregion Fields
     }
 }
