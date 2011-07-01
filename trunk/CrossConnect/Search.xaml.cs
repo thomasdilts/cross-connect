@@ -139,6 +139,7 @@ namespace CrossConnect
                     PhoneApplicationService.Current.State["skipWindowSettings"] = true;
                     if (NavigationService.CanGoBack)
                     {
+                        Debug.WriteLine("Now returning from search");
                         NavigationService.GoBack();
                     }
                 }

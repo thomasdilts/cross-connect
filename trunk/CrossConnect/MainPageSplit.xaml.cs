@@ -42,6 +42,7 @@ namespace CrossConnect
     using Microsoft.Phone.Tasks;
 
     using SwordBackend;
+    using System.Diagnostics;
 
     public partial class MainPageSplit : AutoRotatePage
     {
@@ -413,5 +414,10 @@ namespace CrossConnect
         }
 
         #endregion Methods
+
+        private void AutoRotatePage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Debug.WriteLine("Backed out of the program.");
+        }
     }
 }

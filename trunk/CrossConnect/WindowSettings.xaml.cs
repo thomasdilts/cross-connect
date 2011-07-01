@@ -38,6 +38,7 @@ namespace CrossConnect
     using Microsoft.Phone.Tasks;
 
     using SwordBackend;
+    using System.Diagnostics;
 
     public partial class WindowSettings : AutoRotatePage
     {
@@ -126,10 +127,10 @@ namespace CrossConnect
                 GetSelectedData(out selectedType, out bookSelected);
 
                 App.AddWindow(bookSelected.sbmd.internalName,selectedType, (double)sliderTextSize.Value);
-                if (NavigationService.CanGoBack)
-                {
-                    NavigationService.GoBack();
-                }
+                //if (NavigationService.CanGoBack)
+                //{
+                //    NavigationService.GoBack();
+                //}
             }
             else
             {
@@ -147,10 +148,10 @@ namespace CrossConnect
                 {
                     SetBookChoosen();
                 }
-                if (NavigationService.CanGoBack)
-                {
-                    NavigationService.GoBack();
-                }
+                //if (NavigationService.CanGoBack)
+                //{
+                //    NavigationService.GoBack();
+                //}
             }
         }
 
@@ -165,6 +166,7 @@ namespace CrossConnect
                     // request to skip this window.
                     if (NavigationService.CanGoBack)
                     {
+                        Debug.WriteLine("WindowSettings AutoBackout");
                         NavigationService.GoBack();
                     }
                 }
@@ -355,15 +357,22 @@ namespace CrossConnect
             if (webBrowser1 != null)
             {
                 webBrowser1.FontSize = e.NewValue;
-                webBrowser1.NavigateToString(
-                    SwordBackend.BibleZtextReader.HtmlHeader(
-                    App.displaySettings,
-                    BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"),
-                    BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
-                    BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
-                    e.NewValue) +
-                    "<a class=\"normalcolor\" href=\"#\">" + Translations.translate("Text size") + "</a>" +
-                    "</body></html>");
+                try
+                {
+                    webBrowser1.NavigateToString(
+                        SwordBackend.BibleZtextReader.HtmlHeader(
+                        App.displaySettings,
+                        BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"),
+                        BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
+                        BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
+                        e.NewValue) +
+                        "<a class=\"normalcolor\" href=\"#\">" + Translations.translate("Text size") + "</a>" +
+                        "</body></html>");
+                }
+                catch (Exception ee)
+                {
+                    Debug.WriteLine("sliderTextSize_ValueChanged webBrowser1.NavigateToString; " + ee.Message);
+                }
             }
         }
 

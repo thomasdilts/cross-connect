@@ -195,7 +195,7 @@ namespace CrossConnect
 
         protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml)
         {
-            string chapterStartHtml = "<html>" + HtmlHeader(displaySettings, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
+            string chapterStartHtml = HtmlHeader(displaySettings, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
             string chapterEndHtml = "</body></html>";
             StringBuilder sb = new StringBuilder(chapterStartHtml);
             int bookNum;

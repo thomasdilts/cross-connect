@@ -34,6 +34,7 @@ namespace CrossConnect
     using ComponentAce.Compression.Libs.zlib;
 
     using SwordBackend;
+    using System.Diagnostics;
 
     /// <summary>
     /// Load from a file all the book and verse pointers to the bzz file so that
@@ -58,8 +59,6 @@ namespace CrossConnect
         public string searchText = string.Empty;
         [DataMember]
         public int searchTypeIndex = 0;
-        [DataMember]
-        public BibleZtextReaderSerialData serial2 = new BibleZtextReaderSerialData(false, "", "", 0, 0);
 
         #endregion Fields
 
@@ -70,7 +69,6 @@ namespace CrossConnect
             bool isIsoEncoding)
             : base(path, iso2DigitLangCode, isIsoEncoding)
         {
-            this.serial2.cloneFrom(base.serial);
         }
 
         #endregion Constructors
@@ -196,6 +194,7 @@ namespace CrossConnect
 
             this.displayText = displayTextBody.ToString();
             progress(100, numFoundMatches, chaptListToSearch.Count > i, true);
+            Debug.WriteLine("Done searching.");
         }
 
         public override void GetInfo(out int bookNum, out int absouteChaptNum, out int relChaptNum, out int verseNum, out string fullName, out string title)
@@ -225,18 +224,9 @@ namespace CrossConnect
             title = Translations.translate("Search") + "; " + searchText + "; " + extraText;
         }
 
-        public override void Resume()
-        {
-            base.serial.cloneFrom(this.serial2);
-        }
-
-        public override void SerialSave()
-        {
-            this.serial2.cloneFrom(base.serial);
-        }
-
         protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml = true)
         {
+            //Debug.WriteLine("SearchReader GetChapterHtml.text=" + displayText);
             return HtmlHeader(displaySettings, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize)
                 + displayText + "</body></html>";
         }

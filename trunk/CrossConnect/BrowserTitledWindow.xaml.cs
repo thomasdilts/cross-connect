@@ -89,6 +89,8 @@ namespace CrossConnect
 
         public void CallbackFromUpdate(string createdFileName)
         {
+            Debug.WriteLine("CallbackFromUpdate start");
+            isInGetHtmlAsynchronously = false;
             this.lastFileName = createdFileName;
             //webBrowser1.FontSize = this.state.htmlFontSize;
             webBrowser1.Base = App.WEB_DIR_ISOLATED;
@@ -105,8 +107,16 @@ namespace CrossConnect
                 this.state.source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
                 source = new Uri(this.lastFileName + "#CHAP_" + absoluteChaptNum + "_VERS_" + verseNum, UriKind.Relative);
             }
-
-            webBrowser1.Navigate(source);
+            try
+            {
+                //this will often crash because the window no longer exists OR has not had the chance to create itself yet.
+                webBrowser1.Navigate(source);
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine("CallbackFromUpdate webBrowser1.Navigate crash; " + e.Message);
+                return;
+            }
 
             this.WriteTitle();
 
@@ -123,6 +133,7 @@ namespace CrossConnect
                 tmr.Tick += this.OnTimerTick;
                 tmr.Start();
             }
+            Debug.WriteLine("CallbackFromUpdate end");
         }
 
         public void Initialize(string bibleToLoad, WINDOW_TYPE windowType, IBrowserTextSource source = null)
@@ -209,6 +220,7 @@ namespace CrossConnect
 
         public void UpdateBrowser()
         {
+            Debug.WriteLine("UpdateBrowser start");
             if (this.state.source != null && this.Parent != null)
             {
                 if (this.state.source.IsExternalLink)
@@ -221,8 +233,9 @@ namespace CrossConnect
                         webBrowser1.Navigate(source);
                         WriteTitle();
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
+                        Debug.WriteLine("UpdateBrowser webBrowser1.Navigate ; " + e.Message);
                     }
                 }
                 else
@@ -243,13 +256,16 @@ namespace CrossConnect
                     var forecolor = GetBrowserColor("PhoneForegroundColor");
                     var accentcolor = GetBrowserColor("PhoneAccentColor");
 
-                    GetHtmlAsynchronously(backcolor,
+                    GetHtmlAsynchronously(
+                                App.displaySettings.clone(),
+                                backcolor,
                                 forecolor,
                                 accentcolor,
                                 this.state.htmlFontSize * fontSizeMultiplier,
                                 App.WEB_DIR_ISOLATED + "/" + this.lastFileName);
                 }
             }
+            Debug.WriteLine("UpdateBrowser end");
         }
 
         private void border1_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
@@ -264,7 +280,15 @@ namespace CrossConnect
 
             if (root.FileExists(App.WEB_DIR_ISOLATED + "/" + this.lastFileName))
             {
-                root.DeleteFile(App.WEB_DIR_ISOLATED + "/" + this.lastFileName);
+                try
+                {
+                    //This can easily fail because the background thread is still processing this file!!!
+                    root.DeleteFile(App.WEB_DIR_ISOLATED + "/" + this.lastFileName);
+                }
+                catch (Exception ee)
+                {
+                    Debug.WriteLine("Failed delete file ; " + ee.Message);
+                }
             }
 
             if (this.HitButtonClose != null)
@@ -460,14 +484,21 @@ namespace CrossConnect
                 ButNext_Click(null, null);
             }
         }
-
-        private void GetHtmlAsynchronously(string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fileErase)
+        private bool isInGetHtmlAsynchronously = false;
+        private void GetHtmlAsynchronously(DisplaySettings dispSet,string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fileErase)
         {
+            if (isInGetHtmlAsynchronously)
+            {
+                Debug.WriteLine("GetHtmlAsynchronously MULTIPLE ENTRY");
+                return;
+            }
+            isInGetHtmlAsynchronously = true;
+            Debug.WriteLine("GetHtmlAsynchronously");
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 try
                 {
-                    string createdFileName = this.state.source.putHtmlTofile(App.displaySettings,
+                    string createdFileName = this.state.source.putHtmlTofile(dispSet,
                         htmlBackgroundColor,
                         htmlForegroundColor,
                         htmlPhoneAccentColor,
@@ -477,8 +508,9 @@ namespace CrossConnect
 
                     Deployment.Current.Dispatcher.BeginInvoke(() => CallbackFromUpdate(createdFileName));
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Debug.WriteLine("GetHtmlAsynchronously Failed; " + e.Message);
                     Deployment.Current.Dispatcher.BeginInvoke(() => CallbackFromUpdate(""));
                     return;
                 }
@@ -508,6 +540,7 @@ namespace CrossConnect
 
         private void OnTimerTick(object sender, EventArgs e)
         {
+            Debug.WriteLine("OnTimerTick start");
             // we must delay updating of this webbrowser...
             ((System.Windows.Threading.DispatcherTimer)sender).Stop();
             try
@@ -522,8 +555,9 @@ namespace CrossConnect
                 Uri source = new Uri(this.lastFileName + "#CHAP_" + absoluteChaptNum + "_VERS_" + verseNum, UriKind.Relative);
                 webBrowser1.Navigate(source);
             }
-            catch (Exception)
+            catch (Exception ee)
             {
+                Debug.WriteLine("OnTimerTick Failed; " + ee.Message);
             }
         }
 

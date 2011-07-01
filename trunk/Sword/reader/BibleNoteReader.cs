@@ -166,5 +166,25 @@ namespace SwordBackend
         public bool wordsOfChristRed = false;
 
         #endregion Fields
+
+        public DisplaySettings clone()
+        {
+            DisplaySettings cloned = new DisplaySettings();
+            cloned.eachVerseNewLine = eachVerseNewLine;
+            cloned.greekDictionaryLink = greekDictionaryLink;
+            cloned.hebrewDictionaryLink = hebrewDictionaryLink;
+            cloned.highlightMarkings = highlightMarkings;
+            cloned.showAddedNotesByChapter = showAddedNotesByChapter;
+            cloned.showBookName = showBookName;
+            cloned.showChapterNumber = showChapterNumber;
+            cloned.showHeadings = showHeadings;
+            cloned.showMorphology = showMorphology;
+            cloned.showNotePositions = showNotePositions;
+            cloned.showStrongsNumbers = showStrongsNumbers;
+            cloned.showVerseNumber = showVerseNumber;
+            cloned.smallVerseNumbers = smallVerseNumbers;
+            cloned.wordsOfChristRed = wordsOfChristRed; 
+            return cloned;
+        }
     }
 }

@@ -193,20 +193,27 @@ namespace SwordBackend
 
         public void RemoveBible()
         {
-            IsolatedStorageFile root = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication();
-            string modFile=BibleZtextReader.DIR_CONF + '/' + sbmd.internalName.ToLower() + BibleZtextReader.EXTENSION_CONF;
-            string bookPath = sbmd.getCetProperty(ConfigEntryType.A_DATA_PATH).ToString().Substring(2);
-            string[] filesToDelete=new string[]{modFile,bookPath +"ot.bzs",bookPath +"ot.bzv",bookPath +"ot.bzz",bookPath +"nt.bzs",bookPath +"nt.bzv",bookPath +"nt.bzz" };
-            foreach(string file in filesToDelete)
+            try
             {
-                if (root.FileExists(file))
+                IsolatedStorageFile root = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication();
+                string modFile = BibleZtextReader.DIR_CONF + '/' + sbmd.internalName.ToLower() + BibleZtextReader.EXTENSION_CONF;
+                string bookPath = sbmd.getCetProperty(ConfigEntryType.A_DATA_PATH).ToString().Substring(2);
+                string[] filesToDelete = new string[] { modFile, bookPath + "ot.bzs", bookPath + "ot.bzv", bookPath + "ot.bzz", bookPath + "nt.bzs", bookPath + "nt.bzv", bookPath + "nt.bzz" };
+                foreach (string file in filesToDelete)
                 {
-                    root.DeleteFile(file);
+                    if (root.FileExists(file))
+                    {
+                        root.DeleteFile(file);
+                    }
+                }
+                if (root.DirectoryExists(bookPath))
+                {
+                    root.DeleteDirectory(bookPath.Substring(0, bookPath.Length - 1));
                 }
             }
-            if (root.DirectoryExists(bookPath))
+            catch (Exception)
             {
-                root.DeleteDirectory(bookPath.Substring(0,bookPath.Length-1));
+                //many things can go wrong here. It is no danger to leave the bible in the rare case that this does not work.
             }
         }
 

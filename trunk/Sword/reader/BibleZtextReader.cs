@@ -31,6 +31,7 @@ namespace SwordBackend
     using System.Xml;
 
     using ComponentAce.Compression.Libs.zlib;
+    using System.Diagnostics;
 
     [DataContract]
     public class BiblePlaceMarker
@@ -411,7 +412,7 @@ namespace SwordBackend
 
             head.Append("</style>");
 
-            head.Append("</head>");
+            head.Append("</head><body>");
             return head.ToString();
         }
 
@@ -545,8 +546,9 @@ namespace SwordBackend
                 fullName = getFullName(bookNum);
                 title = fullName + " " + (relChaptNum + 1) + ":" + (verseNum + 1);
             }
-            catch (Exception)
+            catch (Exception ee)
             {
+                Debug.WriteLine("BibleZtextReader.GetInfo; " + ee.Message);
             }
         }
 
@@ -621,7 +623,7 @@ namespace SwordBackend
         public virtual void moveChapterVerse(int chapter, int verse, bool isLocalLinkChange)
         {
             //see if the chapter exists, if not, then don't do anything.
-            if (chapters[chapter].length > 0)
+            if (chapters != null && chapter < chapters.Count && chapters[chapter].length > 0)
             {
                 serial.posChaptNum = chapter;
                 serial.posVerseNum = verse;
@@ -678,11 +680,21 @@ namespace SwordBackend
             string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,
             string fileErase, string filePath)
         {
+            Debug.WriteLine("putHtmlTofile start");
+
             var root = IsolatedStorageFile.GetUserStoreForApplication();
 
             if (root.FileExists( fileErase))
             {
-                root.DeleteFile(fileErase);
+                try
+                {
+                    root.DeleteFile(fileErase);
+                }
+                catch (Exception ee)
+                {
+                    //should never crash here but I have noticed any file delete is a risky business when you have more then one thread.
+                    Debug.WriteLine("BibleZtextReader.putHtmlTofile; " + ee.Message);
+                }
             }
 
             // Must change the file name, otherwise the browser may or may not update.
@@ -704,6 +716,8 @@ namespace SwordBackend
                 false));
             tw.Close();
             fs.Close();
+            
+            Debug.WriteLine("putHtmlTofile end");
             return fileCreate;
         }
 
@@ -773,6 +787,7 @@ namespace SwordBackend
 
         protected byte[] getChapterBytes(int chapterNumber)
         {
+            Debug.WriteLine("getChapterBytes start");
             IsolatedStorageFile fileStorage = IsolatedStorageFile.GetUserStoreForApplication();
             ChapterPos versesForChapterPositions = chapters[chapterNumber];
             BookPos bookPos = bookPositions[versesForChapterPositions.booknum];
@@ -811,13 +826,21 @@ namespace SwordBackend
             int totalBytesRead = 0;
             int totalBytesCopied = 0;
             int len = 0;
+
             try
             {
                 byte[] buffer = new byte[10000];
 
                 while (true)
                 {
-                    len = zipStream.read(buffer, 0, 10000);
+                    try
+                    {
+                        len = zipStream.read(buffer, 0, 10000);
+                    }
+                    catch (Exception ee)
+                    {
+                        Debug.WriteLine("caught a unzip crash 4.2" + ee.ToString());
+                    }
                     if (len <= 0)
                     {
                         // we should never come to this point.  Just here as a safety procaution
@@ -852,8 +875,9 @@ namespace SwordBackend
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ee)
             {
+                Debug.WriteLine("BibleZtextReader.getChapterBytes crash; " + ee.Message);
             }
             fs.Close();
             zipStream.Close();
@@ -871,16 +895,17 @@ namespace SwordBackend
         /// <returns>Entire Chapter without notes and with lots of html markup for each verse</returns>        
         protected string GetChapterHtml(DisplaySettings displaySettings, int chapterNumber, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml = true)
         {
+            Debug.WriteLine("GetChapterHtml start");
             byte[] chapterBuffer = getChapterBytes(chapterNumber);
             // for debug
-             System.Diagnostics.Debug.WriteLine("RawChapter: " + System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length));
+            // System.Diagnostics.Debug.WriteLine("RawChapter: " + System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length));
             StringBuilder htmlChapter = new StringBuilder();
             ChapterPos versesForChapterPositions = chapters[chapterNumber];
             string chapterStartHtml = "";
             string chapterEndHtml = "";
             if (addStartFinishHtml)
             {
-                chapterStartHtml = "<html>" + HtmlHeader(displaySettings, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
+                chapterStartHtml = HtmlHeader(displaySettings, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
                 chapterEndHtml = "</body></html>";
             }
             string bookName="";
@@ -895,11 +920,11 @@ namespace SwordBackend
             for (int i = 0; i < versesForChapterPositions.verses.Count; i++)
             {
                 string htmlChapterText =
-                    startVerseMarking +
-                    (displaySettings.showBookName? bookName + " " : "")  +
-                    (displaySettings.showChapterNumber?((versesForChapterPositions.bookRelativeChapterNum + 1) + ":") : "") +
-                    (displaySettings.showVerseNumber?(i + 1).ToString() : "") +
-                    stopVerseMarking;
+                        startVerseMarking +
+                        (displaySettings.showBookName ? bookName + " " : "") +
+                        (displaySettings.showChapterNumber ? ((versesForChapterPositions.bookRelativeChapterNum + 1) + ":") : "") +
+                        (displaySettings.showVerseNumber ? (i + 1).ToString() : "") +
+                        stopVerseMarking;
 
                 string id = "CHAP_" + chapterNumber + "_VERS_" + i;
                 VersePos verse = versesForChapterPositions.verses[i];
@@ -907,8 +932,11 @@ namespace SwordBackend
                     + "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.Notify('" + id
                     + "'); event.returnValue=false; return false;\" > ";
                 string startText = htmlChapterText + restartText;
+                string verseTxt = "*** ERROR ***";
 
-                string verseTxt = parseOsisText(displaySettings,
+                try
+                {
+                    verseTxt = parseOsisText(displaySettings,
                     startText,
                     restartText,
                     chapterBuffer,
@@ -918,7 +946,11 @@ namespace SwordBackend
                     isNotesOnly,
                     false,
                     ref noteIdentifier);
-
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(verse.length + ";" + verse.startPos + ";" + e.ToString());
+                }
                 // create the verse
                 htmlChapter.Append(
                     (displaySettings.eachVerseNewLine ? "<p>" : "") +
@@ -928,6 +960,7 @@ namespace SwordBackend
                 chapterStartHtml = string.Empty;
             }
             htmlChapter.Append(chapterEndHtml);
+            Debug.WriteLine("GetChapterHtml end");
             return htmlChapter.ToString();
         }
 
@@ -1034,7 +1067,27 @@ namespace SwordBackend
             {
                 ms.Write(prefix, 0, prefix.Length);
             }
-
+            //Some indexes are bad. make sure the startpos and length are not bad
+            if (length == 0)
+            {
+                return "";
+            }
+            if (startPos >= xmlbytes.Length)
+            {
+                Debug.WriteLine("Bad startpos;" + xmlbytes.Length + ";" + startPos + ";" + length);
+                return "*** POSSIBLE ERROR IN BIBLE, TEXT MISSING HERE ***";
+            }
+            if (startPos + length > xmlbytes.Length)
+            {
+                //we can fix this
+                Debug.WriteLine("Fixed bad length;" + xmlbytes.Length + ";" + startPos + ";" + length);
+                length = xmlbytes.Length - startPos - 1;
+                if (length == 0)
+                {
+                    //this might be a problem or it might not. Put some stars here anyway.
+                    return "***";
+                }
+            }
             ms.Write(xmlbytes, startPos, length);
             ms.Write(suffix, 0, suffix.Length);
             ms.Position = 0;
@@ -1323,9 +1376,9 @@ namespace SwordBackend
                                 break;
                         }
                     }
-                }catch(Exception)
+                }catch(Exception e)
                 {
-
+                    Debug.WriteLine("BibleZtextReader.parseOsisText " + e.Message);
                 }
             }
             if (isNotesOnly && !isRaw)

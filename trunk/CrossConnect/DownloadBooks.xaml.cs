@@ -36,6 +36,7 @@ namespace CrossConnect
     using Microsoft.Phone.Controls;
 
     using SwordBackend;
+    using System.Diagnostics;
 
     public partial class DownloadBooks : AutoRotatePage
     {
@@ -71,8 +72,9 @@ namespace CrossConnect
                     action();
                     //Deployment.Current.Dispatcher.BeginInvoke(() => callback(null));
                 }
-                catch (Exception)
+                catch (Exception ee)
                 {
+                    Debug.WriteLine("Do (webunziplist) Failed download books; " + ee.Message);
                     //Deployment.Current.Dispatcher.BeginInvoke(() => callback(null));
                     return;
                 }
