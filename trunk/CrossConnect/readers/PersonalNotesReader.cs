@@ -339,14 +339,17 @@ namespace CrossConnect
             sortedKeys.Sort(CompareIntegersAssending);
             foreach (int key in sortedKeys)
             {
-                var dict = App.dailyPlan.personalNotes[key];
-                keys = new int[dict.Count];
-                dict.Keys.CopyTo(keys, 0);
-                List<int> sortedVerses = new List<int>(keys);
-                sortedVerses.Sort(CompareIntegersAssending);
-                foreach (int verse in sortedVerses)
+                if (App.dailyPlan.personalNotes.ContainsKey(key))
                 {
-                    returnList.Add(dict[verse]);
+                    var dict = App.dailyPlan.personalNotes[key];
+                    keys = new int[dict.Count];
+                    dict.Keys.CopyTo(keys, 0);
+                    List<int> sortedVerses = new List<int>(keys);
+                    sortedVerses.Sort(CompareIntegersAssending);
+                    foreach (int verse in sortedVerses)
+                    {
+                        returnList.Add(dict[verse]);
+                    }
                 }
             }
             return returnList;
