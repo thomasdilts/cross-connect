@@ -167,6 +167,8 @@ namespace SwordBackend
 
         #endregion Fields
 
+        #region Methods
+
         public DisplaySettings clone()
         {
             DisplaySettings cloned = new DisplaySettings();
@@ -183,8 +185,10 @@ namespace SwordBackend
             cloned.showStrongsNumbers = showStrongsNumbers;
             cloned.showVerseNumber = showVerseNumber;
             cloned.smallVerseNumbers = smallVerseNumbers;
-            cloned.wordsOfChristRed = wordsOfChristRed; 
+            cloned.wordsOfChristRed = wordsOfChristRed;
             return cloned;
         }
+
+        #endregion Methods
     }
 }

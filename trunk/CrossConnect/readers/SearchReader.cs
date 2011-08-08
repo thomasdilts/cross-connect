@@ -22,6 +22,7 @@ namespace CrossConnect
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
     using System.IO.IsolatedStorage;
@@ -34,7 +35,6 @@ namespace CrossConnect
     using ComponentAce.Compression.Libs.zlib;
 
     using SwordBackend;
-    using System.Diagnostics;
 
     /// <summary>
     /// Load from a file all the book and verse pointers to the bzz file so that

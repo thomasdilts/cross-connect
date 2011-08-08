@@ -66,6 +66,7 @@ namespace SwordBackend
                     stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_en.xml");
                 }
             }
+            bool isRTL = isoLang2digitCode.Equals("he") || isoLang2digitCode.Equals("ar") || isoLang2digitCode.Equals("ar_EG") || isoLang2digitCode.Equals("fa");
             int numberBadShortNames = 0;
             using (XmlReader reader = XmlReader.Create(stream))
             {
@@ -88,10 +89,10 @@ namespace SwordBackend
                                         keyNumber = int.Parse(reader.Value);
                                         break;
                                     case "short":
-                                        shortName = reader.Value;
+                                        shortName = isRTL ? Reverse(reader.Value) : reader.Value;
                                         break;
                                     case "full":
-                                        fullName = reader.Value;
+                                        fullName = isRTL ? Reverse(reader.Value) : reader.Value;
                                         break;
                                 }
                             } while (reader.MoveToNextAttribute());
@@ -143,6 +144,20 @@ namespace SwordBackend
         public string getShortName(int bookNum)
         {
             return shortNames[bookNum];
+        }
+
+        public string Reverse(string str)
+        {
+            char[] charArray = str.ToCharArray();
+            int len = str.Length - 1;
+
+            for (int i = 0; i < len; i++, len--)
+            {
+                charArray[i] ^= charArray[len];
+                charArray[len] ^= charArray[i];
+                charArray[i] ^= charArray[len];
+            }
+            return new string(charArray);
         }
 
         #endregion Methods

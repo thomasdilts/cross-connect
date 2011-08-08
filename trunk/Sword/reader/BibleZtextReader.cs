@@ -22,6 +22,7 @@ namespace SwordBackend
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
     using System.IO.IsolatedStorage;
@@ -31,7 +32,6 @@ namespace SwordBackend
     using System.Xml;
 
     using ComponentAce.Compression.Libs.zlib;
-    using System.Diagnostics;
 
     [DataContract]
     public class BiblePlaceMarker
@@ -622,11 +622,18 @@ namespace SwordBackend
 
         public virtual void moveChapterVerse(int chapter, int verse, bool isLocalLinkChange)
         {
-            //see if the chapter exists, if not, then don't do anything.
-            if (chapters != null && chapter < chapters.Count && chapters[chapter].length > 0)
+            try
             {
-                serial.posChaptNum = chapter;
-                serial.posVerseNum = verse;
+                //see if the chapter exists, if not, then don't do anything.
+                if (chapters != null && chapter < chapters.Count && chapters[chapter].length > 0)
+                {
+                    serial.posChaptNum = chapter;
+                    serial.posVerseNum = verse;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("moveChapterVerse " + e.Message + " ; " + e.StackTrace);
             }
         }
 
@@ -716,7 +723,7 @@ namespace SwordBackend
                 false));
             tw.Close();
             fs.Close();
-            
+
             Debug.WriteLine("putHtmlTofile end");
             return fileCreate;
         }
@@ -1519,7 +1526,8 @@ namespace SwordBackend
             {
                 // do it for the new testement
                 fs = fileStorage.OpenFile(serial.path + "nt.bzs", FileMode.Open, FileAccess.Read);
-                for (int i = 0; i < BOOKS_IN_NT; i++)
+                int skippedFirstIndexAdjustment = 0;
+                for (int i = 0; i < (BOOKS_IN_NT + skippedFirstIndexAdjustment); i++)
                 {
                     long startPos=getintFromStream(fs);
                     long length=getintFromStream(fs);
@@ -1527,6 +1535,7 @@ namespace SwordBackend
                     if(unused!=SKIP_BOOK_FLAG || i!=0)
                     {
                         bookPositions.Add(new BookPos(startPos, length, unused));
+                        skippedFirstIndexAdjustment = 1;
                     }
                 }
                 fs.Close();

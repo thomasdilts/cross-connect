@@ -69,6 +69,7 @@
     <Compile Include="SwordBookMetaData.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\BibleNames_ar_EG.xml" />
     <EmbeddedResource Include="Properties\iso639full.properties" />
   </ItemGroup>
   <ItemGroup>
@@ -106,7 +107,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\BibleNames_af.xml" />
-    <EmbeddedResource Include="Properties\BibleNames_ar_EG.xml" />
     <EmbeddedResource Include="Properties\BibleNames_bg.xml" />
     <EmbeddedResource Include="Properties\BibleNames_cs.xml" />
     <EmbeddedResource Include="Properties\BibleNames_da.xml" />
@@ -146,6 +146,9 @@
     <EmbeddedResource Include="Properties\BibleNames_vi.xml" />
     <EmbeddedResource Include="Properties\BibleNames_zh.xml" />
     <EmbeddedResource Include="Properties\BibleNames_zh_CN.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\BibleNames_ar.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />

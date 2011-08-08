@@ -48,6 +48,7 @@ namespace ICSharpCode.SharpZipLib.Zip
     using System;
     using System.Globalization;
     using System.Text;
+
     //using System.Threading;
 
     #region Enumerations

@@ -22,6 +22,7 @@ namespace CrossConnect
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.IO.IsolatedStorage;
     using System.Linq;
@@ -42,7 +43,6 @@ namespace CrossConnect
     using Microsoft.Phone.Tasks;
 
     using SwordBackend;
-    using System.Diagnostics;
 
     public partial class MainPageSplit : AutoRotatePage
     {
@@ -142,6 +142,11 @@ namespace CrossConnect
             LayoutRoot.Children.Clear();
             LayoutRoot.ColumnDefinitions.Clear();
             LayoutRoot.RowDefinitions.Clear();
+        }
+
+        private void AutoRotatePage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Debug.WriteLine("Backed out of the program.");
         }
 
         private void butAddBookmark_Click(object sender, EventArgs e)
@@ -285,7 +290,7 @@ namespace CrossConnect
             ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[8]).Text = Translations.translate("Add to bookmarks");
             ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[9]).Text = Translations.translate("Daily plan");
             ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[10]).Text = Translations.translate("Settings");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[11]).Text = Translations.translate("Select the language");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[11]).Text = Translations.translate("Select the language") + " (language)";
             ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[12]).Text = Translations.translate("Help");
 
             if (App.openWindows.Count() == 0 || App.installedBibles.installedBibles.Count() == 0)
@@ -414,10 +419,5 @@ namespace CrossConnect
         }
 
         #endregion Methods
-
-        private void AutoRotatePage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            Debug.WriteLine("Backed out of the program.");
-        }
     }
 }

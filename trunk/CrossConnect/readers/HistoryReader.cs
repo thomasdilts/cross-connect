@@ -112,10 +112,16 @@ namespace CrossConnect
         public override void GetInfo(out int bookNum, out int absoluteChaptNum, out int relChaptNum, out int verseNum, out string fullName, out string title)
         {
             verseNum = 0;
-            bookNum=0;
+            bookNum = 0;
             absoluteChaptNum = 0;
-            relChaptNum=0;
+            relChaptNum = 0;
             fullName = "";
+            if (App.placeMarkers.history.Count > 0)
+            {
+                BiblePlaceMarker place = App.placeMarkers.history[App.placeMarkers.history.Count - 1];
+                absoluteChaptNum = place.chapterNum;
+                verseNum = place.verseNum;
+            }
             title = Translations.translate("History");
         }
 

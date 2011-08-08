@@ -51,6 +51,7 @@ namespace CrossConnect
 
         public SerializableWindowState state = new SerializableWindowState();
 
+        private bool isInGetHtmlAsynchronously = false;
         private string lastFileName = string.Empty;
         private DateTime lastManipulationKillTime = DateTime.Now;
         private System.Windows.Threading.DispatcherTimer manipulationTimer = null;
@@ -484,7 +485,7 @@ namespace CrossConnect
                 ButNext_Click(null, null);
             }
         }
-        private bool isInGetHtmlAsynchronously = false;
+
         private void GetHtmlAsynchronously(DisplaySettings dispSet,string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fileErase)
         {
             if (isInGetHtmlAsynchronously)

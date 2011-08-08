@@ -22,6 +22,7 @@ namespace CrossConnect
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Net;
     using System.Threading;
@@ -36,7 +37,6 @@ namespace CrossConnect
     using Microsoft.Phone.Controls;
 
     using SwordBackend;
-    using System.Diagnostics;
 
     public partial class DownloadBooks : AutoRotatePage
     {
