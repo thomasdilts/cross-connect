@@ -12,9 +12,9 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
-    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    shell:SystemTray.IsVisible="True" xmlns:my="clr-namespace:CrossConnect"
+    shell:SystemTray.IsVisible="False" xmlns:my="clr-namespace:CrossConnect"
     Loaded="PhoneApplicationPage_Loaded" 
     BackKeyPress="PhoneApplicationPage_BackKeyPress">
 

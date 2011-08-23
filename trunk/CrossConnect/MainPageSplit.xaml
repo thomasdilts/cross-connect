@@ -7,13 +7,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:local="clr-namespace:CrossConnect"
-    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696" 
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="728" 
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    shell:SystemTray.IsVisible="True" xmlns:my="clr-namespace:CrossConnect"  
+    shell:SystemTray.IsVisible="False" xmlns:my="clr-namespace:CrossConnect"  
     Unloaded="PhoneApplicationPage_Unloaded"
     Loaded="MainPage_Loaded" OrientationChanged="PhoneApplicationPage_OrientationChanged"  BackKeyPress="AutoRotatePage_BackKeyPress">
     
