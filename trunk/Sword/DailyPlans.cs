@@ -3167,7 +3167,7 @@ namespace SwordBackend
             new string[]{"The bible by random chapters","365","11"},
             new string[]{"The bible by random chapters","180","22"},
             new string[]{"The bible by random chapters","90","44"},
-            new string[]{"The New Testement","90","7"},
+            new string[]{"The New Testement","90","10"},
             new string[]{"The New Testement","60","15"},
             new string[]{"The New Testement","30","30"},
             new string[]{"The New Testement, Psalms, Proverbs","365","4"},
