@@ -28,13 +28,6 @@ namespace CrossConnect
     using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Documents;
-    using System.Windows.Input;
-    using System.Windows.Media;
-    using System.Windows.Media.Animation;
-    using System.Windows.Shapes;
-
-    using Microsoft.Phone.Controls;
 
     using SwordBackend;
 
@@ -44,7 +37,7 @@ namespace CrossConnect
 
         InstallManager imanager = new InstallManager();
         SwordBook sb = null;
-        SwordBackend.WebInstaller webInst = null;
+        WebInstaller webInst = null;
 
         #endregion Fields
 
@@ -101,7 +94,7 @@ namespace CrossConnect
         {
             butDownload.Visibility = System.Windows.Visibility.Collapsed;
             // Ask the Install Manager for a map of all known module sites
-            IDictionary<string, SwordBackend.WebInstaller> installers = imanager.Installers;
+            IDictionary<string, WebInstaller> installers = imanager.Installers;
             webInst=installers[selectServer.SelectedItem.ToString()];
             progressBarGetBookList.Visibility = System.Windows.Visibility.Visible;
             progressBarGetBookList.Maximum = 100;
@@ -137,9 +130,9 @@ namespace CrossConnect
             selectServer.Items.Clear();
 
             // Ask the Install Manager for a map of all known module sites
-            IDictionary<string, SwordBackend.WebInstaller> installers = imanager.Installers;
+            IDictionary<string, WebInstaller> installers = imanager.Installers;
 
-            foreach (KeyValuePair<string, SwordBackend.WebInstaller> mapEntry in installers)
+            foreach (KeyValuePair<string, WebInstaller> mapEntry in installers)
             {
                 selectServer.Items.Add(mapEntry.Key.ToString());
             }

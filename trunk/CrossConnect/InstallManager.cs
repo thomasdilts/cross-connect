@@ -18,16 +18,13 @@
 ///     Thomas Dilts. All rights reserved.
 /// </copyright>
 /// <author>Thomas Dilts</author>
-namespace SwordBackend
+namespace CrossConnect
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
     using System.IO.IsolatedStorage;
     using System.Net;
-    using System.Reflection;
-    using System.Runtime.CompilerServices;
     using System.Text;
     using System.Windows;
 
@@ -36,6 +33,8 @@ namespace SwordBackend
     using ICSharpCode.SharpZipLib.Zip;
 
     using javaprops;
+
+    using SwordBackend;
 
     /// <summary>
     /// Main entry into the world of Sword for downloading books
@@ -188,7 +187,7 @@ namespace SwordBackend
             {
                 Logger.Fail(e.ToString());
                 return e.Message;
-            };
+            }
         }
 
         public void RemoveBible()
@@ -458,7 +457,7 @@ namespace SwordBackend
                 {
                     break;
                 }
-                Deployment.Current.Dispatcher.BeginInvoke(() =>progress_update((double)(50.0 + ((double)resultStream.Position * 50.0 / (double)resultStream.Length)), null));
+                Deployment.Current.Dispatcher.BeginInvoke(() =>progress_update((50.0 + ((double)resultStream.Position * 50.0 / (double)resultStream.Length)), null));
                 string @internal = entry.Name;
                 if (!entry.IsDirectory)
                 {
@@ -569,7 +568,7 @@ namespace SwordBackend
             {
                 Logger.Fail(e.ToString());
                 return e.Message;
-            };
+            }
         }
 
         #endregion Methods

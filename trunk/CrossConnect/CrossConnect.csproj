@@ -94,7 +94,7 @@
     </Compile>
     <Compile Include="readers\HistoryReader.cs" />
     <Compile Include="ImageButton.cs" />
-    <Compile Include="InstalledBooks.cs" />
+    <Compile Include="InstalledBibles.cs" />
     <Compile Include="MainPageSplit.xaml.cs">
       <DependentUpon>MainPageSplit.xaml</DependentUpon>
     </Compile>
@@ -274,6 +274,7 @@
     <EmbeddedResource Include="Properties\crossc_sw.xml" />
     <EmbeddedResource Include="Properties\crossc_ur.xml" />
     <EmbeddedResource Include="Properties\crossc_vi.xml" />
+    <EmbeddedResource Include="Properties\crossc_iw.xml" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <EmbeddedResource Include="Properties\regex.html" />

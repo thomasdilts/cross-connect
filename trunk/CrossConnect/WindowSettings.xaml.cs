@@ -21,22 +21,11 @@
 namespace CrossConnect
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.IO.IsolatedStorage;
-    using System.Linq;
-    using System.Net;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Documents;
-    using System.Windows.Input;
-    using System.Windows.Media;
-    using System.Windows.Media.Animation;
-    using System.Windows.Shapes;
 
-    using Microsoft.Phone.Controls;
     using Microsoft.Phone.Shell;
-    using Microsoft.Phone.Tasks;
 
     using SwordBackend;
 
@@ -65,7 +54,7 @@ namespace CrossConnect
             this.NavigationService.Navigate(new Uri("/SelectBibleBook.xaml", UriKind.Relative));
         }
 
-        private void GetSelectedData(out WINDOW_TYPE selectedType, out SwordBackend.SwordBook bookSelected)
+        private void GetSelectedData(out WINDOW_TYPE selectedType, out SwordBook bookSelected)
         {
             bookSelected = null;
             if (selectDocument.SelectedItem != null)
@@ -123,10 +112,10 @@ namespace CrossConnect
             if ((bool)isAddNewWindowOnly)
             {
                 WINDOW_TYPE selectedType;
-                SwordBackend.SwordBook bookSelected;
+                SwordBook bookSelected;
                 GetSelectedData(out selectedType, out bookSelected);
 
-                App.AddWindow(bookSelected.sbmd.internalName,selectedType, (double)sliderTextSize.Value);
+                App.AddWindow(bookSelected.sbmd.internalName,selectedType, sliderTextSize.Value);
                 //if (NavigationService.CanGoBack)
                 //{
                 //    NavigationService.GoBack();
@@ -137,7 +126,7 @@ namespace CrossConnect
                 object openWindowIndex = null;
                 if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
                 {
-                    openWindowIndex = (int)0;
+                    openWindowIndex = 0;
                 }
 
                 if (App.openWindows[(int)openWindowIndex].state.windowType == WINDOW_TYPE.WINDOW_SEARCH)
@@ -230,12 +219,12 @@ namespace CrossConnect
         private void SetBookChoosen()
         {
             WINDOW_TYPE selectedType;
-            SwordBackend.SwordBook bookSelected;
+            SwordBook bookSelected;
             GetSelectedData(out selectedType, out bookSelected);
             object openWindowIndex = null;
             if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
             {
-                openWindowIndex = (int)0;
+                openWindowIndex = 0;
             }
             var state = App.openWindows[(int)openWindowIndex].state;
             if (!state.bibleToLoad.Equals(bookSelected.sbmd.internalName) || state.windowType != selectedType)
@@ -313,7 +302,6 @@ namespace CrossConnect
                 string fullName;
                 string titleText;
                 state.source.GetInfo(out bookNum,out absoluteChaptNum, out relChaptNum,out verseNum, out fullName, out titleText);
-                string title = titleText + " - " + state.bibleToLoad;
 
                 butSelectChapter.Visibility = (state.source.IsPageable ? visibility : System.Windows.Visibility.Collapsed);
                 butSearch.Visibility = (state.source.IsSearchable ? visibility : System.Windows.Visibility.Collapsed);

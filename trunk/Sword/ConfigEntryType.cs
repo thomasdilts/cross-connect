@@ -24,10 +24,6 @@
 /// 
 namespace SwordBackend
 {
-    /*
-    using Language = org.crosswire.common.util.Language;
-    using BookCategory = org.crosswire.jsword.book.BookCategory;
-    using System.Runtime.Serialization;*/
     using System;
     using System.Text.RegularExpressions;
 

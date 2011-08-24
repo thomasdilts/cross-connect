@@ -53,6 +53,7 @@
             <shell:ApplicationBarIconButton Click="butGoToPlan_Click" x:Name="butGoToPlan" IconUri="/Images/dark/appbar.gotodate.rest.png" Text="New window"/>
             <shell:ApplicationBarIconButton Click="butHelp_Click" x:Name="butHelp" IconUri="/Images/dark/appbar.questionmark.rest.png" Text="Help"/>
             <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Click="menuRateThisApp_Click" x:Name="menuRateThisApp" Text="Rate this application"/>
                 <shell:ApplicationBarMenuItem Click="menuDownloadBible_Click" x:Name="menuDownloadBible" Text="Select bible to delete"/>
                 <shell:ApplicationBarMenuItem Click="menuAddNote_Click" x:Name="menuAddNote" Text="Add a note"/>
                 <shell:ApplicationBarMenuItem Click="menuDeleteBible_Click" x:Name="menuDeleteBible" Text="Download bibles"/>

@@ -20,10 +20,7 @@
 /// <author>Thomas Dilts</author>
 namespace SwordBackend
 {
-    using System;
     using System.Collections.Generic;
-    using System.Net;
-    using System.Runtime.Serialization;
 
     #region Enumerations
 

@@ -517,34 +517,6 @@ namespace SwordBackend
             return null;
         }
 
-        /*
-        private IList<Element> processLines(OSISUtil.OSISFactory factory, string aValue)
-        {
-            IList<Element> list = new List<Element>();
-            string[] lines = stringUtil.splitAll(aValue, '\n');
-            for (int i = 0; i < lines.Length; i++)
-            {
-                Element lineElement = factory.createL();
-                lineElement.addContent(lines[i]);
-                list.Add(lineElement);
-            }
-            return list;
-        }
-        */
-        private string report(string issue, string confEntryName, string aValue)
-        {
-            StringBuilder buf = new StringBuilder(100);
-            buf.Append(issue);
-            buf.Append(' ');
-            buf.Append(confEntryName);
-            buf.Append(" in ");
-            buf.Append(@internal);
-            buf.Append(": ");
-            buf.Append(aValue);
-
-            return buf.ToString();
-        }
-
         #endregion Methods
     }
 }

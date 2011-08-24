@@ -20,12 +20,8 @@
 /// <author>Thomas Dilts</author>
 namespace CrossConnect
 {
-    using System;
     using System.Collections.Generic;
     using System.IO.IsolatedStorage;
-    using System.Net;
-
-    using SwordBackend;
 
     public class InstalledBibles
     {

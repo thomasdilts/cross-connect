@@ -23,20 +23,10 @@ namespace CrossConnect
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.IO;
-    using System.IO.IsolatedStorage;
     using System.Linq;
-    using System.Net;
-    using System.Runtime.Serialization;
-    using System.Text;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Documents;
-    using System.Windows.Input;
     using System.Windows.Media;
-    using System.Windows.Media.Animation;
-    using System.Windows.Shapes;
-    using System.Xml;
 
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Shell;
@@ -183,8 +173,9 @@ namespace CrossConnect
         private void butHelp_Click(object sender, EventArgs e)
         {
             WebBrowserTask webBrowserTask = new WebBrowserTask();
-            string version = "1.0.0.8";
+            string version = "1.0.0.10";
             webBrowserTask.URL = @"http://www.chaniel.se/crossconnect/help?version=" + version;
+            //webBrowserTask.Uri = new Uri(@"http://www.chaniel.se/crossconnect/help?version=" + version);
             webBrowserTask.Show();
         }
 
@@ -223,7 +214,7 @@ namespace CrossConnect
             object openWindowIndex = null;
             if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
             {
-                openWindowIndex = (int)0;
+                openWindowIndex = 0;
             }
 
             var state = App.openWindows[(int)openWindowIndex].state;
@@ -279,19 +270,20 @@ namespace CrossConnect
             ((ApplicationBarIconButton)this.ApplicationBar.Buttons[2]).Text = Translations.translate("Daily plan");
             ((ApplicationBarIconButton)this.ApplicationBar.Buttons[3]).Text = Translations.translate("Help");
 
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[0]).Text = Translations.translate("Download bibles");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[1]).Text = Translations.translate("Add a note");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[2]).Text = Translations.translate("Select bible to delete");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[3]).Text = Translations.translate("Select bookmark to delete");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[4]).Text = Translations.translate("Clear history");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[5]).Text = Translations.translate("Send message");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[6]).Text = Translations.translate("Send mail");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[7]).Text = Translations.translate("Add new window");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[8]).Text = Translations.translate("Add to bookmarks");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[9]).Text = Translations.translate("Daily plan");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[10]).Text = Translations.translate("Settings");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[11]).Text = Translations.translate("Select the language") + " (language)";
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[12]).Text = Translations.translate("Help");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[0]).Text = Translations.translate("Rate this program");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[1]).Text = Translations.translate("Download bibles");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[2]).Text = Translations.translate("Add a note");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[3]).Text = Translations.translate("Select bible to delete");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[4]).Text = Translations.translate("Select bookmark to delete");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[5]).Text = Translations.translate("Clear history");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[6]).Text = Translations.translate("Send message");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[7]).Text = Translations.translate("Send mail");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[8]).Text = Translations.translate("Add new window");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[9]).Text = Translations.translate("Add to bookmarks");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[10]).Text = Translations.translate("Daily plan");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[11]).Text = Translations.translate("Settings");
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[12]).Text = Translations.translate("Select the language") + " (language)";
+            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[13]).Text = Translations.translate("Help");
 
             if (App.openWindows.Count() == 0 || App.installedBibles.installedBibles.Count() == 0)
             {
@@ -386,6 +378,12 @@ namespace CrossConnect
             //smsComposeTask.To = "5555555555";
             smsComposeTask.Body = textsWithTitles;
             smsComposeTask.Show();
+        }
+
+        private void menuRateThisApp_Click(object sender, EventArgs e)
+        {
+            MarketplaceReviewTask task = new MarketplaceReviewTask();
+            task.Show();
         }
 
         private void menuSettings_Click(object sender, EventArgs e)

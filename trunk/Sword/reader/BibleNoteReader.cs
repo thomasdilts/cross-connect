@@ -20,16 +20,7 @@
 /// <author>Thomas Dilts</author>
 namespace SwordBackend
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
-    using System.IO.IsolatedStorage;
-    using System.Net;
     using System.Runtime.Serialization;
-    using System.Text;
-
-    using ComponentAce.Compression.Libs.zlib;
 
     /// <summary>
     /// Load from a file all the book and verse pointers to the bzz file so that
@@ -97,7 +88,6 @@ namespace SwordBackend
         {
             //give them the notes if you can.
             byte[] chapterBuffer = getChapterBytes(chapterNumber);
-            string chapter = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
             BibleZtextReader.VersePos verse = chapters[chapterNumber].verses[verseNumber];
             int noteMarker = 'a';
             return parseOsisText(displaySettings,

@@ -21,24 +21,18 @@
 namespace CrossConnect
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.IO;
     using System.IO.IsolatedStorage;
     using System.Linq;
-    using System.Net;
     using System.Runtime.Serialization;
-    using System.Text;
     using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Documents;
     using System.Windows.Input;
     using System.Windows.Media;
-    using System.Windows.Media.Animation;
     using System.Windows.Media.Imaging;
-    using System.Windows.Navigation;
-    using System.Windows.Shapes;
+
+    using CrossConnect.readers;
 
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Shell;
@@ -242,9 +236,9 @@ namespace CrossConnect
                 else
                 {
                     double fontSizeMultiplier = 1;
-                    if (this.Parent != null && ((Grid)(Grid)this.Parent).Parent != null)
+                    if (this.Parent != null && ((Grid)this.Parent).Parent != null)
                     {
-                        MainPageSplit parent = (MainPageSplit)((Grid)(Grid)this.Parent).Parent;
+                        MainPageSplit parent = (MainPageSplit)((Grid)this.Parent).Parent;
                         if (parent.Orientation == PageOrientation.Landscape
                             || parent.Orientation == PageOrientation.LandscapeLeft
                             || parent.Orientation == PageOrientation.LandscapeRight)
@@ -358,7 +352,7 @@ namespace CrossConnect
             PhoneApplicationService.Current.State["openWindowIndex"] = this.state.curIndex;
             PhoneApplicationService.Current.State["InitializeWindowSettings"] = true;
 
-            MainPageSplit parent = (MainPageSplit)((Grid)(Grid)this.Parent).Parent;
+            MainPageSplit parent = (MainPageSplit)((Grid)this.Parent).Parent;
             parent.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
         }
 
@@ -377,7 +371,6 @@ namespace CrossConnect
 
             transitionElement = this.SlideTransitionElement(mode);
 
-            PhoneApplicationPage phoneApplicationPage = (PhoneApplicationPage)((PhoneApplicationFrame)Application.Current.RootVisual).Content;
             ITransition transition = transitionElement.GetTransition(this);
             transition.Completed += delegate
             {

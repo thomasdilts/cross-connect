@@ -18,18 +18,9 @@
 ///     Thomas Dilts. All rights reserved.
 /// </copyright>
 /// <author>Thomas Dilts</author>
-namespace CrossConnect
+namespace CrossConnect.readers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
-    using System.IO.IsolatedStorage;
-    using System.Net;
     using System.Runtime.Serialization;
-    using System.Text;
-
-    using ComponentAce.Compression.Libs.zlib;
 
     using SwordBackend;
 

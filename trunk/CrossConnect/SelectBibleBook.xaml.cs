@@ -20,17 +20,9 @@
 /// <author>Thomas Dilts</author>
 namespace CrossConnect
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Documents;
-    using System.Windows.Input;
     using System.Windows.Media;
-    using System.Windows.Media.Animation;
-    using System.Windows.Shapes;
 
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Shell;
@@ -89,7 +81,7 @@ namespace CrossConnect
                 case ButtonSize.SMALL:
                     if (buttonWindow.NumButtons < 50)
                     {
-                        double sideLength = System.Math.Sqrt(((double)(App.Current.Host.Content.ActualWidth * (double)App.Current.Host.Content.ActualHeight) / buttonWindow.NumButtons)) / 1.15;
+                        double sideLength = System.Math.Sqrt(((App.Current.Host.Content.ActualWidth * App.Current.Host.Content.ActualHeight) / buttonWindow.NumButtons)) / 1.15;
                         if (sideLength * 2 > (App.Current.Host.Content.ActualWidth > App.Current.Host.Content.ActualHeight ? App.Current.Host.Content.ActualHeight : App.Current.Host.Content.ActualWidth))
                         {
                             sideLength = sideLength / 2;
@@ -168,7 +160,7 @@ namespace CrossConnect
             object openWindowIndex = null;
             if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
             {
-                openWindowIndex = (int)0;
+                openWindowIndex = 0;
             }
             ButtonWindowSpecs specs = App.openWindows[(int)openWindowIndex].state.source.GetButtonWindowSpecs(1, (int)((Button)sender).Tag);
             if (specs != null)
@@ -192,7 +184,7 @@ namespace CrossConnect
             object openWindowIndex = null;
             if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
             {
-                openWindowIndex = (int)0;
+                openWindowIndex = 0;
             }
             reloadWindow(App.openWindows[(int)openWindowIndex].state.source.GetButtonWindowSpecs(0,0));
         }
@@ -207,7 +199,7 @@ namespace CrossConnect
             object openWindowIndex = null;
             if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
             {
-                openWindowIndex = (int)0;
+                openWindowIndex = 0;
             }
             object SelectBibleBookFirsSelection = null;
             int selectBibleBookFirsSelection = 0;
