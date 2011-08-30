@@ -95,52 +95,59 @@ namespace CrossConnect
 
         private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (selectDocumentType.SelectedIndex == 4)
+            try
             {
-                if (this.planStartDate.Value != null)
+                if (selectDocumentType.SelectedIndex == 4)
                 {
-                    App.dailyPlan.planStartDate = (DateTime)this.planStartDate.Value;
-                }
-                App.dailyPlan.planNumber = this.selectPlanType.SelectedIndex;
-            }
-
-            object isAddNewWindowOnly = null;
-            if (!PhoneApplicationService.Current.State.TryGetValue("isAddNewWindowOnly", out isAddNewWindowOnly))
-            {
-                isAddNewWindowOnly = false;
-            }
-            if ((bool)isAddNewWindowOnly)
-            {
-                WINDOW_TYPE selectedType;
-                SwordBook bookSelected;
-                GetSelectedData(out selectedType, out bookSelected);
-
-                App.AddWindow(bookSelected.sbmd.internalName,selectedType, sliderTextSize.Value);
-                //if (NavigationService.CanGoBack)
-                //{
-                //    NavigationService.GoBack();
-                //}
-            }
-            else
-            {
-                object openWindowIndex = null;
-                if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
-                {
-                    openWindowIndex = 0;
+                    if (this.planStartDate.Value != null)
+                    {
+                        App.dailyPlan.planStartDate = (DateTime)this.planStartDate.Value;
+                    }
+                    App.dailyPlan.planNumber = this.selectPlanType.SelectedIndex;
                 }
 
-                if (App.openWindows[(int)openWindowIndex].state.windowType == WINDOW_TYPE.WINDOW_SEARCH)
+                object isAddNewWindowOnly = null;
+                if (!PhoneApplicationService.Current.State.TryGetValue("isAddNewWindowOnly", out isAddNewWindowOnly))
                 {
-                    App.openWindows[(int)openWindowIndex].state.htmlFontSize = this.sliderTextSize.Value;
+                    isAddNewWindowOnly = false;
+                }
+                if ((bool)isAddNewWindowOnly)
+                {
+                    WINDOW_TYPE selectedType;
+                    SwordBook bookSelected;
+                    GetSelectedData(out selectedType, out bookSelected);
+
+                    App.AddWindow(bookSelected.sbmd.internalName, selectedType, sliderTextSize.Value);
+                    //if (NavigationService.CanGoBack)
+                    //{
+                    //    NavigationService.GoBack();
+                    //}
                 }
                 else
                 {
-                    SetBookChoosen();
+                    object openWindowIndex = null;
+                    if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+                    {
+                        openWindowIndex = 0;
+                    }
+
+                    if (App.openWindows[(int)openWindowIndex].state.windowType == WINDOW_TYPE.WINDOW_SEARCH)
+                    {
+                        App.openWindows[(int)openWindowIndex].state.htmlFontSize = this.sliderTextSize.Value;
+                    }
+                    else
+                    {
+                        SetBookChoosen();
+                    }
+                    //if (NavigationService.CanGoBack)
+                    //{
+                    //    NavigationService.GoBack();
+                    //}
                 }
-                //if (NavigationService.CanGoBack)
-                //{
-                //    NavigationService.GoBack();
-                //}
+            }
+            catch (Exception ee)
+            {
+                Debug.WriteLine("crashed in a strange place. err=" + ee.StackTrace);
             }
         }
 

@@ -77,15 +77,24 @@ namespace CrossConnect
         private void butDownloadBook_Click(object sender, RoutedEventArgs e)
         {
             // not much to do, but get the book!!!!!
-            butDownloadBook.Visibility = System.Windows.Visibility.Collapsed;
-            sb = webInst.entries[selectBook.SelectedItem.ToString()];
-            sb.progress_completed+=new OpenReadCompletedEventHandler(sb_progress_completed);
-            sb.progress_update+=new DownloadProgressChangedEventHandler(sb_progress_update);
-            progressBarGetBook.Visibility = System.Windows.Visibility.Visible;
-            string errMsg=sb.downloadBookNow(webInst);
-            if (errMsg != null)
+            if (webInst.entries != null && webInst.entries.ContainsKey(selectBook.SelectedItem.ToString()))
             {
-                MessageBox.Show(Translations.translate("An error occurred trying to connect to the network. Try again later.") + "; " + errMsg);
+                butDownloadBook.Visibility = System.Windows.Visibility.Collapsed;
+                sb = webInst.entries[selectBook.SelectedItem.ToString()];
+                sb.progress_completed += new OpenReadCompletedEventHandler(sb_progress_completed);
+                sb.progress_update += new DownloadProgressChangedEventHandler(sb_progress_update);
+                progressBarGetBook.Visibility = System.Windows.Visibility.Visible;
+
+                string errMsg = sb.downloadBookNow(webInst);
+                if (errMsg != null)
+                {
+                    MessageBox.Show(Translations.translate("An error occurred trying to connect to the network. Try again later.") + "; " + errMsg);
+                    PhoneApplicationPage_Loaded(null, null);
+                }
+            }
+            else
+            {
+                MessageBox.Show(Translations.translate("An error occurred trying to connect to the network. Try again later.") );
                 PhoneApplicationPage_Loaded(null, null);
             }
         }

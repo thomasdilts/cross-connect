@@ -66,92 +66,95 @@ namespace CrossConnect
 
         public void reloadWindow(ButtonWindowSpecs buttonWindow)
         {
-            int butWidth = 96;
-            int butHeight = 70;
-            switch (buttonWindow.butSize)
+            if (buttonWindow != null)
             {
-                case ButtonSize.LARGE:
-                    butWidth = 200;
-                    butHeight = 70;
-                    break;
-                case ButtonSize.MEDIUM:
-                    butWidth = 96;
-                    butHeight = 70;
-                    break;
-                case ButtonSize.SMALL:
-                    if (buttonWindow.NumButtons < 50)
-                    {
-                        double sideLength = System.Math.Sqrt(((App.Current.Host.Content.ActualWidth * App.Current.Host.Content.ActualHeight) / buttonWindow.NumButtons)) / 1.15;
-                        if (sideLength * 2 > (App.Current.Host.Content.ActualWidth > App.Current.Host.Content.ActualHeight ? App.Current.Host.Content.ActualHeight : App.Current.Host.Content.ActualWidth))
-                        {
-                            sideLength = sideLength / 2;
-                        }
-                        butWidth = (int)sideLength;
-                        butHeight = (int)sideLength;
-                    }
-                    break;
-            }
-
-            PageTitle.Text = Translations.translate(buttonWindow.title);
-            usingNowSpec = buttonWindow;
-            ScrollContentGrid.Children.Clear();
-            ScrollContentGrid.ColumnDefinitions.Clear();
-            ScrollContentGrid.RowDefinitions.Clear();
-            double screenWidth=0;
-            double screenHeight=0;
-            PageOrientation orient=(App.Current.RootVisual as PhoneApplicationFrame).Orientation;
-            if (orient == PageOrientation.Portrait || orient == PageOrientation.PortraitDown || orient == PageOrientation.PortraitUp || orient == PageOrientation.None)
-            {
-                screenWidth = App.Current.Host.Content.ActualWidth;
-                screenHeight = App.Current.Host.Content.ActualHeight;
-            }
-            else
-            {
-                screenWidth = App.Current.Host.Content.ActualHeight;
-                screenHeight = App.Current.Host.Content.ActualWidth;
-            }
-
-            int numCols = (int)screenWidth / butWidth;
-            if (numCols == 0)
-            {
-                numCols = 1;
-            }
-            int numRows = buttonWindow.NumButtons / numCols;
-            for (int i = 0; i <= numRows; i++)
-            {
-                RowDefinition row = new RowDefinition();
-                row.Height = GridLength.Auto;
-                ScrollContentGrid.RowDefinitions.Add(row);
-
-                for (int j = 0; j < numCols && ((i*numCols)+j)<buttonWindow.NumButtons; j++)
+                int butWidth = 96;
+                int butHeight = 70;
+                switch (buttonWindow.butSize)
                 {
-                    ColumnDefinition col = new ColumnDefinition();
-                    col.Width = GridLength.Auto;
-                    ScrollContentGrid.ColumnDefinitions.Add(col);
-                    Button but = new Button();
-                    but.Content = buttonWindow.text[(i*numCols)+j];
-                    but.Margin = new Thickness(-9,-9,-9,-9);
-                    but.MaxHeight = butHeight;
-                    but.MinHeight = butHeight;
-                    but.MaxWidth = butWidth;
-                    but.MinWidth = butWidth;
-                    but.FontSize = (int)((double)butHeight / 3.5);
-                    but.Visibility = System.Windows.Visibility.Visible;
-                    if (buttonWindow.colors != null)
-                    {
-                        but.Foreground = new SolidColorBrush(colorConversionScheme[buttonWindow.colors[(i * numCols) + j]]);
-                    }
-
-                    Grid.SetRow(but, i);
-                    Grid.SetColumn(but, j);
-                    ScrollContentGrid.Children.Add(but);
-                    but.Click += new RoutedEventHandler(buttonWindow.stage == 0 ? (RoutedEventHandler)First_Click : (RoutedEventHandler)Second_Click);
-                    but.Tag = buttonWindow.value[(i * numCols) + j];
+                    case ButtonSize.LARGE:
+                        butWidth = 200;
+                        butHeight = 70;
+                        break;
+                    case ButtonSize.MEDIUM:
+                        butWidth = 96;
+                        butHeight = 70;
+                        break;
+                    case ButtonSize.SMALL:
+                        if (buttonWindow.NumButtons < 50)
+                        {
+                            double sideLength = System.Math.Sqrt(((App.Current.Host.Content.ActualWidth * App.Current.Host.Content.ActualHeight) / buttonWindow.NumButtons)) / 1.15;
+                            if (sideLength * 2 > (App.Current.Host.Content.ActualWidth > App.Current.Host.Content.ActualHeight ? App.Current.Host.Content.ActualHeight : App.Current.Host.Content.ActualWidth))
+                            {
+                                sideLength = sideLength / 2;
+                            }
+                            butWidth = (int)sideLength;
+                            butHeight = (int)sideLength;
+                        }
+                        break;
                 }
+
+                PageTitle.Text = Translations.translate(buttonWindow.title);
+                usingNowSpec = buttonWindow;
+                ScrollContentGrid.Children.Clear();
+                ScrollContentGrid.ColumnDefinitions.Clear();
+                ScrollContentGrid.RowDefinitions.Clear();
+                double screenWidth = 0;
+                double screenHeight = 0;
+                PageOrientation orient = (App.Current.RootVisual as PhoneApplicationFrame).Orientation;
+                if (orient == PageOrientation.Portrait || orient == PageOrientation.PortraitDown || orient == PageOrientation.PortraitUp || orient == PageOrientation.None)
+                {
+                    screenWidth = App.Current.Host.Content.ActualWidth;
+                    screenHeight = App.Current.Host.Content.ActualHeight;
+                }
+                else
+                {
+                    screenWidth = App.Current.Host.Content.ActualHeight;
+                    screenHeight = App.Current.Host.Content.ActualWidth;
+                }
+
+                int numCols = (int)screenWidth / butWidth;
+                if (numCols == 0)
+                {
+                    numCols = 1;
+                }
+                int numRows = buttonWindow.NumButtons / numCols;
+                for (int i = 0; i <= numRows; i++)
+                {
+                    RowDefinition row = new RowDefinition();
+                    row.Height = GridLength.Auto;
+                    ScrollContentGrid.RowDefinitions.Add(row);
+
+                    for (int j = 0; j < numCols && ((i * numCols) + j) < buttonWindow.NumButtons; j++)
+                    {
+                        ColumnDefinition col = new ColumnDefinition();
+                        col.Width = GridLength.Auto;
+                        ScrollContentGrid.ColumnDefinitions.Add(col);
+                        Button but = new Button();
+                        but.Content = buttonWindow.text[(i * numCols) + j];
+                        but.Margin = new Thickness(-9, -9, -9, -9);
+                        but.MaxHeight = butHeight;
+                        but.MinHeight = butHeight;
+                        but.MaxWidth = butWidth;
+                        but.MinWidth = butWidth;
+                        but.FontSize = (int)((double)butHeight / 3.5);
+                        but.Visibility = System.Windows.Visibility.Visible;
+                        if (buttonWindow.colors != null)
+                        {
+                            but.Foreground = new SolidColorBrush(colorConversionScheme[buttonWindow.colors[(i * numCols) + j]]);
+                        }
+
+                        Grid.SetRow(but, i);
+                        Grid.SetColumn(but, j);
+                        ScrollContentGrid.Children.Add(but);
+                        but.Click += new RoutedEventHandler(buttonWindow.stage == 0 ? (RoutedEventHandler)First_Click : (RoutedEventHandler)Second_Click);
+                        but.Tag = buttonWindow.value[(i * numCols) + j];
+                    }
+                }
+                LayoutRoot.UpdateLayout();
+                scrollViewer1.UpdateLayout();
+                ScrollContentGrid.UpdateLayout();
             }
-            LayoutRoot.UpdateLayout();
-            scrollViewer1.UpdateLayout();
-            ScrollContentGrid.UpdateLayout();
         }
 
         private void First_Click(object sender, RoutedEventArgs e)

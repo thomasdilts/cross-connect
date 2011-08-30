@@ -1093,9 +1093,16 @@ namespace SwordBackend
                     return "***";
                 }
             }
-            ms.Write(xmlbytes, startPos, length);
-            ms.Write(suffix, 0, suffix.Length);
-            ms.Position = 0;
+            try
+            {
+                ms.Write(xmlbytes, startPos, length);
+                ms.Write(suffix, 0, suffix.Length);
+                ms.Position = 0;
+            }
+            catch (Exception ee)
+            {
+                Debug.WriteLine("crashed in a strange place. err=" + ee.StackTrace);
+            }
             StringBuilder plainText = new StringBuilder();
             StringBuilder noteText = new StringBuilder();
             XmlReaderSettings settings = new XmlReaderSettings();

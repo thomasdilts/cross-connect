@@ -22,6 +22,7 @@ namespace CrossConnect
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.IO.IsolatedStorage;
     using System.Linq;
@@ -250,58 +251,65 @@ namespace CrossConnect
 
         public void LoadPersistantObjects()
         {
-            // make sure some important directories exist.
-            var root = IsolatedStorageFile.GetUserStoreForApplication();
-            if (!root.DirectoryExists(WEB_DIR_ISOLATED))
-            {
-                root.CreateDirectory(WEB_DIR_ISOLATED);
-            }
-
-            // clear web directory
-            string[] filenames = root.GetFileNames(WEB_DIR_ISOLATED + "/*.*");
-            foreach (string file in filenames)
-            {
-                root.DeleteFile(WEB_DIR_ISOLATED + "/" + file);
-            }
-            PhoneApplicationService.Current.State["InitializeWindowSettings"] = true;
-            //get the daily plan first
-            string dailyPlanXmlData;
-            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("DailyPlan", out dailyPlanXmlData))
-            {
-                using (StringReader sr = new StringReader(dailyPlanXmlData))
-                {
-                    XmlReaderSettings settings = new XmlReaderSettings();
-                    using (XmlReader reader = XmlReader.Create(sr, settings))
-                    {
-                        Type[] types = new Type[]
-                        {
-                            typeof(SerializableDailyPlan),
-                            };
-                        DataContractSerializer ser = new DataContractSerializer(typeof(SerializableDailyPlan), types);
-                        dailyPlan = (SerializableDailyPlan)ser.ReadObject(reader);
-                    }
-                }
-            }
-
-            if (dailyPlan == null)
-            {
-                dailyPlan = new SerializableDailyPlan();
-            }
-
+            dailyPlan = new SerializableDailyPlan();
             openWindows.Clear();
-
-            // get all windows
-            for (int i = 0; i < MAX_NUM_WINDOWS; i++)
+            placeMarkers = new BiblePlaceMarkers();
+            IsolatedStorageSettings.ApplicationSettings["LanguageIsoCode"] = "default";
+            displaySettings = new DisplaySettings();
+            try
             {
-                string windowsXmlData = string.Empty;
-                if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("Windows" + i, out windowsXmlData))
+                // make sure some important directories exist.
+                var root = IsolatedStorageFile.GetUserStoreForApplication();
+                if (!root.DirectoryExists(WEB_DIR_ISOLATED))
                 {
-                    using (StringReader sr = new StringReader(windowsXmlData))
+                    root.CreateDirectory(WEB_DIR_ISOLATED);
+                }
+
+                // clear web directory
+                string[] filenames = root.GetFileNames(WEB_DIR_ISOLATED + "/*.*");
+                foreach (string file in filenames)
+                {
+                    root.DeleteFile(WEB_DIR_ISOLATED + "/" + file);
+                }
+                PhoneApplicationService.Current.State["InitializeWindowSettings"] = true;
+                //get the daily plan first
+                string dailyPlanXmlData;
+                if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("DailyPlan", out dailyPlanXmlData))
+                {
+                    using (StringReader sr = new StringReader(dailyPlanXmlData))
                     {
                         XmlReaderSettings settings = new XmlReaderSettings();
                         using (XmlReader reader = XmlReader.Create(sr, settings))
                         {
                             Type[] types = new Type[]
+                        {
+                            typeof(SerializableDailyPlan),
+                            };
+                            DataContractSerializer ser = new DataContractSerializer(typeof(SerializableDailyPlan), types);
+                            dailyPlan = (SerializableDailyPlan)ser.ReadObject(reader);
+                        }
+                    }
+                }
+
+                if (dailyPlan == null)
+                {
+                    dailyPlan = new SerializableDailyPlan();
+                }
+
+                openWindows.Clear();
+
+                // get all windows
+                for (int i = 0; i < MAX_NUM_WINDOWS; i++)
+                {
+                    string windowsXmlData = string.Empty;
+                    if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("Windows" + i, out windowsXmlData))
+                    {
+                        using (StringReader sr = new StringReader(windowsXmlData))
+                        {
+                            XmlReaderSettings settings = new XmlReaderSettings();
+                            using (XmlReader reader = XmlReader.Create(sr, settings))
+                            {
+                                Type[] types = new Type[]
                             {
                                 typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState),
                                 typeof(SwordBackend.BibleZtextReader.VersePos),
@@ -317,72 +325,77 @@ namespace CrossConnect
                                 typeof(PersonalNotesReader),
                                 typeof(InternetLinkReader),
                             };
-                            DataContractSerializer ser = new DataContractSerializer(typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState), types);
-                            BrowserTitledWindow nextWindow = new BrowserTitledWindow();
-                            nextWindow.state = (CrossConnect.BrowserTitledWindow.SerializableWindowState)ser.ReadObject(reader);
-                            nextWindow.state.source.Resume();
-                            nextWindow.state.isResume = true;
-                            openWindows.Add(nextWindow);
-                            //nextWindow.Initialize(nextWindow.state.bibleToLoad, nextWindow.state.windowType);
+                                DataContractSerializer ser = new DataContractSerializer(typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState), types);
+                                BrowserTitledWindow nextWindow = new BrowserTitledWindow();
+                                nextWindow.state = (CrossConnect.BrowserTitledWindow.SerializableWindowState)ser.ReadObject(reader);
+                                nextWindow.state.source.Resume();
+                                nextWindow.state.isResume = true;
+                                openWindows.Add(nextWindow);
+                                //nextWindow.Initialize(nextWindow.state.bibleToLoad, nextWindow.state.windowType);
+                            }
                         }
                     }
-                }
-                else
-                {
-                    // no more windows to load.
-                    break;
-                }
-            }
-
-            string markerXmlData;
-            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("BiblePlaceMarkers", out markerXmlData))
-            {
-                using (StringReader sr = new StringReader(markerXmlData))
-                {
-                    XmlReaderSettings settings = new XmlReaderSettings();
-                    using (XmlReader reader = XmlReader.Create(sr, settings))
+                    else
                     {
-                        Type[] types = new Type[]
+                        // no more windows to load.
+                        break;
+                    }
+                }
+
+                string markerXmlData;
+                if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("BiblePlaceMarkers", out markerXmlData))
+                {
+                    using (StringReader sr = new StringReader(markerXmlData))
+                    {
+                        XmlReaderSettings settings = new XmlReaderSettings();
+                        using (XmlReader reader = XmlReader.Create(sr, settings))
+                        {
+                            Type[] types = new Type[]
                         {
                             typeof(BiblePlaceMarkers),
                                 typeof(BiblePlaceMarker),
                             };
-                        DataContractSerializer ser = new DataContractSerializer(typeof(BiblePlaceMarkers), types);
-                        placeMarkers = (BiblePlaceMarkers)ser.ReadObject(reader);
+                            DataContractSerializer ser = new DataContractSerializer(typeof(BiblePlaceMarkers), types);
+                            placeMarkers = (BiblePlaceMarkers)ser.ReadObject(reader);
+                        }
                     }
                 }
-            }
 
-            if (placeMarkers == null)
-            {
-                placeMarkers = new BiblePlaceMarkers();
-            }
-            if (!IsolatedStorageSettings.ApplicationSettings.Contains("LanguageIsoCode"))
-            {
-                IsolatedStorageSettings.ApplicationSettings["LanguageIsoCode"] = "default";
-            }
-
-            markerXmlData="";
-            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("DisplaySettings", out markerXmlData))
-            {
-                using (StringReader sr = new StringReader(markerXmlData))
+                if (placeMarkers == null)
                 {
-                    XmlReaderSettings settings = new XmlReaderSettings();
-                    using (XmlReader reader = XmlReader.Create(sr, settings))
+                    placeMarkers = new BiblePlaceMarkers();
+                }
+                if (!IsolatedStorageSettings.ApplicationSettings.Contains("LanguageIsoCode"))
+                {
+                    IsolatedStorageSettings.ApplicationSettings["LanguageIsoCode"] = "default";
+                }
+
+                markerXmlData = "";
+                if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("DisplaySettings", out markerXmlData))
+                {
+                    using (StringReader sr = new StringReader(markerXmlData))
                     {
-                        Type[] types = new Type[]
+                        XmlReaderSettings settings = new XmlReaderSettings();
+                        using (XmlReader reader = XmlReader.Create(sr, settings))
+                        {
+                            Type[] types = new Type[]
                         {
                             typeof(DisplaySettings)
                             };
-                        DataContractSerializer ser = new DataContractSerializer(typeof(DisplaySettings), types);
-                        displaySettings = (DisplaySettings)ser.ReadObject(reader);
+                            DataContractSerializer ser = new DataContractSerializer(typeof(DisplaySettings), types);
+                            displaySettings = (DisplaySettings)ser.ReadObject(reader);
+                        }
                     }
                 }
-            }
 
-            if (displaySettings == null)
+                if (displaySettings == null)
+                {
+                    displaySettings = new DisplaySettings();
+                }
+            }
+            catch (Exception ee)
             {
-                displaySettings = new DisplaySettings();
+                Debug.WriteLine("crashed in a strange place. err=" + ee.StackTrace);
             }
         }
 
