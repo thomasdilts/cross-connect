@@ -262,7 +262,15 @@ namespace CrossConnect
                     string entrypath = entry.Name;
                     if (entry.IsDirectory)
                     {
-                        isolatedStorageRoot.CreateDirectory(entry.Name);
+                        if (entry.Name.StartsWith("/"))
+                        {
+                            entrypath = entry.Name.Substring(1);
+                        }
+                        if (entry.Name.EndsWith("/"))
+                        {
+                            entrypath = entry.Name.Substring(0, entry.Name.Length - 1);
+                        }
+                        isolatedStorageRoot.CreateDirectory(entrypath);
                     }
                     else
                     {

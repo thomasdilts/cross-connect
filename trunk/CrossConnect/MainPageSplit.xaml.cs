@@ -173,7 +173,7 @@ namespace CrossConnect
         private void butHelp_Click(object sender, EventArgs e)
         {
             WebBrowserTask webBrowserTask = new WebBrowserTask();
-            string version = "1.0.0.12";
+            string version = "1.0.0.13";
             webBrowserTask.Uri = new Uri(@"http://www.chaniel.se/crossconnect/help?version=" + version);
             webBrowserTask.Show();
         }
