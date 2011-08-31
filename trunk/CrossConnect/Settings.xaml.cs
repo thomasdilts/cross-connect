@@ -51,6 +51,7 @@ namespace CrossConnect
             App.displaySettings.showAddedNotesByChapter = (bool)showAddedNotesByChapter.IsChecked;
             App.displaySettings.hebrewDictionaryLink = hebrewDictionaryLink.Text;
             App.displaySettings.greekDictionaryLink = greekDictionaryLink.Text;
+            App.displaySettings.customBibleDownloadLinks = customBibleDownloadLink.Text;
             App.RaiseBookmarkChangeEvent();
             App.RaiseHistoryChangeEvent();
             App.RaisePersonalNotesChangeEvent();
@@ -74,6 +75,7 @@ namespace CrossConnect
             showAddedNotesByChapter.Header = Translations.translate("Show added notes by chapter");
             captionHebrewDictionaryLink.Text = Translations.translate("Hebrew dictionary internet link");
             captionGreekDictionaryLink.Text = Translations.translate("Greek dictionary internet link");
+            captionCustomBibleDownloadLink.Text = Translations.translate("Custom bible download addresses");
 
             highlightMarkings.IsChecked = App.displaySettings.highlightMarkings;
             wordsOfChristRed.IsChecked = App.displaySettings.wordsOfChristRed;
@@ -89,6 +91,7 @@ namespace CrossConnect
             showAddedNotesByChapter.IsChecked = App.displaySettings.showAddedNotesByChapter;
             hebrewDictionaryLink.Text = App.displaySettings.hebrewDictionaryLink;
             greekDictionaryLink.Text = App.displaySettings.greekDictionaryLink;
+            customBibleDownloadLink.Text = App.displaySettings.customBibleDownloadLinks;
         }
 
         private void butSetDefault_Click(object sender, RoutedEventArgs e)

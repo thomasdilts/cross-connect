@@ -66,6 +66,16 @@ namespace CrossConnect
                 string catalogDirectory = parts[4];
                 installers[name] = new WebInstaller(host, packageDirectory, catalogDirectory);
             }
+            if(!string.IsNullOrEmpty(App.displaySettings.customBibleDownloadLinks))
+            {
+                string[] parts=App.displaySettings.customBibleDownloadLinks.Split(new char[]{','});
+                if (parts.Length == 3 && Uri.IsWellFormedUriString("http://" + parts[0].Trim(), UriKind.Absolute)
+                    && Uri.IsWellFormedUriString("http://" + parts[0].Trim() + parts[1].Trim(), UriKind.Absolute)
+                    && Uri.IsWellFormedUriString("http://" + parts[0].Trim() + parts[2].Trim(), UriKind.Absolute))
+                {
+                    installers[Translations.translate("Custom bible download addresses")] = new WebInstaller(parts[0].Trim(), parts[1].Trim(), parts[2].Trim());
+                }
+            }
         }
 
         #endregion Constructors

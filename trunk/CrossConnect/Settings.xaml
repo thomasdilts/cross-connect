@@ -70,6 +70,8 @@
                 <TextBox  Name="hebrewDictionaryLink" Text=""  />
                 <TextBlock  Name="captionGreekDictionaryLink" Text="Greek dictionary internet link"  />
                 <TextBox  Name="greekDictionaryLink" Text=""  />
+                <TextBlock  Name="captionCustomBibleDownloadLink" Text="Custom bible download address"  />
+                <TextBox  Name="customBibleDownloadLink" Text=""  />
                 <Button Content="Default settings" Name="butSetDefault"  Click="butSetDefault_Click" />
             </StackPanel>
         </Grid>

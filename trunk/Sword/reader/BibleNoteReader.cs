@@ -127,6 +127,8 @@ namespace SwordBackend
         #region Fields
 
         [DataMember]
+        public string customBibleDownloadLinks = @"www.chaniel.se,/crossconnect/bibles/raw,/crossconnect/bibles/biblelist";
+        [DataMember]
         public bool eachVerseNewLine = false;
         [DataMember]
         public string greekDictionaryLink = @"http://www.eliyah.com/cgi-bin/strongs.cgi?file=greeklexicon&isindex={0}";
