@@ -129,6 +129,7 @@
 <string key="Select the language">Agħżel il-lingwa</string>
 <string key="Select the server">Agħżel-server</string>
 <string key="Select the window type">Agħżel it-tip tieqa</string>
+<string key="Select what you want to hear">Agħżel dak li trid li tisma '</string>
 <string key="Send mail">Tibgħat posta</string>
 <string key="Send message">Ibgħat messaġġ</string>
 <string key="Settings">Settings</string>
@@ -142,6 +143,7 @@
 <string key="Show the words of Jesus in red">Uri l-kliem ta &#39;Ġesù bl-aħmar</string>
 <string key="Show word morphology">Uri morfoloġija kelma</string>
 <string key="Start each verse on a new line">Tibda kull poeżiji fuq linja ġdida</string>
+<string key="Talking bible internet link">Nitkellmu rabta internet bibbja</string>
 <string key="Text size">Daqs tat-test</string>
 <string key="The New Testement">Il-New Testement</string>
 <string key="The New Testement, Psalms, Proverbs">Il-Testement ġodda, Salmi, Proverbji</string>

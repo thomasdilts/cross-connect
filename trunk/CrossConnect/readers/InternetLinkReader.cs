@@ -61,6 +61,14 @@ namespace CrossConnect.readers
             }
         }
 
+        public override bool IsHearable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public override bool IsPageable
         {
             get

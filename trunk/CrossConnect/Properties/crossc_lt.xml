@@ -129,6 +129,7 @@
 <string key="Select the language">Pasirinkite kalbą</string>
 <string key="Select the server">Pasirinkite serverį</string>
 <string key="Select the window type">Pasirinkite lango tipas</string>
+<string key="Select what you want to hear">Pasirinkite, ką norite girdėti</string>
 <string key="Send mail">Siųsti laišką</string>
 <string key="Send message">Siųsti žinutę</string>
 <string key="Settings">Nustatymai</string>
@@ -142,6 +143,7 @@
 <string key="Show the words of Jesus in red">Rodyti Jėzaus žodžius raudonai</string>
 <string key="Show word morphology">Rodyti žodžio morfologija</string>
 <string key="Start each verse on a new line">Pradėti kiekvieną eilutę į naują eilutę</string>
+<string key="Talking bible internet link">Kalbėjimas Biblija interneto ryšys</string>
 <string key="Text size">Teksto dydis</string>
 <string key="The New Testement">Naujas Testement</string>
 <string key="The New Testement, Psalms, Proverbs">Naujas Testement, Psalmių, Patarlių</string>

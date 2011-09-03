@@ -72,6 +72,8 @@
                 <TextBox  Name="greekDictionaryLink" Text=""  />
                 <TextBlock  Name="captionCustomBibleDownloadLink" Text="Custom bible download address"  />
                 <TextBox  Name="customBibleDownloadLink" Text=""  />
+                <TextBlock  Name="captionSoundLink" Text="Talking bible internet link"  />
+                <TextBox  Name="soundLink" Text=""  />
                 <Button Content="Default settings" Name="butSetDefault"  Click="butSetDefault_Click" />
             </StackPanel>
         </Grid>

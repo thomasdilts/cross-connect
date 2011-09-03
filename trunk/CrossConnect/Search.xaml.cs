@@ -123,6 +123,7 @@ namespace CrossConnect
                     {
                         App.AddWindow(
                             App.openWindows[(int)openWindowIndex].state.bibleToLoad,
+                            App.openWindows[(int)openWindowIndex].state.bibleDescription,
                             WINDOW_TYPE.WINDOW_SEARCH,
                             App.openWindows[(int)openWindowIndex].state.htmlFontSize,
                             sourceSearch);

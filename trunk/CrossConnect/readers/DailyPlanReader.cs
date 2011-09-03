@@ -52,6 +52,14 @@ namespace CrossConnect.readers
 
         #region Properties
 
+        public override bool IsHearable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public override bool IsLocalChangeDuringLink
         {
             get

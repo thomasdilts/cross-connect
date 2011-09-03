@@ -52,6 +52,7 @@ namespace CrossConnect
             App.displaySettings.hebrewDictionaryLink = hebrewDictionaryLink.Text;
             App.displaySettings.greekDictionaryLink = greekDictionaryLink.Text;
             App.displaySettings.customBibleDownloadLinks = customBibleDownloadLink.Text;
+            App.displaySettings.soundLink = soundLink.Text;
             App.RaiseBookmarkChangeEvent();
             App.RaiseHistoryChangeEvent();
             App.RaisePersonalNotesChangeEvent();
@@ -76,6 +77,7 @@ namespace CrossConnect
             captionHebrewDictionaryLink.Text = Translations.translate("Hebrew dictionary internet link");
             captionGreekDictionaryLink.Text = Translations.translate("Greek dictionary internet link");
             captionCustomBibleDownloadLink.Text = Translations.translate("Custom bible download addresses");
+            captionSoundLink.Text = Translations.translate("Talking bible internet link");
 
             highlightMarkings.IsChecked = App.displaySettings.highlightMarkings;
             wordsOfChristRed.IsChecked = App.displaySettings.wordsOfChristRed;
@@ -92,6 +94,7 @@ namespace CrossConnect
             hebrewDictionaryLink.Text = App.displaySettings.hebrewDictionaryLink;
             greekDictionaryLink.Text = App.displaySettings.greekDictionaryLink;
             customBibleDownloadLink.Text = App.displaySettings.customBibleDownloadLinks;
+            soundLink.Text = App.displaySettings.soundLink;
         }
 
         private void butSetDefault_Click(object sender, RoutedEventArgs e)

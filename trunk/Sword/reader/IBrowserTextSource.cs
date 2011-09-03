@@ -53,6 +53,11 @@ namespace SwordBackend
             get;
         }
 
+        bool IsHearable
+        {
+            get;
+        }
+
         bool IsLocalChangeDuringLink
         {
             get;

@@ -165,7 +165,7 @@ namespace CrossConnect
                 //take the present window and show the plan if it exists.
                 var state = App.openWindows[0].state;
                 state.windowType = WINDOW_TYPE.WINDOW_DAILY_PLAN;
-                App.openWindows[0].Initialize(state.bibleToLoad, state.windowType);
+                App.openWindows[0].Initialize(state.bibleToLoad, state.bibleDescription, state.windowType);
                 ReDrawWindows();
             }
         }

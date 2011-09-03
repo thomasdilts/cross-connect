@@ -201,10 +201,10 @@ namespace CrossConnect
             RaiseHistoryChangeEvent();
         }
 
-        public static void AddWindow(string bibleToLoad, WINDOW_TYPE typeOfWindow, double textSize, IBrowserTextSource source = null)
+        public static void AddWindow(string bibleToLoad, string bibleDescription, WINDOW_TYPE typeOfWindow, double textSize, IBrowserTextSource source = null)
         {
             BrowserTitledWindow nextWindow = new BrowserTitledWindow();
-            nextWindow.Initialize(bibleToLoad, typeOfWindow, source);
+            nextWindow.Initialize(bibleToLoad, bibleDescription, typeOfWindow, source);
             nextWindow.state.curIndex = App.openWindows.Count();
             nextWindow.state.htmlFontSize = textSize;
             App.openWindows.Add(nextWindow);

@@ -129,6 +129,7 @@
 <string key="Select the language">Zgjidhni gjuhën</string>
 <string key="Select the server">Zgjidhni server</string>
 <string key="Select the window type">Zgjidhni llojin e dritares</string>
+<string key="Select what you want to hear">Zgjidhni atë që doni të dëgjoni</string>
 <string key="Send mail">Dërgo email</string>
 <string key="Send message">Dërgo një mesazh</string>
 <string key="Settings">Settings</string>
@@ -142,6 +143,7 @@
 <string key="Show the words of Jesus in red">Trego fjalët e Jezusit në të kuqe</string>
 <string key="Show word morphology">Trego morfologjia fjalë</string>
 <string key="Start each verse on a new line">Fillimi i çdo varg në një linjë të re</string>
+<string key="Talking bible internet link">Duke folur Lidhje bible internet</string>
 <string key="Text size">Madhësinë e tekstit</string>
 <string key="The New Testement">Testement New</string>
 <string key="The New Testement, Psalms, Proverbs">Testement e re, Psalmet, Fjalët e urta</string>

@@ -36,6 +36,7 @@ namespace CrossConnect
 
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Shell;
+    using Microsoft.Phone.Tasks;
 
     using SwordBackend;
 
@@ -131,9 +132,10 @@ namespace CrossConnect
             Debug.WriteLine("CallbackFromUpdate end");
         }
 
-        public void Initialize(string bibleToLoad, WINDOW_TYPE windowType, IBrowserTextSource source = null)
+        public void Initialize(string bibleToLoad, string bibleDescription, WINDOW_TYPE windowType, IBrowserTextSource source = null)
         {
             this.state.bibleToLoad = bibleToLoad;
+            this.state.bibleDescription = bibleDescription;
             this.state.windowType = windowType;
             if (source != null)
             {
@@ -184,24 +186,22 @@ namespace CrossConnect
         {
             if (!isShow)
             {
-                butLarger.Visibility = System.Windows.Visibility.Collapsed;
-                butSmaller.Visibility = System.Windows.Visibility.Collapsed;
-                butClose.Visibility = System.Windows.Visibility.Collapsed;
+                SetButtonVisibility(butLarger, false, "", "");
+                SetButtonVisibility(butSmaller, false, "", "");
+                SetButtonVisibility(butClose, false, "", "");
             }
             else
             {
-                if (this.state.numRowsIown > 1)
-                {
-                    butSmaller.Visibility = System.Windows.Visibility.Visible;
-                }
-                else
-                {
-                    butSmaller.Visibility = System.Windows.Visibility.Collapsed;
-                }
+                // figure out if this is a light color
+                var color = (Color)Application.Current.Resources["PhoneBackgroundColor"];
+                int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
+                string colorDir = lightColorCount >= 2 ? "light" : "dark";
 
-                butLarger.Visibility = System.Windows.Visibility.Visible;
-                butClose.Visibility = System.Windows.Visibility.Visible;
+                SetButtonVisibility(butSmaller, this.state.numRowsIown > 1, "/Images/" + colorDir + "/appbar.minus.rest.png", "/Images/" + colorDir + "/appbar.minus.rest.pressed.png");
+                SetButtonVisibility(butLarger, true, "/Images/" + colorDir + "/appbar.feature.search.rest.png", "/Images/" + colorDir + "/appbar.feature.search.rest.pressed.png");
+                SetButtonVisibility(butClose, true, "/Images/" + colorDir + "/appbar.cancel.rest.png", "/Images/" + colorDir + "/appbar.cancel.rest.pressed.png");
             }
+            CalculateTitleTextWidth();
         }
 
         public void SynchronizeWindow(int chapterNum, int verseNum)
@@ -297,6 +297,25 @@ namespace CrossConnect
             DoManipulation(e);
         }
 
+        private void butHear_Click(object sender, RoutedEventArgs e)
+        {
+            int bookNum;
+            int absoluteChaptNum;
+            int relChaptNum;
+            int verseNum;
+            string fullName;
+            string titleText;
+            this.state.source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
+            PhoneApplicationService.Current.State["ChapterToHear"] = absoluteChaptNum;
+            MainPageSplit parent = (MainPageSplit)((Grid)this.Parent).Parent;
+            parent.NavigationService.Navigate(new Uri("/SelectToPlay.xaml", UriKind.Relative));
+        }
+
+        private void butHear_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
+        }
+
         private void ButLarger_Click(object sender, RoutedEventArgs e)
         {
             killManipulation();
@@ -327,14 +346,16 @@ namespace CrossConnect
                 this.state.isSynchronized = !this.state.isSynchronized;
                 if (this.state.isSynchronized)
                 {
-                    butLink.PressedImage = this.GetImage("/Images/" + colorDir + "/appbar.linkto.rest.png");
-                    butLink.Image = this.GetImage("/Images/" + colorDir + "/appbar.linkto.rest.pressed.png");
+                    SetButtonVisibility(butLink, true, "/Images/" + colorDir + "/appbar.linkto.rest.pressed.png", "/Images/" + colorDir + "/appbar.linkto.rest.png");
                 }
                 else
                 {
-                    butLink.Image = this.GetImage("/Images/" + colorDir + "/appbar.linkto.rest.png");
-                    butLink.PressedImage = this.GetImage("/Images/" + colorDir + "/appbar.linkto.rest.pressed.png");
+                    SetButtonVisibility(butLink, true, "/Images/" + colorDir + "/appbar.linkto.rest.png", "/Images/" + colorDir + "/appbar.linkto.rest.pressed.png");
                 }
+            }
+            else
+            {
+                SetButtonVisibility(butLink, false, "", "");
             }
         }
 
@@ -438,9 +459,49 @@ namespace CrossConnect
             DoManipulation(e);
         }
 
+        private void CalculateTitleTextWidth()
+        {
+            int numButtonsShowing = 0;
+            if (butPrevious.Visibility == System.Windows.Visibility.Visible)
+            {
+                numButtonsShowing++;
+            }
+            if (butNext.Visibility == System.Windows.Visibility.Visible)
+            {
+                numButtonsShowing++;
+            }
+            if (butMenu.Visibility == System.Windows.Visibility.Visible)
+            {
+                numButtonsShowing++;
+            }
+            if (butLink.Visibility == System.Windows.Visibility.Visible)
+            {
+                numButtonsShowing++;
+            }
+            if (butLarger.Visibility == System.Windows.Visibility.Visible)
+            {
+                numButtonsShowing++;
+            }
+            if (butSmaller.Visibility == System.Windows.Visibility.Visible)
+            {
+                numButtonsShowing++;
+            }
+            if (butClose.Visibility == System.Windows.Visibility.Visible)
+            {
+                numButtonsShowing++;
+            }
+            if (butHear.Visibility == System.Windows.Visibility.Visible)
+            {
+                numButtonsShowing++;
+            }
+            title.Width = System.Windows.Application.Current.Host.Content.ActualWidth - butClose.Width * numButtonsShowing - 15;
+            title.MaxWidth = System.Windows.Application.Current.Host.Content.ActualWidth - butClose.Width * numButtonsShowing - 15;
+        }
+
         private void DoAsynchronAddWindow(string link)
         {
             App.AddWindow(
+                "",
                 "",
                 WINDOW_TYPE.WINDOW_SEARCH,
                 10,
@@ -555,6 +616,22 @@ namespace CrossConnect
             }
         }
 
+        private void SetButtonVisibility(ImageButton but, bool isVisible, string image, string pressedImage)
+        {
+            if (isVisible)
+            {
+                but.Visibility = System.Windows.Visibility.Visible;
+                but.Image = this.GetImage(image);
+                but.PressedImage = this.GetImage(pressedImage);
+            }
+            else
+            {
+                but.Visibility = System.Windows.Visibility.Collapsed;
+                but.Image = null;
+                but.PressedImage = null;
+            }
+        }
+
         private void showInternetLinkWindow(string link)
         {
             InternetLinkReader linkReader = null;
@@ -597,22 +674,11 @@ namespace CrossConnect
             int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
             string colorDir = lightColorCount >= 2 ? "light" : "dark";
 
-            if (this.state != null && this.state.source != null && this.state.source.IsPageable)
-            {
-                butPrevious.Image = this.GetImage("/Images/" + colorDir + "/appbar.prev.rest.png");
-                butPrevious.PressedImage = this.GetImage("/Images/" + colorDir + "/appbar.prev.rest.press.png");
-
-                butNext.Image = this.GetImage("/Images/" + colorDir + "/appbar.next.rest.png");
-                butNext.PressedImage = this.GetImage("/Images/" + colorDir + "/appbar.next.rest.press.png");
-            }
-            else
-            {
-                butPrevious.Image = null;
-                butPrevious.PressedImage = null;
-
-                butNext.Image = null;
-                butNext.PressedImage = null;
-            }
+            bool isPrevNext = this.state != null && this.state.source != null && this.state.source.IsPageable;
+            SetButtonVisibility(butPrevious, isPrevNext, "/Images/" + colorDir + "/appbar.prev.rest.png", "/Images/" + colorDir + "/appbar.prev.rest.press.png");
+            SetButtonVisibility(butNext, isPrevNext, "/Images/" + colorDir + "/appbar.next.rest.png", "/Images/" + colorDir + "/appbar.next.rest.press.png");
+            bool IsHearable = this.state != null && this.state.source != null && this.state.source.IsHearable;
+            SetButtonVisibility(butHear, IsHearable, "/Images/" + colorDir + "/appbar.speaker.png", "/Images/" + colorDir + "/appbar.next.speaker.pressed.png");
 
             butMenu.Image = this.GetImage("/Images/" + colorDir + "/appbar.menu.rest.png");
             butMenu.PressedImage = this.GetImage("/Images/" + colorDir + "/appbar.menu.rest.pressed.png");
@@ -628,14 +694,14 @@ namespace CrossConnect
 
             if (this.state != null && this.state.source != null && !this.state.source.IsSynchronizeable)
             {
-                butLink.Image = null;
-                butLink.PressedImage = null;
+                SetButtonVisibility(butLink, false, "", "");
             }
 
             if (this.state != null && this.state.source != null)
             {
                 this.state.source.RegisterUpdateEvent(this.Source_Changed, true);
             }
+            CalculateTitleTextWidth();
         }
 
         private void WebBrowser1_ScriptNotify(object sender, Microsoft.Phone.Controls.NotifyEventArgs e)
@@ -694,7 +760,7 @@ namespace CrossConnect
             string fullName;
             string titleText;
             this.state.source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
-            title.Text = titleText + " - " + this.state.bibleToLoad;
+            title.Text = titleText + " - " + (string.IsNullOrEmpty(this.state.bibleDescription)?this.state.bibleToLoad:this.state.bibleDescription) + "                                                               ";
         }
 
         #endregion Methods
@@ -716,6 +782,8 @@ namespace CrossConnect
         {
             #region Fields
 
+            [DataMember]
+            public string bibleDescription = string.Empty;
             [DataMember]
             public string bibleToLoad = string.Empty;
             [DataMember]

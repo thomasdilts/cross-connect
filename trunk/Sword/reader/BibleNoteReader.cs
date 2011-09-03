@@ -56,6 +56,14 @@ namespace SwordBackend
 
         #region Properties
 
+        public override bool IsHearable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public override bool IsLocalChangeDuringLink
         {
             get
@@ -154,6 +162,8 @@ namespace SwordBackend
         public bool showVerseNumber = true;
         [DataMember]
         public bool smallVerseNumbers = true;
+        [DataMember]
+        public string soundLink = @"http://www.chaniel.se/crossconnect/bibles/talking/getabsolutechapter.php?chapternum={0}";
         [DataMember]
         public bool wordsOfChristRed = false;
 

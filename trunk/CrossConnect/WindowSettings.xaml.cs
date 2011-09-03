@@ -117,7 +117,7 @@ namespace CrossConnect
                     SwordBook bookSelected;
                     GetSelectedData(out selectedType, out bookSelected);
 
-                    App.AddWindow(bookSelected.sbmd.internalName, selectedType, sliderTextSize.Value);
+                    App.AddWindow(bookSelected.sbmd.internalName, bookSelected.sbmd.Name, selectedType, sliderTextSize.Value);
                     //if (NavigationService.CanGoBack)
                     //{
                     //    NavigationService.GoBack();
@@ -238,8 +238,9 @@ namespace CrossConnect
             {
                 state.windowType = selectedType;
                 state.bibleToLoad = bookSelected.sbmd.internalName;
+                state.bibleDescription = bookSelected.sbmd.Name;
                 state.htmlFontSize = this.sliderTextSize.Value;
-                App.openWindows[(int)openWindowIndex].Initialize(state.bibleToLoad, state.windowType);
+                App.openWindows[(int)openWindowIndex].Initialize(state.bibleToLoad, state.bibleDescription, state.windowType);
             }
             else
             {

@@ -66,6 +66,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AutoRotatePage.cs" />
+    <Compile Include="SelectToPlay.xaml.cs">
+      <DependentUpon>SelectToPlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="InstallManager.cs" />
     <Compile Include="MorphologyTranslator.cs" />
     <Compile Include="readers\DailyPlanReader.cs" />
@@ -122,6 +125,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BrowserTitledWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SelectToPlay.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -274,6 +281,18 @@
     <EmbeddedResource Include="Properties\crossc_ur.xml" />
     <EmbeddedResource Include="Properties\crossc_vi.xml" />
     <EmbeddedResource Include="Properties\crossc_iw.xml" />
+    <Content Include="Images\dark\appbar.speaker.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\dark\appbar.speaker.pressed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\light\appbar.speaker.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\light\appbar.speaker.pressed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <EmbeddedResource Include="Properties\regex.html" />

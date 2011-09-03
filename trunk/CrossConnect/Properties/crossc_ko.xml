@@ -129,6 +129,7 @@
 <string key="Select the language">언어를 선택하십시오</string>
 <string key="Select the server">서버를 선택하십시오</string>
 <string key="Select the window type">창 유형을 선택</string>
+<string key="Select what you want to hear">당신이 듣고 싶은 무엇을 선택</string>
 <string key="Send mail">메일 보내기</string>
 <string key="Send message">메시지 보내기</string>
 <string key="Settings">설정</string>
@@ -142,6 +143,7 @@
 <string key="Show the words of Jesus in red">빨간색으로 예수님의 말씀을 표시</string>
 <string key="Show word morphology">단어 형태보기</string>
 <string key="Start each verse on a new line">새 행에 각 구절을 시작</string>
+<string key="Talking bible internet link">토킹 성경 인터넷 링크</string>
 <string key="Text size">텍스트 크기</string>
 <string key="The New Testement">뉴 Testement</string>
 <string key="The New Testement, Psalms, Proverbs">뉴 Testement, 시편, 잠</string>

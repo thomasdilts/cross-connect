@@ -296,6 +296,14 @@ namespace SwordBackend
             }
         }
 
+        public virtual bool IsHearable
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public virtual bool IsLocalChangeDuringLink
         {
             get
