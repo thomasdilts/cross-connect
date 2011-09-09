@@ -67,6 +67,7 @@ namespace CrossConnect
                 {
                     string src = string.Empty;
                     string name = string.Empty;
+                    this.MsgFromServer.Text = "";
                     // Parse the file and get each of the nodes.
                     while (reader.Read())
                     {
@@ -89,6 +90,10 @@ namespace CrossConnect
                                     }
                                     while (reader.MoveToNextAttribute());
                                 }
+                                else if (reader.Name.ToLower().Equals("message"))
+                                {
+                                    name = string.Empty;
+                                }
                                 break;
                             case XmlNodeType.EndElement:
                                 if (reader.Name.ToLower().Equals("source") && !string.IsNullOrEmpty(src) && !string.IsNullOrEmpty(name))
@@ -100,6 +105,11 @@ namespace CrossConnect
                                     block.Margin = new Thickness(0,0,0,10);
                                     block.TextWrapping = TextWrapping.Wrap;
                                     SelectList.Items.Add(block);
+                                }
+                                else if (reader.Name.ToLower().Equals("message"))
+                                {
+                                    this.MsgFromServer.Text = name;
+                                    name = string.Empty;
                                 }
                                 break;
                             case XmlNodeType.Text:
@@ -124,7 +134,7 @@ namespace CrossConnect
             object chapterToHear;
             if (PhoneApplicationService.Current.State.TryGetValue("ChapterToHear", out chapterToHear))
             {
-                string url = string.Format(App.displaySettings.soundLink, (int)chapterToHear);
+                string url = string.Format(App.displaySettings.soundLink, (int)chapterToHear,Translations.isoLanguageCode);
                 try
                 {
                     Uri source = new Uri(url);

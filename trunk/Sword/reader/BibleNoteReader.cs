@@ -163,7 +163,7 @@ namespace SwordBackend
         [DataMember]
         public bool smallVerseNumbers = true;
         [DataMember]
-        public string soundLink = @"http://www.chaniel.se/crossconnect/bibles/talking/getabsolutechapter.php?chapternum={0}";
+        public string soundLink = @"http://www.chaniel.se/crossconnect/bibles/talking/getabsolutechapter.php?chapternum={0}&language={1}";
         [DataMember]
         public bool wordsOfChristRed = false;
 
