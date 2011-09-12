@@ -171,9 +171,32 @@ namespace SwordBackend
 
         #region Methods
 
+        public void CheckForNullAndFix()
+        {
+            DisplaySettings fixer = new DisplaySettings();
+            if (soundLink == null)
+            {
+                soundLink = fixer.soundLink;
+            }
+            if (greekDictionaryLink == null)
+            {
+                greekDictionaryLink = fixer.greekDictionaryLink;
+            }
+            if (hebrewDictionaryLink == null)
+            {
+                hebrewDictionaryLink = fixer.hebrewDictionaryLink;
+            }
+            if (customBibleDownloadLinks == null)
+            {
+                customBibleDownloadLinks = fixer.customBibleDownloadLinks;
+            }
+
+        }
+
         public DisplaySettings clone()
         {
             DisplaySettings cloned = new DisplaySettings();
+            cloned.customBibleDownloadLinks = customBibleDownloadLinks;
             cloned.eachVerseNewLine = eachVerseNewLine;
             cloned.greekDictionaryLink = greekDictionaryLink;
             cloned.hebrewDictionaryLink = hebrewDictionaryLink;
@@ -187,6 +210,7 @@ namespace SwordBackend
             cloned.showStrongsNumbers = showStrongsNumbers;
             cloned.showVerseNumber = showVerseNumber;
             cloned.smallVerseNumbers = smallVerseNumbers;
+            cloned.soundLink = soundLink;
             cloned.wordsOfChristRed = wordsOfChristRed;
             return cloned;
         }

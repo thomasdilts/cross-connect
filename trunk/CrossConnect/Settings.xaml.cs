@@ -21,6 +21,8 @@
 namespace CrossConnect
 {
     using System.Windows;
+    using System;
+    using System.Diagnostics;
 
     public partial class Settings : AutoRotatePage
     {
@@ -79,22 +81,38 @@ namespace CrossConnect
             captionCustomBibleDownloadLink.Text = Translations.translate("Custom bible download addresses");
             captionSoundLink.Text = Translations.translate("Talking bible internet link");
 
-            highlightMarkings.IsChecked = App.displaySettings.highlightMarkings;
-            wordsOfChristRed.IsChecked = App.displaySettings.wordsOfChristRed;
-            smallVerseNumbers.IsChecked = App.displaySettings.smallVerseNumbers;
-            showNotePositions.IsChecked = App.displaySettings.showNotePositions;
-            showBookName.IsChecked = App.displaySettings.showBookName;
-            showChapterNumber.IsChecked = App.displaySettings.showChapterNumber;
-            showVerseNumber.IsChecked = App.displaySettings.showVerseNumber;
-            showStrongsNumbers.IsChecked = App.displaySettings.showStrongsNumbers;
-            showMorphology.IsChecked = App.displaySettings.showMorphology;
-            showHeadings.IsChecked = App.displaySettings.showHeadings;
-            eachVerseNewLine.IsChecked = App.displaySettings.eachVerseNewLine;
-            showAddedNotesByChapter.IsChecked = App.displaySettings.showAddedNotesByChapter;
-            hebrewDictionaryLink.Text = App.displaySettings.hebrewDictionaryLink;
-            greekDictionaryLink.Text = App.displaySettings.greekDictionaryLink;
-            customBibleDownloadLink.Text = App.displaySettings.customBibleDownloadLinks;
-            soundLink.Text = App.displaySettings.soundLink;
+            bool successfulInitialize = false;
+            while (!successfulInitialize)
+            {
+                try
+                {
+                    highlightMarkings.IsChecked = App.displaySettings.highlightMarkings;
+                    wordsOfChristRed.IsChecked = App.displaySettings.wordsOfChristRed;
+                    smallVerseNumbers.IsChecked = App.displaySettings.smallVerseNumbers;
+                    showNotePositions.IsChecked = App.displaySettings.showNotePositions;
+                    showBookName.IsChecked = App.displaySettings.showBookName;
+                    showChapterNumber.IsChecked = App.displaySettings.showChapterNumber;
+                    showVerseNumber.IsChecked = App.displaySettings.showVerseNumber;
+                    showStrongsNumbers.IsChecked = App.displaySettings.showStrongsNumbers;
+                    showMorphology.IsChecked = App.displaySettings.showMorphology;
+                    showHeadings.IsChecked = App.displaySettings.showHeadings;
+                    eachVerseNewLine.IsChecked = App.displaySettings.eachVerseNewLine;
+                    showAddedNotesByChapter.IsChecked = App.displaySettings.showAddedNotesByChapter;
+                    hebrewDictionaryLink.Text = App.displaySettings.hebrewDictionaryLink;
+                    greekDictionaryLink.Text = App.displaySettings.greekDictionaryLink;
+                    customBibleDownloadLink.Text = App.displaySettings.customBibleDownloadLinks;
+                    soundLink.Text = App.displaySettings.soundLink;
+
+                    successfulInitialize = true;
+                }
+                catch (Exception eee)
+                {
+                    Debug.WriteLine("null in probably: " + eee.Message + "; " + eee.StackTrace);
+                    //we got some null value in that crashes everything.  Lets just reset it all.
+                    //we could try to repair it but lets take no chances.
+                    App.displaySettings = new SwordBackend.DisplaySettings();
+                }
+            }
         }
 
         private void butSetDefault_Click(object sender, RoutedEventArgs e)

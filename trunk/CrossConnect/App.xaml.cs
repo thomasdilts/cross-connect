@@ -392,6 +392,8 @@ namespace CrossConnect
                 {
                     displaySettings = new DisplaySettings();
                 }
+
+                displaySettings.CheckForNullAndFix();
             }
             catch (Exception ee)
             {
