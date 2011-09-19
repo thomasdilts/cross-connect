@@ -190,7 +190,6 @@ namespace SwordBackend
             {
                 customBibleDownloadLinks = fixer.customBibleDownloadLinks;
             }
-
         }
 
         public DisplaySettings clone()

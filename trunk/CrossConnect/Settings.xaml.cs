@@ -20,9 +20,9 @@
 /// <author>Thomas Dilts</author>
 namespace CrossConnect
 {
-    using System.Windows;
     using System;
     using System.Diagnostics;
+    using System.Windows;
 
     public partial class Settings : AutoRotatePage
     {
