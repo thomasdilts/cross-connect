@@ -60,6 +60,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid x:Name="DocumentPanel" Grid.Row="0">
@@ -73,25 +74,23 @@
                     <Button Content="Get bible list" Grid.Row="0" Grid.Column="1"  Name="butDownload"  Click="butDownload_Click" />
             </Grid>
             <ProgressBar Grid.Row="1" Name="progressBarGetBookList" Height="60" />
-            <Grid x:Name="LanguagePanel" Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <toolkit:ListPicker Name="selectLangauge" SelectionChanged="selectLangauge_SelectionChanged" Grid.Column="0" Grid.Row="0"  Header="Select the language">
+                <toolkit:ListPicker  Grid.Row="2" Name="selectType" SelectionChanged="selectType_SelectionChanged"  Header="Download type">
                     <sys:String>dark</sys:String>
                 </toolkit:ListPicker>
-            </Grid>
+            
+                <toolkit:ListPicker  Grid.Row="3" Name="selectLangauge" SelectionChanged="selectLangauge_SelectionChanged"  Header="Select the language">
+                    <sys:String>dark</sys:String>
+                </toolkit:ListPicker>
 
-                <toolkit:ListPicker Name="selectBook"  Grid.Column="0" Grid.Row="3"  Header="Select the bible">
-                <sys:String>dark</sys:String>
-            </toolkit:ListPicker>
-            <Grid x:Name="BookPanel" Grid.Row="4">
+                <toolkit:ListPicker Name="selectBook"  Grid.Row="4"  Header="Select the bible">
+                    <sys:String>dark</sys:String>
+                </toolkit:ListPicker>
+            <Grid x:Name="BookPanel" Grid.Row="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                    <Button Content="Download bible" Grid.Row="5" Grid.Column="1"  Name="butDownloadBook"  Click="butDownloadBook_Click" />
+                    <Button Content="Download bible" Grid.Row="6" Grid.Column="1"  Name="butDownloadBook"  Click="butDownloadBook_Click" />
             </Grid>
             <ProgressBar Grid.Row="5" Name="progressBarGetBook" Height="60" />
         </Grid>

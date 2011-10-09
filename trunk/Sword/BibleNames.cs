@@ -62,7 +62,7 @@ namespace SwordBackend
                     stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_en.xml");
                 }
             }
-            bool isRTL = isoLang2digitCode.Equals("he") || isoLang2digitCode.Equals("ar") || isoLang2digitCode.Equals("ar_EG") || isoLang2digitCode.Equals("fa");
+            bool isRTL = isoLang2digitCode.Equals("iw") || isoLang2digitCode.Equals("he") || isoLang2digitCode.Equals("ar") || isoLang2digitCode.Equals("ar_EG") || isoLang2digitCode.Equals("fa");
             int numberBadShortNames = 0;
             using (XmlReader reader = XmlReader.Create(stream))
             {

@@ -137,6 +137,10 @@ namespace CrossConnect
             selectLangauge.Header=Translations.translate("Select the language");
             selectBook.Header=Translations.translate("Select the bible");
             butDownloadBook.Content = Translations.translate("Download bible");
+            selectType.Header = Translations.translate("Select type");
+
+            selectType.Items.Add(Translations.translate("Bibles"));
+            selectType.Items.Add(Translations.translate("Commentaries"));
 
             butDownload.Visibility = System.Windows.Visibility.Visible;
             butDownloadBook.Visibility = System.Windows.Visibility.Collapsed;
@@ -188,7 +192,9 @@ namespace CrossConnect
                 foreach (var book in webInst.entries)
                 {
                     Language lang = (Language)book.Value.sbmd.getProperty(ConfigEntryType.LANG);
-                    if (lang.Name.Equals(selectLangauge.SelectedItem) && ((string)book.Value.sbmd.getProperty(ConfigEntryType.MOD_DRV)).ToUpper().Equals("ZTEXT"))
+                    if (lang.Name.Equals(selectLangauge.SelectedItem) && (
+                        (selectType.SelectedItem.Equals(Translations.translate("Bibles")) && ((string)book.Value.sbmd.getProperty(ConfigEntryType.MOD_DRV)).ToUpper().Equals("ZTEXT"))
+                        || (selectType.SelectedItem.Equals(Translations.translate("Commentaries")) && ((string)book.Value.sbmd.getProperty(ConfigEntryType.MOD_DRV)).ToUpper().Equals("ZCOM"))))
                     {
                         allBooks[book.Value.sbmd.Name] = book.Value.sbmd.Name;
                     }
@@ -233,6 +239,8 @@ namespace CrossConnect
             });
         }
 
+
+
         private void webInst_progress_completed_unzipped(object sender, OpenReadCompletedEventArgs e)
         {
             if (sender != null)
@@ -257,7 +265,12 @@ namespace CrossConnect
                         Language lang = (Language)book.Value.sbmd.getProperty(ConfigEntryType.LANG);
                         allLanguages[lang.Name] = lang;
                     }
-
+                    if (((string)book.Value.sbmd.getProperty(ConfigEntryType.MOD_DRV)).ToUpper().Equals("ZCOM"))
+                    {
+                        bookcount++;
+                        Language lang = (Language)book.Value.sbmd.getProperty(ConfigEntryType.LANG);
+                        allLanguages[lang.Name] = lang;
+                    }
                 }
                 var list = allLanguages.OrderBy(t => t.Key).ToList();
                 foreach (var x in list)
@@ -279,5 +292,10 @@ namespace CrossConnect
         }
 
         #endregion Methods
+
+        private void selectType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

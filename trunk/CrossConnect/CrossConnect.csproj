@@ -16,7 +16,7 @@
     <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <SilverlightApplication>true</SilverlightApplication>
-    <SupportedCultures>af-AF;ar-AR;az-AZ;be-BE;bg-BG;cs-CS;da-DA;de-DE;el-EL;es-ES;et-ET;fa-FA;fi-FI;fr-FR;hi-HI;hr-HR;hu-HU;hy-HY;id-ID;is-IS;it-IT;iw-IW;ja-JA;ko-KO;lt-LT;lv-LV;mk-MK;ms-MS;mt-MT;nl-NL;no-NO;pl-PL;pt-PT;ro-RO;ru-RU;sk-SK;sl-SL;sq-SQ;sr-SR;sv-SV;sw-SW;th-TH;tl-TL;tr-TR;uk-UK;ur-UR;vi-VI;zh-CN;zh-TW</SupportedCultures>
+    <SupportedCultures>fr-FR;es-ES;it-IT;de-DE;af-AF;ar-AR;az-AZ;be-BE;bg-BG;cs-CS;da-DA;el-EL;et-ET;fa-FA;fi-FI;hi-HI;hr-HR;hu-HU;hy-HY;id-ID;is-IS;iw-IW;ja-JA;ko-KO;lt-LT;lv-LV;mk-MK;ms-MS;mt-MT;nl-NL;no-NO;pl-PL;pt-PT;ro-RO;ru-RU;sk-SK;sl-SL;sq-SQ;sr-SR;sv-SV;sw-SW;th-TH;tl-TL;tr-TR;uk-UK;ur-UR;vi-VI;zh-CN;zh-TW</SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
     <XapFilename>CrossConnect.xap</XapFilename>
@@ -278,9 +278,7 @@
     <EmbeddedResource Include="Resources\AppResources.bg-BG.resx" />
     <EmbeddedResource Include="Resources\AppResources.cs-CS.resx" />
     <EmbeddedResource Include="Resources\AppResources.da-DA.resx" />
-    <EmbeddedResource Include="Resources\AppResources.de-DE.resx" />
     <EmbeddedResource Include="Resources\AppResources.el-EL.resx" />
-    <EmbeddedResource Include="Resources\AppResources.es-ES.resx" />
     <EmbeddedResource Include="Properties\crossc_az.xml" />
     <EmbeddedResource Include="Properties\crossc_fa.xml" />
     <EmbeddedResource Include="Properties\crossc_ro.xml" />
@@ -428,14 +426,12 @@
     <EmbeddedResource Include="Resources\AppResources.et-ET.resx" />
     <EmbeddedResource Include="Resources\AppResources.fa-FA.resx" />
     <EmbeddedResource Include="Resources\AppResources.fi-FI.resx" />
-    <EmbeddedResource Include="Resources\AppResources.fr-FR.resx" />
     <EmbeddedResource Include="Resources\AppResources.hi-HI.resx" />
     <EmbeddedResource Include="Resources\AppResources.hr-HR.resx" />
     <EmbeddedResource Include="Resources\AppResources.hu-HU.resx" />
     <EmbeddedResource Include="Resources\AppResources.hy-HY.resx" />
     <EmbeddedResource Include="Resources\AppResources.id-ID.resx" />
     <EmbeddedResource Include="Resources\AppResources.is-IS.resx" />
-    <EmbeddedResource Include="Resources\AppResources.it-IT.resx" />
     <EmbeddedResource Include="Resources\AppResources.iw-IW.resx" />
     <EmbeddedResource Include="Resources\AppResources.ja-JA.resx" />
     <EmbeddedResource Include="Resources\AppResources.ko-KO.resx" />

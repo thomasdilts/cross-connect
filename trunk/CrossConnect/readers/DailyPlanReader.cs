@@ -155,6 +155,7 @@ namespace CrossConnect.readers
 
         public override void moveNext()
         {
+            base.serial.posVerseNum = 0;
             int count = DailyPlans.zAllPlans[App.dailyPlan.planNumber].GetUpperBound(0) + 1;
             App.dailyPlan.planDayNumber++;
             if (App.dailyPlan.planDayNumber>=count)
@@ -165,6 +166,7 @@ namespace CrossConnect.readers
 
         public override void movePrevious()
         {
+            base.serial.posVerseNum = 0;
             int count = DailyPlans.zAllPlans[App.dailyPlan.planNumber].GetUpperBound(0) + 1;
             App.dailyPlan.planDayNumber--;
             if (App.dailyPlan.planDayNumber < 0)

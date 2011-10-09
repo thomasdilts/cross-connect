@@ -213,6 +213,12 @@ namespace SwordBackend
         public List<ChapterPos> chapters = new List<ChapterPos>();
         [DataMember]
         public BibleZtextReaderSerialData serial = new BibleZtextReaderSerialData(false,"","",0,0);
+        private enum BLOCK_TYPE
+        {
+            BOOK='b',
+            CHAPTER='c'
+        };
+        private BLOCK_TYPE blockType=BLOCK_TYPE.BOOK;
 
         /// <summary> Constant for the number of verses in the Bible  </summary>
         internal const short VERSES_IN_BIBLE = 31102;
@@ -646,6 +652,7 @@ namespace SwordBackend
         public virtual void moveNext()
         {
             serial.posChaptNum++;
+            serial.posVerseNum = 0;
             if (serial.posChaptNum >= chapters.Count)
             {
                 serial.posChaptNum = 0;
@@ -669,6 +676,7 @@ namespace SwordBackend
         public virtual void movePrevious()
         {
             serial.posChaptNum--;
+            serial.posVerseNum = 0;
             if (serial.posChaptNum < 0)
             {
                 serial.posChaptNum = chapters.Count - 1;
@@ -802,40 +810,49 @@ namespace SwordBackend
         {
             Debug.WriteLine("getChapterBytes start");
             IsolatedStorageFile fileStorage = IsolatedStorageFile.GetUserStoreForApplication();
+            if (chapterNumber >= chapters.Count)
+            {
+                chapterNumber = chapters.Count - 1;
+            }
+            if (chapterNumber < 0)
+            {
+                chapterNumber = 0;
+            }
             ChapterPos versesForChapterPositions = chapters[chapterNumber];
-            BookPos bookPos = bookPositions[versesForChapterPositions.booknum];
+            BookPos bookPos = null;
+            long blockStartPos = 0;
+            long blockLen = 0;
+            if (blockType == BLOCK_TYPE.BOOK)
+            {
+                bookPos=bookPositions[versesForChapterPositions.booknum];
+                blockStartPos = versesForChapterPositions.startPos;
+                blockLen = versesForChapterPositions.length;
+            }
+            else //BLOCK_TYPE.CHAPTER
+            {
+                bookPos = bookPositions[chapterNumber];
+                blockStartPos = 0;
+                blockLen = versesForChapterPositions.length;
+            }
 
             FileStream fs = null;
-            if (chapterNumber < CHAPTERS_IN_OT)
+            string fileName = (chapterNumber < CHAPTERS_IN_OT) ? "ot." : "nt.";
+            try
             {
-                try
-                {
-                    fs = fileStorage.OpenFile(serial.path + "ot.bzz", FileMode.Open, FileAccess.Read);
-                }
-                catch (Exception)
-                {
-                    // does not exist
-                    return System.Text.UTF8Encoding.UTF8.GetBytes("Does not exist");
-                }
+                fs = fileStorage.OpenFile(serial.path + fileName + ((char)blockType) + "zz", FileMode.Open, FileAccess.Read);
             }
-            else
+            catch (Exception)
             {
-                try
-                {
-                    fs = fileStorage.OpenFile(serial.path + "nt.bzz", FileMode.Open, FileAccess.Read);
-                }
-                catch (Exception)
-                {
-                    // does not exist
-                    return System.Text.UTF8Encoding.UTF8.GetBytes("Does not exist");
-                }
+                // does not exist
+                return System.Text.UTF8Encoding.UTF8.GetBytes("Does not exist");
             }
-
             // adjust the start postion of the stream to where this book begins.
             // we must read the entire book up to the chapter we want even though we just want one chapter.
+            
             fs.Position = bookPos.startPos;
+
             ZInputStream zipStream = new ZInputStream(fs);
-            byte[] chapterBuffer = new byte[versesForChapterPositions.length];
+            byte[] chapterBuffer = new byte[blockLen];
             int totalBytesRead = 0;
             int totalBytesCopied = 0;
             int len = 0;
@@ -862,7 +879,7 @@ namespace SwordBackend
                     else
                     {
                         totalBytesRead += len;
-                        if (totalBytesRead >= versesForChapterPositions.startPos)
+                        if (totalBytesRead >= blockStartPos)
                         {
                             // we are now inside of where the chapter we want is so we need to start saving it.
                             int startOffset = 0;
@@ -870,15 +887,15 @@ namespace SwordBackend
                             {
                                 // but our actual chapter might begin in the middle of the buffer.  Find the offset from the
                                 // beginning of the buffer.
-                                startOffset = len - (totalBytesRead - (int)versesForChapterPositions.startPos);
+                                startOffset = len - (totalBytesRead - (int)blockStartPos);
                             }
                             int i;
-                            for (i = totalBytesCopied; i < versesForChapterPositions.length && (i - totalBytesCopied) < (len - startOffset); i++)
+                            for (i = totalBytesCopied; i < blockLen && (i - totalBytesCopied) < (len - startOffset); i++)
                             {
                                 chapterBuffer[i] = buffer[i - totalBytesCopied + startOffset];
                             }
                             totalBytesCopied += (len - startOffset);
-                            if (totalBytesCopied >= versesForChapterPositions.length)
+                            if (totalBytesCopied >= blockLen)
                             {
                                 // we are done. no more reason to read anymore of this book stream, just get out.
                                 break;
@@ -1325,9 +1342,18 @@ namespace SwordBackend
                                 {
                                     text = reader.Value;
                                 }
-                                catch (Exception)
+                                catch (Exception e1)
                                 {
-                                    text = "*error*";
+                                    System.Diagnostics.Debug.WriteLine("error in text: " + e1.Message);
+                                    try
+                                    {
+                                        text = reader.Value.ToString();
+                                    }
+                                    catch (Exception e2)
+                                    {
+                                        System.Diagnostics.Debug.WriteLine("second error in text: " + e2.Message);
+                                        text = "*error*";
+                                    } 
                                 }
                                 if ((!(noTitles || !displaySettings.showHeadings) || !isInTitle) && text.Length>0)
                                 {
@@ -1439,18 +1465,24 @@ namespace SwordBackend
             bookPositions = new List<BookPos>();
             chapters = new List<ChapterPos>();
             FileStream fs = null;
+            blockType = BLOCK_TYPE.BOOK;
             // read the Sword index to the ot bzz file which is the bzs file
             try
             {
-                fs = fileStorage.OpenFile(serial.path + "ot.bzs", FileMode.Open, FileAccess.Read);
-                for (int i = 0; i < BOOKS_IN_OT; i++)
+                if (fileStorage.FileExists(serial.path + "ot.czs") || fileStorage.FileExists(serial.path + "nt.czs"))
+                {
+                    blockType = BLOCK_TYPE.CHAPTER;
+                }
+                fs = fileStorage.OpenFile(serial.path + "ot." + ((char)blockType) + "zs", FileMode.Open, FileAccess.Read);
+                int numBooks = (blockType == BLOCK_TYPE.BOOK) ? BOOKS_IN_OT : CHAPTERS_IN_OT;
+                for (int i = 0; i < numBooks; i++)
                 {
                     bookPositions.Add(new BookPos(getintFromStream(fs), getintFromStream(fs), getintFromStream(fs)));
                 }
                 fs.Close();
 
                 // read the verse holder for versification bzv file old testememt
-                fs = fileStorage.OpenFile(serial.path + "ot.bzv", FileMode.Open, FileAccess.Read);
+                fs = fileStorage.OpenFile(serial.path + "ot." + ((char)blockType) + "zv", FileMode.Open, FileAccess.Read);
                 // dump the first 4 posts
                 for (int i = 0; i < 4; i++)
                 {
@@ -1458,7 +1490,7 @@ namespace SwordBackend
                     long startPos = getInt48FromStream(fs);
                     int length = getShortIntFromStream(fs);
                 }
-
+                int absoluteChapterNumber = 0;
                 // now start getting old testament
                 for (int i = 0; i < BOOKS_IN_OT; i++)
                 {
@@ -1483,7 +1515,8 @@ namespace SwordBackend
                             {
                                 chapterStartPos = startPos;
                                 chapt = new ChapterPos(chapterStartPos, i, j);
-                                bookPositions[i].chapters.Add(chapt);
+                                int bokPos = (blockType == BLOCK_TYPE.BOOK) ? i : absoluteChapterNumber;
+                                bookPositions[bokPos].chapters.Add(chapt);
                             }
                             if (booknum == 0 && startPos == 0 && length == 0)
                             {
@@ -1503,6 +1536,7 @@ namespace SwordBackend
                         getByteFromStream(fs);
                         long x = getInt48FromStream(fs);
                         getShortIntFromStream(fs);
+                        absoluteChapterNumber++;
                     }
                     // dump a post for the book break
                     getByteFromStream(fs);
@@ -1515,10 +1549,12 @@ namespace SwordBackend
             {
                 // failed to load old testement.  Maybe it does not exist.
                 // fill with fake data
-                for (int i = 0; i < BOOKS_IN_OT; i++)
+                int numBooks = (blockType == BLOCK_TYPE.BOOK) ? BOOKS_IN_OT : CHAPTERS_IN_OT;
+                for (int i = 0; i < numBooks; i++)
                 {
                     bookPositions.Add(new BookPos(0, 0, 0));
                 }
+                int absoluteChapterNumber = 0;
                 for (int i = 0; i < BOOKS_IN_OT; i++)
                 {
                     for (int j = 0; j < CHAPTERS_IN_BOOK[i]; j++)
@@ -1531,21 +1567,24 @@ namespace SwordBackend
                         // update the chapter length now that we know it
                         chapt.length =0;
                         chapters.Add(chapt);
+                        int bokPos = (blockType == BLOCK_TYPE.BOOK) ? i : absoluteChapterNumber;
                         bookPositions[i].chapters.Add(chapt);
+                        absoluteChapterNumber++;
                     }
                 }
             }
             try
             {
                 // do it for the new testement
-                fs = fileStorage.OpenFile(serial.path + "nt.bzs", FileMode.Open, FileAccess.Read);
+                fs = fileStorage.OpenFile(serial.path + "nt." + ((char)blockType) + "zs", FileMode.Open, FileAccess.Read);
                 int skippedFirstIndexAdjustment = 0;
+                int numBooks = (blockType == BLOCK_TYPE.BOOK) ? BOOKS_IN_NT : CHAPTERS_IN_NT;
                 for (int i = 0; i < (BOOKS_IN_NT + skippedFirstIndexAdjustment); i++)
                 {
-                    long startPos=getintFromStream(fs);
-                    long length=getintFromStream(fs);
-                    long unused=getintFromStream(fs);
-                    if(unused!=SKIP_BOOK_FLAG || i!=0)
+                    long startPos = getintFromStream(fs);
+                    long length = getintFromStream(fs);
+                    long unused = getintFromStream(fs);
+                    if (unused != SKIP_BOOK_FLAG || i != 0)
                     {
                         bookPositions.Add(new BookPos(startPos, length, unused));
                         skippedFirstIndexAdjustment = 1;
@@ -1554,7 +1593,7 @@ namespace SwordBackend
                 fs.Close();
 
                 // read the verse holder for versification bzv file new testememt
-                fs = fileStorage.OpenFile(serial.path + "nt.bzv", FileMode.Open, FileAccess.Read);
+                fs = fileStorage.OpenFile(serial.path + "nt." + ((char)blockType) + "zv", FileMode.Open, FileAccess.Read);
                 // dump the first 4 posts
                 for (int i = 0; i < 4; i++)
                 {
@@ -1562,7 +1601,7 @@ namespace SwordBackend
                     long startPos = getInt48FromStream(fs);
                     int length = getShortIntFromStream(fs);
                 }
-
+                int absoluteChapterNumber = CHAPTERS_IN_OT;
                 // now start getting new testament
                 for (int i = BOOKS_IN_OT; i < (BOOKS_IN_OT + BOOKS_IN_NT); i++)
                 {
@@ -1587,7 +1626,8 @@ namespace SwordBackend
                             {
                                 chapterStartPos = startPos;
                                 chapt = new ChapterPos(chapterStartPos, i, j);
-                                bookPositions[i].chapters.Add(chapt);
+                                int bokPos = (blockType == BLOCK_TYPE.BOOK) ? i : absoluteChapterNumber;
+                                bookPositions[bokPos].chapters.Add(chapt);
                             }
                             if (booknum == 0 && startPos == 0 && length == 0)
                             {
@@ -1607,6 +1647,7 @@ namespace SwordBackend
                         getByteFromStream(fs);
                         long x = getInt48FromStream(fs);
                         getShortIntFromStream(fs);
+                        absoluteChapterNumber++;
                     }
                     // dump a post for the book break
                     getByteFromStream(fs);
@@ -1619,10 +1660,12 @@ namespace SwordBackend
             {
                 // failed to load new testement.  Maybe it does not exist.
                 // fill with fake data
-                for (int i = 0; i < BOOKS_IN_NT; i++)
+                int numBooks = (blockType == BLOCK_TYPE.BOOK) ? BOOKS_IN_NT : CHAPTERS_IN_NT;
+                for (int i = 0; i < numBooks; i++)
                 {
                     bookPositions.Add(new BookPos(0, 0, 0));
                 }
+                int absoluteChapterNumber = CHAPTERS_IN_OT;
                 for (int i = BOOKS_IN_OT; i < (BOOKS_IN_OT + BOOKS_IN_NT); i++)
                 {
                     for (int j = 0; j < CHAPTERS_IN_BOOK[i]; j++)
@@ -1635,7 +1678,9 @@ namespace SwordBackend
                         // update the chapter length now that we know it
                         chapt.length = 0;
                         chapters.Add(chapt);
-                        bookPositions[i].chapters.Add(chapt);
+                        int bokPos = (blockType == BLOCK_TYPE.BOOK) ? i : absoluteChapterNumber;
+                        bookPositions[bokPos].chapters.Add(chapt);
+                        absoluteChapterNumber++;
                     }
                 }
             }
