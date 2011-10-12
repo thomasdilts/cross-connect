@@ -23,6 +23,7 @@ namespace CrossConnect
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Collections.Generic;
 
     public partial class RemoveBibles : AutoRotatePage
     {
@@ -46,7 +47,8 @@ namespace CrossConnect
         private void LoadList()
         {
             SelectList.Items.Clear();
-            foreach (var book in App.installedBibles.installedBibles)
+            Dictionary<string, SwordBook> BiblesAndCommentaries = App.installedBibles.installedBibles.Concat(App.installedBibles.installedCommentaries).ToDictionary(x => x.Key, x => x.Value);
+            foreach (var book in BiblesAndCommentaries)
             {
                 TextBlock block = new TextBlock();
                 block.Text = book.Value.Name;
@@ -69,7 +71,21 @@ namespace CrossConnect
                 return;
             }
             isInSelectionChanged = true;
-            if (App.installedBibles.installedBibles.Count == 1)
+            SwordBook foundBook = null;
+            string foundKey = "";
+            string index = (string)((TextBlock)e.AddedItems[0]).Tag;
+            Dictionary<string, SwordBook> BiblesAndCommentaries = App.installedBibles.installedBibles.Concat(App.installedBibles.installedCommentaries).ToDictionary(x => x.Key, x => x.Value);
+            foreach (var book in BiblesAndCommentaries)
+            {
+                if (book.Value.sbmd.Initials.Equals(index))
+                {
+                    foundBook = book.Value;
+                    foundKey = book.Key;
+                    break;
+                }
+            }
+
+            if (App.installedBibles.installedBibles.Count == 1 && App.installedBibles.installedBibles.ContainsKey(foundKey))
             {
                 MessageBox.Show(Translations.translate("You must have at least one bible"));
             }
@@ -78,25 +94,24 @@ namespace CrossConnect
                 MessageBoxResult result = MessageBox.Show(Translations.translate("Delete?"), "", MessageBoxButton.OKCancel);
                 if (result.Equals(MessageBoxResult.OK))
                 {
-                    string index = (string)((TextBlock)e.AddedItems[0]).Tag;
-                    foreach (var book in App.installedBibles.installedBibles)
+                    for (int i = App.openWindows.Count() - 1; i >= 0; i--)
                     {
-                        if (book.Value.sbmd.Initials.Equals(index))
+                        if (App.openWindows[i].state.bibleToLoad.Equals(foundBook.sbmd.internalName) && App.mainWindow != null)
                         {
-                            for (int i = App.openWindows.Count()-1; i >=0 ; i--)
-                            {
-                                if (App.openWindows[i].state.bibleToLoad.Equals(book.Value.sbmd.internalName) && App.mainWindow!=null)
-                                {
-                                    App.openWindows.RemoveAt(i);
-                                    App.mainWindow.ReDrawWindows();
-                                }
-                            }
-                            book.Value.RemoveBible();
-                            App.installedBibles.installedBibles.Remove(book.Key);
-                            App.installedBibles.save();
-                            break;
+                            App.openWindows.RemoveAt(i);
+                            App.mainWindow.ReDrawWindows();
                         }
                     }
+                    foundBook.RemoveBible();
+                    if (App.installedBibles.installedBibles.ContainsKey(foundKey))
+                    {
+                        App.installedBibles.installedBibles.Remove(foundKey);
+                    }
+                    else
+                    {
+                        App.installedBibles.installedCommentaries.Remove(foundKey);
+                    }
+                    App.installedBibles.save(); 
                     LoadList();
                 }
                 else

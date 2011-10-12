@@ -137,11 +137,12 @@ namespace CrossConnect
             selectLangauge.Header=Translations.translate("Select the language");
             selectBook.Header=Translations.translate("Select the bible");
             butDownloadBook.Content = Translations.translate("Download bible");
-            selectType.Header = Translations.translate("Select type");
-
-            selectType.Items.Add(Translations.translate("Bibles"));
+            selectType.Header = Translations.translate("Download type");
+            selectType.Items.Clear();
+            selectType.Items.Add(Translations.translate("Bible"));
             selectType.Items.Add(Translations.translate("Commentaries"));
 
+            selectType.Visibility = System.Windows.Visibility.Collapsed;
             butDownload.Visibility = System.Windows.Visibility.Visible;
             butDownloadBook.Visibility = System.Windows.Visibility.Collapsed;
             selectBook.Visibility = System.Windows.Visibility.Collapsed;
@@ -168,7 +169,14 @@ namespace CrossConnect
                 PhoneApplicationPage_Loaded(null, null);
                 return;
             }
-            App.installedBibles.AddBook(sb.sbmd.internalName);
+            if (selectType.SelectedItem.Equals(Translations.translate("Commentaries")))
+            {
+                App.installedBibles.AddCommentary(sb.sbmd.internalName);
+            }
+            else
+            {
+                App.installedBibles.AddBook(sb.sbmd.internalName);
+            }
             sb = null;
             if (NavigationService.CanGoBack)
             {
@@ -183,18 +191,20 @@ namespace CrossConnect
 
         private void selectLangauge_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (selectLangauge!=null && selectLangauge.SelectedItem != null)
+            if (selectLangauge != null && selectLangauge.SelectedItem != null && webInst != null && webInst.entries!=null)
             {
 
                 selectBook.Items.Clear();
                 // put in the books
                 Dictionary<string, string> allBooks = new Dictionary<string, string>();
+                bool isCommentarySelected = selectType.SelectedItem.Equals(Translations.translate("Commentaries"));
+                bool isBibleSelected = selectType.SelectedItem.Equals(Translations.translate("Bible"));
                 foreach (var book in webInst.entries)
                 {
                     Language lang = (Language)book.Value.sbmd.getProperty(ConfigEntryType.LANG);
                     if (lang.Name.Equals(selectLangauge.SelectedItem) && (
-                        (selectType.SelectedItem.Equals(Translations.translate("Bibles")) && ((string)book.Value.sbmd.getProperty(ConfigEntryType.MOD_DRV)).ToUpper().Equals("ZTEXT"))
-                        || (selectType.SelectedItem.Equals(Translations.translate("Commentaries")) && ((string)book.Value.sbmd.getProperty(ConfigEntryType.MOD_DRV)).ToUpper().Equals("ZCOM"))))
+                        (isBibleSelected && ((string)book.Value.sbmd.getProperty(ConfigEntryType.MOD_DRV)).ToUpper().Equals("ZTEXT"))
+                        || (isCommentarySelected && ((string)book.Value.sbmd.getProperty(ConfigEntryType.MOD_DRV)).ToUpper().Equals("ZCOM"))))
                     {
                         allBooks[book.Value.sbmd.Name] = book.Value.sbmd.Name;
                     }
@@ -204,6 +214,7 @@ namespace CrossConnect
                 {
                     selectBook.Items.Add(x.Key);
                 }
+                selectType.Visibility = System.Windows.Visibility.Visible;
                 selectBook.Visibility = System.Windows.Visibility.Visible;
                 butDownloadBook.Visibility = System.Windows.Visibility.Visible;
             }
@@ -223,6 +234,13 @@ namespace CrossConnect
             }
         }
 
+        private void selectType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //måste reload bible list.
+            webInst_progress_completed_unzipped(null, null);
+            selectLangauge_SelectionChanged(sender, e);
+        }
+
         private void webInst_progress_completed(object sender, OpenReadCompletedEventArgs e)
         {
             if (sender != null)
@@ -239,8 +257,6 @@ namespace CrossConnect
             });
         }
 
-
-
         private void webInst_progress_completed_unzipped(object sender, OpenReadCompletedEventArgs e)
         {
             if (sender != null)
@@ -249,23 +265,34 @@ namespace CrossConnect
                 PhoneApplicationPage_Loaded(null, null);
                 return;
             }
-
-            progressBarGetBookList.Visibility = System.Windows.Visibility.Collapsed;
+            if (progressBarGetBookList != null)
+            {
+                progressBarGetBookList.Visibility = System.Windows.Visibility.Collapsed;
+            }
             // need to load the book selection with all the books.
-            selectLangauge.Items.Clear();
+            if (selectLangauge != null)
+            {
+                selectLangauge.Items.Clear();
+            }
             int bookcount = 0;
-            if (webInst.isLoaded)
+            bool isCommentarySelected = false;
+            if (selectType != null && selectType.SelectedItem!=null)
+            {
+                isCommentarySelected=selectType.SelectedItem.Equals(Translations.translate("Commentaries"));
+            }
+            if (webInst!=null && webInst.isLoaded)
             {
                 Dictionary<string, Language> allLanguages = new Dictionary<string, Language>();
                 foreach (var book in webInst.entries)
                 {
-                    if (((string)book.Value.sbmd.getProperty(ConfigEntryType.MOD_DRV)).ToUpper().Equals("ZTEXT"))
+                    if (isCommentarySelected && ((string)book.Value.sbmd.getProperty(ConfigEntryType.MOD_DRV)).ToUpper().Equals("ZCOM"))
                     {
                         bookcount++;
                         Language lang = (Language)book.Value.sbmd.getProperty(ConfigEntryType.LANG);
                         allLanguages[lang.Name] = lang;
+
                     }
-                    if (((string)book.Value.sbmd.getProperty(ConfigEntryType.MOD_DRV)).ToUpper().Equals("ZCOM"))
+                    else if (!isCommentarySelected && ((string)book.Value.sbmd.getProperty(ConfigEntryType.MOD_DRV)).ToUpper().Equals("ZTEXT"))
                     {
                         bookcount++;
                         Language lang = (Language)book.Value.sbmd.getProperty(ConfigEntryType.LANG);
@@ -279,7 +306,7 @@ namespace CrossConnect
                 }
                 selectLangauge.Visibility = System.Windows.Visibility.Visible;
             }
-            else
+            else if (webInst!=null )
             {
                 MessageBox.Show(Translations.translate("An error occurred trying to connect to the network. Try again later.") + "; " + e.Error.Message);
                 PhoneApplicationPage_Loaded(null, null);
@@ -292,10 +319,5 @@ namespace CrossConnect
         }
 
         #endregion Methods
-
-        private void selectType_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
     }
 }

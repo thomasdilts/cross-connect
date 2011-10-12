@@ -16,7 +16,7 @@
     <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <SilverlightApplication>true</SilverlightApplication>
-    <SupportedCultures>fr-FR;es-ES;it-IT;de-DE;af-AF;ar-AR;az-AZ;be-BE;bg-BG;cs-CS;da-DA;el-EL;et-ET;fa-FA;fi-FI;hi-HI;hr-HR;hu-HU;hy-HY;id-ID;is-IS;iw-IW;ja-JA;ko-KO;lt-LT;lv-LV;mk-MK;ms-MS;mt-MT;nl-NL;no-NO;pl-PL;pt-PT;ro-RO;ru-RU;sk-SK;sl-SL;sq-SQ;sr-SR;sv-SV;sw-SW;th-TH;tl-TL;tr-TR;uk-UK;ur-UR;vi-VI;zh-CN;zh-TW</SupportedCultures>
+    <SupportedCultures>es-ES;fr-FR;it-IT;de-DE;af-AF;ar-AR;az-AZ;be-BE;bg-BG;cs-CS;da-DA;el-EL;et-ET;fa-FA;fi-FI;hi-HI;hr-HR;hu-HU;hy-HY;id-ID;is-IS;iw-IW;ja-JA;ko-KO;lt-LT;lv-LV;mk-MK;ms-MS;mt-MT;nl-NL;no-NO;pl-PL;pt-PT;ro-RO;ru-RU;sk-SK;sl-SL;sq-SQ;sr-SR;sv-SV;sw-SW;th-TH;tl-TL;tr-TR;uk-UK;ur-UR;vi-VI;zh-CN;zh-TW</SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
     <XapFilename>CrossConnect.xap</XapFilename>
@@ -66,6 +66,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AutoRotatePage.cs" />
+    <Compile Include="readers\TranslatorReader.cs" />
+    <Compile Include="readers\GreekHebrewDictReader.cs" />
     <Compile Include="SelectToPlay.xaml.cs">
       <DependentUpon>SelectToPlay.xaml</DependentUpon>
     </Compile>
@@ -80,6 +82,7 @@
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TranslateByGoogle.cs" />
     <Compile Include="Translations.cs" />
     <Compile Include="readers\BookMarkReader.cs" />
     <Compile Include="BrowserTitledWindow.xaml.cs">
@@ -175,6 +178,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
+    <EmbeddedResource Include="Properties\strongsgreek.xml.gz" />
+    <EmbeddedResource Include="Properties\strongshebrew.xml.gz" />
     <None Include="Properties\WMAppManifest.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -295,10 +300,22 @@
     <Content Include="Images\dark\appbar.speaker.pressed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\dark\appbar.translate.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\dark\appbar.translate.pressed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\light\appbar.speaker.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\light\appbar.speaker.pressed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\light\appbar.translate.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\light\appbar.translate.pressed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
@@ -423,6 +440,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SplashScreenImage.jpg" />
+    <EmbeddedResource Include="Resources\AppResources.es-ES.resx" />
     <EmbeddedResource Include="Resources\AppResources.et-ET.resx" />
     <EmbeddedResource Include="Resources\AppResources.fa-FA.resx" />
     <EmbeddedResource Include="Resources\AppResources.fi-FI.resx" />

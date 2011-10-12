@@ -58,6 +58,12 @@ namespace CrossConnect
             App.RaiseBookmarkChangeEvent();
             App.RaiseHistoryChangeEvent();
             App.RaisePersonalNotesChangeEvent();
+            //all the windows must be redrawn
+            for (int i = App.openWindows.Count - 1; i >= 0; i--)
+            {
+                App.openWindows[i].forceReload = true;
+            }
+
         }
 
         private void AutoRotatePage_Loaded(object sender, RoutedEventArgs e)

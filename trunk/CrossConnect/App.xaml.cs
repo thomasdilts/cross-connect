@@ -44,12 +44,15 @@ namespace CrossConnect
     {
         WINDOW_BIBLE,
         WINDOW_BIBLE_NOTES,
+        WINDOW_COMMENTARY,
         WINDOW_SEARCH,
         WINDOW_HISTORY,
         WINDOW_BOOKMARKS,
         WINDOW_DAILY_PLAN,
         WINDOW_ADDED_NOTES,
+        WINDOW_TRANSLATOR,
         WINDOW_INTERNET_LINK,
+        WINDOW_LEXICON_LINK,
     }
 
     #endregion Enumerations
@@ -138,10 +141,7 @@ namespace CrossConnect
         public static void AddBookmark(int chapterNum, int verseNum)
         {
             placeMarkers.bookmarks.Add(new BiblePlaceMarker(chapterNum, verseNum, DateTime.Now));
-            if (BookMarksChanged != null)
-            {
-                BookMarksChanged();
-            }
+            RaiseBookmarkChangeEvent();
         }
 
         public static void AddBookmark()
@@ -318,12 +318,15 @@ namespace CrossConnect
                                 typeof(SwordBackend.BibleZtextReader),
                                 typeof(SwordBackend.BibleNoteReader),
                                 typeof(SwordBackend.BibleZtextReaderSerialData),
+                                typeof(SwordBackend.CommentZtextReader),
+                                typeof(TranslatorReader),
                                 typeof(BookMarkReader),
                                 typeof(HistoryReader),
                                 typeof(SearchReader),
                                 typeof(DailyPlanReader),
                                 typeof(PersonalNotesReader),
                                 typeof(InternetLinkReader),
+                                typeof(GreekHebrewDictReader),
                             };
                                 DataContractSerializer ser = new DataContractSerializer(typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState), types);
                                 BrowserTitledWindow nextWindow = new BrowserTitledWindow();
@@ -430,12 +433,15 @@ namespace CrossConnect
                     typeof(SwordBackend.BibleZtextReader),
                     typeof(SwordBackend.BibleNoteReader),
                     typeof(SwordBackend.BibleZtextReaderSerialData),
+                    typeof(SwordBackend.CommentZtextReader),
+                    typeof(TranslatorReader),
                     typeof(BookMarkReader),
                     typeof(HistoryReader),
                     typeof(SearchReader),
                     typeof(DailyPlanReader),
                     typeof(PersonalNotesReader),
                     typeof(InternetLinkReader),
+                    typeof(GreekHebrewDictReader),
                 };
                 DataContractSerializer ser = new DataContractSerializer(typeof(CrossConnect.BrowserTitledWindow.SerializableWindowState), types);
                 using (StringWriter sw = new StringWriter())

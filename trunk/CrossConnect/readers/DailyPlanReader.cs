@@ -52,6 +52,13 @@ namespace CrossConnect.readers
 
         #region Properties
 
+        public override bool IsTranslateable
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override bool IsHearable
         {
             get

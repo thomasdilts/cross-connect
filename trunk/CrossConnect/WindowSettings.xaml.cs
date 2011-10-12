@@ -57,18 +57,6 @@ namespace CrossConnect
         private void GetSelectedData(out WINDOW_TYPE selectedType, out SwordBook bookSelected)
         {
             bookSelected = null;
-            if (selectDocument.SelectedItem != null)
-            {
-                // did the book choice change?
-                foreach (var book in App.installedBibles.installedBibles)
-                {
-                    if (selectDocument.SelectedItem.Equals(book.Value.sbmd.Name))
-                    {
-                        bookSelected = book.Value;
-                        break;
-                    }
-                }
-            }
             selectedType = WINDOW_TYPE.WINDOW_BIBLE;
             switch (this.selectDocumentType.SelectedIndex)
             {
@@ -90,7 +78,37 @@ namespace CrossConnect
                 case 5:
                     selectedType = WINDOW_TYPE.WINDOW_ADDED_NOTES;
                     break;
+                case 6:
+                    selectedType = WINDOW_TYPE.WINDOW_COMMENTARY;
+                    break;
             }
+            if (selectDocument.SelectedItem != null)
+            {
+                if (selectedType == WINDOW_TYPE.WINDOW_COMMENTARY)
+                {
+                    // did the book choice change?
+                    foreach (var book in App.installedBibles.installedCommentaries)
+                    {
+                        if (selectDocument.SelectedItem.Equals(book.Value.sbmd.Name))
+                        {
+                            bookSelected = book.Value;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var book in App.installedBibles.installedBibles)
+                    {
+                        if (selectDocument.SelectedItem.Equals(book.Value.sbmd.Name))
+                        {
+                            bookSelected = book.Value;
+                            break;
+                        }
+                    }
+                }
+            }
+
         }
 
         private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
@@ -131,7 +149,9 @@ namespace CrossConnect
                         openWindowIndex = 0;
                     }
 
-                    if (App.openWindows[(int)openWindowIndex].state.windowType == WINDOW_TYPE.WINDOW_SEARCH)
+                    if (App.openWindows[(int)openWindowIndex].state.windowType == WINDOW_TYPE.WINDOW_SEARCH
+                        || App.openWindows[(int)openWindowIndex].state.windowType == WINDOW_TYPE.WINDOW_LEXICON_LINK
+                        || App.openWindows[(int)openWindowIndex].state.windowType == WINDOW_TYPE.WINDOW_TRANSLATOR)
                     {
                         App.openWindows[(int)openWindowIndex].state.htmlFontSize = this.sliderTextSize.Value;
                     }
@@ -183,6 +203,16 @@ namespace CrossConnect
 
         private void selectDocumentType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            object isAddNewWindowOnly = null;
+            object openWindowIndex = null;
+            if (!PhoneApplicationService.Current.State.TryGetValue("isAddNewWindowOnly", out isAddNewWindowOnly))
+            {
+                isAddNewWindowOnly = false;
+            }
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            {
+                openWindowIndex = 0;
+            }
             if (selectDocumentType.SelectedIndex == 4)
             {
                 //prefill and show the next 2 fields.
@@ -194,15 +224,29 @@ namespace CrossConnect
                 selectPlanType.SelectedIndex = App.dailyPlan.planNumber;
                 planStartDate.Value = App.dailyPlan.planStartDate;
             }
-            object isAddNewWindowOnly = null;
-            if (!PhoneApplicationService.Current.State.TryGetValue("isAddNewWindowOnly", out isAddNewWindowOnly))
+            else if (selectDocumentType.SelectedIndex == 6)
             {
-                isAddNewWindowOnly = false;
+                selectDocument.Items.Clear();
+                foreach (var book in App.installedBibles.installedCommentaries)
+                {
+                    selectDocument.Items.Add(book.Value.Name);
+                    if ((bool)isAddNewWindowOnly == false && App.openWindows.Count > 0 && App.openWindows[(int)openWindowIndex].state.bibleToLoad.Equals(book.Value.sbmd.internalName))
+                    {
+                        selectDocument.SelectedIndex = selectDocument.Items.Count - 1;
+                    }
+                }
             }
-            object openWindowIndex = null;
-            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            else
             {
-                openWindowIndex = 0;
+                selectDocument.Items.Clear();
+                foreach (var book in App.installedBibles.installedBibles)
+                {
+                    selectDocument.Items.Add(book.Value.Name);
+                    if ((bool)isAddNewWindowOnly == false && App.openWindows.Count > 0 && App.openWindows[(int)openWindowIndex].state.bibleToLoad.Equals(book.Value.sbmd.internalName))
+                    {
+                        selectDocument.SelectedIndex = selectDocument.Items.Count - 1;
+                    }
+                }
             }
             bool IsPageable = false;
             bool IsSearchable = false;
@@ -265,6 +309,10 @@ namespace CrossConnect
             selectDocumentType.Items.Add(Translations.translate("Bookmarks"));
             selectDocumentType.Items.Add(Translations.translate("Daily plan"));
             selectDocumentType.Items.Add(Translations.translate("Added notes"));
+            if (App.installedBibles.installedCommentaries.Count>0)
+            {
+                selectDocumentType.Items.Add(Translations.translate("Commentaries"));
+            }
 
             object isAddNewWindowOnly = null;
             object openWindowIndex = null;
@@ -335,7 +383,23 @@ namespace CrossConnect
                     case WINDOW_TYPE.WINDOW_ADDED_NOTES:
                         this.selectDocumentType.SelectedIndex = 5;
                         break;
+                    case WINDOW_TYPE.WINDOW_COMMENTARY:
+                        selectDocument.Items.Clear();
+                        foreach (var book in App.installedBibles.installedCommentaries)
+                        {
+                            selectDocument.Items.Add(book.Value.Name);
+                            if ((bool)isAddNewWindowOnly == false && App.openWindows.Count > 0 && App.openWindows[(int)openWindowIndex].state.bibleToLoad.Equals(book.Value.sbmd.internalName))
+                            {
+                                selectDocument.SelectedIndex = selectDocument.Items.Count - 1;
+                            }
+                        }
+                        this.selectDocumentType.SelectedIndex = 6;
+                        break;
                     case WINDOW_TYPE.WINDOW_INTERNET_LINK:
+                        this.selectDocumentType.Visibility = System.Windows.Visibility.Collapsed;
+                        this.selectDocument.Visibility = System.Windows.Visibility.Collapsed;
+                        break;
+                    case WINDOW_TYPE.WINDOW_LEXICON_LINK:
                         this.selectDocumentType.Visibility = System.Windows.Visibility.Collapsed;
                         this.selectDocument.Visibility = System.Windows.Visibility.Collapsed;
                         break;

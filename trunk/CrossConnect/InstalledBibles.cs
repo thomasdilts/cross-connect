@@ -28,6 +28,7 @@ namespace CrossConnect
         #region Fields
 
         public Dictionary<string, SwordBook> installedBibles = new Dictionary<string, SwordBook>();
+        public Dictionary<string, SwordBook> installedCommentaries = new Dictionary<string, SwordBook>();
 
         #endregion Fields
 
@@ -41,7 +42,16 @@ namespace CrossConnect
                 string[] books = sBooks.Split("¤".ToCharArray());
                 foreach (string book in books)
                 {
-                    AddBook(book,false);
+                    AddBook(book, false);
+                }
+            }
+            sBooks = string.Empty;
+            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("installedCommentaries", out sBooks))
+            {
+                string[] books = sBooks.Split("¤".ToCharArray());
+                foreach (string book in books)
+                {
+                    AddCommentary(book, false);
                 }
             }
         }
@@ -64,6 +74,20 @@ namespace CrossConnect
             }
         }
 
+        public void AddCommentary(string modPath, bool doSave = true)
+        {
+            installedCommentaries[modPath] = new SwordBook(modPath);
+            if (!installedCommentaries[modPath].isLoaded)
+            {
+                installedCommentaries.Remove(modPath);
+            }
+            if (doSave)
+            {
+                save();
+                IsolatedStorageSettings.ApplicationSettings.Save();
+            }
+        }
+
         public void save()
         {
             string allBooks = string.Empty;
@@ -76,6 +100,17 @@ namespace CrossConnect
                 allBooks += book.Key;
             }
             IsolatedStorageSettings.ApplicationSettings["installedBibles"]= allBooks;
+
+            allBooks = string.Empty;
+            foreach (var book in installedCommentaries)
+            {
+                if (allBooks.Length > 0)
+                {
+                    allBooks += "¤";
+                }
+                allBooks += book.Key;
+            }
+            IsolatedStorageSettings.ApplicationSettings["installedCommentaries"] = allBooks;
         }
 
         #endregion Methods

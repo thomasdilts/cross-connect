@@ -207,18 +207,9 @@ namespace SwordBackend
         };
 
         //[DataMember] Tried it but it took 10 times longer then re-reading the mod-file
-        public List<BookPos> bookPositions = new List<BookPos>();
-
-        //[DataMember] Tried it but it took 10 times longer then re-reading the mod-file
         public List<ChapterPos> chapters = new List<ChapterPos>();
         [DataMember]
         public BibleZtextReaderSerialData serial = new BibleZtextReaderSerialData(false,"","",0,0);
-        private enum BLOCK_TYPE
-        {
-            BOOK='b',
-            CHAPTER='c'
-        };
-        private BLOCK_TYPE blockType=BLOCK_TYPE.BOOK;
 
         /// <summary> Constant for the number of verses in the Bible  </summary>
         internal const short VERSES_IN_BIBLE = 31102;
@@ -252,7 +243,11 @@ namespace SwordBackend
         protected BibleNames bookNames = null;
 
         private const string colorWordsOfChrist = "#ff1439"; //deep pink
-        private const long SKIP_BOOK_FLAG = 68;
+        protected const long SKIP_BOOK_FLAG = 68;
+
+        protected BLOCK_TYPE blockType = BLOCK_TYPE.BOOK;
+
+        private int lastShownChapterNumber = -1;
 
         #endregion Fields
 
@@ -273,6 +268,16 @@ namespace SwordBackend
         }
 
         #endregion Constructors
+
+        #region Enumerations
+
+        protected enum BLOCK_TYPE
+        {
+            BOOK='b',
+            CHAPTER='c'
+        }
+
+        #endregion Enumerations
 
         #region Events
 
@@ -302,6 +307,13 @@ namespace SwordBackend
             }
         }
 
+        public virtual bool IsTranslateable
+        {
+            get
+            {
+                return true;
+            }
+        }
         public virtual bool IsHearable
         {
             get
@@ -426,6 +438,33 @@ namespace SwordBackend
 
             head.Append("</head><body>");
             return head.ToString();
+        }
+
+
+        public virtual string GetLanguage()
+        {
+            return this.serial.iso2DigitLangCode;
+        }
+
+        public virtual void GetTranslateableTexts(DisplaySettings displaySettings, string bibleToLoad, out string[] toTranslate, out bool[] isTranslateable)
+        {
+            toTranslate = new string[2];
+            isTranslateable = new bool[2];
+
+            int bookNum;
+            int relChaptNum;
+            string fullName;
+            string titleText;
+            int verseNum;
+            int absoluteChaptNum;
+
+            GetInfo( out bookNum,out absoluteChaptNum, out relChaptNum,out verseNum, out fullName, out titleText);
+            string verseText = GetVerseTextOnly(displaySettings, relChaptNum, verseNum);
+
+            toTranslate[0] = "<p>" + fullName + " " + (relChaptNum + 1) + ":" + (verseNum + 1) + " - " + bibleToLoad + "</p>";
+            toTranslate[1] = verseText.Replace("<p>", "").Replace("</p>", "").Replace("<br />", "").Replace("\n", " ");
+            isTranslateable[0]=false;
+            isTranslateable[1]=true;
         }
 
         public virtual ButtonWindowSpecs GetButtonWindowSpecs(int stage,int lastSelectedButton)
@@ -699,25 +738,13 @@ namespace SwordBackend
 
         public virtual string putHtmlTofile(DisplaySettings displaySettings, string htmlBackgroundColor, 
             string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,
-            string fileErase, string filePath)
+            string fileErase, string filePath, bool forceReload)
         {
             Debug.WriteLine("putHtmlTofile start");
 
             var root = IsolatedStorageFile.GetUserStoreForApplication();
 
-            if (root.FileExists( fileErase))
-            {
-                try
-                {
-                    root.DeleteFile(fileErase);
-                }
-                catch (Exception ee)
-                {
-                    //should never crash here but I have noticed any file delete is a risky business when you have more then one thread.
-                    Debug.WriteLine("BibleZtextReader.putHtmlTofile; " + ee.Message);
-                }
-            }
-
+            // Find a new file name.
             // Must change the file name, otherwise the browser may or may not update.
             string fileCreate = "web" + (int)(new Random().NextDouble() * 10000) + ".html";
 
@@ -726,6 +753,39 @@ namespace SwordBackend
             {
                 fileCreate = "web" + (int)(new Random().NextDouble() * 10000) + ".html";
             }
+
+
+            if (root.FileExists( fileErase))
+            {
+                if (serial.posChaptNum == lastShownChapterNumber && !forceReload)
+                {
+                    //we dont need to rewrite everything. Just rename the file.
+                    try
+                    {
+                        root.MoveFile(fileErase, filePath + "/" + fileCreate);
+                        return fileCreate;
+                    }
+                    catch (Exception ee)
+                    {
+                        //should never crash here but I have noticed any file rename is a risky business when you have more then one thread.
+                        Debug.WriteLine("BibleZtextReader.putHtmlTofile; " + ee.Message);
+                        //problems. lets just remake the file.
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        root.DeleteFile(fileErase);
+                    }
+                    catch (Exception ee)
+                    {
+                        //should never crash here but I have noticed any file delete is a risky business when you have more then one thread.
+                        Debug.WriteLine("BibleZtextReader.putHtmlTofile; " + ee.Message);
+                    }
+                }
+            }
+            lastShownChapterNumber = serial.posChaptNum;
 
             IsolatedStorageFileStream fs = root.CreateFile(filePath + "/" + fileCreate);
             System.IO.StreamWriter tw = new System.IO.StreamWriter(fs);
@@ -799,10 +859,10 @@ namespace SwordBackend
             return bookNames.getAllShortNames();
         }
 
-        protected int getByteFromStream(FileStream fs)
+        protected int getByteFromStream(FileStream fs, out bool isEnd)
         {
             byte[] buf = new byte[1];
-            fs.Read(buf, 0, 1);
+            isEnd = fs.Read(buf, 0, 1) != 1;
             return  buf[0];
         }
 
@@ -819,21 +879,10 @@ namespace SwordBackend
                 chapterNumber = 0;
             }
             ChapterPos versesForChapterPositions = chapters[chapterNumber];
-            BookPos bookPos = null;
-            long blockStartPos = 0;
-            long blockLen = 0;
-            if (blockType == BLOCK_TYPE.BOOK)
-            {
-                bookPos=bookPositions[versesForChapterPositions.booknum];
-                blockStartPos = versesForChapterPositions.startPos;
-                blockLen = versesForChapterPositions.length;
-            }
-            else //BLOCK_TYPE.CHAPTER
-            {
-                bookPos = bookPositions[chapterNumber];
-                blockStartPos = 0;
-                blockLen = versesForChapterPositions.length;
-            }
+
+            long bookStartPos = versesForChapterPositions.bookStartPos;
+            long blockStartPos = versesForChapterPositions.startPos;
+            long blockLen = versesForChapterPositions.length;
 
             FileStream fs = null;
             string fileName = (chapterNumber < CHAPTERS_IN_OT) ? "ot." : "nt.";
@@ -848,8 +897,8 @@ namespace SwordBackend
             }
             // adjust the start postion of the stream to where this book begins.
             // we must read the entire book up to the chapter we want even though we just want one chapter.
-            
-            fs.Position = bookPos.startPos;
+
+            fs.Position = bookStartPos;
 
             ZInputStream zipStream = new ZInputStream(fs);
             byte[] chapterBuffer = new byte[blockLen];
@@ -947,39 +996,50 @@ namespace SwordBackend
             string startVerseMarking=(displaySettings.smallVerseNumbers?"<sup>":(isVerseMarking?"<span class=\"strongsmorph\">(":""));
             string stopVerseMarking = (displaySettings.smallVerseNumbers ? "</sup>" : (isVerseMarking ? ")</span>" : ""));
             int noteIdentifier = (int)'a';
+            VersePos lastVerse= new VersePos(0, 0, 0);
+            //in some commentaries, the verses repeat. Stop these repeats from comming in!
+            Dictionary<long, int> verseRepeatCheck = new Dictionary<long, int>();
             for (int i = 0; i < versesForChapterPositions.verses.Count; i++)
             {
+                VersePos verse = versesForChapterPositions.verses[i];
                 string htmlChapterText =
                         startVerseMarking +
                         (displaySettings.showBookName ? bookName + " " : "") +
                         (displaySettings.showChapterNumber ? ((versesForChapterPositions.bookRelativeChapterNum + 1) + ":") : "") +
                         (displaySettings.showVerseNumber ? (i + 1).ToString() : "") +
                         stopVerseMarking;
-
+                string verseTxt = "";
                 string id = "CHAP_" + chapterNumber + "_VERS_" + i;
-                VersePos verse = versesForChapterPositions.verses[i];
                 string restartText = "<a name=\"" + id
                     + "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.Notify('" + id
                     + "'); event.returnValue=false; return false;\" > ";
-                string startText = htmlChapterText + restartText;
-                string verseTxt = "*** ERROR ***";
+                string startText = htmlChapterText + restartText; 
+                if (!verseRepeatCheck.ContainsKey(verse.startPos))
+                {
+                    verseRepeatCheck[verse.startPos] = 0;
 
-                try
-                {
-                    verseTxt = parseOsisText(displaySettings,
-                    startText,
-                    restartText,
-                    chapterBuffer,
-                    (int)verse.startPos,
-                    verse.length,
-                    this.serial.isIsoEncoding,
-                    isNotesOnly,
-                    false,
-                    ref noteIdentifier);
+                    verseTxt = "*** ERROR ***"; 
+                    try
+                    {
+                        verseTxt = parseOsisText(displaySettings,
+                            startText,
+                            restartText,
+                            chapterBuffer,
+                            (int)verse.startPos,
+                            verse.length,
+                            this.serial.isIsoEncoding,
+                            isNotesOnly,
+                            false,
+                            ref noteIdentifier);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine(verse.length + ";" + verse.startPos + ";" + e.ToString());
+                    }
                 }
-                catch (Exception e)
+                else
                 {
-                    System.Diagnostics.Debug.WriteLine(verse.length + ";" + verse.startPos + ";" + e.ToString());
+                    verseTxt = "<p>" + startText + "</p>";
                 }
                 // create the verse
                 htmlChapter.Append(
@@ -988,6 +1048,7 @@ namespace SwordBackend
                     + verseTxt
                     + (verseTxt.Length > 0 ? (displaySettings.eachVerseNewLine ? "</a></p>" : "</a>") : ""));
                 chapterStartHtml = string.Empty;
+
             }
             htmlChapter.Append(chapterEndHtml);
             Debug.WriteLine("GetChapterHtml end");
@@ -999,24 +1060,36 @@ namespace SwordBackend
             return GetChapterHtml(displaySettings, serial.posChaptNum, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, isNotesOnly, addStartFinishHtml );
         }
 
-        protected long getInt48FromStream(FileStream fs)
+        protected long getInt48FromStream(FileStream fs,out bool isEnd)
         {
             byte[] buf = new byte[7];
-            fs.Read(buf, 0, 7);
+            isEnd = fs.Read(buf, 0, 7) != 7;
+            if (isEnd)
+            {
+                return 0;
+            }
             return buf[2] * 0x100000000000000 + buf[1] * 0x100000000000 + buf[0] * 0x100000000 + buf[6] * 0x1000000 + buf[5] * 0x10000 + buf[4] * 0x100 + buf[3];
         }
 
-        protected long getintFromStream(FileStream fs)
+        protected long getintFromStream(FileStream fs, out bool isEnd)
         {
             byte[] buf = new byte[4];
-            fs.Read(buf, 0, 4);
+            isEnd = fs.Read(buf, 0, 4) != 4;
+            if (isEnd)
+            {
+                return 0;
+            }
             return buf[3] * 0x100000 + buf[2] * 0x10000 + buf[1] * 0x100 + buf[0];
         }
 
-        protected int getShortIntFromStream(FileStream fs)
+        protected int getShortIntFromStream(FileStream fs, out bool isEnd)
         {
             byte[] buf = new byte[2];
-            fs.Read(buf, 0, 2);
+            isEnd = fs.Read(buf, 0, 2) != 2;
+            if (isEnd)
+            {
+                return 0;
+            }
             return buf[1] * 0x100 + buf[0];
         }
 
@@ -1353,7 +1426,7 @@ namespace SwordBackend
                                     {
                                         System.Diagnostics.Debug.WriteLine("second error in text: " + e2.Message);
                                         text = "*error*";
-                                    } 
+                                    }
                                 }
                                 if ((!(noTitles || !displaySettings.showHeadings) || !isInTitle) && text.Length>0)
                                 {
@@ -1447,6 +1520,143 @@ namespace SwordBackend
             }
         }
 
+        private void ReloadOneIndex(string filename, int startBook, int endBook)
+        {
+            IsolatedStorageFile fileStorage = IsolatedStorageFile.GetUserStoreForApplication();
+            FileStream fs = null;
+            try
+            {
+                List<BookPos>  bookPositions = new List<BookPos>();
+                fs = fileStorage.OpenFile(serial.path + filename + ((char)blockType) + "zs", FileMode.Open, FileAccess.Read);
+                bool isEnd = false;
+                //read book position index
+                for (int i = 0; !isEnd; i++)
+                {
+                    long startPos = getintFromStream(fs, out isEnd);
+                    if (isEnd)
+                    {
+                        break;
+                    }
+                    long length = getintFromStream(fs, out isEnd);
+                    if (isEnd)
+                    {
+                        break;
+                    }
+                    long unused = getintFromStream(fs, out isEnd);
+                    if (isEnd)
+                    {
+                        break;
+                    }
+                    bookPositions.Add(new BookPos( startPos, length, unused));
+                }
+                fs.Close();
+
+                // read the verse holder for versification bzv file
+                fs = fileStorage.OpenFile(serial.path + filename + ((char)blockType) + "zv", FileMode.Open, FileAccess.Read);
+                // dump the first 4 posts
+                for (int i = 0; i < 4; i++)
+                {
+                    int booknum = getByteFromStream(fs, out isEnd);
+                    long startPos = getInt48FromStream(fs, out isEnd);
+                    int length = getShortIntFromStream(fs, out isEnd);
+                }
+                // now start getting each chapter in each book 
+                for (int i = startBook; i < endBook; i++)
+                {
+                    for (int j = 0; j < CHAPTERS_IN_BOOK[i]; j++)
+                    {
+                        long chapterStartPos = 0;
+                        ChapterPos chapt = null;
+                        int booknum = 0;
+                        long startPos = 0;
+                        long lastNonZeroStartPos = 0;
+                        int length = 0;
+                        long bookStartPos = 0;
+                        for (int k = 0; k < VERSES_IN_CHAPTER[i][j]; k++)
+                        {
+                            booknum = getByteFromStream(fs, out isEnd);
+                            startPos = getInt48FromStream(fs, out isEnd);
+                            if (startPos != 0)
+                            {
+                                lastNonZeroStartPos = startPos;
+                            }
+                            length = getShortIntFromStream(fs, out isEnd);
+                            if (k == 0)
+                            {
+                                chapterStartPos = startPos;
+                                bookStartPos = 0;
+                                if (booknum < bookPositions.Count)
+                                {
+                                    bookStartPos = bookPositions[booknum].startPos;
+                                }
+                                if (blockType == BLOCK_TYPE.CHAPTER)
+                                {
+                                    chapterStartPos = 0;
+                                }
+                                chapt = new ChapterPos(chapterStartPos, i, j, bookStartPos);
+                            }
+                            if (booknum == 0 && startPos == 0 && length == 0)
+                            {
+                                chapt.verses.Add(new VersePos(0, 0, i));
+                            }
+                            else
+                            {
+                                chapt.verses.Add(new VersePos(startPos - chapterStartPos, length, i));
+                            }
+                        }
+                        // update the chapter length now that we know it
+                        chapt.length = (int)(lastNonZeroStartPos - chapterStartPos) + length;
+
+                        chapters.Add(chapt);
+
+                        // dump a post for the chapter break
+                        getByteFromStream(fs, out isEnd);
+                        long x = getInt48FromStream(fs, out isEnd);
+                        getShortIntFromStream(fs, out isEnd);
+                    }
+                    // dump a post for the book break
+                    getByteFromStream(fs, out isEnd);
+                    getInt48FromStream(fs, out isEnd);
+                    getShortIntFromStream(fs, out isEnd);
+                }
+                fs.Close();
+            }
+            catch (Exception)
+            {
+                // failed to load old testement.  Maybe it does not exist.
+                // fill with fake data
+                for (int i = startBook; i < endBook; i++)
+                {
+                    for (int j = 0; j < CHAPTERS_IN_BOOK[i]; j++)
+                    {
+                        ChapterPos chapt = new ChapterPos(0, i, j, 0);
+                        for (int k = 0; k < VERSES_IN_CHAPTER[i][j]; k++)
+                        {
+                            chapt.verses.Add(new VersePos(0, 0, i));
+                        }
+                        // update the chapter length now that we know it
+                        chapt.length = 0;
+                        chapters.Add(chapt);
+                    }
+                }
+            }
+        }
+
+        protected virtual void ReloadSettingsFile()
+        {
+            IsolatedStorageFile fileStorage = IsolatedStorageFile.GetUserStoreForApplication();
+            chapters = new List<ChapterPos>();
+            blockType = BLOCK_TYPE.BOOK;
+            // read the Sword index to the ot bzz file which is the bzs file
+            if (fileStorage.FileExists(serial.path + "ot.czs") || fileStorage.FileExists(serial.path + "nt.czs"))
+            {
+                blockType = BLOCK_TYPE.CHAPTER;
+            }
+
+            ReloadOneIndex("ot.", 0, BOOKS_IN_OT);
+            ReloadOneIndex("nt.", BOOKS_IN_OT, (BOOKS_IN_OT + BOOKS_IN_NT));
+        }
+
         private string convertNoteNumToId(int noteIdentifier)
         {
             string noteReturned = "";
@@ -1457,233 +1667,6 @@ namespace SwordBackend
                 noteReturned += startChar;
             }
             return "(" + noteReturned + ")";
-        }
-
-        private void ReloadSettingsFile()
-        {
-            IsolatedStorageFile fileStorage = IsolatedStorageFile.GetUserStoreForApplication();
-            bookPositions = new List<BookPos>();
-            chapters = new List<ChapterPos>();
-            FileStream fs = null;
-            blockType = BLOCK_TYPE.BOOK;
-            // read the Sword index to the ot bzz file which is the bzs file
-            try
-            {
-                if (fileStorage.FileExists(serial.path + "ot.czs") || fileStorage.FileExists(serial.path + "nt.czs"))
-                {
-                    blockType = BLOCK_TYPE.CHAPTER;
-                }
-                fs = fileStorage.OpenFile(serial.path + "ot." + ((char)blockType) + "zs", FileMode.Open, FileAccess.Read);
-                int numBooks = (blockType == BLOCK_TYPE.BOOK) ? BOOKS_IN_OT : CHAPTERS_IN_OT;
-                for (int i = 0; i < numBooks; i++)
-                {
-                    bookPositions.Add(new BookPos(getintFromStream(fs), getintFromStream(fs), getintFromStream(fs)));
-                }
-                fs.Close();
-
-                // read the verse holder for versification bzv file old testememt
-                fs = fileStorage.OpenFile(serial.path + "ot." + ((char)blockType) + "zv", FileMode.Open, FileAccess.Read);
-                // dump the first 4 posts
-                for (int i = 0; i < 4; i++)
-                {
-                    int booknum = getByteFromStream(fs);
-                    long startPos = getInt48FromStream(fs);
-                    int length = getShortIntFromStream(fs);
-                }
-                int absoluteChapterNumber = 0;
-                // now start getting old testament
-                for (int i = 0; i < BOOKS_IN_OT; i++)
-                {
-                    for (int j = 0; j < CHAPTERS_IN_BOOK[i]; j++)
-                    {
-                        long chapterStartPos = 0;
-                        ChapterPos chapt = null;
-                        int booknum = 0;
-                        long startPos = 0;
-                        long lastNonZeroStartPos = 0;
-                        int length = 0;
-                        for (int k = 0; k < VERSES_IN_CHAPTER[i][j]; k++)
-                        {
-                            booknum = getByteFromStream(fs);
-                            startPos = getInt48FromStream(fs);
-                            if (startPos != 0)
-                            {
-                                lastNonZeroStartPos = startPos;
-                            }
-                            length = getShortIntFromStream(fs);
-                            if (k == 0)
-                            {
-                                chapterStartPos = startPos;
-                                chapt = new ChapterPos(chapterStartPos, i, j);
-                                int bokPos = (blockType == BLOCK_TYPE.BOOK) ? i : absoluteChapterNumber;
-                                bookPositions[bokPos].chapters.Add(chapt);
-                            }
-                            if (booknum == 0 && startPos == 0 && length == 0)
-                            {
-                                chapt.verses.Add(new VersePos(0, 0, i));
-                            }
-                            else
-                            {
-                                chapt.verses.Add(new VersePos(startPos - chapterStartPos, length, i));
-                            }
-                        }
-                        // update the chapter length now that we know it
-                        chapt.length = (int)(lastNonZeroStartPos - chapterStartPos) + length;
-
-                        chapters.Add(chapt);
-
-                        // dump a post for the chapter break
-                        getByteFromStream(fs);
-                        long x = getInt48FromStream(fs);
-                        getShortIntFromStream(fs);
-                        absoluteChapterNumber++;
-                    }
-                    // dump a post for the book break
-                    getByteFromStream(fs);
-                    getInt48FromStream(fs);
-                    getShortIntFromStream(fs);
-                }
-                fs.Close();
-            }
-            catch (Exception)
-            {
-                // failed to load old testement.  Maybe it does not exist.
-                // fill with fake data
-                int numBooks = (blockType == BLOCK_TYPE.BOOK) ? BOOKS_IN_OT : CHAPTERS_IN_OT;
-                for (int i = 0; i < numBooks; i++)
-                {
-                    bookPositions.Add(new BookPos(0, 0, 0));
-                }
-                int absoluteChapterNumber = 0;
-                for (int i = 0; i < BOOKS_IN_OT; i++)
-                {
-                    for (int j = 0; j < CHAPTERS_IN_BOOK[i]; j++)
-                    {
-                        ChapterPos chapt = new ChapterPos(0, i, j);
-                        for (int k = 0; k < VERSES_IN_CHAPTER[i][j]; k++)
-                        {
-                            chapt.verses.Add(new VersePos(0, 0, i));
-                        }
-                        // update the chapter length now that we know it
-                        chapt.length =0;
-                        chapters.Add(chapt);
-                        int bokPos = (blockType == BLOCK_TYPE.BOOK) ? i : absoluteChapterNumber;
-                        bookPositions[i].chapters.Add(chapt);
-                        absoluteChapterNumber++;
-                    }
-                }
-            }
-            try
-            {
-                // do it for the new testement
-                fs = fileStorage.OpenFile(serial.path + "nt." + ((char)blockType) + "zs", FileMode.Open, FileAccess.Read);
-                int skippedFirstIndexAdjustment = 0;
-                int numBooks = (blockType == BLOCK_TYPE.BOOK) ? BOOKS_IN_NT : CHAPTERS_IN_NT;
-                for (int i = 0; i < (BOOKS_IN_NT + skippedFirstIndexAdjustment); i++)
-                {
-                    long startPos = getintFromStream(fs);
-                    long length = getintFromStream(fs);
-                    long unused = getintFromStream(fs);
-                    if (unused != SKIP_BOOK_FLAG || i != 0)
-                    {
-                        bookPositions.Add(new BookPos(startPos, length, unused));
-                        skippedFirstIndexAdjustment = 1;
-                    }
-                }
-                fs.Close();
-
-                // read the verse holder for versification bzv file new testememt
-                fs = fileStorage.OpenFile(serial.path + "nt." + ((char)blockType) + "zv", FileMode.Open, FileAccess.Read);
-                // dump the first 4 posts
-                for (int i = 0; i < 4; i++)
-                {
-                    int booknum = getByteFromStream(fs);
-                    long startPos = getInt48FromStream(fs);
-                    int length = getShortIntFromStream(fs);
-                }
-                int absoluteChapterNumber = CHAPTERS_IN_OT;
-                // now start getting new testament
-                for (int i = BOOKS_IN_OT; i < (BOOKS_IN_OT + BOOKS_IN_NT); i++)
-                {
-                    for (int j = 0; j < CHAPTERS_IN_BOOK[i]; j++)
-                    {
-                        long chapterStartPos = 0;
-                        ChapterPos chapt = null;
-                        int booknum = 0;
-                        long startPos = 0;
-                        long lastNonZeroStartPos = 0;
-                        int length = 0;
-                        for (int k = 0; k < VERSES_IN_CHAPTER[i][j]; k++)
-                        {
-                            booknum = getByteFromStream(fs);
-                            startPos = getInt48FromStream(fs);
-                            if (startPos != 0)
-                            {
-                                lastNonZeroStartPos = startPos;
-                            }
-                            length = getShortIntFromStream(fs);
-                            if (k == 0)
-                            {
-                                chapterStartPos = startPos;
-                                chapt = new ChapterPos(chapterStartPos, i, j);
-                                int bokPos = (blockType == BLOCK_TYPE.BOOK) ? i : absoluteChapterNumber;
-                                bookPositions[bokPos].chapters.Add(chapt);
-                            }
-                            if (booknum == 0 && startPos == 0 && length == 0)
-                            {
-                                chapt.verses.Add(new VersePos(0, 0, i));
-                            }
-                            else
-                            {
-                                chapt.verses.Add(new VersePos(startPos - chapterStartPos, length, i));
-                            }
-                        }
-                        // update the chapter length now that we know it
-                        chapt.length = (int)(lastNonZeroStartPos - chapterStartPos) + length;
-
-                        chapters.Add(chapt);
-
-                        // dump a post for the chapter break
-                        getByteFromStream(fs);
-                        long x = getInt48FromStream(fs);
-                        getShortIntFromStream(fs);
-                        absoluteChapterNumber++;
-                    }
-                    // dump a post for the book break
-                    getByteFromStream(fs);
-                    getInt48FromStream(fs);
-                    getShortIntFromStream(fs);
-                }
-                fs.Close();
-            }
-            catch (Exception)
-            {
-                // failed to load new testement.  Maybe it does not exist.
-                // fill with fake data
-                int numBooks = (blockType == BLOCK_TYPE.BOOK) ? BOOKS_IN_NT : CHAPTERS_IN_NT;
-                for (int i = 0; i < numBooks; i++)
-                {
-                    bookPositions.Add(new BookPos(0, 0, 0));
-                }
-                int absoluteChapterNumber = CHAPTERS_IN_OT;
-                for (int i = BOOKS_IN_OT; i < (BOOKS_IN_OT + BOOKS_IN_NT); i++)
-                {
-                    for (int j = 0; j < CHAPTERS_IN_BOOK[i]; j++)
-                    {
-                        ChapterPos chapt = new ChapterPos(0, i, j);
-                        for (int k = 0; k < VERSES_IN_CHAPTER[i][j]; k++)
-                        {
-                            chapt.verses.Add(new VersePos(0, 0, i));
-                        }
-                        // update the chapter length now that we know it
-                        chapt.length = 0;
-                        chapters.Add(chapt);
-                        int bokPos = (blockType == BLOCK_TYPE.BOOK) ? i : absoluteChapterNumber;
-                        bookPositions[bokPos].chapters.Add(chapt);
-                        absoluteChapterNumber++;
-                    }
-                }
-            }
         }
 
         #endregion Methods
@@ -1711,6 +1694,10 @@ namespace SwordBackend
                 this.startPos = startPos;
                 this.length = length;
                 this.booknum = booknum;
+            }
+            public bool Equals(VersePos equalsTo)
+            {
+                return equalsTo.booknum == this.booknum && equalsTo.length == this.length && equalsTo.startPos == this.startPos;
             }
 
             #endregion Constructors
@@ -1752,11 +1739,13 @@ namespace SwordBackend
             #region Fields
 
             [DataMember]
+            public long bookStartPos;
+            [DataMember]
             public int booknum;
             [DataMember]
             public int bookRelativeChapterNum;
             [DataMember]
-            public int length = 0;
+            public long length = 0;
             [DataMember]
             public long startPos;
             [DataMember]
@@ -1766,11 +1755,12 @@ namespace SwordBackend
 
             #region Constructors
 
-            public ChapterPos(long startPos, int booknum, int bookRelativeChapterNum)
+            public ChapterPos(long startPos, int booknum, int bookRelativeChapterNum, long bookStartPos)
             {
                 this.startPos = startPos;
                 this.booknum = booknum;
                 this.bookRelativeChapterNum = bookRelativeChapterNum;
+                this.bookStartPos = bookStartPos;
             }
 
             #endregion Constructors

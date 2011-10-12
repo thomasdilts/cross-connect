@@ -21,6 +21,7 @@
 namespace SwordBackend
 {
     using System.Runtime.Serialization;
+    using System;
 
     /// <summary>
     /// Load from a file all the book and verse pointers to the bzz file so that
@@ -56,6 +57,13 @@ namespace SwordBackend
 
         #region Properties
 
+        public override bool IsTranslateable
+        {
+            get
+            {
+                return true;
+            }
+        }
         public override bool IsHearable
         {
             get
@@ -166,6 +174,8 @@ namespace SwordBackend
         public string soundLink = @"http://www.chaniel.se/crossconnect/bibles/talking/getabsolutechapter.php?chapternum={0}&language={1}";
         [DataMember]
         public bool wordsOfChristRed = false;
+        [DataMember]
+        public string userUniqueGuuid = "";
 
         #endregion Fields
 
@@ -190,6 +200,10 @@ namespace SwordBackend
             {
                 customBibleDownloadLinks = fixer.customBibleDownloadLinks;
             }
+            if (userUniqueGuuid == null)
+            {
+                userUniqueGuuid = Guid.NewGuid().ToString();
+            }
         }
 
         public DisplaySettings clone()
@@ -211,6 +225,7 @@ namespace SwordBackend
             cloned.smallVerseNumbers = smallVerseNumbers;
             cloned.soundLink = soundLink;
             cloned.wordsOfChristRed = wordsOfChristRed;
+            cloned.userUniqueGuuid = userUniqueGuuid;
             return cloned;
         }
 

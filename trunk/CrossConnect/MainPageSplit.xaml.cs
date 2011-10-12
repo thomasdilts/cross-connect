@@ -395,6 +395,7 @@ namespace CrossConnect
             //redraw the browsers
             for (int i = 0; i < App.openWindows.Count(); i++)
             {
+                App.openWindows[i].forceReload = true;
                 App.openWindows[i].UpdateBrowser();
             }
         }

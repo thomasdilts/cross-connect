@@ -32,6 +32,7 @@ namespace CrossConnect
         #region Fields
 
         private static Dictionary<string, string> translations = null;
+        private static string _isoLanguageCode = "";
 
         #endregion Fields
 
@@ -39,38 +40,49 @@ namespace CrossConnect
 
         public static string isoLanguageCode
         {
+            
             get
             {
-                Assembly assem = Assembly.GetExecutingAssembly();
-                string isocode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLower();
-                string name = CultureInfo.CurrentCulture.Name.Replace('-', '_').ToLower();
-                if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("LanguageIsoCode", out name))
+                string name="";
+                if (string.IsNullOrEmpty(_isoLanguageCode))
                 {
-                    if (string.IsNullOrEmpty(name))
+                    Assembly assem = Assembly.GetExecutingAssembly();
+                    string isocode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLower();
+                    name = CultureInfo.CurrentCulture.Name.Replace('-', '_').ToLower();
+                    if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("LanguageIsoCode", out name))
                     {
-                        name = CultureInfo.CurrentCulture.Name.Replace('-', '_').ToLower();
+                        if (string.IsNullOrEmpty(name))
+                        {
+                            name = CultureInfo.CurrentCulture.Name.Replace('-', '_').ToLower();
+                        }
                     }
-                }
-                Stream stream = null;
-                stream = assem.GetManifestResourceStream("CrossConnect.Properties.crossc_" + name + ".xml");
-
-                if (stream == null)
-                {
-                    name = isocode;
+                    Stream stream = null;
                     stream = assem.GetManifestResourceStream("CrossConnect.Properties.crossc_" + name + ".xml");
+
                     if (stream == null)
                     {
-                        name = "en";
+                        name = isocode;
+                        stream = assem.GetManifestResourceStream("CrossConnect.Properties.crossc_" + name + ".xml");
+                        if (stream == null)
+                        {
+                            name = "en";
+                        }
                     }
+                    if (stream != null)
+                    {
+                        stream.Close();
+                    }
+                    _isoLanguageCode = name;
                 }
-                if (stream != null)
+                else
                 {
-                    stream.Close();
+                    name = _isoLanguageCode;
                 }
                 return name;
             }
             set
             {
+                _isoLanguageCode = value;
                 IsolatedStorageSettings.ApplicationSettings["LanguageIsoCode"] = value;
                 IsolatedStorageSettings.ApplicationSettings.Save();
                 translations = new Dictionary<string, string>();
@@ -80,7 +92,6 @@ namespace CrossConnect
 
         #endregion Properties
 
-        #region Methods
 
         public static string translate(string key)
         {
@@ -147,6 +158,5 @@ namespace CrossConnect
             stream.Close();
         }
 
-        #endregion Methods
     }
 }

@@ -39,6 +39,7 @@ namespace CrossConnect
     using Microsoft.Phone.Tasks;
 
     using SwordBackend;
+    using System.Collections.Generic;
 
     public partial class BrowserTitledWindow : UserControl
     {
@@ -51,6 +52,7 @@ namespace CrossConnect
         private DateTime lastManipulationKillTime = DateTime.Now;
         private System.Windows.Threading.DispatcherTimer manipulationTimer = null;
         private ManipulationCompletedEventArgs manipulationToProcess = null;
+        public bool forceReload=false;
 
         #endregion Fields
 
@@ -143,7 +145,16 @@ namespace CrossConnect
             }
             else
             {
-                foreach (var book in App.installedBibles.installedBibles)
+                Dictionary<string, SwordBook> books = null;
+                if (windowType == WINDOW_TYPE.WINDOW_COMMENTARY)
+                {
+                    books = App.installedBibles.installedCommentaries;
+                }
+                else
+                {
+                    books = App.installedBibles.installedBibles;
+                }
+                foreach (var book in books)
                 {
                     if (book.Value.sbmd.internalName.Equals(bibleToLoad))
                     {
@@ -168,8 +179,14 @@ namespace CrossConnect
                                 case WINDOW_TYPE.WINDOW_DAILY_PLAN:
                                     this.state.source = new DailyPlanReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
                                     break;
+                                case WINDOW_TYPE.WINDOW_COMMENTARY:
+                                    this.state.source = new CommentZtextReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                    break;
                                 case WINDOW_TYPE.WINDOW_ADDED_NOTES:
                                     this.state.source = new PersonalNotesReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                    break;
+                                case WINDOW_TYPE.WINDOW_TRANSLATOR:
+                                    this.state.source = new TranslatorReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
                                     break;
                             }
                         }
@@ -367,7 +384,7 @@ namespace CrossConnect
         private void ButMenu_Click(object sender, RoutedEventArgs e)
         {
             killManipulation();
-
+            forceReload=true;
             PhoneApplicationService.Current.State["isAddNewWindowOnly"] = false;
             PhoneApplicationService.Current.State["skipWindowSettings"] = false;
             PhoneApplicationService.Current.State["openWindowIndex"] = this.state.curIndex;
@@ -494,19 +511,38 @@ namespace CrossConnect
             {
                 numButtonsShowing++;
             }
+            if (butTranslate.Visibility == System.Windows.Visibility.Visible)
+            {
+                numButtonsShowing++;
+            }
             title.Width = System.Windows.Application.Current.Host.Content.ActualWidth - butClose.Width * numButtonsShowing - 15;
             title.MaxWidth = System.Windows.Application.Current.Host.Content.ActualWidth - butClose.Width * numButtonsShowing - 15;
         }
 
-        private void DoAsynchronAddWindow(string link)
+        private void DoAsynchronAddInternetWindow(string link)
         {
+            var win = new InternetLinkReader("", "", false);
+            win.ShowLink(link); 
             App.AddWindow(
                 "",
                 "",
-                WINDOW_TYPE.WINDOW_SEARCH,
-                10,
-                new InternetLinkReader("","",false));
+                WINDOW_TYPE.WINDOW_INTERNET_LINK,
+                state.htmlFontSize,
+                win);
             Deployment.Current.Dispatcher.BeginInvoke(() => showInternetLinkWindow(link));
+        }
+
+        private void DoAsynchronAddLexiconWindow(string link)
+        {
+            var win = new GreekHebrewDictReader("", "", false);
+            win.ShowLink(link);
+            App.AddWindow(
+                "",
+                "",
+                WINDOW_TYPE.WINDOW_LEXICON_LINK,
+                state.htmlFontSize,
+                win);
+            //Deployment.Current.Dispatcher.BeginInvoke(() => showLexiconLinkWindow(link));
         }
 
         private void DoManipulation(ManipulationCompletedEventArgs e)
@@ -559,8 +595,9 @@ namespace CrossConnect
                         htmlPhoneAccentColor,
                         htmlFontSize,
                         fileErase,
-                        App.WEB_DIR_ISOLATED);
-
+                        App.WEB_DIR_ISOLATED,
+                        forceReload);
+                    forceReload = false;
                     Deployment.Current.Dispatcher.BeginInvoke(() => CallbackFromUpdate(createdFileName));
                 }
                 catch (Exception e)
@@ -641,13 +678,29 @@ namespace CrossConnect
                 {
                     linkReader = (InternetLinkReader)win.state.source;
                     linkReader.ShowLink(link);
+                    forceReload = true;
                     win.UpdateBrowser();
                     return;
                 }
             }
-            Deployment.Current.Dispatcher.BeginInvoke(() => DoAsynchronAddWindow(link));
+            Deployment.Current.Dispatcher.BeginInvoke(() => DoAsynchronAddInternetWindow(link));
         }
-
+        private void showLexiconLinkWindow(string link)
+        {
+            GreekHebrewDictReader linkReader = null;
+            foreach (var win in App.openWindows)
+            {
+                if (win.state.source is GreekHebrewDictReader)
+                {
+                    linkReader = (GreekHebrewDictReader)win.state.source;
+                    linkReader.ShowLink(link);
+                    win.forceReload = true;
+                    win.UpdateBrowser();
+                    return;
+                }
+            }
+            Deployment.Current.Dispatcher.BeginInvoke(() => DoAsynchronAddLexiconWindow(link));
+        }
         private SlideTransition SlideTransitionElement(string mode)
         {
             SlideTransitionMode slideTransitionMode = (SlideTransitionMode)Enum.Parse(typeof(SlideTransitionMode), mode, false);
@@ -656,6 +709,7 @@ namespace CrossConnect
 
         private void Source_Changed()
         {
+            forceReload = true;
             this.UpdateBrowser();
         }
 
@@ -678,7 +732,9 @@ namespace CrossConnect
             SetButtonVisibility(butPrevious, isPrevNext, "/Images/" + colorDir + "/appbar.prev.rest.png", "/Images/" + colorDir + "/appbar.prev.rest.press.png");
             SetButtonVisibility(butNext, isPrevNext, "/Images/" + colorDir + "/appbar.next.rest.png", "/Images/" + colorDir + "/appbar.next.rest.press.png");
             bool IsHearable = this.state != null && this.state.source != null && this.state.source.IsHearable;
-            SetButtonVisibility(butHear, IsHearable, "/Images/" + colorDir + "/appbar.speaker.png", "/Images/" + colorDir + "/appbar.next.speaker.pressed.png");
+            SetButtonVisibility(butHear, IsHearable, "/Images/" + colorDir + "/appbar.speaker.png", "/Images/" + colorDir + "/appbar.speaker.pressed.png");
+            bool IsTranslate = this.state != null && this.state.source != null && this.state.source.IsTranslateable && !this.state.source.GetLanguage().Equals(Translations.isoLanguageCode);
+            SetButtonVisibility(butTranslate, IsTranslate, "/Images/" + colorDir + "/appbar.translate.png", "/Images/" + colorDir + "/appbar.translate.pressed.png");
 
             butMenu.Image = this.GetImage("/Images/" + colorDir + "/appbar.menu.rest.png");
             butMenu.PressedImage = this.GetImage("/Images/" + colorDir + "/appbar.menu.rest.pressed.png");
@@ -720,7 +776,8 @@ namespace CrossConnect
                         int.TryParse(chapterVerse[i + 1], out verseNum);
                         break;
                     case "STRONG":
-                        showInternetLinkWindow(chapterVerse[i + 1]);
+                        showLexiconLinkWindow(chapterVerse[i + 1]);
+                        //showInternetLinkWindow(chapterVerse[i + 1]);
                         return;
                     case "MORPH":
                         string morphology = MorphologyTranslator.ParseRobinson(chapterVerse[i + 1]);
@@ -773,7 +830,9 @@ namespace CrossConnect
         /// </summary>
         [DataContract]
         [KnownType(typeof(DailyPlanReader))]
+        [KnownType(typeof(CommentZtextReader))]
         [KnownType(typeof(BookMarkReader))]
+        [KnownType(typeof(TranslatorReader))]
         [KnownType(typeof(HistoryReader))]
         [KnownType(typeof(SearchReader))]
         [KnownType(typeof(BibleNoteReader))]
@@ -804,5 +863,37 @@ namespace CrossConnect
         }
 
         #endregion Nested Types
+
+        private void butTranslate_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
+        }
+
+        private void butTranslate_Click(object sender, RoutedEventArgs e)
+        {
+            killManipulation();
+
+            string[] toTranslate;
+            bool[] isTranslateable;
+            this.state.source.GetTranslateableTexts(App.displaySettings, state.bibleToLoad, out toTranslate, out isTranslateable); 
+            
+            foreach (var win in App.openWindows)
+            {
+                if (win.state.source is TranslatorReader)
+                {
+                    TranslatorReader transReader = (TranslatorReader)win.state.source;
+                    transReader.TranslateThis( toTranslate, isTranslateable, this.state.source.GetLanguage());
+                    return;
+                }
+            }
+            TranslatorReader transReader2 = new TranslatorReader("", "", false);
+            App.AddWindow(
+                "",
+                "",
+                WINDOW_TYPE.WINDOW_TRANSLATOR,
+                state.htmlFontSize,
+                transReader2);
+            transReader2.TranslateThis(toTranslate, isTranslateable, this.state.source.GetLanguage());
+        }
     }
 }

@@ -43,6 +43,10 @@ namespace SwordBackend
     {
         #region Properties
 
+        bool IsTranslateable
+        {
+            get;
+        }        
         bool existsShortNames
         {
             get;
@@ -90,6 +94,10 @@ namespace SwordBackend
 
         string GetVerseTextOnly(DisplaySettings displaySettings, int chapterNumber, int verseNum);
 
+        string GetLanguage();
+
+        void GetTranslateableTexts(DisplaySettings displaySettings, string bibleToLoad, out string[] toTranslate, out bool[] isTranslateable);
+
         List<string> MakeListDisplayText(DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay);
 
         void moveChapterVerse(int chapter, int verse, bool isLocalLinkChange);
@@ -98,7 +106,7 @@ namespace SwordBackend
 
         void movePrevious();
 
-        string putHtmlTofile(DisplaySettings displaySettings,  string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fileErase, string filePath);
+        string putHtmlTofile(DisplaySettings displaySettings,  string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fileErase, string filePath, bool forceReload);
 
         void RegisterUpdateEvent(WindowSourceChanged sourceChangedMethod, bool isRegister = true);
 
