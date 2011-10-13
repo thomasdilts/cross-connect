@@ -214,7 +214,7 @@ namespace CrossConnect
                 {
                     selectBook.Items.Add(x.Key);
                 }
-                selectType.Visibility = System.Windows.Visibility.Visible;
+                selectType.Visibility = App.installedBibles.installedBibles.Count > 0 ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
                 selectBook.Visibility = System.Windows.Visibility.Visible;
                 butDownloadBook.Visibility = System.Windows.Visibility.Visible;
             }
