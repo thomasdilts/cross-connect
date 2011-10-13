@@ -1,5 +1,5 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <translations isolang="sr" isolocale="" version="1.0">
-<string key="Add a note">Додај белешку</string>
 <string key="Add new window">Додај нови прозор</string>
 <string key="Add to bookmarks">Додај у маркере</string>
 <string key="Added notes">Додато белешке</string>
@@ -9,7 +9,8 @@
 <string key="Bookmarks">Маркера</string>
 <string key="Case insensitive">Цасе инсенситиве</string>
 <string key="Clear history">Обриши историју</string>
-<string key="Custom bible download addresses">Прилагођено библија преузимање адресе</string>
+<string key="Commentaries">Коментари</string>
+<string key="Custom bible download addresses">Прилагођено библија довнлоад адресе</string>
 <string key="Daily plan">Дневни план</string>
 <string key="Day">Дан</string>
 <string key="Days">Дани</string>
@@ -19,7 +20,8 @@
 <string key="Download bible list">Довнлоад библија листу</string>
 <string key="Download bible">Довнлоад библија</string>
 <string key="Download bibles">Довнлоад Библије</string>
-<string key="Exact match">Потпуно подударање</string>
+<string key="Download type">Тип довнлоад</string>
+<string key="Exact match">Тачно подударање</string>
 <string key="Found">Пронађено</string>
 <string key="From the beginning to the end">Од почетка до краја</string>
 <string key="Greek dictionary internet link">Грчки речник Интернет линк</string>
@@ -44,7 +46,7 @@
 <string key="Morphology-Conjunction or conjunctive particle">Коњункцију или спојено честица</string>
 <string key="Morphology-Contracted form">Уговорени облику</string>
 <string key="Morphology-Contracted form, or two words merged by crasis">Уговорене форму, или две речи стопљене црасис</string>
-<string key="Morphology-Correlative or interrogative pronoun">Корелативна или упитан заменицу</string>
+<string key="Morphology-Correlative or interrogative pronoun">Корелативна или упитни заменицу</string>
 <string key="Morphology-Correlative pronoun">Корелативна заменица</string>
 <string key="Morphology-Dative">Датив</string>
 <string key="Morphology-Definite article">Дефинитивно чланак</string>
@@ -76,8 +78,8 @@
 <string key="Morphology-Middle significance">Средњег значаја</string>
 <string key="Morphology-Middle">Средњи</string>
 <string key="Morphology-Negative">Негативан</string>
-<string key="Morphology-Neuter">Бесполан</string>
-<string key="Morphology-No tense stated (adverbial imperative)">Нема напета наведено (прилошки императив)</string>
+<string key="Morphology-Neuter">Неопредељен</string>
+<string key="Morphology-No tense stated (adverbial imperative)">Нема напета изјавио (прилошки императив)</string>
 <string key="Morphology-No voice stated">Нема глас рекао</string>
 <string key="Morphology-Nominative">Номинатив</string>
 <string key="Morphology-Noun">Именица</string>
@@ -98,7 +100,7 @@
 <string key="Morphology-Reflexive pronoun">Рефлексивно заменица</string>
 <string key="Morphology-Relative pronoun">Релативна заменица</string>
 <string key="Morphology-Second Aorist">Други аорист</string>
-<string key="Morphology-Second Future">Други Будућност</string>
+<string key="Morphology-Second Future">Други будућност</string>
 <string key="Morphology-Second perfect">Други савршен</string>
 <string key="Morphology-Second person">Друга особа</string>
 <string key="Morphology-Second pluperfect">Други Плуперфецт</string>
@@ -113,7 +115,7 @@
 <string key="Nothing found">Ништа није нађено</string>
 <string key="One or more words">Једну или више речи</string>
 <string key="Rate this program">Оцени овај програм</string>
-<string key="Search conditions">Претрага условима</string>
+<string key="Search conditions">Сеарцх условима</string>
 <string key="Search where">Тражи где</string>
 <string key="Search">Претраживање</string>
 <string key="Select bible to delete">Одаберите библија за брисање</string>
@@ -124,7 +126,7 @@
 <string key="Select day">Изабери дан</string>
 <string key="Select the bible">Изаберите библија</string>
 <string key="Select the daily plan start date">Одаберите дневне датум почетка плана</string>
-<string key="Select the daily plan">Изаберите дневно плана</string>
+<string key="Select the daily plan">Изаберите Даили плана</string>
 <string key="Select the language">Одаберите језик</string>
 <string key="Select the server">Изаберите сервер</string>
 <string key="Select the window type">Изаберите тип прозора</string>
@@ -132,15 +134,15 @@
 <string key="Send mail">Пошаљи маил</string>
 <string key="Send message">Пошаљи поруку</string>
 <string key="Settings">Подешавања</string>
-<string key="Show Strong&#39;s numbers">Прикажи Стронгова бројева</string>
-<string key="Show added notes by chapter">Прикажи додао белешке из поглавља</string>
+<string key="Show Strong's numbers">Прикажи Стронгова бројева</string>
+<string key="Show added notes by chapter">Прикажи додао белешке за поглавље</string>
 <string key="Show note positions">Прикажи позиције Напомена</string>
 <string key="Show the book name on each verse">Прикажи име књиге на сваком стиху</string>
 <string key="Show the chapter number on each verse">Прикажи број поглавља на сваком стиху</string>
 <string key="Show the headings">Прикажи наслови</string>
 <string key="Show the verse number on each verse">Прикажи број стиха на сваком стиху</string>
 <string key="Show the words of Jesus in red">Прикажи Исусове речи у црвеном</string>
-<string key="Show word morphology">Прикажи морфологија речи</string>
+<string key="Show word morphology">Прикажи морфологије речи</string>
 <string key="Start each verse on a new line">Почните сваки стих у новом реду</string>
 <string key="Talking bible internet link">Говорећи библија Интернет линк</string>
 <string key="Text size">Величине текста</string>
@@ -151,8 +153,11 @@
 <string key="The bible by random chapters">Библија случајним поглављима</string>
 <string key="The bible by topic">Библија по темама</string>
 <string key="Too many found. Search stopped">Превише пронађено. Тражи заустављен</string>
+<string key="Translation">Превод</string>
+<string key="Add a note">Додај белешку</string>
+<string key="Use internet dictionaries">Употреба речника интернета</string>
 <string key="Use small verse numbers">Користите мали број стих</string>
 <string key="Whole bible">Целу Библију</string>
 <string key="You must first select a verse">Прво морате изабрати стих</string>
-<string key="You must have at least one bible">Морате имати најмање једног библија</string>
+<string key="You must have at least one bible">Морате имати бар један библија</string>
 </translations>

@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <translations isolang="sv" isolocale="" version="1.0">
-<string key="Add a note">Lägg till en anteckning</string>
-<string key="Add new window">Lägg till nya fönster</string>
+<string key="Add new window">Lägg till nytt fönster</string>
 <string key="Add to bookmarks">Lägg till bokmärke</string>
 <string key="Added notes">Lade till anteckningar</string>
 <string key="All words (maximum 3 words)">Alla ord (högst 3 ord)</string>
@@ -10,6 +9,7 @@
 <string key="Bookmarks">Bokmärken</string>
 <string key="Case insensitive">Mål okänslig</string>
 <string key="Clear history">Rensa historik</string>
+<string key="Commentaries">Kommentarer</string>
 <string key="Custom bible download addresses">Anpassad bibel hämta adresser</string>
 <string key="Daily plan">Daglig planen</string>
 <string key="Day">Dag</string>
@@ -20,9 +20,10 @@
 <string key="Download bible list">Ladda ner bibel lista</string>
 <string key="Download bible">Ladda ner bibel</string>
 <string key="Download bibles">Ladda ner biblar</string>
+<string key="Download type">Typ av nedladdning</string>
 <string key="Exact match">Exakt matchning</string>
 <string key="Found">Hittade</string>
-<string key="From the beginning to the end">Från början till slutet</string>
+<string key="From the beginning to the end">Från början till slut</string>
 <string key="Greek dictionary internet link">Grekisk ordbok internet länk</string>
 <string key="Hebrew dictionary internet link">Hebreiska ordlista internet länk</string>
 <string key="Help">Hjälp</string>
@@ -37,7 +38,7 @@
 <string key="Morphology-Aeolic">Aeolic</string>
 <string key="Morphology-Aorist">Aoristen</string>
 <string key="Morphology-Apocopated form">Apocopated formulär</string>
-<string key="Morphology-Aramaic transliterated word (indeclinable)">Arameiska transliterated ord (orubbliga)</string>
+<string key="Morphology-Aramaic transliterated word (indeclinable)">Arameiska transliterated ord (oböjlig)</string>
 <string key="Morphology-Attic Greek form">Attic grekiska formen</string>
 <string key="Morphology-Attic">Attic</string>
 <string key="Morphology-Comparative">Jämförande</string>
@@ -55,13 +56,13 @@
 <string key="Morphology-First person">Första person</string>
 <string key="Morphology-Future">Framtida</string>
 <string key="Morphology-Genitive">Genitiv</string>
-<string key="Morphology-Hebrew transliterated word (indeclinable)">Hebreiska transliterated ord (orubbliga)</string>
+<string key="Morphology-Hebrew transliterated word (indeclinable)">Hebreiska transliterated ord (oböjlig)</string>
 <string key="Morphology-Imperative">Imperativ</string>
 <string key="Morphology-Imperative-sense participle">Imperativ-sense particip</string>
 <string key="Morphology-Imperfect">Imperfect</string>
 <string key="Morphology-Impersonal active">Opersonliga aktiva</string>
 <string key="Morphology-Indeclinable Letter (Noun)">Orubbliga Brev (substantiv)</string>
-<string key="Morphology-Indeclinable Noun of Other type">Orubbliga Substantiv av andra slag</string>
+<string key="Morphology-Indeclinable Noun of Other type">Orubbliga Substantiv av Annan typ</string>
 <string key="Morphology-Indeclinable Numeral (Adjective)">Orubbliga Siffra (adjektiv)</string>
 <string key="Morphology-Indeclinable Proper Noun">Orubbliga egennamn</string>
 <string key="Morphology-Indefinite pronoun">Obestämd pronomen</string>
@@ -78,7 +79,7 @@
 <string key="Morphology-Middle">Mellanöstern</string>
 <string key="Morphology-Negative">Negativ</string>
 <string key="Morphology-Neuter">Kastrat</string>
-<string key="Morphology-No tense stated (adverbial imperative)">Inga spända anges (adverbial imperativ)</string>
+<string key="Morphology-No tense stated (adverbial imperative)">No spända anges (adverbial imperativ)</string>
 <string key="Morphology-No voice stated">Ingen röst förklarade</string>
 <string key="Morphology-Nominative">NOMINATIV</string>
 <string key="Morphology-Noun">Substantiv</string>
@@ -104,7 +105,7 @@
 <string key="Morphology-Second person">Andra person</string>
 <string key="Morphology-Second pluperfect">Andra PLUSKVAMPERFEKTUM</string>
 <string key="Morphology-Singular">Singular</string>
-<string key="Morphology-Subjunctive">KONJUNKTIVISK</string>
+<string key="Morphology-Subjunctive">KONJUNKTIV</string>
 <string key="Morphology-Superlative">Överlägsen</string>
 <string key="Morphology-Third person">Tredje person</string>
 <string key="Morphology-Transitive">Transitiv</string>
@@ -118,7 +119,7 @@
 <string key="Search where">Sök där</string>
 <string key="Search">Sök</string>
 <string key="Select bible to delete">Välj bibel för att radera</string>
-<string key="Select book and chapter">Välj bok och kapitel</string>
+<string key="Select book and chapter">Välj bok och kapitlet</string>
 <string key="Select book">Välj bok</string>
 <string key="Select bookmark to delete">Välj bokmärket för att radera</string>
 <string key="Select chapter">Välj kapitel</string>
@@ -133,8 +134,8 @@
 <string key="Send mail">Skicka e-post</string>
 <string key="Send message">Skicka meddelande</string>
 <string key="Settings">Inställningar</string>
-<string key="Show Strong&#39;s numbers">Visa Strongs nummer</string>
-<string key="Show added notes by chapter">Visa lagt till noteringar av kapitel</string>
+<string key="Show Strong's numbers">Visa Strongs nummer</string>
+<string key="Show added notes by chapter">Visa lagt till anteckningar för kapitel</string>
 <string key="Show note positions">Visa notera positioner</string>
 <string key="Show the book name on each verse">Visa boken namn på varje vers</string>
 <string key="Show the chapter number on each verse">Visa kapitlet numret på varje vers</string>
@@ -145,13 +146,16 @@
 <string key="Start each verse on a new line">Börja varje vers på en ny rad</string>
 <string key="Talking bible internet link">Talande bibel internet länk</string>
 <string key="Text size">Textstorlek</string>
-<string key="The New Testement">Den nya Testement</string>
+<string key="The New Testement">Nya Testement</string>
 <string key="The New Testement, Psalms, Proverbs">Nya Testement, Psaltaren, Ordspråksboken</string>
 <string key="The Old Testement">Gamla Testement</string>
 <string key="The Old and New Testement each day">Gamla och Nya Testement varje dag</string>
 <string key="The bible by random chapters">Bibeln av slumpmässiga kapitel</string>
 <string key="The bible by topic">Bibeln efter ämne</string>
-<string key="Too many found. Search stopped">För många hittade. Sök stoppas</string>
+<string key="Too many found. Search stopped">För många hittats. Sök stoppas</string>
+<string key="Translation">Översättning</string>
+<string key="Add a note">Lägg till en anteckning</string>
+<string key="Use internet dictionaries">Använd internet ordböcker</string>
 <string key="Use small verse numbers">Använd små versnumren</string>
 <string key="Whole bible">Hela bibeln</string>
 <string key="You must first select a verse">Du måste först välja en vers</string>

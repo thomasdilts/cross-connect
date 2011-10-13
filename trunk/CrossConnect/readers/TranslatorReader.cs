@@ -44,6 +44,9 @@ namespace CrossConnect.readers
         [DataMember]
         public string displayText = string.Empty;
 
+        private bool[] isTranslateable;
+        private string[] toTranslate;
+
         #endregion Fields
 
         #region Constructors
@@ -54,6 +57,7 @@ namespace CrossConnect.readers
             : base(path, iso2DigitLangCode, isIsoEncoding)
         {
         }
+
         #endregion Constructors
 
         #region Delegates
@@ -65,13 +69,6 @@ namespace CrossConnect.readers
         #region Properties
 
         public override bool IsHearable
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsTranslateable
         {
             get
             {
@@ -103,48 +100,18 @@ namespace CrossConnect.readers
             }
         }
 
+        public override bool IsTranslateable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         #endregion Properties
 
         #region Methods
-        private string[] toTranslate;
-        private bool[] isTranslateable;
-        public void TranslateThis(string[] toTranslate, bool[] isTranslateable, string fromLanguage)
-        {
-            this.toTranslate=toTranslate;
-            this.isTranslateable=isTranslateable;
-            TranslateByGoogle ggl=new TranslateByGoogle();
-            for (int i = 0; i < isTranslateable.Length; i++)
-			{
-			    if(isTranslateable[i])
-                {
-                    ggl.GetGoogleTranslationAsync(toTranslate[i],fromLanguage,new TranslateByGoogle.GoogleTranslatedTextReturnEvent(TextTranslatedByGoogle));
-                    break;
-                }
-			}
-        }
-        private void TextTranslatedByGoogle(string translation, bool isError)
-        {
-            displayText="";
-            if(isError)
-            {
-                displayText=translation;
-            }
-            else
-            {
-                for (int i = 0; i < isTranslateable.Length; i++)
-			    {
-			        if(isTranslateable[i])
-                    {
-                        displayText+=translation;
-                    }
-                    else
-                    {
-                        displayText+=toTranslate[i];
-                    }
-			    }
-            }
-            raiseSourceChangedEvent();
-        }
+
         public override void GetInfo(out int bookNum, out int absouteChaptNum, out int relChaptNum, out int verseNum, out string fullName, out string title)
         {
             verseNum = 0;
@@ -155,11 +122,50 @@ namespace CrossConnect.readers
             title = Translations.translate("Translation");
         }
 
+        public void TranslateThis(string[] toTranslate, bool[] isTranslateable, string fromLanguage)
+        {
+            this.toTranslate=toTranslate;
+            this.isTranslateable=isTranslateable;
+            TranslateByGoogle ggl=new TranslateByGoogle();
+            for (int i = 0; i < isTranslateable.Length; i++)
+            {
+                if(isTranslateable[i])
+                {
+                    ggl.GetGoogleTranslationAsync(toTranslate[i],fromLanguage,new TranslateByGoogle.GoogleTranslatedTextReturnEvent(TextTranslatedByGoogle));
+                    break;
+                }
+            }
+        }
+
         protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml = true)
         {
             //Debug.WriteLine("SearchReader GetChapterHtml.text=" + displayText);
             return HtmlHeader(displaySettings, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize)
                 + displayText + "</body></html>";
+        }
+
+        private void TextTranslatedByGoogle(string translation, bool isError)
+        {
+            displayText="";
+            if(isError)
+            {
+                displayText=translation;
+            }
+            else
+            {
+                for (int i = 0; i < isTranslateable.Length; i++)
+                {
+                    if(isTranslateable[i])
+                    {
+                        displayText+=translation;
+                    }
+                    else
+                    {
+                        displayText+=toTranslate[i];
+                    }
+                }
+            }
+            raiseSourceChangedEvent();
         }
 
         #endregion Methods

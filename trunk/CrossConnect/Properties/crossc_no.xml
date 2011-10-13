@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <translations isolang="no" isolocale="" version="1.0">
-<string key="Add a note">Legg til et notat</string>
-<string key="Add new window">Legg nytt vindu</string>
+<string key="Add new window">Legg til i nytt vindu</string>
 <string key="Add to bookmarks">Legg til i bokmerker</string>
 <string key="Added notes">Lagt notater</string>
 <string key="All words (maximum 3 words)">Alle ord (maksimalt 3 ord)</string>
@@ -10,16 +9,18 @@
 <string key="Bookmarks">Bokmerker</string>
 <string key="Case insensitive">Små bokstaver</string>
 <string key="Clear history">Tøm logg</string>
+<string key="Commentaries">Kommentarer</string>
 <string key="Custom bible download addresses">Custom bible download adresser</string>
 <string key="Daily plan">Daglig plan</string>
 <string key="Day">Dag</string>
 <string key="Days">Dager</string>
 <string key="Default settings">Standardinnstillinger</string>
-<string key="Default system language">Standard system language</string>
+<string key="Default system language">Standard system språk</string>
 <string key="Delete?">Slett?</string>
 <string key="Download bible list">Last ned bible liste</string>
 <string key="Download bible">Last ned bible</string>
 <string key="Download bibles">Last ned bibler</string>
+<string key="Download type">Nedlastning type</string>
 <string key="Exact match">Eksakt samsvar</string>
 <string key="Found">Funnet</string>
 <string key="From the beginning to the end">Fra begynnelsen til slutten</string>
@@ -37,10 +38,10 @@
 <string key="Morphology-Aeolic">Aeolic</string>
 <string key="Morphology-Aorist">Aorist</string>
 <string key="Morphology-Apocopated form">Apocopated skjema</string>
-<string key="Morphology-Aramaic transliterated word (indeclinable)">Arameisk oversatt ord (indeclinable)</string>
-<string key="Morphology-Attic Greek form">Attic greske formen</string>
+<string key="Morphology-Aramaic transliterated word (indeclinable)">Aramaic oversatt ord (indeclinable)</string>
+<string key="Morphology-Attic Greek form">Attic gresk skjema</string>
 <string key="Morphology-Attic">Attic</string>
-<string key="Morphology-Comparative">Sammenlignende</string>
+<string key="Morphology-Comparative">Comparative</string>
 <string key="Morphology-Conditional particle or conjunction">Betinget partikkel eller sammen</string>
 <string key="Morphology-Conjunction or conjunctive particle">Konjunksjon eller konjunktiv partikkel</string>
 <string key="Morphology-Contracted form">Avtalt skjema</string>
@@ -62,7 +63,7 @@
 <string key="Morphology-Impersonal active">Upersonlig aktiv</string>
 <string key="Morphology-Indeclinable Letter (Noun)">Indeclinable Letter (Substantiv)</string>
 <string key="Morphology-Indeclinable Noun of Other type">Indeclinable Substantiv av andre typen</string>
-<string key="Morphology-Indeclinable Numeral (Adjective)">Indeclinable Tall (adjektiv)</string>
+<string key="Morphology-Indeclinable Numeral (Adjective)">Indeclinable Tall (Adjektiv)</string>
 <string key="Morphology-Indeclinable Proper Noun">Indeclinable Riktig Substantiv</string>
 <string key="Morphology-Indefinite pronoun">Ubestemt pronomen</string>
 <string key="Morphology-Indicative">Omtrentlig</string>
@@ -85,7 +86,7 @@
 <string key="Morphology-Optative">Optative</string>
 <string key="Morphology-Participle">Partisipp</string>
 <string key="Morphology-Particle attached (with relative pronoun)">Particle festet (med relative pronomen)</string>
-<string key="Morphology-Particle, disjunctive particle">Partikkel, disjunktiv partikkel</string>
+<string key="Morphology-Particle, disjunctive particle">Particle, disjunktiv partikkel</string>
 <string key="Morphology-Passive deponent">Passive deponent</string>
 <string key="Morphology-Passive">Passiv</string>
 <string key="Morphology-Perfect">Perfekt</string>
@@ -133,7 +134,7 @@
 <string key="Send mail">Send mail</string>
 <string key="Send message">Send melding</string>
 <string key="Settings">Innstillinger</string>
-<string key="Show Strong&#39;s numbers">Vis Strong tall</string>
+<string key="Show Strong's numbers">Vis Strong tall</string>
 <string key="Show added notes by chapter">Vis lagt notater etter kapittel</string>
 <string key="Show note positions">Vis notat posisjoner</string>
 <string key="Show the book name on each verse">Vis boken navnet på hvert vers</string>
@@ -142,7 +143,7 @@
 <string key="Show the verse number on each verse">Vis verset nummer på hvert vers</string>
 <string key="Show the words of Jesus in red">Vis Jesu ord i rødt</string>
 <string key="Show word morphology">Vis Ordet morfologi</string>
-<string key="Start each verse on a new line">Begynn hvert vers på en ny linje</string>
+<string key="Start each verse on a new line">Start hver vers på en ny linje</string>
 <string key="Talking bible internet link">Talking bible internett kobling</string>
 <string key="Text size">Tekststørrelse</string>
 <string key="The New Testement">The New Testement</string>
@@ -152,6 +153,9 @@
 <string key="The bible by random chapters">Bibelen av en tilfeldig kapitler</string>
 <string key="The bible by topic">Bibelen etter emne</string>
 <string key="Too many found. Search stopped">For mange funnet. Søk stoppet</string>
+<string key="Translation">Oversettelse</string>
+<string key="Add a note">Legg til et notat</string>
+<string key="Use internet dictionaries">Bruk internett ordbøker</string>
 <string key="Use small verse numbers">Bruk små vers tall</string>
 <string key="Whole bible">Hele Bibelen</string>
 <string key="You must first select a verse">Du må først velge et vers</string>

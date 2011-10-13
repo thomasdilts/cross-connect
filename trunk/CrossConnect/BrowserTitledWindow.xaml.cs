@@ -21,6 +21,7 @@
 namespace CrossConnect
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO.IsolatedStorage;
     using System.Linq;
@@ -39,12 +40,12 @@ namespace CrossConnect
     using Microsoft.Phone.Tasks;
 
     using SwordBackend;
-    using System.Collections.Generic;
 
     public partial class BrowserTitledWindow : UserControl
     {
         #region Fields
 
+        public bool forceReload = false;
         public SerializableWindowState state = new SerializableWindowState();
 
         private bool isInGetHtmlAsynchronously = false;
@@ -52,7 +53,6 @@ namespace CrossConnect
         private DateTime lastManipulationKillTime = DateTime.Now;
         private System.Windows.Threading.DispatcherTimer manipulationTimer = null;
         private ManipulationCompletedEventArgs manipulationToProcess = null;
-        public bool forceReload=false;
 
         #endregion Fields
 
@@ -476,6 +476,38 @@ namespace CrossConnect
             DoManipulation(e);
         }
 
+        private void butTranslate_Click(object sender, RoutedEventArgs e)
+        {
+            killManipulation();
+
+            string[] toTranslate;
+            bool[] isTranslateable;
+            this.state.source.GetTranslateableTexts(App.displaySettings, state.bibleToLoad, out toTranslate, out isTranslateable);
+
+            foreach (var win in App.openWindows)
+            {
+                if (win.state.source is TranslatorReader)
+                {
+                    TranslatorReader transReader = (TranslatorReader)win.state.source;
+                    transReader.TranslateThis( toTranslate, isTranslateable, this.state.source.GetLanguage());
+                    return;
+                }
+            }
+            TranslatorReader transReader2 = new TranslatorReader("", "", false);
+            App.AddWindow(
+                "",
+                "",
+                WINDOW_TYPE.WINDOW_TRANSLATOR,
+                state.htmlFontSize,
+                transReader2);
+            transReader2.TranslateThis(toTranslate, isTranslateable, this.state.source.GetLanguage());
+        }
+
+        private void butTranslate_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
+        }
+
         private void CalculateTitleTextWidth()
         {
             int numButtonsShowing = 0;
@@ -522,7 +554,7 @@ namespace CrossConnect
         private void DoAsynchronAddInternetWindow(string link)
         {
             var win = new InternetLinkReader("", "", false);
-            win.ShowLink(link); 
+            win.ShowLink(link);
             App.AddWindow(
                 "",
                 "",
@@ -685,6 +717,7 @@ namespace CrossConnect
             }
             Deployment.Current.Dispatcher.BeginInvoke(() => DoAsynchronAddInternetWindow(link));
         }
+
         private void showLexiconLinkWindow(string link)
         {
             GreekHebrewDictReader linkReader = null;
@@ -701,6 +734,7 @@ namespace CrossConnect
             }
             Deployment.Current.Dispatcher.BeginInvoke(() => DoAsynchronAddLexiconWindow(link));
         }
+
         private SlideTransition SlideTransitionElement(string mode)
         {
             SlideTransitionMode slideTransitionMode = (SlideTransitionMode)Enum.Parse(typeof(SlideTransitionMode), mode, false);
@@ -776,8 +810,14 @@ namespace CrossConnect
                         int.TryParse(chapterVerse[i + 1], out verseNum);
                         break;
                     case "STRONG":
-                        showLexiconLinkWindow(chapterVerse[i + 1]);
-                        //showInternetLinkWindow(chapterVerse[i + 1]);
+                        if (App.displaySettings.useInternetGreekHebrewDict)
+                        {
+                            showInternetLinkWindow(chapterVerse[i + 1]);
+                        }
+                        else
+                        {
+                            showLexiconLinkWindow(chapterVerse[i + 1]);
+                        }
                         return;
                     case "MORPH":
                         string morphology = MorphologyTranslator.ParseRobinson(chapterVerse[i + 1]);
@@ -863,37 +903,5 @@ namespace CrossConnect
         }
 
         #endregion Nested Types
-
-        private void butTranslate_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
-        {
-            DoManipulation(e);
-        }
-
-        private void butTranslate_Click(object sender, RoutedEventArgs e)
-        {
-            killManipulation();
-
-            string[] toTranslate;
-            bool[] isTranslateable;
-            this.state.source.GetTranslateableTexts(App.displaySettings, state.bibleToLoad, out toTranslate, out isTranslateable); 
-            
-            foreach (var win in App.openWindows)
-            {
-                if (win.state.source is TranslatorReader)
-                {
-                    TranslatorReader transReader = (TranslatorReader)win.state.source;
-                    transReader.TranslateThis( toTranslate, isTranslateable, this.state.source.GetLanguage());
-                    return;
-                }
-            }
-            TranslatorReader transReader2 = new TranslatorReader("", "", false);
-            App.AddWindow(
-                "",
-                "",
-                WINDOW_TYPE.WINDOW_TRANSLATOR,
-                state.htmlFontSize,
-                transReader2);
-            transReader2.TranslateThis(toTranslate, isTranslateable, this.state.source.GetLanguage());
-        }
     }
 }

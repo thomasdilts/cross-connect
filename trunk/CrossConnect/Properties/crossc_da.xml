@@ -1,25 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<translations isolang="en" isolocale="" version="1.0">
-<string key="Add a note">Tilføj en note</string>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<translations isolang="da" isolocale="" version="1.0">
 <string key="Add new window">Tilføj nyt vindue</string>
 <string key="Add to bookmarks">Tilføj til bogmærker</string>
 <string key="Added notes">Tilføjet noter</string>
 <string key="All words (maximum 3 words)">Alle ord (højst 3 ord)</string>
-<string key="An error occurred trying to connect to the network. Try again later.">Der opstod en fejl forsøger at forbinde til netværket. Prøv igen senere.</string>
+<string key="An error occurred trying to connect to the network. Try again later.">Der opstod en fejl forsøger at oprette forbindelse til netværket. Prøv igen senere.</string>
 <string key="Bible">Bibel</string>
 <string key="Bookmarks">Bogmærker</string>
 <string key="Case insensitive">Sag ufølsom</string>
 <string key="Clear history">Ryd historik</string>
+<string key="Commentaries">Kommentarer</string>
 <string key="Custom bible download addresses">Brugerdefineret bibel hente adresser</string>
 <string key="Daily plan">Dagsplan</string>
 <string key="Day">Dag</string>
 <string key="Days">Dage</string>
 <string key="Default settings">Standardindstillinger</string>
-<string key="Default system language">Standard systemsproget</string>
+<string key="Default system language">Standard systemet sprog</string>
 <string key="Delete?">Slet?</string>
 <string key="Download bible list">Hent bibel liste</string>
 <string key="Download bible">Hent bibel</string>
 <string key="Download bibles">Hent bibler</string>
+<string key="Download type">Download type</string>
 <string key="Exact match">Eksakt match</string>
 <string key="Found">Fundet</string>
 <string key="From the beginning to the end">Fra begyndelsen til enden</string>
@@ -45,7 +46,7 @@
 <string key="Morphology-Conjunction or conjunctive particle">Konjunktion eller, sammenfattende partikel</string>
 <string key="Morphology-Contracted form">Kontraheret formular</string>
 <string key="Morphology-Contracted form, or two words merged by crasis">Kontraheret form, eller to ord sammen ved crasis</string>
-<string key="Morphology-Correlative or interrogative pronoun">Korrelationsmaalinger eller spørgende pronomen</string>
+<string key="Morphology-Correlative or interrogative pronoun">Korrelationsmaalinger eller spørgende stedord</string>
 <string key="Morphology-Correlative pronoun">Korrelationsmaalinger pronomen</string>
 <string key="Morphology-Dative">Dativ</string>
 <string key="Morphology-Definite article">Bestemt artikel</string>
@@ -133,7 +134,7 @@
 <string key="Send mail">Send mail</string>
 <string key="Send message">Send besked</string>
 <string key="Settings">Indstillinger</string>
-<string key="Show Strong&#39;s numbers">Vis Strongs numre</string>
+<string key="Show Strong's numbers">Vis Strongs numre</string>
 <string key="Show added notes by chapter">Vis tilføjet noter efter kapitel</string>
 <string key="Show note positions">Vis note positioner</string>
 <string key="Show the book name on each verse">Vis bogen navn på hvert vers</string>
@@ -141,7 +142,7 @@
 <string key="Show the headings">Vis overskrifter</string>
 <string key="Show the verse number on each verse">Vis vers nummer på hvert vers</string>
 <string key="Show the words of Jesus in red">Vis Jesu ord i rødt</string>
-<string key="Show word morphology">Vis ord morfologi</string>
+<string key="Show word morphology">Vis ordet morfologi</string>
 <string key="Start each verse on a new line">Start hvert vers på en ny linje</string>
 <string key="Talking bible internet link">Talking bibel internet link</string>
 <string key="Text size">Tekststørrelse</string>
@@ -152,6 +153,9 @@
 <string key="The bible by random chapters">Bibelen ved tilfældige kapitler</string>
 <string key="The bible by topic">Bibelen efter emne</string>
 <string key="Too many found. Search stopped">For mange fundet. Søg stoppet</string>
+<string key="Translation">Oversættelse</string>
+<string key="Add a note">Tilføj en note</string>
+<string key="Use internet dictionaries">Brug internettet ordbøger</string>
 <string key="Use small verse numbers">Brug små vers numre</string>
 <string key="Whole bible">Hele bibel</string>
 <string key="You must first select a verse">Du skal først vælge et vers</string>

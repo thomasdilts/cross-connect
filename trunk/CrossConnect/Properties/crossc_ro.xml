@@ -1,5 +1,5 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <translations isolang="ro" isolocale="" version="1.0">
-<string key="Add a note">Adăugaţi o notă</string>
 <string key="Add new window">Adaugă fereastră nouă</string>
 <string key="Add to bookmarks">Adauga la favorite</string>
 <string key="Added notes">Constată Adăugat</string>
@@ -9,23 +9,25 @@
 <string key="Bookmarks">Bare de unelte</string>
 <string key="Case insensitive">Cauza insensibil</string>
 <string key="Clear history">Clar istorie</string>
+<string key="Commentaries">Comentarii</string>
 <string key="Custom bible download addresses">Particularizate biblia sa descarcati adrese</string>
 <string key="Daily plan">Planul de zi cu zi</string>
 <string key="Day">Zi</string>
-<string key="Days">Zilele</string>
-<string key="Default settings">Setările implicite</string>
+<string key="Days">Zile</string>
+<string key="Default settings">Setări implicite</string>
 <string key="Default system language">Implicit, sistemul limbă</string>
 <string key="Delete?">Ştergeţi?</string>
 <string key="Download bible list">Descarca Biblia listă</string>
 <string key="Download bible">Descarca Biblia</string>
 <string key="Download bibles">Biblii Descarca</string>
+<string key="Download type">Tipul descarcarii</string>
 <string key="Exact match">Potrivire exactă</string>
 <string key="Found">S-au găsit</string>
-<string key="From the beginning to the end">De la început până la sfârşit</string>
-<string key="Greek dictionary internet link">Greaca dicţionar internet legătură într-</string>
+<string key="From the beginning to the end">De la începutul până la sfârşitul</string>
+<string key="Greek dictionary internet link">Limba greacă Dicţionar internet legătură într-</string>
 <string key="Hebrew dictionary internet link">Ebraică dicţionar internet legătură într-</string>
 <string key="Help">Ajutor</string>
-<string key="Highlight text markings">Evidenţiaţi textul marcajele</string>
+<string key="Highlight text markings">Evidenţiaţi textul marcaje</string>
 <string key="History">Istorie</string>
 <string key="Minutes/Day">De minute pe zi</string>
 <string key="Morphology-Abbreviated form">Abreviat formă</string>
@@ -40,8 +42,8 @@
 <string key="Morphology-Attic Greek form">Mansarda grec formă</string>
 <string key="Morphology-Attic">Mansardă</string>
 <string key="Morphology-Comparative">Comparativ</string>
-<string key="Morphology-Conditional particle or conjunction">Particula condiţională sau coroborat</string>
-<string key="Morphology-Conjunction or conjunctive particle">Coroborat sau particule conjunctive</string>
+<string key="Morphology-Conditional particle or conjunction">Condiţionat de particule sau coroborat</string>
+<string key="Morphology-Conjunction or conjunctive particle">Coroborat sau particule conjunctiv</string>
 <string key="Morphology-Contracted form">Contractate formă</string>
 <string key="Morphology-Contracted form, or two words merged by crasis">Formă contractate, sau două cuvinte au fuzionat prin crasis</string>
 <string key="Morphology-Correlative or interrogative pronoun">Corelative sau pronume interogativ</string>
@@ -58,9 +60,9 @@
 <string key="Morphology-Imperative">Imperativ</string>
 <string key="Morphology-Imperative-sense participle">Imperativul-simţ Participiu</string>
 <string key="Morphology-Imperfect">Imperfect</string>
-<string key="Morphology-Impersonal active">Activă impersonală</string>
-<string key="Morphology-Indeclinable Letter (Noun)">Scrisoare indeclinabil (substantiv)</string>
-<string key="Morphology-Indeclinable Noun of Other type">Substantiv indeclinabil de Alt tip</string>
+<string key="Morphology-Impersonal active">Impersonal activă</string>
+<string key="Morphology-Indeclinable Letter (Noun)">Scrisoare indeclinabil (Noun)</string>
+<string key="Morphology-Indeclinable Noun of Other type">Substantiv indeclinabil Alt tip de</string>
 <string key="Morphology-Indeclinable Numeral (Adjective)">Numeral indeclinabil (adjectiv)</string>
 <string key="Morphology-Indeclinable Proper Noun">Indeclinabil substantiv propriu</string>
 <string key="Morphology-Indefinite pronoun">Nedeterminată pronume</string>
@@ -84,7 +86,7 @@
 <string key="Morphology-Optative">Optativ</string>
 <string key="Morphology-Participle">Participiu</string>
 <string key="Morphology-Particle attached (with relative pronoun)">Ataşat de particule (cu pronume relative)</string>
-<string key="Morphology-Particle, disjunctive particle">Particulelor, disjuncte particulelor</string>
+<string key="Morphology-Particle, disjunctive particle">Particulă, disjuncte de particule</string>
 <string key="Morphology-Passive deponent">Pasive deponent</string>
 <string key="Morphology-Passive">Pasiv</string>
 <string key="Morphology-Perfect">Perfect</string>
@@ -111,9 +113,9 @@
 <string key="Morphology-Vocative">Vocativ</string>
 <string key="Notes">Ia act de</string>
 <string key="Nothing found">Nimic găsit</string>
-<string key="One or more words">Una sau mai multe cuvinte</string>
+<string key="One or more words">Unul sau mai multe cuvinte</string>
 <string key="Rate this program">Evaluaţi acest program de</string>
-<string key="Search conditions">Căutare condiţii</string>
+<string key="Search conditions">Condiţiile de căutare</string>
 <string key="Search where">Căutare în cazul în care</string>
 <string key="Search">Căutare</string>
 <string key="Select bible to delete">Selectaţi biblie pentru a şterge</string>
@@ -122,8 +124,8 @@
 <string key="Select bookmark to delete">Selectaţi marcaj pentru a şterge</string>
 <string key="Select chapter">Selectaţi capitol</string>
 <string key="Select day">Selectaţi zile</string>
-<string key="Select the bible">Selectaţi biblia</string>
-<string key="Select the daily plan start date">Selectaţi data de începere a planului de zi cu zi</string>
+<string key="Select the bible">Selectaţi Biblie</string>
+<string key="Select the daily plan start date">Selectaţi data de început de zi cu zi planul de</string>
 <string key="Select the daily plan">Selectaţi planul de zi cu zi</string>
 <string key="Select the language">Selectaţi limba</string>
 <string key="Select the server">Selectaţi serverul</string>
@@ -132,11 +134,11 @@
 <string key="Send mail">Trimite e-mail</string>
 <string key="Send message">Trimite un mesaj</string>
 <string key="Settings">Setări</string>
-<string key="Show Strong&#39;s numbers">Arată Strong numere</string>
+<string key="Show Strong's numbers">Arată Strong numere</string>
 <string key="Show added notes by chapter">Afişare note adăugat de capitol</string>
 <string key="Show note positions">Afişare poziţii notă</string>
 <string key="Show the book name on each verse">Arată cele numele de carte de pe fiecare verset</string>
-<string key="Show the chapter number on each verse">Arată numărul capitolului privind fiecare verset</string>
+<string key="Show the chapter number on each verse">Arată numărul capitolului pe fiecare verset</string>
 <string key="Show the headings">Arată cele rubrici</string>
 <string key="Show the verse number on each verse">Arată cele numărul verset pe fiecare verset</string>
 <string key="Show the words of Jesus in red">Arată cuvintele lui Isus în roşu</string>
@@ -149,10 +151,13 @@
 <string key="The Old Testement">Vechi Testement</string>
 <string key="The Old and New Testement each day">Testement vechi şi noi în fiecare zi</string>
 <string key="The bible by random chapters">Biblia pe capitole aleatorii</string>
-<string key="The bible by topic">Biblia de subiect</string>
+<string key="The bible by topic">Biblia după subiect</string>
 <string key="Too many found. Search stopped">Prea multe găsite. Căutare oprit</string>
+<string key="Translation">Traducere</string>
+<string key="Add a note">Adaugă o notă</string>
+<string key="Use internet dictionaries">Utilizarea de dicţionare internet</string>
 <string key="Use small verse numbers">Utilizaţi un număr mic verset</string>
 <string key="Whole bible">Toată Biblia</string>
-<string key="You must first select a verse">Trebuie să selectaţi întâi verset</string>
+<string key="You must first select a verse">Trebuie să selectaţi mai întâi un verset</string>
 <string key="You must have at least one bible">Trebuie să aveţi cel puţin o Biblie</string>
 </translations>

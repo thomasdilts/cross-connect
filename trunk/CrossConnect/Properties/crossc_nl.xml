@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <translations isolang="nl" isolocale="" version="1.0">
-<string key="Add a note">Een notitie toevoegen</string>
 <string key="Add new window">Voeg een nieuwe venster</string>
-<string key="Add to bookmarks">Voeg toe aan favorieten</string>
+<string key="Add to bookmarks">Toevoegen aan favorieten</string>
 <string key="Added notes">Toegevoegd notities</string>
 <string key="All words (maximum 3 words)">Alle woorden (maximaal drie woorden)</string>
 <string key="An error occurred trying to connect to the network. Try again later.">Er is een fout opgetreden bij het verbinden met het netwerk. Probeer het later opnieuw.</string>
@@ -10,7 +9,8 @@
 <string key="Bookmarks">Bladwijzers</string>
 <string key="Case insensitive">Hoofdlettergevoelig</string>
 <string key="Clear history">Geschiedenis wissen</string>
-<string key="Custom bible download addresses">Aangepaste bijbel downloaden adressen</string>
+<string key="Commentaries">Commentaren</string>
+<string key="Custom bible download addresses">Custom bijbel downloaden adressen</string>
 <string key="Daily plan">Dagelijks plannen</string>
 <string key="Day">Dag</string>
 <string key="Days">Dagen</string>
@@ -20,6 +20,7 @@
 <string key="Download bible list">Download bijbel lijst</string>
 <string key="Download bible">Download bijbel</string>
 <string key="Download bibles">Download bijbels</string>
+<string key="Download type">Download het type</string>
 <string key="Exact match">Exacte overeenkomst</string>
 <string key="Found">Gevonden</string>
 <string key="From the beginning to the end">Van het begin tot het einde</string>
@@ -61,7 +62,7 @@
 <string key="Morphology-Imperfect">Onvolmaakt</string>
 <string key="Morphology-Impersonal active">Onpersoonlijke actief</string>
 <string key="Morphology-Indeclinable Letter (Noun)">Onverbuigbaar Letter (zelfstandig naamwoord)</string>
-<string key="Morphology-Indeclinable Noun of Other type">Onverbuigbaar Noun van andere soort</string>
+<string key="Morphology-Indeclinable Noun of Other type">Onverbuigbaar Noun van andere typen</string>
 <string key="Morphology-Indeclinable Numeral (Adjective)">Onverbuigbaar Cijfer (bijvoeglijk naamwoord)</string>
 <string key="Morphology-Indeclinable Proper Noun">Onverbuigbaar eigennaam</string>
 <string key="Morphology-Indefinite pronoun">Onbepaald voornaamwoord</string>
@@ -121,22 +122,22 @@
 <string key="Select book and chapter">Selecteer boek en hoofdstuk</string>
 <string key="Select book">Selecteer boek</string>
 <string key="Select bookmark to delete">Selecteer de bladwijzer die u wilt verwijderen</string>
-<string key="Select chapter">Selecteer het hoofdstuk</string>
-<string key="Select day">Selecteren dag</string>
+<string key="Select chapter">Selecteer hoofdstuk</string>
+<string key="Select day">Selecteer dag</string>
 <string key="Select the bible">Selecteer de bijbel</string>
 <string key="Select the daily plan start date">Selecteer de dagelijkse planning startdatum</string>
 <string key="Select the daily plan">Selecteer de dagelijkse planning</string>
-<string key="Select the language">Selecteer de gewenste taal</string>
+<string key="Select the language">Kies de taal</string>
 <string key="Select the server">Selecteer de server</string>
 <string key="Select the window type">Selecteer het venster type</string>
 <string key="Select what you want to hear">Selecteer wat u wilt horen</string>
-<string key="Send mail">Stuur mail</string>
+<string key="Send mail">E-mail verzenden</string>
 <string key="Send message">Verstuur bericht</string>
 <string key="Settings">Instellingen</string>
-<string key="Show Strong&#39;s numbers">Toon Strong&#39;s nummers</string>
-<string key="Show added notes by chapter">Toon toegevoegd aantekeningen per hoofdstuk</string>
+<string key="Show Strong's numbers">Toon Strong's nummers</string>
+<string key="Show added notes by chapter">Show toegevoegd aantekeningen per hoofdstuk</string>
 <string key="Show note positions">Tonen opmerking posities</string>
-<string key="Show the book name on each verse">Laat het boek naam op elke vers</string>
+<string key="Show the book name on each verse">Laat het boek de naam van elke vers</string>
 <string key="Show the chapter number on each verse">Toon het hoofdstuk getal op elke vers</string>
 <string key="Show the headings">Toon rubrieken</string>
 <string key="Show the verse number on each verse">Laat het vers getal op elke vers</string>
@@ -152,6 +153,9 @@
 <string key="The bible by random chapters">De bijbel door willekeurige hoofdstukken</string>
 <string key="The bible by topic">De bijbel per onderwerp</string>
 <string key="Too many found. Search stopped">Te veel gevonden. Zoeken gestopt</string>
+<string key="Translation">Vertaling</string>
+<string key="Add a note">Een notitie toevoegen</string>
+<string key="Use internet dictionaries">Gebruik internet woordenboeken</string>
 <string key="Use small verse numbers">Gebruik maken van kleine versnummers</string>
 <string key="Whole bible">Hele bijbel</string>
 <string key="You must first select a verse">U moet eerst een couplet</string>

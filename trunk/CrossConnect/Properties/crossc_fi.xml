@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <translations isolang="fi" isolocale="" version="1.0">
-<string key="Add a note">Lisää huomautus</string>
 <string key="Add new window">Lisää uuteen ikkunaan</string>
 <string key="Add to bookmarks">Lisää kirjanmerkkeihin</string>
 <string key="Added notes">Lisätty toteaa</string>
@@ -10,16 +9,18 @@
 <string key="Bookmarks">Kirjanmerkit</string>
 <string key="Case insensitive">Asia tunteeton</string>
 <string key="Clear history">Tyhjennä historia</string>
+<string key="Commentaries">Kommentaarit</string>
 <string key="Custom bible download addresses">Custom Raamattu Lataa osoitteet</string>
 <string key="Daily plan">Daily suunnitelma</string>
 <string key="Day">Päivä</string>
-<string key="Days">Päivät</string>
+<string key="Days">Days</string>
 <string key="Default settings">Oletusasetukset</string>
-<string key="Default system language">Oletus järjestelmän kieli</string>
+<string key="Default system language">Oletus Järjestelmä kieli</string>
 <string key="Delete?">Poista?</string>
 <string key="Download bible list">Lataa Raamatun luettelo</string>
 <string key="Download bible">Lataa Raamattu</string>
 <string key="Download bibles">Lataa Raamatut</string>
+<string key="Download type">Lataa tyyppi</string>
 <string key="Exact match">Tarkka haku</string>
 <string key="Found">Löytyi</string>
 <string key="From the beginning to the end">Alusta loppuun</string>
@@ -36,15 +37,15 @@
 <string key="Morphology-Adverb or adverb and particle combined">Adverbi tai adverbi ja hiukkasten yhteenlaskettu</string>
 <string key="Morphology-Aeolic">Aeolic</string>
 <string key="Morphology-Aorist">Aorist</string>
-<string key="Morphology-Apocopated form">Apocopated lomake</string>
+<string key="Morphology-Apocopated form">Apocopated muodossa</string>
 <string key="Morphology-Aramaic transliterated word (indeclinable)">Arameaa translitteroitu sana (indeclinable)</string>
 <string key="Morphology-Attic Greek form">Attic kreikankielinen muoto</string>
 <string key="Morphology-Attic">Ullakko</string>
 <string key="Morphology-Comparative">Vertaileva</string>
 <string key="Morphology-Conditional particle or conjunction">Ehdollinen hiukkanen tai yhdessä</string>
 <string key="Morphology-Conjunction or conjunctive particle">Konjunktio tai konjunktiivinen hiukkanen</string>
-<string key="Morphology-Contracted form">Tilaustyö lomake</string>
-<string key="Morphology-Contracted form, or two words merged by crasis">Tilaustyö muodossa, tai kaksi sanaa sulautettava yhteen crasis</string>
+<string key="Morphology-Contracted form">Tilaustyö muodossa</string>
+<string key="Morphology-Contracted form, or two words merged by crasis">Supistui muodossa, tai kaksi sanaa yhdistetty by crasis</string>
 <string key="Morphology-Correlative or interrogative pronoun">Korrelatiivinen tai interrogatiivipronomini</string>
 <string key="Morphology-Correlative pronoun">Korrelatiivinen pronomini</string>
 <string key="Morphology-Dative">Datiivi</string>
@@ -99,7 +100,7 @@
 <string key="Morphology-Reflexive pronoun">Refleksiivinen pronomini</string>
 <string key="Morphology-Relative pronoun">Relatiivipronomini</string>
 <string key="Morphology-Second Aorist">Toinen Aorist</string>
-<string key="Morphology-Second Future">Toinen tulevaisuuden</string>
+<string key="Morphology-Second Future">Toinen tulevaisuus</string>
 <string key="Morphology-Second perfect">Toinen erinomainen</string>
 <string key="Morphology-Second person">Toinen henkilö</string>
 <string key="Morphology-Second pluperfect">Toinen pluskvamperfekti</string>
@@ -112,13 +113,13 @@
 <string key="Morphology-Vocative">Vokatiivi</string>
 <string key="Notes">Huomautuksia</string>
 <string key="Nothing found">Mitään ei löytynyt</string>
-<string key="One or more words">Yksi tai useampia sanoja</string>
-<string key="Rate this program">Äänestä tätä ohjelmaa</string>
+<string key="One or more words">Yhden tai useamman sanan</string>
+<string key="Rate this program">Arvostele tämä ohjelma</string>
 <string key="Search conditions">Hakuehtoja</string>
 <string key="Search where">Etsi kohteesta</string>
 <string key="Search">Haku</string>
 <string key="Select bible to delete">Valitse Raamattu poistaa</string>
-<string key="Select book and chapter">Valitse kirja ja luku</string>
+<string key="Select book and chapter">Valitse Kirja ja luku</string>
 <string key="Select book">Valitse kirja</string>
 <string key="Select bookmark to delete">Valitse kirjanmerkki poistaa</string>
 <string key="Select chapter">Valitse luku</string>
@@ -133,16 +134,16 @@
 <string key="Send mail">Lähetä sähköpostia</string>
 <string key="Send message">Lähetä viesti</string>
 <string key="Settings">Asetukset</string>
-<string key="Show Strong&#39;s numbers">Näytä Strongin numerot</string>
+<string key="Show Strong's numbers">Näytä Strongin numerot</string>
 <string key="Show added notes by chapter">Näytä lisännyt muistiinpanoja luvuittain</string>
-<string key="Show note positions">Näytä Huom kantoja</string>
+<string key="Show note positions">Näytä merkinnän kantoja</string>
 <string key="Show the book name on each verse">Näytä kirjan nimi jokaisen jakeen</string>
 <string key="Show the chapter number on each verse">Näytä luvun numero jokaisen jakeen</string>
 <string key="Show the headings">Näytä otsikot</string>
 <string key="Show the verse number on each verse">Näytä jae määrä kunkin jakeen</string>
 <string key="Show the words of Jesus in red">Näytä Jeesuksen sanat punaisella</string>
 <string key="Show word morphology">Näytä sanan morfologia</string>
-<string key="Start each verse on a new line">Aloita jokainen jae uudelle riville</string>
+<string key="Start each verse on a new line">Aloita jokainen jae uudelta riviltä</string>
 <string key="Talking bible internet link">Talking Bible Internet-yhteys</string>
 <string key="Text size">Tekstin koko</string>
 <string key="The New Testement">Uusi Testement</string>
@@ -151,8 +152,11 @@
 <string key="The Old and New Testement each day">Vanha ja Uusi Testement joka päivä</string>
 <string key="The bible by random chapters">Raamattu satunnaisotannalla luvuissa</string>
 <string key="The bible by topic">Raamattu aiheittain</string>
-<string key="Too many found. Search stopped">Liian monta löytynyt. Haku pysäytetty</string>
-<string key="Use small verse numbers">Käytä pientä jae numeroita</string>
+<string key="Too many found. Search stopped">Liian monta löytyi. Haku pysäytetty</string>
+<string key="Translation">Käännös</string>
+<string key="Add a note">Lisää huomautus</string>
+<string key="Use internet dictionaries">Käytä Internet sanakirjoja</string>
+<string key="Use small verse numbers">Käytä pieni jae numeroita</string>
 <string key="Whole bible">Koko Raamatun</string>
 <string key="You must first select a verse">Sinun täytyy ensin valita jae</string>
 <string key="You must have at least one bible">Sinulla on oltava vähintään yksi Raamatun</string>

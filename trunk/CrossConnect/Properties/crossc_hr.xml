@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <translations isolang="hr" isolocale="" version="1.0">
-<string key="Add a note">Dodaj bilješku</string>
-<string key="Add new window">Dodaj u novom prozoru</string>
+<string key="Add new window">Dodaj novi prozor</string>
 <string key="Add to bookmarks">Dodaj u oznake</string>
 <string key="Added notes">Dodano bilješke</string>
 <string key="All words (maximum 3 words)">Sve riječi (najviše 3 riječi)</string>
@@ -10,6 +9,7 @@
 <string key="Bookmarks">Oznake</string>
 <string key="Case insensitive">Velika i mala slova</string>
 <string key="Clear history">Brisanje povijesti</string>
+<string key="Commentaries">Komentari</string>
 <string key="Custom bible download addresses">Custom Bibliju preuzimanje adrese</string>
 <string key="Daily plan">Dnevni plan</string>
 <string key="Day">Dan</string>
@@ -20,6 +20,7 @@
 <string key="Download bible list">Preuzimanje Bibliju popis</string>
 <string key="Download bible">Preuzimanje Bibliju</string>
 <string key="Download bibles">Preuzimanje Biblije</string>
+<string key="Download type">Preuzimanje tip</string>
 <string key="Exact match">Točno podudaranje</string>
 <string key="Found">Pronađen</string>
 <string key="From the beginning to the end">Od početka do kraja</string>
@@ -28,7 +29,7 @@
 <string key="Help">Pomoć</string>
 <string key="Highlight text markings">Označite tekst oznake</string>
 <string key="History">Povijest</string>
-<string key="Minutes/Day">Minuta na dan</string>
+<string key="Minutes/Day">Minuta dnevno</string>
 <string key="Morphology-Abbreviated form">Skraćeni oblik</string>
 <string key="Morphology-Accusative">Akuzativ</string>
 <string key="Morphology-Active">Aktivan</string>
@@ -45,7 +46,7 @@
 <string key="Morphology-Conjunction or conjunctive particle">Zajedno ili vezivni čestica</string>
 <string key="Morphology-Contracted form">Ugovoreni oblik</string>
 <string key="Morphology-Contracted form, or two words merged by crasis">Ugovoreni oblik, ili dvije riječi spojene po crasis</string>
-<string key="Morphology-Correlative or interrogative pronoun">Usporednim ili upitnoj zamjenici</string>
+<string key="Morphology-Correlative or interrogative pronoun">Korelacijsko ili upitnoj zamjenici</string>
 <string key="Morphology-Correlative pronoun">Korelacijsko zamjenica</string>
 <string key="Morphology-Dative">Dativ</string>
 <string key="Morphology-Definite article">Određeni član</string>
@@ -100,7 +101,7 @@
 <string key="Morphology-Relative pronoun">Relativna zamjenica</string>
 <string key="Morphology-Second Aorist">Drugo aorist</string>
 <string key="Morphology-Second Future">Drugo budućnost</string>
-<string key="Morphology-Second perfect">Drugo savršen</string>
+<string key="Morphology-Second perfect">Druga savršena</string>
 <string key="Morphology-Second person">Druga osoba</string>
 <string key="Morphology-Second pluperfect">Drugo pluskvamperfekt</string>
 <string key="Morphology-Singular">Jednina</string>
@@ -118,7 +119,7 @@
 <string key="Search where">Traži gdje</string>
 <string key="Search">Pretraživanje</string>
 <string key="Select bible to delete">Odaberite Biblija za brisanje</string>
-<string key="Select book and chapter">Odaberite knjiga i poglavlja</string>
+<string key="Select book and chapter">Odaberite knjiga i poglavlje</string>
 <string key="Select book">Odaberite knjiga</string>
 <string key="Select bookmark to delete">Odaberite oznaku za brisanje</string>
 <string key="Select chapter">Odaberite poglavlje</string>
@@ -133,14 +134,14 @@
 <string key="Send mail">Pošaljite mail</string>
 <string key="Send message">Pošalji poruku</string>
 <string key="Settings">Postavke</string>
-<string key="Show Strong&#39;s numbers">Prikaži Jaka je broj</string>
+<string key="Show Strong's numbers">Prikaži Strong-a broj</string>
 <string key="Show added notes by chapter">Prikaži dodao bilješke poglavlja</string>
 <string key="Show note positions">Prikaži bilj pozicije</string>
 <string key="Show the book name on each verse">Prikaži naziv knjige na svakog stiha</string>
 <string key="Show the chapter number on each verse">Prikaži broj poglavlja svakog stiha</string>
 <string key="Show the headings">Prikaži naslova</string>
-<string key="Show the verse number on each verse">Prikaži Broj stih na svakoj stiha</string>
-<string key="Show the words of Jesus in red">Prikaži Isusove riječi u crvenom</string>
+<string key="Show the verse number on each verse">Prikaži Broj stih na svakog stiha</string>
+<string key="Show the words of Jesus in red">Prikaži Isusove riječi u crveno</string>
 <string key="Show word morphology">Prikaži riječ morfologija</string>
 <string key="Start each verse on a new line">Početak svakog stiha na novi redak</string>
 <string key="Talking bible internet link">Govoreći Bibliju na internet</string>
@@ -152,6 +153,9 @@
 <string key="The bible by random chapters">Biblija slučajnim poglavljima</string>
 <string key="The bible by topic">Biblija po temama</string>
 <string key="Too many found. Search stopped">Previše rezultata. Traži zaustavljen</string>
+<string key="Translation">Prijevod</string>
+<string key="Add a note">Dodaj bilješku</string>
+<string key="Use internet dictionaries">Koristite Internet rječnik</string>
 <string key="Use small verse numbers">Koristite mali broj stiha</string>
 <string key="Whole bible">Cijela Biblija</string>
 <string key="You must first select a verse">Prvo morate odabrati stih</string>

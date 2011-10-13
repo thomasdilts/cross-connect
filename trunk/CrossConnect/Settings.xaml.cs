@@ -55,6 +55,8 @@ namespace CrossConnect
             App.displaySettings.greekDictionaryLink = greekDictionaryLink.Text;
             App.displaySettings.customBibleDownloadLinks = customBibleDownloadLink.Text;
             App.displaySettings.soundLink = soundLink.Text;
+            App.displaySettings.useInternetGreekHebrewDict = (bool)useInternetGreekHebrewDict.IsChecked;
+
             App.RaiseBookmarkChangeEvent();
             App.RaiseHistoryChangeEvent();
             App.RaisePersonalNotesChangeEvent();
@@ -63,7 +65,6 @@ namespace CrossConnect
             {
                 App.openWindows[i].forceReload = true;
             }
-
         }
 
         private void AutoRotatePage_Loaded(object sender, RoutedEventArgs e)
@@ -86,6 +87,7 @@ namespace CrossConnect
             captionGreekDictionaryLink.Text = Translations.translate("Greek dictionary internet link");
             captionCustomBibleDownloadLink.Text = Translations.translate("Custom bible download addresses");
             captionSoundLink.Text = Translations.translate("Talking bible internet link");
+            useInternetGreekHebrewDict.Header = Translations.translate("Use internet dictionaries");
 
             bool successfulInitialize = false;
             while (!successfulInitialize)
@@ -108,6 +110,7 @@ namespace CrossConnect
                     greekDictionaryLink.Text = App.displaySettings.greekDictionaryLink;
                     customBibleDownloadLink.Text = App.displaySettings.customBibleDownloadLinks;
                     soundLink.Text = App.displaySettings.soundLink;
+                    useInternetGreekHebrewDict.IsChecked = App.displaySettings.useInternetGreekHebrewDict;
 
                     successfulInitialize = true;
                 }

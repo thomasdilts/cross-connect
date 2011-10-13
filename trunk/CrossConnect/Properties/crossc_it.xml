@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <translations isolang="it" isolocale="" version="1.0">
-<string key="Add a note">Aggiungere una nota</string>
 <string key="Add new window">Aggiungi una nuova finestra</string>
 <string key="Add to bookmarks">Aggiungi ai preferiti</string>
 <string key="Added notes">Note aggiunte</string>
@@ -10,6 +9,7 @@
 <string key="Bookmarks">Preferiti</string>
 <string key="Case insensitive">Case insensitive</string>
 <string key="Clear history">Cancella cronologia</string>
+<string key="Commentaries">Commentari</string>
 <string key="Custom bible download addresses">Personalizzati bibbia scaricare gli indirizzi</string>
 <string key="Daily plan">Piano giornaliero</string>
 <string key="Day">Giorno</string>
@@ -20,9 +20,10 @@
 <string key="Download bible list">Scarica bibbia lista</string>
 <string key="Download bible">Scarica bibbia</string>
 <string key="Download bibles">Scarica bibbie</string>
+<string key="Download type">Tipo di download</string>
 <string key="Exact match">Corrispondenza esatta</string>
 <string key="Found">Trovato</string>
-<string key="From the beginning to the end">Dall&#39;inizio alla fine</string>
+<string key="From the beginning to the end">Dall'inizio alla fine</string>
 <string key="Greek dictionary internet link">Greco dizionario collegamento internet</string>
 <string key="Hebrew dictionary internet link">Ebraico dizionario collegamento internet</string>
 <string key="Help">Aiuto</string>
@@ -33,7 +34,7 @@
 <string key="Morphology-Accusative">Accusativo</string>
 <string key="Morphology-Active">Attivo</string>
 <string key="Morphology-Adjective">Aggettivo</string>
-<string key="Morphology-Adverb or adverb and particle combined">Avverbio, avverbio e particelle combinato</string>
+<string key="Morphology-Adverb or adverb and particle combined">Avverbio, avverbio e particelle combinate</string>
 <string key="Morphology-Aeolic">Eolico</string>
 <string key="Morphology-Aorist">Aoristo</string>
 <string key="Morphology-Apocopated form">Forma Apocopated</string>
@@ -44,8 +45,8 @@
 <string key="Morphology-Conditional particle or conjunction">Particella condizionale o congiunzione</string>
 <string key="Morphology-Conjunction or conjunctive particle">Congiunzione o particella congiuntiva</string>
 <string key="Morphology-Contracted form">Forma contratta</string>
-<string key="Morphology-Contracted form, or two words merged by crasis">Forma contratta, o due parole unite dalla crasi</string>
-<string key="Morphology-Correlative or interrogative pronoun">Pronome correlativo o interrogative</string>
+<string key="Morphology-Contracted form, or two words merged by crasis">Forma contratta, o due parole fusa per crasi</string>
+<string key="Morphology-Correlative or interrogative pronoun">Correlativo pronome interrogativo o</string>
 <string key="Morphology-Correlative pronoun">Pronome correlativo</string>
 <string key="Morphology-Dative">Dativo</string>
 <string key="Morphology-Definite article">Articolo determinativo</string>
@@ -70,7 +71,7 @@
 <string key="Morphology-Interjection">Interiezione</string>
 <string key="Morphology-Interrogative pronoun">Pronome interrogativo</string>
 <string key="Morphology-Interrogative">Interrogativo</string>
-<string key="Morphology-Irregular or Impure form">Forma irregolare o Impure</string>
+<string key="Morphology-Irregular or Impure form">Forma irregolare o di Impure</string>
 <string key="Morphology-Masculine">Maschile</string>
 <string key="Morphology-Middle Deponent">Medio deponente</string>
 <string key="Morphology-Middle or passive deponent">Deponente mezzo o passivo</string>
@@ -86,7 +87,7 @@
 <string key="Morphology-Participle">Participio</string>
 <string key="Morphology-Particle attached (with relative pronoun)">Particelle allegata (con pronome relativo)</string>
 <string key="Morphology-Particle, disjunctive particle">Particella, particella disgiuntiva</string>
-<string key="Morphology-Passive deponent">Deponente passiva</string>
+<string key="Morphology-Passive deponent">Deponente passivo</string>
 <string key="Morphology-Passive">Passivo</string>
 <string key="Morphology-Perfect">Perfetto</string>
 <string key="Morphology-Personal pronoun">Pronome personale</string>
@@ -117,14 +118,14 @@
 <string key="Search conditions">Cerca le condizioni</string>
 <string key="Search where">Cerca dove</string>
 <string key="Search">Ricerca</string>
-<string key="Select bible to delete">Seleziona Bibbia da eliminare</string>
+<string key="Select bible to delete">Seleziona bibbia per eliminare</string>
 <string key="Select book and chapter">Seleziona libro e il capitolo</string>
 <string key="Select book">Seleziona libro</string>
 <string key="Select bookmark to delete">Seleziona segnalibro da eliminare</string>
 <string key="Select chapter">Selezionare il capitolo</string>
-<string key="Select day">Seleziona giorni</string>
+<string key="Select day">Selezionare giorno</string>
 <string key="Select the bible">Selezionare la bibbia</string>
-<string key="Select the daily plan start date">Selezionare la data di inizio giornaliero piano</string>
+<string key="Select the daily plan start date">Selezionare la data di inizio del piano giornaliero</string>
 <string key="Select the daily plan">Selezionare il piano giornaliero</string>
 <string key="Select the language">Selezionare la lingua</string>
 <string key="Select the server">Selezionare il server</string>
@@ -133,16 +134,16 @@
 <string key="Send mail">Invia mail</string>
 <string key="Send message">Inviare un messaggio</string>
 <string key="Settings">Impostazioni</string>
-<string key="Show Strong&#39;s numbers">Mostra Strong numeri</string>
+<string key="Show Strong's numbers">Mostra Strong numeri</string>
 <string key="Show added notes by chapter">Mostra note aggiunte per capitolo</string>
 <string key="Show note positions">Mostra posizioni nota</string>
 <string key="Show the book name on each verse">Mostra il nome del libro su ogni versetto</string>
 <string key="Show the chapter number on each verse">Mostra il numero del capitolo su ogni versetto</string>
 <string key="Show the headings">Mostra le intestazioni</string>
-<string key="Show the verse number on each verse">Mostrano il numero su ogni versetto versetto</string>
-<string key="Show the words of Jesus in red">Mostra le parole di Gesù in rosso</string>
+<string key="Show the verse number on each verse">Mostra il numero di versi per ogni strofa</string>
+<string key="Show the words of Jesus in red">Mostrano le parole di Gesù in rosso</string>
 <string key="Show word morphology">Mostra morfologia parola</string>
-<string key="Start each verse on a new line">Inizio ogni verso su una nuova linea</string>
+<string key="Start each verse on a new line">Avviare ogni verso su una nuova linea</string>
 <string key="Talking bible internet link">Parlare bibbia internet collegamento</string>
 <string key="Text size">Dimensione del testo</string>
 <string key="The New Testement">Il New Testement</string>
@@ -150,9 +151,12 @@
 <string key="The Old Testement">Il Testement Vecchio</string>
 <string key="The Old and New Testement each day">Il Vecchio e il Nuovo Testement ogni giorno</string>
 <string key="The bible by random chapters">La bibbia di capitoli a caso</string>
-<string key="The bible by topic">La Bibbia per argomento</string>
+<string key="The bible by topic">La bibbia per argomento</string>
 <string key="Too many found. Search stopped">Troppi trovati. Cerca fermato</string>
-<string key="Use small verse numbers">Usare i numeri versi piccoli</string>
+<string key="Translation">Traduzione</string>
+<string key="Add a note">Aggiungere una nota</string>
+<string key="Use internet dictionaries">Utilizzare dizionari internet</string>
+<string key="Use small verse numbers">Usare i numeri piccoli versi</string>
 <string key="Whole bible">Tutta la Bibbia</string>
 <string key="You must first select a verse">È necessario innanzitutto selezionare un versetto</string>
 <string key="You must have at least one bible">È necessario disporre di almeno una bibbia</string>

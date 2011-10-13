@@ -20,8 +20,8 @@
 /// <author>Thomas Dilts</author>
 namespace SwordBackend
 {
-    using System.Runtime.Serialization;
     using System;
+    using System.Runtime.Serialization;
 
     /// <summary>
     /// Load from a file all the book and verse pointers to the bzz file so that
@@ -57,13 +57,6 @@ namespace SwordBackend
 
         #region Properties
 
-        public override bool IsTranslateable
-        {
-            get
-            {
-                return true;
-            }
-        }
         public override bool IsHearable
         {
             get
@@ -86,6 +79,14 @@ namespace SwordBackend
             {
             return false;
              }
+        }
+
+        public override bool IsTranslateable
+        {
+            get
+            {
+                return true;
+            }
         }
 
         #endregion Properties
@@ -173,9 +174,11 @@ namespace SwordBackend
         [DataMember]
         public string soundLink = @"http://www.chaniel.se/crossconnect/bibles/talking/getabsolutechapter.php?chapternum={0}&language={1}";
         [DataMember]
-        public bool wordsOfChristRed = false;
+        public bool useInternetGreekHebrewDict = false;
         [DataMember]
         public string userUniqueGuuid = "";
+        [DataMember]
+        public bool wordsOfChristRed = false;
 
         #endregion Fields
 
@@ -226,6 +229,7 @@ namespace SwordBackend
             cloned.soundLink = soundLink;
             cloned.wordsOfChristRed = wordsOfChristRed;
             cloned.userUniqueGuuid = userUniqueGuuid;
+            cloned.useInternetGreekHebrewDict = useInternetGreekHebrewDict;
             return cloned;
         }
 

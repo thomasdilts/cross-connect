@@ -207,7 +207,7 @@ namespace CrossConnect
                 IsolatedStorageFile root = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication();
                 string modFile = BibleZtextReader.DIR_CONF + '/' + sbmd.internalName.ToLower() + BibleZtextReader.EXTENSION_CONF;
                 string bookPath = sbmd.getCetProperty(ConfigEntryType.A_DATA_PATH).ToString().Substring(2);
-                string[] filesToDelete = new string[] { modFile, bookPath + "ot.bzs", bookPath + "ot.bzv", bookPath + "ot.bzz", bookPath + "nt.bzs", bookPath + "nt.bzv", bookPath + "nt.bzz" 
+                string[] filesToDelete = new string[] { modFile, bookPath + "ot.bzs", bookPath + "ot.bzv", bookPath + "ot.bzz", bookPath + "nt.bzs", bookPath + "nt.bzv", bookPath + "nt.bzz"
                     + bookPath + "ot.czs", bookPath + "ot.czv", bookPath + "ot.czz", bookPath + "nt.czs", bookPath + "nt.czv", bookPath + "nt.czz"};
                 foreach (string file in filesToDelete)
                 {

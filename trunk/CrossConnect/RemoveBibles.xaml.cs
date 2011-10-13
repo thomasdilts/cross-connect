@@ -20,10 +20,10 @@
 /// <author>Thomas Dilts</author>
 namespace CrossConnect
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Collections.Generic;
 
     public partial class RemoveBibles : AutoRotatePage
     {
@@ -111,7 +111,7 @@ namespace CrossConnect
                     {
                         App.installedBibles.installedCommentaries.Remove(foundKey);
                     }
-                    App.installedBibles.save(); 
+                    App.installedBibles.save();
                     LoadList();
                 }
                 else

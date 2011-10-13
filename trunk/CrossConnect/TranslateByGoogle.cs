@@ -20,35 +20,46 @@
 /// <author>Thomas Dilts</author>
 namespace CrossConnect
 {
+    using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
+    using System.IO;
+    using System.IO.IsolatedStorage;
+    using System.Net;
     using System.Security.Permissions;
     using System.Text;
     using System.Text.RegularExpressions;
-    using System.Net;
-    using System.IO;
-    using System.Collections.Generic;
-    using System;
-    using System.Globalization;
-    using System.IO.IsolatedStorage;
     using System.Xml;
-    
+
     public class TranslateByGoogle
     {
-        // Developer application ID. Obtain a free key from https://code.google.com/apis/console/.
+        #region Fields
 
+        // Developer application ID. Obtain a free key from https://code.google.com/apis/console/.
         // CrossConnect REST service URL.
         private readonly string CROSSCONNECT_URL = "http://www.chaniel.se/crossconnect/translate/gettranslatekey.php?uuid={0}&language={1}";
+
         // Google Translate REST service URL.
         private readonly string SERVICE_URL = "https://www.googleapis.com/language/translate/v2?key={0}&source={1}&target={2}&q={3}";
+
+        private GoogleTranslatedTextReturnEvent endUserFinalTranslationEvent;
+        private string googleTranslateFromLanguage;
+        private string textToGooleTranslate;
 
         // Http request / response manager.
         private WebClient _proxy = null;
 
+        #endregion Fields
+
+        #region Delegates
+
         public delegate void GoogleTranslatedTextReturnEvent(string translatedText, bool isError);
-        private GoogleTranslatedTextReturnEvent endUserFinalTranslationEvent;
-        private string textToGooleTranslate;
-        private string googleTranslateFromLanguage;
+
+        #endregion Delegates
+
+        #region Methods
 
         public void GetGoogleTranslationAsync(string textToGooleTranslate, string googleTranslateFromLanguage, GoogleTranslatedTextReturnEvent endUserFinalTranslationEvent)
         {
@@ -62,7 +73,7 @@ namespace CrossConnect
                 _proxy.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
                 _proxy.OpenReadCompleted += new OpenReadCompletedEventHandler(OpenReadFromCrossConnectCompleted);
 
-                string crossconnectUrl = string.Format(CROSSCONNECT_URL, App.displaySettings.userUniqueGuuid, IsolatedStorageSettings.ApplicationSettings["LanguageIsoCode"]);
+                string crossconnectUrl = string.Format(CROSSCONNECT_URL, App.displaySettings.userUniqueGuuid, Translations.isoLanguageCode);
 
                 _proxy.OpenReadAsync(new Uri(crossconnectUrl));
             }
@@ -77,6 +88,25 @@ namespace CrossConnect
             //nothing to do here
         }
 
+        private void DownloadStringFromGoogleCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            try
+            {
+                //must un-jsonize and un-htmlize
+                string unEscapedText = HttpUtility.HtmlDecode(jsonUnescape(Regex.Match(e.Result, "\"translatedText\" *: *\"(.*?)\"").Groups[1].Value));
+                replyToTranslateRequestor(unEscapedText, false);
+            }
+            catch (Exception ee2)
+            {
+                replyToTranslateRequestor(Translations.translate("An error occurred trying to connect to the network. Try again later.") + "; " + ee2.Message, true);
+            }
+        }
+
+        private string jsonUnescape(string toUnJson)
+        {
+            return toUnJson.Replace("\\\\", "\\").Replace("\\\"", "\"").Replace("\\/", "/");
+        }
+
         private void OpenReadFromCrossConnectCompleted(object sender, OpenReadCompletedEventArgs e)
         {
             try
@@ -86,7 +116,8 @@ namespace CrossConnect
                 //e.Result.Read(buffer, 0, (int)e.Result.Length);
                 //System.Diagnostics.Debug.WriteLine("RawFile: " + System.Text.UTF8Encoding.UTF8.GetString(buffer, 0, (int)e.Result.Length));
                 string msgFromServer = "";
-                string googleApiKey = ""; 
+                string googleApiKey = "";
+                int maxtranssize = 0;
                 using (XmlReader reader = XmlReader.Create(e.Result))
                 {
                     string xmltxt = "";
@@ -105,6 +136,9 @@ namespace CrossConnect
                                         {
                                             case "key":
                                                 googleApiKey = reader.Value;
+                                                break;
+                                            case "maxtranssize":
+                                                int.TryParse(reader.Value, out maxtranssize);
                                                 break;
                                         }
                                     }
@@ -128,7 +162,7 @@ namespace CrossConnect
                         }
                     }
                 }
-                if (string.IsNullOrEmpty(googleApiKey))
+                if (string.IsNullOrEmpty(googleApiKey) || maxtranssize==0)
                 {
                     if (string.IsNullOrEmpty(msgFromServer))
                     {
@@ -145,7 +179,7 @@ namespace CrossConnect
 
                     _proxy.DownloadStringCompleted += new DownloadStringCompletedEventHandler(DownloadStringFromGoogleCompleted);
                     string toTranslate = Uri.EscapeDataString(textToGooleTranslate);
-                    string googleTranslateUrl = string.Format(SERVICE_URL, googleApiKey, googleTranslateFromLanguage, Translations.isoLanguageCode, toTranslate.Substring(0, toTranslate.Length > 500 ? 500 : toTranslate.Length));
+                    string googleTranslateUrl = string.Format(SERVICE_URL, googleApiKey, googleTranslateFromLanguage, Translations.isoLanguageCode, toTranslate.Substring(0, toTranslate.Length > maxtranssize ? maxtranssize : toTranslate.Length));
 
                     _proxy.DownloadStringAsync(new Uri(googleTranslateUrl));
                 }
@@ -157,7 +191,6 @@ namespace CrossConnect
             }
         }
 
-
         private void replyToTranslateRequestor(string msg, bool isFail)
         {
             if (endUserFinalTranslationEvent != null)
@@ -166,37 +199,34 @@ namespace CrossConnect
             }
         }
 
-        private void DownloadStringFromGoogleCompleted(object sender, DownloadStringCompletedEventArgs e)
-        {
-            try
-            {
-                //must un-jsonize and un-htmlize
-                string unEscapedText = HttpUtility.HtmlDecode(jsonUnescape(Regex.Match(e.Result, "\"translatedText\" *: *\"(.*?)\"").Groups[1].Value));
-                replyToTranslateRequestor(unEscapedText, false);
-            }
-            catch (Exception ee2)
-            {
-                replyToTranslateRequestor(Translations.translate("An error occurred trying to connect to the network. Try again later.") + "; " + ee2.Message, true);
-            }
-        }
+        #endregion Methods
 
-        private string jsonUnescape(string toUnJson)
-        {
-            return toUnJson.Replace("\\\\", "\\").Replace("\\\"", "\"").Replace("\\/", "/");
-        }
+        #region Nested Types
 
         /// <summary>
         /// This is only used for the DecodeHtml function.
         /// </summary>
         private class HttpUtility
         {
-
             #region Fields
 
+            const string notEncoded = "!'()*-._";
+
             static Dictionary<object, object> entities;
+            static char[] hexChars = "0123456789abcdef".ToCharArray();
             static object lock_ = new object();
 
-            #endregion // Fields
+            #endregion Fields
+
+            #region Constructors
+
+            public HttpUtility()
+            {
+            }
+
+            #endregion Constructors
+
+            #region Properties
 
             static Dictionary<object, object> Entities
             {
@@ -212,7 +242,618 @@ namespace CrossConnect
                 }
             }
 
-            #region Constructors
+            #endregion Properties
+
+            #region Methods
+
+            public static void HtmlAttributeEncode(string s, TextWriter output)
+            {
+                output.Write(HtmlAttributeEncode(s));
+            }
+
+            public static string HtmlAttributeEncode(string s)
+            {
+                if (null == s)
+                    return null;
+
+                if (s.IndexOf('&') == -1 && s.IndexOf('"') == -1)
+                    return s;
+
+                StringBuilder output = new StringBuilder();
+                foreach (char c in s)
+                    switch (c)
+                    {
+                        case '&':
+                            output.Append("&amp;");
+                            break;
+                        case '"':
+                            output.Append("&quot;");
+                            break;
+                        default:
+                            output.Append(c);
+                            break;
+                    }
+
+                return output.ToString();
+            }
+
+            /// <summary>
+            /// Decodes an HTML-encoded string and returns the decoded string.
+            /// </summary>
+            /// <param name="s">The HTML string to decode. </param>
+            /// <returns>The decoded text.</returns>
+            public static string HtmlDecode(string s)
+            {
+                if (s == null)
+                    throw new ArgumentNullException("s");
+
+                //fix unicode escape sequences
+                Regex rx = new Regex(@"\\[uU]([0-9A-Fa-f]{4})");
+                s = rx.Replace(s, delegate(Match match) { return ((char)Int32.Parse(match.Value.Substring(2), NumberStyles.HexNumber)).ToString(); });
+
+                //fix html escape sequences.
+                if (s.IndexOf('&') == -1)
+                    return s;
+
+                StringBuilder entity = new StringBuilder();
+                StringBuilder output = new StringBuilder();
+                int len = s.Length;
+                // 0 -> nothing,
+                // 1 -> right after '&'
+                // 2 -> between '&' and ';' but no '#'
+                // 3 -> '#' found after '&' and getting numbers
+                int state = 0;
+                int number = 0;
+                bool have_trailing_digits = false;
+
+                for (int i = 0; i < len; i++)
+                {
+                    char c = s[i];
+                    if (state == 0)
+                    {
+                        if (c == '&')
+                        {
+                            entity.Append(c);
+                            state = 1;
+                        }
+                        else
+                        {
+                            output.Append(c);
+                        }
+                        continue;
+                    }
+
+                    if (c == '&')
+                    {
+                        state = 1;
+                        if (have_trailing_digits)
+                        {
+                            entity.Append(number.ToString(CultureInfo.InvariantCulture));
+                            have_trailing_digits = false;
+                        }
+
+                        output.Append(entity.ToString());
+                        entity.Length = 0;
+                        entity.Append('&');
+                        continue;
+                    }
+
+                    if (state == 1)
+                    {
+                        if (c == ';')
+                        {
+                            state = 0;
+                            output.Append(entity.ToString());
+                            output.Append(c);
+                            entity.Length = 0;
+                        }
+                        else
+                        {
+                            number = 0;
+                            if (c != '#')
+                            {
+                                state = 2;
+                            }
+                            else
+                            {
+                                state = 3;
+                            }
+                            entity.Append(c);
+                        }
+                    }
+                    else if (state == 2)
+                    {
+                        entity.Append(c);
+                        if (c == ';')
+                        {
+                            string key = entity.ToString();
+                            if (key.Length > 1 && Entities.ContainsKey(key.Substring(1, key.Length - 2)))
+                                key = Entities[key.Substring(1, key.Length - 2)].ToString();
+
+                            output.Append(key);
+                            state = 0;
+                            entity.Length = 0;
+                        }
+                    }
+                    else if (state == 3)
+                    {
+                        if (c == ';')
+                        {
+                            if (number > 65535)
+                            {
+                                output.Append("&#");
+                                output.Append(number.ToString(CultureInfo.InvariantCulture));
+                                output.Append(";");
+                            }
+                            else
+                            {
+                                output.Append((char)number);
+                            }
+                            state = 0;
+                            entity.Length = 0;
+                            have_trailing_digits = false;
+                        }
+                        else if (Char.IsDigit(c))
+                        {
+                            number = number * 10 + ((int)c - '0');
+                            have_trailing_digits = true;
+                        }
+                        else
+                        {
+                            state = 2;
+                            if (have_trailing_digits)
+                            {
+                                entity.Append(number.ToString(CultureInfo.InvariantCulture));
+                                have_trailing_digits = false;
+                            }
+                            entity.Append(c);
+                        }
+                    }
+                }
+
+                if (entity.Length > 0)
+                {
+                    output.Append(entity.ToString());
+                }
+                else if (have_trailing_digits)
+                {
+                    output.Append(number.ToString(CultureInfo.InvariantCulture));
+                }
+                return output.ToString();
+            }
+
+            /// <summary>
+            /// Decodes an HTML-encoded string and sends the resulting output to a TextWriter output stream.
+            /// </summary>
+            /// <param name="s">The HTML string to decode</param>
+            /// <param name="output">The TextWriter output stream containing the decoded string. </param>
+            public static void HtmlDecode(string s, TextWriter output)
+            {
+                if (s != null)
+                    output.Write(HtmlDecode(s));
+            }
+
+            /// <summary>
+            /// HTML-encodes a string and returns the encoded string.
+            /// </summary>
+            /// <param name="s">The text string to encode. </param>
+            /// <returns>The HTML-encoded text.</returns>
+            public static string HtmlEncode(string s)
+            {
+                if (s == null)
+                    return null;
+
+                StringBuilder output = new StringBuilder();
+
+                foreach (char c in s)
+                    switch (c)
+                    {
+                        case '&':
+                            output.Append("&amp;");
+                            break;
+                        case '>':
+                            output.Append("&gt;");
+                            break;
+                        case '<':
+                            output.Append("&lt;");
+                            break;
+                        case '"':
+                            output.Append("&quot;");
+                            break;
+                        default:
+                            // MS starts encoding with &# from 160 and stops at 255.
+                            // We don't do that. One reason is the 65308/65310 unicode
+                            // characters that look like '<' and '>'.
+                            if (c > 159)
+                            {
+                                output.Append("&#");
+                                output.Append(((int)c).ToString(CultureInfo.InvariantCulture));
+                                output.Append(";");
+                            }
+                            else
+                            {
+                                output.Append(c);
+                            }
+                            break;
+                    }
+                return output.ToString();
+            }
+
+            /// <summary>
+            /// HTML-encodes a string and sends the resulting output to a TextWriter output stream.
+            /// </summary>
+            /// <param name="s">The string to encode. </param>
+            /// <param name="output">The TextWriter output stream containing the encoded string. </param>
+            public static void HtmlEncode(string s, TextWriter output)
+            {
+                if (s != null)
+                    output.Write(HtmlEncode(s));
+            }
+
+            public static string UrlDecode(string str)
+            {
+                return UrlDecode(str, Encoding.UTF8);
+            }
+
+            public static string UrlDecode(string s, Encoding e)
+            {
+                if (null == s)
+                    return null;
+
+                if (s.IndexOf('%') == -1 && s.IndexOf('+') == -1)
+                    return s;
+
+                if (e == null)
+                    e = Encoding.UTF8;
+
+                StringBuilder output = new StringBuilder();
+                long len = s.Length;
+                MemoryStream bytes = new MemoryStream();
+                int xchar;
+
+                for (int i = 0; i < len; i++)
+                {
+                    if (s[i] == '%' && i + 2 < len && s[i + 1] != '%')
+                    {
+                        if (s[i + 1] == 'u' && i + 5 < len)
+                        {
+                            if (bytes.Length > 0)
+                            {
+                                output.Append(GetChars(bytes, e));
+                                bytes.SetLength(0);
+                            }
+
+                            xchar = GetChar(s, i + 2, 4);
+                            if (xchar != -1)
+                            {
+                                output.Append((char)xchar);
+                                i += 5;
+                            }
+                            else
+                            {
+                                output.Append('%');
+                            }
+                        }
+                        else if ((xchar = GetChar(s, i + 1, 2)) != -1)
+                        {
+                            bytes.WriteByte((byte)xchar);
+                            i += 2;
+                        }
+                        else
+                        {
+                            output.Append('%');
+                        }
+                        continue;
+                    }
+
+                    if (bytes.Length > 0)
+                    {
+                        output.Append(GetChars(bytes, e));
+                        bytes.SetLength(0);
+                    }
+
+                    if (s[i] == '+')
+                    {
+                        output.Append(' ');
+                    }
+                    else
+                    {
+                        output.Append(s[i]);
+                    }
+                }
+
+                if (bytes.Length > 0)
+                {
+                    output.Append(GetChars(bytes, e));
+                }
+
+                bytes = null;
+                return output.ToString();
+            }
+
+            public static string UrlDecode(byte[] bytes, Encoding e)
+            {
+                if (bytes == null)
+                    return null;
+
+                return UrlDecode(bytes, 0, bytes.Length, e);
+            }
+
+            public static string UrlDecode(byte[] bytes, int offset, int count, Encoding e)
+            {
+                if (bytes == null)
+                    return null;
+                if (count == 0)
+                    return String.Empty;
+
+                if (bytes == null)
+                    throw new ArgumentNullException("bytes");
+
+                if (offset < 0 || offset > bytes.Length)
+                    throw new ArgumentOutOfRangeException("offset");
+
+                if (count < 0 || offset + count > bytes.Length)
+                    throw new ArgumentOutOfRangeException("count");
+
+                StringBuilder output = new StringBuilder();
+                MemoryStream acc = new MemoryStream();
+
+                int end = count + offset;
+                int xchar;
+                for (int i = offset; i < end; i++)
+                {
+                    if (bytes[i] == '%' && i + 2 < count && bytes[i + 1] != '%')
+                    {
+                        if (bytes[i + 1] == (byte)'u' && i + 5 < end)
+                        {
+                            if (acc.Length > 0)
+                            {
+                                output.Append(GetChars(acc, e));
+                                acc.SetLength(0);
+                            }
+                            xchar = GetChar(bytes, i + 2, 4);
+                            if (xchar != -1)
+                            {
+                                output.Append((char)xchar);
+                                i += 5;
+                                continue;
+                            }
+                        }
+                        else if ((xchar = GetChar(bytes, i + 1, 2)) != -1)
+                        {
+                            acc.WriteByte((byte)xchar);
+                            i += 2;
+                            continue;
+                        }
+                    }
+
+                    if (acc.Length > 0)
+                    {
+                        output.Append(GetChars(acc, e));
+                        acc.SetLength(0);
+                    }
+
+                    if (bytes[i] == '+')
+                    {
+                        output.Append(' ');
+                    }
+                    else
+                    {
+                        output.Append((char)bytes[i]);
+                    }
+                }
+
+                if (acc.Length > 0)
+                {
+                    output.Append(GetChars(acc, e));
+                }
+
+                acc = null;
+                return output.ToString();
+            }
+
+            public static byte[] UrlDecodeToBytes(byte[] bytes)
+            {
+                if (bytes == null)
+                    return null;
+
+                return UrlDecodeToBytes(bytes, 0, bytes.Length);
+            }
+
+            public static byte[] UrlDecodeToBytes(string str)
+            {
+                return UrlDecodeToBytes(str, Encoding.UTF8);
+            }
+
+            public static byte[] UrlDecodeToBytes(string str, Encoding e)
+            {
+                if (str == null)
+                    return null;
+
+                if (e == null)
+                    throw new ArgumentNullException("e");
+
+                return UrlDecodeToBytes(e.GetBytes(str));
+            }
+
+            public static byte[] UrlDecodeToBytes(byte[] bytes, int offset, int count)
+            {
+                if (bytes == null)
+                    return null;
+                if (count == 0)
+                    return new byte[0];
+
+                int len = bytes.Length;
+                if (offset < 0 || offset >= len)
+                    throw new ArgumentOutOfRangeException("offset");
+
+                if (count < 0 || offset > len - count)
+                    throw new ArgumentOutOfRangeException("count");
+
+                MemoryStream result = new MemoryStream();
+                int end = offset + count;
+                for (int i = offset; i < end; i++)
+                {
+                    char c = (char)bytes[i];
+                    if (c == '+')
+                    {
+                        c = ' ';
+                    }
+                    else if (c == '%' && i < end - 2)
+                    {
+                        int xchar = GetChar(bytes, i + 1, 2);
+                        if (xchar != -1)
+                        {
+                            c = (char)xchar;
+                            i += 2;
+                        }
+                    }
+                    result.WriteByte((byte)c);
+                }
+
+                return result.ToArray();
+            }
+
+            public static byte[] UrlEncodeToBytes(byte[] bytes, int offset, int count)
+            {
+                if (bytes == null)
+                    return null;
+
+                int len = bytes.Length;
+                if (len == 0)
+                    return new byte[0];
+
+                if (offset < 0 || offset >= len)
+                    throw new ArgumentOutOfRangeException("offset");
+
+                if (count < 0 || count > len - offset)
+                    throw new ArgumentOutOfRangeException("count");
+
+                MemoryStream result = new MemoryStream(count);
+                int end = offset + count;
+                for (int i = offset; i < end; i++)
+                    UrlEncodeChar((char)bytes[i], result, false);
+
+                return result.ToArray();
+            }
+
+            public static byte[] UrlEncodeUnicodeToBytes(string str)
+            {
+                if (str == null)
+                    return null;
+
+                if (str == "")
+                    return new byte[0];
+
+                MemoryStream result = new MemoryStream(str.Length);
+                foreach (char c in str)
+                {
+                    UrlEncodeChar(c, result, true);
+                }
+                return result.ToArray();
+            }
+
+            internal static void ParseQueryString(string query, Encoding encoding, Dictionary<string, string> result)
+            {
+                if (query.Length == 0)
+                    return;
+
+                int namePos = 0;
+                while (namePos <= query.Length)
+                {
+                    int valuePos = -1, valueEnd = -1;
+                    for (int q = namePos; q < query.Length; q++)
+                    {
+                        if (valuePos == -1 && query[q] == '=')
+                        {
+                            valuePos = q + 1;
+                        }
+                        else if (query[q] == '&')
+                        {
+                            valueEnd = q;
+                            break;
+                        }
+                    }
+
+                    string name, value;
+                    if (valuePos == -1)
+                    {
+                        name = null;
+                        valuePos = namePos;
+                    }
+                    else
+                    {
+                        name = UrlDecode(query.Substring(namePos, valuePos - namePos - 1), encoding);
+                    }
+                    if (valueEnd < 0)
+                    {
+                        namePos = -1;
+                        valueEnd = query.Length;
+                    }
+                    else
+                    {
+                        namePos = valueEnd + 1;
+                    }
+                    value = UrlDecode(query.Substring(valuePos, valueEnd - valuePos), encoding);
+
+                    result.Add(name, value);
+                    if (namePos == -1) break;
+                }
+            }
+
+            private static int GetChar(byte[] bytes, int offset, int length)
+            {
+                int value = 0;
+                int end = length + offset;
+                for (int i = offset; i < end; i++)
+                {
+                    int current = GetInt(bytes[i]);
+                    if (current == -1)
+                        return -1;
+                    value = (value << 4) + current;
+                }
+
+                return value;
+            }
+
+            private static int GetChar(string str, int offset, int length)
+            {
+                int val = 0;
+                int end = length + offset;
+                for (int i = offset; i < end; i++)
+                {
+                    char c = str[i];
+                    if (c > 127)
+                        return -1;
+
+                    int current = GetInt((byte)c);
+                    if (current == -1)
+                        return -1;
+                    val = (val << 4) + current;
+                }
+
+                return val;
+            }
+
+            private static char[] GetChars(MemoryStream b, Encoding e)
+            {
+                return e.GetChars(b.GetBuffer(), 0, (int)b.Length);
+            }
+
+            private static int GetInt(byte b)
+            {
+                char c = (char)b;
+                if (c >= '0' && c <= '9')
+                    return c - '0';
+
+                if (c >= 'a' && c <= 'f')
+                    return c - 'a' + 10;
+
+                if (c >= 'A' && c <= 'F')
+                    return c - 'A' + 10;
+
+                return -1;
+            }
 
             static void InitEntities()
             {
@@ -473,326 +1114,6 @@ namespace CrossConnect
                 entities.Add("euro", '\u20AC');
             }
 
-            public HttpUtility()
-            {
-            }
-
-            #endregion // Constructors
-
-
-
-            public static void HtmlAttributeEncode(string s, TextWriter output)
-            {
-                output.Write(HtmlAttributeEncode(s));
-            }
-
-            public static string HtmlAttributeEncode(string s)
-            {
-                if (null == s)
-                    return null;
-
-                if (s.IndexOf('&') == -1 && s.IndexOf('"') == -1)
-                    return s;
-
-                StringBuilder output = new StringBuilder();
-                foreach (char c in s)
-                    switch (c)
-                    {
-                        case '&':
-                            output.Append("&amp;");
-                            break;
-                        case '"':
-                            output.Append("&quot;");
-                            break;
-                        default:
-                            output.Append(c);
-                            break;
-                    }
-
-                return output.ToString();
-            }
-
-            public static string UrlDecode(string str)
-            {
-                return UrlDecode(str, Encoding.UTF8);
-            }
-
-            private static char[] GetChars(MemoryStream b, Encoding e)
-            {
-                return e.GetChars(b.GetBuffer(), 0, (int)b.Length);
-            }
-
-            public static string UrlDecode(string s, Encoding e)
-            {
-                if (null == s)
-                    return null;
-
-                if (s.IndexOf('%') == -1 && s.IndexOf('+') == -1)
-                    return s;
-
-                if (e == null)
-                    e = Encoding.UTF8;
-
-                StringBuilder output = new StringBuilder();
-                long len = s.Length;
-                MemoryStream bytes = new MemoryStream();
-                int xchar;
-
-                for (int i = 0; i < len; i++)
-                {
-                    if (s[i] == '%' && i + 2 < len && s[i + 1] != '%')
-                    {
-                        if (s[i + 1] == 'u' && i + 5 < len)
-                        {
-                            if (bytes.Length > 0)
-                            {
-                                output.Append(GetChars(bytes, e));
-                                bytes.SetLength(0);
-                            }
-
-                            xchar = GetChar(s, i + 2, 4);
-                            if (xchar != -1)
-                            {
-                                output.Append((char)xchar);
-                                i += 5;
-                            }
-                            else
-                            {
-                                output.Append('%');
-                            }
-                        }
-                        else if ((xchar = GetChar(s, i + 1, 2)) != -1)
-                        {
-                            bytes.WriteByte((byte)xchar);
-                            i += 2;
-                        }
-                        else
-                        {
-                            output.Append('%');
-                        }
-                        continue;
-                    }
-
-                    if (bytes.Length > 0)
-                    {
-                        output.Append(GetChars(bytes, e));
-                        bytes.SetLength(0);
-                    }
-
-                    if (s[i] == '+')
-                    {
-                        output.Append(' ');
-                    }
-                    else
-                    {
-                        output.Append(s[i]);
-                    }
-                }
-
-                if (bytes.Length > 0)
-                {
-                    output.Append(GetChars(bytes, e));
-                }
-
-                bytes = null;
-                return output.ToString();
-            }
-
-            public static string UrlDecode(byte[] bytes, Encoding e)
-            {
-                if (bytes == null)
-                    return null;
-
-                return UrlDecode(bytes, 0, bytes.Length, e);
-            }
-
-            private static int GetInt(byte b)
-            {
-                char c = (char)b;
-                if (c >= '0' && c <= '9')
-                    return c - '0';
-
-                if (c >= 'a' && c <= 'f')
-                    return c - 'a' + 10;
-
-                if (c >= 'A' && c <= 'F')
-                    return c - 'A' + 10;
-
-                return -1;
-            }
-
-            private static int GetChar(byte[] bytes, int offset, int length)
-            {
-                int value = 0;
-                int end = length + offset;
-                for (int i = offset; i < end; i++)
-                {
-                    int current = GetInt(bytes[i]);
-                    if (current == -1)
-                        return -1;
-                    value = (value << 4) + current;
-                }
-
-                return value;
-            }
-
-            private static int GetChar(string str, int offset, int length)
-            {
-                int val = 0;
-                int end = length + offset;
-                for (int i = offset; i < end; i++)
-                {
-                    char c = str[i];
-                    if (c > 127)
-                        return -1;
-
-                    int current = GetInt((byte)c);
-                    if (current == -1)
-                        return -1;
-                    val = (val << 4) + current;
-                }
-
-                return val;
-            }
-
-            public static string UrlDecode(byte[] bytes, int offset, int count, Encoding e)
-            {
-                if (bytes == null)
-                    return null;
-                if (count == 0)
-                    return String.Empty;
-
-                if (bytes == null)
-                    throw new ArgumentNullException("bytes");
-
-                if (offset < 0 || offset > bytes.Length)
-                    throw new ArgumentOutOfRangeException("offset");
-
-                if (count < 0 || offset + count > bytes.Length)
-                    throw new ArgumentOutOfRangeException("count");
-
-                StringBuilder output = new StringBuilder();
-                MemoryStream acc = new MemoryStream();
-
-                int end = count + offset;
-                int xchar;
-                for (int i = offset; i < end; i++)
-                {
-                    if (bytes[i] == '%' && i + 2 < count && bytes[i + 1] != '%')
-                    {
-                        if (bytes[i + 1] == (byte)'u' && i + 5 < end)
-                        {
-                            if (acc.Length > 0)
-                            {
-                                output.Append(GetChars(acc, e));
-                                acc.SetLength(0);
-                            }
-                            xchar = GetChar(bytes, i + 2, 4);
-                            if (xchar != -1)
-                            {
-                                output.Append((char)xchar);
-                                i += 5;
-                                continue;
-                            }
-                        }
-                        else if ((xchar = GetChar(bytes, i + 1, 2)) != -1)
-                        {
-                            acc.WriteByte((byte)xchar);
-                            i += 2;
-                            continue;
-                        }
-                    }
-
-                    if (acc.Length > 0)
-                    {
-                        output.Append(GetChars(acc, e));
-                        acc.SetLength(0);
-                    }
-
-                    if (bytes[i] == '+')
-                    {
-                        output.Append(' ');
-                    }
-                    else
-                    {
-                        output.Append((char)bytes[i]);
-                    }
-                }
-
-                if (acc.Length > 0)
-                {
-                    output.Append(GetChars(acc, e));
-                }
-
-                acc = null;
-                return output.ToString();
-            }
-
-            public static byte[] UrlDecodeToBytes(byte[] bytes)
-            {
-                if (bytes == null)
-                    return null;
-
-                return UrlDecodeToBytes(bytes, 0, bytes.Length);
-            }
-
-            public static byte[] UrlDecodeToBytes(string str)
-            {
-                return UrlDecodeToBytes(str, Encoding.UTF8);
-            }
-
-            public static byte[] UrlDecodeToBytes(string str, Encoding e)
-            {
-                if (str == null)
-                    return null;
-
-                if (e == null)
-                    throw new ArgumentNullException("e");
-
-                return UrlDecodeToBytes(e.GetBytes(str));
-            }
-
-            public static byte[] UrlDecodeToBytes(byte[] bytes, int offset, int count)
-            {
-                if (bytes == null)
-                    return null;
-                if (count == 0)
-                    return new byte[0];
-
-                int len = bytes.Length;
-                if (offset < 0 || offset >= len)
-                    throw new ArgumentOutOfRangeException("offset");
-
-                if (count < 0 || offset > len - count)
-                    throw new ArgumentOutOfRangeException("count");
-
-                MemoryStream result = new MemoryStream();
-                int end = offset + count;
-                for (int i = offset; i < end; i++)
-                {
-                    char c = (char)bytes[i];
-                    if (c == '+')
-                    {
-                        c = ' ';
-                    }
-                    else if (c == '%' && i < end - 2)
-                    {
-                        int xchar = GetChar(bytes, i + 1, 2);
-                        if (xchar != -1)
-                        {
-                            c = (char)xchar;
-                            i += 2;
-                        }
-                    }
-                    result.WriteByte((byte)c);
-                }
-
-                return result.ToArray();
-            }
-
-            static char[] hexChars = "0123456789abcdef".ToCharArray();
-            const string notEncoded = "!'()*-._";
-
             static void UrlEncodeChar(char c, Stream result, bool isUnicode)
             {
                 if (c > 255)
@@ -850,367 +1171,72 @@ namespace CrossConnect
                     result.WriteByte((byte)c);
             }
 
-            public static byte[] UrlEncodeToBytes(byte[] bytes, int offset, int count)
+            #endregion Methods
+
+            #if NET_1_1
+
+            public static string UrlPathEncode(string s)
             {
-                if (bytes == null)
-                    return null;
+                if (s == null || s.Length == 0)
+                return s;
 
-                int len = bytes.Length;
-                if (len == 0)
-                    return new byte[0];
-
-                if (offset < 0 || offset >= len)
-                    throw new ArgumentOutOfRangeException("offset");
-
-                if (count < 0 || count > len - offset)
-                    throw new ArgumentOutOfRangeException("count");
-
-                MemoryStream result = new MemoryStream(count);
-                int end = offset + count;
-                for (int i = offset; i < end; i++)
-                    UrlEncodeChar((char)bytes[i], result, false);
-
-                return result.ToArray();
-            }
-
-
-            public static byte[] UrlEncodeUnicodeToBytes(string str)
-            {
-                if (str == null)
-                    return null;
-
-                if (str == "")
-                    return new byte[0];
-
-                MemoryStream result = new MemoryStream(str.Length);
-                foreach (char c in str)
-                {
-                    UrlEncodeChar(c, result, true);
+                MemoryStream result = new MemoryStream ();
+                int length = s.Length;
+                for (int i = 0; i < length; i++) {
+                UrlPathEncodeChar (s [i], result);
                 }
-                return result.ToArray();
+                return Encoding.ASCII.GetString (result.ToArray ());
             }
 
-            /// <summary>
-            /// Decodes an HTML-encoded string and returns the decoded string.
-            /// </summary>
-            /// <param name="s">The HTML string to decode. </param>
-            /// <returns>The decoded text.</returns>
-            public static string HtmlDecode(string s)
+            static void UrlPathEncodeChar(char c, Stream result)
             {
-                if (s == null)
-                    throw new ArgumentNullException("s");
-
-                //fix unicode escape sequences
-                Regex rx = new Regex(@"\\[uU]([0-9A-Fa-f]{4})");
-                s = rx.Replace(s, delegate(Match match) { return ((char)Int32.Parse(match.Value.Substring(2), NumberStyles.HexNumber)).ToString(); });
-
-                //fix html escape sequences.
-                if (s.IndexOf('&') == -1)
-                    return s;
-
-                StringBuilder entity = new StringBuilder();
-                StringBuilder output = new StringBuilder();
-                int len = s.Length;
-                // 0 -> nothing,
-                // 1 -> right after '&'
-                // 2 -> between '&' and ';' but no '#'
-                // 3 -> '#' found after '&' and getting numbers
-                int state = 0;
-                int number = 0;
-                bool have_trailing_digits = false;
-
-                for (int i = 0; i < len; i++)
-                {
-                    char c = s[i];
-                    if (state == 0)
-                    {
-                        if (c == '&')
-                        {
-                            entity.Append(c);
-                            state = 1;
-                        }
-                        else
-                        {
-                            output.Append(c);
-                        }
-                        continue;
-                    }
-
-                    if (c == '&')
-                    {
-                        state = 1;
-                        if (have_trailing_digits)
-                        {
-                            entity.Append(number.ToString(CultureInfo.InvariantCulture));
-                            have_trailing_digits = false;
-                        }
-
-                        output.Append(entity.ToString());
-                        entity.Length = 0;
-                        entity.Append('&');
-                        continue;
-                    }
-
-                    if (state == 1)
-                    {
-                        if (c == ';')
-                        {
-                            state = 0;
-                            output.Append(entity.ToString());
-                            output.Append(c);
-                            entity.Length = 0;
-                        }
-                        else
-                        {
-                            number = 0;
-                            if (c != '#')
-                            {
-                                state = 2;
-                            }
-                            else
-                            {
-                                state = 3;
-                            }
-                            entity.Append(c);
-                        }
-                    }
-                    else if (state == 2)
-                    {
-                        entity.Append(c);
-                        if (c == ';')
-                        {
-                            string key = entity.ToString();
-                            if (key.Length > 1 && Entities.ContainsKey(key.Substring(1, key.Length - 2)))
-                                key = Entities[key.Substring(1, key.Length - 2)].ToString();
-
-                            output.Append(key);
-                            state = 0;
-                            entity.Length = 0;
-                        }
-                    }
-                    else if (state == 3)
-                    {
-                        if (c == ';')
-                        {
-                            if (number > 65535)
-                            {
-                                output.Append("&#");
-                                output.Append(number.ToString(CultureInfo.InvariantCulture));
-                                output.Append(";");
-                            }
-                            else
-                            {
-                                output.Append((char)number);
-                            }
-                            state = 0;
-                            entity.Length = 0;
-                            have_trailing_digits = false;
-                        }
-                        else if (Char.IsDigit(c))
-                        {
-                            number = number * 10 + ((int)c - '0');
-                            have_trailing_digits = true;
-                        }
-                        else
-                        {
-                            state = 2;
-                            if (have_trailing_digits)
-                            {
-                                entity.Append(number.ToString(CultureInfo.InvariantCulture));
-                                have_trailing_digits = false;
-                            }
-                            entity.Append(c);
-                        }
-                    }
+                if (c > 127) {
+                byte [] bIn = Encoding.UTF8.GetBytes (c.ToString ());
+                for (int i = 0; i < bIn.Length; i++) {
+                    result.WriteByte ((byte) '%');
+                    int idx = ((int) bIn [i]) >> 4;
+                    result.WriteByte ((byte) hexChars [idx]);
+                    idx = ((int) bIn [i]) & 0x0F;
+                    result.WriteByte ((byte) hexChars [idx]);
                 }
-
-                if (entity.Length > 0)
-                {
-                    output.Append(entity.ToString());
                 }
-                else if (have_trailing_digits)
-                {
-                    output.Append(number.ToString(CultureInfo.InvariantCulture));
+                else if (c == ' ') {
+                result.WriteByte ((byte) '%');
+                result.WriteByte ((byte) '2');
+                result.WriteByte ((byte) '0');
                 }
-                return output.ToString();
+                else
+                result.WriteByte ((byte) c);
             }
 
-            /// <summary>
-            /// Decodes an HTML-encoded string and sends the resulting output to a TextWriter output stream.
-            /// </summary>
-            /// <param name="s">The HTML string to decode</param>
-            /// <param name="output">The TextWriter output stream containing the decoded string. </param>
-            public static void HtmlDecode(string s, TextWriter output)
+            #endif
+
+            #if NET_2_0
+
+            public static NameValueCollection ParseQueryString(string query)
             {
-                if (s != null)
-                    output.Write(HtmlDecode(s));
+                return ParseQueryString (query, Encoding.UTF8);
             }
 
-            /// <summary>
-            /// HTML-encodes a string and returns the encoded string.
-            /// </summary>
-            /// <param name="s">The text string to encode. </param>
-            /// <returns>The HTML-encoded text.</returns>
-            public static string HtmlEncode(string s)
+            public static NameValueCollection ParseQueryString(string query, Encoding encoding)
             {
-                if (s == null)
-                    return null;
+                if (query == null)
+                throw new ArgumentNullException ("query");
+                if (encoding == null)
+                throw new ArgumentNullException ("encoding");
+                if (query.Length == 0 || (query.Length == 1 && query[0] == '?'))
+                return new NameValueCollection ();
+                if (query[0] == '?')
+                query = query.Substring (1);
 
-                StringBuilder output = new StringBuilder();
-
-                foreach (char c in s)
-                    switch (c)
-                    {
-                        case '&':
-                            output.Append("&amp;");
-                            break;
-                        case '>':
-                            output.Append("&gt;");
-                            break;
-                        case '<':
-                            output.Append("&lt;");
-                            break;
-                        case '"':
-                            output.Append("&quot;");
-                            break;
-                        default:
-                            // MS starts encoding with &# from 160 and stops at 255.
-                            // We don't do that. One reason is the 65308/65310 unicode
-                            // characters that look like '<' and '>'.
-                            if (c > 159)
-                            {
-                                output.Append("&#");
-                                output.Append(((int)c).ToString(CultureInfo.InvariantCulture));
-                                output.Append(";");
-                            }
-                            else
-                            {
-                                output.Append(c);
-                            }
-                            break;
-                    }
-                return output.ToString();
+                NameValueCollection result = new NameValueCollection ();
+                ParseQueryString (query, encoding, result);
+                return result;
             }
 
-            /// <summary>
-            /// HTML-encodes a string and sends the resulting output to a TextWriter output stream.
-            /// </summary>
-            /// <param name="s">The string to encode. </param>
-            /// <param name="output">The TextWriter output stream containing the encoded string. </param>
-            public static void HtmlEncode(string s, TextWriter output)
-            {
-                if (s != null)
-                    output.Write(HtmlEncode(s));
-            }
-
-#if NET_1_1
-		public static string UrlPathEncode (string s)
-		{
-			if (s == null || s.Length == 0)
-				return s;
-
-			MemoryStream result = new MemoryStream ();
-			int length = s.Length;
-            for (int i = 0; i < length; i++) {
-				UrlPathEncodeChar (s [i], result);
-			}
-			return Encoding.ASCII.GetString (result.ToArray ());
-		}
-		
-		static void UrlPathEncodeChar (char c, Stream result) {
-			if (c > 127) {
-				byte [] bIn = Encoding.UTF8.GetBytes (c.ToString ());
-				for (int i = 0; i < bIn.Length; i++) {
-					result.WriteByte ((byte) '%');
-					int idx = ((int) bIn [i]) >> 4;
-					result.WriteByte ((byte) hexChars [idx]);
-					idx = ((int) bIn [i]) & 0x0F;
-					result.WriteByte ((byte) hexChars [idx]);
-				}
-			}
-			else if (c == ' ') {
-				result.WriteByte ((byte) '%');
-				result.WriteByte ((byte) '2');
-				result.WriteByte ((byte) '0');
-			}
-			else
-				result.WriteByte ((byte) c);
-		}
-#endif
-
-#if NET_2_0
-		public static NameValueCollection ParseQueryString (string query)
-		{
-			return ParseQueryString (query, Encoding.UTF8);
-		}
-
-		public static NameValueCollection ParseQueryString (string query, Encoding encoding)
-		{
-			if (query == null)
-				throw new ArgumentNullException ("query");
-			if (encoding == null)
-				throw new ArgumentNullException ("encoding");
-			if (query.Length == 0 || (query.Length == 1 && query[0] == '?'))
-				return new NameValueCollection ();
-			if (query[0] == '?')
-				query = query.Substring (1);
-				
-			NameValueCollection result = new NameValueCollection ();
-			ParseQueryString (query, encoding, result);
-			return result;
-		} 				
-#endif
-
-            internal static void ParseQueryString(string query, Encoding encoding, Dictionary<string, string> result)
-            {
-                if (query.Length == 0)
-                    return;
-
-                int namePos = 0;
-                while (namePos <= query.Length)
-                {
-                    int valuePos = -1, valueEnd = -1;
-                    for (int q = namePos; q < query.Length; q++)
-                    {
-                        if (valuePos == -1 && query[q] == '=')
-                        {
-                            valuePos = q + 1;
-                        }
-                        else if (query[q] == '&')
-                        {
-                            valueEnd = q;
-                            break;
-                        }
-                    }
-
-                    string name, value;
-                    if (valuePos == -1)
-                    {
-                        name = null;
-                        valuePos = namePos;
-                    }
-                    else
-                    {
-                        name = UrlDecode(query.Substring(namePos, valuePos - namePos - 1), encoding);
-                    }
-                    if (valueEnd < 0)
-                    {
-                        namePos = -1;
-                        valueEnd = query.Length;
-                    }
-                    else
-                    {
-                        namePos = valueEnd + 1;
-                    }
-                    value = UrlDecode(query.Substring(valuePos, valueEnd - valuePos), encoding);
-
-                    result.Add(name, value);
-                    if (namePos == -1) break;
-                }
-            }
-           
+            #endif
         }
 
-
+        #endregion Nested Types
     }
 }

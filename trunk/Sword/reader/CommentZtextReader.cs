@@ -42,7 +42,6 @@ namespace SwordBackend
     [KnownType(typeof(VersePos))]
     public class CommentZtextReader : BibleZtextReader
     {
-
         #region Constructors
 
         /// <summary>
@@ -59,13 +58,6 @@ namespace SwordBackend
 
         #region Properties
 
-        public override bool IsTranslateable
-        {
-            get
-            {
-                return true;
-            }
-        }
         public override bool IsHearable
         {
             get
@@ -74,7 +66,14 @@ namespace SwordBackend
             }
         }
 
-        #endregion Properties
+        public override bool IsTranslateable
+        {
+            get
+            {
+                return true;
+            }
+        }
 
+        #endregion Properties
     }
 }

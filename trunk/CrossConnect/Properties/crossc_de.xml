@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<translations isolang="en" isolocale="" version="1.0">
-<string key="Add a note">Hinzufügen einer Notiz</string>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<translations isolang="de" isolocale="" version="1.0">
 <string key="Add new window">Add new window</string>
 <string key="Add to bookmarks">Zu Favoriten hinzufügen</string>
 <string key="Added notes">Hinzugefügt Notizen</string>
-<string key="All words (maximum 3 words)">Alle Wörter (maximal 3 Worte)</string>
+<string key="All words (maximum 3 words)">Alle Wörter (maximal 3 Wörter)</string>
 <string key="An error occurred trying to connect to the network. Try again later.">Ein Fehler ist aufgetreten mit dem Netzwerk verbinden. Versuchen Sie es später erneut.</string>
 <string key="Bible">Bibel</string>
 <string key="Bookmarks">Bookmarks</string>
 <string key="Case insensitive">Groß-und Kleinschreibung</string>
 <string key="Clear history">Verlauf löschen</string>
+<string key="Commentaries">Kommentare</string>
 <string key="Custom bible download addresses">Benutzerdefinierte Bibel Download-Adressen</string>
 <string key="Daily plan">Tagesplan</string>
 <string key="Day">Tag</string>
@@ -18,8 +18,9 @@
 <string key="Default system language">Standard Systemsprache</string>
 <string key="Delete?">Löschen?</string>
 <string key="Download bible list">Herunterladen Bibel Liste</string>
-<string key="Download bible">Herunterladen Bibel</string>
+<string key="Download bible">Download Bibel</string>
 <string key="Download bibles">Herunterladen Bibeln</string>
+<string key="Download type">Downloadart</string>
 <string key="Exact match">Exakte Übereinstimmung</string>
 <string key="Found">Gefunden</string>
 <string key="From the beginning to the end">Vom Anfang bis zum Ende</string>
@@ -45,10 +46,10 @@
 <string key="Morphology-Conjunction or conjunctive particle">Konjunktion oder konjunktive Teilchen</string>
 <string key="Morphology-Contracted form">Kurzform</string>
 <string key="Morphology-Contracted form, or two words merged by crasis">Kurzform oder zwei Worte, die Krase zusammengeführt</string>
-<string key="Morphology-Correlative or interrogative pronoun">Korrelative oder Interrogativpronomen</string>
-<string key="Morphology-Correlative pronoun">Korrelative Pronomen</string>
+<string key="Morphology-Correlative or interrogative pronoun">Correlative oder Interrogativpronomen</string>
+<string key="Morphology-Correlative pronoun">Correlative Pronomen</string>
 <string key="Morphology-Dative">Dativ</string>
-<string key="Morphology-Definite article">Definite Artikel</string>
+<string key="Morphology-Definite article">Bestimmter Artikel</string>
 <string key="Morphology-Demonstrative pronoun">Demonstrativpronomen</string>
 <string key="Morphology-Either middle or passive">Entweder Mitte oder passive</string>
 <string key="Morphology-Feminine">Weiblich</string>
@@ -78,7 +79,7 @@
 <string key="Morphology-Middle">Mitte</string>
 <string key="Morphology-Negative">Negativ</string>
 <string key="Morphology-Neuter">Neutrum</string>
-<string key="Morphology-No tense stated (adverbial imperative)">Keine angespannt angegeben (adverbiale Imperativ)</string>
+<string key="Morphology-No tense stated (adverbial imperative)">Keine angespannte angegeben (adverbiale Imperativ)</string>
 <string key="Morphology-No voice stated">Keine Stimme erklärt</string>
 <string key="Morphology-Nominative">Nominativ</string>
 <string key="Morphology-Noun">Nomen</string>
@@ -99,8 +100,8 @@
 <string key="Morphology-Reflexive pronoun">Reflexivpronomen</string>
 <string key="Morphology-Relative pronoun">Relativpronomen</string>
 <string key="Morphology-Second Aorist">Zweite Aorist</string>
-<string key="Morphology-Second Future">Zweite Zukunft</string>
-<string key="Morphology-Second perfect">Zweiter perfekt</string>
+<string key="Morphology-Second Future">Zweitens Zukunft</string>
+<string key="Morphology-Second perfect">Zweite perfekt</string>
 <string key="Morphology-Second person">Zweite Person</string>
 <string key="Morphology-Second pluperfect">Zweite Plusquamperfekt</string>
 <string key="Morphology-Singular">Singular</string>
@@ -113,7 +114,7 @@
 <string key="Notes">Hinweise</string>
 <string key="Nothing found">Nichts gefunden</string>
 <string key="One or more words">Ein oder mehrere Wörter</string>
-<string key="Rate this program">Rate dieses Programm</string>
+<string key="Rate this program">Bewerten dieses Programm</string>
 <string key="Search conditions">Suchbedingungen</string>
 <string key="Search where">Suche in</string>
 <string key="Search">Suche</string>
@@ -133,7 +134,7 @@
 <string key="Send mail">E-Mail senden</string>
 <string key="Send message">Nachricht senden</string>
 <string key="Settings">Einstellungen</string>
-<string key="Show Strong&#39;s numbers">Zeige Strong-Zahlen</string>
+<string key="Show Strong's numbers">Zeige Strong-Zahlen</string>
 <string key="Show added notes by chapter">Zeige hinzugefügten Noten von Kapitel</string>
 <string key="Show note positions">Zeige Notenpositionen</string>
 <string key="Show the book name on each verse">Zeige das Buch Namen auf jeden Vers</string>
@@ -152,8 +153,11 @@
 <string key="The bible by random chapters">Die Bibel durch zufällige Kapiteln</string>
 <string key="The bible by topic">Die Bibel nach Themen</string>
 <string key="Too many found. Search stopped">Zu viele gefunden. Suche gestoppt</string>
+<string key="Translation">Übersetzung</string>
+<string key="Add a note">Notiz hinzufügen</string>
+<string key="Use internet dictionaries">Verwenden Sie Internet-Wörterbüchern</string>
 <string key="Use small verse numbers">Verwenden Sie kleine Versnummern</string>
 <string key="Whole bible">Ganze Bibel</string>
-<string key="You must first select a verse">Sie müssen zunächst ein Vers</string>
+<string key="You must first select a verse">Sie müssen zunächst einen Vers</string>
 <string key="You must have at least one bible">Sie müssen mindestens eine Bibel</string>
 </translations>

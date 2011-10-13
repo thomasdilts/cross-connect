@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <translations isolang="en" isolocale="" version="1.0" >
-<string key="Add a note">Add a note</string>
 <string key="Add new window">Add new window</string>
 <string key="Add to bookmarks">Add to bookmarks</string>
 <string key="Added notes">Added notes</string>
@@ -10,6 +9,7 @@
 <string key="Bookmarks">Bookmarks</string>
 <string key="Case insensitive">Case insensitive</string>
 <string key="Clear history">Clear history</string>
+<string key="Commentaries">Commentaries</string>
 <string key="Custom bible download addresses">Custom bible download addresses</string>
 <string key="Daily plan">Daily plan</string>
 <string key="Day">Day</string>
@@ -20,6 +20,7 @@
 <string key="Download bible list">Download bible list</string>
 <string key="Download bible">Download bible</string>
 <string key="Download bibles">Download bibles</string>
+<string key="Download type">Download type</string>
 <string key="Exact match">Exact match</string>
 <string key="Found">Found</string>
 <string key="From the beginning to the end">From the beginning to the end</string>
@@ -52,7 +53,7 @@
 <string key="Morphology-Demonstrative pronoun">Demonstrative pronoun</string>
 <string key="Morphology-Either middle or passive">Either middle or passive</string>
 <string key="Morphology-Feminine">Feminine</string>
-<string key="Morphology-First person">First person</string> 
+<string key="Morphology-First person">First person</string>
 <string key="Morphology-Future">Future</string>
 <string key="Morphology-Genitive">Genitive</string>
 <string key="Morphology-Hebrew transliterated word (indeclinable)">Hebrew transliterated word (indeclinable)</string>
@@ -101,14 +102,14 @@
 <string key="Morphology-Second Aorist">Second Aorist</string>
 <string key="Morphology-Second Future">Second Future</string>
 <string key="Morphology-Second perfect">Second perfect</string>
-<string key="Morphology-Second person">Second person</string> 
+<string key="Morphology-Second person">Second person</string>
 <string key="Morphology-Second pluperfect">Second pluperfect</string>
 <string key="Morphology-Singular">Singular</string>
 <string key="Morphology-Subjunctive">Subjunctive</string>
 <string key="Morphology-Superlative">Superlative</string>
-<string key="Morphology-Third person">Third person</string> 
+<string key="Morphology-Third person">Third person</string>
 <string key="Morphology-Transitive">Transitive</string>
-<string key="Morphology-Verb">Verb</string>        
+<string key="Morphology-Verb">Verb</string>
 <string key="Morphology-Vocative">Vocative</string>
 <string key="Notes">Notes</string>
 <string key="Nothing found">Nothing found</string>
@@ -152,6 +153,9 @@
 <string key="The bible by random chapters">The bible by random chapters</string>
 <string key="The bible by topic">The bible by topic</string>
 <string key="Too many found. Search stopped">Too many found. Search stopped</string>
+<string key="Translation">Translation</string>
+<string key="Add a note">Add a note</string>
+<string key="Use internet dictionaries">Use internet dictionaries</string>
 <string key="Use small verse numbers">Use small verse numbers</string>
 <string key="Whole bible">Whole bible</string>
 <string key="You must first select a verse">You must first select a verse</string>

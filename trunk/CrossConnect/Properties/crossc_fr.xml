@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <translations isolang="fr" isolocale="" version="1.0">
-<string key="Add a note">Ajouter une note</string>
 <string key="Add new window">Ajouter nouvelle fenêtre</string>
 <string key="Add to bookmarks">Ajouter aux favoris</string>
 <string key="Added notes">Ajout de notes</string>
-<string key="All words (maximum 3 words)">Tous les mots (maximum de 3 mots)</string>
+<string key="All words (maximum 3 words)">Tous les mots (maximum 3 mots)</string>
 <string key="An error occurred trying to connect to the network. Try again later.">Une erreur est survenue lors de la connexion au réseau. Réessayez plus tard.</string>
 <string key="Bible">La Bible</string>
 <string key="Bookmarks">Favoris</string>
 <string key="Case insensitive">Insensible à la casse</string>
-<string key="Clear history">Effacer l&#39;historique</string>
+<string key="Clear history">Effacer l'historique</string>
+<string key="Commentaries">Commentaires</string>
 <string key="Custom bible download addresses">Personnalisé bible télécharger des adresses</string>
 <string key="Daily plan">Plan quotidien</string>
 <string key="Day">Jour</string>
@@ -20,13 +20,14 @@
 <string key="Download bible list">Télécharger la liste bible</string>
 <string key="Download bible">Télécharger la Bible</string>
 <string key="Download bibles">Télécharger des bibles</string>
+<string key="Download type">Type de téléchargement</string>
 <string key="Exact match">Correspondance exacte</string>
 <string key="Found">Trouvé</string>
 <string key="From the beginning to the end">Du début à la fin</string>
-<string key="Greek dictionary internet link">Grecques lien Internet Dictionnaire</string>
+<string key="Greek dictionary internet link">Grecs lien internet Dictionnaire</string>
 <string key="Hebrew dictionary internet link">Lien internet en hébreu dictionnaire</string>
 <string key="Help">Aide</string>
-<string key="Highlight text markings">Marquages ​​texte en surbrillance</string>
+<string key="Highlight text markings">Marquages \u200b\u200bdu texte en surbrillance</string>
 <string key="History">Histoire</string>
 <string key="Minutes/Day">Minutes par jour</string>
 <string key="Morphology-Abbreviated form">Sous forme abrégée</string>
@@ -41,7 +42,7 @@
 <string key="Morphology-Attic Greek form">Grenier forme grecque</string>
 <string key="Morphology-Attic">Grenier</string>
 <string key="Morphology-Comparative">Comparative</string>
-<string key="Morphology-Conditional particle or conjunction">Particules avec sursis ou une conjonction</string>
+<string key="Morphology-Conditional particle or conjunction">Particules conditionnelle ou conjointement</string>
 <string key="Morphology-Conjunction or conjunctive particle">Conjonction ou particule conjonctive</string>
 <string key="Morphology-Contracted form">Forme contractée</string>
 <string key="Morphology-Contracted form, or two words merged by crasis">Forme contractée, ou deux mots fusionnés par crase</string>
@@ -74,7 +75,7 @@
 <string key="Morphology-Masculine">Masculin</string>
 <string key="Morphology-Middle Deponent">Moyen Déposant</string>
 <string key="Morphology-Middle or passive deponent">Déposant Orient ou passive</string>
-<string key="Morphology-Middle significance">L&#39;importance du Moyen-</string>
+<string key="Morphology-Middle significance">L'importance du Moyen-</string>
 <string key="Morphology-Middle">Moyen</string>
 <string key="Morphology-Negative">Négative</string>
 <string key="Morphology-Neuter">Neutre</string>
@@ -101,7 +102,7 @@
 <string key="Morphology-Second Aorist">Deuxième aoriste</string>
 <string key="Morphology-Second Future">Future deuxième</string>
 <string key="Morphology-Second perfect">Deuxième parfaite</string>
-<string key="Morphology-Second person">Deuxième personne</string>
+<string key="Morphology-Second person">Une seconde personne</string>
 <string key="Morphology-Second pluperfect">Deuxième pluperfect</string>
 <string key="Morphology-Singular">Singulière</string>
 <string key="Morphology-Subjunctive">Subjonctif</string>
@@ -118,7 +119,7 @@
 <string key="Search where">Recherche où les</string>
 <string key="Search">Rechercher</string>
 <string key="Select bible to delete">Sélectionnez bible pour supprimer</string>
-<string key="Select book and chapter">Sélectionnez ouvrage et le chapitre</string>
+<string key="Select book and chapter">Sélectionnez livre et chapitre</string>
 <string key="Select book">Sélectionnez livre</string>
 <string key="Select bookmark to delete">Sélectionnez signet à supprimer</string>
 <string key="Select chapter">Sélectionnez le chapitre</string>
@@ -133,7 +134,7 @@
 <string key="Send mail">Envoyer un mail</string>
 <string key="Send message">Envoyer un message</string>
 <string key="Settings">Réglages</string>
-<string key="Show Strong&#39;s numbers">Voir Strong numéros</string>
+<string key="Show Strong's numbers">Voir Strong numéros</string>
 <string key="Show added notes by chapter">Voir notes ajoutées par chapitre</string>
 <string key="Show note positions">Voir la note des positions</string>
 <string key="Show the book name on each verse">Voir le nom du livre sur chaque verset</string>
@@ -148,12 +149,15 @@
 <string key="The New Testement">Le Nouveau Testement</string>
 <string key="The New Testement, Psalms, Proverbs">Le Nouveau Testement, Psaumes, Proverbes</string>
 <string key="The Old Testement">Le Vieux Testement</string>
-<string key="The Old and New Testement each day">L&#39;Ancien et le Nouveau Testement chaque jour</string>
-<string key="The bible by random chapters">La Bible en chapitres hasard</string>
+<string key="The Old and New Testement each day">L'Ancien et le Nouveau Testement chaque jour</string>
+<string key="The bible by random chapters">La Bible en chapitres aléatoires</string>
 <string key="The bible by topic">La bible par sujet</string>
 <string key="Too many found. Search stopped">Trop de trouvé. Rechercher arrêté</string>
+<string key="Translation">Traduction</string>
+<string key="Add a note">Ajouter une note</string>
+<string key="Use internet dictionaries">Utiliser des dictionnaires sur Internet</string>
 <string key="Use small verse numbers">Utilisez numéros de versets de petites</string>
 <string key="Whole bible">Toute la Bible</string>
-<string key="You must first select a verse">Vous devez d&#39;abord sélectionner un verset</string>
-<string key="You must have at least one bible">Vous devez avoir au moins un bible</string>
+<string key="You must first select a verse">Vous devez d'abord sélectionner un verset</string>
+<string key="You must have at least one bible">Vous devez avoir au moins une bible</string>
 </translations>

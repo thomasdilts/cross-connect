@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <translations isolang="mk" isolocale="" version="1.0">
-<string key="Add a note">Додај белешка</string>
 <string key="Add new window">Додај нов прозорец</string>
 <string key="Add to bookmarks">Додади во обележувачи</string>
 <string key="Added notes">Додадено белешки</string>
-<string key="All words (maximum 3 words)">Сите зборови (максимум 3 зборови)</string>
-<string key="An error occurred trying to connect to the network. Try again later.">Се случи грешка обидува да се поврзе на мрежата. Обидете се повторно подоцна.</string>
+<string key="All words (maximum 3 words)">Сите зборови (максимум 3 букви)</string>
+<string key="An error occurred trying to connect to the network. Try again later.">Се случи грешка се обидува да се поврзете со мрежата. Обидете се повторно подоцна.</string>
 <string key="Bible">Библијата</string>
 <string key="Bookmarks">Ознаки</string>
 <string key="Case insensitive">Случај нечувствително</string>
 <string key="Clear history">Исчисти историја</string>
+<string key="Commentaries">Коментари</string>
 <string key="Custom bible download addresses">Прилагодено Библијата преземете адреси</string>
 <string key="Daily plan">Дневен план</string>
 <string key="Day">Ден</string>
@@ -20,6 +20,7 @@
 <string key="Download bible list">Превземи Библијата листа</string>
 <string key="Download bible">Превземи Библијата</string>
 <string key="Download bibles">Превземи Библии</string>
+<string key="Download type">Превземи тип</string>
 <string key="Exact match">Точно одговараат</string>
 <string key="Found">Резултати</string>
 <string key="From the beginning to the end">Од почеток до крај</string>
@@ -49,8 +50,8 @@
 <string key="Morphology-Correlative pronoun">Корелатив заменка</string>
 <string key="Morphology-Dative">Dative</string>
 <string key="Morphology-Definite article">Определен член</string>
-<string key="Morphology-Demonstrative pronoun">Покажана заменка</string>
-<string key="Morphology-Either middle or passive">Или средината или пасивен</string>
+<string key="Morphology-Demonstrative pronoun">Демонстративна заменка</string>
+<string key="Morphology-Either middle or passive">Или средината или пасивна</string>
 <string key="Morphology-Feminine">Женската</string>
 <string key="Morphology-First person">Прво лице</string>
 <string key="Morphology-Future">Иднината</string>
@@ -124,7 +125,7 @@
 <string key="Select chapter">Изберете глава</string>
 <string key="Select day">Изберете ден</string>
 <string key="Select the bible">Изберете Библијата</string>
-<string key="Select the daily plan start date">Изберете дневниот план датум</string>
+<string key="Select the daily plan start date">Изберете дневниот план датум за почеток</string>
 <string key="Select the daily plan">Изберете дневниот план</string>
 <string key="Select the language">Изберете јазик</string>
 <string key="Select the server">Изберете сервер</string>
@@ -133,7 +134,7 @@
 <string key="Send mail">Прати пошта</string>
 <string key="Send message">Испрати порака</string>
 <string key="Settings">Подесувања</string>
-<string key="Show Strong&#39;s numbers">Прикажи Силен на броеви</string>
+<string key="Show Strong's numbers">Прикажи Силен е броеви</string>
 <string key="Show added notes by chapter">Прикажи додадени белешки од глава</string>
 <string key="Show note positions">Прикажи белешка позиции</string>
 <string key="Show the book name on each verse">Прикажи ги книга име на секој стих</string>
@@ -146,12 +147,15 @@
 <string key="Talking bible internet link">Зборувајќи Библијата интернет линк</string>
 <string key="Text size">Текст големина</string>
 <string key="The New Testement">Новиот Testement</string>
-<string key="The New Testement, Psalms, Proverbs">Новиот Testement, Пророците, Псалмите, Изреки</string>
+<string key="The New Testement, Psalms, Proverbs">Новиот Testement, Псалми, Изреки</string>
 <string key="The Old Testement">Стариот Testement</string>
 <string key="The Old and New Testement each day">Стариот и Новиот Testement секој ден</string>
 <string key="The bible by random chapters">Библијата по случаен поглавја</string>
 <string key="The bible by topic">Библијата по тема</string>
 <string key="Too many found. Search stopped">Премногу се најде. Барај запре</string>
+<string key="Translation">Превод</string>
+<string key="Add a note">Додај белешка</string>
+<string key="Use internet dictionaries">Користете интернет речници</string>
 <string key="Use small verse numbers">Користете мали стих броеви</string>
 <string key="Whole bible">Целата Библија</string>
 <string key="You must first select a verse">Прво треба да изберете еден стих</string>

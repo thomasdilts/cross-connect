@@ -20,14 +20,15 @@
 /// <author>Thomas Dilts</author>
 namespace CrossConnect.readers
 {
-    using System.Runtime.Serialization;
-
-    using SwordBackend;
     using System.Collections.Generic;
-    using System.Xml;
-    using ICSharpCode.SharpZipLib.GZip;
     using System.IO;
     using System.Reflection;
+    using System.Runtime.Serialization;
+    using System.Xml;
+
+    using ICSharpCode.SharpZipLib.GZip;
+
+    using SwordBackend;
 
     /// <summary>
     /// Load from a file all the book and verse pointers to the bzz file so that
@@ -69,13 +70,6 @@ namespace CrossConnect.readers
             }
         }
 
-        public override bool IsTranslateable
-        {
-            get
-            {
-                return true;
-            }
-        }
         public override bool IsHearable
         {
             get
@@ -108,6 +102,14 @@ namespace CrossConnect.readers
             }
         }
 
+        public override bool IsTranslateable
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         #endregion Properties
 
         #region Methods
@@ -123,38 +125,7 @@ namespace CrossConnect.readers
             //<string key="Hebrew dictionary internet link">Hebrew dictionary internet link</string>
             title = "Dictionary - " + (link.StartsWith("G") ? "Greek " : "Hebrew ") + link.Substring(1);
         }
-        public void ShowLink(string link)
-        {
-            this.link = link;
-        }
-        private string ShowReferences(string displayText, LexiconEntry lexiconEntry, bool showRecursively)
-        {
-            LexiconEntry foundEntry = null;
-            //write all the references
-            foreach (var item in lexiconEntry.GreekRelatedKeys)
-            {
-                if (greekDict.dict.TryGetValue(item, out foundEntry))
-                {
-                    displayText += "<hr /><p>See also Greek " + foundEntry.untranslateable + "</p>" + foundEntry.value;
-                    if (showRecursively)
-                    {
-                        displayText = ShowReferences(displayText, foundEntry, false);
-                    }
-                }
-            }
-            foreach (var item in lexiconEntry.HebrewRelatedKeys)
-            {
-                if (hebrewDict.dict.TryGetValue(item, out foundEntry))
-                {
-                    displayText += "<hr /><p>See also Hebrew " + foundEntry.untranslateable + "</p>" + foundEntry.value;
-                    if (showRecursively)
-                    {
-                        displayText = ShowReferences(displayText, foundEntry, false);
-                    }                
-                }
-            }
-            return displayText;
-        }
+
         public override string GetLanguage()
         {
             return "en";
@@ -165,7 +136,6 @@ namespace CrossConnect.readers
             toTranslate = new string[2];
             isTranslateable = new bool[2];
 
-            string displayText = "";
             string strongNumber = "";
             int number;
             if (int.TryParse(link.Substring(1), out number))
@@ -188,6 +158,12 @@ namespace CrossConnect.readers
                 isTranslateable[1] = true;
             }
         }
+
+        public void ShowLink(string link)
+        {
+            this.link = link;
+        }
+
         protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml = true)
         {
             string displayText = "";
@@ -216,27 +192,75 @@ namespace CrossConnect.readers
                 + displayText + "</body></html>";
         }
 
+        private string ShowReferences(string displayText, LexiconEntry lexiconEntry, bool showRecursively)
+        {
+            LexiconEntry foundEntry = null;
+            //write all the references
+            foreach (var item in lexiconEntry.GreekRelatedKeys)
+            {
+                if (greekDict.dict.TryGetValue(item, out foundEntry))
+                {
+                    displayText += "<hr /><p>See also Greek " + foundEntry.untranslateable + "</p>" + foundEntry.value;
+                    if (showRecursively)
+                    {
+                        displayText = ShowReferences(displayText, foundEntry, false);
+                    }
+                }
+            }
+            foreach (var item in lexiconEntry.HebrewRelatedKeys)
+            {
+                if (hebrewDict.dict.TryGetValue(item, out foundEntry))
+                {
+                    displayText += "<hr /><p>See also Hebrew " + foundEntry.untranslateable + "</p>" + foundEntry.value;
+                    if (showRecursively)
+                    {
+                        displayText = ShowReferences(displayText, foundEntry, false);
+                    }
+                }
+            }
+            return displayText;
+        }
+
         #endregion Methods
+
+        #region Nested Types
 
         public class LexiconEntry
         {
+            #region Fields
+
+            public List<int> GreekRelatedKeys = new List<int>();
+            public List<int> HebrewRelatedKeys = new List<int>();
             public int key;
-            public string value;
             public string untranslateable;
-            public List<int> GreekRelatedKeys=new List<int>();
-            public List<int> HebrewRelatedKeys=new List<int>();
+            public string value;
+
+            #endregion Fields
+
+            #region Constructors
+
             public LexiconEntry(int key)
             {
                 this.key = key;
             }
+
             public LexiconEntry()
             {
             }
+
+            #endregion Constructors
         }
 
         public class LexiconFromXmlFile
         {
+            #region Fields
+
             public Dictionary<int, LexiconEntry> dict = new Dictionary<int, LexiconEntry>();
+
+            #endregion Fields
+
+            #region Constructors
+
             public LexiconFromXmlFile(string filepath)
             {
                 Assembly assem = Assembly.GetExecutingAssembly();
@@ -254,7 +278,7 @@ namespace CrossConnect.readers
                         switch (reader.NodeType)
                         {
                             case XmlNodeType.Element:
-                                
+
                                 switch (reader.Name)
                                 {
                                     case "i":
@@ -300,7 +324,14 @@ namespace CrossConnect.readers
                     }
                 }
             }
+
+            #endregion Constructors
         }
+
+        #endregion Nested Types
+
+        #region Other
+
         /*
         void readFromDatFile()
         {
@@ -379,5 +410,7 @@ namespace CrossConnect.readers
             xmlw.Close();
 
         }*/
+
+        #endregion Other
     }
 }

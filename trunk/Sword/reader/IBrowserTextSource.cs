@@ -43,10 +43,6 @@ namespace SwordBackend
     {
         #region Properties
 
-        bool IsTranslateable
-        {
-            get;
-        }        
         bool existsShortNames
         {
             get;
@@ -82,6 +78,11 @@ namespace SwordBackend
             get;
         }
 
+        bool IsTranslateable
+        {
+            get;
+        }
+
         #endregion Properties
 
         #region Methods
@@ -92,11 +93,11 @@ namespace SwordBackend
 
         void GetInfo(out int bookNum,out int absoluteChaptNum, out int relChaptNum, out int verseNum, out string fullName, out string title);
 
-        string GetVerseTextOnly(DisplaySettings displaySettings, int chapterNumber, int verseNum);
-
         string GetLanguage();
 
         void GetTranslateableTexts(DisplaySettings displaySettings, string bibleToLoad, out string[] toTranslate, out bool[] isTranslateable);
+
+        string GetVerseTextOnly(DisplaySettings displaySettings, int chapterNumber, int verseNum);
 
         List<string> MakeListDisplayText(DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay);
 

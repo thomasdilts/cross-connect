@@ -1,16 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <translations isolang="hu" isolocale="" version="1.0">
-<string key="Add a note">Megjegyzés hozzáadása</string>
 <string key="Add new window">Új ablakban</string>
 <string key="Add to bookmarks">Add a könyvjelzők közé</string>
 <string key="Added notes">Hozzáadott jegyzetek</string>
 <string key="All words (maximum 3 words)">Minden szó (maximum 3 szó)</string>
 <string key="An error occurred trying to connect to the network. Try again later.">Hiba történt próbál csatlakozni a hálózathoz. Próbálja meg később.</string>
 <string key="Bible">Biblia</string>
-<string key="Bookmarks">Könyvjelzők</string>
+<string key="Bookmarks">Bookmarks</string>
 <string key="Case insensitive">Kis-és nagybetűket</string>
 <string key="Clear history">Előzmények törlése</string>
-<string key="Custom bible download addresses">Egyéni biblia letöltés címekre</string>
+<string key="Commentaries">Kommentárok</string>
+<string key="Custom bible download addresses">Egyéni biblia letöltés címét</string>
 <string key="Daily plan">Napi terv</string>
 <string key="Day">Nap</string>
 <string key="Days">Napok</string>
@@ -20,6 +20,7 @@
 <string key="Download bible list">Letöltés Biblia lista</string>
 <string key="Download bible">Letöltés biblia</string>
 <string key="Download bibles">Letöltés Bibliák</string>
+<string key="Download type">Letöltés típusa</string>
 <string key="Exact match">Pontos egyezés</string>
 <string key="Found">Talált</string>
 <string key="From the beginning to the end">Elejétől végéig</string>
@@ -44,8 +45,8 @@
 <string key="Morphology-Conditional particle or conjunction">Feltételes részecske vagy együtt</string>
 <string key="Morphology-Conjunction or conjunctive particle">Együtt vagy konjunktív részecske</string>
 <string key="Morphology-Contracted form">Szerződéses formában</string>
-<string key="Morphology-Contracted form, or two words merged by crasis">Szerződéses formában, vagy két szó egyesült a crasis</string>
-<string key="Morphology-Correlative or interrogative pronoun">Korrelációs és kérdő névmás</string>
+<string key="Morphology-Contracted form, or two words merged by crasis">Szerződéses formában, vagy két szót egyesült a crasis</string>
+<string key="Morphology-Correlative or interrogative pronoun">Korrelációs vagy kérdő névmás</string>
 <string key="Morphology-Correlative pronoun">Korrelatív névmás</string>
 <string key="Morphology-Dative">Részeshatározó</string>
 <string key="Morphology-Definite article">Névelő</string>
@@ -60,9 +61,9 @@
 <string key="Morphology-Imperative-sense participle">Elengedhetetlen ész igenév</string>
 <string key="Morphology-Imperfect">Tökéletlen</string>
 <string key="Morphology-Impersonal active">Személytelen aktív</string>
-<string key="Morphology-Indeclinable Letter (Noun)">Ragozhatatlan Letter (Noun)</string>
+<string key="Morphology-Indeclinable Letter (Noun)">Ragozhatatlan Letter (Főnév)</string>
 <string key="Morphology-Indeclinable Noun of Other type">Ragozhatatlan Noun egyéb típusú</string>
-<string key="Morphology-Indeclinable Numeral (Adjective)">Ragozhatatlan Szám (Melléknév)</string>
+<string key="Morphology-Indeclinable Numeral (Adjective)">Ragozhatatlan Szám (melléknév)</string>
 <string key="Morphology-Indeclinable Proper Noun">Ragozhatatlan megfelelő Noun</string>
 <string key="Morphology-Indefinite pronoun">Határozatlan névmás</string>
 <string key="Morphology-Indicative">Indikatív</string>
@@ -100,7 +101,7 @@
 <string key="Morphology-Relative pronoun">Relatív névmás</string>
 <string key="Morphology-Second Aorist">Második Aorist</string>
 <string key="Morphology-Second Future">Második jövő</string>
-<string key="Morphology-Second perfect">A második tökéletes</string>
+<string key="Morphology-Second perfect">Második tökéletes</string>
 <string key="Morphology-Second person">Második személy</string>
 <string key="Morphology-Second pluperfect">Második régmúlt</string>
 <string key="Morphology-Singular">Egyes szám</string>
@@ -114,7 +115,7 @@
 <string key="Nothing found">Semmi nem talált</string>
 <string key="One or more words">Egy vagy több szó</string>
 <string key="Rate this program">Szavazz erre a programra</string>
-<string key="Search conditions">Keresés a feltételek</string>
+<string key="Search conditions">Keresési feltételeket</string>
 <string key="Search where">Keresés helye</string>
 <string key="Search">Keresés</string>
 <string key="Select bible to delete">Válassza ki a biblia törölni</string>
@@ -133,27 +134,30 @@
 <string key="Send mail">E-mail küldése</string>
 <string key="Send message">Üzenet küldése</string>
 <string key="Settings">Beállítások</string>
-<string key="Show Strong&#39;s numbers">Mutasd Strong számok</string>
+<string key="Show Strong's numbers">Mutasd Strong számok</string>
 <string key="Show added notes by chapter">Mutasd hozzá jegyzeteket fejezet</string>
 <string key="Show note positions">Mutasd megjegyzés pozíciók</string>
 <string key="Show the book name on each verse">Mutasd a könyv nevét minden verse</string>
 <string key="Show the chapter number on each verse">Mutasd a fejezet számát minden verse</string>
 <string key="Show the headings">Mutasd a tételek</string>
 <string key="Show the verse number on each verse">Mutasd a vers számát mindegyik vers</string>
-<string key="Show the words of Jesus in red">Mutasd a Jézus szavai, piros</string>
-<string key="Show word morphology">Mutasd szó morfológiai</string>
+<string key="Show the words of Jesus in red">Mutasd a szavak Jézus piros</string>
+<string key="Show word morphology">Mutasd szó morfológiája</string>
 <string key="Start each verse on a new line">Kezdje vers új sorban</string>
 <string key="Talking bible internet link">Beszélő biblia internet kapcsolat</string>
-<string key="Text size">Szöveg méret</string>
+<string key="Text size">Betűméret</string>
 <string key="The New Testement">Az új Testement</string>
-<string key="The New Testement, Psalms, Proverbs">Az Új Testement, zsoltárok, Példabeszédek</string>
-<string key="The Old Testement">A régi Testement</string>
+<string key="The New Testement, Psalms, Proverbs">Az Új Testement, Zsolt, Példabeszédek</string>
+<string key="The Old Testement">The Old Testement</string>
 <string key="The Old and New Testement each day">A régi és az új Testement minden nap</string>
 <string key="The bible by random chapters">A Biblia véletlenszerű fejezetek</string>
 <string key="The bible by topic">A Biblia téma</string>
-<string key="Too many found. Search stopped">Túl sok találat. Keresés megállt</string>
+<string key="Too many found. Search stopped">Túl sok találat. Keresés abbahagyta</string>
+<string key="Translation">Fordítás</string>
+<string key="Add a note">Add a note</string>
+<string key="Use internet dictionaries">Használja internet szótárak</string>
 <string key="Use small verse numbers">Használjon kis vers számok</string>
-<string key="Whole bible">Egész biblia</string>
+<string key="Whole bible">Egész Biblia</string>
 <string key="You must first select a verse">Meg kell először válasszon vers</string>
 <string key="You must have at least one bible">Meg kell legalább egy bibliai</string>
 </translations>
