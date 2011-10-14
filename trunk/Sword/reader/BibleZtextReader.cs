@@ -976,8 +976,8 @@ namespace SwordBackend
             Debug.WriteLine("GetChapterHtml start");
             byte[] chapterBuffer = getChapterBytes(chapterNumber);
             // for debug
-            string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
-            System.Diagnostics.Debug.WriteLine("RawChapter: " + xxxxxx);
+            //string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
+            //System.Diagnostics.Debug.WriteLine("RawChapter: " + xxxxxx);
             StringBuilder htmlChapter = new StringBuilder();
             ChapterPos versesForChapterPositions = chapters[chapterNumber];
             string chapterStartHtml = "";
@@ -1196,10 +1196,11 @@ namespace SwordBackend
                 ms.Write(xmlbytes, startPos, length);
                 ms.Write(suffix, 0, suffix.Length);
                 ms.Position = 0;
-                byte[] buf = new byte[ms.Length]; ms.Read(buf, 0, (int)ms.Length);
-                string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, buf.Length);
-                System.Diagnostics.Debug.WriteLine("osisbuf: " + xxxxxx);
-                ms.Position = 0;
+                //debug
+                //byte[] buf = new byte[ms.Length]; ms.Read(buf, 0, (int)ms.Length);
+                //string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, buf.Length);
+                //System.Diagnostics.Debug.WriteLine("osisbuf: " + xxxxxx);
+                //ms.Position = 0;
             }
             catch (Exception ee)
             {
