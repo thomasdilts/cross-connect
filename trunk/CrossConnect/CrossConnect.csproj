@@ -321,7 +321,9 @@
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <EmbeddedResource Include="Properties\regex.html" />
-    <EmbeddedResource Include="Properties\crossc_en.xml" />
+    <EmbeddedResource Include="Properties\crossc_en.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\crossc_sv.xml" />
     <EmbeddedResource Include="Properties\crossc_af.xml" />
     <EmbeddedResource Include="Properties\crossc_ar.xml" />
@@ -440,7 +442,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SplashScreenImage.jpg" />
-    <EmbeddedResource Include="Resources\AppResources.es-ES.resx" />
     <EmbeddedResource Include="Resources\AppResources.et-ET.resx" />
     <EmbeddedResource Include="Resources\AppResources.fa-FA.resx" />
     <EmbeddedResource Include="Resources\AppResources.fi-FI.resx" />

@@ -604,7 +604,7 @@ namespace SwordBackend
             int absoluteChaptNum;
 
             GetInfo( out bookNum,out absoluteChaptNum, out relChaptNum,out verseNum, out fullName, out titleText);
-            string verseText = GetVerseTextOnly(displaySettings, relChaptNum, verseNum);
+            string verseText = GetVerseTextOnly(displaySettings, absoluteChaptNum, verseNum);
 
             toTranslate[0] = "<p>" + fullName + " " + (relChaptNum + 1) + ":" + (verseNum + 1) + " - " + bibleToLoad + "</p>";
             toTranslate[1] = verseText.Replace("<p>", "").Replace("</p>", "").Replace("<br />", "").Replace("\n", " ");
@@ -976,7 +976,8 @@ namespace SwordBackend
             Debug.WriteLine("GetChapterHtml start");
             byte[] chapterBuffer = getChapterBytes(chapterNumber);
             // for debug
-            // System.Diagnostics.Debug.WriteLine("RawChapter: " + System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length));
+            string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
+            System.Diagnostics.Debug.WriteLine("RawChapter: " + xxxxxx);
             StringBuilder htmlChapter = new StringBuilder();
             ChapterPos versesForChapterPositions = chapters[chapterNumber];
             string chapterStartHtml = "";
@@ -1059,15 +1060,15 @@ namespace SwordBackend
             return GetChapterHtml(displaySettings, serial.posChaptNum, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, isNotesOnly, addStartFinishHtml );
         }
 
-        protected long getInt48FromStream(FileStream fs,out bool isEnd)
+        protected long getInt48FromStream(FileStream fs, out bool isEnd)
         {
-            byte[] buf = new byte[7];
-            isEnd = fs.Read(buf, 0, 7) != 7;
+            byte[] buf = new byte[6];
+            isEnd = fs.Read(buf, 0, 6) != 6;
             if (isEnd)
             {
                 return 0;
             }
-            return buf[2] * 0x100000000000000 + buf[1] * 0x100000000000 + buf[0] * 0x100000000 + buf[6] * 0x1000000 + buf[5] * 0x10000 + buf[4] * 0x100 + buf[3];
+            return buf[1] * 0x100000000000 + buf[0] * 0x100000000 + buf[5] * 0x1000000 + buf[4] * 0x10000 + buf[3] * 0x100 + buf[2];
         }
 
         protected long getintFromStream(FileStream fs, out bool isEnd)
@@ -1194,6 +1195,10 @@ namespace SwordBackend
             {
                 ms.Write(xmlbytes, startPos, length);
                 ms.Write(suffix, 0, suffix.Length);
+                ms.Position = 0;
+                byte[] buf = new byte[ms.Length]; ms.Read(buf, 0, (int)ms.Length);
+                string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, buf.Length);
+                System.Diagnostics.Debug.WriteLine("osisbuf: " + xxxxxx);
                 ms.Position = 0;
             }
             catch (Exception ee)
@@ -1582,7 +1587,7 @@ namespace SwordBackend
                 // dump the first 4 posts
                 for (int i = 0; i < 4; i++)
                 {
-                    int booknum = getByteFromStream(fs, out isEnd);
+                    int booknum = getShortIntFromStream(fs, out isEnd);
                     long startPos = getInt48FromStream(fs, out isEnd);
                     int length = getShortIntFromStream(fs, out isEnd);
                 }
@@ -1600,7 +1605,7 @@ namespace SwordBackend
                         long bookStartPos = 0;
                         for (int k = 0; k < VERSES_IN_CHAPTER[i][j]; k++)
                         {
-                            booknum = getByteFromStream(fs, out isEnd);
+                            booknum = getShortIntFromStream(fs, out isEnd);
                             startPos = getInt48FromStream(fs, out isEnd);
                             if (startPos != 0)
                             {
@@ -1636,12 +1641,12 @@ namespace SwordBackend
                         chapters.Add(chapt);
 
                         // dump a post for the chapter break
-                        getByteFromStream(fs, out isEnd);
+                        getShortIntFromStream(fs, out isEnd);
                         long x = getInt48FromStream(fs, out isEnd);
                         getShortIntFromStream(fs, out isEnd);
                     }
                     // dump a post for the book break
-                    getByteFromStream(fs, out isEnd);
+                    getShortIntFromStream(fs, out isEnd);
                     getInt48FromStream(fs, out isEnd);
                     getShortIntFromStream(fs, out isEnd);
                 }
