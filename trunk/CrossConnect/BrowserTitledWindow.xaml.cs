@@ -508,7 +508,7 @@ namespace CrossConnect
             DoManipulation(e);
         }
 
-        private void CalculateTitleTextWidth()
+        public void CalculateTitleTextWidth()
         {
             int numButtonsShowing = 0;
             if (butPrevious.Visibility == System.Windows.Visibility.Visible)
@@ -547,8 +547,19 @@ namespace CrossConnect
             {
                 numButtonsShowing++;
             }
-            title.Width = System.Windows.Application.Current.Host.Content.ActualWidth - butClose.Width * numButtonsShowing - 15;
-            title.MaxWidth = System.Windows.Application.Current.Host.Content.ActualWidth - butClose.Width * numButtonsShowing - 15;
+            MainPageSplit parent = (MainPageSplit)((Grid)this.Parent).Parent;
+            if (parent.Orientation == PageOrientation.Landscape
+                || parent.Orientation == PageOrientation.LandscapeLeft
+                || parent.Orientation == PageOrientation.LandscapeRight)
+            {
+                title.Width = System.Windows.Application.Current.Host.Content.ActualHeight - butClose.Width * numButtonsShowing - 15 - butClose.Width * 2;
+                title.MaxWidth = title.Width;
+            }
+            else
+            {
+                title.Width = System.Windows.Application.Current.Host.Content.ActualWidth - butClose.Width * numButtonsShowing - 15 ;
+                title.MaxWidth = title.Width;
+            }
         }
 
         private void DoAsynchronAddInternetWindow(string link)
