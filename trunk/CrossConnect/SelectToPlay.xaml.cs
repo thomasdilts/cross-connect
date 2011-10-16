@@ -65,8 +65,8 @@ namespace CrossConnect
 
                 using (XmlReader reader = XmlReader.Create(e.Result))
                 {
-                    string src = string.Empty;
                     string name = string.Empty;
+                    MediaInfo foundMedia = null; 
                     this.MsgFromServer.Text = "";
                     // Parse the file and get each of the nodes.
                     while (reader.Read())
@@ -76,15 +76,27 @@ namespace CrossConnect
                             case XmlNodeType.Element:
                                 if (reader.Name.ToLower().Equals("source") && reader.HasAttributes)
                                 {
+                                    foundMedia = new MediaInfo();
                                     name = string.Empty;
-                                    src = string.Empty;
                                     reader.MoveToFirstAttribute();
                                     do
                                     {
                                         switch (reader.Name.ToLower())
                                         {
                                             case "src":
-                                                src = reader.Value;
+                                                foundMedia.src = reader.Value;
+                                                break;
+                                            case "icon":
+                                                foundMedia.icon = reader.Value;
+                                                break;
+                                            case "viewer":
+                                                foundMedia.viewer = reader.Value;
+                                                break;
+                                            case "player":
+                                                if (reader.Value.Equals("explorer"))
+                                                {
+                                                    foundMedia.player = MediaType.MEDIA_EXPLORER;
+                                                }
                                                 break;
                                         }
                                     }
@@ -96,15 +108,17 @@ namespace CrossConnect
                                 }
                                 break;
                             case XmlNodeType.EndElement:
-                                if (reader.Name.ToLower().Equals("source") && !string.IsNullOrEmpty(src) && !string.IsNullOrEmpty(name))
+                                if (reader.Name.ToLower().Equals("source") && foundMedia!=null && !string.IsNullOrEmpty(foundMedia.src) && !string.IsNullOrEmpty(name))
                                 {
                                     TextBlock block = new TextBlock();
                                     block.Text = name;
                                     block.Style = PageTitle.Style;
-                                    block.Tag = src;
+                                    foundMedia.visualText = name;
+                                    block.Tag = foundMedia;
                                     block.Margin = new Thickness(0,0,0,10);
                                     block.TextWrapping = TextWrapping.Wrap;
                                     SelectList.Items.Add(block);
+                                    foundMedia = null;
                                 }
                                 else if (reader.Name.ToLower().Equals("message"))
                                 {
@@ -126,6 +140,8 @@ namespace CrossConnect
             }
         }
 
+        private string titleBar = "";
+
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
             PageTitle.Text = Translations.translate("Select what you want to hear");
@@ -134,7 +150,14 @@ namespace CrossConnect
             object chapterToHear;
             if (PhoneApplicationService.Current.State.TryGetValue("ChapterToHear", out chapterToHear))
             {
-                string url = string.Format(App.displaySettings.soundLink, (int)chapterToHear,Translations.isoLanguageCode);
+                object titleBar;
+                PhoneApplicationService.Current.State.TryGetValue("titleBar", out titleBar);
+                if (titleBar==null)
+                {
+                    titleBar = "";
+                }
+                this.titleBar = (string)titleBar;
+                string url = string.Format(App.displaySettings.soundLink, (int)chapterToHear, Translations.isoLanguageCode);
                 try
                 {
                     Uri source = new Uri(url);
@@ -164,16 +187,46 @@ namespace CrossConnect
                 return;
             }
             isInSelectionChanged = true;
-            string address = (string)((TextBlock)e.AddedItems[0]).Tag;
-            MediaPlayerLauncher mediaPlayerLauncher =
-                new MediaPlayerLauncher()
+            MediaInfo info = (MediaInfo)((TextBlock)e.AddedItems[0]).Tag;
+            if (info.player == MediaType.MEDIA_EXPLORER)
             {
-                Media = new Uri(address, UriKind.Absolute)
-            };
-            mediaPlayerLauncher.Show();
+                string uri = info.viewer + (string.IsNullOrEmpty(info.src) ? "" : "?src=" + Uri.EscapeDataString(info.src)) + (string.IsNullOrEmpty(info.icon) ? "" : "&icon=" + Uri.EscapeDataString(info.icon));
+                BrowserTitledWindow.showInternetLinkWindow(uri, this.titleBar);
+                if (NavigationService.CanGoBack)
+                {
+                    NavigationService.GoBack();
+                }
+            }
+            else
+            {
+                MediaPlayerLauncher mediaPlayerLauncher =
+                    new MediaPlayerLauncher()
+                    {
+                        Media = new Uri(info.src, UriKind.Absolute)
+                    };
+                mediaPlayerLauncher.Show();
+            }
             isInSelectionChanged = false;
         }
 
         #endregion Methods
+
+        enum MediaType
+        {
+            MEDIA_PLAYER,
+            MEDIA_EXPLORER
+        }
+
+        private class MediaInfo
+        {
+            public string src = string.Empty;
+            public string icon = string.Empty;
+            public string viewer = string.Empty;
+            public MediaType player = MediaType.MEDIA_PLAYER;
+            public string visualText = string.Empty;
+            public MediaInfo()
+            {
+            }
+        }
     }
 }

@@ -39,6 +39,8 @@ namespace CrossConnect.readers
 
         [DataMember]
         public string link = string.Empty;
+        [DataMember]
+        public string titleBar = string.Empty;
 
         #endregion Fields
 
@@ -121,7 +123,10 @@ namespace CrossConnect.readers
             {
                 return string.Format(displaySettings.hebrewDictionaryLink, strongNumber);
             }
-            return "";
+            else
+            {
+                return link;
+            }
         }
 
         public override void GetInfo(out int bookNum, out int absouteChaptNum, out int relChaptNum, out int verseNum, out string fullName, out string title)
@@ -131,12 +136,13 @@ namespace CrossConnect.readers
             bookNum = 0;
             relChaptNum = 0;
             fullName = "";
-            title = link;
+            title = titleBar;
         }
 
-        public void ShowLink(string link)
+        public void ShowLink(string link, string titleBar)
         {
             this.link = link;
+            this.titleBar = titleBar;
         }
 
         #endregion Methods

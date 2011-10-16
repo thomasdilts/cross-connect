@@ -85,6 +85,60 @@ namespace CrossConnect
             return "#" + color.ToString().Substring(3, 6);
         }
 
+        public void CalculateTitleTextWidth()
+        {
+            int numButtonsShowing = 0;
+            if (butPrevious.Visibility == System.Windows.Visibility.Visible)
+            {
+                numButtonsShowing++;
+            }
+            if (butNext.Visibility == System.Windows.Visibility.Visible)
+            {
+                numButtonsShowing++;
+            }
+            if (butMenu.Visibility == System.Windows.Visibility.Visible)
+            {
+                numButtonsShowing++;
+            }
+            if (butLink.Visibility == System.Windows.Visibility.Visible)
+            {
+                numButtonsShowing++;
+            }
+            if (butLarger.Visibility == System.Windows.Visibility.Visible)
+            {
+                numButtonsShowing++;
+            }
+            if (butSmaller.Visibility == System.Windows.Visibility.Visible)
+            {
+                numButtonsShowing++;
+            }
+            if (butClose.Visibility == System.Windows.Visibility.Visible)
+            {
+                numButtonsShowing++;
+            }
+            if (butHear.Visibility == System.Windows.Visibility.Visible)
+            {
+                numButtonsShowing++;
+            }
+            if (butTranslate.Visibility == System.Windows.Visibility.Visible)
+            {
+                numButtonsShowing++;
+            }
+            MainPageSplit parent = (MainPageSplit)((Grid)this.Parent).Parent;
+            if (parent.Orientation == PageOrientation.Landscape
+                || parent.Orientation == PageOrientation.LandscapeLeft
+                || parent.Orientation == PageOrientation.LandscapeRight)
+            {
+                title.Width = System.Windows.Application.Current.Host.Content.ActualHeight - butClose.Width * numButtonsShowing - 15 - butClose.Width * 2;
+                title.MaxWidth = title.Width;
+            }
+            else
+            {
+                title.Width = System.Windows.Application.Current.Host.Content.ActualWidth - butClose.Width * numButtonsShowing - 15 ;
+                title.MaxWidth = title.Width;
+            }
+        }
+
         public void CallbackFromUpdate(string createdFileName)
         {
             Debug.WriteLine("CallbackFromUpdate start");
@@ -324,6 +378,7 @@ namespace CrossConnect
             string titleText;
             this.state.source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
             PhoneApplicationService.Current.State["ChapterToHear"] = absoluteChaptNum;
+            PhoneApplicationService.Current.State["titleBar"] = titleText;
             MainPageSplit parent = (MainPageSplit)((Grid)this.Parent).Parent;
             parent.NavigationService.Navigate(new Uri("/SelectToPlay.xaml", UriKind.Relative));
         }
@@ -508,71 +563,17 @@ namespace CrossConnect
             DoManipulation(e);
         }
 
-        public void CalculateTitleTextWidth()
-        {
-            int numButtonsShowing = 0;
-            if (butPrevious.Visibility == System.Windows.Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
-            if (butNext.Visibility == System.Windows.Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
-            if (butMenu.Visibility == System.Windows.Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
-            if (butLink.Visibility == System.Windows.Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
-            if (butLarger.Visibility == System.Windows.Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
-            if (butSmaller.Visibility == System.Windows.Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
-            if (butClose.Visibility == System.Windows.Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
-            if (butHear.Visibility == System.Windows.Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
-            if (butTranslate.Visibility == System.Windows.Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
-            MainPageSplit parent = (MainPageSplit)((Grid)this.Parent).Parent;
-            if (parent.Orientation == PageOrientation.Landscape
-                || parent.Orientation == PageOrientation.LandscapeLeft
-                || parent.Orientation == PageOrientation.LandscapeRight)
-            {
-                title.Width = System.Windows.Application.Current.Host.Content.ActualHeight - butClose.Width * numButtonsShowing - 15 - butClose.Width * 2;
-                title.MaxWidth = title.Width;
-            }
-            else
-            {
-                title.Width = System.Windows.Application.Current.Host.Content.ActualWidth - butClose.Width * numButtonsShowing - 15 ;
-                title.MaxWidth = title.Width;
-            }
-        }
-
-        private void DoAsynchronAddInternetWindow(string link)
+        private static void DoAsynchronAddInternetWindow(string link, string titleBar)
         {
             var win = new InternetLinkReader("", "", false);
-            win.ShowLink(link);
+            win.ShowLink(link, titleBar);
             App.AddWindow(
                 "",
                 "",
                 WINDOW_TYPE.WINDOW_INTERNET_LINK,
-                state.htmlFontSize,
+                10,
                 win);
-            Deployment.Current.Dispatcher.BeginInvoke(() => showInternetLinkWindow(link));
+            Deployment.Current.Dispatcher.BeginInvoke(() => showInternetLinkWindow(link, titleBar));
         }
 
         private void DoAsynchronAddLexiconWindow(string link)
@@ -712,7 +713,7 @@ namespace CrossConnect
             }
         }
 
-        private void showInternetLinkWindow(string link)
+        public static void showInternetLinkWindow(string link, string titleBar)
         {
             InternetLinkReader linkReader = null;
             foreach(var win in App.openWindows)
@@ -720,13 +721,13 @@ namespace CrossConnect
                 if (win.state.source is InternetLinkReader)
                 {
                     linkReader = (InternetLinkReader)win.state.source;
-                    linkReader.ShowLink(link);
-                    forceReload = true;
+                    linkReader.ShowLink(link, titleBar);
+                    //forceReload = true;
                     win.UpdateBrowser();
                     return;
                 }
             }
-            Deployment.Current.Dispatcher.BeginInvoke(() => DoAsynchronAddInternetWindow(link));
+            Deployment.Current.Dispatcher.BeginInvoke(() => DoAsynchronAddInternetWindow(link, titleBar));
         }
 
         private void showLexiconLinkWindow(string link)
@@ -823,7 +824,7 @@ namespace CrossConnect
                     case "STRONG":
                         if (App.displaySettings.useInternetGreekHebrewDict)
                         {
-                            showInternetLinkWindow(chapterVerse[i + 1]);
+                            showInternetLinkWindow(chapterVerse[i + 1], chapterVerse[i + 1]);
                         }
                         else
                         {
