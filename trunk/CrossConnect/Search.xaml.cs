@@ -1,55 +1,63 @@
-﻿/// <summary>
-/// Distribution License:
-/// CrossConnect is free software; you can redistribute it and/or modify it under
-/// the terms of the GNU General Public License, version 3 as published by
-/// the Free Software Foundation. This program is distributed in the hope
-/// that it will be useful, but WITHOUT ANY WARRANTY; without even the
-/// implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// See the GNU General Public License for more details.
-///
-/// The License is available on the internet at:
-///       http://www.gnu.org/copyleft/gpl.html
-/// or by writing to:
-///      Free Software Foundation, Inc.
-///      59 Temple Place - Suite 330
-///      Boston, MA 02111-1307, USA
-/// </summary>
-/// <copyright file="Search.xaml.cs" company="Thomas Dilts">
-///     Thomas Dilts. All rights reserved.
-/// </copyright>
-/// <author>Thomas Dilts</author>
+﻿#region Header
+
+// <copyright file="Search.xaml.cs" company="Thomas Dilts">
+//
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@chaniel.se
+// </summary>
+// <author>Thomas Dilts</author>
+
+#endregion Header
+
 namespace CrossConnect
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
+    using System.Threading;
     using System.Windows;
 
     using CrossConnect.readers;
 
     using Microsoft.Phone.Shell;
 
-    using SwordBackend;
+    using Sword.reader;
 
-    public partial class Search : AutoRotatePage
+    public partial class Search
     {
         #region Fields
 
-        public static Search searchingObject = null;
+        public static Search SearchingObject;
 
-        public List<int> chapters = new List<int>();
-        public bool ignoreCase = false;
-        public bool isAbort = false;
-        public bool isSearchFinished = false;
-        public bool isSearchFinishedReported = false;
-        public string searchText = string.Empty;
-        public int searchTypeIndex = 0;
-        public SearchReader sourceSearch = null;
+        public List<int> Chapters = new List<int>();
+        public bool IsAbort;
+        public bool IsIgnoreCase;
+        public bool IsSearchFinished;
+        public bool IsSearchFinishedReported;
+        public int SearchTypeIndex;
+        public SearchReader SourceSearch;
+        public string TextToSearch = string.Empty;
 
-        private int currentBookNum;
-        private int numFoundVerses = 0;
-        private double percent = 1;
+        private int _currentBookNum;
+        private int _numFoundVerses;
+        private double _percent = 1;
 
         #endregion Fields
 
@@ -66,7 +74,7 @@ namespace CrossConnect
 
         public void ShowControls(bool isShow)
         {
-            System.Windows.Visibility isVis = (isShow ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed);
+            var isVis = (isShow ? Visibility.Visible : Visibility.Collapsed);
             SearchText.Visibility = isVis;
             SearchWhereText.Visibility = isVis;
             wholeBible.Visibility = isVis;
@@ -77,7 +85,7 @@ namespace CrossConnect
             progressBar1.Value = 0;
             butSearch.Visibility = isVis;
             butHelp.Visibility = isVis;
-            PageTitle.Text = Translations.translate("Search");
+            PageTitle.Text = Translations.Translate("Search");
             SearchByText.Visibility = isVis;
             OneOrMoreWords.Visibility = isVis;
             AllWords.Visibility = isVis;
@@ -86,47 +94,48 @@ namespace CrossConnect
 
         public void ShowProgress(double percent, int totalFound, bool isAbort, bool isFinished)
         {
-            Search.searchingObject.isSearchFinished = isFinished;
-            Search.searchingObject.percent = percent;
-            Search.searchingObject.isAbort = isAbort;
+            SearchingObject.IsSearchFinished = isFinished;
+            SearchingObject._percent = percent;
+            SearchingObject.IsAbort = isAbort;
 
             Dispatcher.BeginInvoke(UpdateProgressBar);
 
-            numFoundVerses = totalFound;
+            _numFoundVerses = totalFound;
         }
 
         public void UpdateProgressBar()
         {
-            if (Search.searchingObject.isSearchFinishedReported)
+            if (SearchingObject.IsSearchFinishedReported)
             {
                 // this is a delayed reporting that must be ignored.
                 return;
             }
-            Search.searchingObject.progressBar1.Value = percent;
-            PageTitle.Text = Translations.translate("Search") + "; " + Translations.translate("Found") + "; " + numFoundVerses;
-            if (isSearchFinished)
+            SearchingObject.progressBar1.Value = _percent;
+            PageTitle.Text = Translations.Translate("Search") + "; " + Translations.Translate("Found") + "; " +
+                             _numFoundVerses;
+            if (IsSearchFinished)
             {
-                Search.searchingObject.isSearchFinishedReported = true;
-                if (numFoundVerses == 0)
+                SearchingObject.IsSearchFinishedReported = true;
+                if (_numFoundVerses == 0)
                 {
-                    MessageBox.Show(Translations.translate("Nothing found"));
+                    MessageBox.Show(Translations.Translate("Nothing found"));
                     ShowControls(true);
                 }
                 else
                 {
-                    if (isAbort)
+                    if (IsAbort)
                     {
-                        MessageBox.Show(Translations.translate("Too many found. Search stopped"));
+                        MessageBox.Show(Translations.Translate("Too many found. Search stopped"));
                     }
-                    object openWindowIndex = null;
+                    object openWindowIndex;
                     if (PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
                     {
                         App.AddWindow(
-                            App.openWindows[(int)openWindowIndex].state.bibleToLoad,
-                            App.openWindows[(int)openWindowIndex].state.bibleDescription,
-                            WINDOW_TYPE.WINDOW_SEARCH,
-                            App.openWindows[(int)openWindowIndex].state.htmlFontSize,
-                            sourceSearch);
+                            App.OpenWindows[(int) openWindowIndex].State.BibleToLoad,
+                            App.OpenWindows[(int) openWindowIndex].State.BibleDescription,
+                            WindowType.WindowSearch,
+                            App.OpenWindows[(int) openWindowIndex].State.HtmlFontSize,
+                            SourceSearch);
                     }
                     PhoneApplicationService.Current.State["skipWindowSettings"] = true;
                     if (NavigationService.CanGoBack)
@@ -138,23 +147,24 @@ namespace CrossConnect
             }
         }
 
-        private void butHelp_Click(object sender, RoutedEventArgs e)
+        private void ButHelpClick(object sender, RoutedEventArgs e)
         {
             PhoneApplicationService.Current.State["HelpWindowFileToLoad"] = "CrossConnect.Properties.regex.html";
-            PhoneApplicationService.Current.State["HelpWindowTitle"]= Translations.translate("Help") + "(Regular Expressions)";
+            PhoneApplicationService.Current.State["HelpWindowTitle"] = Translations.Translate("Help") +
+                                                                       "(Regular Expressions)";
 
             NavigationService.Navigate(new Uri("/Help.xaml", UriKind.Relative));
         }
 
-        private void butSearch_Click(object sender, RoutedEventArgs e)
+        private void ButSearchClick(object sender, RoutedEventArgs e)
         {
-            chapters.Clear();
+            Chapters.Clear();
             ShowControls(false);
-            searchingObject = this;
-            ignoreCase = (bool)IgnoreCase.IsChecked;
-            searchText = SearchText.Text;
-            string[] parts = searchText.Split(" ,".ToArray());
-            List<string> goodParts = new List<string>();
+            SearchingObject = this;
+            if (IgnoreCase.IsChecked != null) IsIgnoreCase = (bool) IgnoreCase.IsChecked;
+            TextToSearch = SearchText.Text;
+            var parts = TextToSearch.Split(" ,".ToArray());
+            var goodParts = new List<string>();
             for (int j = 0; j < parts.Count(); j++)
             {
                 if (!string.IsNullOrEmpty(parts[j]))
@@ -164,138 +174,136 @@ namespace CrossConnect
             }
             if (goodParts.Count() > 1)
             {
-                if ((bool)OneOrMoreWords.IsChecked)
+                if (OneOrMoreWords.IsChecked != null && (bool) OneOrMoreWords.IsChecked)
                 {
-                    searchText = goodParts[0];
+                    TextToSearch = goodParts[0];
                     for (int j = 1; j < goodParts.Count(); j++)
                     {
-                        searchText = searchText + "|" + goodParts[j];
+                        TextToSearch = TextToSearch + "|" + goodParts[j];
                     }
                 }
-                else if ((bool)AllWords.IsChecked)
+                else if (AllWords.IsChecked != null && (bool) AllWords.IsChecked)
                 {
                     switch (goodParts.Count())
                     {
                         case 2:
-                            searchText = "(" + goodParts[0] + ".*?" + goodParts[1] + ")|(" + goodParts[1] + ".*?" + goodParts[0] + ")";
+                            TextToSearch = "(" + goodParts[0] + ".*?" + goodParts[1] + ")|(" + goodParts[1] + ".*?" +
+                                         goodParts[0] + ")";
                             break;
                         case 3:
-                            searchText =
-                            "(" + goodParts[0] + ".*?" + goodParts[1] + ".*?" + goodParts[2] + ")|" +
-                            "(" + goodParts[0] + ".*?" + goodParts[2] + ".*?" + goodParts[1] + ")|" +
-                            "(" + goodParts[1] + ".*?" + goodParts[2] + ".*?" + goodParts[0] + ")|" +
-                            "(" + goodParts[1] + ".*?" + goodParts[0] + ".*?" + goodParts[2] + ")|" +
-                            "(" + goodParts[2] + ".*?" + goodParts[1] + ".*?" + goodParts[0] + ")|" +
-                            "(" + goodParts[2] + ".*?" + goodParts[0] + ".*?" + goodParts[1] + ")";
+                            TextToSearch =
+                                "(" + goodParts[0] + ".*?" + goodParts[1] + ".*?" + goodParts[2] + ")|" +
+                                "(" + goodParts[0] + ".*?" + goodParts[2] + ".*?" + goodParts[1] + ")|" +
+                                "(" + goodParts[1] + ".*?" + goodParts[2] + ".*?" + goodParts[0] + ")|" +
+                                "(" + goodParts[1] + ".*?" + goodParts[0] + ".*?" + goodParts[2] + ")|" +
+                                "(" + goodParts[2] + ".*?" + goodParts[1] + ".*?" + goodParts[0] + ")|" +
+                                "(" + goodParts[2] + ".*?" + goodParts[0] + ".*?" + goodParts[1] + ")";
                             break;
                     }
                 }
             }
 
-            isSearchFinished = false;
-            isSearchFinishedReported = false;
-            object openWindowIndex = null;
+            IsSearchFinished = false;
+            IsSearchFinishedReported = false;
+            object openWindowIndex;
             if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
             {
                 openWindowIndex = 0;
             }
 
-            if ((bool)wholeBible.IsChecked)
+            if (wholeBible.IsChecked != null && (bool) wholeBible.IsChecked)
             {
-                for (int i = 0; i < BibleZtextReader.CHAPTERS_IN_BIBLE; i++)
+                for (int i = 0; i < BibleZtextReader.ChaptersInBible; i++)
                 {
-                    chapters.Add(i);
+                    Chapters.Add(i);
                 }
-                searchTypeIndex = 0;
+                SearchTypeIndex = 0;
             }
-            else if ((bool)oldTestement.IsChecked)
+            else if (oldTestement.IsChecked != null && (bool) oldTestement.IsChecked)
             {
-                for (int i = 0; i < BibleZtextReader.CHAPTERS_IN_OT; i++)
+                for (int i = 0; i < BibleZtextReader.ChaptersInOt; i++)
                 {
-                    chapters.Add(i);
+                    Chapters.Add(i);
                 }
-                searchTypeIndex = 1;
+                SearchTypeIndex = 1;
             }
-            else if ((bool)newTEstement.IsChecked)
+            else if (newTEstement.IsChecked != null && (bool) newTEstement.IsChecked)
             {
-                for (int i = BibleZtextReader.CHAPTERS_IN_OT; i < BibleZtextReader.CHAPTERS_IN_BIBLE; i++)
+                for (int i = BibleZtextReader.ChaptersInOt; i < BibleZtextReader.ChaptersInBible; i++)
                 {
-                    chapters.Add(i);
+                    Chapters.Add(i);
                 }
-                searchTypeIndex = 2;
+                SearchTypeIndex = 2;
             }
             else
             {
                 // we must find the first chapter in the current book.
                 int chapter = 0;
-                for (int i = 0; i < currentBookNum; i++)
+                for (int i = 0; i < _currentBookNum; i++)
                 {
-                    chapter += SwordBackend.BibleZtextReader.CHAPTERS_IN_BOOK[i];
+                    chapter += BibleZtextReader.ChaptersInBook[i];
                 }
                 // add all the chapters up to the last chapter in the book.
-                int lastChapterInBook = chapter + SwordBackend.BibleZtextReader.CHAPTERS_IN_BOOK[currentBookNum];
+                int lastChapterInBook = chapter + BibleZtextReader.ChaptersInBook[_currentBookNum];
                 for (int i = chapter; i < lastChapterInBook; i++)
                 {
-                    chapters.Add(i);
+                    Chapters.Add(i);
                 }
 
-                searchTypeIndex = 3;
+                SearchTypeIndex = 3;
             }
-            BibleZtextReader source = (BibleZtextReader)App.openWindows[(int)openWindowIndex].state.source;
-            sourceSearch = new SearchReader(
-                source.serial.path,
-                source.serial.iso2DigitLangCode,
-                source.serial.isIsoEncoding);
+            var source = (BibleZtextReader) App.OpenWindows[(int) openWindowIndex].State.Source;
+            SourceSearch = new SearchReader(
+                source.Serial.Path,
+                source.Serial.Iso2DigitLangCode,
+                source.Serial.IsIsoEncoding);
 
-            System.Threading.Timer tmr = new System.Threading.Timer(new System.Threading.TimerCallback(OnTimerTick));
-            tmr.Change(300, System.Threading.Timeout.Infinite);
+            var tmr = new Timer(OnTimerTick);
+            tmr.Change(300, Timeout.Infinite);
         }
 
         // void OnTimerTick(object sender, EventArgs e)
-        void OnTimerTick(object state)
+        private void OnTimerTick(object state)
         {
-            ((System.Threading.Timer)state).Dispose();
+            ((Timer) state).Dispose();
 
-            sourceSearch.doSearch(
-                App.displaySettings,
-                Search.searchingObject.searchTypeIndex,
-                Search.searchingObject.searchText,
-                Search.searchingObject.ignoreCase,
-                Search.searchingObject.chapters,
+            SourceSearch.DoSearch(
+                App.DisplaySettings,
+                SearchingObject.SearchTypeIndex,
+                SearchingObject.TextToSearch,
+                SearchingObject.IsIgnoreCase,
+                SearchingObject.Chapters,
                 ShowProgress);
         }
 
-        private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
+        private void PhoneApplicationPageLoaded(object sender, RoutedEventArgs e)
         {
-        }
-
-        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            object openWindowIndex = null;
+            object openWindowIndex;
             if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
             {
                 openWindowIndex = 0;
             }
             int dummy2;
-            string Name;
+            string fullName;
             string text;
             int verseNum;
             int absoluteChaptNum;
-            App.openWindows[(int)openWindowIndex].state.source.GetInfo(out currentBookNum,out absoluteChaptNum, out dummy2, out verseNum, out Name, out text);
-            Chapter.Content = Name;
+            App.OpenWindows[(int) openWindowIndex].State.Source.GetInfo(out _currentBookNum, out absoluteChaptNum,
+                                                                        out dummy2, out verseNum, out fullName, out text);
+            Chapter.Content = fullName;
 
-            PageTitle.Text = Translations.translate("Search");
-            butSearch.Content = Translations.translate("Search");
-            SearchWhereText.Text = Translations.translate("Search where");
-            wholeBible.Content = Translations.translate("Whole bible");
-            oldTestement.Content = Translations.translate("The Old Testement");
-            newTEstement.Content = Translations.translate("The New Testement");
-            SearchByText.Text = Translations.translate("Search conditions");
-            OneOrMoreWords.Content = Translations.translate("One or more words");
-            AllWords.Content = Translations.translate("All words (maximum 3 words)");
-            ExactMatch.Content = Translations.translate("Exact match") + " (Regular Expressions)";
-            IgnoreCase.Header = Translations.translate("Case insensitive");
-            butHelp.Content = Translations.translate("Help") + " (Regular Expressions)";
+            PageTitle.Text = Translations.Translate("Search");
+            butSearch.Content = Translations.Translate("Search");
+            SearchWhereText.Text = Translations.Translate("Search where");
+            wholeBible.Content = Translations.Translate("Whole bible");
+            oldTestement.Content = Translations.Translate("The Old Testement");
+            newTEstement.Content = Translations.Translate("The New Testement");
+            SearchByText.Text = Translations.Translate("Search conditions");
+            OneOrMoreWords.Content = Translations.Translate("One or more words");
+            AllWords.Content = Translations.Translate("All words (maximum 3 words)");
+            ExactMatch.Content = Translations.Translate("Exact match") + " (Regular Expressions)";
+            IgnoreCase.Header = Translations.Translate("Case insensitive");
+            butHelp.Content = Translations.Translate("Help") + " (Regular Expressions)";
         }
 
         #endregion Methods

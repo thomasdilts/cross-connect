@@ -1,47 +1,48 @@
-﻿/// <summary>
-/// Distribution License:
-/// CrossConnect is free software; you can redistribute it and/or modify it under
-/// the terms of the GNU General Public License, version 3 as published by
-/// the Free Software Foundation. This program is distributed in the hope
-/// that it will be useful, but WITHOUT ANY WARRANTY; without even the
-/// implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// See the GNU General Public License for more details.
-///
-/// The License is available on the internet at:
-///       http://www.gnu.org/copyleft/gpl.html
-/// or by writing to:
-///      Free Software Foundation, Inc.
-///      59 Temple Place - Suite 330
-///      Boston, MA 02111-1307, USA
-/// </summary>
-/// <copyright file="MainPageSplit.cs" company="Thomas Dilts">
-///     Thomas Dilts. All rights reserved.
-/// </copyright>
-/// <author>Thomas Dilts</author>
+﻿#region Header
+
+// <copyright file="MainPageSplit.xaml.cs" company="Thomas Dilts">
+//
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@chaniel.se
+// </summary>
+// <author>Thomas Dilts</author>
+
+#endregion Header
+
 namespace CrossConnect
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Media;
 
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Shell;
     using Microsoft.Phone.Tasks;
 
-    using SwordBackend;
+    using Sword.reader;
 
-    public partial class MainPageSplit : AutoRotatePage
+    public partial class MainPageSplit
     {
-        #region Fields
-
-        WindowSettings settings = new WindowSettings();
-
-        #endregion Fields
-
         #region Constructors
 
         // Constructor
@@ -59,70 +60,64 @@ namespace CrossConnect
             LayoutRoot.Children.Clear();
             LayoutRoot.ColumnDefinitions.Clear();
             LayoutRoot.RowDefinitions.Clear();
-            if (App.openWindows.Count() == 0)
+            if (App.OpenWindows.Count() == 0)
             {
-                RowDefinition row = new RowDefinition();
-                row.Height = GridLength.Auto;
+                var row = new RowDefinition {Height = GridLength.Auto};
                 LayoutRoot.RowDefinitions.Add(row);
-                row = new RowDefinition();
-                row.Height = GridLength.Auto;
+                row = new RowDefinition {Height = GridLength.Auto};
                 LayoutRoot.RowDefinitions.Add(row);
-                row = new RowDefinition();
-                row.Height = new GridLength(0,GridUnitType.Star);
+                row = new RowDefinition {Height = new GridLength(0, GridUnitType.Star)};
                 LayoutRoot.RowDefinitions.Add(row);
 
                 // show just a quick menu to add window or bibles
-                TextBlock text = new TextBlock();
-                text.Text = "Cross Connect";
-                text.FontSize = 40;
+                var text = new TextBlock {Text = "Cross Connect", FontSize = 40};
                 Grid.SetRow(text, 0);
                 LayoutRoot.Children.Add(text);
-                Button but = new Button();
+                var but = new Button();
                 Grid.SetRow(but, 1);
-                if (App.installedBibles.installedBibles.Count() == 0)
+                if (App.InstalledBibles.InstalledBibles.Count() == 0)
                 {
-                    but.Content = Translations.translate("Download bibles");
-                    but.Click += menuDownloadBible_Click;
+                    but.Content = Translations.Translate("Download bibles");
+                    but.Click += MenuDownloadBibleClick;
                 }
                 else
                 {
-                    but.Content = Translations.translate("Add new window");
-                    but.Click += butAddWindow_Click;
+                    but.Content = Translations.Translate("Add new window");
+                    but.Click += ButAddWindowClick;
                 }
                 LayoutRoot.Children.Add(but);
             }
             else
             {
-
                 int rowCount = 0;
-                for (int i = 0; i < App.openWindows.Count(); i++)
+                for (int i = 0; i < App.OpenWindows.Count(); i++)
                 {
                     // make sure we are not doubled up on the events.
-                    App.openWindows[i].HitButtonBigger -= HitButtonBigger;
-                    App.openWindows[i].HitButtonSmaller -= HitButtonSmaller;
-                    App.openWindows[i].HitButtonClose -= HitButtonClose;
+                    App.OpenWindows[i].HitButtonBigger -= HitButtonBigger;
+                    App.OpenWindows[i].HitButtonSmaller -= HitButtonSmaller;
+                    App.OpenWindows[i].HitButtonClose -= HitButtonClose;
 
                     // then add
-                    App.openWindows[i].HitButtonBigger += HitButtonBigger;
-                    App.openWindows[i].HitButtonSmaller += HitButtonSmaller;
-                    App.openWindows[i].HitButtonClose += HitButtonClose;
+                    App.OpenWindows[i].HitButtonBigger += HitButtonBigger;
+                    App.OpenWindows[i].HitButtonSmaller += HitButtonSmaller;
+                    App.OpenWindows[i].HitButtonClose += HitButtonClose;
 
-                    App.openWindows[i].state.curIndex = i;
-                    for (int j = 0; j < App.openWindows[i].state.numRowsIown; j++)
+                    App.OpenWindows[i].State.CurIndex = i;
+                    for (int j = 0; j < App.OpenWindows[i].State.NumRowsIown; j++)
                     {
-                        RowDefinition row = new RowDefinition();
+                        var row = new RowDefinition();
                         LayoutRoot.RowDefinitions.Add(row);
                     }
-                    Grid.SetRow(App.openWindows[i], rowCount);
-                    Grid.SetRowSpan(App.openWindows[i], App.openWindows[i].state.numRowsIown);
-                    Grid.SetColumn(App.openWindows[i], 0);
-                    LayoutRoot.Children.Add(App.openWindows[i]);
-                    rowCount += App.openWindows[i].state.numRowsIown;
-                    App.openWindows[i].ShowSizeButtons(true);
+                    Grid.SetRow(App.OpenWindows[i], rowCount);
+                    Grid.SetRowSpan(App.OpenWindows[i], App.OpenWindows[i].State.NumRowsIown);
+                    Grid.SetColumn(App.OpenWindows[i], 0);
+                    LayoutRoot.Children.Add(App.OpenWindows[i]);
+                    rowCount += App.OpenWindows[i].State.NumRowsIown;
+                    App.OpenWindows[i].ShowSizeButtons();
                 }
-                if (App.openWindows.Count() == 1)
+                if (App.OpenWindows.Count() == 1)
                 {
-                    App.openWindows[0].ShowSizeButtons(false);
+                    App.OpenWindows[0].ShowSizeButtons(false);
                 }
             }
         }
@@ -134,56 +129,43 @@ namespace CrossConnect
             LayoutRoot.RowDefinitions.Clear();
         }
 
-        private void AutoRotatePage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
+        private void AutoRotatePageBackKeyPress(object sender, CancelEventArgs e)
         {
             Debug.WriteLine("Backed out of the program.");
         }
 
-        private void butAddBookmark_Click(object sender, EventArgs e)
+        private void ButAddBookmarkClick(object sender, EventArgs e)
         {
             App.AddBookmark();
         }
 
-        private void butAddWindow_Click(object sender, EventArgs e)
+        private void ButAddWindowClick(object sender, EventArgs e)
         {
             PhoneApplicationService.Current.State["isAddNewWindowOnly"] = true;
             PhoneApplicationService.Current.State["skipWindowSettings"] = false;
             PhoneApplicationService.Current.State["openWindowIndex"] = 0;
             PhoneApplicationService.Current.State["InitializeWindowSettings"] = true;
-            this.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
         }
 
-        private void butDownload_Click(object sender, EventArgs e)
+        private void ButGoToPlanClick(object sender, EventArgs e)
         {
-            this.NavigationService.Navigate(new Uri("/DownloadBooks.xaml", UriKind.Relative));
-        }
-
-        private void butGoToPlan_Click(object sender, EventArgs e)
-        {
-            if (App.openWindows.Count() > 0)
+            if (App.OpenWindows.Count() > 0)
             {
                 //take the present window and show the plan if it exists.
-                var state = App.openWindows[0].state;
-                state.windowType = WINDOW_TYPE.WINDOW_DAILY_PLAN;
-                App.openWindows[0].Initialize(state.bibleToLoad, state.bibleDescription, state.windowType);
+                var state = App.OpenWindows[0].State;
+                state.WindowType = WindowType.WindowDailyPlan;
+                App.OpenWindows[0].Initialize(state.BibleToLoad, state.BibleDescription, state.WindowType);
                 ReDrawWindows();
             }
         }
 
-        private void butHelp_Click(object sender, EventArgs e)
+        private void ButHelpClick(object sender, EventArgs e)
         {
-            WebBrowserTask webBrowserTask = new WebBrowserTask();
-            string version = "1.0.0.18";
+            var webBrowserTask = new WebBrowserTask();
+            const string version = "1.0.0.18";
             webBrowserTask.Uri = new Uri(@"http://www.chaniel.se/crossconnect/help?version=" + version);
             webBrowserTask.Show();
-        }
-
-        private TextBlock createTextBlock(string text,string tag)
-        {
-            TextBlock textBlock = new TextBlock();
-            textBlock.Text = text;
-            textBlock.Tag = tag;
-            return textBlock;
         }
 
         private void GetLast3SecondsChosenVerses(out string textsWithTitles, out string titlesOnly)
@@ -191,16 +173,16 @@ namespace CrossConnect
             textsWithTitles = "";
             titlesOnly = "";
             DateTime? firstFound = null;
-            List<BiblePlaceMarker> foundVerses = new List<BiblePlaceMarker>();
-            for (int j = App.placeMarkers.history.Count - 1; j >= 0; j--)
+            var foundVerses = new List<BiblePlaceMarker>();
+            for (int j = App.PlaceMarkers.History.Count - 1; j >= 0; j--)
             {
-                BiblePlaceMarker place = App.placeMarkers.history[j];
+                BiblePlaceMarker place = App.PlaceMarkers.History[j];
                 if (firstFound == null)
                 {
-                    firstFound = place.when;
+                    firstFound = place.When;
                     foundVerses.Add(place);
                 }
-                else if (firstFound.Value.AddSeconds(-3).CompareTo(place.when) < 0)
+                else if (firstFound.Value.AddSeconds(-3).CompareTo(place.When) < 0)
                 {
                     foundVerses.Add(place);
                 }
@@ -210,13 +192,13 @@ namespace CrossConnect
                     break;
                 }
             }
-            object openWindowIndex = null;
+            object openWindowIndex;
             if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
             {
                 openWindowIndex = 0;
             }
 
-            var state = App.openWindows[(int)openWindowIndex].state;
+            var state = App.OpenWindows[(int) openWindowIndex].State;
             //they are in reverse order again,
             for (int j = foundVerses.Count - 1; j >= 0; j--)
             {
@@ -225,9 +207,11 @@ namespace CrossConnect
                 int relChaptNum;
                 string fullName;
                 string titleText;
-                ((BibleZtextReader)state.source).GetInfo(place.chapterNum, place.verseNum, out bookNum, out relChaptNum, out fullName, out titleText);
-                string title = fullName + " " + (relChaptNum + 1) + ":" + (place.verseNum + 1) + " - " + state.bibleToLoad;
-                string verseText = state.source.GetVerseTextOnly(App.displaySettings, place.chapterNum, place.verseNum);
+                ((BibleZtextReader) state.Source).GetInfo(place.ChapterNum, place.VerseNum, out bookNum, out relChaptNum,
+                                                          out fullName, out titleText);
+                string title = fullName + " " + (relChaptNum + 1) + ":" + (place.VerseNum + 1) + " - " +
+                               state.BibleToLoad;
+                string verseText = state.Source.GetVerseTextOnly(App.DisplaySettings, place.ChapterNum, place.VerseNum);
 
                 if (!string.IsNullOrEmpty(titlesOnly))
                 {
@@ -235,10 +219,14 @@ namespace CrossConnect
                     titlesOnly += ", ";
                 }
                 titlesOnly += title;
-                textsWithTitles += verseText.Replace("<p>", "").Replace("</p>", "").Replace("<br />", "").Replace("\n", " ") + "\n-" + title;
-                if (App.dailyPlan.personalNotes.ContainsKey(place.chapterNum) && App.dailyPlan.personalNotes[place.chapterNum].ContainsKey(place.verseNum))
+                textsWithTitles +=
+                    verseText.Replace("<p>", "").Replace("</p>", "").Replace("<br />", "").Replace("\n", " ") + "\n-" +
+                    title;
+                if (App.DailyPlan.PersonalNotes.ContainsKey(place.ChapterNum) &&
+                    App.DailyPlan.PersonalNotes[place.ChapterNum].ContainsKey(place.VerseNum))
                 {
-                    textsWithTitles += "\n" + Translations.translate("Added notes") + "\n" + App.dailyPlan.personalNotes[place.chapterNum][place.verseNum].note;
+                    textsWithTitles += "\n" + Translations.Translate("Added notes") + "\n" +
+                                       App.DailyPlan.PersonalNotes[place.ChapterNum][place.VerseNum].Note;
                 }
             }
         }
@@ -250,7 +238,7 @@ namespace CrossConnect
 
         private void HitButtonClose(object sender, EventArgs e)
         {
-            App.openWindows.RemoveAt(((BrowserTitledWindow)sender).state.curIndex);
+            App.OpenWindows.RemoveAt(((BrowserTitledWindow) sender).State.CurIndex);
             ReDrawWindows();
         }
 
@@ -260,161 +248,155 @@ namespace CrossConnect
         }
 
         // Load data for the ViewModel Items
-        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+        private void MainPageLoaded(object sender, RoutedEventArgs e)
         {
-            App.mainWindow = this;
+            App.MainWindow = this;
 
-            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[0]).Text = Translations.translate("Add new window");
-            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[1]).Text = Translations.translate("Add to bookmarks");
-            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[2]).Text = Translations.translate("Daily plan");
-            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[3]).Text = Translations.translate("Help");
+            ((ApplicationBarIconButton) ApplicationBar.Buttons[0]).Text = Translations.Translate("Add new window");
+            ((ApplicationBarIconButton) ApplicationBar.Buttons[1]).Text = Translations.Translate("Add to bookmarks");
+            ((ApplicationBarIconButton) ApplicationBar.Buttons[2]).Text = Translations.Translate("Daily plan");
+            ((ApplicationBarIconButton) ApplicationBar.Buttons[3]).Text = Translations.Translate("Help");
 
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[0]).Text = Translations.translate("Rate this program");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[1]).Text = Translations.translate("Download bibles");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[2]).Text = Translations.translate("Add a note");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[3]).Text = Translations.translate("Select bible to delete");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[4]).Text = Translations.translate("Select bookmark to delete");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[5]).Text = Translations.translate("Clear history");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[6]).Text = Translations.translate("Send message");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[7]).Text = Translations.translate("Send mail");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[8]).Text = Translations.translate("Add new window");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[9]).Text = Translations.translate("Add to bookmarks");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[10]).Text = Translations.translate("Daily plan");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[11]).Text = Translations.translate("Settings");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[12]).Text = Translations.translate("Select the language") + " (language)";
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[13]).Text = Translations.translate("Help");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[0]).Text = Translations.Translate("Rate this program");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[1]).Text = Translations.Translate("Download bibles");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[2]).Text = Translations.Translate("Add a note");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[3]).Text =
+                Translations.Translate("Select bible to delete");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[4]).Text =
+                Translations.Translate("Select bookmark to delete");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[5]).Text = Translations.Translate("Clear history");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[6]).Text = Translations.Translate("Send message");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[7]).Text = Translations.Translate("Send mail");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[8]).Text = Translations.Translate("Add new window");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[9]).Text = Translations.Translate("Add to bookmarks");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[10]).Text = Translations.Translate("Daily plan");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[11]).Text = Translations.Translate("Settings");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[12]).Text =
+                Translations.Translate("Select the language") + " (language)";
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[13]).Text = Translations.Translate("Help");
 
-            if (App.openWindows.Count() == 0 || App.installedBibles.installedBibles.Count() == 0)
+            if (App.OpenWindows.Count() == 0 || App.InstalledBibles.InstalledBibles.Count() == 0)
             {
-                if (App.installedBibles.installedBibles.Count() == 0)
+                if (App.InstalledBibles.InstalledBibles.Count() == 0)
                 {
-                    if (App.isFirstTimeInMainPageSplit==0)
+                    if (App.IsFirstTimeInMainPageSplit == 0)
                     {
                         // cant have any open windows if there are no books!
-                        App.openWindows.Clear();
+                        App.OpenWindows.Clear();
                         // get some books.
-                        this.NavigationService.Navigate(new Uri("/DownloadBooks.xaml", UriKind.Relative));
-                        App.isFirstTimeInMainPageSplit = 1;
+                        NavigationService.Navigate(new Uri("/DownloadBooks.xaml", UriKind.Relative));
+                        App.IsFirstTimeInMainPageSplit = 1;
                     }
                 }
                 else
                 {
-                    if (App.isFirstTimeInMainPageSplit<=1)
+                    if (App.IsFirstTimeInMainPageSplit <= 1)
                     {
                         PhoneApplicationService.Current.State["skipWindowSettings"] = false;
                         PhoneApplicationService.Current.State["isAddNewWindowOnly"] = true;
                         PhoneApplicationService.Current.State["InitializeWindowSettings"] = true;
-                        this.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
-                        App.isFirstTimeInMainPageSplit=2;
+                        NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
+                        App.IsFirstTimeInMainPageSplit = 2;
                     }
                 }
             }
             ReDrawWindows();
             // figure out if this is a light color
-            var color = (Color)Application.Current.Resources["PhoneBackgroundColor"];
-            int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
-            string colorDir = lightColorCount >= 2 ? "light" : "dark";
+            //var color = (Color) Application.Current.Resources["PhoneBackgroundColor"];
+            //int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
+            //string colorDir = lightColorCount >= 2 ? "light" : "dark";
         }
 
-        private void menuAddNote_Click(object sender, EventArgs e)
+        private void MenuAddNoteClick(object sender, EventArgs e)
         {
-            if (App.placeMarkers.history.Count > 0)
+            if (App.PlaceMarkers.History.Count > 0)
             {
                 PhoneApplicationService.Current.State.Remove("NoteToAddSaved");
-                this.NavigationService.Navigate(new Uri("/AddNote.xaml", UriKind.Relative));
+                NavigationService.Navigate(new Uri("/AddNote.xaml", UriKind.Relative));
             }
             else
             {
-                MessageBox.Show(Translations.translate("You must first select a verse"));
+                MessageBox.Show(Translations.Translate("You must first select a verse"));
             }
         }
 
-        private void menuClearHistory_Click(object sender, EventArgs e)
+        private void MenuClearHistoryClick(object sender, EventArgs e)
         {
-            App.placeMarkers.history = new List<SwordBackend.BiblePlaceMarker>();
+            App.PlaceMarkers.History = new List<BiblePlaceMarker>();
             App.RaiseHistoryChangeEvent();
         }
 
-        private void menuDeleteBible_Click(object sender, EventArgs e)
+        private void MenuDeleteBibleClick(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/RemoveBibles.xaml", UriKind.Relative));
         }
 
-        private void menuDeleteBookmark_Click(object sender, EventArgs e)
+        private void MenuDeleteBookmarkClick(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/EditBookmarks.xaml", UriKind.Relative));
         }
 
-        private void menuDownloadBible_Click(object sender, EventArgs e)
+        private void MenuDownloadBibleClick(object sender, EventArgs e)
         {
-            this.NavigationService.Navigate(new Uri("/DownloadBooks.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/DownloadBooks.xaml", UriKind.Relative));
         }
 
-        private void menuLanguage_Click(object sender, EventArgs e)
+        private void MenuLanguageClick(object sender, EventArgs e)
         {
-            this.NavigationService.Navigate(new Uri("/SelectLanguage.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/SelectLanguage.xaml", UriKind.Relative));
         }
 
-        private void menuMail_Click(object sender, EventArgs e)
+        private void MenuMailClick(object sender, EventArgs e)
         {
             string textsWithTitles;
             string titlesOnly;
             GetLast3SecondsChosenVerses(out textsWithTitles, out titlesOnly);
-            EmailComposeTask emailComposeTask = new EmailComposeTask();
+            var emailComposeTask = new EmailComposeTask {Body = textsWithTitles, Subject = titlesOnly};
             //emailComposeTask.To = "user@example.com";
-            emailComposeTask.Body = textsWithTitles;
             //emailComposeTask.Cc = "user2@example.com";
-            emailComposeTask.Subject = titlesOnly;
             emailComposeTask.Show();
         }
 
-        private void menuMessage_Click(object sender, EventArgs e)
+        private void MenuMessageClick(object sender, EventArgs e)
         {
             string textsWithTitles;
             string titlesOnly;
             GetLast3SecondsChosenVerses(out textsWithTitles, out titlesOnly);
-            SmsComposeTask smsComposeTask = new SmsComposeTask();
+            var smsComposeTask = new SmsComposeTask {Body = textsWithTitles};
             //smsComposeTask.To = "5555555555";
-            smsComposeTask.Body = textsWithTitles;
             smsComposeTask.Show();
         }
 
-        private void menuRateThisApp_Click(object sender, EventArgs e)
+        private void MenuRateThisAppClick(object sender, EventArgs e)
         {
-            MarketplaceReviewTask task = new MarketplaceReviewTask();
+            var task = new MarketplaceReviewTask();
             task.Show();
         }
 
-        private void menuSettings_Click(object sender, EventArgs e)
+        private void MenuSettingsClick(object sender, EventArgs e)
         {
-            this.NavigationService.Navigate(new Uri("/Settings.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Settings.xaml", UriKind.Relative));
         }
 
-        private void PhoneApplicationPage_OrientationChanged(object sender, OrientationChangedEventArgs e)
+        private void PhoneApplicationPageOrientationChanged(object sender, OrientationChangedEventArgs e)
         {
             //redraw the browsers
-            for (int i = 0; i < App.openWindows.Count(); i++)
+            for (int i = 0; i < App.OpenWindows.Count(); i++)
             {
-                App.openWindows[i].CalculateTitleTextWidth();
-                App.openWindows[i].forceReload = true;
-                App.openWindows[i].UpdateBrowser();
+                App.OpenWindows[i].CalculateTitleTextWidth();
+                App.OpenWindows[i].ForceReload = true;
+                App.OpenWindows[i].UpdateBrowser();
             }
         }
 
-        private void PhoneApplicationPage_Unloaded(object sender, RoutedEventArgs e)
+        private void PhoneApplicationPageUnloaded(object sender, RoutedEventArgs e)
         {
-            foreach (var nextWindow in App.openWindows)
+            foreach (var nextWindow in App.OpenWindows)
             {
                 nextWindow.HitButtonBigger -= HitButtonBigger;
                 nextWindow.HitButtonSmaller -= HitButtonSmaller;
                 nextWindow.HitButtonClose -= HitButtonClose;
             }
-        }
-
-        private TurnstileTransition TurnstileTransitionElement(string mode)
-        {
-            TurnstileTransitionMode slideTransitionMode = (TurnstileTransitionMode)Enum.Parse(typeof(TurnstileTransitionMode), mode, false);
-            return new TurnstileTransition { Mode = slideTransitionMode };
         }
 
         #endregion Methods

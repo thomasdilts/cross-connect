@@ -1,53 +1,62 @@
-﻿/// <summary>
-/// Distribution License:
-/// CrossConnect is free software; you can redistribute it and/or modify it under
-/// the terms of the GNU General Public License, version 3 as published by
-/// the Free Software Foundation. This program is distributed in the hope
-/// that it will be useful, but WITHOUT ANY WARRANTY; without even the
-/// implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// See the GNU General Public License for more details.
-///
-/// The License is available on the internet at:
-///       http://www.gnu.org/copyleft/gpl.html
-/// or by writing to:
-///      Free Software Foundation, Inc.
-///      59 Temple Place - Suite 330
-///      Boston, MA 02111-1307, USA
-/// </summary>
-/// <copyright file="PersonalNotesReader.cs" company="Thomas Dilts">
-///     Thomas Dilts. All rights reserved.
-/// </copyright>
-/// <author>Thomas Dilts</author>
+﻿#region Header
+
+// <copyright file="PersonalNotesReader.cs" company="Thomas Dilts">
+//
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@chaniel.se
+// </summary>
+// <author>Thomas Dilts</author>
+
+#endregion Header
+
 namespace CrossConnect.readers
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Runtime.Serialization;
 
-    using SwordBackend;
+    using Sword.reader;
 
     /// <summary>
-    /// Load from a file all the book and verse pointers to the bzz file so that
-    /// we can later read the bzz file quickly and efficiently.
+    ///   Load from a file all the book and verse pointers to the bzz file so that
+    ///   we can later read the bzz file quickly and efficiently.
     /// </summary>
-    /// <param name="path">The path to where the ot.bzs,ot.bzv and ot.bzz and nt files are</param>
     [DataContract(Name = "PersonalNotesReader")]
-    [KnownType(typeof(ChapterPos))]
-    [KnownType(typeof(BookPos))]
-    [KnownType(typeof(VersePos))]
+    [KnownType(typeof (ChapterPos))]
+    [KnownType(typeof (BookPos))]
+    [KnownType(typeof (VersePos))]
     public class PersonalNotesReader : BibleZtextReader
     {
         #region Fields
 
         [DataMember]
-        public BibleZtextReaderSerialData serial2 = new BibleZtextReaderSerialData(false, "", "", 0, 0);
+        public BibleZtextReaderSerialData Serial2 = new BibleZtextReaderSerialData(false, "", "", 0, 0);
 
-        private const int LIMIT_FOR_PAGING = 60;
+        private const double Epsilon = 0.00001;
+        private const int LimitForPaging = 60;
 
-        private string displayText = string.Empty;
-        private string htmlBackgroundColor = string.Empty;
-        private double htmlFontSize = 0;
-        private string htmlForegroundColor = string.Empty;
-        private string htmlPhoneAccentColor = string.Empty;
+        private string _displayText = string.Empty;
+        private string _htmlBackgroundColor = string.Empty;
+        private double _htmlFontSize;
+        private string _htmlForegroundColor = string.Empty;
+        private string _htmlPhoneAccentColor = string.Empty;
 
         #endregion Fields
 
@@ -56,13 +65,14 @@ namespace CrossConnect.readers
         public PersonalNotesReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
             : base(path, iso2DigitLangCode, isIsoEncoding)
         {
-            serial2.cloneFrom(base.serial);
-            App.PersonalNotesChanged += this.App_PersonalNotesChanged;
+            Serial2.CloneFrom(Serial);
+            App.PersonalNotesChanged += AppPersonalNotesChanged;
+            SetToFirstChapter();
         }
 
         ~PersonalNotesReader()
         {
-            App.PersonalNotesChanged -= this.App_PersonalNotesChanged;
+            App.PersonalNotesChanged -= AppPersonalNotesChanged;
         }
 
         #endregion Constructors
@@ -71,47 +81,31 @@ namespace CrossConnect.readers
 
         public override bool IsHearable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public override bool IsPageable
         {
             get
             {
-                int count=0;
-                foreach (var dict in App.dailyPlan.personalNotes)
-                {
-                    count += dict.Value.Count;
-                }
-                return App.displaySettings.showAddedNotesByChapter || count > LIMIT_FOR_PAGING;
+                int count = App.DailyPlan.PersonalNotes.Sum(dict => dict.Value.Count);
+                return App.DisplaySettings.ShowAddedNotesByChapter || count > LimitForPaging;
             }
         }
 
         public override bool IsSearchable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public override bool IsSynchronizeable
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
 
         public override bool IsTranslateable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         #endregion Properties
@@ -124,14 +118,11 @@ namespace CrossConnect.readers
             {
                 return 0;
             }
-            else if (a < b)
+            if (a < b)
             {
                 return 1;
             }
-            else
-            {
-                return -1;
-            }
+            return -1;
         }
 
         public static int CompareIntegersDescending(int a, int b)
@@ -140,50 +131,51 @@ namespace CrossConnect.readers
             {
                 return 0;
             }
-            else if (a > b)
+            if (a > b)
             {
                 return 1;
             }
-            else
-            {
-                return -1;
-            }
+            return -1;
         }
 
-        public void App_PersonalNotesChanged()
+        public void AppPersonalNotesChanged()
         {
             if (IsPageable)
             {
                 //show just the one chapter.
-                this.displayText = MakeListDisplayText(App.displaySettings, getSortedList(base.serial.posChaptNum), htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, false, Translations.translate("Added notes"));
+                _displayText = MakeListDisplayText(App.DisplaySettings, getSortedList(Serial.PosChaptNum),
+                                                  _htmlBackgroundColor, _htmlForegroundColor, _htmlPhoneAccentColor,
+                                                  _htmlFontSize, false, Translations.Translate("Added notes"));
             }
             else
             {
                 //put it all into one window
-                this.displayText = MakeListDisplayText(App.displaySettings, getSortedList(-1), htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, true, Translations.translate("Added notes"));
+                _displayText = MakeListDisplayText(App.DisplaySettings, getSortedList(-1), _htmlBackgroundColor,
+                                                  _htmlForegroundColor, _htmlPhoneAccentColor, _htmlFontSize, true,
+                                                  Translations.Translate("Added notes"));
             }
-            raiseSourceChangedEvent();
+            RaiseSourceChangedEvent();
         }
 
         public override ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton)
         {
             if (stage == 0)
             {
-                Dictionary<int, int> books = new Dictionary<int, int>();
-                int count = App.dailyPlan.personalNotes.Count;
-                int[] butColors = new int[count];
-                int[] values = new int[count];
-                string[] butText = new string[count];
+                var books = new Dictionary<int, int>();
+                int count = App.DailyPlan.PersonalNotes.Count;
+                var butColors = new int[count];
+                var values = new int[count];
+                var butText = new string[count];
 
-                int[] keys = new int[count];
-                App.dailyPlan.personalNotes.Keys.CopyTo(keys, 0);
-                List<int> sortedKeys = new List<int>(keys);
+                var keys = new int[count];
+                App.DailyPlan.PersonalNotes.Keys.CopyTo(keys, 0);
+                var sortedKeys = new List<int>(keys);
                 sortedKeys.Sort(CompareIntegersDescending);
 
-                string[] buttonNamesStart = bookNames.getAllShortNames();
-                if (!bookNames.existsShortNames)
+                var buttonNamesStart = BookNames.getAllShortNames();
+                if (!BookNames.existsShortNames)
                 {
-                    buttonNamesStart = bookNames.getAllFullNames();
+                    buttonNamesStart = BookNames.getAllFullNames();
                 }
 
                 for (int i = 0; i < count; i++)
@@ -191,13 +183,12 @@ namespace CrossConnect.readers
                     int bookNum = getBookNumForChapterNum(sortedKeys[i]);
                     if (!books.ContainsKey(bookNum))
                     {
-                        butColors[books.Count] = CHAPTER_CATEGORIES[bookNum];
+                        butColors[books.Count] = ChapterCategories[bookNum];
                         butText[books.Count] = buttonNamesStart[bookNum];
                         values[books.Count] = bookNum;
 
                         books.Add(bookNum, bookNum);
                     }
-
                 }
                 return new ButtonWindowSpecs(
                     stage,
@@ -206,18 +197,18 @@ namespace CrossConnect.readers
                     butColors,
                     butText,
                     values,
-                    !bookNames.existsShortNames ? ButtonSize.LARGE : ButtonSize.MEDIUM);
+                    !BookNames.existsShortNames ? ButtonSize.Large : ButtonSize.Medium);
             }
             else
             {
-                int count = App.dailyPlan.personalNotes.Count;
-                int[] butColors = new int[count];
-                int[] values = new int[count];
-                string[] butText = new string[count];
+                int count = App.DailyPlan.PersonalNotes.Count;
+                var butColors = new int[count];
+                var values = new int[count];
+                var butText = new string[count];
 
-                int[] keys = new int[count];
-                App.dailyPlan.personalNotes.Keys.CopyTo(keys, 0);
-                List<int> sortedKeys = new List<int>(keys);
+                var keys = new int[count];
+                App.DailyPlan.PersonalNotes.Keys.CopyTo(keys, 0);
+                var sortedKeys = new List<int>(keys);
                 sortedKeys.Sort(CompareIntegersDescending);
                 int chapterCount = 0;
                 for (int i = 0; i < count; i++)
@@ -226,11 +217,10 @@ namespace CrossConnect.readers
                     if (lastSelectedButton == bookNum)
                     {
                         butColors[chapterCount] = 0;
-                        butText[chapterCount] = (sortedKeys[i] - FIRST_CHAPTERNUM_IN_BOOK[bookNum] + 1).ToString();
+                        butText[chapterCount] = (sortedKeys[i] - FirstChapternumInBook[bookNum] + 1).ToString();
                         values[chapterCount] = sortedKeys[i] - lastSelectedButton;
                         chapterCount++;
                     }
-
                 }
                 return new ButtonWindowSpecs(
                     stage,
@@ -239,100 +229,101 @@ namespace CrossConnect.readers
                     butColors,
                     butText,
                     values,
-                    ButtonSize.SMALL);
+                    ButtonSize.Small);
             }
         }
 
-        public override void GetInfo(out int bookNum, out int absoluteChaptNum, out int relChaptNum, out int verseNum, out string fullName, out string title)
+        public override void GetInfo(out int bookNum, out int absoluteChaptNum, out int relChaptNum, out int verseNum,
+            out string fullName, out string title)
         {
             base.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out title);
-            title = Translations.translate("Added notes");
+            title = Translations.Translate("Added notes");
         }
 
-        public override void moveChapterVerse(int chapter, int verse, bool isLocalLinkChange)
+        public override void MoveChapterVerse(int chapter, int verse, bool isLocalLinkChange)
         {
-            moveChapterVerse(chapter, verse, isLocalLinkChange, false);
+            MoveChapterVerse(chapter, verse, isLocalLinkChange, false);
         }
 
-        public override void moveNext()
+        public override void MoveNext()
         {
-            int nextChapter = base.serial.posChaptNum + 1;
-            if (nextChapter >= CHAPTERS_IN_BIBLE)
+            int nextChapter = Serial.PosChaptNum + 1;
+            if (nextChapter >= ChaptersInBible)
             {
                 nextChapter = 0;
             }
-            moveChapterVerse(nextChapter, 0, false, false);
+            MoveChapterVerse(nextChapter, 0, false, false);
         }
 
-        public override void movePrevious()
+        public override void MovePrevious()
         {
-            int prevChapter=base.serial.posChaptNum - 1;
+            int prevChapter = Serial.PosChaptNum - 1;
             if (prevChapter < 0)
             {
-                prevChapter = CHAPTERS_IN_BIBLE;
+                prevChapter = ChaptersInBible;
             }
-            moveChapterVerse(prevChapter, 0, false, true);
+            MoveChapterVerse(prevChapter, 0, false, true);
         }
 
         public override void Resume()
         {
-            base.serial.cloneFrom(this.serial2);
-            App.PersonalNotesChanged += this.App_PersonalNotesChanged;
+            Serial.CloneFrom(Serial2);
+            App.PersonalNotesChanged += AppPersonalNotesChanged;
             base.Resume();
         }
 
         public override void SerialSave()
         {
-            this.serial2.cloneFrom(base.serial);
+            Serial2.CloneFrom(Serial);
         }
 
-        public override void SetToFirstChapter()
+        protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor,
+            string htmlForegroundColor, string htmlPhoneAccentColor,
+            double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml = true)
         {
-            moveChapterVerse(0, 0, false, false);
-        }
-
-        protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,bool isNotesOnly, bool addStartFinishHtml=true)
-        {
-            bool mustUpdate = string.IsNullOrEmpty(this.htmlBackgroundColor);
-            this.htmlBackgroundColor = htmlBackgroundColor;
-            this.htmlForegroundColor = htmlForegroundColor;
-            this.htmlPhoneAccentColor = htmlPhoneAccentColor;
+            bool mustUpdate = string.IsNullOrEmpty(_htmlBackgroundColor);
+            _htmlBackgroundColor = htmlBackgroundColor;
+            _htmlForegroundColor = htmlForegroundColor;
+            _htmlPhoneAccentColor = htmlPhoneAccentColor;
             bool isPageable = IsPageable;
-            if (isPageable || mustUpdate || this.htmlFontSize != htmlFontSize)
+            if (isPageable || mustUpdate || Math.Abs(_htmlFontSize - htmlFontSize) > Epsilon)
             {
                 if (isPageable)
                 {
                     //show just the one chapter.
-                    this.displayText = MakeListDisplayText(displaySettings, getSortedList(base.serial.posChaptNum), htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, false, Translations.translate("Added notes"));
+                    _displayText = MakeListDisplayText(displaySettings, getSortedList(Serial.PosChaptNum),
+                                                      htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor,
+                                                      htmlFontSize, false, Translations.Translate("Added notes"));
                 }
                 else
                 {
                     //put it all into one window
-                    this.displayText = MakeListDisplayText(displaySettings, getSortedList(-1), htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, true, Translations.translate("Added notes"));
+                    _displayText = MakeListDisplayText(displaySettings, getSortedList(-1), htmlBackgroundColor,
+                                                      htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, true,
+                                                      Translations.Translate("Added notes"));
                 }
-
             }
-            this.htmlFontSize = htmlFontSize;
-            return this.displayText;
+            _htmlFontSize = htmlFontSize;
+            return _displayText;
         }
 
         private int getBookNumForChapterNum(int chapterNum)
         {
-            for (int i = 0; i < FIRST_CHAPTERNUM_IN_BOOK.Length; i++)
+            for (int i = 0; i < FirstChapternumInBook.Length; i++)
             {
-                if (FIRST_CHAPTERNUM_IN_BOOK[i] > chapterNum)
+                if (FirstChapternumInBook[i] > chapterNum)
                 {
                     return i - 1;
                 }
             }
-            return BOOKS_IN_BIBLE-1;
+            return BooksInBible - 1;
         }
 
         private List<BiblePlaceMarker> getSortedList(int chapterNumber)
         {
-            List<BiblePlaceMarker> returnList = new List<BiblePlaceMarker>();
+            var returnList = new List<BiblePlaceMarker>();
 
-            int[] keys = null;
+            int[] keys;
             if (chapterNumber >= 0)
             {
                 keys = new int[1];
@@ -340,60 +331,57 @@ namespace CrossConnect.readers
             }
             else
             {
-                keys = new int[App.dailyPlan.personalNotes.Count];
-                App.dailyPlan.personalNotes.Keys.CopyTo(keys, 0);
+                keys = new int[App.DailyPlan.PersonalNotes.Count];
+                App.DailyPlan.PersonalNotes.Keys.CopyTo(keys, 0);
             }
-            List<int> sortedKeys = new List<int>(keys);
+            var sortedKeys = new List<int>(keys);
             sortedKeys.Sort(CompareIntegersAssending);
             foreach (int key in sortedKeys)
             {
-                if (App.dailyPlan.personalNotes.ContainsKey(key))
+                if (App.DailyPlan.PersonalNotes.ContainsKey(key))
                 {
-                    var dict = App.dailyPlan.personalNotes[key];
+                    var dict = App.DailyPlan.PersonalNotes[key];
                     keys = new int[dict.Count];
                     dict.Keys.CopyTo(keys, 0);
-                    List<int> sortedVerses = new List<int>(keys);
+                    var sortedVerses = new List<int>(keys);
                     sortedVerses.Sort(CompareIntegersAssending);
-                    foreach (int verse in sortedVerses)
-                    {
-                        returnList.Add(dict[verse]);
-                    }
+                    returnList.AddRange(sortedVerses.Select(verse => dict[verse]));
                 }
             }
             return returnList;
         }
 
-        private void moveChapterVerse(int chapter, int verse, bool isLocalLinkChange, bool forcePrevious)
+        private void MoveChapterVerse(int chapter, int verse, bool isLocalLinkChange, bool forcePrevious)
         {
-            int count = App.dailyPlan.personalNotes.Count;
+            int count = App.DailyPlan.PersonalNotes.Count;
             if (count > 0)
             {
-                int[] keys = new int[count];
-                App.dailyPlan.personalNotes.Keys.CopyTo(keys, 0);
-                List<int> sortedKeys = new List<int>(keys);
+                var keys = new int[count];
+                App.DailyPlan.PersonalNotes.Keys.CopyTo(keys, 0);
+                var sortedKeys = new List<int>(keys);
                 sortedKeys.Sort(CompareIntegersDescending);
-                base.serial.posChaptNum = sortedKeys[0];
-                base.serial.posVerseNum = verse;
-                int i = 0;
+                Serial.PosChaptNum = sortedKeys[0];
+                Serial.PosVerseNum = verse;
+                int i;
                 for (i = 0; i < count; i++)
                 {
                     if (sortedKeys[i] == chapter)
                     {
-                        base.serial.posChaptNum = sortedKeys[i];
+                        Serial.PosChaptNum = sortedKeys[i];
                         break;
                     }
-                    else if (sortedKeys[i] > chapter)
+                    if (sortedKeys[i] > chapter)
                     {
                         if (forcePrevious)
                         {
                             if (i > 0)
                             {
-                                base.serial.posChaptNum = sortedKeys[i-1];
+                                Serial.PosChaptNum = sortedKeys[i - 1];
                             }
                         }
                         else
                         {
-                            base.serial.posChaptNum = sortedKeys[i];
+                            Serial.PosChaptNum = sortedKeys[i];
                         }
                         break;
                     }
@@ -401,9 +389,14 @@ namespace CrossConnect.readers
                 if (i == count && count > 1 && forcePrevious)
                 {
                     //we must get the previous which would be the last
-                    base.serial.posChaptNum = sortedKeys[count - 1];
+                    Serial.PosChaptNum = sortedKeys[count - 1];
                 }
             }
+        }
+
+        private void SetToFirstChapter()
+        {
+            MoveChapterVerse(0, 0, false, false);
         }
 
         #endregion Methods

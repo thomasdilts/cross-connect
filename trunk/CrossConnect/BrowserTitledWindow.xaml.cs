@@ -1,23 +1,30 @@
-﻿/// <summary>
-/// Distribution License:
-/// CrossConnect is free software; you can redistribute it and/or modify it under
-/// the terms of the GNU General Public License, version 3 as published by
-/// the Free Software Foundation. This program is distributed in the hope
-/// that it will be useful, but WITHOUT ANY WARRANTY; without even the
-/// implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// See the GNU General Public License for more details.
-///
-/// The License is available on the internet at:
-///       http://www.gnu.org/copyleft/gpl.html
-/// or by writing to:
-///      Free Software Foundation, Inc.
-///      59 Temple Place - Suite 330
-///      Boston, MA 02111-1307, USA
-/// </summary>
-/// <copyright file="BrowserTitledWindow.xaml.cs" company="Thomas Dilts">
-///     Thomas Dilts. All rights reserved.
-/// </copyright>
-/// <author>Thomas Dilts</author>
+﻿#region Header
+
+// <copyright file="BrowserTitledWindow.xaml.cs" company="Thomas Dilts">
+//
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@chaniel.se
+// </summary>
+// <author>Thomas Dilts</author>
+
+#endregion Header
+
 namespace CrossConnect
 {
     using System;
@@ -32,27 +39,27 @@ namespace CrossConnect
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
+    using System.Windows.Threading;
 
     using CrossConnect.readers;
 
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Shell;
-    using Microsoft.Phone.Tasks;
 
-    using SwordBackend;
+    using Sword;
+    using Sword.reader;
 
-    public partial class BrowserTitledWindow : UserControl
+    public partial class BrowserTitledWindow
     {
         #region Fields
 
-        public bool forceReload = false;
-        public SerializableWindowState state = new SerializableWindowState();
+        public SerializableWindowState State = new SerializableWindowState();
 
-        private bool isInGetHtmlAsynchronously = false;
-        private string lastFileName = string.Empty;
-        private DateTime lastManipulationKillTime = DateTime.Now;
-        private System.Windows.Threading.DispatcherTimer manipulationTimer = null;
-        private ManipulationCompletedEventArgs manipulationToProcess = null;
+        private bool _isInGetHtmlAsynchronously;
+        private string _lastFileName = string.Empty;
+        private DateTime _lastManipulationKillTime = DateTime.Now;
+        private DispatcherTimer _manipulationTimer;
+        private ManipulationCompletedEventArgs _manipulationToProcess;
 
         #endregion Fields
 
@@ -77,64 +84,90 @@ namespace CrossConnect
 
         #endregion Events
 
+        #region Properties
+
+        public bool ForceReload
+        {
+            get; set;
+        }
+
+        #endregion Properties
+
         #region Methods
 
         public static string GetBrowserColor(string sourceResource)
         {
-            var color = (Color)Application.Current.Resources[sourceResource];
+            var color = (Color) Application.Current.Resources[sourceResource];
             return "#" + color.ToString().Substring(3, 6);
+        }
+
+        public static void ShowInternetLinkWindow(string link, string titleBar)
+        {
+            foreach (var win in App.OpenWindows)
+            {
+                if (win.State.Source is InternetLinkReader)
+                {
+                    var linkReader = (InternetLinkReader) win.State.Source;
+                    linkReader.ShowLink(link, titleBar);
+                    //forceReload = true;
+                    win.UpdateBrowser();
+                    return;
+                }
+            }
+            Deployment.Current.Dispatcher.BeginInvoke(() => DoAsynchronAddInternetWindow(link, titleBar));
         }
 
         public void CalculateTitleTextWidth()
         {
             int numButtonsShowing = 0;
-            if (butPrevious.Visibility == System.Windows.Visibility.Visible)
+            if (butPrevious.Visibility == Visibility.Visible)
             {
                 numButtonsShowing++;
             }
-            if (butNext.Visibility == System.Windows.Visibility.Visible)
+            if (butNext.Visibility == Visibility.Visible)
             {
                 numButtonsShowing++;
             }
-            if (butMenu.Visibility == System.Windows.Visibility.Visible)
+            if (butMenu.Visibility == Visibility.Visible)
             {
                 numButtonsShowing++;
             }
-            if (butLink.Visibility == System.Windows.Visibility.Visible)
+            if (butLink.Visibility == Visibility.Visible)
             {
                 numButtonsShowing++;
             }
-            if (butLarger.Visibility == System.Windows.Visibility.Visible)
+            if (butLarger.Visibility == Visibility.Visible)
             {
                 numButtonsShowing++;
             }
-            if (butSmaller.Visibility == System.Windows.Visibility.Visible)
+            if (butSmaller.Visibility == Visibility.Visible)
             {
                 numButtonsShowing++;
             }
-            if (butClose.Visibility == System.Windows.Visibility.Visible)
+            if (butClose.Visibility == Visibility.Visible)
             {
                 numButtonsShowing++;
             }
-            if (butHear.Visibility == System.Windows.Visibility.Visible)
+            if (butHear.Visibility == Visibility.Visible)
             {
                 numButtonsShowing++;
             }
-            if (butTranslate.Visibility == System.Windows.Visibility.Visible)
+            if (butTranslate.Visibility == Visibility.Visible)
             {
                 numButtonsShowing++;
             }
-            MainPageSplit parent = (MainPageSplit)((Grid)this.Parent).Parent;
+            var parent = (MainPageSplit) ((Grid) Parent).Parent;
             if (parent.Orientation == PageOrientation.Landscape
                 || parent.Orientation == PageOrientation.LandscapeLeft
                 || parent.Orientation == PageOrientation.LandscapeRight)
             {
-                title.Width = System.Windows.Application.Current.Host.Content.ActualHeight - butClose.Width * numButtonsShowing - 15 - butClose.Width * 2;
+                title.Width = Application.Current.Host.Content.ActualHeight - butClose.Width*numButtonsShowing - 15 -
+                              butClose.Width*2;
                 title.MaxWidth = title.Width;
             }
             else
             {
-                title.Width = System.Windows.Application.Current.Host.Content.ActualWidth - butClose.Width * numButtonsShowing - 15 ;
+                title.Width = Application.Current.Host.Content.ActualWidth - butClose.Width*numButtonsShowing - 15;
                 title.MaxWidth = title.Width;
             }
         }
@@ -142,13 +175,13 @@ namespace CrossConnect
         public void CallbackFromUpdate(string createdFileName)
         {
             Debug.WriteLine("CallbackFromUpdate start");
-            isInGetHtmlAsynchronously = false;
-            this.lastFileName = createdFileName;
-            //webBrowser1.FontSize = this.state.htmlFontSize;
-            webBrowser1.Base = App.WEB_DIR_ISOLATED;
+            _isInGetHtmlAsynchronously = false;
+            _lastFileName = createdFileName;
+            //webBrowser1.FontSize = state.htmlFontSize;
+            webBrowser1.Base = App.WebDirIsolated;
 
-            Uri source = new Uri(this.lastFileName, UriKind.Relative);
-            if (this.state.source.IsSynchronizeable || this.state.source.IsLocalChangeDuringLink)
+            var source = new Uri(_lastFileName, UriKind.Relative);
+            if (State.Source.IsSynchronizeable || State.Source.IsLocalChangeDuringLink)
             {
                 int bookNum;
                 int absoluteChaptNum;
@@ -156,96 +189,119 @@ namespace CrossConnect
                 int verseNum;
                 string fullName;
                 string titleText;
-                this.state.source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
-                source = new Uri(this.lastFileName + "#CHAP_" + absoluteChaptNum + "_VERS_" + verseNum, UriKind.Relative);
+                State.Source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName,
+                                     out titleText);
+                source = new Uri(_lastFileName + "#CHAP_" + absoluteChaptNum + "_VERS_" + verseNum, UriKind.Relative);
             }
             try
             {
                 //this will often crash because the window no longer exists OR has not had the chance to create itself yet.
                 webBrowser1.Navigate(source);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine("CallbackFromUpdate webBrowser1.Navigate crash; " + e.Message);
                 return;
             }
 
-            this.WriteTitle();
+            WriteTitle();
 
             // update the sync button image
-            this.state.isSynchronized = !this.state.isSynchronized;
-            this.ButLink_Click(null, null);
+            State.IsSynchronized = !State.IsSynchronized;
+            ButLinkClick(null, null);
 
-            if (this.state.source.IsSynchronizeable || this.state.source.IsLocalChangeDuringLink)
+            if (State.Source.IsSynchronizeable || State.Source.IsLocalChangeDuringLink)
             {
                 //The window wont show the correct verse if we dont wait a few seconds before showing it.
-                System.Windows.Threading.DispatcherTimer tmr = new System.Windows.Threading.DispatcherTimer();
-                tmr.Interval = TimeSpan.FromSeconds(state.isResume ? 2.5 : 1.5);
-                state.isResume = false;
-                tmr.Tick += this.OnTimerTick;
+                var tmr = new DispatcherTimer {Interval = TimeSpan.FromSeconds(State.IsResume ? 2.5 : 1.5)};
+                State.IsResume = false;
+                tmr.Tick += OnTimerTick;
                 tmr.Start();
             }
             Debug.WriteLine("CallbackFromUpdate end");
         }
 
-        public void Initialize(string bibleToLoad, string bibleDescription, WINDOW_TYPE windowType, IBrowserTextSource source = null)
+        public void Initialize(string bibleToLoad, string bibleDescription, WindowType windowType,
+            IBrowserTextSource source = null)
         {
-            this.state.bibleToLoad = bibleToLoad;
-            this.state.bibleDescription = bibleDescription;
-            this.state.windowType = windowType;
+            State.BibleToLoad = bibleToLoad;
+            State.BibleDescription = bibleDescription;
+            State.WindowType = windowType;
             if (source != null)
             {
-                this.state.source = source;
+                State.Source = source;
             }
             else
             {
-                Dictionary<string, SwordBook> books = null;
-                if (windowType == WINDOW_TYPE.WINDOW_COMMENTARY)
-                {
-                    books = App.installedBibles.installedCommentaries;
-                }
-                else
-                {
-                    books = App.installedBibles.installedBibles;
-                }
+                Dictionary<string, SwordBook> books = windowType == WindowType.WindowCommentary ? App.InstalledBibles.InstalledCommentaries : App.InstalledBibles.InstalledBibles;
                 foreach (var book in books)
                 {
-                    if (book.Value.sbmd.internalName.Equals(bibleToLoad))
+                    if (book.Value.Sbmd.InternalName.Equals(bibleToLoad))
                     {
-                        string bookPath = book.Value.sbmd.getCetProperty(ConfigEntryType.A_DATA_PATH).ToString().Substring(2);
-                        bool isIsoEncoding = !book.Value.sbmd.getCetProperty(ConfigEntryType.ENCODING).Equals("UTF-8");
+                        string bookPath =
+                            book.Value.Sbmd.GetCetProperty(ConfigEntryType.ADataPath).ToString().Substring(2);
+                        bool isIsoEncoding = !book.Value.Sbmd.GetCetProperty(ConfigEntryType.ENCODING).Equals("UTF-8");
                         try
                         {
                             switch (windowType)
                             {
-                                case WINDOW_TYPE.WINDOW_BIBLE:
-                                    this.state.source = new BibleZtextReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                case WindowType.WindowBible:
+                                    State.Source = new BibleZtextReader(bookPath,
+                                                                        ((Language)
+                                                                         book.Value.Sbmd.GetCetProperty(
+                                                                             ConfigEntryType.LANG)).Code, isIsoEncoding);
                                     break;
-                                case WINDOW_TYPE.WINDOW_BIBLE_NOTES:
-                                    this.state.source = new BibleNoteReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding, Translations.translate("Notes"));
+                                case WindowType.WindowBibleNotes:
+                                    State.Source = new BibleNoteReader(bookPath,
+                                                                       ((Language)
+                                                                        book.Value.Sbmd.GetCetProperty(
+                                                                            ConfigEntryType.LANG)).Code, isIsoEncoding,
+                                                                       Translations.Translate("Notes"));
                                     break;
-                                case WINDOW_TYPE.WINDOW_BOOKMARKS:
-                                    this.state.source = new BookMarkReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                case WindowType.WindowBookmarks:
+                                    State.Source = new BookMarkReader(bookPath,
+                                                                      ((Language)
+                                                                       book.Value.Sbmd.GetCetProperty(
+                                                                           ConfigEntryType.LANG)).Code, isIsoEncoding);
                                     break;
-                                case WINDOW_TYPE.WINDOW_HISTORY:
-                                    this.state.source = new HistoryReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                case WindowType.WindowHistory:
+                                    State.Source = new HistoryReader(bookPath,
+                                                                     ((Language)
+                                                                      book.Value.Sbmd.GetCetProperty(
+                                                                          ConfigEntryType.LANG)).Code, isIsoEncoding);
                                     break;
-                                case WINDOW_TYPE.WINDOW_DAILY_PLAN:
-                                    this.state.source = new DailyPlanReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                case WindowType.WindowDailyPlan:
+                                    State.Source = new DailyPlanReader(bookPath,
+                                                                       ((Language)
+                                                                        book.Value.Sbmd.GetCetProperty(
+                                                                            ConfigEntryType.LANG)).Code, isIsoEncoding);
                                     break;
-                                case WINDOW_TYPE.WINDOW_COMMENTARY:
-                                    this.state.source = new CommentZtextReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                case WindowType.WindowCommentary:
+                                    State.Source = new CommentZtextReader(bookPath,
+                                                                          ((Language)
+                                                                           book.Value.Sbmd.GetCetProperty(
+                                                                               ConfigEntryType.LANG)).Code,
+                                                                          isIsoEncoding);
                                     break;
-                                case WINDOW_TYPE.WINDOW_ADDED_NOTES:
-                                    this.state.source = new PersonalNotesReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                case WindowType.WindowAddedNotes:
+                                    State.Source = new PersonalNotesReader(bookPath,
+                                                                           ((Language)
+                                                                            book.Value.Sbmd.GetCetProperty(
+                                                                                ConfigEntryType.LANG)).Code,
+                                                                           isIsoEncoding);
                                     break;
-                                case WINDOW_TYPE.WINDOW_TRANSLATOR:
-                                    this.state.source = new TranslatorReader(bookPath, ((Language)book.Value.sbmd.getCetProperty(ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                case WindowType.WindowTranslator:
+                                    State.Source = new TranslatorReader(bookPath,
+                                                                        ((Language)
+                                                                         book.Value.Sbmd.GetCetProperty(
+                                                                             ConfigEntryType.LANG)).Code, isIsoEncoding);
                                     break;
                             }
                         }
-                        catch (Exception)
-                        {//should never be an exception here.
+                        catch (Exception e3)
+                        {
+                            //should never be an exception here.
+                            Debug.WriteLine("crashed. " + e3.StackTrace);
                         }
                         break;
                     }
@@ -264,37 +320,39 @@ namespace CrossConnect
             else
             {
                 // figure out if this is a light color
-                var color = (Color)Application.Current.Resources["PhoneBackgroundColor"];
+                var color = (Color) Application.Current.Resources["PhoneBackgroundColor"];
                 int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
                 string colorDir = lightColorCount >= 2 ? "light" : "dark";
 
-                SetButtonVisibility(butSmaller, this.state.numRowsIown > 1, "/Images/" + colorDir + "/appbar.minus.rest.png", "/Images/" + colorDir + "/appbar.minus.rest.pressed.png");
-                SetButtonVisibility(butLarger, true, "/Images/" + colorDir + "/appbar.feature.search.rest.png", "/Images/" + colorDir + "/appbar.feature.search.rest.pressed.png");
-                SetButtonVisibility(butClose, true, "/Images/" + colorDir + "/appbar.cancel.rest.png", "/Images/" + colorDir + "/appbar.cancel.rest.pressed.png");
+                SetButtonVisibility(butSmaller, State.NumRowsIown > 1, "/Images/" + colorDir + "/appbar.minus.rest.png",
+                                    "/Images/" + colorDir + "/appbar.minus.rest.pressed.png");
+                SetButtonVisibility(butLarger, true, "/Images/" + colorDir + "/appbar.feature.search.rest.png",
+                                    "/Images/" + colorDir + "/appbar.feature.search.rest.pressed.png");
+                SetButtonVisibility(butClose, true, "/Images/" + colorDir + "/appbar.cancel.rest.png",
+                                    "/Images/" + colorDir + "/appbar.cancel.rest.pressed.png");
             }
             CalculateTitleTextWidth();
         }
 
         public void SynchronizeWindow(int chapterNum, int verseNum)
         {
-            if (this.state.isSynchronized && this.state.source.IsSynchronizeable)
+            if (State.IsSynchronized && State.Source.IsSynchronizeable)
             {
-                this.state.source.moveChapterVerse(chapterNum, verseNum, false);
-                this.UpdateBrowser();
+                State.Source.MoveChapterVerse(chapterNum, verseNum, false);
+                UpdateBrowser();
             }
         }
 
         public void UpdateBrowser()
         {
             Debug.WriteLine("UpdateBrowser start");
-            if (this.state.source != null && this.Parent != null)
+            if (State.Source != null && Parent != null)
             {
-                if (this.state.source.IsExternalLink)
+                if (State.Source.IsExternalLink)
                 {
                     try
                     {
-
-                        Uri source = new Uri(this.state.source.getExternalLink(App.displaySettings));
+                        var source = new Uri(State.Source.GetExternalLink(App.DisplaySettings));
                         webBrowser1.Base = "";
                         webBrowser1.Navigate(source);
                         WriteTitle();
@@ -307,15 +365,15 @@ namespace CrossConnect
                 else
                 {
                     double fontSizeMultiplier = 1;
-                    if (this.Parent != null && ((Grid)this.Parent).Parent != null)
+                    if (Parent != null && ((Grid) Parent).Parent != null)
                     {
-                        MainPageSplit parent = (MainPageSplit)((Grid)this.Parent).Parent;
+                        var parent = (MainPageSplit) ((Grid) Parent).Parent;
                         if (parent.Orientation == PageOrientation.Landscape
                             || parent.Orientation == PageOrientation.LandscapeLeft
                             || parent.Orientation == PageOrientation.LandscapeRight)
                         {
                             //we must adjust the font size for the new orientation. otherwise the font is too big.
-                            fontSizeMultiplier = parent.ActualHeight / parent.ActualWidth;
+                            fontSizeMultiplier = parent.ActualHeight/parent.ActualWidth;
                         }
                     }
                     var backcolor = GetBrowserColor("PhoneBackgroundColor");
@@ -323,244 +381,15 @@ namespace CrossConnect
                     var accentcolor = GetBrowserColor("PhoneAccentColor");
 
                     GetHtmlAsynchronously(
-                                App.displaySettings.clone(),
-                                backcolor,
-                                forecolor,
-                                accentcolor,
-                                this.state.htmlFontSize * fontSizeMultiplier,
-                                App.WEB_DIR_ISOLATED + "/" + this.lastFileName);
+                        App.DisplaySettings.Clone(),
+                        backcolor,
+                        forecolor,
+                        accentcolor,
+                        State.HtmlFontSize*fontSizeMultiplier,
+                        App.WebDirIsolated + "/" + _lastFileName);
                 }
             }
             Debug.WriteLine("UpdateBrowser end");
-        }
-
-        private void border1_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
-        {
-            DoManipulation(e);
-        }
-
-        private void ButClose_Click(object sender, RoutedEventArgs e)
-        {
-            killManipulation();
-            var root = IsolatedStorageFile.GetUserStoreForApplication();
-
-            if (root.FileExists(App.WEB_DIR_ISOLATED + "/" + this.lastFileName))
-            {
-                try
-                {
-                    //This can easily fail because the background thread is still processing this file!!!
-                    root.DeleteFile(App.WEB_DIR_ISOLATED + "/" + this.lastFileName);
-                }
-                catch (Exception ee)
-                {
-                    Debug.WriteLine("Failed delete file ; " + ee.Message);
-                }
-            }
-
-            if (this.HitButtonClose != null)
-            {
-                this.HitButtonClose(this, e);
-            }
-        }
-
-        private void butClose_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
-        {
-            DoManipulation(e);
-        }
-
-        private void butHear_Click(object sender, RoutedEventArgs e)
-        {
-            int bookNum;
-            int absoluteChaptNum;
-            int relChaptNum;
-            int verseNum;
-            string fullName;
-            string titleText;
-            this.state.source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
-            PhoneApplicationService.Current.State["ChapterToHear"] = absoluteChaptNum;
-            PhoneApplicationService.Current.State["titleBar"] = titleText;
-            MainPageSplit parent = (MainPageSplit)((Grid)this.Parent).Parent;
-            parent.NavigationService.Navigate(new Uri("/SelectToPlay.xaml", UriKind.Relative));
-        }
-
-        private void butHear_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
-        {
-            DoManipulation(e);
-        }
-
-        private void ButLarger_Click(object sender, RoutedEventArgs e)
-        {
-            killManipulation();
-            this.state.numRowsIown++;
-            ShowSizeButtons();
-            if (this.HitButtonBigger != null)
-            {
-                this.HitButtonBigger(this, e);
-            }
-        }
-
-        private void butLarger_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
-        {
-            DoManipulation(e);
-        }
-
-        private void ButLink_Click(object sender, RoutedEventArgs e)
-        {
-            killManipulation();
-            if (this.state.source.IsSynchronizeable)
-            {
-                // get all the right images
-                // figure out if this is a light color
-                var color = (Color)Application.Current.Resources["PhoneBackgroundColor"];
-                int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
-                string colorDir = lightColorCount >= 2 ? "light" : "dark";
-
-                this.state.isSynchronized = !this.state.isSynchronized;
-                if (this.state.isSynchronized)
-                {
-                    SetButtonVisibility(butLink, true, "/Images/" + colorDir + "/appbar.linkto.rest.pressed.png", "/Images/" + colorDir + "/appbar.linkto.rest.png");
-                }
-                else
-                {
-                    SetButtonVisibility(butLink, true, "/Images/" + colorDir + "/appbar.linkto.rest.png", "/Images/" + colorDir + "/appbar.linkto.rest.pressed.png");
-                }
-            }
-            else
-            {
-                SetButtonVisibility(butLink, false, "", "");
-            }
-        }
-
-        private void butLink_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
-        {
-            DoManipulation(e);
-        }
-
-        private void ButMenu_Click(object sender, RoutedEventArgs e)
-        {
-            killManipulation();
-            forceReload=true;
-            PhoneApplicationService.Current.State["isAddNewWindowOnly"] = false;
-            PhoneApplicationService.Current.State["skipWindowSettings"] = false;
-            PhoneApplicationService.Current.State["openWindowIndex"] = this.state.curIndex;
-            PhoneApplicationService.Current.State["InitializeWindowSettings"] = true;
-
-            MainPageSplit parent = (MainPageSplit)((Grid)this.Parent).Parent;
-            parent.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
-        }
-
-        private void butMenu_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
-        {
-            DoManipulation(e);
-        }
-
-        private void ButNext_Click(object sender, RoutedEventArgs e)
-        {
-            killManipulation();
-            this.state.source.moveNext();
-
-            string mode = "SlideLeftFadeOut";
-            TransitionElement transitionElement = null;
-
-            transitionElement = this.SlideTransitionElement(mode);
-
-            ITransition transition = transitionElement.GetTransition(this);
-            transition.Completed += delegate
-            {
-                this.UpdateBrowser();
-                transition.Stop();
-                mode = "SlideLeftFadeIn";
-                transitionElement = null;
-
-                transitionElement = this.SlideTransitionElement(mode);
-
-                transition = transitionElement.GetTransition(this);
-                transition.Completed += delegate
-                {
-                    transition.Stop();
-                };
-                transition.Begin();
-            };
-            transition.Begin();
-        }
-
-        private void ButPrevious_Click(object sender, RoutedEventArgs e)
-        {
-            killManipulation();
-            this.state.source.movePrevious();
-
-            string mode = "SlideRightFadeOut";
-            TransitionElement transitionElement = null;
-
-            transitionElement = this.SlideTransitionElement(mode);
-
-            ITransition transition = transitionElement.GetTransition(this);
-
-            transition.Completed += delegate
-            {
-                this.UpdateBrowser();
-                transition.Stop();
-                mode = "SlideRightFadeIn";
-                transitionElement = null;
-
-                transitionElement = this.SlideTransitionElement(mode);
-
-                transition = transitionElement.GetTransition(this);
-                transition.Completed += delegate
-                {
-                    transition.Stop();
-                };
-                transition.Begin();
-            };
-            transition.Begin();
-        }
-
-        private void ButSmaller_Click(object sender, RoutedEventArgs e)
-        {
-            killManipulation();
-            this.state.numRowsIown--;
-            ShowSizeButtons();
-            if (this.HitButtonSmaller != null)
-            {
-                this.HitButtonSmaller(this, e);
-            }
-        }
-
-        private void butSmaller_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
-        {
-            DoManipulation(e);
-        }
-
-        private void butTranslate_Click(object sender, RoutedEventArgs e)
-        {
-            killManipulation();
-
-            string[] toTranslate;
-            bool[] isTranslateable;
-            this.state.source.GetTranslateableTexts(App.displaySettings, state.bibleToLoad, out toTranslate, out isTranslateable);
-
-            foreach (var win in App.openWindows)
-            {
-                if (win.state.source is TranslatorReader)
-                {
-                    TranslatorReader transReader = (TranslatorReader)win.state.source;
-                    transReader.TranslateThis( toTranslate, isTranslateable, this.state.source.GetLanguage());
-                    return;
-                }
-            }
-            TranslatorReader transReader2 = new TranslatorReader("", "", false);
-            App.AddWindow(
-                "",
-                "",
-                WINDOW_TYPE.WINDOW_TRANSLATOR,
-                state.htmlFontSize,
-                transReader2);
-            transReader2.TranslateThis(toTranslate, isTranslateable, this.state.source.GetLanguage());
-        }
-
-        private void butTranslate_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
-        {
-            DoManipulation(e);
         }
 
         private static void DoAsynchronAddInternetWindow(string link, string titleBar)
@@ -570,10 +399,257 @@ namespace CrossConnect
             App.AddWindow(
                 "",
                 "",
-                WINDOW_TYPE.WINDOW_INTERNET_LINK,
+                WindowType.WindowInternetLink,
                 10,
                 win);
-            Deployment.Current.Dispatcher.BeginInvoke(() => showInternetLinkWindow(link, titleBar));
+            Deployment.Current.Dispatcher.BeginInvoke(() => ShowInternetLinkWindow(link, titleBar));
+        }
+
+        private static ImageSource GetImage(string path)
+        {
+            var uri = new Uri(path, UriKind.Relative);
+            return new BitmapImage(uri);
+        }
+
+        private static void SetButtonVisibility(ImageButton but, bool isVisible, string image, string pressedImage)
+        {
+            if (isVisible)
+            {
+                but.Visibility = Visibility.Visible;
+                but.Image = GetImage(image);
+                but.PressedImage = GetImage(pressedImage);
+            }
+            else
+            {
+                but.Visibility = Visibility.Collapsed;
+                but.Image = null;
+                but.PressedImage = null;
+            }
+        }
+
+        private static SlideTransition SlideTransitionElement(string mode)
+        {
+            var slideTransitionMode = (SlideTransitionMode) Enum.Parse(typeof (SlideTransitionMode), mode, false);
+            return new SlideTransition {Mode = slideTransitionMode};
+        }
+
+        private void Border1ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
+        }
+
+        private void ButCloseClick(object sender, RoutedEventArgs e)
+        {
+            KillManipulation();
+            var root = IsolatedStorageFile.GetUserStoreForApplication();
+
+            if (root.FileExists(App.WebDirIsolated + "/" + _lastFileName))
+            {
+                try
+                {
+                    //This can easily fail because the background thread is still processing this file!!!
+                    root.DeleteFile(App.WebDirIsolated + "/" + _lastFileName);
+                }
+                catch (Exception ee)
+                {
+                    Debug.WriteLine("Failed delete file ; " + ee.Message);
+                }
+            }
+
+            if (HitButtonClose != null)
+            {
+                HitButtonClose(this, e);
+            }
+        }
+
+        private void ButCloseManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
+        }
+
+        private void ButHearClick(object sender, RoutedEventArgs e)
+        {
+            int bookNum;
+            int absoluteChaptNum;
+            int relChaptNum;
+            int verseNum;
+            string fullName;
+            string titleText;
+            State.Source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName,
+                                 out titleText);
+            PhoneApplicationService.Current.State["ChapterToHear"] = absoluteChaptNum;
+            PhoneApplicationService.Current.State["titleBar"] = titleText;
+            var parent = (MainPageSplit) ((Grid) Parent).Parent;
+            parent.NavigationService.Navigate(new Uri("/SelectToPlay.xaml", UriKind.Relative));
+        }
+
+        private void ButHearManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
+        }
+
+        private void ButLargerClick(object sender, RoutedEventArgs e)
+        {
+            KillManipulation();
+            State.NumRowsIown++;
+            ShowSizeButtons();
+            if (HitButtonBigger != null)
+            {
+                HitButtonBigger(this, e);
+            }
+        }
+
+        private void ButLargerManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
+        }
+
+        private void ButLinkClick(object sender, RoutedEventArgs e)
+        {
+            KillManipulation();
+            if (State.Source.IsSynchronizeable)
+            {
+                // get all the right images
+                // figure out if this is a light color
+                var color = (Color) Application.Current.Resources["PhoneBackgroundColor"];
+                int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
+                string colorDir = lightColorCount >= 2 ? "light" : "dark";
+
+                State.IsSynchronized = !State.IsSynchronized;
+                if (State.IsSynchronized)
+                {
+                    SetButtonVisibility(butLink, true, "/Images/" + colorDir + "/appbar.linkto.rest.pressed.png",
+                                        "/Images/" + colorDir + "/appbar.linkto.rest.png");
+                }
+                else
+                {
+                    SetButtonVisibility(butLink, true, "/Images/" + colorDir + "/appbar.linkto.rest.png",
+                                        "/Images/" + colorDir + "/appbar.linkto.rest.pressed.png");
+                }
+            }
+            else
+            {
+                SetButtonVisibility(butLink, false, "", "");
+            }
+        }
+
+        private void ButLinkManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
+        }
+
+        private void ButMenuClick(object sender, RoutedEventArgs e)
+        {
+            KillManipulation();
+            ForceReload = true;
+            PhoneApplicationService.Current.State["isAddNewWindowOnly"] = false;
+            PhoneApplicationService.Current.State["skipWindowSettings"] = false;
+            PhoneApplicationService.Current.State["openWindowIndex"] = State.CurIndex;
+            PhoneApplicationService.Current.State["InitializeWindowSettings"] = true;
+
+            var parent = (MainPageSplit) ((Grid) Parent).Parent;
+            parent.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
+        }
+
+        private void ButMenuManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
+        }
+
+        private void ButNextClick(object sender, RoutedEventArgs e)
+        {
+            KillManipulation();
+            State.Source.MoveNext();
+
+            string mode = "SlideLeftFadeOut";
+            TransitionElement transitionElement = SlideTransitionElement(mode);
+
+            var transition = transitionElement.GetTransition(this);
+            transition.Completed += (sender1, e1) =>
+                                        {
+                                            UpdateBrowser();
+                                            transition.Stop();
+                                            mode = "SlideLeftFadeIn";
+                                            transitionElement = null;
+                                            transitionElement = SlideTransitionElement(mode);
+                                            transition = transitionElement.GetTransition(this);
+                                            transition.Completed += delegate { transition.Stop(); };
+                                            transition.Begin();
+                                        };
+            transition.Begin();
+        }
+
+        private void ButPreviousClick(object sender, RoutedEventArgs e)
+        {
+            KillManipulation();
+            State.Source.MovePrevious();
+
+            string mode = "SlideRightFadeOut";
+            TransitionElement transitionElement = SlideTransitionElement(mode);
+
+            var transition = transitionElement.GetTransition(this);
+
+            transition.Completed += (sender1, e1) =>
+                                        {
+                                            UpdateBrowser();
+                                            transition.Stop();
+                                            mode = "SlideRightFadeIn";
+                                            transitionElement = null;
+                                            transitionElement = SlideTransitionElement(mode);
+                                            transition = transitionElement.GetTransition(this);
+                                            transition.Completed += delegate { transition.Stop(); };
+                                            transition.Begin();
+                                        };
+            transition.Begin();
+        }
+
+        private void ButSmallerClick(object sender, RoutedEventArgs e)
+        {
+            KillManipulation();
+            State.NumRowsIown--;
+            ShowSizeButtons();
+            if (HitButtonSmaller != null)
+            {
+                HitButtonSmaller(this, e);
+            }
+        }
+
+        private void ButSmallerManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
+        }
+
+        private void ButTranslateClick(object sender, RoutedEventArgs e)
+        {
+            KillManipulation();
+
+            string[] toTranslate;
+            bool[] isTranslateable;
+            State.Source.GetTranslateableTexts(App.DisplaySettings, State.BibleToLoad, out toTranslate,
+                                               out isTranslateable);
+
+            foreach (var win in App.OpenWindows)
+            {
+                if (win.State.Source is TranslatorReader)
+                {
+                    var transReader = (TranslatorReader) win.State.Source;
+                    transReader.TranslateThis(toTranslate, isTranslateable, State.Source.GetLanguage());
+                    return;
+                }
+            }
+            var transReader2 = new TranslatorReader("", "", false);
+            App.AddWindow(
+                "",
+                "",
+                WindowType.WindowTranslator,
+                State.HtmlFontSize,
+                transReader2);
+            transReader2.TranslateThis(toTranslate, isTranslateable, State.Source.GetLanguage());
+        }
+
+        private void ButTranslateManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            DoManipulation(e);
         }
 
         private void DoAsynchronAddLexiconWindow(string link)
@@ -583,102 +659,100 @@ namespace CrossConnect
             App.AddWindow(
                 "",
                 "",
-                WINDOW_TYPE.WINDOW_LEXICON_LINK,
-                state.htmlFontSize,
+                WindowType.WindowLexiconLink,
+                State.HtmlFontSize,
                 win);
             //Deployment.Current.Dispatcher.BeginInvoke(() => showLexiconLinkWindow(link));
         }
 
         private void DoManipulation(ManipulationCompletedEventArgs e)
         {
-            if (manipulationTimer == null && lastManipulationKillTime.AddMilliseconds(400).CompareTo(DateTime.Now) < 0)
+            if (_manipulationTimer == null && _lastManipulationKillTime.AddMilliseconds(400).CompareTo(DateTime.Now) < 0)
             {
-                manipulationToProcess = e;
+                _manipulationToProcess = e;
                 //start timer
-                manipulationTimer = new System.Windows.Threading.DispatcherTimer();
-                manipulationTimer.Interval = TimeSpan.FromMilliseconds(200);
-                manipulationTimer.Tick += this.DoManipulationTimerTick;
-                manipulationTimer.Start();
+                _manipulationTimer = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(200)};
+                _manipulationTimer.Tick += DoManipulationTimerTick;
+                _manipulationTimer.Start();
             }
         }
 
         private void DoManipulationTimerTick(object sender, EventArgs e)
         {
             // we must delay updating of this webbrowser...
-            killManipulation();
+            KillManipulation();
 
-            System.Windows.Point pt = manipulationToProcess.FinalVelocities.LinearVelocity;
+            var pt = _manipulationToProcess.FinalVelocities.LinearVelocity;
             if (pt.X > 700)
             {
                 //previous
-                ButPrevious_Click(null, null);
+                ButPreviousClick(null, null);
             }
             else if (pt.X < -700)
             {
                 //next
-                ButNext_Click(null, null);
+                ButNextClick(null, null);
             }
         }
 
-        private void GetHtmlAsynchronously(DisplaySettings dispSet,string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fileErase)
+        private void GetHtmlAsynchronously(DisplaySettings dispSet, string htmlBackgroundColor,
+            string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,
+            string fileErase)
         {
-            if (isInGetHtmlAsynchronously)
+            if (_isInGetHtmlAsynchronously)
             {
                 Debug.WriteLine("GetHtmlAsynchronously MULTIPLE ENTRY");
                 return;
             }
-            isInGetHtmlAsynchronously = true;
+            _isInGetHtmlAsynchronously = true;
             Debug.WriteLine("GetHtmlAsynchronously");
             ThreadPool.QueueUserWorkItem(_ =>
-            {
-                try
-                {
-                    string createdFileName = this.state.source.putHtmlTofile(dispSet,
-                        htmlBackgroundColor,
-                        htmlForegroundColor,
-                        htmlPhoneAccentColor,
-                        htmlFontSize,
-                        fileErase,
-                        App.WEB_DIR_ISOLATED,
-                        forceReload);
-                    forceReload = false;
-                    Deployment.Current.Dispatcher.BeginInvoke(() => CallbackFromUpdate(createdFileName));
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine("GetHtmlAsynchronously Failed; " + e.Message);
-                    Deployment.Current.Dispatcher.BeginInvoke(() => CallbackFromUpdate(""));
-                    return;
-                }
-            });
+                                             {
+                                                 try
+                                                 {
+                                                     string createdFileName = State.Source.PutHtmlTofile(dispSet,
+                                                                                                         htmlBackgroundColor,
+                                                                                                         htmlForegroundColor,
+                                                                                                         htmlPhoneAccentColor,
+                                                                                                         htmlFontSize,
+                                                                                                         fileErase,
+                                                                                                         App.
+                                                                                                             WebDirIsolated,
+                                                                                                         ForceReload);
+                                                     ForceReload = false;
+                                                     Deployment.Current.Dispatcher.BeginInvoke(
+                                                         () => CallbackFromUpdate(createdFileName));
+                                                 }
+                                                 catch (Exception e)
+                                                 {
+                                                     Debug.WriteLine("GetHtmlAsynchronously Failed; " + e.Message);
+                                                     Deployment.Current.Dispatcher.BeginInvoke(
+                                                         () => CallbackFromUpdate(""));
+                                                     return;
+                                                 }
+                                             });
         }
 
-        private ImageSource GetImage(string path)
-        {
-            Uri uri = new Uri(path, UriKind.Relative);
-            return (ImageSource)new BitmapImage(uri);
-        }
-
-        private void grid1_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        private void Grid1ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
         {
             DoManipulation(e);
         }
 
-        private void killManipulation()
+        private void KillManipulation()
         {
-            if (manipulationTimer != null)
+            if (_manipulationTimer != null)
             {
-                manipulationTimer.Stop();
-                manipulationTimer = null;
+                _manipulationTimer.Stop();
+                _manipulationTimer = null;
             }
-            lastManipulationKillTime = DateTime.Now;
+            _lastManipulationKillTime = DateTime.Now;
         }
 
         private void OnTimerTick(object sender, EventArgs e)
         {
             Debug.WriteLine("OnTimerTick start");
             // we must delay updating of this webbrowser...
-            ((System.Windows.Threading.DispatcherTimer)sender).Stop();
+            ((DispatcherTimer) sender).Stop();
             try
             {
                 int bookNum;
@@ -687,8 +761,9 @@ namespace CrossConnect
                 int verseNum;
                 string fullName;
                 string titleText;
-                this.state.source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
-                Uri source = new Uri(this.lastFileName + "#CHAP_" + absoluteChaptNum + "_VERS_" + verseNum, UriKind.Relative);
+                State.Source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName,
+                                     out titleText);
+                var source = new Uri(_lastFileName + "#CHAP_" + absoluteChaptNum + "_VERS_" + verseNum, UriKind.Relative);
                 webBrowser1.Navigate(source);
             }
             catch (Exception ee)
@@ -697,49 +772,15 @@ namespace CrossConnect
             }
         }
 
-        private void SetButtonVisibility(ImageButton but, bool isVisible, string image, string pressedImage)
+        private void ShowLexiconLinkWindow(string link)
         {
-            if (isVisible)
+            foreach (var win in App.OpenWindows)
             {
-                but.Visibility = System.Windows.Visibility.Visible;
-                but.Image = this.GetImage(image);
-                but.PressedImage = this.GetImage(pressedImage);
-            }
-            else
-            {
-                but.Visibility = System.Windows.Visibility.Collapsed;
-                but.Image = null;
-                but.PressedImage = null;
-            }
-        }
-
-        public static void showInternetLinkWindow(string link, string titleBar)
-        {
-            InternetLinkReader linkReader = null;
-            foreach(var win in App.openWindows)
-            {
-                if (win.state.source is InternetLinkReader)
+                if (win.State.Source is GreekHebrewDictReader)
                 {
-                    linkReader = (InternetLinkReader)win.state.source;
-                    linkReader.ShowLink(link, titleBar);
-                    //forceReload = true;
-                    win.UpdateBrowser();
-                    return;
-                }
-            }
-            Deployment.Current.Dispatcher.BeginInvoke(() => DoAsynchronAddInternetWindow(link, titleBar));
-        }
-
-        private void showLexiconLinkWindow(string link)
-        {
-            GreekHebrewDictReader linkReader = null;
-            foreach (var win in App.openWindows)
-            {
-                if (win.state.source is GreekHebrewDictReader)
-                {
-                    linkReader = (GreekHebrewDictReader)win.state.source;
+                    var linkReader = (GreekHebrewDictReader) win.State.Source;
                     linkReader.ShowLink(link);
-                    win.forceReload = true;
+                    win.ForceReload = true;
                     win.UpdateBrowser();
                     return;
                 }
@@ -747,68 +788,67 @@ namespace CrossConnect
             Deployment.Current.Dispatcher.BeginInvoke(() => DoAsynchronAddLexiconWindow(link));
         }
 
-        private SlideTransition SlideTransitionElement(string mode)
+        private void SourceChanged()
         {
-            SlideTransitionMode slideTransitionMode = (SlideTransitionMode)Enum.Parse(typeof(SlideTransitionMode), mode, false);
-            return new SlideTransition { Mode = slideTransitionMode };
+            ForceReload = true;
+            UpdateBrowser();
         }
 
-        private void Source_Changed()
-        {
-            forceReload = true;
-            this.UpdateBrowser();
-        }
-
-        private void title_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        private void TitleManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
         {
             DoManipulation(e);
         }
 
-        private void WebBrowser1_Loaded(object sender, RoutedEventArgs e)
+        private void WebBrowser1Loaded(object sender, RoutedEventArgs e)
         {
-            this.UpdateBrowser();
+            UpdateBrowser();
 
             // get all the right images
             // figure out if this is a light color
-            var color = (Color)Application.Current.Resources["PhoneBackgroundColor"];
+            var color = (Color) Application.Current.Resources["PhoneBackgroundColor"];
             int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
             string colorDir = lightColorCount >= 2 ? "light" : "dark";
 
-            bool isPrevNext = this.state != null && this.state.source != null && this.state.source.IsPageable;
-            SetButtonVisibility(butPrevious, isPrevNext, "/Images/" + colorDir + "/appbar.prev.rest.png", "/Images/" + colorDir + "/appbar.prev.rest.press.png");
-            SetButtonVisibility(butNext, isPrevNext, "/Images/" + colorDir + "/appbar.next.rest.png", "/Images/" + colorDir + "/appbar.next.rest.press.png");
-            bool IsHearable = this.state != null && this.state.source != null && this.state.source.IsHearable;
-            SetButtonVisibility(butHear, IsHearable, "/Images/" + colorDir + "/appbar.speaker.png", "/Images/" + colorDir + "/appbar.speaker.pressed.png");
-            bool IsTranslate = this.state != null && this.state.source != null && this.state.source.IsTranslateable && !this.state.source.GetLanguage().Equals(Translations.isoLanguageCode);
-            SetButtonVisibility(butTranslate, IsTranslate, "/Images/" + colorDir + "/appbar.translate.png", "/Images/" + colorDir + "/appbar.translate.pressed.png");
+            bool isPrevNext = State != null && State.Source != null && State.Source.IsPageable;
+            SetButtonVisibility(butPrevious, isPrevNext, "/Images/" + colorDir + "/appbar.prev.rest.png",
+                                "/Images/" + colorDir + "/appbar.prev.rest.press.png");
+            SetButtonVisibility(butNext, isPrevNext, "/Images/" + colorDir + "/appbar.next.rest.png",
+                                "/Images/" + colorDir + "/appbar.next.rest.press.png");
+            bool isHearable = State != null && State.Source != null && State.Source.IsHearable;
+            SetButtonVisibility(butHear, isHearable, "/Images/" + colorDir + "/appbar.speaker.png",
+                                "/Images/" + colorDir + "/appbar.speaker.pressed.png");
+            bool isTranslate = State != null && State.Source != null && State.Source.IsTranslateable &&
+                               !State.Source.GetLanguage().Equals(Translations.IsoLanguageCode);
+            SetButtonVisibility(butTranslate, isTranslate, "/Images/" + colorDir + "/appbar.translate.png",
+                                "/Images/" + colorDir + "/appbar.translate.pressed.png");
 
-            butMenu.Image = this.GetImage("/Images/" + colorDir + "/appbar.menu.rest.png");
-            butMenu.PressedImage = this.GetImage("/Images/" + colorDir + "/appbar.menu.rest.pressed.png");
+            butMenu.Image = GetImage("/Images/" + colorDir + "/appbar.menu.rest.png");
+            butMenu.PressedImage = GetImage("/Images/" + colorDir + "/appbar.menu.rest.pressed.png");
 
-            butLarger.Image = this.GetImage("/Images/" + colorDir + "/appbar.feature.search.rest.png");
-            butLarger.PressedImage = this.GetImage("/Images/" + colorDir + "/appbar.feature.search.rest.pressed.png");
+            butLarger.Image = GetImage("/Images/" + colorDir + "/appbar.feature.search.rest.png");
+            butLarger.PressedImage = GetImage("/Images/" + colorDir + "/appbar.feature.search.rest.pressed.png");
 
-            butSmaller.Image = this.GetImage("/Images/" + colorDir + "/appbar.minus.rest.png");
-            butSmaller.PressedImage = this.GetImage("/Images/" + colorDir + "/appbar.minus.rest.pressed.png");
+            butSmaller.Image = GetImage("/Images/" + colorDir + "/appbar.minus.rest.png");
+            butSmaller.PressedImage = GetImage("/Images/" + colorDir + "/appbar.minus.rest.pressed.png");
 
-            butClose.Image = this.GetImage("/Images/" + colorDir + "/appbar.cancel.rest.png");
-            butClose.PressedImage = this.GetImage("/Images/" + colorDir + "/appbar.cancel.rest.pressed.png");
+            butClose.Image = GetImage("/Images/" + colorDir + "/appbar.cancel.rest.png");
+            butClose.PressedImage = GetImage("/Images/" + colorDir + "/appbar.cancel.rest.pressed.png");
 
-            if (this.state != null && this.state.source != null && !this.state.source.IsSynchronizeable)
+            if (State != null && State.Source != null && !State.Source.IsSynchronizeable)
             {
                 SetButtonVisibility(butLink, false, "", "");
             }
 
-            if (this.state != null && this.state.source != null)
+            if (State != null && State.Source != null)
             {
-                this.state.source.RegisterUpdateEvent(this.Source_Changed, true);
+                State.Source.RegisterUpdateEvent(SourceChanged);
             }
             CalculateTitleTextWidth();
         }
 
-        private void WebBrowser1_ScriptNotify(object sender, Microsoft.Phone.Controls.NotifyEventArgs e)
+        private void WebBrowser1ScriptNotify(object sender, NotifyEventArgs e)
         {
-            string[] chapterVerse = e.Value.ToString().Split("_".ToArray());
+            var chapterVerse = e.Value.Split("_".ToArray());
             int chapterNum = -1;
             int verseNum = -1;
             for (int i = 0; i < chapterVerse.Length; i += 2)
@@ -822,13 +862,13 @@ namespace CrossConnect
                         int.TryParse(chapterVerse[i + 1], out verseNum);
                         break;
                     case "STRONG":
-                        if (App.displaySettings.useInternetGreekHebrewDict)
+                        if (App.DisplaySettings.UseInternetGreekHebrewDict)
                         {
-                            showInternetLinkWindow(chapterVerse[i + 1], chapterVerse[i + 1]);
+                            ShowInternetLinkWindow(chapterVerse[i + 1], chapterVerse[i + 1]);
                         }
                         else
                         {
-                            showLexiconLinkWindow(chapterVerse[i + 1]);
+                            ShowLexiconLinkWindow(chapterVerse[i + 1]);
                         }
                         return;
                     case "MORPH":
@@ -840,23 +880,23 @@ namespace CrossConnect
 
             if (chapterNum >= 0 && verseNum >= 0)
             {
-                if (this.state.source.IsLocalChangeDuringLink)
+                if (State.Source.IsLocalChangeDuringLink)
                 {
-                    this.state.source.moveChapterVerse(chapterNum, verseNum, true);
-                    this.WriteTitle();
+                    State.Source.MoveChapterVerse(chapterNum, verseNum, true);
+                    WriteTitle();
                 }
 
-                App.SynchronizeAllWindows(chapterNum, verseNum, this.state.curIndex);
+                App.SynchronizeAllWindows(chapterNum, verseNum, State.CurIndex);
 
                 App.AddHistory(chapterNum, verseNum);
             }
         }
 
-        private void WebBrowser1_Unloaded(object sender, RoutedEventArgs e)
+        private void WebBrowser1Unloaded(object sender, RoutedEventArgs e)
         {
-            if (this.state != null && this.state.source != null)
+            if (State != null && State.Source != null)
             {
-                this.state.source.RegisterUpdateEvent(this.Source_Changed, false);
+                State.Source.RegisterUpdateEvent(SourceChanged, false);
             }
         }
 
@@ -868,8 +908,11 @@ namespace CrossConnect
             int verseNum;
             string fullName;
             string titleText;
-            this.state.source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
-            title.Text = titleText + " - " + (string.IsNullOrEmpty(this.state.bibleDescription)?this.state.bibleToLoad:this.state.bibleDescription) + "                                                               ";
+            State.Source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName,
+                                 out titleText);
+            title.Text = titleText + " - " +
+                         (string.IsNullOrEmpty(State.BibleDescription) ? State.BibleToLoad : State.BibleDescription) +
+                         "                                                               ";
         }
 
         #endregion Methods
@@ -877,39 +920,39 @@ namespace CrossConnect
         #region Nested Types
 
         /// <summary>
-        /// I was forced to make this class just for serialization because a "UserControl" 
-        /// cannot be serialized.
+        ///   I was forced to make this class just for serialization because a "UserControl" 
+        ///   cannot be serialized.
         /// </summary>
         [DataContract]
-        [KnownType(typeof(DailyPlanReader))]
-        [KnownType(typeof(CommentZtextReader))]
-        [KnownType(typeof(BookMarkReader))]
-        [KnownType(typeof(TranslatorReader))]
-        [KnownType(typeof(HistoryReader))]
-        [KnownType(typeof(SearchReader))]
-        [KnownType(typeof(BibleNoteReader))]
-        [KnownType(typeof(BibleZtextReader))]
+        [KnownType(typeof (DailyPlanReader))]
+        [KnownType(typeof (CommentZtextReader))]
+        [KnownType(typeof (BookMarkReader))]
+        [KnownType(typeof (TranslatorReader))]
+        [KnownType(typeof (HistoryReader))]
+        [KnownType(typeof (SearchReader))]
+        [KnownType(typeof (BibleNoteReader))]
+        [KnownType(typeof (BibleZtextReader))]
         public class SerializableWindowState
         {
             #region Fields
 
             [DataMember]
-            public string bibleDescription = string.Empty;
+            public string BibleDescription = string.Empty;
             [DataMember]
-            public string bibleToLoad = string.Empty;
+            public string BibleToLoad = string.Empty;
             [DataMember]
-            public int curIndex = 0;
+            public int CurIndex;
             [DataMember]
-            public double htmlFontSize = 10;
-            public bool isResume = false;
+            public double HtmlFontSize = 10;
+            public bool IsResume;
             [DataMember]
-            public bool isSynchronized = true;
+            public bool IsSynchronized = true;
             [DataMember]
-            public int numRowsIown = 1;
+            public int NumRowsIown = 1;
             [DataMember]
-            public IBrowserTextSource source = null;
+            public IBrowserTextSource Source;
             [DataMember]
-            public WINDOW_TYPE windowType = WINDOW_TYPE.WINDOW_BIBLE;
+            public WindowType WindowType = WindowType.WindowBible;
 
             #endregion Fields
         }

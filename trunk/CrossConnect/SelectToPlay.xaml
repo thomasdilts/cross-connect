@@ -14,7 +14,7 @@
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     shell:SystemTray.IsVisible="True" xmlns:my="clr-namespace:CrossConnect"
-    Loaded="PhoneApplicationPage_Loaded"
+    Loaded="PhoneApplicationPageLoaded"
      >
 
     <toolkit:TransitionService.NavigationInTransition>
@@ -53,7 +53,7 @@
                 <TextBlock x:Name="PageTitle" Text="Select what you want to hear" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
                 <TextBlock x:Name="MsgFromServer" TextWrapping="Wrap"  Text="" Style="{StaticResource PhoneTextNormalStyle}"/>
             </StackPanel>
-            <ListBox Grid.Row="1" SelectionChanged="SelectList_SelectionChanged"  Name="SelectList" />
+            <ListBox Grid.Row="1" SelectionChanged="SelectListSelectionChanged"  Name="SelectList" />
         </Grid>
 
 </local:AutoRotatePage>

@@ -1,23 +1,30 @@
-﻿/// <summary>
-/// Distribution License:
-/// CrossConnect is free software; you can redistribute it and/or modify it under
-/// the terms of the GNU General Public License, version 3 as published by
-/// the Free Software Foundation. This program is distributed in the hope
-/// that it will be useful, but WITHOUT ANY WARRANTY; without even the
-/// implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// See the GNU General Public License for more details.
-///
-/// The License is available on the internet at:
-///       http://www.gnu.org/copyleft/gpl.html
-/// or by writing to:
-///      Free Software Foundation, Inc.
-///      59 Temple Place - Suite 330
-///      Boston, MA 02111-1307, USA
-/// </summary>
-/// <copyright file="RemoveBibles.cs" company="Thomas Dilts">
-///     Thomas Dilts. All rights reserved.
-/// </copyright>
-/// <author>Thomas Dilts</author>
+﻿#region Header
+
+// <copyright file="RemoveBibles.xaml.cs" company="Thomas Dilts">
+//
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@chaniel.se
+// </summary>
+// <author>Thomas Dilts</author>
+
+#endregion Header
+
 namespace CrossConnect
 {
     using System.Collections.Generic;
@@ -25,11 +32,11 @@ namespace CrossConnect
     using System.Windows;
     using System.Windows.Controls;
 
-    public partial class RemoveBibles : AutoRotatePage
+    public partial class RemoveBibles
     {
         #region Fields
 
-        private bool isInSelectionChanged = false;
+        private bool _isInSelectionChanged;
 
         #endregion Fields
 
@@ -47,37 +54,43 @@ namespace CrossConnect
         private void LoadList()
         {
             SelectList.Items.Clear();
-            Dictionary<string, SwordBook> BiblesAndCommentaries = App.installedBibles.installedBibles.Concat(App.installedBibles.installedCommentaries).ToDictionary(x => x.Key, x => x.Value);
-            foreach (var book in BiblesAndCommentaries)
+            Dictionary<string, SwordBook> biblesAndCommentaries =
+                App.InstalledBibles.InstalledBibles.Concat(App.InstalledBibles.InstalledCommentaries).ToDictionary(
+                    x => x.Key, x => x.Value);
+            foreach (var book in biblesAndCommentaries)
             {
-                TextBlock block = new TextBlock();
-                block.Text = book.Value.Name;
-                block.Tag = book.Value.sbmd.Initials;
-                block.TextWrapping = TextWrapping.Wrap;
+                var block = new TextBlock
+                                {
+                                    Text = book.Value.Name,
+                                    Tag = book.Value.Sbmd.Initials,
+                                    TextWrapping = TextWrapping.Wrap
+                                };
                 SelectList.Items.Add(block);
             }
         }
 
-        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        private void PhoneApplicationPageLoaded(object sender, RoutedEventArgs e)
         {
-            PageTitle.Text = Translations.translate("Select bible to delete");
+            PageTitle.Text = Translations.Translate("Select bible to delete");
             LoadList();
         }
 
-        private void SelectList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SelectListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (isInSelectionChanged)
+            if (_isInSelectionChanged)
             {
                 return;
             }
-            isInSelectionChanged = true;
+            _isInSelectionChanged = true;
             SwordBook foundBook = null;
             string foundKey = "";
-            string index = (string)((TextBlock)e.AddedItems[0]).Tag;
-            Dictionary<string, SwordBook> BiblesAndCommentaries = App.installedBibles.installedBibles.Concat(App.installedBibles.installedCommentaries).ToDictionary(x => x.Key, x => x.Value);
-            foreach (var book in BiblesAndCommentaries)
+            var index = (string) ((TextBlock) e.AddedItems[0]).Tag;
+            Dictionary<string, SwordBook> biblesAndCommentaries =
+                App.InstalledBibles.InstalledBibles.Concat(App.InstalledBibles.InstalledCommentaries).ToDictionary(
+                    x => x.Key, x => x.Value);
+            foreach (var book in biblesAndCommentaries)
             {
-                if (book.Value.sbmd.Initials.Equals(index))
+                if (book.Value.Sbmd.Initials.Equals(index))
                 {
                     foundBook = book.Value;
                     foundKey = book.Key;
@@ -85,33 +98,36 @@ namespace CrossConnect
                 }
             }
 
-            if (App.installedBibles.installedBibles.Count == 1 && App.installedBibles.installedBibles.ContainsKey(foundKey))
+            if (App.InstalledBibles.InstalledBibles.Count == 1 &&
+                App.InstalledBibles.InstalledBibles.ContainsKey(foundKey))
             {
-                MessageBox.Show(Translations.translate("You must have at least one bible"));
+                MessageBox.Show(Translations.Translate("You must have at least one bible"));
             }
             else
             {
-                MessageBoxResult result = MessageBox.Show(Translations.translate("Delete?"), "", MessageBoxButton.OKCancel);
+                MessageBoxResult result = MessageBox.Show(Translations.Translate("Delete?"), "",
+                                                          MessageBoxButton.OKCancel);
                 if (result.Equals(MessageBoxResult.OK))
                 {
-                    for (int i = App.openWindows.Count() - 1; i >= 0; i--)
+                    for (int i = App.OpenWindows.Count() - 1; i >= 0; i--)
                     {
-                        if (App.openWindows[i].state.bibleToLoad.Equals(foundBook.sbmd.internalName) && App.mainWindow != null)
+                        if (foundBook != null && (App.OpenWindows[i].State.BibleToLoad.Equals(foundBook.Sbmd.InternalName) &&
+                                                  App.MainWindow != null))
                         {
-                            App.openWindows.RemoveAt(i);
-                            App.mainWindow.ReDrawWindows();
+                            App.OpenWindows.RemoveAt(i);
+                            App.MainWindow.ReDrawWindows();
                         }
                     }
-                    foundBook.RemoveBible();
-                    if (App.installedBibles.installedBibles.ContainsKey(foundKey))
+                    if (foundBook != null) foundBook.RemoveBible();
+                    if (App.InstalledBibles.InstalledBibles.ContainsKey(foundKey))
                     {
-                        App.installedBibles.installedBibles.Remove(foundKey);
+                        App.InstalledBibles.InstalledBibles.Remove(foundKey);
                     }
                     else
                     {
-                        App.installedBibles.installedCommentaries.Remove(foundKey);
+                        App.InstalledBibles.InstalledCommentaries.Remove(foundKey);
                     }
-                    App.installedBibles.save();
+                    App.InstalledBibles.Save();
                     LoadList();
                 }
                 else
@@ -119,7 +135,7 @@ namespace CrossConnect
                     SelectList.SelectedItem = null;
                 }
             }
-            isInSelectionChanged = false;
+            _isInSelectionChanged = false;
         }
 
         #endregion Methods

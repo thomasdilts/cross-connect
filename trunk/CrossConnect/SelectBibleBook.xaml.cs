@@ -1,23 +1,30 @@
-﻿/// <summary>
-/// Distribution License:
-/// CrossConnect is free software; you can redistribute it and/or modify it under
-/// the terms of the GNU General Public License, version 3 as published by
-/// the Free Software Foundation. This program is distributed in the hope
-/// that it will be useful, but WITHOUT ANY WARRANTY; without even the
-/// implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// See the GNU General Public License for more details.
-///
-/// The License is available on the internet at:
-///       http://www.gnu.org/copyleft/gpl.html
-/// or by writing to:
-///      Free Software Foundation, Inc.
-///      59 Temple Place - Suite 330
-///      Boston, MA 02111-1307, USA
-/// </summary>
-/// <copyright file="SelectBibleBook.cs" company="Thomas Dilts">
-///     Thomas Dilts. All rights reserved.
-/// </copyright>
-/// <author>Thomas Dilts</author>
+﻿#region Header
+
+// <copyright file="SelectBibleBook.xaml.cs" company="Thomas Dilts">
+//
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@chaniel.se
+// </summary>
+// <author>Thomas Dilts</author>
+
+#endregion Header
+
 namespace CrossConnect
 {
     using System;
@@ -29,29 +36,28 @@ namespace CrossConnect
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Shell;
 
-    using SwordBackend;
+    using Sword.reader;
 
-    public partial class SelectBibleBook : AutoRotatePage
+    public partial class SelectBibleBook
     {
         #region Fields
 
-        private static Color[] colorConversionScheme = 
-        {
-            (Color)Application.Current.Resources["PhoneForegroundColor"],
-            Color.FromArgb(255,0xD2,0x69,0x1E), //chochlate
-            Color.FromArgb(255,0x00,0xce,0xd1), //dark turqoise
-            Color.FromArgb(255,0xff,0x14,0x39), //deep pink
-            Color.FromArgb(255,0xa9,0xa9,0xa9), //darkgrey
-            Color.FromArgb(255,0xb8,0x86,0x0b), //darkgoldenrod
-            Color.FromArgb(255,0x8f,0xbc,0x8f), //dark seagreen
-            Color.FromArgb(255,0x8a,0x2b,0xe2), //blueviolet
-            Color.FromArgb(255,0xff,0x8c,0x00), //dark orange
-            Color.FromArgb(255,0x00,0xbf,0xff), //deep skyblue
-            Color.FromArgb(255,0xdc,0x14,0x3c), //crimson
+        private static readonly Color[] ColorConversionScheme = 
+            {
+                (Color) Application.Current.Resources["PhoneForegroundColor"],
+                Color.FromArgb(255, 0xD2, 0x69, 0x1E), //chochlate
+                Color.FromArgb(255, 0x00, 0xce, 0xd1), //dark turqoise
+                Color.FromArgb(255, 0xff, 0x14, 0x39), //deep pink
+                Color.FromArgb(255, 0xa9, 0xa9, 0xa9), //darkgrey
+                Color.FromArgb(255, 0xb8, 0x86, 0x0b), //darkgoldenrod
+                Color.FromArgb(255, 0x8f, 0xbc, 0x8f), //dark seagreen
+                Color.FromArgb(255, 0x8a, 0x2b, 0xe2), //blueviolet
+                Color.FromArgb(255, 0xff, 0x8c, 0x00), //dark orange
+                Color.FromArgb(255, 0x00, 0xbf, 0xff), //deep skyblue
+                Color.FromArgb(255, 0xdc, 0x14, 0x3c) //crimson
+            };
 
-        };
-
-        private ButtonWindowSpecs usingNowSpec = null;
+        private ButtonWindowSpecs _usingNowSpec;
 
         #endregion Fields
 
@@ -66,7 +72,7 @@ namespace CrossConnect
 
         #region Methods
 
-        public void reloadWindow(ButtonWindowSpecs buttonWindow)
+        public void ReloadWindow(ButtonWindowSpecs buttonWindow)
         {
             try
             {
@@ -74,85 +80,97 @@ namespace CrossConnect
                 {
                     int butWidth = 96;
                     int butHeight = 70;
-                    switch (buttonWindow.butSize)
+                    switch (buttonWindow.ButSize)
                     {
-                        case ButtonSize.LARGE:
+                        case ButtonSize.Large:
                             butWidth = 200;
                             butHeight = 70;
                             break;
-                        case ButtonSize.MEDIUM:
+                        case ButtonSize.Medium:
                             butWidth = 96;
                             butHeight = 70;
                             break;
-                        case ButtonSize.SMALL:
+                        case ButtonSize.Small:
                             if (buttonWindow.NumButtons < 50)
                             {
-                                double sideLength = System.Math.Sqrt(((App.Current.Host.Content.ActualWidth * App.Current.Host.Content.ActualHeight) / buttonWindow.NumButtons)) / 1.15;
-                                if (sideLength * 2 > (App.Current.Host.Content.ActualWidth > App.Current.Host.Content.ActualHeight ? App.Current.Host.Content.ActualHeight : App.Current.Host.Content.ActualWidth))
+                                double sideLength =
+                                    Math.Sqrt(((Application.Current.Host.Content.ActualWidth*
+                                                Application.Current.Host.Content.ActualHeight)/buttonWindow.NumButtons))/
+                                    1.15;
+                                if (sideLength*2 >
+                                    (Application.Current.Host.Content.ActualWidth >
+                                     Application.Current.Host.Content.ActualHeight
+                                         ? Application.Current.Host.Content.ActualHeight
+                                         : Application.Current.Host.Content.ActualWidth))
                                 {
-                                    sideLength = sideLength / 2;
+                                    sideLength = sideLength/2;
                                 }
-                                butWidth = (int)sideLength;
-                                butHeight = (int)sideLength;
+                                butWidth = (int) sideLength;
+                                butHeight = (int) sideLength;
                             }
                             break;
                     }
 
-                    PageTitle.Text = Translations.translate(buttonWindow.title);
-                    usingNowSpec = buttonWindow;
+                    PageTitle.Text = Translations.Translate(buttonWindow.Title);
+                    _usingNowSpec = buttonWindow;
                     ScrollContentGrid.Children.Clear();
                     ScrollContentGrid.ColumnDefinitions.Clear();
                     ScrollContentGrid.RowDefinitions.Clear();
                     double screenWidth = 0;
-                    double screenHeight = 0;
-                    PageOrientation orient = (App.Current.RootVisual as PhoneApplicationFrame).Orientation;
-                    if (orient == PageOrientation.Portrait || orient == PageOrientation.PortraitDown || orient == PageOrientation.PortraitUp || orient == PageOrientation.None)
+                    var phoneApplicationFrame = Application.Current.RootVisual as PhoneApplicationFrame;
+                    if (phoneApplicationFrame != null)
                     {
-                        screenWidth = App.Current.Host.Content.ActualWidth;
-                        screenHeight = App.Current.Host.Content.ActualHeight;
-                    }
-                    else
-                    {
-                        screenWidth = App.Current.Host.Content.ActualHeight;
-                        screenHeight = App.Current.Host.Content.ActualWidth;
+                        PageOrientation orient = phoneApplicationFrame.Orientation;
+                        if (orient == PageOrientation.Portrait || orient == PageOrientation.PortraitDown ||
+                            orient == PageOrientation.PortraitUp || orient == PageOrientation.None)
+                        {
+                            screenWidth = Application.Current.Host.Content.ActualWidth;
+                        }
+                        else
+                        {
+                            screenWidth = Application.Current.Host.Content.ActualHeight;
+                        }
                     }
 
-                    int numCols = (int)screenWidth / butWidth;
+                    int numCols = (int) screenWidth/butWidth;
                     if (numCols == 0)
                     {
                         numCols = 1;
                     }
-                    int numRows = buttonWindow.NumButtons / numCols;
+                    int numRows = buttonWindow.NumButtons/numCols;
                     for (int i = 0; i <= numRows; i++)
                     {
-                        RowDefinition row = new RowDefinition();
-                        row.Height = GridLength.Auto;
+                        var row = new RowDefinition {Height = GridLength.Auto};
                         ScrollContentGrid.RowDefinitions.Add(row);
 
-                        for (int j = 0; j < numCols && ((i * numCols) + j) < buttonWindow.NumButtons; j++)
+                        for (int j = 0; j < numCols && ((i*numCols) + j) < buttonWindow.NumButtons; j++)
                         {
-                            ColumnDefinition col = new ColumnDefinition();
-                            col.Width = GridLength.Auto;
+                            var col = new ColumnDefinition {Width = GridLength.Auto};
                             ScrollContentGrid.ColumnDefinitions.Add(col);
-                            Button but = new Button();
-                            but.Content = buttonWindow.text[(i * numCols) + j];
-                            but.Margin = new Thickness(-9, -9, -9, -9);
-                            but.MaxHeight = butHeight;
-                            but.MinHeight = butHeight;
-                            but.MaxWidth = butWidth;
-                            but.MinWidth = butWidth;
-                            but.FontSize = (int)((double)butHeight / 3.5);
-                            but.Visibility = System.Windows.Visibility.Visible;
-                            if (buttonWindow.colors != null)
+                            var but = new Button
+                                          {
+                                              Content = buttonWindow.Text[(i*numCols) + j],
+                                              Margin = new Thickness(-9, -9, -9, -9),
+                                              MaxHeight = butHeight,
+                                              MinHeight = butHeight,
+                                              MaxWidth = butWidth,
+                                              MinWidth = butWidth,
+                                              FontSize = (int) (butHeight/3.5),
+                                              Visibility = Visibility.Visible
+                                          };
+                            if (buttonWindow.Colors != null)
                             {
-                                but.Foreground = new SolidColorBrush(colorConversionScheme[buttonWindow.colors[(i * numCols) + j]]);
+                                but.Foreground =
+                                    new SolidColorBrush(ColorConversionScheme[buttonWindow.Colors[(i*numCols) + j]]);
                             }
 
                             Grid.SetRow(but, i);
                             Grid.SetColumn(but, j);
                             ScrollContentGrid.Children.Add(but);
-                            but.Click += new RoutedEventHandler(buttonWindow.stage == 0 ? (RoutedEventHandler)First_Click : (RoutedEventHandler)Second_Click);
-                            but.Tag = buttonWindow.value[(i * numCols) + j];
+                            but.Click += buttonWindow.Stage == 0
+                                             ? (RoutedEventHandler) FirstClick
+                                             : (RoutedEventHandler) SecondClick;
+                            but.Tag = buttonWindow.Value[(i*numCols) + j];
                         }
                     }
                     LayoutRoot.UpdateLayout();
@@ -160,29 +178,34 @@ namespace CrossConnect
                     ScrollContentGrid.UpdateLayout();
                 }
             }
-            catch(Exception eee)
+            catch (Exception eee)
             {
                 Debug.WriteLine("strange crash =" + eee.Message + "; " + eee.StackTrace);
             }
         }
 
-        private void First_Click(object sender, RoutedEventArgs e)
+        private void FirstClick(object sender, RoutedEventArgs e)
         {
-            PhoneApplicationService.Current.State["SelectBibleBookFirsSelection"] = 0;
-            object openWindowIndex = null;
+            PhoneApplicationService.Current.State["SelectBibleBookFirstSelection"] = 0;
+            object openWindowIndex;
             if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
             {
                 openWindowIndex = 0;
             }
-            ButtonWindowSpecs specs = App.openWindows[(int)openWindowIndex].state.source.GetButtonWindowSpecs(1, (int)((Button)sender).Tag);
+            ButtonWindowSpecs specs = App.OpenWindows[(int) openWindowIndex].State.Source.GetButtonWindowSpecs(1,
+                                                                                                               (int)
+                                                                                                               ((Button)
+                                                                                                                sender).
+                                                                                                                   Tag);
             if (specs != null)
             {
-                PhoneApplicationService.Current.State["SelectBibleBookFirsSelection"]=(int)((Button)sender).Tag;
-                reloadWindow(specs);
+                PhoneApplicationService.Current.State["SelectBibleBookFirstSelection"] = (int) ((Button) sender).Tag;
+                ReloadWindow(specs);
             }
             else
             {
-                App.openWindows[(int)openWindowIndex].state.source.moveChapterVerse((int)((Button)sender).Tag,0,false);
+                App.OpenWindows[(int) openWindowIndex].State.Source.MoveChapterVerse((int) ((Button) sender).Tag, 0,
+                                                                                     false);
                 PhoneApplicationService.Current.State["skipWindowSettings"] = true;
                 if (NavigationService.CanGoBack)
                 {
@@ -191,35 +214,36 @@ namespace CrossConnect
             }
         }
 
-        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        private void PhoneApplicationPageLoaded(object sender, RoutedEventArgs e)
         {
-            object openWindowIndex = null;
+            object openWindowIndex;
             if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
             {
                 openWindowIndex = 0;
             }
-            reloadWindow(App.openWindows[(int)openWindowIndex].state.source.GetButtonWindowSpecs(0,0));
+            ReloadWindow(App.OpenWindows[(int) openWindowIndex].State.Source.GetButtonWindowSpecs(0, 0));
         }
 
-        private void PhoneApplicationPage_OrientationChanged(object sender, OrientationChangedEventArgs e)
+        private void PhoneApplicationPageOrientationChanged(object sender, OrientationChangedEventArgs e)
         {
-            reloadWindow(usingNowSpec);
+            ReloadWindow(_usingNowSpec);
         }
 
-        private void Second_Click(object sender, RoutedEventArgs e)
+        private void SecondClick(object sender, RoutedEventArgs e)
         {
-            object openWindowIndex = null;
+            object openWindowIndex;
             if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
             {
                 openWindowIndex = 0;
             }
-            object SelectBibleBookFirsSelection = null;
-            int selectBibleBookFirsSelection = 0;
-            if (PhoneApplicationService.Current.State.TryGetValue("SelectBibleBookFirsSelection", out SelectBibleBookFirsSelection))
+            object selectBibleBookFirstSelection;
+            if (PhoneApplicationService.Current.State.TryGetValue("SelectBibleBookFirstSelection",
+                                                                  out selectBibleBookFirstSelection))
             {
-                selectBibleBookFirsSelection = (int)PhoneApplicationService.Current.State["SelectBibleBookFirsSelection"];
+                selectBibleBookFirstSelection = 0;
             }
-            App.openWindows[(int)openWindowIndex].state.source.moveChapterVerse((int)((Button)sender).Tag + selectBibleBookFirsSelection, 0,false);
+            App.OpenWindows[(int) openWindowIndex].State.Source.MoveChapterVerse(
+                (int)((Button)sender).Tag + (int)selectBibleBookFirstSelection, 0, false);
             PhoneApplicationService.Current.State["skipWindowSettings"] = true;
             if (NavigationService.CanGoBack)
             {

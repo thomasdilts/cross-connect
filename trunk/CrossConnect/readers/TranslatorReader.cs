@@ -1,51 +1,53 @@
-﻿/// <summary>
-/// Distribution License:
-/// CrossConnect is free software; you can redistribute it and/or modify it under
-/// the terms of the GNU General Public License, version 3 as published by
-/// the Free Software Foundation. This program is distributed in the hope
-/// that it will be useful, but WITHOUT ANY WARRANTY; without even the
-/// implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// See the GNU General Public License for more details.
-///
-/// The License is available on the internet at:
-///       http://www.gnu.org/copyleft/gpl.html
-/// or by writing to:
-///      Free Software Foundation, Inc.
-///      59 Temple Place - Suite 330
-///      Boston, MA 02111-1307, USA
-/// </summary>
-/// <copyright file="TranslatorReader.cs" company="Thomas Dilts">
-///     Thomas Dilts. All rights reserved.
-/// </copyright>
-/// <author>Thomas Dilts</author>
+﻿#region Header
+
+// <copyright file="TranslatorReader.cs" company="Thomas Dilts">
+//
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@chaniel.se
+// </summary>
+// <author>Thomas Dilts</author>
+
+#endregion Header
+
 namespace CrossConnect.readers
 {
-    using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Runtime.Serialization;
-    using System.Text;
-    using System.Text.RegularExpressions;
 
-    using SwordBackend;
+    using Sword.reader;
 
     /// <summary>
-    /// Load from a file all the book and verse pointers to the bzz file so that
-    /// we can later read the bzz file quickly and efficiently.
+    ///   Load from a file all the book and verse pointers to the bzz file so that
+    ///   we can later read the bzz file quickly and efficiently.
     /// </summary>
-    /// <param name="path">The path to where the ot.bzs,ot.bzv and ot.bzz and nt files are</param>
     [DataContract(Name = "TranslatorReader")]
-    [KnownType(typeof(ChapterPos))]
-    [KnownType(typeof(BookPos))]
-    [KnownType(typeof(VersePos))]
+    [KnownType(typeof (ChapterPos))]
+    [KnownType(typeof (BookPos))]
+    [KnownType(typeof (VersePos))]
     public class TranslatorReader : BibleZtextReader
     {
         #region Fields
 
         [DataMember]
-        public string displayText = string.Empty;
+        public string DisplayText = string.Empty;
 
-        private bool[] isTranslateable;
-        private string[] toTranslate;
+        private bool[] _isTranslateable;
+        private string[] _toTranslate;
 
         #endregion Fields
 
@@ -70,102 +72,89 @@ namespace CrossConnect.readers
 
         public override bool IsHearable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public override bool IsPageable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public override bool IsSearchable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public override bool IsSynchronizeable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public override bool IsTranslateable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         #endregion Properties
 
         #region Methods
 
-        public override void GetInfo(out int bookNum, out int absouteChaptNum, out int relChaptNum, out int verseNum, out string fullName, out string title)
+        public override void GetInfo(out int bookNum, out int absouteChaptNum, out int relChaptNum, out int verseNum,
+            out string fullName, out string title)
         {
             verseNum = 0;
             absouteChaptNum = 0;
             bookNum = 0;
             relChaptNum = 0;
             fullName = "";
-            title = Translations.translate("Translation");
+            title = Translations.Translate("Translation");
         }
 
         public void TranslateThis(string[] toTranslate, bool[] isTranslateable, string fromLanguage)
         {
-            this.toTranslate=toTranslate;
-            this.isTranslateable=isTranslateable;
-            TranslateByGoogle ggl=new TranslateByGoogle();
-            for (int i = 0; i < isTranslateable.Length; i++)
+            _toTranslate = toTranslate;
+            _isTranslateable = isTranslateable;
+            var ggl = new TranslateByGoogle();
+            for (var i = 0; i < isTranslateable.Length; i++)
             {
-                if(isTranslateable[i])
-                {
-                    ggl.GetGoogleTranslationAsync(toTranslate[i],fromLanguage,new TranslateByGoogle.GoogleTranslatedTextReturnEvent(TextTranslatedByGoogle));
-                    break;
-                }
+                if (!isTranslateable[i]) continue;
+                ggl.GetGoogleTranslationAsync(toTranslate[i], fromLanguage, TextTranslatedByGoogle);
+                break;
             }
         }
 
-        protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml = true)
+        protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor,
+            string htmlForegroundColor, string htmlPhoneAccentColor,
+            double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml = true)
         {
             //Debug.WriteLine("SearchReader GetChapterHtml.text=" + displayText);
-            return HtmlHeader(displaySettings, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize)
-                + displayText + "</body></html>";
+            return HtmlHeader(displaySettings, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor,
+                              htmlFontSize)
+                   + DisplayText + "</body></html>";
         }
 
         private void TextTranslatedByGoogle(string translation, bool isError)
         {
-            displayText="";
-            if(isError)
+            DisplayText = "";
+            if (isError)
             {
-                displayText=translation;
+                DisplayText = translation;
             }
             else
             {
-                for (int i = 0; i < isTranslateable.Length; i++)
+                for (int i = 0; i < _isTranslateable.Length; i++)
                 {
-                    if(isTranslateable[i])
+                    if (_isTranslateable[i])
                     {
-                        displayText+=translation;
+                        DisplayText += translation;
                     }
                     else
                     {
-                        displayText+=toTranslate[i];
+                        DisplayText += _toTranslate[i];
                     }
                 }
             }
-            raiseSourceChangedEvent();
+            RaiseSourceChangedEvent();
         }
 
         #endregion Methods

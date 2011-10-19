@@ -1,37 +1,46 @@
-﻿/// <summary>
-/// Distribution License:
-/// CrossConnect is free software; you can redistribute it and/or modify it under
-/// the terms of the GNU General Public License, version 3 as published by
-/// the Free Software Foundation. This program is distributed in the hope
-/// that it will be useful, but WITHOUT ANY WARRANTY; without even the
-/// implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// See the GNU General Public License for more details.
-///
-/// The License is available on the internet at:
-///       http://www.gnu.org/copyleft/gpl.html
-/// or by writing to:
-///      Free Software Foundation, Inc.
-///      59 Temple Place - Suite 330
-///      Boston, MA 02111-1307, USA
-/// </summary>
-/// <copyright file="BibleNames.cs" company="Thomas Dilts">
-///     Thomas Dilts. All rights reserved.
-/// </copyright>
-/// <author>Thomas Dilts</author>
-namespace SwordBackend
+﻿#region Header
+
+// <copyright file="BibleNames.cs" company="Thomas Dilts">
+//
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@chaniel.se
+// </summary>
+// <author>Thomas Dilts</author>
+
+#endregion Header
+
+namespace Sword
 {
     using System.Globalization;
     using System.IO;
     using System.Reflection;
     using System.Xml;
 
+    using Sword.reader;
+
     public class BibleNames
     {
         #region Fields
 
-        private string[] fullNames = new string[BibleZtextReader.BOOKS_IN_BIBLE];
-        private bool isShortNamesExisting = true;
-        private string[] shortNames = new string[BibleZtextReader.BOOKS_IN_BIBLE];
+        private readonly string[] fullNames = new string[BibleZtextReader.BooksInBible];
+        private readonly bool isShortNamesExisting = true;
+        private readonly string[] shortNames = new string[BibleZtextReader.BooksInBible];
 
         #endregion Fields
 
@@ -39,7 +48,7 @@ namespace SwordBackend
 
         public BibleNames(string isoLang2digitCode)
         {
-            Assembly assem = Assembly.GetExecutingAssembly();
+            var assem = Assembly.GetExecutingAssembly();
             string isocode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLower();
             string name = CultureInfo.CurrentCulture.Name.Replace('-', '_');
             Stream stream = null;
@@ -54,28 +63,30 @@ namespace SwordBackend
                 stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + name + ".xml");
             }
 
-            if(stream==null)
+            if (stream == null)
             {
                 stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + isoLang2digitCode + ".xml");
-                if(stream==null)
+                if (stream == null)
                 {
                     stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_en.xml");
                 }
             }
-            bool isRTL = isoLang2digitCode.Equals("iw") || isoLang2digitCode.Equals("he") || isoLang2digitCode.Equals("ar") || isoLang2digitCode.Equals("ar_EG") || isoLang2digitCode.Equals("fa");
+            bool isRTL = isoLang2digitCode.Equals("iw") || isoLang2digitCode.Equals("he") ||
+                         isoLang2digitCode.Equals("ar") || isoLang2digitCode.Equals("ar_EG") ||
+                         isoLang2digitCode.Equals("fa");
             int numberBadShortNames = 0;
-            using (XmlReader reader = XmlReader.Create(stream))
+            using (var reader = XmlReader.Create(stream))
             {
                 // Parse the file and get each of the nodes.
                 while (reader.Read())
                 {
-                    if (reader.NodeType==XmlNodeType.Element)
+                    if (reader.NodeType == XmlNodeType.Element)
                     {
                         if (reader.Name.ToLower().Equals("book") && reader.HasAttributes)
                         {
-                            string shortName="";
-                            string fullName="";
-                            int keyNumber=0;
+                            string shortName = "";
+                            string fullName = "";
+                            int keyNumber = 0;
                             reader.MoveToFirstAttribute();
                             do
                             {
@@ -96,7 +107,7 @@ namespace SwordBackend
                             {
                                 numberBadShortNames++;
                             }
-                            shortNames[keyNumber]=shortName;
+                            shortNames[keyNumber] = shortName;
                             fullNames[keyNumber] = fullName;
                         }
                     }
@@ -112,10 +123,7 @@ namespace SwordBackend
 
         public bool existsShortNames
         {
-            get
-            {
-                return isShortNamesExisting;
-            }
+            get { return isShortNamesExisting; }
         }
 
         #endregion Properties
@@ -144,7 +152,7 @@ namespace SwordBackend
 
         public string Reverse(string str)
         {
-            char[] charArray = str.ToCharArray();
+            var charArray = str.ToCharArray();
             int len = str.Length - 1;
 
             for (int i = 0; i < len; i++, len--)

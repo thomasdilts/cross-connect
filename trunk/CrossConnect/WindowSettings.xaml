@@ -15,8 +15,8 @@
     mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     shell:SystemTray.IsVisible="False" xmlns:my="clr-namespace:CrossConnect"
-    Loaded="PhoneApplicationPage_Loaded" 
-    BackKeyPress="PhoneApplicationPage_BackKeyPress">
+    Loaded="PhoneApplicationPageLoaded" 
+    BackKeyPress="PhoneApplicationPageBackKeyPress">
 
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -66,7 +66,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <toolkit:ListPicker Name="selectDocumentType"  Grid.Row="0"  Header="Select the window type" SelectionChanged="selectDocumentType_SelectionChanged" >
+                <toolkit:ListPicker Name="selectDocumentType"  Grid.Row="0"  Header="Select the window type" SelectionChanged="SelectDocumentTypeSelectionChanged" >
 
                 </toolkit:ListPicker>
                 <toolkit:ListPicker Name="selectPlanType"  Grid.Row="1"  Header="Select the daily plan">
@@ -80,10 +80,10 @@
                 <toolkit:ListPicker Name="selectDocument"   Grid.Row="3"  Header="Select the bible">
                     <sys:String>dark</sys:String>
                 </toolkit:ListPicker>
-                <Button Content="Select book and chapter" Grid.Row="4"  Name="butSelectChapter"  Click="butSelectChapter_Click" />
-                <Button Content="Search" Grid.Row="5"  Name="butSearch"  Click="butSearch_Click" />
+                <Button Content="Select book and chapter" Grid.Row="4"  Name="butSelectChapter"  Click="ButSelectChapterClick" />
+                <Button Content="Search" Grid.Row="5"  Name="butSearch"  Click="ButSearchClick" />
                 <phone:WebBrowser Grid.Row="6" Margin="0 0 0 0"  Name="webBrowser1"  MinHeight="50" />
-                <Slider Grid.Row="7" Maximum="37.0" Minimum="5.0" ValueChanged="sliderTextSize_ValueChanged" Name="sliderTextSize" />
+                <Slider Grid.Row="7" Maximum="37.0" Minimum="5.0" ValueChanged="SliderTextSizeValueChanged" Name="sliderTextSize" />
             </Grid>
     </Grid>
     </ScrollViewer>

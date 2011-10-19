@@ -1,139 +1,171 @@
-///
-/// <summary> Distribution License:
-/// CrossConnect is free software; you can redistribute it and/or modify it under
-/// the terms of the GNU Lesser General Public License, version 2.1 as published by
-/// the Free Software Foundation. This program is distributed in the hope
-/// that it will be useful, but WITHOUT ANY WARRANTY; without even the
-/// implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// See the GNU Lesser General Public License for more details.
-///
-/// The License is available on the internet at:
-///       http://www.gnu.org/copyleft/lgpl.html
-/// or by writing to:
-///      Free Software Foundation, Inc.
-///      59 Temple Place - Suite 330
-///      Boston, MA 02111-1307, USA
-///
-/// Copyright: 2005
-///     The copyright to this program is held by it's authors.
-///
-/// ID: $Id: ConfigEntryTable.java 2099 2011-03-07 17:13:00Z dmsmith $
-/// 
-/// Converted from Java to C# by Thomas Dilts with the help of a program from www.tangiblesoftwaresolutions.com
-/// called 'Java to VB & C# Converter' on 2011-04-12 </summary>
-/// 
-namespace SwordBackend
+#region Header
+
+// <copyright file="ConfigEntryTable.cs" company="Thomas Dilts">
+//
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@chaniel.se
+// </summary>
+// <author>Thomas Dilts</author>
+
+#endregion Header
+
+namespace Sword
 {
     using System.Collections.Generic;
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
 
-    ///
-    /// <summary> A utility class for loading the entries in a Sword book's conf file. Since
-    /// the conf files are manually maintained, there can be all sorts of errors in
-    /// them. This class does robust checking and reporting.
+    ///<summary>
+    ///  A utility class for loading the entries in a Sword book's conf file. Since
+    ///  the conf files are manually maintained, there can be all sorts of errors in
+    ///  them. This class does robust checking and reporting.
     /// 
-    /// <p>
-    /// Config file format. See also: <a href=
-    /// "http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout">
-    /// http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout</a>
+    ///  <p>
+    ///    Config file format. See also: <a href = "http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout">
+    ///                                    http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout</a>
     /// 
-    /// <p>
-    /// The contents of the About field are in rtf.
-    /// <p>
-    /// \ is used as a continuation line.
-    ///  </summary>
-    /// <seealso cref= gnu.lgpl.License for license details.<br>
-    ///      The copyright to this program is held by it's authors.
-    /// @author Mark Goodwin [mark at thorubio dot org]
-    /// @author Joe Walker [joe at eireneh dot com]
-    /// @author Jacky Cheung
-    /// @author DM Smith [dmsmith555 at yahoo dot com] </seealso>
-    /// 
+    ///    <p>
+    ///      The contents of the About field are in rtf.
+    ///      <p>
+    ///        \ is used as a continuation line.
+    ///</summary>
+    ///<seealso cref =  gnu.lgpl.License for license details.<br>
+    ///                                                        The copyright to this program is held by it's authors.
+    ///                                                        @author Mark Goodwin [mark at thorubio dot org]
+    ///                                                        @author Joe Walker [joe at eireneh dot com]
+    ///                                                        @author Jacky Cheung
+    ///                                                        @author DM Smith [dmsmith555 at yahoo dot com] </seealso>
     public class ConfigEntryTable
     {
         #region Fields
 
         private const string ENCODING_LATIN1 = "WINDOWS-1252";
 
-        ///    
-        /// <summary>* Sword only recognizes two encodings for its modules: UTF-8 and LATIN1
-        /// Sword uses MS Windows cp1252 for Latin 1 not the standard. Arrgh! </summary>
-        ///     
+        /// <summary>
+        ///   * Sword only recognizes two encodings for its modules: UTF-8 and LATIN1
+        ///   Sword uses MS Windows cp1252 for Latin 1 not the standard. Arrgh!
+        /// </summary>
         private const string ENCODING_UTF8 = "UTF-8";
 
-        private static readonly ConfigEntryType[] COPYRIGHT_INFO = { ConfigEntryType.ABOUT, ConfigEntryType.SHORT_PROMO, ConfigEntryType.DISTRIBUTION_LICENSE, ConfigEntryType.DISTRIBUTION_NOTES, ConfigEntryType.DISTRIBUTION_SOURCE, ConfigEntryType.SHORT_COPYRIGHT, ConfigEntryType.COPYRIGHT, ConfigEntryType.COPYRIGHT_DATE, ConfigEntryType.COPYRIGHT_HOLDER, ConfigEntryType.COPYRIGHT_CONTACT_NAME, ConfigEntryType.COPYRIGHT_CONTACT_ADDRESS, ConfigEntryType.COPYRIGHT_CONTACT_EMAIL, ConfigEntryType.COPYRIGHT_CONTACT_NOTES, ConfigEntryType.COPYRIGHT_NOTES, ConfigEntryType.TEXT_SOURCE };
-        private static readonly ConfigEntryType[] FEATURE_INFO = { ConfigEntryType.FEATURE, ConfigEntryType.GLOBAL_OPTION_FILTER, ConfigEntryType.FONT };
-        private static readonly ConfigEntryType[] HIDDEN = { ConfigEntryType.CIPHER_KEY };
+        private static readonly ConfigEntryType[] COPYRIGHT_INFO = {
+                                                                       ConfigEntryType.About, ConfigEntryType.SHORT_PROMO,
+                                                                       ConfigEntryType.DISTRIBUTION_LICENSE,
+                                                                       ConfigEntryType.DISTRIBUTION_NOTES,
+                                                                       ConfigEntryType.DISTRIBUTION_SOURCE,
+                                                                       ConfigEntryType.SHORT_COPYRIGHT,
+                                                                       ConfigEntryType.COPYRIGHT,
+                                                                       ConfigEntryType.COPYRIGHT_DATE,
+                                                                       ConfigEntryType.COPYRIGHT_HOLDER,
+                                                                       ConfigEntryType.COPYRIGHT_CONTACT_NAME,
+                                                                       ConfigEntryType.COPYRIGHT_CONTACT_ADDRESS,
+                                                                       ConfigEntryType.COPYRIGHT_CONTACT_EMAIL,
+                                                                       ConfigEntryType.COPYRIGHT_CONTACT_NOTES,
+                                                                       ConfigEntryType.COPYRIGHT_NOTES,
+                                                                       ConfigEntryType.TEXT_SOURCE
+                                                                   };
+        private static readonly ConfigEntryType[] FEATURE_INFO = {
+                                                                     ConfigEntryType.FEATURE,
+                                                                     ConfigEntryType.GLOBAL_OPTION_FILTER,
+                                                                     ConfigEntryType.FONT
+                                                                 };
+        private static readonly ConfigEntryType[] HIDDEN = {ConfigEntryType.CIPHER_KEY};
 
-        ///    
-        /// <summary>* If the module's config is tied to a file remember it so that it can be
-        /// updated. </summary>
-        ///     
         // private File configFile;
-        ///    
-        /// <summary>* Pattern that matches a key=value. The key can contain ascii letters,
-        /// numbers, underscore and period. The key must begin at the beginning of
-        /// the line. The = sign following the key may be surrounded by whitespace.
-        /// The value may contain anything, including an = sign. </summary>
-        ///     
+        /// <summary>
+        ///   * If the module's config is tied to a file remember it so that it can be
+        ///   updated.
+        /// </summary>
+        /// <summary>
+        ///   * Pattern that matches a key=value. The key can contain ascii letters,
+        ///   numbers, underscore and period. The key must begin at the beginning of
+        ///   the line. The = sign following the key may be surrounded by whitespace.
+        ///   The value may contain anything, including an = sign.
+        /// </summary>
         private static readonly Regex KEY_VALUE_PATTERN = new Regex("^([A-Za-z0-9_.]+)\\s*=\\s*(.*)$");
 
-        ///    
-        /// <summary>* These are the elements that JSword requires. They are a superset of those
-        /// that Sword requires. </summary>
-        ///     
+        /// <summary>
+        ///   * These are the elements that JSword requires. They are a superset of those
+        ///   that Sword requires.
+        /// </summary>
         /*
          * For documentation purposes at this time. private static final
          * ConfigEntryType[] REQUIRED = { ConfigEntryType.INITIALS,
          * ConfigEntryType.DESCRIPTION, ConfigEntryType.CATEGORY, // may not be
          * present in conf ConfigEntryType.DATA_PATH, ConfigEntryType.MOD_DRV, };
          */
-        private static readonly ConfigEntryType[] LANG_INFO = { ConfigEntryType.LANG, ConfigEntryType.GLOSSARY_FROM, ConfigEntryType.GLOSSARY_TO };
-        private static readonly ConfigEntryType[] SYSTEM_INFO = { ConfigEntryType.A_DATA_PATH, ConfigEntryType.MOD_DRV, ConfigEntryType.SOURCE_TYPE, ConfigEntryType.BLOCK_TYPE, ConfigEntryType.BLOCK_COUNT, ConfigEntryType.COMPRESS_TYPE, ConfigEntryType.ENCODING, ConfigEntryType.MINIMUM_VERSION, ConfigEntryType.OSIS_VERSION, ConfigEntryType.OSIS_Q_TO_TICK, ConfigEntryType.DIRECTION, ConfigEntryType.KEY_TYPE, ConfigEntryType.DISPLAY_LEVEL };
+        private static readonly ConfigEntryType[] LANG_INFO = {
+                                                                  ConfigEntryType.LANG, ConfigEntryType.GLOSSARY_FROM,
+                                                                  ConfigEntryType.GLOSSARY_TO
+                                                              };
+        private static readonly ConfigEntryType[] SYSTEM_INFO = {
+                                                                    ConfigEntryType.ADataPath, ConfigEntryType.MOD_DRV,
+                                                                    ConfigEntryType.SOURCE_TYPE, ConfigEntryType.BLOCK_TYPE
+                                                                    , ConfigEntryType.BLOCK_COUNT,
+                                                                    ConfigEntryType.COMPRESS_TYPE, ConfigEntryType.ENCODING
+                                                                    , ConfigEntryType.MINIMUM_VERSION,
+                                                                    ConfigEntryType.OSIS_VERSION,
+                                                                    ConfigEntryType.OSIS_Q_TO_TICK,
+                                                                    ConfigEntryType.DIRECTION, ConfigEntryType.KEY_TYPE,
+                                                                    ConfigEntryType.DISPLAY_LEVEL
+                                                                };
 
-        ///    
-        /// <summary>* The original name of this config file from mods.d. This is only used for
-        /// managing warnings and errors </summary>
-        ///     
-        private string @internal;
+        /// <summary>
+        ///   * The original name of this config file from mods.d. This is only used for
+        ///   managing warnings and errors
+        /// </summary>
+        private readonly string @internal;
 
-        ///    
-        /// <summary>* A map of lists of unknown config entries. </summary>
-        ///     
-        private Dictionary<string, ConfigEntry> extra;
+        /// <summary>
+        ///   * A map of lists of unknown config entries.
+        /// </summary>
+        private readonly Dictionary<string, ConfigEntry> extra;
 
-        ///    
-        /// <summary>* True if this book is considered questionable. </summary>
-        ///     
+        /// <summary>
+        ///   * A map of lists of known config entries.
+        /// </summary>
+        private readonly Dictionary<ConfigEntryType, ConfigEntry> table;
+
+        /// <summary>
+        ///   * True if this book is considered questionable.
+        /// </summary>
         private bool questionable;
 
-        ///    
-        /// <summary>* A helper for the reading of the conf file. </summary>
-        ///     
+        /// <summary>
+        ///   * A helper for the reading of the conf file.
+        /// </summary>
         private string readahead;
 
-        ///    
-        /// <summary>* True if this book's config type can be used by JSword. </summary>
-        ///     
+        /// <summary>
+        ///   * True if this book's config type can be used by JSword.
+        /// </summary>
         private bool supported;
-
-        ///    
-        /// <summary>* A map of lists of known config entries. </summary>
-        ///     
-        private Dictionary<ConfigEntryType, ConfigEntry> table;
 
         #endregion Fields
 
         #region Constructors
 
-        ///    
-        /// <summary>* Create an empty Sword config for the named book.
-        ///  </summary>
-        /// <param name="bookName">
-        ///            the name of the book </param>
-        ///     
+        /// <summary>
+        ///   * Create an empty Sword config for the named book.
+        /// </summary>
+        /// <param name = "bookName">
+        ///   the name of the book </param>
         public ConfigEntryTable(string bookName)
         {
             table = new Dictionary<ConfigEntryType, ConfigEntry>();
@@ -146,30 +178,23 @@ namespace SwordBackend
 
         #region Properties
 
-        ///    
-        /// <summary>* Returns an Enumeration of all the unknown keys found in the config file. </summary>
-        ///     
+        /// <summary>
+        ///   * Returns an Enumeration of all the unknown keys found in the config file.
+        /// </summary>
         public Dictionary<string, ConfigEntry>.KeyCollection ExtraKeys
         {
-            get
-            {
-                return extra.Keys;
-            }
+            get { return extra.Keys; }
         }
 
         public string internalName
         {
-            get
-            {
-                return @internal;
-            }
+            get { return @internal; }
         }
 
-        ///    
-        /// <summary>* Determines whether the Sword Book is enciphered.
-        ///  </summary>
+        /// <summary>
+        ///   * Determines whether the Sword Book is enciphered.
+        /// </summary>
         /// <returns> true if enciphered </returns>
-        ///     
         public bool isEnciphered
         {
             get
@@ -179,11 +204,10 @@ namespace SwordBackend
             }
         }
 
-        ///    
-        /// <summary>* Determines whether the Sword Book is enciphered and without a key.
-        ///  </summary>
+        /// <summary>
+        ///   * Determines whether the Sword Book is enciphered and without a key.
+        /// </summary>
         /// <returns> true if enciphered </returns>
-        ///     
         public bool isLocked
         {
             get
@@ -193,37 +217,28 @@ namespace SwordBackend
             }
         }
 
-        ///    
-        /// <summary>* Determines whether the Sword Book's conf is supported by JSword. </summary>
-        ///     
+        /// <summary>
+        ///   * Determines whether the Sword Book's conf is supported by JSword.
+        /// </summary>
         public bool isQuestionable
         {
-            get
-            {
-                return questionable;
-            }
+            get { return questionable; }
         }
 
-        ///    
-        /// <summary>* Determines whether the Sword Book's conf is supported by JSword. </summary>
-        ///     
+        /// <summary>
+        ///   * Determines whether the Sword Book's conf is supported by JSword.
+        /// </summary>
         public bool isSupported
         {
-            get
-            {
-                return supported;
-            }
+            get { return supported; }
         }
 
-        ///    
-        /// <summary>* Returns an Enumeration of all the known keys found in the config file. </summary>
-        ///     
+        /// <summary>
+        ///   * Returns an Enumeration of all the known keys found in the config file.
+        /// </summary>
         public Dictionary<ConfigEntryType, ConfigEntry>.KeyCollection Keys
         {
-            get
-            {
-                return table.Keys;
-            }
+            get { return table.Keys; }
         }
 
         /*
@@ -258,46 +273,40 @@ namespace SwordBackend
             return true;
         }
          * */
-        ///    
-        /// <summary>* Gets the unlock key for the module.
-        ///  </summary>
+        /// <summary>
+        ///   * Gets the unlock key for the module.
+        /// </summary>
         /// <returns> the unlock key, if any, null otherwise. </returns>
-        ///     
         public string UnlockKey
         {
-            get
-            {
-                return (string) getValue(ConfigEntryType.CIPHER_KEY);
-            }
+            get { return (string) getValue(ConfigEntryType.CIPHER_KEY); }
         }
 
         #endregion Properties
 
         #region Methods
 
-        ///    
-        /// <summary>* A helper to create/replace a value for a given type.
-        ///  </summary>
-        /// <param name="type"> </param>
-        /// <param name="aValue"> </param>
-        ///     
+        /// <summary>
+        ///   * A helper to create/replace a value for a given type.
+        /// </summary>
+        /// <param name = "type"> </param>
+        /// <param name = "aValue"> </param>
         public void add(ConfigEntryType type, string aValue)
         {
             if (!table.ContainsKey(type))
             {
-                ConfigEntry ce = new ConfigEntry(@internal, type, aValue);
+                var ce = new ConfigEntry(@internal, type, aValue);
                 table.Add(type, ce);
             }
         }
 
-        ///    
-        /// <summary>* Gets a particular ConfigEntry's value by its type
-        ///  </summary>
-        /// <param name="type">
-        ///            of the ConfigEntry </param>
+        /// <summary>
+        ///   * Gets a particular ConfigEntry's value by its type
+        /// </summary>
+        /// <param name = "type">
+        ///   of the ConfigEntry </param>
         /// <returns> the requested value, the default (if there is no entry) or null
-        ///         (if there is no default) </returns>
-        ///     
+        ///   (if there is no default) </returns>
         public object getValue(ConfigEntryType type)
         {
             ConfigEntry ce = null;
@@ -348,38 +357,36 @@ namespace SwordBackend
             }
         }
 
-        ///    
-        /// <summary>* Load the conf from a buffer. This is used to load conf entries from the
-        /// mods.d.tar.gz file.
-        ///  </summary>
-        /// <param name="buffer">
-        ///            the buffer to load </param>
-        /// <exception cref="IOException"> </exception>
-        ///     
+        /// <summary>
+        ///   * Load the conf from a buffer. This is used to load conf entries from the
+        ///   mods.d.tar.gz file.
+        /// </summary>
+        /// <param name = "buffer">
+        ///   the buffer to load </param>
+        /// <exception cref = "IOException"> </exception>
         public void load(byte[] buffer)
         {
             load(new MemoryStream(buffer));
         }
 
-        ///    
-        /// <summary>* Determine whether this ConfigEntryTable has the ConfigEntry and it
-        /// matches the value.
-        ///  </summary>
-        /// <param name="type">
-        ///            The kind of ConfigEntry to look for </param>
-        /// <param name="search">
-        ///            the value to match against </param>
+        /// <summary>
+        ///   * Determine whether this ConfigEntryTable has the ConfigEntry and it
+        ///   matches the value.
+        /// </summary>
+        /// <param name = "type">
+        ///   The kind of ConfigEntry to look for </param>
+        /// <param name = "search">
+        ///   the value to match against </param>
         /// <returns> true if there is a matching ConfigEntry matching the value </returns>
-        ///     
         public bool match(ConfigEntryType type, object search)
         {
-            ConfigEntry ce = table[type];
+            var ce = table[type];
             return ce != null && ce.match(search);
         }
 
         private void adjustDataPath()
         {
-            string datapath = (string) getValue(ConfigEntryType.A_DATA_PATH);
+            string datapath = (string) getValue(ConfigEntryType.ADataPath);
             if (datapath == null)
             {
                 datapath = string.Empty;
@@ -388,21 +395,21 @@ namespace SwordBackend
             {
                 datapath = datapath.Substring(2);
             }
-            add(ConfigEntryType.A_DATA_PATH, datapath);
+            add(ConfigEntryType.ADataPath, datapath);
         }
 
         private void adjustLanguage()
         {
-            Language lang = (Language) getValue(ConfigEntryType.LANG);
+            var lang = (Language) getValue(ConfigEntryType.LANG);
             if (lang == null)
             {
-                lang = Language.DEFAULT_LANG;
+                lang = Language.DefaultLang;
                 add(ConfigEntryType.LANG, lang.ToString());
             }
             testLanguage(@internal, lang);
 
-            Language langFrom = (Language) getValue(ConfigEntryType.GLOSSARY_FROM);
-            Language langTo = (Language) getValue(ConfigEntryType.GLOSSARY_TO);
+            var langFrom = (Language) getValue(ConfigEntryType.GLOSSARY_FROM);
+            var langTo = (Language) getValue(ConfigEntryType.GLOSSARY_TO);
 
             // If we have either langFrom or langTo, we are dealing with a glossary
             if (langFrom != null || langTo != null)
@@ -410,7 +417,7 @@ namespace SwordBackend
                 if (langFrom == null)
                 {
                     //Logger.Warn("Missing data for " + @internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.Name + '=' + Languages.DEFAULT_LANG_CODE);
-                    langFrom = Language.DEFAULT_LANG;
+                    langFrom = Language.DefaultLang;
                     add(ConfigEntryType.GLOSSARY_FROM, lang.Code);
                 }
                 testLanguage(@internal, langFrom);
@@ -418,7 +425,7 @@ namespace SwordBackend
                 if (langTo == null)
                 {
                     //Logger.Warn("Missing data for " + @internal + ". Assuming " + ConfigEntryType.GLOSSARY_TO.Name + '=' + Languages.DEFAULT_LANG_CODE);
-                    langTo = Language.DEFAULT_LANG;
+                    langTo = Language.DefaultLang;
                     add(ConfigEntryType.GLOSSARY_TO, lang.Code);
                 }
                 testLanguage(@internal, langTo);
@@ -454,14 +461,13 @@ namespace SwordBackend
             }
         }
 
-        ///    
-        /// <summary>* Get the next line from the input
-        ///  </summary>
-        /// <param name="bin">
-        ///            The reader to get data from </param>
+        /// <summary>
+        ///   * Get the next line from the input
+        /// </summary>
+        /// <param name = "bin">
+        ///   The reader to get data from </param>
         /// <returns> the next line </returns>
-        /// <exception cref="IOException"> </exception>
-        ///     
+        /// <exception cref = "IOException"> </exception>
         private string advance(StreamReader bin)
         {
             // Was something put back? If so, return it.
@@ -490,9 +496,9 @@ namespace SwordBackend
             return null;
         }
 
-        ///    
-        /// <summary>* Read too far ahead and need to return a line. </summary>
-        ///     
+        /// <summary>
+        ///   * Read too far ahead and need to return a line.
+        /// </summary>
         private void backup(string oops)
         {
             if (oops.Length > 0)
@@ -506,9 +512,9 @@ namespace SwordBackend
             }
         }
 
-        ///    
-        /// <summary>* Get continuation lines, if any. </summary>
-        ///     
+        /// <summary>
+        ///   * Get continuation lines, if any.
+        /// </summary>
         private void getContinuation(ConfigEntry configEntry, StreamReader bin, StringBuilder buf)
         {
             for (string line = advance(bin); line != null; line = advance(bin))
@@ -554,9 +560,9 @@ namespace SwordBackend
             }
         }
 
-        ///    
-        /// <summary>* Does this line of text represent a key/value pair? </summary>
-        ///     
+        /// <summary>
+        ///   * Does this line of text represent a key/value pair?
+        /// </summary>
         private bool isKeyLine(string line)
         {
             return KEY_VALUE_PATTERN.IsMatch(line);
@@ -578,13 +584,12 @@ namespace SwordBackend
             toOSIS(factory, ele, "Extra", extra);
             return ele;
         }*/
-        ///    
-        /// <summary>* Build's a SWORD conf file as a string. The result is not identical to the
-        /// original, cleaning up problems in the original and re-arranging the
-        /// entries into a predictable order.
-        ///  </summary>
+        /// <summary>
+        ///   * Build's a SWORD conf file as a string. The result is not identical to the
+        ///   original, cleaning up problems in the original and re-arranging the
+        ///   entries into a predictable order.
+        /// </summary>
         /// <returns> the well-formed conf. </returns>
-        ///     
         /*
         public string toConf()
         {
@@ -636,7 +641,7 @@ namespace SwordBackend
         */
         private void loadContents(StreamReader @in)
         {
-            StringBuilder buf = new StringBuilder();
+            var buf = new StringBuilder();
             while (true)
             {
                 // Empty out the buffer
@@ -654,8 +659,8 @@ namespace SwordBackend
                     continue;
                 }
 
-                Match matcher = KEY_VALUE_PATTERN.Match(line);
-                if (matcher==null)
+                var matcher = KEY_VALUE_PATTERN.Match(line);
+                if (matcher == null)
                 {
                     //Logger.Fail("Expected to see '=' in " + @internal + ": " + line);
                     continue;
@@ -671,9 +676,9 @@ namespace SwordBackend
                 }
 
                 // Create a configEntry so that the name is normalized.
-                ConfigEntry configEntry = new ConfigEntry(@internal, key);
+                var configEntry = new ConfigEntry(@internal, key);
 
-                ConfigEntryType type = configEntry.Type;
+                var type = configEntry.Type;
 
                 ConfigEntry e = null;
                 if (type != null)
@@ -745,9 +750,6 @@ namespace SwordBackend
             add(ConfigEntryType.INITIALS, initials);
         }
 
-        ///    
-        /// <summary>* Build an ordered map so that it displays in a consistent order. </summary>
-        ///     
         /*
         private void toOSIS(OSISUtil.OSISFactory factory, Element ele, string aTitle, ConfigEntryType[] category)
         {
@@ -795,9 +797,12 @@ namespace SwordBackend
             }
         }
         */
-        ///    
-        /// <summary>* Build an ordered map so that it displays in a consistent order. </summary>
-        ///     
+        /// <summary>
+        ///   * Build an ordered map so that it displays in a consistent order.
+        /// </summary>
+        /// <summary>
+        ///   * Build an ordered map so that it displays in a consistent order.
+        /// </summary>
         /*
         private void toOSIS(OSISUtil.OSISFactory factory, Element ele, string aTitle, IDictionary<string, ConfigEntry> map)
         {
@@ -844,7 +849,7 @@ namespace SwordBackend
         }*/
         private string report(string issue, string confEntryName, string line)
         {
-            StringBuilder buf = new StringBuilder(100);
+            var buf = new StringBuilder(100);
             buf.Append(issue);
             buf.Append(' ');
             buf.Append(confEntryName);
@@ -858,15 +863,15 @@ namespace SwordBackend
 
         private void testLanguage(string initials, Language lang)
         {
-            if (!lang.isValidLanguage)
+            if (!lang.IsValidLanguage)
             {
                 //Logger.Warn("Unknown language " + lang.Code + " in book " + initials);
             }
         }
 
-        ///    
-        /// <summary>* Determine which books are not supported. Also, report on problems. </summary>
-        ///     
+        /// <summary>
+        ///   * Determine which books are not supported. Also, report on problems.
+        /// </summary>
         private void validate()
         {
             // if (isEnciphered())

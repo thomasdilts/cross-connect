@@ -15,7 +15,7 @@
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     shell:SystemTray.IsVisible="True" xmlns:my="clr-namespace:CrossConnect"
-    Loaded="PhoneApplicationPage_Loaded">
+    Loaded="PhoneApplicationPageLoaded">
     
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -68,17 +68,17 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <toolkit:ListPicker Name="selectServer"  SelectionChanged="selectServer_SelectionChanged" Grid.Column="0" Grid.Row="0"  Header="Select the server">
+                <toolkit:ListPicker Name="selectServer"  SelectionChanged="SelectServerSelectionChanged" Grid.Column="0" Grid.Row="0"  Header="Select the server">
                     <sys:String>dark</sys:String>
                 </toolkit:ListPicker>
-                    <Button Content="Get bible list" Grid.Row="0" Grid.Column="1"  Name="butDownload"  Click="butDownload_Click" />
+                    <Button Content="Get bible list" Grid.Row="0" Grid.Column="1"  Name="butDownload"  Click="ButDownloadClick" />
             </Grid>
             <ProgressBar Grid.Row="1" Name="progressBarGetBookList" Height="60" />
-                <toolkit:ListPicker  Grid.Row="2" Name="selectType" SelectionChanged="selectType_SelectionChanged"  Header="Download type">
+                <toolkit:ListPicker  Grid.Row="2" Name="selectType" SelectionChanged="SelectTypeSelectionChanged"  Header="Download type">
                     <sys:String>dark</sys:String>
                 </toolkit:ListPicker>
             
-                <toolkit:ListPicker  Grid.Row="3" Name="selectLangauge" SelectionChanged="selectLangauge_SelectionChanged"  Header="Select the language">
+                <toolkit:ListPicker  Grid.Row="3" Name="selectLangauge" SelectionChanged="SelectLangaugeSelectionChanged"  Header="Select the language">
                     <sys:String>dark</sys:String>
                 </toolkit:ListPicker>
 
@@ -90,7 +90,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                    <Button Content="Download bible" Grid.Row="6" Grid.Column="1"  Name="butDownloadBook"  Click="butDownloadBook_Click" />
+                    <Button Content="Download bible" Grid.Row="6" Grid.Column="1"  Name="butDownloadBook"  Click="ButDownloadBookClick" />
             </Grid>
             <ProgressBar Grid.Row="5" Name="progressBarGetBook" Height="60" />
         </Grid>

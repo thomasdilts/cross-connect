@@ -1,46 +1,52 @@
-﻿/// <summary>
-/// Distribution License:
-/// CrossConnect is free software; you can redistribute it and/or modify it under
-/// the terms of the GNU General Public License, version 3 as published by
-/// the Free Software Foundation. This program is distributed in the hope
-/// that it will be useful, but WITHOUT ANY WARRANTY; without even the
-/// implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// See the GNU General Public License for more details.
-///
-/// The License is available on the internet at:
-///       http://www.gnu.org/copyleft/gpl.html
-/// or by writing to:
-///      Free Software Foundation, Inc.
-///      59 Temple Place - Suite 330
-///      Boston, MA 02111-1307, USA
-/// </summary>
-/// <copyright file="InternetLinkReader.cs" company="Thomas Dilts">
-///     Thomas Dilts. All rights reserved.
-/// </copyright>
-/// <author>Thomas Dilts</author>
+﻿#region Header
+
+// <copyright file="InternetLinkReader.cs" company="Thomas Dilts">
+//
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@chaniel.se
+// </summary>
+// <author>Thomas Dilts</author>
+
+#endregion Header
+
 namespace CrossConnect.readers
 {
     using System.Runtime.Serialization;
 
-    using SwordBackend;
+    using Sword.reader;
 
     /// <summary>
-    /// Load from a file all the book and verse pointers to the bzz file so that
-    /// we can later read the bzz file quickly and efficiently.
+    ///   Load from a file all the book and verse pointers to the bzz file so that
+    ///   we can later read the bzz file quickly and efficiently.
     /// </summary>
-    /// <param name="path">The path to where the ot.bzs,ot.bzv and ot.bzz and nt files are</param>
     [DataContract(Name = "InternetLinkReader")]
-    [KnownType(typeof(ChapterPos))]
-    [KnownType(typeof(BookPos))]
-    [KnownType(typeof(VersePos))]
+    [KnownType(typeof (ChapterPos))]
+    [KnownType(typeof (BookPos))]
+    [KnownType(typeof (VersePos))]
     public class InternetLinkReader : BibleZtextReader
     {
         #region Fields
 
         [DataMember]
-        public string link = string.Empty;
+        public string Link = string.Empty;
         [DataMember]
-        public string titleBar = string.Empty;
+        public string TitleBar = string.Empty;
 
         #endregion Fields
 
@@ -57,92 +63,72 @@ namespace CrossConnect.readers
 
         public override bool IsExternalLink
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
 
         public override bool IsHearable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public override bool IsPageable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public override bool IsSearchable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public override bool IsSynchronizeable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public override bool IsTranslateable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         #endregion Properties
 
         #region Methods
 
-        public override string getExternalLink(DisplaySettings displaySettings)
+        public override string GetExternalLink(DisplaySettings displaySettings)
         {
             int number;
             string strongNumber = "";
-            if(int.TryParse(link.Substring(1), out number))
+            if (int.TryParse(Link.Substring(1), out number))
             {
                 strongNumber = number.ToString();
             }
-            if (link.StartsWith("G"))
+            if (Link.StartsWith("G"))
             {
-                return string.Format(displaySettings.greekDictionaryLink, strongNumber);
+                return string.Format(displaySettings.GreekDictionaryLink, strongNumber);
             }
-            else if (link.StartsWith("H"))
+            if (Link.StartsWith("H"))
             {
-                return string.Format(displaySettings.hebrewDictionaryLink, strongNumber);
+                return string.Format(displaySettings.HebrewDictionaryLink, strongNumber);
             }
-            else
-            {
-                return link;
-            }
+            return Link;
         }
 
-        public override void GetInfo(out int bookNum, out int absouteChaptNum, out int relChaptNum, out int verseNum, out string fullName, out string title)
+        public override void GetInfo(out int bookNum, out int absouteChaptNum, out int relChaptNum, out int verseNum,
+            out string fullName, out string title)
         {
             verseNum = 0;
             absouteChaptNum = 0;
             bookNum = 0;
             relChaptNum = 0;
             fullName = "";
-            title = titleBar;
+            title = TitleBar;
         }
 
         public void ShowLink(string link, string titleBar)
         {
-            this.link = link;
-            this.titleBar = titleBar;
+            Link = link;
+            TitleBar = titleBar;
         }
 
         #endregion Methods

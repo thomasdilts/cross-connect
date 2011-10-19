@@ -14,7 +14,7 @@
     mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     shell:SystemTray.IsVisible="False" xmlns:my="clr-namespace:CrossConnect"
-    Loaded="AutoRotatePage_Loaded" BackKeyPress="AutoRotatePage_BackKeyPress">
+    Loaded="AutoRotatePageLoaded" BackKeyPress="AutoRotatePageBackKeyPress">
 
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -75,7 +75,7 @@
                 <TextBox  Name="customBibleDownloadLink" Text=""  />
                 <TextBlock  Name="captionSoundLink" Text="Talking bible internet link"  />
                 <TextBox  Name="soundLink" Text=""  />
-                <Button Content="Default settings" Name="butSetDefault"  Click="butSetDefault_Click" />
+                <Button Content="Default settings" Name="butSetDefault"  Click="ButSetDefaultClick" />
             </StackPanel>
         </Grid>
     </ScrollViewer>

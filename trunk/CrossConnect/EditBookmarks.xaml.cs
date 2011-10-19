@@ -1,34 +1,40 @@
-﻿/// <summary>
-/// Distribution License:
-/// CrossConnect is free software; you can redistribute it and/or modify it under
-/// the terms of the GNU General Public License, version 3 as published by
-/// the Free Software Foundation. This program is distributed in the hope
-/// that it will be useful, but WITHOUT ANY WARRANTY; without even the
-/// implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// See the GNU General Public License for more details.
-///
-/// The License is available on the internet at:
-///       http://www.gnu.org/copyleft/gpl.html
-/// or by writing to:
-///      Free Software Foundation, Inc.
-///      59 Temple Place - Suite 330
-///      Boston, MA 02111-1307, USA
-/// </summary>
-/// <copyright file="EditBookmarks.xaml.cs" company="Thomas Dilts">
-///     Thomas Dilts. All rights reserved.
-/// </copyright>
-/// <author>Thomas Dilts</author>
+﻿#region Header
+
+// <copyright file="EditBookmarks.xaml.cs" company="Thomas Dilts">
+//
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@chaniel.se
+// </summary>
+// <author>Thomas Dilts</author>
+
+#endregion Header
+
 namespace CrossConnect
 {
-    using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Controls;
 
-    public partial class EditBookmarks : AutoRotatePage
+    public partial class EditBookmarks
     {
         #region Fields
 
-        private bool isInSelectionChanged = false;
+        private bool _isInSelectionChanged;
 
         #endregion Fields
 
@@ -46,38 +52,41 @@ namespace CrossConnect
         private void LoadList()
         {
             SelectList.Items.Clear();
-            List<string> allBookmarks = App.openWindows[0].state.source.MakeListDisplayText(App.displaySettings, App.placeMarkers.bookmarks);
+            var allBookmarks = App.OpenWindows[0].State.Source.MakeListDisplayText(App.DisplaySettings,
+                                                                                   App.PlaceMarkers.Bookmarks);
             // the list is a reversed list from the original list. So we must mark it with the correct reversed index.
             int j = allBookmarks.Count - 1;
-            for (int i = 0; i < allBookmarks.Count; i++)
+            foreach (string t in allBookmarks)
             {
-                TextBlock block = new TextBlock();
-                block.Text = allBookmarks[i].Replace("<p>", "").Replace("</p>", "");
-                block.Tag = j--;
-                block.TextWrapping = TextWrapping.Wrap;
+                var block = new TextBlock
+                                {
+                                    Text = t.Replace("<p>", "").Replace("</p>", ""),
+                                    Tag = j--,
+                                    TextWrapping = TextWrapping.Wrap
+                                };
                 SelectList.Items.Add(block);
             }
         }
 
-        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        private void PhoneApplicationPageLoaded(object sender, RoutedEventArgs e)
         {
-            PageTitle.Text = Translations.translate("Select bookmark to delete");
+            PageTitle.Text = Translations.Translate("Select bookmark to delete");
 
             LoadList();
         }
 
-        private void SelectList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SelectListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (isInSelectionChanged)
+            if (_isInSelectionChanged)
             {
                 return;
             }
-            isInSelectionChanged = true;
-            MessageBoxResult result= MessageBox.Show(Translations.translate("Delete?"),"", MessageBoxButton.OKCancel);
+            _isInSelectionChanged = true;
+            var result = MessageBox.Show(Translations.Translate("Delete?"), "", MessageBoxButton.OKCancel);
             if (result.Equals(MessageBoxResult.OK))
             {
-                int index = (int)((TextBlock)e.AddedItems[0]).Tag;
-                App.placeMarkers.bookmarks.RemoveAt(index);
+                var index = (int) ((TextBlock) e.AddedItems[0]).Tag;
+                App.PlaceMarkers.Bookmarks.RemoveAt(index);
                 LoadList();
                 App.RaiseBookmarkChangeEvent();
             }
@@ -85,7 +94,7 @@ namespace CrossConnect
             {
                 SelectList.SelectedItem = null;
             }
-            isInSelectionChanged = false;
+            _isInSelectionChanged = false;
         }
 
         #endregion Methods

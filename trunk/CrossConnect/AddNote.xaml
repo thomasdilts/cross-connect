@@ -14,8 +14,8 @@
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     shell:SystemTray.IsVisible="True" xmlns:my="clr-namespace:CrossConnect"
-    Loaded="AutoRotatePage_Loaded"  
-    BackKeyPress="AutoRotatePage_BackKeyPress">
+    Loaded="AutoRotatePageLoaded"  
+    BackKeyPress="AutoRotatePageBackKeyPress">
 
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -53,7 +53,7 @@
         </StackPanel>
         <!--ContentPanel - place additional content here-->
         <TextBlock Grid.Row="1" TextWrapping="Wrap" Name="verse" Text="lkjdsö lks öfkjs öldfjölsa  dfjölsdjf ö df gsd fg sdfg sd fg sdf g"/>
-        <TextBox Grid.Row="2" KeyUp="TextToAdd_KeyUp" Name="TextToAdd" Text=""    />
+        <TextBox Grid.Row="2" KeyUp="TextToAddKeyUp" Name="TextToAdd" Text=""    />
 
     </Grid>
 

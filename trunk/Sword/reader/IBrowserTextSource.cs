@@ -1,24 +1,31 @@
-﻿/// <summary>
-/// Distribution License:
-/// CrossConnect is free software; you can redistribute it and/or modify it under
-/// the terms of the GNU General Public License, version 3 as published by
-/// the Free Software Foundation. This program is distributed in the hope
-/// that it will be useful, but WITHOUT ANY WARRANTY; without even the
-/// implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// See the GNU General Public License for more details.
-///
-/// The License is available on the internet at:
-///       http://www.gnu.org/copyleft/gpl.html
-/// or by writing to:
-///      Free Software Foundation, Inc.
-///      59 Temple Place - Suite 330
-///      Boston, MA 02111-1307, USA
-/// </summary>
-/// <copyright file="IBrowserTextSource.cs" company="Thomas Dilts">
-///     Thomas Dilts. All rights reserved.
-/// </copyright>
-/// <author>Thomas Dilts</author>
-namespace SwordBackend
+﻿#region Header
+
+// <copyright file="IBrowserTextSource.cs" company="Thomas Dilts">
+//
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@chaniel.se
+// </summary>
+// <author>Thomas Dilts</author>
+
+#endregion Header
+
+namespace Sword.reader
 {
     using System.Collections.Generic;
 
@@ -26,9 +33,9 @@ namespace SwordBackend
 
     public enum ButtonSize
     {
-        SMALL,
-        MEDIUM,
-        LARGE
+        Small,
+        Medium,
+        Large
     }
 
     #endregion Enumerations
@@ -43,7 +50,7 @@ namespace SwordBackend
     {
         #region Properties
 
-        bool existsShortNames
+        bool ExistsShortNames
         {
             get;
         }
@@ -89,25 +96,29 @@ namespace SwordBackend
 
         ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton);
 
-        string getExternalLink(DisplaySettings displaySettings);
+        string GetExternalLink(DisplaySettings displaySettings);
 
-        void GetInfo(out int bookNum,out int absoluteChaptNum, out int relChaptNum, out int verseNum, out string fullName, out string title);
+        void GetInfo(out int bookNum, out int absoluteChaptNum, out int relChaptNum, out int verseNum,
+            out string fullName, out string title);
 
         string GetLanguage();
 
-        void GetTranslateableTexts(DisplaySettings displaySettings, string bibleToLoad, out string[] toTranslate, out bool[] isTranslateable);
+        void GetTranslateableTexts(DisplaySettings displaySettings, string bibleToLoad, out string[] toTranslate,
+            out bool[] isTranslateable);
 
         string GetVerseTextOnly(DisplaySettings displaySettings, int chapterNumber, int verseNum);
 
         List<string> MakeListDisplayText(DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay);
 
-        void moveChapterVerse(int chapter, int verse, bool isLocalLinkChange);
+        void MoveChapterVerse(int chapter, int verse, bool isLocalLinkChange);
 
-        void moveNext();
+        void MoveNext();
 
-        void movePrevious();
+        void MovePrevious();
 
-        string putHtmlTofile(DisplaySettings displaySettings,  string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fileErase, string filePath, bool forceReload);
+        string PutHtmlTofile(DisplaySettings displaySettings, string htmlBackgroundColor, string htmlForegroundColor,
+            string htmlPhoneAccentColor, double htmlFontSize, string fileErase, string filePath,
+            bool forceReload);
 
         void RegisterUpdateEvent(WindowSourceChanged sourceChangedMethod, bool isRegister = true);
 
@@ -122,13 +133,13 @@ namespace SwordBackend
     {
         #region Fields
 
-        public ButtonSize butSize;
-        public int[] colors;
+        public ButtonSize ButSize;
+        public int[] Colors;
         public int NumButtons;
-        public int stage;
-        public string[] text;
-        public string title;
-        public int[] value;
+        public int Stage;
+        public string[] Text;
+        public string Title;
+        public int[] Value;
 
         #endregion Fields
 
@@ -137,19 +148,19 @@ namespace SwordBackend
         public ButtonWindowSpecs(
             int stage,
             string title,
-            int NumButtons,
+            int numButtons,
             int[] colors,
             string[] text,
             int[] value,
             ButtonSize butSize)
         {
-            this.stage = stage;
-            this.title = title;
-            this.NumButtons = NumButtons;
-            this.colors = colors;
-            this.text = text;
-            this.value = value;
-            this.butSize = butSize;
+            Stage = stage;
+            Title = title;
+            NumButtons = numButtons;
+            Colors = colors;
+            Text = text;
+            Value = value;
+            ButSize = butSize;
         }
 
         #endregion Constructors

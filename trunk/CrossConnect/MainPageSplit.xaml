@@ -14,8 +14,8 @@
     SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     shell:SystemTray.IsVisible="False" xmlns:my="clr-namespace:CrossConnect"  
-    Unloaded="PhoneApplicationPage_Unloaded"
-    Loaded="MainPage_Loaded" OrientationChanged="PhoneApplicationPage_OrientationChanged"  BackKeyPress="AutoRotatePage_BackKeyPress">
+    Unloaded="PhoneApplicationPageUnloaded"
+    Loaded="MainPageLoaded" OrientationChanged="PhoneApplicationPageOrientationChanged"  BackKeyPress="AutoRotatePageBackKeyPress">
     
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -48,25 +48,25 @@
     <!--Sample code showing usage of ApplicationBar-->
     <local:AutoRotatePage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton Click="butAddWindow_Click" x:Name="butNewWindow" IconUri="/Images/dark/appbar.new.rest.png" Text="New window"/>
-            <shell:ApplicationBarIconButton Click="butAddBookmark_Click" x:Name="butAddBookmark" IconUri="/Images/dark/appbar.favs.addto.rest.png" Text="New window"/>
-            <shell:ApplicationBarIconButton Click="butGoToPlan_Click" x:Name="butGoToPlan" IconUri="/Images/dark/appbar.gotodate.rest.png" Text="New window"/>
-            <shell:ApplicationBarIconButton Click="butHelp_Click" x:Name="butHelp" IconUri="/Images/dark/appbar.questionmark.rest.png" Text="Help"/>
+            <shell:ApplicationBarIconButton Click="ButAddWindowClick" x:Name="butNewWindow" IconUri="/Images/dark/appbar.new.rest.png" Text="New window"/>
+            <shell:ApplicationBarIconButton Click="ButAddBookmarkClick" x:Name="butAddBookmark" IconUri="/Images/dark/appbar.favs.addto.rest.png" Text="New window"/>
+            <shell:ApplicationBarIconButton Click="ButGoToPlanClick" x:Name="butGoToPlan" IconUri="/Images/dark/appbar.gotodate.rest.png" Text="New window"/>
+            <shell:ApplicationBarIconButton Click="ButHelpClick" x:Name="butHelp" IconUri="/Images/dark/appbar.questionmark.rest.png" Text="Help"/>
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Click="menuRateThisApp_Click" x:Name="menuRateThisApp" Text="Rate this application"/>
-                <shell:ApplicationBarMenuItem Click="menuDownloadBible_Click" x:Name="menuDownloadBible" Text="Select bible to delete"/>
-                <shell:ApplicationBarMenuItem Click="menuAddNote_Click" x:Name="menuAddNote" Text="Add a note"/>
-                <shell:ApplicationBarMenuItem Click="menuDeleteBible_Click" x:Name="menuDeleteBible" Text="Download bibles"/>
-                <shell:ApplicationBarMenuItem Click="menuDeleteBookmark_Click" x:Name="menuDeleteBookmark" Text="Select bookmark to delete"/>
-                <shell:ApplicationBarMenuItem Click="menuClearHistory_Click" x:Name="menuClearHistory" Text="Clear history"/>
-                <shell:ApplicationBarMenuItem Click="menuMessage_Click" x:Name="menuMessage" Text="Send message"/>
-                <shell:ApplicationBarMenuItem Click="menuMail_Click" x:Name="menuMail" Text="Send mail"/>
-                <shell:ApplicationBarMenuItem Click="butAddWindow_Click" x:Name="menuNewWindow" Text="Add new window"/>
-                <shell:ApplicationBarMenuItem Click="butAddBookmark_Click" x:Name="menuAddBookmark" Text="Add bookmark"/>
-                <shell:ApplicationBarMenuItem Click="butGoToPlan_Click" x:Name="menuGoToPlan" Text="Daily plan"/>
-                <shell:ApplicationBarMenuItem Click="menuSettings_Click" x:Name="menuSettings" Text="Settings"/>
-                <shell:ApplicationBarMenuItem Click="menuLanguage_Click" x:Name="menuLanguage" Text="Select language"/>
-                <shell:ApplicationBarMenuItem Click="butHelp_Click" x:Name="menuHelp" Text="help"/>
+                <shell:ApplicationBarMenuItem Click="MenuRateThisAppClick" x:Name="menuRateThisApp" Text="Rate this application"/>
+                <shell:ApplicationBarMenuItem Click="MenuDownloadBibleClick" x:Name="menuDownloadBible" Text="Select bible to delete"/>
+                <shell:ApplicationBarMenuItem Click="MenuAddNoteClick" x:Name="menuAddNote" Text="Add a note"/>
+                <shell:ApplicationBarMenuItem Click="MenuDeleteBibleClick" x:Name="menuDeleteBible" Text="Download bibles"/>
+                <shell:ApplicationBarMenuItem Click="MenuDeleteBookmarkClick" x:Name="menuDeleteBookmark" Text="Select bookmark to delete"/>
+                <shell:ApplicationBarMenuItem Click="MenuClearHistoryClick" x:Name="menuClearHistory" Text="Clear history"/>
+                <shell:ApplicationBarMenuItem Click="MenuMessageClick" x:Name="menuMessage" Text="Send message"/>
+                <shell:ApplicationBarMenuItem Click="MenuMailClick" x:Name="menuMail" Text="Send mail"/>
+                <shell:ApplicationBarMenuItem Click="ButAddWindowClick" x:Name="menuNewWindow" Text="Add new window"/>
+                <shell:ApplicationBarMenuItem Click="ButAddBookmarkClick" x:Name="menuAddBookmark" Text="Add bookmark"/>
+                <shell:ApplicationBarMenuItem Click="ButGoToPlanClick" x:Name="menuGoToPlan" Text="Daily plan"/>
+                <shell:ApplicationBarMenuItem Click="MenuSettingsClick" x:Name="menuSettings" Text="Settings"/>
+                <shell:ApplicationBarMenuItem Click="MenuLanguageClick" x:Name="menuLanguage" Text="Select language"/>
+                <shell:ApplicationBarMenuItem Click="ButHelpClick" x:Name="menuHelp" Text="help"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </local:AutoRotatePage.ApplicationBar>

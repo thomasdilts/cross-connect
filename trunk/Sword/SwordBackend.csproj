@@ -139,7 +139,9 @@
     <EmbeddedResource Include="Properties\BibleNames_ru.xml" />
     <EmbeddedResource Include="Properties\BibleNames_sk.xml" />
     <EmbeddedResource Include="Properties\BibleNames_sl.xml" />
-    <EmbeddedResource Include="Properties\BibleNames_sv.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_sv.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\BibleNames_th.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -1,54 +1,60 @@
-﻿/// <summary>
-/// Distribution License:
-/// CrossConnect is free software; you can redistribute it and/or modify it under
-/// the terms of the GNU General Public License, version 3 as published by
-/// the Free Software Foundation. This program is distributed in the hope
-/// that it will be useful, but WITHOUT ANY WARRANTY; without even the
-/// implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// See the GNU General Public License for more details.
-///
-/// The License is available on the internet at:
-///       http://www.gnu.org/copyleft/gpl.html
-/// or by writing to:
-///      Free Software Foundation, Inc.
-///      59 Temple Place - Suite 330
-///      Boston, MA 02111-1307, USA
-/// </summary>
-/// <copyright file="InstalledBooks.cs" company="Thomas Dilts">
-///     Thomas Dilts. All rights reserved.
-/// </copyright>
-/// <author>Thomas Dilts</author>
+﻿#region Header
+
+// <copyright file="InstalledBibles.cs" company="Thomas Dilts">
+//
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@chaniel.se
+// </summary>
+// <author>Thomas Dilts</author>
+
+#endregion Header
+
 namespace CrossConnect
 {
     using System.Collections.Generic;
     using System.IO.IsolatedStorage;
 
-    public class InstalledBibles
+    public class InstalledBiblesAndCommentaries
     {
         #region Fields
 
-        public Dictionary<string, SwordBook> installedBibles = new Dictionary<string, SwordBook>();
-        public Dictionary<string, SwordBook> installedCommentaries = new Dictionary<string, SwordBook>();
+        public Dictionary<string, SwordBook> InstalledBibles = new Dictionary<string, SwordBook>();
+        public Dictionary<string, SwordBook> InstalledCommentaries = new Dictionary<string, SwordBook>();
 
         #endregion Fields
 
         #region Constructors
 
-        public InstalledBibles()
+        public InstalledBiblesAndCommentaries()
         {
-            string sBooks = string.Empty;
-            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("installedBibles", out sBooks))
+            string sBooks;
+            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue("installedBibles", out sBooks))
             {
-                string[] books = sBooks.Split("¤".ToCharArray());
+                var books = sBooks.Split("¤".ToCharArray());
                 foreach (string book in books)
                 {
                     AddBook(book, false);
                 }
             }
-            sBooks = string.Empty;
-            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<string>("installedCommentaries", out sBooks))
+            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue("installedCommentaries", out sBooks))
             {
-                string[] books = sBooks.Split("¤".ToCharArray());
+                var books = sBooks.Split("¤".ToCharArray());
                 foreach (string book in books)
                 {
                     AddCommentary(book, false);
@@ -62,47 +68,47 @@ namespace CrossConnect
 
         public void AddBook(string modPath, bool doSave = true)
         {
-            installedBibles[modPath] = new SwordBook(modPath);
-            if (!installedBibles[modPath].isLoaded)
+            InstalledBibles[modPath] = new SwordBook(modPath);
+            if (!InstalledBibles[modPath].IsLoaded)
             {
-                installedBibles.Remove(modPath);
+                InstalledBibles.Remove(modPath);
             }
             if (doSave)
             {
-                save();
+                Save();
                 IsolatedStorageSettings.ApplicationSettings.Save();
             }
         }
 
         public void AddCommentary(string modPath, bool doSave = true)
         {
-            installedCommentaries[modPath] = new SwordBook(modPath);
-            if (!installedCommentaries[modPath].isLoaded)
+            InstalledCommentaries[modPath] = new SwordBook(modPath);
+            if (!InstalledCommentaries[modPath].IsLoaded)
             {
-                installedCommentaries.Remove(modPath);
+                InstalledCommentaries.Remove(modPath);
             }
             if (doSave)
             {
-                save();
+                Save();
                 IsolatedStorageSettings.ApplicationSettings.Save();
             }
         }
 
-        public void save()
+        public void Save()
         {
             string allBooks = string.Empty;
-            foreach(var book in installedBibles)
+            foreach (var book in InstalledBibles)
             {
-                if(allBooks.Length>0)
+                if (allBooks.Length > 0)
                 {
-                    allBooks+="¤";
+                    allBooks += "¤";
                 }
                 allBooks += book.Key;
             }
-            IsolatedStorageSettings.ApplicationSettings["installedBibles"]= allBooks;
+            IsolatedStorageSettings.ApplicationSettings["installedBibles"] = allBooks;
 
             allBooks = string.Empty;
-            foreach (var book in installedCommentaries)
+            foreach (var book in InstalledCommentaries)
             {
                 if (allBooks.Length > 0)
                 {

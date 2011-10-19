@@ -1,23 +1,30 @@
-﻿/// <summary>
-/// Distribution License:
-/// CrossConnect is free software; you can redistribute it and/or modify it under
-/// the terms of the GNU General Public License, version 3 as published by
-/// the Free Software Foundation. This program is distributed in the hope
-/// that it will be useful, but WITHOUT ANY WARRANTY; without even the
-/// implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// See the GNU General Public License for more details.
-///
-/// The License is available on the internet at:
-///       http://www.gnu.org/copyleft/gpl.html
-/// or by writing to:
-///      Free Software Foundation, Inc.
-///      59 Temple Place - Suite 330
-///      Boston, MA 02111-1307, USA
-/// </summary>
-/// <copyright file="Help.xaml.cs" company="Thomas Dilts">
-///     Thomas Dilts. All rights reserved.
-/// </copyright>
-/// <author>Thomas Dilts</author>
+﻿#region Header
+
+// <copyright file="Help.xaml.cs" company="Thomas Dilts">
+//
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@chaniel.se
+// </summary>
+// <author>Thomas Dilts</author>
+
+#endregion Header
+
 namespace CrossConnect
 {
     using System.IO;
@@ -25,9 +32,9 @@ namespace CrossConnect
 
     using Microsoft.Phone.Shell;
 
-    using SwordBackend;
+    using Sword.reader;
 
-    public partial class Help : AutoRotatePage
+    public partial class Help
     {
         #region Constructors
 
@@ -40,36 +47,40 @@ namespace CrossConnect
 
         #region Methods
 
-        private void WebBrowser_Loaded(object sender, RoutedEventArgs e)
+        private void WebBrowserLoaded(object sender, RoutedEventArgs e)
         {
-            object filePath = null;
-            object title = null;
-            object openWindowIndex = null;
+            object filePath;
+            object title;
+            object openWindowIndex;
             PhoneApplicationService.Current.State.TryGetValue("HelpWindowFileToLoad", out filePath);
             PhoneApplicationService.Current.State.TryGetValue("HelpWindowTitle", out title);
             PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex);
 
-            if (string.IsNullOrEmpty((string)filePath) || string.IsNullOrEmpty((string)title) || openWindowIndex==null)
+            if (string.IsNullOrEmpty((string) filePath) || string.IsNullOrEmpty((string) title) ||
+                openWindowIndex == null)
             {
-                if (this.NavigationService.CanGoBack)
+                if (NavigationService.CanGoBack)
                 {
-                    this.NavigationService.GoBack();
+                    NavigationService.GoBack();
                 }
                 return;
             }
-            PageTitle.Text = (string)title;
-            Stream st = this.GetType().Assembly.GetManifestResourceStream((string)filePath);
-            StreamReader sr = new StreamReader(st);
+            PageTitle.Text = (string) title;
+            var st = GetType().Assembly.GetManifestResourceStream((string) filePath);
+            if (st != null)
+            {
+                var sr = new StreamReader(st);
 
-            var state = App.openWindows[(int)openWindowIndex].state;
-            webBrowser1.NavigateToString(BibleZtextReader.HtmlHeader(
-                App.displaySettings,
-                BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"),
-                BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
-                BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
-                state.htmlFontSize) + sr.ReadToEnd() + "</body></html>");
-            sr.Close();
-            st.Close();
+                var state = App.OpenWindows[(int) openWindowIndex].State;
+                webBrowser1.NavigateToString(BibleZtextReader.HtmlHeader(
+                    App.DisplaySettings,
+                    BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"),
+                    BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
+                    BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
+                    state.HtmlFontSize) + sr.ReadToEnd() + "</body></html>");
+                sr.Close();
+            }
+            if (st != null) st.Close();
         }
 
         #endregion Methods

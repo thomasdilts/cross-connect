@@ -1,42 +1,49 @@
-﻿/// <summary>
-/// Distribution License:
-/// CrossConnect is free software; you can redistribute it and/or modify it under
-/// the terms of the GNU General Public License, version 3 as published by
-/// the Free Software Foundation. This program is distributed in the hope
-/// that it will be useful, but WITHOUT ANY WARRANTY; without even the
-/// implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// See the GNU General Public License for more details.
-///
-/// The License is available on the internet at:
-///       http://www.gnu.org/copyleft/gpl.html
-/// or by writing to:
-///      Free Software Foundation, Inc.
-///      59 Temple Place - Suite 330
-///      Boston, MA 02111-1307, USA
-/// </summary>
-/// <copyright file="DailyPlanReader.cs" company="Thomas Dilts">
-///     Thomas Dilts. All rights reserved.
-/// </copyright>
-/// <author>Thomas Dilts</author>
+﻿#region Header
+
+// <copyright file="DailyPlanReader.cs" company="Thomas Dilts">
+//
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@chaniel.se
+// </summary>
+// <author>Thomas Dilts</author>
+
+#endregion Header
+
 namespace CrossConnect.readers
 {
     using System.Runtime.Serialization;
     using System.Text;
 
-    using SwordBackend;
+    using Sword;
+    using Sword.reader;
 
     /// <summary>
-    /// Load from a file all the book and verse pointers to the bzz file so that
-    /// we can later read the bzz file quickly and efficiently.
+    ///   Load from a file all the book and verse pointers to the bzz file so that
+    ///   we can later read the bzz file quickly and efficiently.
     /// </summary>
-    /// <param name="path">The path to where the ot.bzs,ot.bzv and ot.bzz and nt files are</param>
     [DataContract]
     public class DailyPlanReader : BibleZtextReader
     {
         #region Fields
 
         [DataMember]
-        public BibleZtextReaderSerialData serial2 = new BibleZtextReaderSerialData(false,"","",0,0);
+        public BibleZtextReaderSerialData Serial2 = new BibleZtextReaderSerialData(false, "", "", 0, 0);
 
         #endregion Fields
 
@@ -45,7 +52,8 @@ namespace CrossConnect.readers
         public DailyPlanReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
             : base(path, iso2DigitLangCode, isIsoEncoding)
         {
-            this.serial2.cloneFrom(base.serial);
+            Serial2.CloneFrom(Serial);
+            SetToFirstChapter();
         }
 
         #endregion Constructors
@@ -54,50 +62,32 @@ namespace CrossConnect.readers
 
         public override bool IsHearable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public override bool IsLocalChangeDuringLink
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
 
         public override bool IsPageable
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
 
         public override bool IsSearchable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public override bool IsSynchronizeable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public override bool IsTranslateable
         {
-            get
-            {
-                return true;
-            }
+            get { return true; }
         }
 
         #endregion Properties
@@ -108,11 +98,11 @@ namespace CrossConnect.readers
         {
             if (stage == 0)
             {
-                int count = DailyPlans.zAllPlans[App.dailyPlan.planNumber].GetUpperBound(0) + 1;
+                int count = DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber].GetUpperBound(0) + 1;
 
-                int[] butColors = new int[count];
-                int[] values = new int[count];
-                string[] butText = new string[count];
+                var butColors = new int[count];
+                var values = new int[count];
+                var butText = new string[count];
                 for (int i = 0; i < count; i++)
                 {
                     butColors[i] = 0;
@@ -129,100 +119,111 @@ namespace CrossConnect.readers
                     butColors,
                     butText,
                     values,
-                    ButtonSize.SMALL);
+                    ButtonSize.Small);
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
-        public override void GetInfo(out int bookNum, out int absoluteChaptNum, out int relChaptNum, out int verseNum, out string fullName, out string title)
+        public override void GetInfo(out int bookNum, out int absoluteChaptNum, out int relChaptNum, out int verseNum,
+            out string fullName, out string title)
         {
-            int count = DailyPlans.zAllPlans[App.dailyPlan.planNumber].GetUpperBound(0) + 1;
-            if (App.dailyPlan.planDayNumber >= count)
+            int count = DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber].GetUpperBound(0) + 1;
+            if (App.DailyPlan.PlanDayNumber >= count)
             {
-                App.dailyPlan.planDayNumber = 0;
+                App.DailyPlan.PlanDayNumber = 0;
             }
             base.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out title);
-            title = App.dailyPlan.planStartDate.AddDays(App.dailyPlan.planDayNumber).ToShortDateString() + " " + Translations.translate("Daily plan");
+            title = App.DailyPlan.PlanStartDate.AddDays(App.DailyPlan.PlanDayNumber).ToShortDateString() + " " +
+                    Translations.Translate("Daily plan");
         }
 
-        public override void moveChapterVerse(int chapter, int verse, bool isLocalLinkChange)
+        public override void MoveChapterVerse(int chapter, int verse, bool isLocalLinkChange)
         {
             if (isLocalLinkChange)
             {
-                base.serial.posChaptNum = chapter;
-                base.serial.posVerseNum = verse;
+                Serial.PosChaptNum = chapter;
+                Serial.PosVerseNum = verse;
             }
             else
             {
-                App.dailyPlan.planDayNumber = chapter;
+                App.DailyPlan.PlanDayNumber = chapter;
             }
         }
 
-        public override void moveNext()
+        public override void MoveNext()
         {
-            base.serial.posVerseNum = 0;
-            int count = DailyPlans.zAllPlans[App.dailyPlan.planNumber].GetUpperBound(0) + 1;
-            App.dailyPlan.planDayNumber++;
-            if (App.dailyPlan.planDayNumber>=count)
+            Serial.PosVerseNum = 0;
+            int count = DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber].GetUpperBound(0) + 1;
+            App.DailyPlan.PlanDayNumber++;
+            if (App.DailyPlan.PlanDayNumber >= count)
             {
-                App.dailyPlan.planDayNumber = 0;
+                App.DailyPlan.PlanDayNumber = 0;
             }
         }
 
-        public override void movePrevious()
+        public override void MovePrevious()
         {
-            base.serial.posVerseNum = 0;
-            int count = DailyPlans.zAllPlans[App.dailyPlan.planNumber].GetUpperBound(0) + 1;
-            App.dailyPlan.planDayNumber--;
-            if (App.dailyPlan.planDayNumber < 0)
+            Serial.PosVerseNum = 0;
+            int count = DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber].GetUpperBound(0) + 1;
+            App.DailyPlan.PlanDayNumber--;
+            if (App.DailyPlan.PlanDayNumber < 0)
             {
-                App.dailyPlan.planDayNumber = count-1;
+                App.DailyPlan.PlanDayNumber = count - 1;
             }
         }
 
         public override void Resume()
         {
-            base.serial.cloneFrom(this.serial2);
+            Serial.CloneFrom(Serial2);
             base.Resume();
         }
 
         public override void SerialSave()
         {
-            this.serial2.cloneFrom(base.serial);
+            Serial2.CloneFrom(Serial);
         }
 
-        public override void SetToFirstChapter()
+        protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor,
+            string htmlForegroundColor, string htmlPhoneAccentColor,
+            double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml = true)
         {
-            int count = DailyPlans.zAllPlans[App.dailyPlan.planNumber].GetUpperBound(0) + 1;
-            if (App.dailyPlan.planDayNumber >= count)
-            {
-                App.dailyPlan.planDayNumber = 0;
-            }
-        }
+            string chapterStartHtml = HtmlHeader(displaySettings, htmlBackgroundColor, htmlForegroundColor,
+                                                 htmlPhoneAccentColor, htmlFontSize);
+            const string chapterEndHtml = "</body></html>";
+            var sb = new StringBuilder(chapterStartHtml);
 
-        protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor, string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml)
-        {
-            string chapterStartHtml = HtmlHeader(displaySettings, htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize);
-            string chapterEndHtml = "</body></html>";
-            StringBuilder sb = new StringBuilder(chapterStartHtml);
-            int bookNum;
-            int relChaptNum;
-            string fullName;
-            string title;
-
-            sb.Append("<h3>" + Translations.translate("Day") + " " + (App.dailyPlan.planDayNumber + 1) + ", " + App.dailyPlan.planStartDate.AddDays(App.dailyPlan.planDayNumber).ToShortDateString() + "</h3>");
-            sb.Append("<h3>" + Translations.translate(DailyPlans.zzAllPlansNames[App.dailyPlan.planNumber][0]) + "; " + DailyPlans.zzAllPlansNames[App.dailyPlan.planNumber][1] + " " + Translations.translate("Days") + "</h3>");
-            for (int i = 0; i <= DailyPlans.zAllPlans[App.dailyPlan.planNumber][App.dailyPlan.planDayNumber].GetUpperBound(0); i++)
+            sb.Append("<h3>" + Translations.Translate("Day") + " " + (App.DailyPlan.PlanDayNumber + 1) + ", " +
+                      App.DailyPlan.PlanStartDate.AddDays(App.DailyPlan.PlanDayNumber).ToShortDateString() + "</h3>");
+            sb.Append("<h3>" + Translations.Translate(DailyPlans.ZzAllPlansNames[App.DailyPlan.PlanNumber][0]) + "; " +
+                      DailyPlans.ZzAllPlansNames[App.DailyPlan.PlanNumber][1] + " " + Translations.Translate("Days") +
+                      "</h3>");
+            for (int i = 0;
+                 i <= DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber][App.DailyPlan.PlanDayNumber].GetUpperBound(0);
+                 i++)
             {
-                base.GetInfo(DailyPlans.zAllPlans[App.dailyPlan.planNumber][App.dailyPlan.planDayNumber][i], 0, out bookNum, out relChaptNum, out fullName, out title);
+                int bookNum;
+                int relChaptNum;
+                string fullName;
+                string title;
+                GetInfo(DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber][App.DailyPlan.PlanDayNumber][i], 0,
+                             out bookNum, out relChaptNum, out fullName, out title);
                 sb.Append("<h2>" + fullName + " " + (relChaptNum + 1) + "</h2>");
-                sb.Append(base.GetChapterHtml(displaySettings, DailyPlans.zAllPlans[App.dailyPlan.planNumber][App.dailyPlan.planDayNumber][i], htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, false, false));
+                sb.Append(GetChapterHtml(displaySettings,
+                                              DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber][App.DailyPlan.PlanDayNumber
+                                                  ][i], htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor,
+                                              htmlFontSize, false, false));
             }
             sb.Append(chapterEndHtml);
             return sb.ToString();
+        }
+
+        private void SetToFirstChapter()
+        {
+            int count = DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber].GetUpperBound(0) + 1;
+            if (App.DailyPlan.PlanDayNumber >= count)
+            {
+                App.DailyPlan.PlanDayNumber = 0;
+            }
         }
 
         #endregion Methods

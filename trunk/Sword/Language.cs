@@ -1,135 +1,122 @@
-///
-/// <summary> Distribution License:
-/// CrossConnect is free software; you can redistribute it and/or modify it under
-/// the terms of the GNU Lesser General Public License, version 2.1 as published by
-/// the Free Software Foundation. This program is distributed in the hope
-/// that it will be useful, but WITHOUT ANY WARRANTY; without even the
-/// implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// See the GNU Lesser General Public License for more details.
-///
-/// The License is available on the internet at:
-///       http://www.gnu.org/copyleft/lgpl.html
-/// or by writing to:
-///      Free Software Foundation, Inc.
-///      59 Temple Place - Suite 330
-///      Boston, MA 02111-1307, USA
-///
-/// Copyright: 2007
-///     The copyright to this program is held by it's authors.
-///
-/// ID: $Id: Languages.java 1462 2007-07-02 02:32:23Z dmsmith $
-/// 
-/// Converted from Java to C# by Thomas Dilts with the help of a program from www.tangiblesoftwaresolutions.com
-/// called 'Java to VB & C# Converter' on 2011-04-12 </summary>
-/// 
-namespace SwordBackend
+#region Header
+
+// <copyright file="Language.cs" company="Thomas Dilts">
+//
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@chaniel.se
+// </summary>
+// <author>Thomas Dilts</author>
+
+#endregion Header
+
+namespace Sword
 {
     //: IComparable<Language>
-    ///
-    /// <summary> A single language, paring an ISO-639 code to a localized representation of
-    /// the language.
-    ///  </summary>
-    /// <seealso cref= gnu.lgpl.License for license details.<br>
-    ///      The copyright to this program is held by it's authors.
-    /// @author DM Smith [dmsmith555 at yahoo dot com] </seealso>
-    /// 
+    ///<summary>
+    ///  A single language, paring an ISO-639 code to a localized representation of
+    ///  the language.
+    ///</summary>
+    ///                                                        The copyright to this program is held by it's authors.
+    ///                                                        @author DM Smith [dmsmith555 at yahoo dot com] 
     public class Language
     {
         #region Fields
 
-        public static readonly Language DEFAULT_LANG = new Language(null);
+        public static readonly Language DefaultLang = new Language(null);
 
-        private string code;
-        private bool knowsDirection;
-        private bool ltor;
-        private string name;
+        private readonly string _code;
+
+        private bool _knowsDirection;
+        private bool _ltor;
+        private string _name;
 
         #endregion Fields
 
         #region Constructors
 
-        ///    
-        /// <summary>* A single language defined by an ISO-639 code. If the code is null or
-        /// empty then it is considered to be DEFAULT_LANG_CODE (that is, English).
-        ///  </summary>
-        /// <param name="iso639Code">
-        ///            the particular language </param>
-        ///     
+        /// <summary>
+        ///   * A single language defined by an ISO-639 code. If the code is null or
+        ///   empty then it is considered to be DEFAULT_LANG_CODE (that is, English).
+        /// </summary>
+        /// <param name = "iso639Code">
+        ///   the particular language </param>
         public Language(string iso639Code)
         {
-            this.code = Languages.getLanguageCode(iso639Code);
+            _code = Languages.GetLanguageCode(iso639Code);
         }
 
         #endregion Constructors
 
         #region Properties
 
-        ///    
-        /// <summary>* Get the language code.
-        ///  </summary>
+        /// <summary>
+        ///   * Get the language code.
+        /// </summary>
         /// <returns> the code for the language </returns>
-        ///     
         public virtual string Code
         {
-            get
-            {
-                return code;
-            }
+            get { return _code; }
         }
 
-        ///    
-        /// <summary>* Determine whether this language is a Left-to-Right or a Right-to-Left
-        /// language. Note: This is problematic. Languages do not have direction.
-        /// Scripts do. Further, there are over 7000 living languages, many of which
-        /// are written in Right-to-Left scripts and are not listed here.
-        ///  </summary>
+        /// <summary>
+        ///   * Determine whether this language is a Left-to-Right or a Right-to-Left
+        ///   language.  This is problematic. Languages do not have direction.
+        ///   Scripts do. Further, there are over 7000 living languages, many of which
+        ///   are written in Right-to-Left scripts and are not listed here.
+        /// </summary>
         /// <returns> true if the language is Left-to-Right. </returns>
-        ///     
-        public virtual bool isLeftToRight
+        public virtual bool IsLeftToRight
         {
             get
             {
-                if (!knowsDirection)
+                if (!_knowsDirection)
                 {
-                    // TODO(DMS): Improve this.
-                    ltor = !("he".Equals(code) || "ar".Equals(code) || "fa".Equals(code) || "ur".Equals(code) || "uig".Equals(code) || "syr".Equals(code) || "iw".Equals(code)); // Java's notion of Hebrew -  Syriac -  Uighur, too -  Uighur -  Farsi/Persian -  Arabic -  Hebrew
+                    // Improve this.
+                    _ltor =
+                        !("he".Equals(_code) || "ar".Equals(_code) || "fa".Equals(_code) || "ur".Equals(_code) ||
+                          "uig".Equals(_code) || "syr".Equals(_code) || "iw".Equals(_code));
+                        // Java's notion of Hebrew -  Syriac -  Uighur, too -  Uighur -  Farsi/Persian -  Arabic -  Hebrew
 
-                    knowsDirection = true;
+                    _knowsDirection = true;
                 }
 
-                return ltor;
+                return _ltor;
             }
         }
 
-        ///    
-        /// <summary>* Determine whether this language is valid. The code is valid if it is in
-        /// iso639.properties.
-        ///  </summary>
+        /// <summary>
+        ///   * Determine whether this language is valid. The code is valid if it is in
+        ///   iso639.properties.
+        /// </summary>
         /// <returns> true if the language is valid. </returns>
-        ///     
-        public virtual bool isValidLanguage
+        public virtual bool IsValidLanguage
         {
-            get
-            {
-                return Languages.isValidLanguage(code);
-            }
+            get { return Languages.IsValidLanguage(_code); }
         }
 
-        ///    
-        /// <summary>* Get the language name.
-        ///  </summary>
+        /// <summary>
+        ///   * Get the language name.
+        /// </summary>
         /// <returns> the name of the language </returns>
-        ///     
         public virtual string Name
         {
-            get
-            {
-                if (name == null)
-                {
-                    name = Languages.getLanguageName(code);
-                }
-                return name;
-            }
+            get { return _name ?? (_name = Languages.GetLanguageName(_code)); }
         }
 
         #endregion Properties
@@ -141,7 +128,7 @@ namespace SwordBackend
          *
          * @see java.lang.Comparable#compareTo(java.lang.Object)
          */
-        public virtual int compareTo(Language o)
+        public virtual int CompareTo(Language o)
         {
             return Name.CompareTo(o.ToString());
         }
@@ -158,16 +145,16 @@ namespace SwordBackend
                 return true;
             }
 
-            if (obj == null || this.GetType() != obj.GetType())
+            if (obj == null || GetType() != obj.GetType())
             {
                 return false;
             }
 
             // JAVA TO VB & C# CONVERTER WARNING: The original Java variable was marked 'final':
             // ORIGINAL LINE: final Language other = (Language) obj;
-            Language other = (Language) obj;
+            var other = (Language) obj;
 
-            return code.Equals(other.code);
+            return _code.Equals(other._code);
         }
 
         /*
@@ -177,7 +164,7 @@ namespace SwordBackend
          */
         public override int GetHashCode()
         {
-            return code.GetHashCode();
+            return _code.GetHashCode();
         }
 
         /*

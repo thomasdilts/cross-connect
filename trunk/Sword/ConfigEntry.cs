@@ -1,59 +1,62 @@
-///
-/// <summary> Distribution License:
-/// CrossConnect is free software; you can redistribute it and/or modify it under
-/// the terms of the GNU Lesser General Public License, version 2.1 as published by
-/// the Free Software Foundation. This program is distributed in the hope
-/// that it will be useful, but WITHOUT ANY WARRANTY; without even the
-/// implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-/// See the GNU Lesser General Public License for more details.
-///
-/// The License is available on the internet at:
-///       http://www.gnu.org/copyleft/lgpl.html
-/// or by writing to:
-///      Free Software Foundation, Inc.
-///      59 Temple Place - Suite 330
-///      Boston, MA 02111-1307, USA
-///
-/// Copyright: 2005
-///     The copyright to this program is held by it's authors.
-///
-/// ID: $Id: ConfigEntry.java 2090 2011-03-07 04:13:05Z dmsmith $
-/// 
-/// Converted from Java to C# by Thomas Dilts with the help of a program from www.tangiblesoftwaresolutions.com
-/// called 'Java to VB & C# Converter' on 2011-04-12 </summary>
-/// 
-namespace SwordBackend
+#region Header
+
+// <copyright file="ConfigEntry.cs" company="Thomas Dilts">
+//
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@chaniel.se
+// </summary>
+// <author>Thomas Dilts</author>
+
+#endregion Header
+
+namespace Sword
 {
     using System.Collections.Generic;
     using System.Text;
     using System.Text.RegularExpressions;
 
-    ///
-    /// <summary> A ConfigEntry holds the value(s) for an entry of ConfigEntryType.
-    ///  </summary>
-    /// <seealso cref= gnu.lgpl.License for license details.<br>
-    ///      The copyright to this program is held by it's authors. </seealso>
-    /// <seealso cref= gnu.lgpl.License
+    ///<summary>
+    ///  A ConfigEntry holds the value(s) for an entry of ConfigEntryType.
+    ///</summary>
+    ///<seealso cref =  gnu.lgpl.License for license details.<br>
+    ///                                                        The copyright to this program is held by it's authors. </seealso>
+    ///<seealso cref =  gnu.lgpl.License
     /// @author DM Smith [ dmsmith555 at yahoo dot com] </seealso>
-    /// 
     public class ConfigEntry
     {
         #region Fields
 
-        ///    
-        /// <summary>* A pattern of allowable RTF in a SWORD conf. These are: \pard, \pae, \par,
-        /// \qc \b, \i and embedded Unicode </summary>
-        ///     
+        /// <summary>
+        ///   * A pattern of allowable RTF in a SWORD conf. These are: \pard, \pae, \par,
+        ///   \qc \b, \i and embedded Unicode
+        /// </summary>
         private static readonly Regex RTF_PATTERN = new Regex("\\\\pard|\\\\pa[er]|\\\\qc|\\\\[bi]|\\\\u-?[0-9]{4,6}");
 
-        private string @internal;
-        private string name;
+        private readonly string name;
 
-        ///    
-        /// <summary>* A histogram for debugging. </summary>
-        ///     
+        /// <summary>
+        ///   * A histogram for debugging.
+        /// </summary>
         // private static Histogram histogram = new Histogram();
-        private ConfigEntryType type;
+        private readonly ConfigEntryType type;
+
+        private string @internal;
         private object value;
         private IList<string> values;
 
@@ -61,15 +64,14 @@ namespace SwordBackend
 
         #region Constructors
 
-        ///    
-        /// <summary>* Create a ConfigEntry whose type is not certain and whose value is not
-        /// known.
-        ///  </summary>
-        /// <param name="bookName">
-        ///            the internal name of the book </param>
-        /// <param name="aName">
-        ///            the name of the ConfigEntry. </param>
-        ///     
+        /// <summary>
+        ///   * Create a ConfigEntry whose type is not certain and whose value is not
+        ///   known.
+        /// </summary>
+        /// <param name = "bookName">
+        ///   the internal name of the book </param>
+        /// <param name = "aName">
+        ///   the name of the ConfigEntry. </param>
         public ConfigEntry(string bookName, string aName)
         {
             @internal = bookName;
@@ -77,16 +79,15 @@ namespace SwordBackend
             type = ConfigEntryType.fromString(aName);
         }
 
-        ///    
-        /// <summary>* Create a ConfigEntry directly with an initial value.
-        ///  </summary>
-        /// <param name="bookName">
-        ///            the internal name of the book </param>
-        /// <param name="aType">
-        ///            the kind of ConfigEntry </param>
-        /// <param name="aValue">
-        ///            the initial value for the ConfigEntry </param>
-        ///     
+        /// <summary>
+        ///   * Create a ConfigEntry directly with an initial value.
+        /// </summary>
+        /// <param name = "bookName">
+        ///   the internal name of the book </param>
+        /// <param name = "aType">
+        ///   the kind of ConfigEntry </param>
+        /// <param name = "aValue">
+        ///   the initial value for the ConfigEntry </param>
         public ConfigEntry(string bookName, ConfigEntryType aType, string aValue)
         {
             @internal = bookName;
@@ -99,22 +100,18 @@ namespace SwordBackend
 
         #region Properties
 
-        ///    
-        /// <summary>* Determine whether this config entry is supported.
-        ///  </summary>
+        /// <summary>
+        ///   * Determine whether this config entry is supported.
+        /// </summary>
         /// <returns> true if this ConfigEntry has a type. </returns>
-        ///     
         public bool isSupported
         {
-            get
-            {
-                return type != null;
-            }
+            get { return type != null; }
         }
 
-        ///    
-        /// <summary>* Get the key of this ConfigEntry </summary>
-        ///     
+        /// <summary>
+        ///   * Get the key of this ConfigEntry
+        /// </summary>
         public string Name
         {
             get
@@ -127,23 +124,19 @@ namespace SwordBackend
             }
         }
 
-        ///    
-        /// <summary>* Get the type of this ConfigEntry </summary>
-        ///     
+        /// <summary>
+        ///   * Get the type of this ConfigEntry
+        /// </summary>
         public ConfigEntryType Type
         {
-            get
-            {
-                return type;
-            }
+            get { return type; }
         }
 
-        ///    
-        /// <summary>* Get the value(s) of this ConfigEntry. If mayRepeat() == true then it
-        /// returns a List. Otherwise it returns a string.
-        ///  </summary>
+        /// <summary>
+        ///   * Get the value(s) of this ConfigEntry. If mayRepeat() == true then it
+        ///   returns a List. Otherwise it returns a string.
+        /// </summary>
         /// <returns> a list, value or null. </returns>
-        ///     
         public object Value
         {
             get
@@ -164,9 +157,9 @@ namespace SwordBackend
 
         #region Methods
 
-        ///    
-        /// <summary>* Add a value to the list of values for this ConfigEntry </summary>
-        ///     
+        /// <summary>
+        ///   * Add a value to the list of values for this ConfigEntry
+        /// </summary>
         public void addValue(string val)
         {
             string aValue = val;
@@ -224,13 +217,12 @@ namespace SwordBackend
             }
         }
 
-        ///    
-        /// <summary>* While most fields are single line or single value, some allow
-        /// continuation. A continuation mark is a backslash at the end of a line. It
-        /// is not to be followed by whitespace.
-        ///  </summary>
+        /// <summary>
+        ///   * While most fields are single line or single value, some allow
+        ///   continuation. A continuation mark is a backslash at the end of a line. It
+        ///   is not to be followed by whitespace.
+        /// </summary>
         /// <returns> true if continuation is allowed </returns>
-        ///     
         public bool allowsContinuation()
         {
             if (type != null)
@@ -240,11 +232,10 @@ namespace SwordBackend
             return true;
         }
 
-        ///    
-        /// <summary>* RTF is allowed in a few config entries.
-        ///  </summary>
+        /// <summary>
+        ///   * RTF is allowed in a few config entries.
+        /// </summary>
         /// <returns> true if RTF is allowed </returns>
-        ///     
         public bool allowsRTF()
         {
             if (type != null)
@@ -339,13 +330,13 @@ namespace SwordBackend
 
             // Check that that is the same as this
             // Don't use instanceOf since that breaks inheritance
-            if (!obj.GetType().Equals(this.GetType()))
+            if (!obj.GetType().Equals(GetType()))
             {
                 return false;
             }
 
-            ConfigEntry that = (ConfigEntry) obj;
-            return that.Name.Equals(this.Name);
+            var that = (ConfigEntry) obj;
+            return that.Name.Equals(Name);
         }
 
         /*
@@ -358,13 +349,12 @@ namespace SwordBackend
             return Name.GetHashCode();
         }
 
-        ///    
-        /// <summary>* Determines whether the string is allowed. For some config entries, the
-        /// value is expected to be one of a group, for others the format is defined.
-        ///  </summary>
-        /// <param name="aValue"> </param>
+        /// <summary>
+        ///   * Determines whether the string is allowed. For some config entries, the
+        ///   value is expected to be one of a group, for others the format is defined.
+        /// </summary>
+        /// <param name = "aValue"> </param>
         /// <returns> true if the string is allowed </returns>
-        ///     
         public bool isAllowed(string aValue)
         {
             if (type != null)
@@ -374,13 +364,12 @@ namespace SwordBackend
             return true;
         }
 
-        ///    
-        /// <summary>* Determine whether this Config entry matches the value.
-        ///  </summary>
-        /// <param name="search">
-        ///            the value to match against </param>
+        /// <summary>
+        ///   * Determine whether this Config entry matches the value.
+        /// </summary>
+        /// <param name = "search">
+        ///   the value to match against </param>
         /// <returns> true if this ConfigEntry matches the value </returns>
-        ///     
         public bool match(object search)
         {
             if (value != null)
@@ -391,16 +380,15 @@ namespace SwordBackend
             {
                 return values.Contains(search.ToString());
             }
-            object def = type.Default;
+            var def = type.Default;
             return def != null && def.Equals(search);
         }
 
-        ///    
-        /// <summary>* Some keys can repeat. When this happens each is a single value pick from
-        /// a list of choices.
-        ///  </summary>
+        /// <summary>
+        ///   * Some keys can repeat. When this happens each is a single value pick from
+        ///   a list of choices.
+        /// </summary>
         /// <returns> true if this ConfigEntryType can occur more than once </returns>
-        ///     
         public bool mayRepeat()
         {
             if (type != null)
@@ -410,9 +398,9 @@ namespace SwordBackend
             return true;
         }
 
-        ///    
-        /// <summary>* </summary>
-        ///     
+        /// <summary>
+        ///   *
+        /// </summary>
         public bool reportDetails()
         {
             if (type != null)
@@ -422,16 +410,15 @@ namespace SwordBackend
             return true;
         }
 
-        ///    
-        /// <summary>* Build's a SWORD conf file as a string. The result is not identical to the
-        /// original, cleaning up problems in the original and re-arranging the
-        /// entries into a predictable order.
-        ///  </summary>
+        /// <summary>
+        ///   * Build's a SWORD conf file as a string. The result is not identical to the
+        ///   original, cleaning up problems in the original and re-arranging the
+        ///   entries into a predictable order.
+        /// </summary>
         /// <returns> the well-formed conf. </returns>
-        ///     
         public string toConf()
         {
-            StringBuilder buf = new StringBuilder();
+            var buf = new StringBuilder();
 
             if (value != null)
             {
@@ -465,9 +452,10 @@ namespace SwordBackend
                     {
                         buf.Append(Name);
                         buf.Append('_');
-                        if(text.IndexOf(' ')>=0)
+                        if (text.IndexOf(' ') >= 0)
                         {
-                            buf.Append(text.Substring(0, text.IndexOf(' ') - 1) + "=" + text.Substring(text.IndexOf(' ') + 1));
+                            buf.Append(text.Substring(0, text.IndexOf(' ') - 1) + "=" +
+                                       text.Substring(text.IndexOf(' ') + 1));
                         }
                         buf.Append('\n');
                     }
@@ -496,14 +484,13 @@ namespace SwordBackend
             return Name;
         }
 
-        ///    
-        /// <summary>* The conf value is the internal representation of the string. For
-        /// Language, this is the code, not the localized name. Add others as needed.
-        ///  </summary>
-        /// <param name="aValue">
-        ///            either value or values[i] </param>
+        /// <summary>
+        ///   * The conf value is the internal representation of the string. For
+        ///   Language, this is the code, not the localized name. Add others as needed.
+        /// </summary>
+        /// <param name = "aValue">
+        ///   either value or values[i] </param>
         /// <returns> the conf value. </returns>
-        ///     
         private string getConfValue(object aValue)
         {
             if (aValue != null)

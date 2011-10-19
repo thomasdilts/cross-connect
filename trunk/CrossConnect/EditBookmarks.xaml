@@ -14,7 +14,7 @@
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     shell:SystemTray.IsVisible="True" xmlns:my="clr-namespace:CrossConnect"
-    Loaded="PhoneApplicationPage_Loaded"
+    Loaded="PhoneApplicationPageLoaded"
      >
 
     <toolkit:TransitionService.NavigationInTransition>
@@ -52,7 +52,7 @@
                 <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}"/>
                 <TextBlock x:Name="PageTitle" Text="Select bookmark to delete" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
             </StackPanel>
-            <ListBox Grid.Row="1" SelectionChanged="SelectList_SelectionChanged"  Name="SelectList" />
+            <ListBox Grid.Row="1" SelectionChanged="SelectListSelectionChanged"  Name="SelectList" />
         </Grid>
 
 </local:AutoRotatePage>

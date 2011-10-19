@@ -15,7 +15,7 @@
     mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     shell:SystemTray.IsVisible="False" xmlns:my="clr-namespace:CrossConnect"
-    Loaded="AutoRotatePage_Loaded" >
+    Loaded="AutoRotatePageLoaded" >
 
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -52,7 +52,7 @@
             <TextBlock x:Name="PageTitle" Text="Select Language" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
         </StackPanel>
         <!--ContentPanel - place additional content here-->
-        <ListBox Grid.Row="1" SelectionChanged="SelectList_SelectionChanged"  Name="SelectList" FontSize="32" >
+        <ListBox Grid.Row="1" SelectionChanged="SelectListSelectionChanged"  Name="SelectList" FontSize="32" >
             <sys:String>zzDefault system language</sys:String>
             <sys:String>Afrikaans (af)</sys:String>
             <sys:String>العربية (Arabic ar)</sys:String>

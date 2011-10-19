@@ -51,7 +51,7 @@
                 <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}"/>
                 <TextBlock x:Name="PageTitle" Text="Help" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
             </StackPanel>
-            <phone:WebBrowser Name="webBrowser1" Loaded="WebBrowser_Loaded" Grid.Row="1"  />
+            <phone:WebBrowser Name="webBrowser1" Loaded="WebBrowserLoaded" Grid.Row="1"  />
         </Grid>
     </ScrollViewer>
 
