@@ -44,7 +44,7 @@ namespace CrossConnect.readers
     {
         #region Fields
 
-        [DataMember]
+        [DataMember(Name = "serial2")]
         public BibleZtextReaderSerialData Serial2 = new BibleZtextReaderSerialData(false, "", "", 0, 0);
 
         private string _displayText = string.Empty;

@@ -936,22 +936,22 @@ namespace CrossConnect
         {
             #region Fields
 
-            [DataMember]
+            [DataMember(Name = "bibleDescription")]
             public string BibleDescription = string.Empty;
-            [DataMember]
+            [DataMember(Name = "bibleToLoad")]
             public string BibleToLoad = string.Empty;
-            [DataMember]
+            [DataMember(Name = "curIndex")]
             public int CurIndex;
-            [DataMember]
+            [DataMember(Name = "htmlFontSize")]
             public double HtmlFontSize = 10;
             public bool IsResume;
-            [DataMember]
+            [DataMember(Name = "isSynchronized")]
             public bool IsSynchronized = true;
-            [DataMember]
+            [DataMember(Name = "numRowsIown")]
             public int NumRowsIown = 1;
-            [DataMember]
+            [DataMember(Name = "source")]
             public IBrowserTextSource Source;
-            [DataMember]
+            [DataMember(Name = "windowType")]
             public WindowType WindowType = WindowType.WindowBible;
 
             #endregion Fields

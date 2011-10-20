@@ -234,7 +234,7 @@ namespace CrossConnect
                                              Translations.Translate("Minutes/Day"));
                 }
                 selectPlanType.SelectedIndex = App.DailyPlan.PlanNumber;
-                planStartDate.Value = App.DailyPlan.PlanStartDate;
+                planStartDate.Value = App.DailyPlan.PlanStartDate > DateTime.Now.AddYears(-100) ? App.DailyPlan.PlanStartDate : DateTime.Now;
             }
             else if (selectDocumentType.SelectedIndex == 6)
             {
@@ -397,7 +397,7 @@ namespace CrossConnect
                     case WindowType.WindowDailyPlan:
                         selectDocumentType.SelectedIndex = 4;
                         selectPlanType.SelectedIndex = App.DailyPlan.PlanNumber;
-                        planStartDate.Value = App.DailyPlan.PlanStartDate;
+                        planStartDate.Value = App.DailyPlan.PlanStartDate > DateTime.Now.AddYears(-100) ? App.DailyPlan.PlanStartDate : DateTime.Now;
                         break;
                     case WindowType.WindowAddedNotes:
                         selectDocumentType.SelectedIndex = 5;

@@ -43,13 +43,13 @@ namespace Sword.reader
     {
         #region Fields
 
-        [DataMember]
+        [DataMember(Name = "chapterNum")]
         public int ChapterNum = 1;
-        [DataMember]
+        [DataMember(Name = "note")]
         public string Note = "";
-        [DataMember]
+        [DataMember(Name = "verseNum")]
         public int VerseNum = 1;
-        [DataMember]
+        [DataMember(Name = "when")]
         public DateTime When;
 
         #endregion Fields
@@ -231,7 +231,7 @@ namespace Sword.reader
                                                                                                };
 
         public List<ChapterPos> Chapters = new List<ChapterPos>();
-        [DataMember]
+        [DataMember(Name = "serial")]
         public BibleZtextReaderSerialData Serial = new BibleZtextReaderSerialData(false, "", "", 0, 0);
 
         /// <summary>
@@ -2068,11 +2068,11 @@ namespace Sword.reader
         {
             #region Fields
 
-            [DataMember]
+            [DataMember(Name = "booknum")]
             public int Booknum;
-            [DataMember]
+            [DataMember(Name = "length")]
             public int Length;
-            [DataMember]
+            [DataMember(Name = "startPos")]
             public long StartPos;
 
             #endregion Fields
@@ -2104,13 +2104,13 @@ namespace Sword.reader
         {
             #region Fields
 
-            [DataMember]
+            [DataMember(Name = "length")]
             public long Length;
-            [DataMember]
+            [DataMember(Name = "listChapters")]
             public List<ChapterPos> ListChapters = new List<ChapterPos>();
-            [DataMember]
+            [DataMember(Name = "startPos")]
             public long StartPos;
-            [DataMember]
+            [DataMember(Name = "unused")]
             public long Unused;
 
             #endregion Fields
@@ -2133,17 +2133,17 @@ namespace Sword.reader
         {
             #region Fields
 
-            [DataMember]
+            [DataMember(Name = "booknum")]
             public int Booknum;
-            [DataMember]
+            [DataMember(Name = "bookRelativeChapterNum")]
             public int BookRelativeChapterNum;
-            [DataMember]
+            [DataMember(Name = "bookStartPos")]
             public long BookStartPos;
-            [DataMember]
+            [DataMember(Name = "length")]
             public long Length;
-            [DataMember]
+            [DataMember(Name = "startPos")]
             public long StartPos;
-            [DataMember]
+            [DataMember(Name = "verses")]
             public List<VersePos> Verses = new List<VersePos>();
 
             #endregion Fields
@@ -2169,15 +2169,15 @@ namespace Sword.reader
     {
         #region Fields
 
-        [DataMember]
+        [DataMember(Name = "isIsoEncoding")]
         public bool IsIsoEncoding;
-        [DataMember]
+        [DataMember(Name = "iso2DigitLangCode")]
         public string Iso2DigitLangCode = string.Empty;
-        [DataMember]
+        [DataMember(Name = "path")]
         public string Path = string.Empty;
-        [DataMember]
+        [DataMember(Name = "posChaptNum")]
         public int PosChaptNum;
-        [DataMember]
+        [DataMember(Name = "posVerseNum")]
         public int PosVerseNum;
 
         #endregion Fields

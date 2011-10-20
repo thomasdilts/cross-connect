@@ -42,7 +42,7 @@ namespace CrossConnect.readers
     {
         #region Fields
 
-        [DataMember]
+        [DataMember(Name = "serial2")]
         public BibleZtextReaderSerialData Serial2 = new BibleZtextReaderSerialData(false, "", "", 0, 0);
 
         #endregion Fields
@@ -147,9 +147,9 @@ namespace CrossConnect.readers
             else
             {
                 App.DailyPlan.PlanDayNumber = chapter;
+                //Changing the chapter is only to fool the base class into understanding that we have changed pages
+                Serial.PosChaptNum = Serial.PosChaptNum==0?1:0;
             }
-            //Changing the chapter is only to fool the base class into understanding that we have changed pages
-            Serial.PosChaptNum = App.DailyPlan.PlanDayNumber;
         }
 
         public override void MoveNext()
@@ -162,7 +162,7 @@ namespace CrossConnect.readers
                 App.DailyPlan.PlanDayNumber = 0;
             }
             //Changing the chapter is only to fool the base class into understanding that we have changed pages
-            Serial.PosChaptNum = App.DailyPlan.PlanDayNumber;
+            Serial.PosChaptNum = Serial.PosChaptNum == 0 ? 1 : 0;
         }
 
         public override void MovePrevious()
@@ -175,7 +175,7 @@ namespace CrossConnect.readers
                 App.DailyPlan.PlanDayNumber = count - 1;
             }
             //Changing the chapter is only to fool the base class into understanding that we have changed pages
-            Serial.PosChaptNum = App.DailyPlan.PlanDayNumber;
+            Serial.PosChaptNum = Serial.PosChaptNum == 0 ? 1 : 0;
         }
 
         public override void Resume()

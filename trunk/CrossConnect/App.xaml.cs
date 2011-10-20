@@ -633,9 +633,9 @@ namespace CrossConnect
         {
             #region Fields
 
-            [DataMember]
+            [DataMember(Name = "bookmarks")]
             public List<BiblePlaceMarker> Bookmarks = new List<BiblePlaceMarker>();
-            [DataMember]
+            [DataMember(Name = "history")]
             public List<BiblePlaceMarker> History = new List<BiblePlaceMarker>();
 
             #endregion Fields
@@ -646,18 +646,18 @@ namespace CrossConnect
         {
             #region Fields
 
-            [DataMember]
+            [DataMember(Name = "currentChapterNumber")]
             public int CurrentChapterNumber;
-            [DataMember]
+            [DataMember(Name = "currentVerseNumber")]
             public int CurrentVerseNumber;
-            [DataMember]
+            [DataMember(Name = "personalNotes")]
             public Dictionary<int, Dictionary<int, BiblePlaceMarker>> PersonalNotes = 
                 new Dictionary<int, Dictionary<int, BiblePlaceMarker>>();
-            [DataMember]
+            [DataMember(Name = "planDayNumber")]
             public int PlanDayNumber;
-            [DataMember]
+            [DataMember(Name = "planNumber")]
             public int PlanNumber;
-            [DataMember]
+            [DataMember(Name = "planStartDate")]
             public DateTime PlanStartDate = DateTime.Now;
 
             #endregion Fields

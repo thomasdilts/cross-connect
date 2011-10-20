@@ -42,10 +42,10 @@ namespace Sword.reader
     {
         #region Fields
 
-        [DataMember]
+        [DataMember(Name = "serial2")]
         public BibleZtextReaderSerialData Serial2 = new BibleZtextReaderSerialData(false, "", "", 0, 0);
 
-        [DataMember]
+        [DataMember(Name = "titleBrowserWindow")]
         private string _titleBrowserWindow = string.Empty;
 
         #endregion Fields
@@ -141,45 +141,45 @@ namespace Sword.reader
     {
         #region Fields
 
-        [DataMember]
+        [DataMember(Name = "customBibleDownloadLinks")]
         public string CustomBibleDownloadLinks = 
             @"www.chaniel.se,/crossconnect/bibles/raw,/crossconnect/bibles/biblelist";
-        [DataMember]
+        [DataMember(Name = "eachVerseNewLine")]
         public bool EachVerseNewLine;
-        [DataMember]
+        [DataMember(Name = "greekDictionaryLink")]
         public string GreekDictionaryLink = 
             @"http://www.eliyah.com/cgi-bin/strongs.cgi?file=greeklexicon&isindex={0}";
-        [DataMember]
+        [DataMember(Name = "hebrewDictionaryLink")]
         public string HebrewDictionaryLink = 
             @"http://www.eliyah.com/cgi-bin/strongs.cgi?file=hebrewlexicon&isindex={0}";
-        [DataMember]
+        [DataMember(Name = "highlightMarkings")]
         public bool HighlightMarkings;
-        [DataMember]
+        [DataMember(Name = "showAddedNotesByChapter")]
         public bool ShowAddedNotesByChapter;
-        [DataMember]
+        [DataMember(Name = "showBookName")]
         public bool ShowBookName;
-        [DataMember]
+        [DataMember(Name = "showChapterNumber")]
         public bool ShowChapterNumber;
-        [DataMember]
+        [DataMember(Name = "showHeadings")]
         public bool ShowHeadings = true;
-        [DataMember]
+        [DataMember(Name = "showMorphology")]
         public bool ShowMorphology;
-        [DataMember]
+        [DataMember(Name = "showNotePositions")]
         public bool ShowNotePositions;
-        [DataMember]
+        [DataMember(Name = "showStrongsNumbers")]
         public bool ShowStrongsNumbers;
-        [DataMember]
+        [DataMember(Name = "showVerseNumber")]
         public bool ShowVerseNumber = true;
-        [DataMember]
+        [DataMember(Name = "smallVerseNumbers")]
         public bool SmallVerseNumbers = true;
-        [DataMember]
+        [DataMember(Name = "soundLink")]
         public string SoundLink = 
             @"http://www.chaniel.se/crossconnect/bibles/talking/getabsolutechapter.php?chapternum={0}&language={1}";
-        [DataMember]
+        [DataMember(Name = "useInternetGreekHebrewDict")]
         public bool UseInternetGreekHebrewDict;
-        [DataMember]
+        [DataMember(Name = "userUniqueGuuid")]
         public string UserUniqueGuuid = "";
-        [DataMember]
+        [DataMember(Name = "wordsOfChristRed")]
         public bool WordsOfChristRed;
 
         #endregion Fields
