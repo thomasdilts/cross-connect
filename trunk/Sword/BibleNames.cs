@@ -32,28 +32,28 @@ namespace Sword
     using System.Reflection;
     using System.Xml;
 
-    using Sword.reader;
+    using reader;
 
     public class BibleNames
     {
         #region Fields
 
-        private readonly string[] fullNames = new string[BibleZtextReader.BooksInBible];
-        private readonly bool isShortNamesExisting = true;
-        private readonly string[] shortNames = new string[BibleZtextReader.BooksInBible];
+        private readonly string[] _fullNames = new string[BibleZtextReader.BooksInBible];
+        private readonly bool _isShortNamesExisting = true;
+        private readonly string[] _shortNames = new string[BibleZtextReader.BooksInBible];
 
         #endregion Fields
 
         #region Constructors
 
-        public BibleNames(string isoLang2digitCode)
+        public BibleNames(string isoLang2DigitCode)
         {
             var assem = Assembly.GetExecutingAssembly();
             string isocode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLower();
             string name = CultureInfo.CurrentCulture.Name.Replace('-', '_');
             Stream stream = null;
 
-            if (isocode.Equals(isoLang2digitCode))
+            if (isocode.Equals(isoLang2DigitCode))
             {
                 // here we have the same language as the phone standard langauge
                 //
@@ -65,89 +65,89 @@ namespace Sword
 
             if (stream == null)
             {
-                stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + isoLang2digitCode + ".xml");
-                if (stream == null)
-                {
-                    stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_en.xml");
-                }
+                stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + isoLang2DigitCode + ".xml") ??
+                         assem.GetManifestResourceStream("Sword.Properties.BibleNames_en.xml");
             }
-            bool isRTL = isoLang2digitCode.Equals("iw") || isoLang2digitCode.Equals("he") ||
-                         isoLang2digitCode.Equals("ar") || isoLang2digitCode.Equals("ar_EG") ||
-                         isoLang2digitCode.Equals("fa");
+            bool isRtl = isoLang2DigitCode.Equals("iw") || isoLang2DigitCode.Equals("he") ||
+                         isoLang2DigitCode.Equals("ar") || isoLang2DigitCode.Equals("ar_EG") ||
+                         isoLang2DigitCode.Equals("fa");
             int numberBadShortNames = 0;
-            using (var reader = XmlReader.Create(stream))
+            if (stream != null)
             {
-                // Parse the file and get each of the nodes.
-                while (reader.Read())
+                using (var reader = XmlReader.Create(stream))
                 {
-                    if (reader.NodeType == XmlNodeType.Element)
+                    // Parse the file and get each of the nodes.
+                    while (reader.Read())
                     {
-                        if (reader.Name.ToLower().Equals("book") && reader.HasAttributes)
+                        if (reader.NodeType == XmlNodeType.Element)
                         {
-                            string shortName = "";
-                            string fullName = "";
-                            int keyNumber = 0;
-                            reader.MoveToFirstAttribute();
-                            do
+                            if (reader.Name.ToLower().Equals("book") && reader.HasAttributes)
                             {
-                                switch (reader.Name.ToLower())
+                                string shortName = "";
+                                string fullName = "";
+                                int keyNumber = 0;
+                                reader.MoveToFirstAttribute();
+                                do
                                 {
-                                    case "keynumber":
-                                        keyNumber = int.Parse(reader.Value);
-                                        break;
-                                    case "short":
-                                        shortName = isRTL ? Reverse(reader.Value) : reader.Value;
-                                        break;
-                                    case "full":
-                                        fullName = isRTL ? Reverse(reader.Value) : reader.Value;
-                                        break;
+                                    switch (reader.Name.ToLower())
+                                    {
+                                        case "keynumber":
+                                            keyNumber = int.Parse(reader.Value);
+                                            break;
+                                        case "short":
+                                            shortName = isRtl ? Reverse(reader.Value) : reader.Value;
+                                            break;
+                                        case "full":
+                                            fullName = isRtl ? Reverse(reader.Value) : reader.Value;
+                                            break;
+                                    }
+                                } while (reader.MoveToNextAttribute());
+                                if (shortName.Length > 4)
+                                {
+                                    numberBadShortNames++;
                                 }
-                            } while (reader.MoveToNextAttribute());
-                            if (shortName.Length > 4)
-                            {
-                                numberBadShortNames++;
+                                _shortNames[keyNumber] = shortName;
+                                _fullNames[keyNumber] = fullName;
                             }
-                            shortNames[keyNumber] = shortName;
-                            fullNames[keyNumber] = fullName;
                         }
                     }
                 }
+                stream.Close();
             }
-            stream.Close();
-            isShortNamesExisting = numberBadShortNames < 10;
+            _isShortNamesExisting = numberBadShortNames < 10;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public bool existsShortNames
+        public bool ExistsShortNames
         {
-            get { return isShortNamesExisting; }
+            get { return _isShortNamesExisting; }
         }
 
         #endregion Properties
 
         #region Methods
 
-        public string[] getAllFullNames()
+        public string[] GetAllFullNames()
         {
-            return fullNames;
+            return _fullNames;
         }
 
-        public string[] getAllShortNames()
+        public string[] GetAllShortNames()
         {
-            return shortNames;
+            return _shortNames;
         }
 
-        public string getFullName(int bookNum)
+        public string GetFullName(int bookNum)
         {
-            return fullNames[bookNum];
+            return _fullNames[bookNum];
         }
 
-        public string getShortName(int bookNum)
+        public string GetShortName(int bookNum)
         {
-            return shortNames[bookNum];
+            return _shortNames[bookNum];
         }
 
         public string Reverse(string str)

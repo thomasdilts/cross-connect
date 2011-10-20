@@ -235,18 +235,18 @@ namespace CrossConnect
                 bool isBibleSelected = selectType.SelectedItem.Equals(Translations.Translate("Bible"));
                 foreach (var book in _webInst.Entries)
                 {
-                    var lang = (Language) book.Value.Sbmd.GetProperty(ConfigEntryType.LANG);
+                    var lang = (Language) book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
                     if (lang.Name.Equals(selectLangauge.SelectedItem) && (
                                                                              (isBibleSelected &&
                                                                               ((string)
                                                                                book.Value.Sbmd.GetProperty(
-                                                                                   ConfigEntryType.MOD_DRV)).ToUpper().
+                                                                                   ConfigEntryType.ModDrv)).ToUpper().
                                                                                   Equals("ZTEXT"))
                                                                              ||
                                                                              (isCommentarySelected &&
                                                                               ((string)
                                                                                book.Value.Sbmd.GetProperty(
-                                                                                   ConfigEntryType.MOD_DRV)).ToUpper().
+                                                                                   ConfigEntryType.ModDrv)).ToUpper().
                                                                                   Equals("ZCOM"))))
                     {
                         allBooks[book.Value.Sbmd.Name] = book.Value.Sbmd.Name;
@@ -341,15 +341,15 @@ namespace CrossConnect
                     foreach (var book in _webInst.Entries)
                     {
                         if (isCommentarySelected &&
-                            ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.MOD_DRV)).ToUpper().Equals("ZCOM"))
+                            ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper().Equals("ZCOM"))
                         {
-                            var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.LANG);
+                            var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
                             allLanguages[lang.Name] = lang;
                         }
                         else if (!isCommentarySelected &&
-                                 ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.MOD_DRV)).ToUpper().Equals("ZTEXT"))
+                                 ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper().Equals("ZTEXT"))
                         {
-                            var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.LANG);
+                            var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
                             allLanguages[lang.Name] = lang;
                         }
                     }

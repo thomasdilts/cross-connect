@@ -31,7 +31,7 @@ namespace Sword
     using System.IO;
     using System.Text;
 
-    using Sword.reader;
+    using reader;
 
     ///  A utility class for loading and representing Sword book configs.
     ///                                                        The copyright to this program is held by it's authors.
@@ -61,14 +61,14 @@ namespace Sword
         public SwordBookMetaData(byte[] buffer, string bookName)
         {
             _cet = new ConfigEntryTable(bookName);
-            _cet.load(buffer);
+            _cet.Load(buffer);
             BuildProperties();
         }
 
         public SwordBookMetaData(Stream stream, string bookName)
         {
             _cet = new ConfigEntryTable(bookName);
-            _cet.load(stream);
+            _cet.Load(stream);
             BuildProperties();
         }
 
@@ -90,17 +90,17 @@ namespace Sword
         /// <returns> Returns the relative path of the book's conf. </returns>
         public string ConfPath
         {
-            get { return BibleZtextReader.DirConf + '/' + _cet.internalName.ToLower() + BibleZtextReader.ExtensionConf; }
+            get { return BibleZtextReader.DirConf + '/' + _cet.InternalName.ToLower() + BibleZtextReader.ExtensionConf; }
         }
 
         public string Initials
         {
-            get { return (string) GetProperty(ConfigEntryType.INITIALS); }
+            get { return (string) GetProperty(ConfigEntryType.Initials); }
         }
 
         public string InternalName
         {
-            get { return _cet.internalName; }
+            get { return _cet.InternalName; }
         }
 
         /*
@@ -110,7 +110,7 @@ namespace Sword
          */
         public bool IsEnciphered
         {
-            get { return _cet.isEnciphered; }
+            get { return _cet.IsEnciphered; }
         }
 
         /*
@@ -124,12 +124,12 @@ namespace Sword
             {
                 // This should return the dominate direction of the text, if it is BiDi,
                 // then we have to guess.
-                var dir = (string) GetProperty(ConfigEntryType.DIRECTION);
+                var dir = (string) GetProperty(ConfigEntryType.Direction);
                 if (ConfigEntryType.DirectionBidi.Equals(dir))
                 {
                     // When BiDi, return the dominate direction based upon the Book's
                     // Language not Direction
-                    var lang = (Language) GetProperty(ConfigEntryType.LANG);
+                    var lang = (Language) GetProperty(ConfigEntryType.Lang);
                     return lang.IsLeftToRight;
                 }
 
@@ -144,7 +144,7 @@ namespace Sword
          */
         public bool IsLocked
         {
-            get { return _cet.isLocked; }
+            get { return _cet.IsLocked; }
         }
 
         /*
@@ -154,7 +154,7 @@ namespace Sword
          */
         public bool IsQuestionable
         {
-            get { return _cet.isQuestionable; }
+            get { return _cet.IsQuestionable; }
         }
 
         /*
@@ -164,7 +164,7 @@ namespace Sword
          */
         public string Name
         {
-            get { return (string) GetProperty(ConfigEntryType.DESCRIPTION); }
+            get { return (string) GetProperty(ConfigEntryType.Description); }
         }
 
         /*
@@ -193,7 +193,7 @@ namespace Sword
 
         public object GetCetProperty(ConfigEntryType confType)
         {
-            return _cet.getValue(confType);
+            return _cet.GetValue(confType);
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace Sword
         /// <returns> the property or null </returns>
         public object GetProperty(ConfigEntryType entry)
         {
-            return _cet.getValue(entry);
+            return _cet.GetValue(entry);
         }
 
         private void BuildProperties()
@@ -213,7 +213,7 @@ namespace Sword
             // merge entries into properties file
             foreach (var key in _cet.Keys)
             {
-                var value = _cet.getValue(key);
+                var value = _cet.GetValue(key);
                 // value is null if the config entry was rejected.
                 if (value == null)
                 {

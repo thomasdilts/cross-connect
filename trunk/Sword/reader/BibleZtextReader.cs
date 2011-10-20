@@ -649,7 +649,7 @@ namespace Sword.reader
                 {
                     BookNames = new BibleNames(Serial.Iso2DigitLangCode);
                 }
-                return BookNames.existsShortNames;
+                return BookNames.ExistsShortNames;
             }
         }
 
@@ -783,10 +783,10 @@ namespace Sword.reader
                 {
                     BookNames = new BibleNames(Serial.Iso2DigitLangCode);
                 }
-                var buttonNamesStart = BookNames.getAllShortNames();
-                if (!BookNames.existsShortNames)
+                var buttonNamesStart = BookNames.GetAllShortNames();
+                if (!BookNames.ExistsShortNames)
                 {
-                    buttonNamesStart = BookNames.getAllFullNames();
+                    buttonNamesStart = BookNames.GetAllFullNames();
                 }
                 //assumption. if the first chapter in the book does not exist then the book does not exist
                 for (int i = 0; i < BooksInBible; i++)
@@ -805,7 +805,7 @@ namespace Sword.reader
                     colors.ToArray(),
                     buttonNames.ToArray(),
                     values.ToArray(),
-                    !BookNames.existsShortNames ? ButtonSize.Large : ButtonSize.Medium);
+                    !BookNames.ExistsShortNames ? ButtonSize.Large : ButtonSize.Medium);
             }
             else
             {
@@ -873,7 +873,7 @@ namespace Sword.reader
             {
                 BookNames = new BibleNames(Serial.Iso2DigitLangCode);
             }
-            return BookNames.getFullName(bookNum);
+            return BookNames.GetFullName(bookNum);
         }
 
         public virtual void GetInfo(out int bookNum, out int absoluteChaptNum, out int relChaptNum, out int verseNum,
@@ -918,7 +918,7 @@ namespace Sword.reader
             {
                 BookNames = new BibleNames(Serial.Iso2DigitLangCode);
             }
-            return BookNames.getShortName(bookNum);
+            return BookNames.GetShortName(bookNum);
         }
 
         public virtual void GetTranslateableTexts(DisplaySettings displaySettings, string bibleToLoad,
@@ -1073,7 +1073,7 @@ namespace Sword.reader
             }
         }
 
-        public virtual string PutHtmlTofile(DisplaySettings displaySettings, string htmlBackgroundColor,
+        public string PutHtmlTofile(DisplaySettings displaySettings, string htmlBackgroundColor,
             string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,
             string fileErase, string filePath, bool forceReload)
         {
@@ -1177,7 +1177,7 @@ namespace Sword.reader
             {
                 BookNames = new BibleNames(Serial.Iso2DigitLangCode);
             }
-            return BookNames.getAllShortNames();
+            return BookNames.GetAllShortNames();
         }
 
         protected int GetByteFromStream(FileStream fs, out bool isEnd)

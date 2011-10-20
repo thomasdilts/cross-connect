@@ -172,10 +172,10 @@ namespace CrossConnect.readers
                 var sortedKeys = new List<int>(keys);
                 sortedKeys.Sort(CompareIntegersDescending);
 
-                var buttonNamesStart = BookNames.getAllShortNames();
-                if (!BookNames.existsShortNames)
+                var buttonNamesStart = BookNames.GetAllShortNames();
+                if (!BookNames.ExistsShortNames)
                 {
-                    buttonNamesStart = BookNames.getAllFullNames();
+                    buttonNamesStart = BookNames.GetAllFullNames();
                 }
 
                 for (int i = 0; i < count; i++)
@@ -197,7 +197,7 @@ namespace CrossConnect.readers
                     butColors,
                     butText,
                     values,
-                    !BookNames.existsShortNames ? ButtonSize.Large : ButtonSize.Medium);
+                    !BookNames.ExistsShortNames ? ButtonSize.Large : ButtonSize.Medium);
             }
             else
             {

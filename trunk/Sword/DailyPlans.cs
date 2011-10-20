@@ -902,7 +902,7 @@ namespace Sword
                                                     {
                                                         1175, 1176, 1177, 1178, 1179, 1180, 1181, 1182, 1183, 1184, 1185,
                                                         1186, 1187, 1188}};
-        public static int[][] Fast60DayNT = {
+        public static int[][] Fast60DayNt = {
                                                 new[] {929, 930, 931, 932, 933},
                                                 new[] {934, 935, 936, 937},
                                                 new[] {938, 939, 940},
@@ -963,7 +963,7 @@ namespace Sword
                                                 new[] {1167, 1168, 1169, 1170, 1171, 1172, 1173, 1174},
                                                 new[] {1175, 1176, 1177, 1178, 1179, 1180, 1181, 1182},
                                                 new[] {1183, 1184, 1185, 1186, 1187, 1188}};
-        public static int[][] Fast90DayNT = {
+        public static int[][] Fast90DayNt = {
                                                 new[] {929, 930, 931, 932},
                                                 new[] {933, 934},
                                                 new[] {935, 936, 937},
@@ -1827,7 +1827,7 @@ namespace Sword
                                                       {
                                                           1170, 1171, 1172, 1173, 1174, 1175, 1176, 1177, 1178, 1179, 1180,
                                                           1181, 1182, 1183, 1184, 1185, 1186, 1187, 1188}};
-        public static int[][] VersePerDayNTPvPs = {
+        public static int[][] VersePerDayNtPvPs = {
                                                       new[] {929},
                                                       new[] {930, 931},
                                                       new[] {932},
@@ -2387,7 +2387,7 @@ namespace Sword
                                                      new[] {905, 906, 907, 908, 909, 910, 911, 1183, 1184},
                                                      new[] {912, 913, 914, 915, 916, 917, 918, 919, 1185, 1186, 1187},
                                                      new[] {920, 921, 922, 923, 924, 925, 926, 927, 928, 1188}};
-        public static int[][] VersePerDayOT365 = {
+        public static int[][] VersePerDayOt365 = {
                                                      new[] {0, 1, 929},
                                                      new[] {2, 3, 4, 930},
                                                      new[] {5, 6, 931},
@@ -2753,7 +2753,7 @@ namespace Sword
                                                      new[] {917, 918, 919, 1186, 1187},
                                                      new[] {920, 921, 922, 923, 924},
                                                      new[] {925, 926, 927, 928, 1188}};
-        public static int[][] VersePerDayOT90 = {
+        public static int[][] VersePerDayOt90 = {
                                                     new[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 929, 930, 931, 932},
                                                     new[] {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 933, 934},
                                                     new[] {20, 21, 22, 23, 24, 25, 26, 935, 936, 937},
@@ -3810,19 +3810,19 @@ namespace Sword
                 VersePerDay365,
                 VersePerDay180,
                 VersePerDay90,
-                VersePerDayOT365,
+                VersePerDayOt365,
                 VersePerDayOt180,
-                VersePerDayOT90,
+                VersePerDayOt90,
                 VersePerDayTopic365,
                 VersePerDayTopic180,
                 VersePerDayTopic90,
                 ChapterRandom365,
                 ChapterRandom180,
                 ChapterRandom90,
-                Fast90DayNT,
-                Fast60DayNT,
+                Fast90DayNt,
+                Fast60DayNt,
                 Fast30DayNt,
-                VersePerDayNTPvPs
+                VersePerDayNtPvPs
             };
         public static string[][] ZzAllPlansNames = 
             {
@@ -4125,11 +4125,11 @@ namespace Sword
         private void CalculateAllPlans()
         {
             /////////////////////////////////// Easy NT and Prov and Ps /////////////////////////////////
-            const double goalVerseNumNTPvPs = (VersesInNt + (ProverbsVerseEnd - PsalmsVerseStart))/(double) 365;
-            var versePerDayNTPvPs = new List<int>[365];
-            for (int i = 0; i <= versePerDayNTPvPs.GetUpperBound(0); i++)
+            const double goalVerseNumNtPvPs = (VersesInNt + (ProverbsVerseEnd - PsalmsVerseStart))/(double) 365;
+            var versePerDayNtPvPs = new List<int>[365];
+            for (int i = 0; i <= versePerDayNtPvPs.GetUpperBound(0); i++)
             {
-                versePerDayNTPvPs[i] = new List<int>();
+                versePerDayNtPvPs[i] = new List<int>();
             }
             int daycount = 0;
             int verseCount = 0;
@@ -4139,11 +4139,11 @@ namespace Sword
                 for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
                 {
                     //look ahead. make sure not putting way too much on one day
-                    if (versePerDayNTPvPs[daycount].Count() > 0 &&
+                    if (versePerDayNtPvPs[daycount].Count() > 0 &&
                         (j <= (VersesInChapter[i].GetUpperBound(0) - 4) || i < (BooksInNt - 1)))
                     {
                         if (VersesInChapter[i][j] > 10 &&
-                            ((goalVerseNumNTPvPs*(daycount + 1)) - verseCount)*3 < VersesInChapter[i][j])
+                            ((goalVerseNumNtPvPs*(daycount + 1)) - verseCount)*3 < VersesInChapter[i][j])
                         {
                             daycount++;
                         }
@@ -4151,9 +4151,9 @@ namespace Sword
 
                     verseCount += VersesInChapter[i][j];
 
-                    versePerDayNTPvPs[daycount].Add(chapterCount);
+                    versePerDayNtPvPs[daycount].Add(chapterCount);
 
-                    while ((verseCount) > (goalVerseNumNTPvPs*(daycount + 1)) && versePerDayNTPvPs[daycount].Count() > 0)
+                    while ((verseCount) > (goalVerseNumNtPvPs*(daycount + 1)) && versePerDayNtPvPs[daycount].Count() > 0)
                     {
                         daycount++;
                     }
@@ -4166,11 +4166,11 @@ namespace Sword
                 for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
                 {
                     //look ahead. make sure not putting way too much on one day
-                    if (versePerDayNTPvPs[daycount].Count() > 0 &&
+                    if (versePerDayNtPvPs[daycount].Count() > 0 &&
                         (j <= (VersesInChapter[i].GetUpperBound(0) - 4) || i < (ProverbsBookNum - 1)))
                     {
                         if (VersesInChapter[i][j] > 10 &&
-                            ((goalVerseNumNTPvPs*(daycount + 1)) - verseCount)*3 < VersesInChapter[i][j])
+                            ((goalVerseNumNtPvPs*(daycount + 1)) - verseCount)*3 < VersesInChapter[i][j])
                         {
                             daycount++;
                         }
@@ -4178,9 +4178,9 @@ namespace Sword
 
                     verseCount += VersesInChapter[i][j];
 
-                    versePerDayNTPvPs[daycount].Add(chapterCount);
+                    versePerDayNtPvPs[daycount].Add(chapterCount);
 
-                    while ((verseCount) > (goalVerseNumNTPvPs*(daycount + 1)) && versePerDayNTPvPs[daycount].Count() > 0)
+                    while ((verseCount) > (goalVerseNumNtPvPs*(daycount + 1)) && versePerDayNtPvPs[daycount].Count() > 0)
                     {
                         daycount++;
                     }
@@ -4189,70 +4189,70 @@ namespace Sword
             }
 
             List<int>[] versePerDay;
-            List<int>[] versePerDayOT;
-            List<int>[] versePerDayNT;
+            List<int>[] versePerDayOt;
+            List<int>[] versePerDayNt;
             List<int>[] versePerDayTopic;
             List<int>[] chapterRandom;
 
-            DoPlansInSpecificDays(365, out versePerDay, out versePerDayOT, out versePerDayNT, out versePerDayTopic,
+            DoPlansInSpecificDays(365, out versePerDay, out versePerDayOt, out versePerDayNt, out versePerDayTopic,
                                   out chapterRandom);
 
             //print them out
             printoutPlan(versePerDay, "versePerDay365");
-            printoutPlan(versePerDayOT, "versePerDayOT365");
+            printoutPlan(versePerDayOt, "versePerDayOT365");
             printoutPlan(versePerDayTopic, "versePerDayTopic365");
             printoutPlan(chapterRandom, "chapterRandom365");
-            DoPlansInSpecificDays(180, out versePerDay, out versePerDayOT, out versePerDayNT, out versePerDayTopic,
+            DoPlansInSpecificDays(180, out versePerDay, out versePerDayOt, out versePerDayNt, out versePerDayTopic,
                                   out chapterRandom);
 
             //print them out
             printoutPlan(versePerDay, "versePerDay180");
-            printoutPlan(versePerDayOT, "versePerDayOT180");
+            printoutPlan(versePerDayOt, "versePerDayOT180");
             printoutPlan(versePerDayTopic, "versePerDayTopic180");
             printoutPlan(chapterRandom, "chapterRandom180");
-            DoPlansInSpecificDays(90, out versePerDay, out versePerDayOT, out versePerDayNT, out versePerDayTopic,
+            DoPlansInSpecificDays(90, out versePerDay, out versePerDayOt, out versePerDayNt, out versePerDayTopic,
                                   out chapterRandom);
 
             //print them out
             printoutPlan(versePerDay, "versePerDay90");
-            printoutPlan(versePerDayOT, "versePerDayOT90");
+            printoutPlan(versePerDayOt, "versePerDayOT90");
             printoutPlan(versePerDayTopic, "versePerDayTopic90");
             printoutPlan(chapterRandom, "chapterRandom90");
 
-            List<int>[] fast30DayNT;
-            doNTplans(30, out fast30DayNT);
-            printoutPlan(fast30DayNT, "fast30dayNT");
-            doNTplans(60, out fast30DayNT);
-            printoutPlan(fast30DayNT, "fast60dayNT");
-            doNTplans(90, out fast30DayNT);
-            printoutPlan(fast30DayNT, "fast90dayNT");
+            List<int>[] fast30DayNt;
+            doNTplans(30, out fast30DayNt);
+            printoutPlan(fast30DayNt, "fast30dayNT");
+            doNTplans(60, out fast30DayNt);
+            printoutPlan(fast30DayNt, "fast60dayNT");
+            doNTplans(90, out fast30DayNt);
+            printoutPlan(fast30DayNt, "fast90dayNT");
 
-            printoutPlan(versePerDayNTPvPs, "versePerDayNTPvPs");
+            printoutPlan(versePerDayNtPvPs, "versePerDayNTPvPs");
         }
 
-        private void doNTplans(int days, out List<int>[] fast30DayNT)
+        private void doNTplans(int days, out List<int>[] fast30DayNt)
         {
             ///////////////////////////////////  fast30dayNT new testament ////////////////////////////////////////////
             int verseCount = 0;
             int chapterCount = ChaptersInOt;
-            fast30DayNT = new List<int>[days];
-            for (int i = 0; i <= fast30DayNT.GetUpperBound(0); i++)
+            fast30DayNt = new List<int>[days];
+            for (int i = 0; i <= fast30DayNt.GetUpperBound(0); i++)
             {
-                fast30DayNT[i] = new List<int>();
+                fast30DayNt[i] = new List<int>();
             }
 
-            double goalVerseNumNT = VersesInNt/(double) days;
+            double goalVerseNumNt = VersesInNt/(double) days;
             int daycount = 0;
             for (int i = BooksInOt; i < BooksInBible; i++)
             {
                 for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
                 {
                     //look ahead. make sure not putting way too much on one day
-                    if (fast30DayNT[daycount].Count() > 0 &&
+                    if (fast30DayNt[daycount].Count() > 0 &&
                         (j <= (VersesInChapter[i].GetUpperBound(0) - 4) || i < (BooksInBible - 1)))
                     {
                         if (VersesInChapter[i][j] > 10 &&
-                            ((goalVerseNumNT*(daycount + 1)) - verseCount)*3 < VersesInChapter[i][j])
+                            ((goalVerseNumNt*(daycount + 1)) - verseCount)*3 < VersesInChapter[i][j])
                         {
                             daycount++;
                         }
@@ -4260,9 +4260,9 @@ namespace Sword
 
                     verseCount += VersesInChapter[i][j];
 
-                    fast30DayNT[daycount].Add(chapterCount);
+                    fast30DayNt[daycount].Add(chapterCount);
 
-                    while ((verseCount) > (goalVerseNumNT*(daycount + 1)))
+                    while ((verseCount) > (goalVerseNumNt*(daycount + 1)))
                     {
                         daycount++;
                     }
@@ -4271,8 +4271,8 @@ namespace Sword
             }
         }
 
-        private void DoPlansInSpecificDays(int days, out List<int>[] versePerDay, out List<int>[] versePerDayOT,
-            out List<int>[] versePerDayNT, out List<int>[] versePerDayTopic,
+        private void DoPlansInSpecificDays(int days, out List<int>[] versePerDay, out List<int>[] versePerDayOt,
+            out List<int>[] versePerDayNt, out List<int>[] versePerDayTopic,
             out List<int>[] chapterRandom)
         {
             //////////////////////////////  straight      ////////////////////////////////////////////
@@ -4312,13 +4312,13 @@ namespace Sword
                 }
             }
             ///////////////////////////////////  old and new testament ////////////////////////////////////////////
-            double goalVerseNumOT = VersesInOt/(double) days;
+            double goalVerseNumOt = VersesInOt/(double) days;
             verseCount = 0;
             chapterCount = 0;
-            versePerDayOT = new List<int>[days];
-            for (int i = 0; i <= versePerDayOT.GetUpperBound(0); i++)
+            versePerDayOt = new List<int>[days];
+            for (int i = 0; i <= versePerDayOt.GetUpperBound(0); i++)
             {
-                versePerDayOT[i] = new List<int>();
+                versePerDayOt[i] = new List<int>();
             }
             daycount = 0;
             for (int i = 0; i < BooksInOt; i++)
@@ -4326,43 +4326,43 @@ namespace Sword
                 for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
                 {
                     //look ahead. make sure not putting way too much on one day
-                    if (versePerDayOT[daycount].Count() > 0 &&
+                    if (versePerDayOt[daycount].Count() > 0 &&
                         (j <= (VersesInChapter[i].GetUpperBound(0) - 4) || i < (BooksInBible - 1)))
                     {
                         if (VersesInChapter[i][j] > 10 &&
-                            ((goalVerseNumOT*(daycount + 1)) - verseCount)*3 < VersesInChapter[i][j])
+                            ((goalVerseNumOt*(daycount + 1)) - verseCount)*3 < VersesInChapter[i][j])
                         {
                             daycount++;
                         }
                     }
                     verseCount += VersesInChapter[i][j];
 
-                    versePerDayOT[daycount].Add(chapterCount);
+                    versePerDayOt[daycount].Add(chapterCount);
 
-                    if (verseCount >= (goalVerseNumOT*(daycount + 1)))
+                    if (verseCount >= (goalVerseNumOt*(daycount + 1)))
                     {
                         daycount++;
                     }
                     chapterCount++;
                 }
             }
-            versePerDayNT = new List<int>[days];
-            for (int i = 0; i <= versePerDayNT.GetUpperBound(0); i++)
+            versePerDayNt = new List<int>[days];
+            for (int i = 0; i <= versePerDayNt.GetUpperBound(0); i++)
             {
-                versePerDayNT[i] = new List<int>();
+                versePerDayNt[i] = new List<int>();
             }
-            double goalVerseNumNT = VersesInNt/(double) days;
+            double goalVerseNumNt = VersesInNt/(double) days;
             daycount = 0;
             for (int i = BooksInOt; i < BooksInBible; i++)
             {
                 for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
                 {
                     //look ahead. make sure not putting way too much on one day
-                    if (versePerDayNT[daycount].Count() > 0 &&
+                    if (versePerDayNt[daycount].Count() > 0 &&
                         (j <= (VersesInChapter[i].GetUpperBound(0) - 4) || i < (BooksInNt - 1)))
                     {
                         if (VersesInChapter[i][j] > 10 &&
-                            ((goalVerseNumNT*(daycount + 1)) - (verseCount - VersesInOt))*3 < VersesInChapter[i][j])
+                            ((goalVerseNumNt*(daycount + 1)) - (verseCount - VersesInOt))*3 < VersesInChapter[i][j])
                         {
                             daycount++;
                         }
@@ -4370,9 +4370,9 @@ namespace Sword
 
                     verseCount += VersesInChapter[i][j];
 
-                    versePerDayNT[daycount].Add(chapterCount);
+                    versePerDayNt[daycount].Add(chapterCount);
 
-                    while ((verseCount - VersesInOt) > (goalVerseNumNT*(daycount + 1)))
+                    while ((verseCount - VersesInOt) > (goalVerseNumNt*(daycount + 1)))
                     {
                         daycount++;
                     }
@@ -4382,9 +4382,9 @@ namespace Sword
             //combine old and new testament
             for (int i = 0; i < days; i++)
             {
-                for (int j = 0; j < versePerDayNT[i].Count(); j++)
+                for (int j = 0; j < versePerDayNt[i].Count(); j++)
                 {
-                    versePerDayOT[i].Add(versePerDayNT[i][j]);
+                    versePerDayOt[i].Add(versePerDayNt[i][j]);
                 }
             }
 
@@ -4557,7 +4557,7 @@ namespace Sword
                         string bookName;
                         int relChapter;
                         getBookAndRelChaptFromChapter(ZAllPlans[i][j][k], out bookName, out relChapter,
-                                                      bn.getAllFullNames());
+                                                      bn.GetAllFullNames());
                         if (lastBook.Equals(bookName) && (lastChapter + 1) == relChapter)
                         {
                             savedBook = bookName;

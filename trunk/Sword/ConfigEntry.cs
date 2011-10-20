@@ -34,10 +34,6 @@ namespace Sword
     ///<summary>
     ///  A ConfigEntry holds the value(s) for an entry of ConfigEntryType.
     ///</summary>
-    ///<seealso cref =  gnu.lgpl.License for license details.<br>
-    ///                                                        The copyright to this program is held by it's authors. </seealso>
-    ///<seealso cref =  gnu.lgpl.License
-    /// @author DM Smith [ dmsmith555 at yahoo dot com] </seealso>
     public class ConfigEntry
     {
         #region Fields
@@ -46,19 +42,18 @@ namespace Sword
         ///   * A pattern of allowable RTF in a SWORD conf. These are: \pard, \pae, \par,
         ///   \qc \b, \i and embedded Unicode
         /// </summary>
-        private static readonly Regex RTF_PATTERN = new Regex("\\\\pard|\\\\pa[er]|\\\\qc|\\\\[bi]|\\\\u-?[0-9]{4,6}");
+        private static readonly Regex RtfPattern = new Regex("\\\\pard|\\\\pa[er]|\\\\qc|\\\\[bi]|\\\\u-?[0-9]{4,6}");
 
-        private readonly string name;
+        private readonly string _name;
 
         /// <summary>
         ///   * A histogram for debugging.
         /// </summary>
         // private static Histogram histogram = new Histogram();
-        private readonly ConfigEntryType type;
+        private readonly ConfigEntryType _type;
 
-        private string @internal;
-        private object value;
-        private IList<string> values;
+        private object _value;
+        private IList<string> _values;
 
         #endregion Fields
 
@@ -68,32 +63,26 @@ namespace Sword
         ///   * Create a ConfigEntry whose type is not certain and whose value is not
         ///   known.
         /// </summary>
-        /// <param name = "bookName">
-        ///   the internal name of the book </param>
         /// <param name = "aName">
         ///   the name of the ConfigEntry. </param>
-        public ConfigEntry(string bookName, string aName)
+        public ConfigEntry(string aName)
         {
-            @internal = bookName;
-            name = aName;
-            type = ConfigEntryType.fromString(aName);
+            _name = aName;
+            _type = ConfigEntryType.FromString(aName);
         }
 
         /// <summary>
         ///   * Create a ConfigEntry directly with an initial value.
         /// </summary>
-        /// <param name = "bookName">
-        ///   the internal name of the book </param>
         /// <param name = "aType">
         ///   the kind of ConfigEntry </param>
         /// <param name = "aValue">
         ///   the initial value for the ConfigEntry </param>
-        public ConfigEntry(string bookName, ConfigEntryType aType, string aValue)
+        public ConfigEntry(ConfigEntryType aType, string aValue)
         {
-            @internal = bookName;
-            name = aType.Name;
-            type = aType;
-            addValue(aValue);
+            _name = aType.Name;
+            _type = aType;
+            AddValue(aValue);
         }
 
         #endregion Constructors
@@ -104,9 +93,9 @@ namespace Sword
         ///   * Determine whether this config entry is supported.
         /// </summary>
         /// <returns> true if this ConfigEntry has a type. </returns>
-        public bool isSupported
+        public bool IsSupported
         {
-            get { return type != null; }
+            get { return _type != null; }
         }
 
         /// <summary>
@@ -116,11 +105,11 @@ namespace Sword
         {
             get
             {
-                if (type != null)
+                if (_type != null)
                 {
-                    return type.Name;
+                    return _type.Name;
                 }
-                return name;
+                return _name;
             }
         }
 
@@ -129,7 +118,7 @@ namespace Sword
         /// </summary>
         public ConfigEntryType Type
         {
-            get { return type; }
+            get { return _type; }
         }
 
         /// <summary>
@@ -141,15 +130,15 @@ namespace Sword
         {
             get
             {
-                if (value != null)
+                if (_value != null)
                 {
-                    return value;
+                    return _value;
                 }
-                if (values != null)
+                if (_values != null)
                 {
-                    return values;
+                    return _values;
                 }
-                return type.Default;
+                return _type.Default;
             }
         }
 
@@ -160,59 +149,58 @@ namespace Sword
         /// <summary>
         ///   * Add a value to the list of values for this ConfigEntry
         /// </summary>
-        public void addValue(string val)
+        public void AddValue(string val)
         {
             string aValue = val;
-            string confEntryName = Name;
             // Filter known types of entries
-            if (type != null)
+            if (_type != null)
             {
-                aValue = type.filter(aValue);
+                aValue = _type.Filter(aValue);
             }
 
             // Report on fields that shouldn't have RTF but do
-            if (!allowsRTF() && RTF_PATTERN.IsMatch(aValue))
+            if (!AllowsRtf() && RtfPattern.IsMatch(aValue))
             {
                 //Logger.Debug(report("Ignoring unexpected RTF for", Name, aValue));
             }
 
-            if (mayRepeat())
+            if (MayRepeat())
             {
-                if (values == null)
+                if (_values == null)
                 {
                     // histogram.increment(confEntryName);
-                    values = new List<string>();
+                    _values = new List<string>();
                 }
-                if (reportDetails())
+                if (ReportDetails())
                 {
                     // histogram.increment(confEntryName + '.' + aValue);
                 }
-                if (!isAllowed(aValue))
+                if (!IsAllowed(aValue))
                 {
                     //Logger.Debug(report("Ignoring unknown config value for", confEntryName, aValue));
                     return;
                 }
-                values.Add(aValue);
+                _values.Add(aValue);
             }
             else
             {
-                if (value != null)
+                if (_value != null)
                 {
                     //Logger.Debug(report("Ignoring unexpected additional entry for", confEntryName, aValue));
                 }
                 else
                 {
                     // histogram.increment(confEntryName);
-                    if (type.hasChoices())
+                    if (_type != null && _type.HasChoices())
                     {
                         // histogram.increment(confEntryName + '.' + aValue);
                     }
-                    if (!isAllowed(aValue))
+                    if (!IsAllowed(aValue))
                     {
                         //Logger.Debug(report("Ignoring unknown config value for", confEntryName, aValue));
                         return;
                     }
-                    value = type.convert(aValue);
+                    if (_type != null) _value = _type.Convert(aValue);
                 }
             }
         }
@@ -223,11 +211,11 @@ namespace Sword
         ///   is not to be followed by whitespace.
         /// </summary>
         /// <returns> true if continuation is allowed </returns>
-        public bool allowsContinuation()
+        public bool AllowsContinuation()
         {
-            if (type != null)
+            if (_type != null)
             {
-                return type.allowsContinuation();
+                return _type.AllowsContinuation();
             }
             return true;
         }
@@ -236,11 +224,11 @@ namespace Sword
         ///   * RTF is allowed in a few config entries.
         /// </summary>
         /// <returns> true if RTF is allowed </returns>
-        public bool allowsRTF()
+        public bool AllowsRtf()
         {
-            if (type != null)
+            if (_type != null)
             {
-                return type.allowsRTF();
+                return _type.AllowsRtf();
             }
             return true;
         }
@@ -355,11 +343,11 @@ namespace Sword
         /// </summary>
         /// <param name = "aValue"> </param>
         /// <returns> true if the string is allowed </returns>
-        public bool isAllowed(string aValue)
+        public bool IsAllowed(string aValue)
         {
-            if (type != null)
+            if (_type != null)
             {
-                return type.isAllowed(aValue);
+                return _type.IsAllowed(aValue);
             }
             return true;
         }
@@ -370,17 +358,17 @@ namespace Sword
         /// <param name = "search">
         ///   the value to match against </param>
         /// <returns> true if this ConfigEntry matches the value </returns>
-        public bool match(object search)
+        public bool Match(object search)
         {
-            if (value != null)
+            if (_value != null)
             {
-                return value.Equals(search);
+                return _value.Equals(search);
             }
-            if (values != null)
+            if (_values != null)
             {
-                return values.Contains(search.ToString());
+                return _values.Contains(search.ToString());
             }
-            var def = type.Default;
+            var def = _type.Default;
             return def != null && def.Equals(search);
         }
 
@@ -389,11 +377,11 @@ namespace Sword
         ///   a list of choices.
         /// </summary>
         /// <returns> true if this ConfigEntryType can occur more than once </returns>
-        public bool mayRepeat()
+        public bool MayRepeat()
         {
-            if (type != null)
+            if (_type != null)
             {
-                return type.mayRepeat();
+                return _type.MayRepeat();
             }
             return true;
         }
@@ -401,11 +389,11 @@ namespace Sword
         /// <summary>
         ///   *
         /// </summary>
-        public bool reportDetails()
+        public bool ReportDetails()
         {
-            if (type != null)
+            if (_type != null)
             {
-                return type.reportDetails();
+                return _type.ReportDetails();
             }
             return true;
         }
@@ -416,16 +404,16 @@ namespace Sword
         ///   entries into a predictable order.
         /// </summary>
         /// <returns> the well-formed conf. </returns>
-        public string toConf()
+        public string ToConf()
         {
             var buf = new StringBuilder();
 
-            if (value != null)
+            if (_value != null)
             {
                 buf.Append(Name);
                 buf.Append('=');
-                string text = getConfValue(value);
-                if (allowsContinuation())
+                string text = GetConfValue(_value);
+                if (AllowsContinuation())
                 {
                     // With continuation each line is ended with a '\', except the
                     // last.
@@ -434,21 +422,21 @@ namespace Sword
                 buf.Append(text);
                 buf.Append('\n');
             }
-            else if (type.Equals(ConfigEntryType.CIPHER_KEY))
+            else if (_type.Equals(ConfigEntryType.CipherKey))
             {
                 // CipherKey is empty to indicate that it is encrypted and locked.
                 buf.Append(Name);
                 buf.Append('=');
             }
 
-            if (values != null)
+            if (_values != null)
             {
                 // History values begin with the history value, e.g. 1.2
                 // followed by a space.
                 // These are to joined to the key.
-                if (type.Equals(ConfigEntryType.HISTORY))
+                if (_type.Equals(ConfigEntryType.History))
                 {
-                    foreach (string text in values)
+                    foreach (string text in _values)
                     {
                         buf.Append(Name);
                         buf.Append('_');
@@ -462,11 +450,11 @@ namespace Sword
                 }
                 else
                 {
-                    foreach (string text in values)
+                    foreach (string text in _values)
                     {
                         buf.Append(Name);
                         buf.Append('=');
-                        buf.Append(getConfValue(text));
+                        buf.Append(GetConfValue(text));
                         buf.Append('\n');
                     }
                 }
@@ -491,13 +479,13 @@ namespace Sword
         /// <param name = "aValue">
         ///   either value or values[i] </param>
         /// <returns> the conf value. </returns>
-        private string getConfValue(object aValue)
+        private string GetConfValue(object aValue)
         {
             if (aValue != null)
             {
                 if (aValue is Language)
                 {
-                    return ((Language) value).Code;
+                    return ((Language) _value).Code;
                 }
                 return aValue.ToString();
             }

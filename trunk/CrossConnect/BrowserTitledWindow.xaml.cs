@@ -41,10 +41,10 @@ namespace CrossConnect
     using System.Windows.Media.Imaging;
     using System.Windows.Threading;
 
-    using CrossConnect.readers;
-
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Shell;
+
+    using readers;
 
     using Sword;
     using Sword.reader;
@@ -240,7 +240,7 @@ namespace CrossConnect
                     {
                         string bookPath =
                             book.Value.Sbmd.GetCetProperty(ConfigEntryType.ADataPath).ToString().Substring(2);
-                        bool isIsoEncoding = !book.Value.Sbmd.GetCetProperty(ConfigEntryType.ENCODING).Equals("UTF-8");
+                        bool isIsoEncoding = !book.Value.Sbmd.GetCetProperty(ConfigEntryType.Encoding).Equals("UTF-8");
                         try
                         {
                             switch (windowType)
@@ -249,52 +249,52 @@ namespace CrossConnect
                                     State.Source = new BibleZtextReader(bookPath,
                                                                         ((Language)
                                                                          book.Value.Sbmd.GetCetProperty(
-                                                                             ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                                                             ConfigEntryType.Lang)).Code, isIsoEncoding);
                                     break;
                                 case WindowType.WindowBibleNotes:
                                     State.Source = new BibleNoteReader(bookPath,
                                                                        ((Language)
                                                                         book.Value.Sbmd.GetCetProperty(
-                                                                            ConfigEntryType.LANG)).Code, isIsoEncoding,
+                                                                            ConfigEntryType.Lang)).Code, isIsoEncoding,
                                                                        Translations.Translate("Notes"));
                                     break;
                                 case WindowType.WindowBookmarks:
                                     State.Source = new BookMarkReader(bookPath,
                                                                       ((Language)
                                                                        book.Value.Sbmd.GetCetProperty(
-                                                                           ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                                                           ConfigEntryType.Lang)).Code, isIsoEncoding);
                                     break;
                                 case WindowType.WindowHistory:
                                     State.Source = new HistoryReader(bookPath,
                                                                      ((Language)
                                                                       book.Value.Sbmd.GetCetProperty(
-                                                                          ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                                                          ConfigEntryType.Lang)).Code, isIsoEncoding);
                                     break;
                                 case WindowType.WindowDailyPlan:
                                     State.Source = new DailyPlanReader(bookPath,
                                                                        ((Language)
                                                                         book.Value.Sbmd.GetCetProperty(
-                                                                            ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                                                            ConfigEntryType.Lang)).Code, isIsoEncoding);
                                     break;
                                 case WindowType.WindowCommentary:
                                     State.Source = new CommentZtextReader(bookPath,
                                                                           ((Language)
                                                                            book.Value.Sbmd.GetCetProperty(
-                                                                               ConfigEntryType.LANG)).Code,
+                                                                               ConfigEntryType.Lang)).Code,
                                                                           isIsoEncoding);
                                     break;
                                 case WindowType.WindowAddedNotes:
                                     State.Source = new PersonalNotesReader(bookPath,
                                                                            ((Language)
                                                                             book.Value.Sbmd.GetCetProperty(
-                                                                                ConfigEntryType.LANG)).Code,
+                                                                                ConfigEntryType.Lang)).Code,
                                                                            isIsoEncoding);
                                     break;
                                 case WindowType.WindowTranslator:
                                     State.Source = new TranslatorReader(bookPath,
                                                                         ((Language)
                                                                          book.Value.Sbmd.GetCetProperty(
-                                                                             ConfigEntryType.LANG)).Code, isIsoEncoding);
+                                                                             ConfigEntryType.Lang)).Code, isIsoEncoding);
                                     break;
                             }
                         }

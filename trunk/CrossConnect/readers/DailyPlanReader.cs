@@ -148,6 +148,8 @@ namespace CrossConnect.readers
             {
                 App.DailyPlan.PlanDayNumber = chapter;
             }
+            //Changing the chapter is only to fool the base class into understanding that we have changed pages
+            Serial.PosChaptNum = App.DailyPlan.PlanDayNumber;
         }
 
         public override void MoveNext()
@@ -159,6 +161,8 @@ namespace CrossConnect.readers
             {
                 App.DailyPlan.PlanDayNumber = 0;
             }
+            //Changing the chapter is only to fool the base class into understanding that we have changed pages
+            Serial.PosChaptNum = App.DailyPlan.PlanDayNumber;
         }
 
         public override void MovePrevious()
@@ -170,6 +174,8 @@ namespace CrossConnect.readers
             {
                 App.DailyPlan.PlanDayNumber = count - 1;
             }
+            //Changing the chapter is only to fool the base class into understanding that we have changed pages
+            Serial.PosChaptNum = App.DailyPlan.PlanDayNumber;
         }
 
         public override void Resume()

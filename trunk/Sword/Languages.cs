@@ -30,7 +30,7 @@ namespace Sword
     using System;
     using System.Diagnostics;
 
-    using Sword.javaprops;
+    using javaprops;
 
     ///<summary>
     ///  A utility class that converts ISO-639 codes or locales to their "friendly"

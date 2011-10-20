@@ -37,55 +37,26 @@ namespace Sword
     ///  the conf files are manually maintained, there can be all sorts of errors in
     ///  them. This class does robust checking and reporting.
     /// 
-    ///  <p>
-    ///    Config file format. See also: <a href = "http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout">
-    ///                                    http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout</a>
     /// 
-    ///    <p>
+    ///    Config file format. See also:  "http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout"
+    ///                                    http://sword.sourceforge.net/cgi-bin/twiki/view/Swordapi/ConfFileLayout
+    /// 
+    ///   
     ///      The contents of the About field are in rtf.
-    ///      <p>
+    ///      
     ///        \ is used as a continuation line.
     ///</summary>
-    ///<seealso cref =  gnu.lgpl.License for license details.<br>
+    ///
     ///                                                        The copyright to this program is held by it's authors.
     ///                                                        @author Mark Goodwin [mark at thorubio dot org]
     ///                                                        @author Joe Walker [joe at eireneh dot com]
     ///                                                        @author Jacky Cheung
-    ///                                                        @author DM Smith [dmsmith555 at yahoo dot com] </seealso>
+    ///                                                        @author DM Smith [dmsmith555 at yahoo dot com] 
     public class ConfigEntryTable
     {
         #region Fields
 
-        private const string ENCODING_LATIN1 = "WINDOWS-1252";
-
-        /// <summary>
-        ///   * Sword only recognizes two encodings for its modules: UTF-8 and LATIN1
-        ///   Sword uses MS Windows cp1252 for Latin 1 not the standard. Arrgh!
-        /// </summary>
-        private const string ENCODING_UTF8 = "UTF-8";
-
-        private static readonly ConfigEntryType[] COPYRIGHT_INFO = {
-                                                                       ConfigEntryType.About, ConfigEntryType.SHORT_PROMO,
-                                                                       ConfigEntryType.DISTRIBUTION_LICENSE,
-                                                                       ConfigEntryType.DISTRIBUTION_NOTES,
-                                                                       ConfigEntryType.DISTRIBUTION_SOURCE,
-                                                                       ConfigEntryType.SHORT_COPYRIGHT,
-                                                                       ConfigEntryType.COPYRIGHT,
-                                                                       ConfigEntryType.COPYRIGHT_DATE,
-                                                                       ConfigEntryType.COPYRIGHT_HOLDER,
-                                                                       ConfigEntryType.COPYRIGHT_CONTACT_NAME,
-                                                                       ConfigEntryType.COPYRIGHT_CONTACT_ADDRESS,
-                                                                       ConfigEntryType.COPYRIGHT_CONTACT_EMAIL,
-                                                                       ConfigEntryType.COPYRIGHT_CONTACT_NOTES,
-                                                                       ConfigEntryType.COPYRIGHT_NOTES,
-                                                                       ConfigEntryType.TEXT_SOURCE
-                                                                   };
-        private static readonly ConfigEntryType[] FEATURE_INFO = {
-                                                                     ConfigEntryType.FEATURE,
-                                                                     ConfigEntryType.GLOBAL_OPTION_FILTER,
-                                                                     ConfigEntryType.FONT
-                                                                 };
-        private static readonly ConfigEntryType[] HIDDEN = {ConfigEntryType.CIPHER_KEY};
+        private const string EncodingLatin1 = "WINDOWS-1252";
 
         // private File configFile;
         /// <summary>
@@ -98,64 +69,38 @@ namespace Sword
         ///   the line. The = sign following the key may be surrounded by whitespace.
         ///   The value may contain anything, including an = sign.
         /// </summary>
-        private static readonly Regex KEY_VALUE_PATTERN = new Regex("^([A-Za-z0-9_.]+)\\s*=\\s*(.*)$");
+        private static readonly Regex KeyValuePattern = new Regex("^([A-Za-z0-9_.]+)\\s*=\\s*(.*)$");
 
         /// <summary>
-        ///   * These are the elements that JSword requires. They are a superset of those
-        ///   that Sword requires.
+        ///   * A map of lists of unknown config entries.
         /// </summary>
-        /*
-         * For documentation purposes at this time. private static final
-         * ConfigEntryType[] REQUIRED = { ConfigEntryType.INITIALS,
-         * ConfigEntryType.DESCRIPTION, ConfigEntryType.CATEGORY, // may not be
-         * present in conf ConfigEntryType.DATA_PATH, ConfigEntryType.MOD_DRV, };
-         */
-        private static readonly ConfigEntryType[] LANG_INFO = {
-                                                                  ConfigEntryType.LANG, ConfigEntryType.GLOSSARY_FROM,
-                                                                  ConfigEntryType.GLOSSARY_TO
-                                                              };
-        private static readonly ConfigEntryType[] SYSTEM_INFO = {
-                                                                    ConfigEntryType.ADataPath, ConfigEntryType.MOD_DRV,
-                                                                    ConfigEntryType.SOURCE_TYPE, ConfigEntryType.BLOCK_TYPE
-                                                                    , ConfigEntryType.BLOCK_COUNT,
-                                                                    ConfigEntryType.COMPRESS_TYPE, ConfigEntryType.ENCODING
-                                                                    , ConfigEntryType.MINIMUM_VERSION,
-                                                                    ConfigEntryType.OSIS_VERSION,
-                                                                    ConfigEntryType.OSIS_Q_TO_TICK,
-                                                                    ConfigEntryType.DIRECTION, ConfigEntryType.KEY_TYPE,
-                                                                    ConfigEntryType.DISPLAY_LEVEL
-                                                                };
+        private readonly Dictionary<string, ConfigEntry> _extra;
 
         /// <summary>
         ///   * The original name of this config file from mods.d. This is only used for
         ///   managing warnings and errors
         /// </summary>
-        private readonly string @internal;
-
-        /// <summary>
-        ///   * A map of lists of unknown config entries.
-        /// </summary>
-        private readonly Dictionary<string, ConfigEntry> extra;
+        private readonly string _internal;
 
         /// <summary>
         ///   * A map of lists of known config entries.
         /// </summary>
-        private readonly Dictionary<ConfigEntryType, ConfigEntry> table;
+        private readonly Dictionary<ConfigEntryType, ConfigEntry> _table;
 
         /// <summary>
         ///   * True if this book is considered questionable.
         /// </summary>
-        private bool questionable;
+        private bool _questionable;
 
         /// <summary>
         ///   * A helper for the reading of the conf file.
         /// </summary>
-        private string readahead;
+        private string _readahead;
 
         /// <summary>
         ///   * True if this book's config type can be used by JSword.
         /// </summary>
-        private bool supported;
+        private bool _supported;
 
         #endregion Fields
 
@@ -168,10 +113,10 @@ namespace Sword
         ///   the name of the book </param>
         public ConfigEntryTable(string bookName)
         {
-            table = new Dictionary<ConfigEntryType, ConfigEntry>();
-            extra = new Dictionary<string, ConfigEntry>();
-            @internal = bookName;
-            supported = true;
+            _table = new Dictionary<ConfigEntryType, ConfigEntry>();
+            _extra = new Dictionary<string, ConfigEntry>();
+            _internal = bookName;
+            _supported = true;
         }
 
         #endregion Constructors
@@ -183,23 +128,23 @@ namespace Sword
         /// </summary>
         public Dictionary<string, ConfigEntry>.KeyCollection ExtraKeys
         {
-            get { return extra.Keys; }
+            get { return _extra.Keys; }
         }
 
-        public string internalName
+        public string InternalName
         {
-            get { return @internal; }
+            get { return _internal; }
         }
 
         /// <summary>
         ///   * Determines whether the Sword Book is enciphered.
         /// </summary>
         /// <returns> true if enciphered </returns>
-        public bool isEnciphered
+        public bool IsEnciphered
         {
             get
             {
-                string cipher = (string) getValue(ConfigEntryType.CIPHER_KEY);
+                var cipher = (string) GetValue(ConfigEntryType.CipherKey);
                 return cipher != null;
             }
         }
@@ -208,11 +153,11 @@ namespace Sword
         ///   * Determines whether the Sword Book is enciphered and without a key.
         /// </summary>
         /// <returns> true if enciphered </returns>
-        public bool isLocked
+        public bool IsLocked
         {
             get
             {
-                string cipher = (string) getValue(ConfigEntryType.CIPHER_KEY);
+                var cipher = (string) GetValue(ConfigEntryType.CipherKey);
                 return cipher != null && cipher.Length == 0;
             }
         }
@@ -220,17 +165,17 @@ namespace Sword
         /// <summary>
         ///   * Determines whether the Sword Book's conf is supported by JSword.
         /// </summary>
-        public bool isQuestionable
+        public bool IsQuestionable
         {
-            get { return questionable; }
+            get { return _questionable; }
         }
 
         /// <summary>
         ///   * Determines whether the Sword Book's conf is supported by JSword.
         /// </summary>
-        public bool isSupported
+        public bool IsSupported
         {
-            get { return supported; }
+            get { return _supported; }
         }
 
         /// <summary>
@@ -238,7 +183,7 @@ namespace Sword
         /// </summary>
         public Dictionary<ConfigEntryType, ConfigEntry>.KeyCollection Keys
         {
-            get { return table.Keys; }
+            get { return _table.Keys; }
         }
 
         /*
@@ -279,7 +224,7 @@ namespace Sword
         /// <returns> the unlock key, if any, null otherwise. </returns>
         public string UnlockKey
         {
-            get { return (string) getValue(ConfigEntryType.CIPHER_KEY); }
+            get { return (string) GetValue(ConfigEntryType.CipherKey); }
         }
 
         #endregion Properties
@@ -291,12 +236,12 @@ namespace Sword
         /// </summary>
         /// <param name = "type"> </param>
         /// <param name = "aValue"> </param>
-        public void add(ConfigEntryType type, string aValue)
+        public void Add(ConfigEntryType type, string aValue)
         {
-            if (!table.ContainsKey(type))
+            if (!_table.ContainsKey(type))
             {
-                var ce = new ConfigEntry(@internal, type, aValue);
-                table.Add(type, ce);
+                var ce = new ConfigEntry(type, aValue);
+                _table.Add(type, ce);
             }
         }
 
@@ -307,10 +252,10 @@ namespace Sword
         ///   of the ConfigEntry </param>
         /// <returns> the requested value, the default (if there is no entry) or null
         ///   (if there is no default) </returns>
-        public object getValue(ConfigEntryType type)
+        public object GetValue(ConfigEntryType type)
         {
-            ConfigEntry ce = null;
-            table.TryGetValue(type, out ce);
+            ConfigEntry ce;
+            _table.TryGetValue(type, out ce);
             if (ce != null)
             {
                 return ce.Value;
@@ -318,7 +263,7 @@ namespace Sword
             return type.Default;
         }
 
-        public void load(Stream streamInput)
+        public void Load(Stream streamInput)
         {
             StreamReader @in = null;
             try
@@ -326,26 +271,26 @@ namespace Sword
                 // Quiet Android from complaining about using the default BufferReader buffer size.
                 // The actual buffer size is undocumented. So this is a good idea any way.
                 @in = new StreamReader(streamInput);
-                loadInitials(@in);
-                loadContents(@in);
+                LoadInitials(@in);
+                LoadContents(@in);
                 @in.Close();
                 @in = null;
-                if (getValue(ConfigEntryType.ENCODING).Equals(ENCODING_LATIN1))
+                if (GetValue(ConfigEntryType.Encoding).Equals(EncodingLatin1))
                 {
-                    supported = true;
-                    questionable = false;
-                    readahead = null;
-                    table.Clear();
-                    extra.Clear();
+                    _supported = true;
+                    _questionable = false;
+                    _readahead = null;
+                    _table.Clear();
+                    _extra.Clear();
                     @in = new StreamReader(streamInput);
-                    loadInitials(@in);
-                    loadContents(@in);
+                    LoadInitials(@in);
+                    LoadContents(@in);
                     @in.Close();
                     @in = null;
                 }
-                adjustDataPath();
-                adjustLanguage();
-                adjustName();
+                AdjustDataPath();
+                AdjustLanguage();
+                AdjustName();
                 validate();
             }
             finally
@@ -364,9 +309,9 @@ namespace Sword
         /// <param name = "buffer">
         ///   the buffer to load </param>
         /// <exception cref = "IOException"> </exception>
-        public void load(byte[] buffer)
+        public void Load(byte[] buffer)
         {
-            load(new MemoryStream(buffer));
+            Load(new MemoryStream(buffer));
         }
 
         /// <summary>
@@ -378,38 +323,34 @@ namespace Sword
         /// <param name = "search">
         ///   the value to match against </param>
         /// <returns> true if there is a matching ConfigEntry matching the value </returns>
-        public bool match(ConfigEntryType type, object search)
+        public bool Match(ConfigEntryType type, object search)
         {
-            var ce = table[type];
-            return ce != null && ce.match(search);
+            var ce = _table[type];
+            return ce != null && ce.Match(search);
         }
 
-        private void adjustDataPath()
+        private void AdjustDataPath()
         {
-            string datapath = (string) getValue(ConfigEntryType.ADataPath);
-            if (datapath == null)
-            {
-                datapath = string.Empty;
-            }
+            var datapath = (string) GetValue(ConfigEntryType.ADataPath) ?? string.Empty;
             if (datapath.StartsWith("./"))
             {
                 datapath = datapath.Substring(2);
             }
-            add(ConfigEntryType.ADataPath, datapath);
+            Add(ConfigEntryType.ADataPath, datapath);
         }
 
-        private void adjustLanguage()
+        private void AdjustLanguage()
         {
-            var lang = (Language) getValue(ConfigEntryType.LANG);
+            var lang = (Language) GetValue(ConfigEntryType.Lang);
             if (lang == null)
             {
                 lang = Language.DefaultLang;
-                add(ConfigEntryType.LANG, lang.ToString());
+                Add(ConfigEntryType.Lang, lang.ToString());
             }
-            testLanguage(@internal, lang);
+            testLanguage(lang);
 
-            var langFrom = (Language) getValue(ConfigEntryType.GLOSSARY_FROM);
-            var langTo = (Language) getValue(ConfigEntryType.GLOSSARY_TO);
+            var langFrom = (Language) GetValue(ConfigEntryType.GlossaryFrom);
+            var langTo = (Language) GetValue(ConfigEntryType.GlossaryTo);
 
             // If we have either langFrom or langTo, we are dealing with a glossary
             if (langFrom != null || langTo != null)
@@ -418,17 +359,17 @@ namespace Sword
                 {
                     //Logger.Warn("Missing data for " + @internal + ". Assuming " + ConfigEntryType.GLOSSARY_FROM.Name + '=' + Languages.DEFAULT_LANG_CODE);
                     langFrom = Language.DefaultLang;
-                    add(ConfigEntryType.GLOSSARY_FROM, lang.Code);
+                    Add(ConfigEntryType.GlossaryFrom, lang.Code);
                 }
-                testLanguage(@internal, langFrom);
+                testLanguage(langFrom);
 
                 if (langTo == null)
                 {
                     //Logger.Warn("Missing data for " + @internal + ". Assuming " + ConfigEntryType.GLOSSARY_TO.Name + '=' + Languages.DEFAULT_LANG_CODE);
                     langTo = Language.DefaultLang;
-                    add(ConfigEntryType.GLOSSARY_TO, lang.Code);
+                    Add(ConfigEntryType.GlossaryTo, lang.Code);
                 }
-                testLanguage(@internal, langTo);
+                testLanguage(langTo);
 
                 // At least one of the two languages should match the lang entry
                 if (!langFrom.Equals(lang) && !langTo.Equals(lang))
@@ -446,18 +387,18 @@ namespace Sword
                      * ")");
                      */
                     lang = langFrom;
-                    add(ConfigEntryType.LANG, lang.Code);
+                    Add(ConfigEntryType.Lang, lang.Code);
                 }
             }
         }
 
-        private void adjustName()
+        private void AdjustName()
         {
             // If there is no name then use the internal name
-            if (table[ConfigEntryType.DESCRIPTION] == null)
+            if (_table[ConfigEntryType.Description] == null)
             {
                 //Logger.Fail("Malformed conf file for " + @internal + " no " + ConfigEntryType.DESCRIPTION.Name + " found. Using internal of " + @internal);
-                add(ConfigEntryType.DESCRIPTION, @internal);
+                Add(ConfigEntryType.Description, _internal);
             }
         }
 
@@ -468,22 +409,21 @@ namespace Sword
         ///   The reader to get data from </param>
         /// <returns> the next line </returns>
         /// <exception cref = "IOException"> </exception>
-        private string advance(StreamReader bin)
+        private string Advance(StreamReader bin)
         {
             // Was something put back? If so, return it.
-            if (readahead != null)
+            if (_readahead != null)
             {
-                string line = readahead;
-                readahead = null;
+                string line = _readahead;
+                _readahead = null;
                 return line;
             }
 
             // Get the next non-blank, non-comment line
-            string trimmed = null;
             for (string line = bin.ReadLine(); line != null; line = bin.ReadLine())
             {
                 // Remove trailing whitespace
-                trimmed = line.Trim();
+                string trimmed = line.Trim();
 
                 int length = trimmed.Length;
 
@@ -499,32 +439,27 @@ namespace Sword
         /// <summary>
         ///   * Read too far ahead and need to return a line.
         /// </summary>
-        private void backup(string oops)
+        private void Backup(string oops)
         {
             if (oops.Length > 0)
             {
-                readahead = oops;
-            }
-            else
-            {
-                // should never happen
-                //Logger.Fail("Backup an empty string for " + @internal);
+                _readahead = oops;
             }
         }
 
         /// <summary>
         ///   * Get continuation lines, if any.
         /// </summary>
-        private void getContinuation(ConfigEntry configEntry, StreamReader bin, StringBuilder buf)
+        private void GetContinuation(ConfigEntry configEntry, StreamReader bin, StringBuilder buf)
         {
-            for (string line = advance(bin); line != null; line = advance(bin))
+            for (string line = Advance(bin); line != null; line = Advance(bin))
             {
                 int length = buf.Length;
 
                 // Look for bad data as this condition did exist
-                bool continuation_expected = length > 0 && buf[length - 1] == '\\';
+                bool continuationExpected = length > 0 && buf[length - 1] == '\\';
 
-                if (continuation_expected)
+                if (continuationExpected)
                 {
                     // delete the continuation character
                     buf.Remove(length - 1, 1);
@@ -532,26 +467,26 @@ namespace Sword
 
                 if (isKeyLine(line))
                 {
-                    if (continuation_expected)
+                    if (continuationExpected)
                     {
                         //Logger.Warn(report("Continuation followed by key for", configEntry.Name, line));
                     }
 
-                    backup(line);
+                    Backup(line);
                     break;
                 }
-                else if (!continuation_expected)
+                if (!continuationExpected)
                 {
                     //Logger.Warn(report("Line without previous continuation for", configEntry.Name, line));
                 }
 
-                if (!configEntry.allowsContinuation())
+                if (!configEntry.AllowsContinuation())
                 {
                     //Logger.Warn(report("Ignoring unexpected additional line for", configEntry.Name, line));
                 }
                 else
                 {
-                    if (continuation_expected)
+                    if (continuationExpected)
                     {
                         buf.Append('\n');
                     }
@@ -565,7 +500,7 @@ namespace Sword
         /// </summary>
         private bool isKeyLine(string line)
         {
-            return KEY_VALUE_PATTERN.IsMatch(line);
+            return KeyValuePattern.IsMatch(line);
         }
 
         /*
@@ -639,7 +574,7 @@ namespace Sword
             this.save();
         }
         */
-        private void loadContents(StreamReader @in)
+        private void LoadContents(StreamReader @in)
         {
             var buf = new StringBuilder();
             while (true)
@@ -647,7 +582,7 @@ namespace Sword
                 // Empty out the buffer
                 buf.Length = 0;
 
-                string line = advance(@in);
+                string line = Advance(@in);
                 if (line == null)
                 {
                     break;
@@ -659,46 +594,41 @@ namespace Sword
                     continue;
                 }
 
-                var matcher = KEY_VALUE_PATTERN.Match(line);
-                if (matcher == null)
-                {
-                    //Logger.Fail("Expected to see '=' in " + @internal + ": " + line);
-                    continue;
-                }
+                var matcher = KeyValuePattern.Match(line);
 
                 string key = matcher.Groups[1].Value.Trim();
                 string value = matcher.Groups[2].Value.Trim();
                 // Only CIPHER_KEYS that are empty are not ignored
-                if (value.Length == 0 && !ConfigEntryType.CIPHER_KEY.Name.Equals(key))
+                if (value.Length == 0 && !ConfigEntryType.CipherKey.Name.Equals(key))
                 {
                     //Logger.Warn("Ignoring empty entry in " + @internal + ": " + line);
                     continue;
                 }
 
                 // Create a configEntry so that the name is normalized.
-                var configEntry = new ConfigEntry(@internal, key);
+                var configEntry = new ConfigEntry(key);
 
                 var type = configEntry.Type;
 
                 ConfigEntry e = null;
                 if (type != null)
                 {
-                    table.TryGetValue(type, out e);
+                    _table.TryGetValue(type, out e);
                 }
                 if (e == null)
                 {
                     if (type == null)
                     {
                         //Logger.Warn("Extra entry in " + @internal + " of " + configEntry.Name);
-                        extra.Add(key, configEntry);
+                        _extra.Add(key, configEntry);
                     }
-                    else if (type.isSynthetic)
+                    else if (type.IsSynthetic)
                     {
                         //Logger.Warn("Ignoring unexpected entry in " + @internal + " of " + configEntry.Name);
                     }
                     else
                     {
-                        table.Add(type, configEntry);
+                        _table.Add(type, configEntry);
                     }
                 }
                 else
@@ -707,28 +637,28 @@ namespace Sword
                 }
 
                 buf.Append(value);
-                getContinuation(configEntry, @in, buf);
+                GetContinuation(configEntry, @in, buf);
 
                 // History is a special case it is of the form History_x.x
                 // The config entry is History without the x.x.
                 // We want to put x.x at the beginning of the string
                 value = buf.ToString();
-                if (ConfigEntryType.HISTORY.Equals(type))
+                if (ConfigEntryType.History.Equals(type))
                 {
                     int pos = key.IndexOf('_');
                     value = key.Substring(pos + 1) + ' ' + value;
                 }
 
-                configEntry.addValue(value);
+                configEntry.AddValue(value);
             }
         }
 
-        private void loadInitials(StreamReader @in)
+        private void LoadInitials(StreamReader @in)
         {
             string initials = null;
             while (true)
             {
-                string line = advance(@in);
+                string line = Advance(@in);
                 if (line == null)
                 {
                     break;
@@ -745,123 +675,12 @@ namespace Sword
             if (initials == null)
             {
                 //Logger.Fail("Malformed conf file for " + @internal + " no initials found. Using internal of " + @internal);
-                initials = @internal;
+                initials = _internal;
             }
-            add(ConfigEntryType.INITIALS, initials);
+            Add(ConfigEntryType.Initials, initials);
         }
 
-        /*
-        private void toOSIS(OSISUtil.OSISFactory factory, Element ele, string aTitle, ConfigEntryType[] category)
-        {
-            Element title = null;
-            for (int i = 0; i < category.Length; i++)
-            {
-                ConfigEntry entry = table[category[i]];
-                Element configElement = null;
-
-                if (entry != null)
-                {
-                    configElement = entry.toOSIS();
-                }
-
-                if (title == null && configElement != null)
-                {
-                    // I18N(DMS): use aTitle to lookup translation.
-                    title = factory.createHeader();
-                    title.addContent(aTitle);
-                    ele.addContent(title);
-                }
-
-                if (configElement != null)
-                {
-                    ele.addContent(configElement);
-                }
-            }
-        }
-
-        private void toConf(StringBuilder buf, ConfigEntryType[] category)
-        {
-            for (int i = 0; i < category.Length; i++)
-            {
-
-                ConfigEntry entry = table[category[i]];
-
-                if (entry != null && !entry.Type.Synthetic)
-                {
-                    string text = entry.toConf();
-                    if (text != null && text.Length > 0)
-                    {
-                        buf.Append(entry.toConf());
-                    }
-                }
-            }
-        }
-        */
-        /// <summary>
-        ///   * Build an ordered map so that it displays in a consistent order.
-        /// </summary>
-        /// <summary>
-        ///   * Build an ordered map so that it displays in a consistent order.
-        /// </summary>
-        /*
-        private void toOSIS(OSISUtil.OSISFactory factory, Element ele, string aTitle, IDictionary<string, ConfigEntry> map)
-        {
-            Element title = null;
-        // JAVA TO VB & C# CONVERTER TODO TASK: There is no .NET Dictionary equivalent to the Java 'entrySet' method:
-            foreach (KeyValuePair<string, ConfigEntry> mapEntry in map.entrySet())
-            {
-                ConfigEntry entry = mapEntry.Value;
-                Element configElement = null;
-
-                if (entry != null)
-                {
-                    configElement = entry.toOSIS();
-                }
-
-                if (title == null && configElement != null)
-                {
-                    // I18N(DMS): use aTitle to lookup translation.
-                    title = factory.createHeader();
-                    title.addContent(aTitle);
-                    ele.addContent(title);
-                }
-
-                if (configElement != null)
-                {
-                    ele.addContent(configElement);
-                }
-            }
-        }
-        */
-        /*
-        private void toConf(StringBuilder buf, IDictionary<string, ConfigEntry> map)
-        {
-        // JAVA TO VB & C# CONVERTER TODO TASK: There is no .NET Dictionary equivalent to the Java 'entrySet' method:
-            foreach (KeyValuePair<string, ConfigEntry> mapEntry in map.entrySet())
-            {
-                ConfigEntry entry = mapEntry.Value;
-                string text = entry.toConf();
-                if (text != null && text.Length > 0)
-                {
-                    buf.Append(text);
-                }
-            }
-        }*/
-        private string report(string issue, string confEntryName, string line)
-        {
-            var buf = new StringBuilder(100);
-            buf.Append(issue);
-            buf.Append(' ');
-            buf.Append(confEntryName);
-            buf.Append(" in ");
-            buf.Append(@internal);
-            buf.Append(": ");
-            buf.Append(line);
-
-            return buf.ToString();
-        }
-
-        private void testLanguage(string initials, Language lang)
+        private void testLanguage(Language lang)
         {
             if (!lang.IsValidLanguage)
             {
