@@ -38,7 +38,7 @@ namespace CrossConnect
     using System.Windows.Navigation;
     using System.Xml;
 
-    using CrossConnect.readers;
+    using readers;
 
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Shell;

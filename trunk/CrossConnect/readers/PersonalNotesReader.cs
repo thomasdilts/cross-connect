@@ -143,14 +143,14 @@ namespace CrossConnect.readers
             if (IsPageable)
             {
                 //show just the one chapter.
-                _displayText = MakeListDisplayText(App.DisplaySettings, getSortedList(Serial.PosChaptNum),
+                _displayText = MakeListDisplayText(App.DisplaySettings, GetSortedList(Serial.PosChaptNum),
                                                   _htmlBackgroundColor, _htmlForegroundColor, _htmlPhoneAccentColor,
                                                   _htmlFontSize, false, Translations.Translate("Added notes"));
             }
             else
             {
                 //put it all into one window
-                _displayText = MakeListDisplayText(App.DisplaySettings, getSortedList(-1), _htmlBackgroundColor,
+                _displayText = MakeListDisplayText(App.DisplaySettings, GetSortedList(-1), _htmlBackgroundColor,
                                                   _htmlForegroundColor, _htmlPhoneAccentColor, _htmlFontSize, true,
                                                   Translations.Translate("Added notes"));
             }
@@ -180,7 +180,7 @@ namespace CrossConnect.readers
 
                 for (int i = 0; i < count; i++)
                 {
-                    int bookNum = getBookNumForChapterNum(sortedKeys[i]);
+                    int bookNum = GetBookNumForChapterNum(sortedKeys[i]);
                     if (!books.ContainsKey(bookNum))
                     {
                         butColors[books.Count] = ChapterCategories[bookNum];
@@ -213,7 +213,7 @@ namespace CrossConnect.readers
                 int chapterCount = 0;
                 for (int i = 0; i < count; i++)
                 {
-                    int bookNum = getBookNumForChapterNum(sortedKeys[i]);
+                    int bookNum = GetBookNumForChapterNum(sortedKeys[i]);
                     if (lastSelectedButton == bookNum)
                     {
                         butColors[chapterCount] = 0;
@@ -291,14 +291,14 @@ namespace CrossConnect.readers
                 if (isPageable)
                 {
                     //show just the one chapter.
-                    _displayText = MakeListDisplayText(displaySettings, getSortedList(Serial.PosChaptNum),
+                    _displayText = MakeListDisplayText(displaySettings, GetSortedList(Serial.PosChaptNum),
                                                       htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor,
                                                       htmlFontSize, false, Translations.Translate("Added notes"));
                 }
                 else
                 {
                     //put it all into one window
-                    _displayText = MakeListDisplayText(displaySettings, getSortedList(-1), htmlBackgroundColor,
+                    _displayText = MakeListDisplayText(displaySettings, GetSortedList(-1), htmlBackgroundColor,
                                                       htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, true,
                                                       Translations.Translate("Added notes"));
                 }
@@ -307,7 +307,7 @@ namespace CrossConnect.readers
             return _displayText;
         }
 
-        private int getBookNumForChapterNum(int chapterNum)
+        private static int GetBookNumForChapterNum(int chapterNum)
         {
             for (int i = 0; i < FirstChapternumInBook.Length; i++)
             {
@@ -319,7 +319,7 @@ namespace CrossConnect.readers
             return BooksInBible - 1;
         }
 
-        private List<BiblePlaceMarker> getSortedList(int chapterNumber)
+        private static List<BiblePlaceMarker> GetSortedList(int chapterNumber)
         {
             var returnList = new List<BiblePlaceMarker>();
 

@@ -276,7 +276,9 @@
     <Content Include="Images\dark\appbar.share.rest.pressed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Resources\AppResources.af-AF.resx" />
+    <EmbeddedResource Include="Resources\AppResources.af-AF.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\AppResources.ar-AR.resx" />
     <EmbeddedResource Include="Resources\AppResources.az-AZ.resx" />
     <EmbeddedResource Include="Resources\AppResources.be-BE.resx" />

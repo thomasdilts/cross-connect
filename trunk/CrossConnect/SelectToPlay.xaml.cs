@@ -123,11 +123,14 @@ namespace CrossConnect
                                 if (reader.Name.ToLower().Equals("source") && foundMedia != null &&
                                     !string.IsNullOrEmpty(foundMedia.Src) && !string.IsNullOrEmpty(name))
                                 {
-                                    var block = new TextBlock {Text = name, Style = PageTitle.Style};
-                                    foundMedia.VisualText = name;
-                                    block.Tag = foundMedia;
-                                    block.Margin = new Thickness(0, 0, 0, 10);
-                                    block.TextWrapping = TextWrapping.Wrap;
+                                    var block = new TextBlock
+                                                    {
+                                                        Text = name,
+                                                        Style = PageTitle.Style,
+                                                        Tag = foundMedia,
+                                                        Margin = new Thickness(0, 0, 0, 10),
+                                                        TextWrapping = TextWrapping.Wrap
+                                                    };
                                     SelectList.Items.Add(block);
                                     foundMedia = null;
                                 }
@@ -153,7 +156,7 @@ namespace CrossConnect
             }
         }
 
-        private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        private static void ClientDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             //nothing to do here
         }
@@ -180,7 +183,7 @@ namespace CrossConnect
                     var source = new Uri(url);
 
                     _client = new WebClient();
-                    _client.DownloadProgressChanged += client_DownloadProgressChanged;
+                    _client.DownloadProgressChanged += ClientDownloadProgressChanged;
                     _client.OpenReadCompleted += ClientOpenReadCompleted;
                     Logger.Debug("download start");
                     _client.OpenReadAsync(source);
@@ -239,7 +242,6 @@ namespace CrossConnect
             public MediaType Player = MediaType.MediaPlayer;
             public string Src = string.Empty;
             public string Viewer = string.Empty;
-            public string VisualText = string.Empty;
 
             #endregion Fields
         }

@@ -3,15 +3,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="clr-namespace:CrossConnect"
-    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    mc:Ignorable="d"
+    xmlns:local="clr-namespace:CrossConnect" mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    d:DesignHeight="427" d:DesignWidth="414" xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
-    xmlns:layout="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    xmlns:vsm="clr-namespace:System.Windows;assembly=System.Windows">
+    d:DesignHeight="427" d:DesignWidth="414" xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone">
 
 
     <Border ManipulationCompleted="Border1ManipulationCompleted" BorderBrush="Silver" BorderThickness="3" Name="border1">
@@ -32,7 +28,7 @@
                 <local:ImageButton Width="35" ManipulationCompleted="ButLinkManipulationCompleted" Click="ButLinkClick" Image="/Images/dark/appbar.linkto.rest.png" PressedImage="/Images/dark/appbar.linkto.rest.pressed.png" x:Name="butLink" Template="{StaticResource ImageButtonControlTemplate}"/>
                 <local:ImageButton Width="35" ManipulationCompleted="ButLargerManipulationCompleted" Click="ButLargerClick" Image="/Images/dark/appbar.feature.search.rest.png" PressedImage="/Images/dark/appbar.feature.search.rest.pressed.png"  x:Name="butLarger" Template="{StaticResource ImageButtonControlTemplate}"/>
                 <local:ImageButton Width="35" ManipulationCompleted="ButSmallerManipulationCompleted" Click="ButSmallerClick" Image="/Images/dark/appbar.minus.rest.png" PressedImage="/Images/dark/appbar.minus.rest.pressed.png"  x:Name="butSmaller" Template="{StaticResource ImageButtonControlTemplate}"/>
-                <local:ImageButton Width="35" ManipulationCompleted="ButHearManipulationCompleted" Click="ButHearClick" Image="/Images/dark/appbar.speaker.png" PressedImage="/Images/dark/appbar.cancel.speaker.pressed.png"  x:Name="butHear" Template="{StaticResource ImageButtonControlTemplate}"/>
+                <local:ImageButton Width="35" ManipulationCompleted="ButHearManipulationCompleted" Click="ButHearClick" Image="/Images/dark/appbar.speaker.png" PressedImage="/Images/dark/appbar.speaker.pressed.png"  x:Name="butHear" Template="{StaticResource ImageButtonControlTemplate}"/>
                 <local:ImageButton Width="35" ManipulationCompleted="ButTranslateManipulationCompleted" Click="ButTranslateClick" Image="/Images/dark/appbar.translate.png" PressedImage="/Images/dark/appbar.translate.pressed.png"  x:Name="butTranslate" Template="{StaticResource ImageButtonControlTemplate}"/>
                 <local:ImageButton Width="35" ManipulationCompleted="ButCloseManipulationCompleted" Click="ButCloseClick" Image="/Images/dark/appbar.cancel.rest.png" PressedImage="/Images/dark/appbar.cancel.rest.pressed.png"  x:Name="butClose" Template="{StaticResource ImageButtonControlTemplate}"/>
             </StackPanel>
