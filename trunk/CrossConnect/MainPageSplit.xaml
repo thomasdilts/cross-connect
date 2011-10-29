@@ -54,6 +54,7 @@
             <shell:ApplicationBarIconButton Click="ButHelpClick" x:Name="butHelp" IconUri="/Images/dark/appbar.questionmark.rest.png" Text="Help"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Click="MenuRateThisAppClick" x:Name="menuRateThisApp" Text="Rate this application"/>
+                <shell:ApplicationBarMenuItem Click="MenuThemesClick"  x:Name="menuThemes" Text="Select colors"/>
                 <shell:ApplicationBarMenuItem Click="MenuDownloadBibleClick" x:Name="menuDownloadBible" Text="Select bible to delete"/>
                 <shell:ApplicationBarMenuItem Click="MenuAddNoteClick" x:Name="menuAddNote" Text="Add a note"/>
                 <shell:ApplicationBarMenuItem Click="MenuDeleteBibleClick" x:Name="menuDeleteBible" Text="Download bibles"/>

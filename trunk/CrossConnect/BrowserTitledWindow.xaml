@@ -17,7 +17,7 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition   Height="35" ></RowDefinition>
+                <RowDefinition Height="35" ></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel Name="stackPanelButtons" Grid.Row="0" Orientation="Horizontal" Height="35" HorizontalAlignment="Left" Margin="0,0,0,0">
@@ -32,7 +32,7 @@
                 <local:ImageButton Width="35" ManipulationCompleted="ButTranslateManipulationCompleted" Click="ButTranslateClick" Image="/Images/dark/appbar.translate.png" PressedImage="/Images/dark/appbar.translate.pressed.png"  x:Name="butTranslate" Template="{StaticResource ImageButtonControlTemplate}"/>
                 <local:ImageButton Width="35" ManipulationCompleted="ButCloseManipulationCompleted" Click="ButCloseClick" Image="/Images/dark/appbar.cancel.rest.png" PressedImage="/Images/dark/appbar.cancel.rest.pressed.png"  x:Name="butClose" Template="{StaticResource ImageButtonControlTemplate}"/>
             </StackPanel>
-             <Border BorderBrush="Silver" BorderThickness="1" Grid.Row="1" >
+             <Border Name="WebBrowserBorder" BorderBrush="Silver" BorderThickness="1" Grid.Row="1" >
                 <phone:WebBrowser Margin="0 0 0 0" IsScriptEnabled="True" ScriptNotify="WebBrowser1ScriptNotify"  Unloaded="WebBrowser1Unloaded" Loaded="WebBrowser1Loaded"  Name="webBrowser1"  />
             </Border>
         </Grid>

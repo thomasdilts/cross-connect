@@ -78,6 +78,7 @@ namespace CrossConnect
         public static MainPageSplit MainWindow;
         public static List<BrowserTitledWindow> OpenWindows = new List<BrowserTitledWindow>();
         public static BiblePlaceMarkers PlaceMarkers = new BiblePlaceMarkers();
+        public static Theme Themes = new Theme();
 
         /// <summary>
         ///   Avoid double-initialization
@@ -409,6 +410,15 @@ namespace CrossConnect
                 }
 
                 DisplaySettings.CheckForNullAndFix();
+
+                if (IsolatedStorageSettings.ApplicationSettings.TryGetValue("Themes", out markerXmlData))
+                {
+                    Themes.FromString(markerXmlData);
+                }
+                else
+                {
+                    Themes.InitializeFromResources();
+                }
             }
             catch (Exception ee)
             {
@@ -535,6 +545,13 @@ namespace CrossConnect
 
                 IsolatedStorageSettings.ApplicationSettings["DailyPlan"] = sw.ToString();
             }
+            if (Themes.Themes.Count() > 0)
+            {
+                string text = Themes.ToString();
+                IsolatedStorageSettings.ApplicationSettings["Themes"] = text;
+            }
+            else
+                IsolatedStorageSettings.ApplicationSettings.Remove("Themes");
         }
 
         // Code to execute when the application is activated (brought to foreground)

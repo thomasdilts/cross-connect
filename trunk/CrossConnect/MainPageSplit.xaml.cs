@@ -163,7 +163,7 @@ namespace CrossConnect
         private void ButHelpClick(object sender, EventArgs e)
         {
             var webBrowserTask = new WebBrowserTask();
-            const string version = "1.0.0.19";
+            const string version = "1.0.0.20";
             webBrowserTask.Uri = new Uri(@"http://www.chaniel.se/crossconnect/help?version=" + version);
             webBrowserTask.Show();
         }
@@ -258,22 +258,23 @@ namespace CrossConnect
             ((ApplicationBarIconButton) ApplicationBar.Buttons[3]).Text = Translations.Translate("Help");
 
             ((ApplicationBarMenuItem) ApplicationBar.MenuItems[0]).Text = Translations.Translate("Rate this program");
-            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[1]).Text = Translations.Translate("Download bibles");
-            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[2]).Text = Translations.Translate("Add a note");
-            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[3]).Text =
-                Translations.Translate("Select bible to delete");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[1]).Text = Translations.Translate("Themes");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[2]).Text = Translations.Translate("Download bibles");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[3]).Text = Translations.Translate("Add a note");
             ((ApplicationBarMenuItem) ApplicationBar.MenuItems[4]).Text =
+                Translations.Translate("Select bible to delete");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[5]).Text =
                 Translations.Translate("Select bookmark to delete");
-            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[5]).Text = Translations.Translate("Clear history");
-            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[6]).Text = Translations.Translate("Send message");
-            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[7]).Text = Translations.Translate("Send mail");
-            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[8]).Text = Translations.Translate("Add new window");
-            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[9]).Text = Translations.Translate("Add to bookmarks");
-            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[10]).Text = Translations.Translate("Daily plan");
-            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[11]).Text = Translations.Translate("Settings");
-            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[12]).Text =
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[6]).Text = Translations.Translate("Clear history");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[7]).Text = Translations.Translate("Send message");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[8]).Text = Translations.Translate("Send mail");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[9]).Text = Translations.Translate("Add new window");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[10]).Text = Translations.Translate("Add to bookmarks");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[11]).Text = Translations.Translate("Daily plan");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[12]).Text = Translations.Translate("Settings");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[13]).Text =
                 Translations.Translate("Select the language") + " (language)";
-            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[13]).Text = Translations.Translate("Help");
+            ((ApplicationBarMenuItem) ApplicationBar.MenuItems[14]).Text = Translations.Translate("Help");
 
             if (App.OpenWindows.Count() == 0 || App.InstalledBibles.InstalledBibles.Count() == 0)
             {
@@ -352,6 +353,7 @@ namespace CrossConnect
             string titlesOnly;
             GetLast3SecondsChosenVerses(out textsWithTitles, out titlesOnly);
             var emailComposeTask = new EmailComposeTask {Body = textsWithTitles, Subject = titlesOnly};
+
             //emailComposeTask.To = "user@example.com";
             //emailComposeTask.Cc = "user2@example.com";
             emailComposeTask.Show();
@@ -400,5 +402,10 @@ namespace CrossConnect
         }
 
         #endregion Methods
+
+        private void MenuThemesClick(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Themes.xaml", UriKind.Relative));
+        }
     }
 }

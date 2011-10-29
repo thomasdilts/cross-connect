@@ -97,7 +97,19 @@ namespace CrossConnect
 
         public static string GetBrowserColor(string sourceResource)
         {
-            var color = (Color) Application.Current.Resources[sourceResource];
+            var color = (Color)Application.Current.Resources[sourceResource];
+            switch(sourceResource)
+            {
+                case "PhoneBackgroundColor":
+                    color = App.Themes.MainBackColor;
+                    break;
+                case "PhoneForegroundColor":
+                    color = App.Themes.MainFontColor;
+                    break;
+                case "PhoneAccentColor":
+                    color = App.Themes.AccentColor;
+                    break;
+            }
             return "#" + color.ToString().Substring(3, 6);
         }
 
@@ -320,9 +332,10 @@ namespace CrossConnect
             else
             {
                 // figure out if this is a light color
-                var color = (Color) Application.Current.Resources["PhoneBackgroundColor"];
-                int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
-                string colorDir = lightColorCount >= 2 ? "light" : "dark";
+                //var color = (Color) Application.Current.Resources["PhoneBackgroundColor"];
+                //int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
+                //string colorDir = lightColorCount >= 2 ? "light" : "dark";
+                string colorDir = App.Themes.IsButtonColorDark ? "light" : "dark";
 
                 SetButtonVisibility(butSmaller, State.NumRowsIown > 1, "/Images/" + colorDir + "/appbar.minus.rest.png",
                                     "/Images/" + colorDir + "/appbar.minus.rest.pressed.png");
@@ -373,19 +386,24 @@ namespace CrossConnect
                             || parent.Orientation == PageOrientation.LandscapeRight)
                         {
                             //we must adjust the font size for the new orientation. otherwise the font is too big.
-                            fontSizeMultiplier = parent.ActualHeight/parent.ActualWidth;
+                            //fontSizeMultiplier = parent.ActualHeight/parent.ActualWidth;
                         }
                     }
                     var backcolor = GetBrowserColor("PhoneBackgroundColor");
                     var forecolor = GetBrowserColor("PhoneForegroundColor");
                     var accentcolor = GetBrowserColor("PhoneAccentColor");
-
+                    var fontFamily = Theme.FontFamilies[App.Themes.FontFamily];
+                    if(App.Themes.IsMainBackImage && !string.IsNullOrEmpty(App.Themes.MainBackImage))
+                    {
+                        fontFamily += "background-image:url('/images/" + App.Themes.MainBackImage + "');";
+                    }
                     GetHtmlAsynchronously(
                         App.DisplaySettings.Clone(),
                         backcolor,
                         forecolor,
                         accentcolor,
                         State.HtmlFontSize*fontSizeMultiplier,
+                        fontFamily,
                         App.WebDirIsolated + "/" + _lastFileName);
                 }
             }
@@ -511,10 +529,10 @@ namespace CrossConnect
             {
                 // get all the right images
                 // figure out if this is a light color
-                var color = (Color) Application.Current.Resources["PhoneBackgroundColor"];
-                int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
-                string colorDir = lightColorCount >= 2 ? "light" : "dark";
-
+                //var color = (Color) Application.Current.Resources["PhoneBackgroundColor"];
+                //int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
+                //string colorDir = lightColorCount >= 2 ? "light" : "dark";
+                string colorDir = App.Themes.IsButtonColorDark ? "light" : "dark";
                 State.IsSynchronized = !State.IsSynchronized;
                 if (State.IsSynchronized)
                 {
@@ -696,7 +714,7 @@ namespace CrossConnect
         }
 
         private void GetHtmlAsynchronously(DisplaySettings dispSet, string htmlBackgroundColor,
-            string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,
+            string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fontFamily,
             string fileErase)
         {
             if (_isInGetHtmlAsynchronously)
@@ -714,7 +732,8 @@ namespace CrossConnect
                                                                                                          htmlBackgroundColor,
                                                                                                          htmlForegroundColor,
                                                                                                          htmlPhoneAccentColor,
-                                                                                                         htmlFontSize,
+                                                                                                         htmlFontSize, 
+                                                                                                         fontFamily,
                                                                                                          fileErase,
                                                                                                          App.
                                                                                                              WebDirIsolated,
@@ -805,9 +824,10 @@ namespace CrossConnect
 
             // get all the right images
             // figure out if this is a light color
-            var color = (Color) Application.Current.Resources["PhoneBackgroundColor"];
-            int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
-            string colorDir = lightColorCount >= 2 ? "light" : "dark";
+            //var color = (Color) Application.Current.Resources["PhoneBackgroundColor"];
+            //int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
+            //string colorDir = lightColorCount >= 2 ? "light" : "dark";
+            string colorDir = App.Themes.IsButtonColorDark ? "light" : "dark";
 
             bool isPrevNext = State != null && State.Source != null && State.Source.IsPageable;
             SetButtonVisibility(butPrevious, isPrevNext, "/Images/" + colorDir + "/appbar.prev.rest.png",
@@ -843,6 +863,13 @@ namespace CrossConnect
             {
                 State.Source.RegisterUpdateEvent(SourceChanged);
             }
+
+            border1.BorderBrush = new SolidColorBrush(App.Themes.BorderColor);
+            WebBrowserBorder.BorderBrush = border1.BorderBrush;
+            grid1.Background = new SolidColorBrush(App.Themes.TitleBackColor);
+
+            title.Foreground = new SolidColorBrush(App.Themes.TitleFontColor);
+
             CalculateTitleTextWidth();
         }
 

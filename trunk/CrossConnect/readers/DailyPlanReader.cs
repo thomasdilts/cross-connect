@@ -191,10 +191,10 @@ namespace CrossConnect.readers
 
         protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor,
             string htmlForegroundColor, string htmlPhoneAccentColor,
-            double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml = true)
+            double htmlFontSize, string fontFamily, bool isNotesOnly, bool addStartFinishHtml = true)
         {
             string chapterStartHtml = HtmlHeader(displaySettings, htmlBackgroundColor, htmlForegroundColor,
-                                                 htmlPhoneAccentColor, htmlFontSize);
+                                                 htmlPhoneAccentColor, htmlFontSize, fontFamily);
             const string chapterEndHtml = "</body></html>";
             var sb = new StringBuilder(chapterStartHtml);
 
@@ -217,7 +217,7 @@ namespace CrossConnect.readers
                 sb.Append(GetChapterHtml(displaySettings,
                                               DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber][App.DailyPlan.PlanDayNumber
                                                   ][i], htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor,
-                                              htmlFontSize, false, false));
+                                              htmlFontSize, fontFamily, false, false));
             }
             sb.Append(chapterEndHtml);
             return sb.ToString();

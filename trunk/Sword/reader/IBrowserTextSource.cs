@@ -117,7 +117,7 @@ namespace Sword.reader
         void MovePrevious();
 
         string PutHtmlTofile(DisplaySettings displaySettings, string htmlBackgroundColor, string htmlForegroundColor,
-            string htmlPhoneAccentColor, double htmlFontSize, string fileErase, string filePath,
+            string htmlPhoneAccentColor, double htmlFontSize, string fontFamily, string fileErase, string filePath,
             bool forceReload);
 
         void RegisterUpdateEvent(WindowSourceChanged sourceChangedMethod, bool isRegister = true);

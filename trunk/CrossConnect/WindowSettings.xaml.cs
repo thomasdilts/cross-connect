@@ -446,7 +446,7 @@ namespace CrossConnect
                             BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"),
                             BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
                             BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
-                            e.NewValue) +
+                            e.NewValue, Theme.FontFamilies[App.Themes.FontFamily]) +
                         "<a class=\"normalcolor\" href=\"#\">" + Translations.Translate("Text size") + "</a>" +
                         "</body></html>");
                 }

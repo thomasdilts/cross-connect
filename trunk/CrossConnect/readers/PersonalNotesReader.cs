@@ -57,6 +57,7 @@ namespace CrossConnect.readers
         private double _htmlFontSize;
         private string _htmlForegroundColor = string.Empty;
         private string _htmlPhoneAccentColor = string.Empty;
+        private string _fontFamily = string.Empty;
 
         #endregion Fields
 
@@ -145,13 +146,13 @@ namespace CrossConnect.readers
                 //show just the one chapter.
                 _displayText = MakeListDisplayText(App.DisplaySettings, GetSortedList(Serial.PosChaptNum),
                                                   _htmlBackgroundColor, _htmlForegroundColor, _htmlPhoneAccentColor,
-                                                  _htmlFontSize, false, Translations.Translate("Added notes"));
+                                                  _htmlFontSize, _fontFamily, false, Translations.Translate("Added notes"));
             }
             else
             {
                 //put it all into one window
                 _displayText = MakeListDisplayText(App.DisplaySettings, GetSortedList(-1), _htmlBackgroundColor,
-                                                  _htmlForegroundColor, _htmlPhoneAccentColor, _htmlFontSize, true,
+                                                  _htmlForegroundColor, _htmlPhoneAccentColor, _htmlFontSize, _fontFamily, true,
                                                   Translations.Translate("Added notes"));
             }
             RaiseSourceChangedEvent();
@@ -279,12 +280,13 @@ namespace CrossConnect.readers
 
         protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor,
             string htmlForegroundColor, string htmlPhoneAccentColor,
-            double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml = true)
+            double htmlFontSize, string fontFamily, bool isNotesOnly, bool addStartFinishHtml = true)
         {
             bool mustUpdate = string.IsNullOrEmpty(_htmlBackgroundColor);
             _htmlBackgroundColor = htmlBackgroundColor;
             _htmlForegroundColor = htmlForegroundColor;
             _htmlPhoneAccentColor = htmlPhoneAccentColor;
+            _fontFamily = fontFamily;
             bool isPageable = IsPageable;
             if (isPageable || mustUpdate || Math.Abs(_htmlFontSize - htmlFontSize) > Epsilon)
             {
@@ -293,13 +295,13 @@ namespace CrossConnect.readers
                     //show just the one chapter.
                     _displayText = MakeListDisplayText(displaySettings, GetSortedList(Serial.PosChaptNum),
                                                       htmlBackgroundColor, htmlForegroundColor, htmlPhoneAccentColor,
-                                                      htmlFontSize, false, Translations.Translate("Added notes"));
+                                                      htmlFontSize, fontFamily, false, Translations.Translate("Added notes"));
                 }
                 else
                 {
                     //put it all into one window
                     _displayText = MakeListDisplayText(displaySettings, GetSortedList(-1), htmlBackgroundColor,
-                                                      htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, true,
+                                                      htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, _fontFamily, true,
                                                       Translations.Translate("Added notes"));
                 }
             }

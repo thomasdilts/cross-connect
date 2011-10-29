@@ -237,7 +237,7 @@ namespace CrossConnect
                 openWindowIndex = 0;
             }
             object selectBibleBookFirstSelection;
-            if (PhoneApplicationService.Current.State.TryGetValue("SelectBibleBookFirstSelection",
+            if (!PhoneApplicationService.Current.State.TryGetValue("SelectBibleBookFirstSelection",
                                                                   out selectBibleBookFirstSelection))
             {
                 selectBibleBookFirstSelection = 0;

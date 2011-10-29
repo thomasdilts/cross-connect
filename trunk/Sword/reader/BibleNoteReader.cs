@@ -127,10 +127,10 @@ namespace Sword.reader
 
         protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor,
             string htmlForegroundColor, string htmlPhoneAccentColor,
-            double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml = true)
+            double htmlFontSize,string fontFamily, bool isNotesOnly, bool addStartFinishHtml = true)
         {
             return GetChapterHtml(displaySettings, Serial.PosChaptNum, htmlBackgroundColor, htmlForegroundColor,
-                                  htmlPhoneAccentColor, htmlFontSize, true, addStartFinishHtml);
+                                  htmlPhoneAccentColor, htmlFontSize,fontFamily, true, addStartFinishHtml);
         }
 
         #endregion Methods

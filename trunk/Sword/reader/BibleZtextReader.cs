@@ -739,18 +739,19 @@ namespace Sword.reader
         }
 
         public static string HtmlHeader(DisplaySettings displaySettings, string htmlBackgroundColor,
-            string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize)
+            string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fontFamily)
         {
             var head = new StringBuilder();
-            head.Append("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
+            head.Append("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">");
 
             head.Append("<style>");
 
             head.Append(string.Format(
-                "body {{background:{0};color:{1};font-size:{2}pt;margin:0;padding:0 }}",
+                "body {{background:{0};color:{1};font-size:{2}pt;margin:0;padding:0;{3} }}",
                 htmlBackgroundColor,
                 htmlForegroundColor,
-                (int) (htmlFontSize + 0.5))); //old fashioned way to round an integer
+                (int) (htmlFontSize + 0.5),
+                fontFamily)); //old fashioned way to round an integer
 
             head.Append(string.Format("sup,sub {{color:{0};font-size: .83em;}} " +
                                       "a.strongsmorph,a.strongsmorph:link,span.strongsmorph{{color:{1};text-decoration:none;}} " +
@@ -1074,7 +1075,7 @@ namespace Sword.reader
         }
 
         public string PutHtmlTofile(DisplaySettings displaySettings, string htmlBackgroundColor,
-            string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,
+            string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,string fontFamily,
             string fileErase, string filePath, bool forceReload)
         {
             Debug.WriteLine("putHtmlTofile start");
@@ -1130,6 +1131,7 @@ namespace Sword.reader
                                     htmlForegroundColor,
                                     htmlPhoneAccentColor,
                                     htmlFontSize,
+                                    fontFamily,
                                     false));
             tw.Close();
             fs.Close();
@@ -1292,7 +1294,7 @@ namespace Sword.reader
         /// <param name="addStartFinishHtml"></param>
         /// <returns>Entire Chapter without notes and with lots of html markup for each verse</returns>
         protected string GetChapterHtml(DisplaySettings displaySettings, int chapterNumber, string htmlBackgroundColor,
-            string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize,
+            string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fontFamily,
             bool isNotesOnly, bool addStartFinishHtml = true)
         {
             Debug.WriteLine("GetChapterHtml start");
@@ -1307,7 +1309,7 @@ namespace Sword.reader
             if (addStartFinishHtml)
             {
                 chapterStartHtml = HtmlHeader(displaySettings, htmlBackgroundColor, htmlForegroundColor,
-                                              htmlPhoneAccentColor, htmlFontSize);
+                                              htmlPhoneAccentColor, htmlFontSize,fontFamily);
                 chapterEndHtml = "</body></html>";
             }
             string bookName = "";
@@ -1384,10 +1386,10 @@ namespace Sword.reader
 
         protected virtual string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor,
             string htmlForegroundColor, string htmlPhoneAccentColor,
-            double htmlFontSize, bool isNotesOnly, bool addStartFinishHtml = true)
+            double htmlFontSize, string fontFamily, bool isNotesOnly, bool addStartFinishHtml = true)
         {
             return GetChapterHtml(displaySettings, Serial.PosChaptNum, htmlBackgroundColor, htmlForegroundColor,
-                                  htmlPhoneAccentColor, htmlFontSize, isNotesOnly, addStartFinishHtml);
+                                  htmlPhoneAccentColor, htmlFontSize, fontFamily, isNotesOnly, addStartFinishHtml);
         }
 
         protected long GetInt48FromStream(FileStream fs, out bool isEnd)
@@ -1426,7 +1428,7 @@ namespace Sword.reader
 
         protected string MakeListDisplayText(DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay,
             string htmlBackgroundColor, string htmlForegroundColor,
-            string htmlPhoneAccentColor, double htmlFontSize, bool showBookTitles,
+            string htmlPhoneAccentColor, double htmlFontSize, string fontFamily, bool showBookTitles,
             string notesTitle)
         {
             if (htmlBackgroundColor.Length == 0)
@@ -1436,7 +1438,7 @@ namespace Sword.reader
             }
 
             string chapterStartHtml = HtmlHeader(displaySettings, htmlBackgroundColor, htmlForegroundColor,
-                                                 htmlPhoneAccentColor, htmlFontSize);
+                                                 htmlPhoneAccentColor, htmlFontSize, fontFamily);
             const string chapterEndHtml = "</body></html>";
             var htmlListText = new StringBuilder(chapterStartHtml);
             int lastBookNum = -1;
