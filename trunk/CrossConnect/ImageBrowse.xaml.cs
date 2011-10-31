@@ -25,25 +25,27 @@
 
 #endregion Header
 
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Windows.Media.Imaging;
-using System.Xml;
-using ICSharpCode.SharpZipLib.Zip;
-using Microsoft.Phone.Shell;
-
 namespace CrossConnect
 {
     using System;
+    using System.Diagnostics;
+    using System.IO;
     using System.IO.IsolatedStorage;
+    using System.Linq;
     using System.Windows;
-    using System.Windows.Controls;
+    using System.Windows.Media.Imaging;
+
+    using Microsoft.Phone.Shell;
 
     public partial class ImageBrowse
     {
+        #region Fields
+
+        private string[] _imageNames = new string[0];
+        private int _nowShowingPicture = 0;
+
+        #endregion Fields
+
         #region Constructors
 
         public ImageBrowse()
@@ -55,8 +57,10 @@ namespace CrossConnect
 
         #region Methods
 
-        private string[] _imageNames = new string[0];
-        private int _nowShowingPicture = 0;
+        private void AutoRotatePageBackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+        }
+
         private void AutoRotatePageLoaded(object sender, RoutedEventArgs e)
         {
             PageTitle.Text = Translations.Translate("Select an image");
@@ -88,14 +92,36 @@ namespace CrossConnect
             {
                 LoadCurrentImage();
             }
-            
         }
 
-        #endregion Methods
-
-        private void AutoRotatePageBackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
+        private void ButNextClick(object sender, EventArgs e)
         {
+            _nowShowingPicture++;
+            if (_nowShowingPicture >= _imageNames.Count())
+                _nowShowingPicture = 0;
+            LoadCurrentImage();
+        }
 
+        private void ButPreviousClick(object sender, EventArgs e)
+        {
+            _nowShowingPicture--;
+            if (_nowShowingPicture < 0)
+                _nowShowingPicture = _imageNames.Count() - 1;
+            if (_nowShowingPicture < 0)
+                _nowShowingPicture = 0;
+            LoadCurrentImage();
+        }
+
+        private void ButSelectClick(object sender, EventArgs e)
+        {
+            if (_imageNames.Count() > _nowShowingPicture && !string.IsNullOrEmpty(_imageNames[_nowShowingPicture]))
+            {
+                PhoneApplicationService.Current.State["ImageBrowserSelected"] = _imageNames[_nowShowingPicture];
+                if (NavigationService.CanGoBack)
+                {
+                    NavigationService.GoBack();
+                }
+            }
         }
 
         private void LoadCurrentImage()
@@ -135,34 +161,6 @@ namespace CrossConnect
             }
         }
 
-        private void ButPreviousClick(object sender, EventArgs e)
-        {
-            _nowShowingPicture--;
-            if (_nowShowingPicture < 0)
-                _nowShowingPicture = _imageNames.Count() - 1;
-            if (_nowShowingPicture < 0)
-                _nowShowingPicture = 0;
-            LoadCurrentImage();
-        }
-
-        private void ButNextClick(object sender, EventArgs e)
-        {
-            _nowShowingPicture++;
-            if (_nowShowingPicture >= _imageNames.Count())
-                _nowShowingPicture = 0;
-            LoadCurrentImage();
-        }
-
-        private void ButSelectClick(object sender, EventArgs e)
-        {
-            if (_imageNames.Count() > _nowShowingPicture && !string.IsNullOrEmpty(_imageNames[_nowShowingPicture]))
-            {
-                PhoneApplicationService.Current.State["ImageBrowserSelected"] = _imageNames[_nowShowingPicture];
-                if (NavigationService.CanGoBack)
-                {
-                    NavigationService.GoBack();
-                }
-            }
-        }
+        #endregion Methods
     }
 }

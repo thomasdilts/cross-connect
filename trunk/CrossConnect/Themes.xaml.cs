@@ -25,22 +25,29 @@
 
 #endregion Header
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Xml;
-using ICSharpCode.SharpZipLib.Zip;
-using Microsoft.Phone.Shell;
-
 namespace CrossConnect
 {
     using System;
+    using System.Collections.Generic;
     using System.IO.IsolatedStorage;
+    using System.Linq;
+    using System.Net;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Xml;
+
+    using ICSharpCode.SharpZipLib.Zip;
+
+    using Microsoft.Phone.Shell;
 
     public partial class Themes
     {
+        #region Fields
+
+        private WebClient _client;
+
+        #endregion Fields
+
         #region Constructors
 
         public Themes()
@@ -51,6 +58,19 @@ namespace CrossConnect
         #endregion Constructors
 
         #region Methods
+
+        private void AutoRotatePageBackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //save the current selection
+            var uniqId = (Guid)((TextBlock)SelectList.SelectedItem).Tag;
+            App.Themes.CurrentTheme = uniqId;
+
+            //all the windows must be redrawn
+            for (int i = App.OpenWindows.Count - 1; i >= 0; i--)
+            {
+                App.OpenWindows[i].ForceReload = true;
+            }
+        }
 
         private void AutoRotatePageLoaded(object sender, RoutedEventArgs e)
         {
@@ -64,7 +84,6 @@ namespace CrossConnect
             ((ApplicationBarMenuItem)ApplicationBar.MenuItems[1]).Text = Translations.Translate("New");
             ((ApplicationBarMenuItem)ApplicationBar.MenuItems[2]).Text = Translations.Translate("Edit");
             ((ApplicationBarMenuItem)ApplicationBar.MenuItems[3]).Text = Translations.Translate("Delete");
-
 
             SelectList.Items.Clear();
             //add the default
@@ -92,18 +111,9 @@ namespace CrossConnect
             }
         }
 
-        #endregion Methods
-
-        private void SelectListSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ButChangeThemeClick(object sender, EventArgs e)
         {
-            ((ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = SelectList.SelectedIndex != 0;
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[2]).IsEnabled = SelectList.SelectedIndex != 0;
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[3]).IsEnabled = SelectList.SelectedIndex != 0;
-        }
-
-        private void ButDownloadThemesClick(object sender, EventArgs e)
-        {
-            MenuDownloadThemesClick(sender, e);
+            MenuChangeThemeClick(sender, e);
         }
 
         private void ButCreateNewThemeClick(object sender, EventArgs e)
@@ -111,9 +121,14 @@ namespace CrossConnect
             MenuCreateNewThemeClick(sender, e);
         }
 
-        private void ButChangeThemeClick(object sender, EventArgs e)
+        private void ButDownloadThemesClick(object sender, EventArgs e)
         {
-            MenuChangeThemeClick(sender, e);
+            MenuDownloadThemesClick(sender, e);
+        }
+
+        private void ClientDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            progressBarDownloadThemes.Value = e.ProgressPercentage;
         }
 
         private void ClientOpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
@@ -132,7 +147,7 @@ namespace CrossConnect
                 {
                     MessageBox.Show(
                         Translations.Translate("An error occurred trying to connect to the network. Try again later.") +
-                        "; " + e2.Message); 
+                        "; " + e2.Message);
                     return;
                 }
                 using (var isolatedStorageRoot = IsolatedStorageFile.GetUserStoreForApplication())
@@ -179,7 +194,40 @@ namespace CrossConnect
             AutoRotatePageLoaded(null, null);
         }
 
-        private WebClient _client;
+        private void MenuChangeThemeClick(object sender, EventArgs e)
+        {
+            //save the current selection
+            var uniqId = (Guid)((TextBlock)SelectList.SelectedItem).Tag;
+            App.Themes.CurrentTheme = uniqId;
+            //call the editing page
+            PhoneApplicationService.Current.State["ThemeColorsThemeToChange"] = uniqId;
+            PhoneApplicationService.Current.State.Remove("WebFontSelectWindowSelection");
+            NavigationService.Navigate(new Uri("/ThemeColors.xaml", UriKind.Relative));
+        }
+
+        private void MenuCreateNewThemeClick(object sender, EventArgs e)
+        {
+            var theme = new Theme {UniqId = App.Themes.GetUniqueGuidKey()};
+            App.Themes.Themes[theme.UniqId] =theme;
+            theme.Name = Translations.Translate("New") + " " + (int)(new Random().NextDouble() * 100);
+            PhoneApplicationService.Current.State["ThemeColorsThemeToChange"] = theme.UniqId;
+            PhoneApplicationService.Current.State.Remove("WebFontSelectWindowSelection");
+            NavigationService.Navigate(new Uri("/ThemeColors.xaml", UriKind.Relative));
+        }
+
+        private void MenuDeleteThemeClick(object sender, EventArgs e)
+        {
+            var uniqId = (Guid)((TextBlock)SelectList.SelectedItem).Tag;
+            SelectList.Items.RemoveAt(SelectList.SelectedIndex);
+            SelectList.SelectedIndex = 0;
+            if(uniqId.Equals(App.Themes.CurrentTheme))
+            {
+                var defaultId = (Guid)((TextBlock)SelectList.Items[0]).Tag;
+                App.Themes.CurrentTheme = defaultId;
+            }
+            App.Themes.Themes.Remove(uniqId);
+        }
+
         private void MenuDownloadThemesClick(object sender, EventArgs e)
         {
             const string url = "http://www.chaniel.se/crossconnect/bibles/themes/themes.zip";
@@ -207,55 +255,13 @@ namespace CrossConnect
             }
         }
 
-        private void ClientDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        private void SelectListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            progressBarDownloadThemes.Value = e.ProgressPercentage;
-        }
-        private void MenuCreateNewThemeClick(object sender, EventArgs e)
-        {
-            var theme = new Theme {UniqId = App.Themes.GetUniqueGuidKey()};
-            App.Themes.Themes[theme.UniqId] =theme;
-            theme.Name = Translations.Translate("New") + " " + (int)(new Random().NextDouble() * 100);
-            PhoneApplicationService.Current.State["ThemeColorsThemeToChange"] = theme.UniqId;
-            PhoneApplicationService.Current.State.Remove("WebFontSelectWindowSelection");
-            NavigationService.Navigate(new Uri("/ThemeColors.xaml", UriKind.Relative));
+            ((ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = SelectList.SelectedIndex != 0;
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[2]).IsEnabled = SelectList.SelectedIndex != 0;
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[3]).IsEnabled = SelectList.SelectedIndex != 0;
         }
 
-        private void MenuChangeThemeClick(object sender, EventArgs e)
-        {
-            //save the current selection
-            var uniqId = (Guid)((TextBlock)SelectList.SelectedItem).Tag;
-            App.Themes.CurrentTheme = uniqId;
-            //call the editing page
-            PhoneApplicationService.Current.State["ThemeColorsThemeToChange"] = uniqId;
-            PhoneApplicationService.Current.State.Remove("WebFontSelectWindowSelection");
-            NavigationService.Navigate(new Uri("/ThemeColors.xaml", UriKind.Relative));
-        }
-
-        private void MenuDeleteThemeClick(object sender, EventArgs e)
-        {
-            var uniqId = (Guid)((TextBlock)SelectList.SelectedItem).Tag;
-            SelectList.Items.RemoveAt(SelectList.SelectedIndex);
-            SelectList.SelectedIndex = 0;
-            if(uniqId.Equals(App.Themes.CurrentTheme))
-            {
-                var defaultId = (Guid)((TextBlock)SelectList.Items[0]).Tag;
-                App.Themes.CurrentTheme = defaultId;
-            }
-            App.Themes.Themes.Remove(uniqId);
-        }
-
-        private void AutoRotatePageBackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            //save the current selection
-            var uniqId = (Guid)((TextBlock)SelectList.SelectedItem).Tag;
-            App.Themes.CurrentTheme = uniqId;
-            
-            //all the windows must be redrawn
-            for (int i = App.OpenWindows.Count - 1; i >= 0; i--)
-            {
-                App.OpenWindows[i].ForceReload = true;
-            }
-        }
+        #endregion Methods
     }
 }

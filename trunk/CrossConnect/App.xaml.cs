@@ -38,10 +38,10 @@ namespace CrossConnect
     using System.Windows.Navigation;
     using System.Xml;
 
-    using readers;
-
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Shell;
+
+    using readers;
 
     using Sword.reader;
 

@@ -25,25 +25,16 @@
 
 #endregion Header
 
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using Sword.reader;
-
 namespace CrossConnect
 {
-    using System;
-    using System.IO.IsolatedStorage;
+    using System.Text;
     using System.Windows;
-    using System.Windows.Controls;
+    using Microsoft.Phone.Shell;
+
+    using Sword.reader;
 
     public partial class WebFontSelect
     {
-        #region Fields
-
-        #endregion Fields
-
         #region Constructors
 
         public WebFontSelect()
@@ -73,12 +64,12 @@ namespace CrossConnect
                 20, "") + sb + "</body></html>");
         }
 
-
-        #endregion Methods
+        private void WebBrowser1Loaded(object sender, RoutedEventArgs e)
+        {
+        }
 
         private void WebBrowser1ScriptNotify(object sender, Microsoft.Phone.Controls.NotifyEventArgs e)
         {
-
             PhoneApplicationService.Current.State["WebFontSelectWindowSelection"] = e.Value;
             if (NavigationService.CanGoBack)
             {
@@ -86,14 +77,10 @@ namespace CrossConnect
             }
         }
 
-        private void WebBrowser1Loaded(object sender, RoutedEventArgs e)
-        {
-        
-        }
-
         private void WebBrowser1Unloaded(object sender, RoutedEventArgs e)
         {
-        
         }
+
+        #endregion Methods
     }
 }

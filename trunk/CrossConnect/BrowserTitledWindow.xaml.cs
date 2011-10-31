@@ -732,7 +732,7 @@ namespace CrossConnect
                                                                                                          htmlBackgroundColor,
                                                                                                          htmlForegroundColor,
                                                                                                          htmlPhoneAccentColor,
-                                                                                                         htmlFontSize, 
+                                                                                                         htmlFontSize,
                                                                                                          fontFamily,
                                                                                                          fileErase,
                                                                                                          App.

@@ -53,11 +53,11 @@ namespace CrossConnect.readers
         private const int LimitForPaging = 60;
 
         private string _displayText = string.Empty;
+        private string _fontFamily = string.Empty;
         private string _htmlBackgroundColor = string.Empty;
         private double _htmlFontSize;
         private string _htmlForegroundColor = string.Empty;
         private string _htmlPhoneAccentColor = string.Empty;
-        private string _fontFamily = string.Empty;
 
         #endregion Fields
 

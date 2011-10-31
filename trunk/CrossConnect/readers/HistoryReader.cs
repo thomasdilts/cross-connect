@@ -48,11 +48,11 @@ namespace CrossConnect.readers
         public BibleZtextReaderSerialData Serial2 = new BibleZtextReaderSerialData(false, "", "", 0, 0);
 
         private string _displayText = string.Empty;
+        private string _fontFamily = string.Empty;
         private string _htmlBackgroundColor = string.Empty;
         private double _htmlFontSize;
         private string _htmlForegroundColor = string.Empty;
         private string _htmlPhoneAccentColor = string.Empty;
-        private string _fontFamily = string.Empty;
 
         #endregion Fields
 

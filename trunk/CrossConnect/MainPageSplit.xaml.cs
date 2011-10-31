@@ -122,13 +122,6 @@ namespace CrossConnect
             }
         }
 
-        public void ShowEmptyWindow()
-        {
-            LayoutRoot.Children.Clear();
-            LayoutRoot.ColumnDefinitions.Clear();
-            LayoutRoot.RowDefinitions.Clear();
-        }
-
         private void AutoRotatePageBackKeyPress(object sender, CancelEventArgs e)
         {
             Debug.WriteLine("Backed out of the program.");
@@ -380,6 +373,11 @@ namespace CrossConnect
             NavigationService.Navigate(new Uri("/Settings.xaml", UriKind.Relative));
         }
 
+        private void MenuThemesClick(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Themes.xaml", UriKind.Relative));
+        }
+
         private void PhoneApplicationPageOrientationChanged(object sender, OrientationChangedEventArgs e)
         {
             //redraw the browsers
@@ -402,10 +400,5 @@ namespace CrossConnect
         }
 
         #endregion Methods
-
-        private void MenuThemesClick(object sender, EventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Themes.xaml", UriKind.Relative));
-        }
     }
 }

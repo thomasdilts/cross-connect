@@ -67,6 +67,11 @@ namespace CrossConnect
 
         #region Methods
 
+        private static void ClientDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            //nothing to do here
+        }
+
         private void ClientOpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
         {
             try
@@ -154,11 +159,6 @@ namespace CrossConnect
                     Translations.Translate("An error occurred trying to connect to the network. Try again later.") +
                     "; " + exp.Message);
             }
-        }
-
-        private static void ClientDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            //nothing to do here
         }
 
         private void PhoneApplicationPageLoaded(object sender, RoutedEventArgs e)
