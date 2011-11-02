@@ -1,6 +1,6 @@
 ﻿#region Header
 
-// <copyright file="SelectLanguage.xaml.cs" company="Thomas Dilts">
+// <copyright file="Themes.xaml.cs" company="Thomas Dilts">
 //
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
@@ -28,14 +28,11 @@
 namespace CrossConnect
 {
     using System;
-    using System.Collections.Generic;
     using System.IO.IsolatedStorage;
     using System.Linq;
     using System.Net;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Xml;
-
     using ICSharpCode.SharpZipLib.Zip;
 
     using Microsoft.Phone.Shell;

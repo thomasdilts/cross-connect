@@ -29,6 +29,7 @@ namespace CrossConnect
 {
     using System.Text;
     using System.Windows;
+
     using Microsoft.Phone.Shell;
 
     using Sword.reader;

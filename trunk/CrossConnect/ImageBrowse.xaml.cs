@@ -1,6 +1,6 @@
 ﻿#region Header
 
-// <copyright file="SelectLanguage.xaml.cs" company="Thomas Dilts">
+// <copyright file="ImageBrowse.xaml.cs" company="Thomas Dilts">
 //
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
@@ -42,7 +42,7 @@ namespace CrossConnect
         #region Fields
 
         private string[] _imageNames = new string[0];
-        private int _nowShowingPicture = 0;
+        private int _nowShowingPicture;
 
         #endregion Fields
 
@@ -76,9 +76,9 @@ namespace CrossConnect
                 {
                     _imageNames = root.GetFileNames(App.WebDirIsolated + "/images/*.*");
                 }
-                catch (Exception)
+                catch (Exception ee)
                 {
-
+                    Debug.WriteLine(ee);
                 }
             }
             if (_imageNames == null || _imageNames.Count()==0)
