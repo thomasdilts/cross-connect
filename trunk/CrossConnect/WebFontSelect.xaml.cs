@@ -1,6 +1,6 @@
 ﻿#region Header
 
-// <copyright file="SelectLanguage.xaml.cs" company="Thomas Dilts">
+// <copyright file="WebFontSelect.xaml.cs" company="Thomas Dilts">
 //
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
