@@ -16,6 +16,7 @@
     <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <SilverlightApplication>true</SilverlightApplication>
+    <!-- <SupportedCultures>es-ES;fr-FR;it-IT;de-DE;af-AF;ar-AR;az-AZ;be-BE;bg-BG;cs-CS;da-DA;el-EL;et-ET;fa-FA;fi-FI;hi-HI;hr-HR;hu-HU;hy-HY;id-ID;is-IS;iw-IW;ja-JA;ko-KO;lt-LT;lv-LV;mk-MK;ms-MS;mt-MT;nl-NL;no-NO;pl-PL;pt-PT;ro-RO;ru-RU;sk-SK;sl-SL;sq-SQ;sr-SR;sv-SV;sw-SW;th-TH;tl-TL;tr-TR;uk-UK;ur-UR;vi-VI;zh-CN;zh-TW</SupportedCultures> -->
     <SupportedCultures>es-ES;fr-FR;it-IT;de-DE;af-AF;ar-AR;az-AZ;be-BE;bg-BG;cs-CS;da-DA;el-EL;et-ET;fa-FA;fi-FI;hi-HI;hr-HR;hu-HU;hy-HY;id-ID;is-IS;iw-IW;ja-JA;ko-KO;lt-LT;lv-LV;mk-MK;ms-MS;mt-MT;nl-NL;no-NO;pl-PL;pt-PT;ro-RO;ru-RU;sk-SK;sl-SL;sq-SQ;sr-SR;sv-SV;sw-SW;th-TH;tl-TL;tr-TR;uk-UK;ur-UR;vi-VI;zh-CN;zh-TW</SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
@@ -329,6 +330,7 @@
     <EmbeddedResource Include="Resources\AppResources.bg-BG.resx" />
     <EmbeddedResource Include="Resources\AppResources.cs-CS.resx" />
     <EmbeddedResource Include="Resources\AppResources.da-DA.resx" />
+    <EmbeddedResource Include="Resources\AppResources.de-DE.resx" />
     <EmbeddedResource Include="Resources\AppResources.el-EL.resx" />
     <EmbeddedResource Include="Properties\crossc_az.xml" />
     <EmbeddedResource Include="Properties\crossc_fa.xml" />
