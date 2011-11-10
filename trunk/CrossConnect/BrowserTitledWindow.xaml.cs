@@ -49,17 +49,16 @@ namespace CrossConnect
     using Sword;
     using Sword.reader;
 
-    public partial class BrowserTitledWindow
+    public partial class BrowserTitledWindow : ITiledWindow
     {
         #region Fields
-
-        public SerializableWindowState State = new SerializableWindowState();
 
         private bool _isInGetHtmlAsynchronously;
         private string _lastFileName = string.Empty;
         private DateTime _lastManipulationKillTime = DateTime.Now;
         private DispatcherTimer _manipulationTimer;
         private ManipulationCompletedEventArgs _manipulationToProcess;
+        private SerializableWindowState _state = new SerializableWindowState();
 
         #endregion Fields
 
@@ -89,6 +88,12 @@ namespace CrossConnect
         public bool ForceReload
         {
             get; set;
+        }
+
+        public SerializableWindowState State
+        {
+            get { return _state; }
+            set { _state = value; }
         }
 
         #endregion Properties
@@ -174,7 +179,7 @@ namespace CrossConnect
                 || parent.Orientation == PageOrientation.LandscapeRight)
             {
                 title.Width = Application.Current.Host.Content.ActualHeight - butClose.Width*numButtonsShowing - 15 -
-                              butClose.Width*2;
+                              70;
                 title.MaxWidth = title.Width;
             }
             else
@@ -193,7 +198,7 @@ namespace CrossConnect
             webBrowser1.Base = App.WebDirIsolated;
 
             var source = new Uri(_lastFileName, UriKind.Relative);
-            if (State.Source.IsSynchronizeable || State.Source.IsLocalChangeDuringLink)
+            if (_state.Source.IsSynchronizeable || _state.Source.IsLocalChangeDuringLink)
             {
                 int bookNum;
                 int absoluteChaptNum;
@@ -201,7 +206,7 @@ namespace CrossConnect
                 int verseNum;
                 string fullName;
                 string titleText;
-                State.Source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName,
+                _state.Source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName,
                                      out titleText);
                 source = new Uri(_lastFileName + "#CHAP_" + absoluteChaptNum + "_VERS_" + verseNum, UriKind.Relative);
             }
@@ -219,14 +224,14 @@ namespace CrossConnect
             WriteTitle();
 
             // update the sync button image
-            State.IsSynchronized = !State.IsSynchronized;
+            _state.IsSynchronized = !_state.IsSynchronized;
             ButLinkClick(null, null);
 
-            if (State.Source.IsSynchronizeable || State.Source.IsLocalChangeDuringLink)
+            if (_state.Source.IsSynchronizeable || _state.Source.IsLocalChangeDuringLink)
             {
                 //The window wont show the correct verse if we dont wait a few seconds before showing it.
-                var tmr = new DispatcherTimer {Interval = TimeSpan.FromSeconds(State.IsResume ? 2.5 : 1.5)};
-                State.IsResume = false;
+                var tmr = new DispatcherTimer {Interval = TimeSpan.FromSeconds(_state.IsResume ? 2.5 : 1.5)};
+                _state.IsResume = false;
                 tmr.Tick += OnTimerTick;
                 tmr.Start();
             }
@@ -236,12 +241,12 @@ namespace CrossConnect
         public void Initialize(string bibleToLoad, string bibleDescription, WindowType windowType,
             IBrowserTextSource source = null)
         {
-            State.BibleToLoad = bibleToLoad;
-            State.BibleDescription = bibleDescription;
-            State.WindowType = windowType;
+            _state.BibleToLoad = bibleToLoad;
+            _state.BibleDescription = bibleDescription;
+            _state.WindowType = windowType;
             if (source != null)
             {
-                State.Source = source;
+                _state.Source = source;
             }
             else
             {
@@ -258,52 +263,52 @@ namespace CrossConnect
                             switch (windowType)
                             {
                                 case WindowType.WindowBible:
-                                    State.Source = new BibleZtextReader(bookPath,
+                                    _state.Source = new BibleZtextReader(bookPath,
                                                                         ((Language)
                                                                          book.Value.Sbmd.GetCetProperty(
                                                                              ConfigEntryType.Lang)).Code, isIsoEncoding);
                                     break;
                                 case WindowType.WindowBibleNotes:
-                                    State.Source = new BibleNoteReader(bookPath,
+                                    _state.Source = new BibleNoteReader(bookPath,
                                                                        ((Language)
                                                                         book.Value.Sbmd.GetCetProperty(
                                                                             ConfigEntryType.Lang)).Code, isIsoEncoding,
                                                                        Translations.Translate("Notes"));
                                     break;
                                 case WindowType.WindowBookmarks:
-                                    State.Source = new BookMarkReader(bookPath,
+                                    _state.Source = new BookMarkReader(bookPath,
                                                                       ((Language)
                                                                        book.Value.Sbmd.GetCetProperty(
                                                                            ConfigEntryType.Lang)).Code, isIsoEncoding);
                                     break;
                                 case WindowType.WindowHistory:
-                                    State.Source = new HistoryReader(bookPath,
+                                    _state.Source = new HistoryReader(bookPath,
                                                                      ((Language)
                                                                       book.Value.Sbmd.GetCetProperty(
                                                                           ConfigEntryType.Lang)).Code, isIsoEncoding);
                                     break;
                                 case WindowType.WindowDailyPlan:
-                                    State.Source = new DailyPlanReader(bookPath,
+                                    _state.Source = new DailyPlanReader(bookPath,
                                                                        ((Language)
                                                                         book.Value.Sbmd.GetCetProperty(
                                                                             ConfigEntryType.Lang)).Code, isIsoEncoding);
                                     break;
                                 case WindowType.WindowCommentary:
-                                    State.Source = new CommentZtextReader(bookPath,
+                                    _state.Source = new CommentZtextReader(bookPath,
                                                                           ((Language)
                                                                            book.Value.Sbmd.GetCetProperty(
                                                                                ConfigEntryType.Lang)).Code,
                                                                           isIsoEncoding);
                                     break;
                                 case WindowType.WindowAddedNotes:
-                                    State.Source = new PersonalNotesReader(bookPath,
+                                    _state.Source = new PersonalNotesReader(bookPath,
                                                                            ((Language)
                                                                             book.Value.Sbmd.GetCetProperty(
                                                                                 ConfigEntryType.Lang)).Code,
                                                                            isIsoEncoding);
                                     break;
                                 case WindowType.WindowTranslator:
-                                    State.Source = new TranslatorReader(bookPath,
+                                    _state.Source = new TranslatorReader(bookPath,
                                                                         ((Language)
                                                                          book.Value.Sbmd.GetCetProperty(
                                                                              ConfigEntryType.Lang)).Code, isIsoEncoding);
@@ -337,7 +342,7 @@ namespace CrossConnect
                 //string colorDir = lightColorCount >= 2 ? "light" : "dark";
                 string colorDir = App.Themes.IsButtonColorDark ? "light" : "dark";
 
-                SetButtonVisibility(butSmaller, State.NumRowsIown > 1, "/Images/" + colorDir + "/appbar.minus.rest.png",
+                SetButtonVisibility(butSmaller, _state.NumRowsIown > 1, "/Images/" + colorDir + "/appbar.minus.rest.png",
                                     "/Images/" + colorDir + "/appbar.minus.rest.pressed.png");
                 SetButtonVisibility(butLarger, true, "/Images/" + colorDir + "/appbar.feature.search.rest.png",
                                     "/Images/" + colorDir + "/appbar.feature.search.rest.pressed.png");
@@ -349,9 +354,9 @@ namespace CrossConnect
 
         public void SynchronizeWindow(int chapterNum, int verseNum)
         {
-            if (State.IsSynchronized && State.Source.IsSynchronizeable)
+            if (_state.IsSynchronized && _state.Source.IsSynchronizeable)
             {
-                State.Source.MoveChapterVerse(chapterNum, verseNum, false);
+                _state.Source.MoveChapterVerse(chapterNum, verseNum, false);
                 UpdateBrowser();
             }
         }
@@ -359,13 +364,13 @@ namespace CrossConnect
         public void UpdateBrowser()
         {
             Debug.WriteLine("UpdateBrowser start");
-            if (State.Source != null && Parent != null)
+            if (_state.Source != null && Parent != null)
             {
-                if (State.Source.IsExternalLink)
+                if (_state.Source.IsExternalLink)
                 {
                     try
                     {
-                        var source = new Uri(State.Source.GetExternalLink(App.DisplaySettings));
+                        var source = new Uri(_state.Source.GetExternalLink(App.DisplaySettings));
                         webBrowser1.Base = "";
                         webBrowser1.Navigate(source);
                         WriteTitle();
@@ -402,7 +407,7 @@ namespace CrossConnect
                         backcolor,
                         forecolor,
                         accentcolor,
-                        State.HtmlFontSize*fontSizeMultiplier,
+                        _state.HtmlFontSize*fontSizeMultiplier,
                         fontFamily,
                         App.WebDirIsolated + "/" + _lastFileName);
                 }
@@ -493,7 +498,7 @@ namespace CrossConnect
             int verseNum;
             string fullName;
             string titleText;
-            State.Source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName,
+            _state.Source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName,
                                  out titleText);
             PhoneApplicationService.Current.State["ChapterToHear"] = absoluteChaptNum;
             PhoneApplicationService.Current.State["titleBar"] = titleText;
@@ -509,7 +514,7 @@ namespace CrossConnect
         private void ButLargerClick(object sender, RoutedEventArgs e)
         {
             KillManipulation();
-            State.NumRowsIown++;
+            _state.NumRowsIown++;
             ShowSizeButtons();
             if (HitButtonBigger != null)
             {
@@ -525,7 +530,7 @@ namespace CrossConnect
         private void ButLinkClick(object sender, RoutedEventArgs e)
         {
             KillManipulation();
-            if (State.Source.IsSynchronizeable)
+            if (_state.Source.IsSynchronizeable)
             {
                 // get all the right images
                 // figure out if this is a light color
@@ -533,8 +538,8 @@ namespace CrossConnect
                 //int lightColorCount = (color.R > 0x80 ? 1 : 0) + (color.G > 0x80 ? 1 : 0) + (color.B > 0x80 ? 1 : 0);
                 //string colorDir = lightColorCount >= 2 ? "light" : "dark";
                 string colorDir = App.Themes.IsButtonColorDark ? "light" : "dark";
-                State.IsSynchronized = !State.IsSynchronized;
-                if (State.IsSynchronized)
+                _state.IsSynchronized = !_state.IsSynchronized;
+                if (_state.IsSynchronized)
                 {
                     SetButtonVisibility(butLink, true, "/Images/" + colorDir + "/appbar.linkto.rest.pressed.png",
                                         "/Images/" + colorDir + "/appbar.linkto.rest.png");
@@ -562,7 +567,7 @@ namespace CrossConnect
             ForceReload = true;
             PhoneApplicationService.Current.State["isAddNewWindowOnly"] = false;
             PhoneApplicationService.Current.State["skipWindowSettings"] = false;
-            PhoneApplicationService.Current.State["openWindowIndex"] = State.CurIndex;
+            PhoneApplicationService.Current.State["openWindowIndex"] = _state.CurIndex;
             PhoneApplicationService.Current.State["InitializeWindowSettings"] = true;
 
             var parent = (MainPageSplit) ((Grid) Parent).Parent;
@@ -577,7 +582,7 @@ namespace CrossConnect
         private void ButNextClick(object sender, RoutedEventArgs e)
         {
             KillManipulation();
-            State.Source.MoveNext();
+            _state.Source.MoveNext();
 
             string mode = "SlideLeftFadeOut";
             TransitionElement transitionElement = SlideTransitionElement(mode);
@@ -600,7 +605,7 @@ namespace CrossConnect
         private void ButPreviousClick(object sender, RoutedEventArgs e)
         {
             KillManipulation();
-            State.Source.MovePrevious();
+            _state.Source.MovePrevious();
 
             string mode = "SlideRightFadeOut";
             TransitionElement transitionElement = SlideTransitionElement(mode);
@@ -624,7 +629,7 @@ namespace CrossConnect
         private void ButSmallerClick(object sender, RoutedEventArgs e)
         {
             KillManipulation();
-            State.NumRowsIown--;
+            _state.NumRowsIown--;
             ShowSizeButtons();
             if (HitButtonSmaller != null)
             {
@@ -643,7 +648,7 @@ namespace CrossConnect
 
             string[] toTranslate;
             bool[] isTranslateable;
-            State.Source.GetTranslateableTexts(App.DisplaySettings, State.BibleToLoad, out toTranslate,
+            _state.Source.GetTranslateableTexts(App.DisplaySettings, _state.BibleToLoad, out toTranslate,
                                                out isTranslateable);
 
             foreach (var win in App.OpenWindows)
@@ -651,7 +656,7 @@ namespace CrossConnect
                 if (win.State.Source is TranslatorReader)
                 {
                     var transReader = (TranslatorReader) win.State.Source;
-                    transReader.TranslateThis(toTranslate, isTranslateable, State.Source.GetLanguage());
+                    transReader.TranslateThis(toTranslate, isTranslateable, _state.Source.GetLanguage());
                     return;
                 }
             }
@@ -660,9 +665,9 @@ namespace CrossConnect
                 "",
                 "",
                 WindowType.WindowTranslator,
-                State.HtmlFontSize,
+                _state.HtmlFontSize,
                 transReader2);
-            transReader2.TranslateThis(toTranslate, isTranslateable, State.Source.GetLanguage());
+            transReader2.TranslateThis(toTranslate, isTranslateable, _state.Source.GetLanguage());
         }
 
         private void ButTranslateManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
@@ -678,7 +683,7 @@ namespace CrossConnect
                 "",
                 "",
                 WindowType.WindowLexiconLink,
-                State.HtmlFontSize,
+                _state.HtmlFontSize,
                 win);
             //Deployment.Current.Dispatcher.BeginInvoke(() => showLexiconLinkWindow(link));
         }
@@ -728,7 +733,7 @@ namespace CrossConnect
                                              {
                                                  try
                                                  {
-                                                     string createdFileName = State.Source.PutHtmlTofile(dispSet,
+                                                     string createdFileName = _state.Source.PutHtmlTofile(dispSet,
                                                                                                          htmlBackgroundColor,
                                                                                                          htmlForegroundColor,
                                                                                                          htmlPhoneAccentColor,
@@ -780,7 +785,7 @@ namespace CrossConnect
                 int verseNum;
                 string fullName;
                 string titleText;
-                State.Source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName,
+                _state.Source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName,
                                      out titleText);
                 var source = new Uri(_lastFileName + "#CHAP_" + absoluteChaptNum + "_VERS_" + verseNum, UriKind.Relative);
                 webBrowser1.Navigate(source);
@@ -829,16 +834,16 @@ namespace CrossConnect
             //string colorDir = lightColorCount >= 2 ? "light" : "dark";
             string colorDir = App.Themes.IsButtonColorDark ? "light" : "dark";
 
-            bool isPrevNext = State != null && State.Source != null && State.Source.IsPageable;
+            bool isPrevNext = _state != null && _state.Source != null && _state.Source.IsPageable;
             SetButtonVisibility(butPrevious, isPrevNext, "/Images/" + colorDir + "/appbar.prev.rest.png",
                                 "/Images/" + colorDir + "/appbar.prev.rest.press.png");
             SetButtonVisibility(butNext, isPrevNext, "/Images/" + colorDir + "/appbar.next.rest.png",
                                 "/Images/" + colorDir + "/appbar.next.rest.press.png");
-            bool isHearable = State != null && State.Source != null && State.Source.IsHearable;
+            bool isHearable = _state != null && _state.Source != null && _state.Source.IsHearable;
             SetButtonVisibility(butHear, isHearable, "/Images/" + colorDir + "/appbar.speaker.png",
                                 "/Images/" + colorDir + "/appbar.speaker.pressed.png");
-            bool isTranslate = State != null && State.Source != null && State.Source.IsTranslateable &&
-                               !State.Source.GetLanguage().Equals(Translations.IsoLanguageCode);
+            bool isTranslate = _state != null && _state.Source != null && _state.Source.IsTranslateable &&
+                               !_state.Source.GetLanguage().Equals(Translations.IsoLanguageCode);
             SetButtonVisibility(butTranslate, isTranslate, "/Images/" + colorDir + "/appbar.translate.png",
                                 "/Images/" + colorDir + "/appbar.translate.pressed.png");
 
@@ -854,14 +859,14 @@ namespace CrossConnect
             butClose.Image = GetImage("/Images/" + colorDir + "/appbar.cancel.rest.png");
             butClose.PressedImage = GetImage("/Images/" + colorDir + "/appbar.cancel.rest.pressed.png");
 
-            if (State != null && State.Source != null && !State.Source.IsSynchronizeable)
+            if (_state != null && _state.Source != null && !_state.Source.IsSynchronizeable)
             {
                 SetButtonVisibility(butLink, false, "", "");
             }
 
-            if (State != null && State.Source != null)
+            if (_state != null && _state.Source != null)
             {
-                State.Source.RegisterUpdateEvent(SourceChanged);
+                _state.Source.RegisterUpdateEvent(SourceChanged);
             }
 
             border1.BorderBrush = new SolidColorBrush(App.Themes.BorderColor);
@@ -907,13 +912,13 @@ namespace CrossConnect
 
             if (chapterNum >= 0 && verseNum >= 0)
             {
-                if (State.Source.IsLocalChangeDuringLink)
+                if (_state.Source.IsLocalChangeDuringLink)
                 {
-                    State.Source.MoveChapterVerse(chapterNum, verseNum, true);
+                    _state.Source.MoveChapterVerse(chapterNum, verseNum, true);
                     WriteTitle();
                 }
 
-                App.SynchronizeAllWindows(chapterNum, verseNum, State.CurIndex);
+                App.SynchronizeAllWindows(chapterNum, verseNum, _state.CurIndex);
 
                 App.AddHistory(chapterNum, verseNum);
             }
@@ -921,9 +926,9 @@ namespace CrossConnect
 
         private void WebBrowser1Unloaded(object sender, RoutedEventArgs e)
         {
-            if (State != null && State.Source != null)
+            if (_state != null && _state.Source != null)
             {
-                State.Source.RegisterUpdateEvent(SourceChanged, false);
+                _state.Source.RegisterUpdateEvent(SourceChanged, false);
             }
         }
 
@@ -935,55 +940,13 @@ namespace CrossConnect
             int verseNum;
             string fullName;
             string titleText;
-            State.Source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName,
+            _state.Source.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName,
                                  out titleText);
             title.Text = titleText + " - " +
-                         (string.IsNullOrEmpty(State.BibleDescription) ? State.BibleToLoad : State.BibleDescription) +
+                         (string.IsNullOrEmpty(_state.BibleDescription) ? _state.BibleToLoad : _state.BibleDescription) +
                          "                                                               ";
         }
 
         #endregion Methods
-
-        #region Nested Types
-
-        /// <summary>
-        ///   I was forced to make this class just for serialization because a "UserControl" 
-        ///   cannot be serialized.
-        /// </summary>
-        [DataContract]
-        [KnownType(typeof (DailyPlanReader))]
-        [KnownType(typeof (CommentZtextReader))]
-        [KnownType(typeof (BookMarkReader))]
-        [KnownType(typeof (TranslatorReader))]
-        [KnownType(typeof (HistoryReader))]
-        [KnownType(typeof (SearchReader))]
-        [KnownType(typeof (BibleNoteReader))]
-        [KnownType(typeof (BibleZtextReader))]
-        public class SerializableWindowState
-        {
-            #region Fields
-
-            [DataMember(Name = "bibleDescription")]
-            public string BibleDescription = string.Empty;
-            [DataMember(Name = "bibleToLoad")]
-            public string BibleToLoad = string.Empty;
-            [DataMember(Name = "curIndex")]
-            public int CurIndex;
-            [DataMember(Name = "htmlFontSize")]
-            public double HtmlFontSize = 10;
-            public bool IsResume;
-            [DataMember(Name = "isSynchronized")]
-            public bool IsSynchronized = true;
-            [DataMember(Name = "numRowsIown")]
-            public int NumRowsIown = 1;
-            [DataMember(Name = "source")]
-            public IBrowserTextSource Source;
-            [DataMember(Name = "windowType")]
-            public WindowType WindowType = WindowType.WindowBible;
-
-            #endregion Fields
-        }
-
-        #endregion Nested Types
     }
 }

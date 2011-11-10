@@ -300,7 +300,7 @@ namespace CrossConnect
                 state.BibleToLoad = bookSelected.Sbmd.InternalName;
                 state.BibleDescription = bookSelected.Sbmd.Name;
                 state.HtmlFontSize = sliderTextSize.Value;
-                App.OpenWindows[(int) openWindowIndex].Initialize(state.BibleToLoad, state.BibleDescription,
+                ((BrowserTitledWindow)App.OpenWindows[(int) openWindowIndex]).Initialize(state.BibleToLoad, state.BibleDescription,
                                                                   state.WindowType);
             }
             else

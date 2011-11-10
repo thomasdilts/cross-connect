@@ -108,10 +108,10 @@ namespace CrossConnect
                         var row = new RowDefinition();
                         LayoutRoot.RowDefinitions.Add(row);
                     }
-                    Grid.SetRow(App.OpenWindows[i], rowCount);
-                    Grid.SetRowSpan(App.OpenWindows[i], App.OpenWindows[i].State.NumRowsIown);
-                    Grid.SetColumn(App.OpenWindows[i], 0);
-                    LayoutRoot.Children.Add(App.OpenWindows[i]);
+                    Grid.SetRow((FrameworkElement)App.OpenWindows[i], rowCount);
+                    Grid.SetRowSpan((FrameworkElement)App.OpenWindows[i], App.OpenWindows[i].State.NumRowsIown);
+                    Grid.SetColumn((FrameworkElement)App.OpenWindows[i], 0);
+                    LayoutRoot.Children.Add((UIElement)App.OpenWindows[i]);
                     rowCount += App.OpenWindows[i].State.NumRowsIown;
                     App.OpenWindows[i].ShowSizeButtons();
                 }
@@ -143,14 +143,7 @@ namespace CrossConnect
 
         private void ButGoToPlanClick(object sender, EventArgs e)
         {
-            if (App.OpenWindows.Count() > 0)
-            {
-                //take the present window and show the plan if it exists.
-                var state = App.OpenWindows[0].State;
-                state.WindowType = WindowType.WindowDailyPlan;
-                App.OpenWindows[0].Initialize(state.BibleToLoad, state.BibleDescription, state.WindowType);
-                ReDrawWindows();
-            }
+            App.AddWindow("", "", WindowType.WindowDailyPlan,20);
         }
 
         private void ButHelpClick(object sender, EventArgs e)
@@ -231,7 +224,7 @@ namespace CrossConnect
 
         private void HitButtonClose(object sender, EventArgs e)
         {
-            App.OpenWindows.RemoveAt(((BrowserTitledWindow) sender).State.CurIndex);
+            App.OpenWindows.RemoveAt(((ITiledWindow) sender).State.CurIndex);
             ReDrawWindows();
         }
 

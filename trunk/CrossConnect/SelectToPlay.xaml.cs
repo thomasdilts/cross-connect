@@ -33,6 +33,8 @@ namespace CrossConnect
     using System.Windows.Controls;
     using System.Xml;
 
+    using CrossConnect.readers;
+
     using Microsoft.Phone.Shell;
     using Microsoft.Phone.Tasks;
 
@@ -57,7 +59,7 @@ namespace CrossConnect
 
         #region Enumerations
 
-        private enum MediaType
+        public enum MediaType
         {
             MediaPlayer,
             MediaExplorer
@@ -207,34 +209,33 @@ namespace CrossConnect
             }
             _isInSelectionChanged = true;
             var info = (MediaInfo) ((TextBlock) e.AddedItems[0]).Tag;
-            if (info.Player == MediaType.MediaExplorer)
+            foreach (var win in App.OpenWindows)
             {
-                string uri = info.Viewer +
-                             (string.IsNullOrEmpty(info.Src) ? "" : "?src=" + Uri.EscapeDataString(info.Src)) +
-                             (string.IsNullOrEmpty(info.Icon) ? "" : "&icon=" + Uri.EscapeDataString(info.Icon));
-                BrowserTitledWindow.ShowInternetLinkWindow(uri, _titleBar);
-                if (NavigationService.CanGoBack)
+                if (win.State.WindowType == WindowType.WindowMediaPlayer)
                 {
-                    NavigationService.GoBack();
+                    var mediaWindow = (MediaPlayerWindow)win;
+                    mediaWindow.InitializeMedia(info.Src, _titleBar, _titleBar);
+                    _isInSelectionChanged = false;
+                    if (NavigationService.CanGoBack)
+                    {
+                        NavigationService.GoBack();
+                    }
+                    return;
                 }
             }
-            else
-            {
-                var mediaPlayerLauncher =
-                    new MediaPlayerLauncher
-                        {
-                            Media = new Uri(info.Src, UriKind.Absolute)
-                        };
-                mediaPlayerLauncher.Show();
-            }
+            App.AddMediaWindow(info.Src, _titleBar, info.Icon);
             _isInSelectionChanged = false;
+            if (NavigationService.CanGoBack)
+            {
+                NavigationService.GoBack();
+            }
         }
 
         #endregion Methods
 
         #region Nested Types
 
-        private class MediaInfo
+        public class MediaInfo
         {
             #region Fields
 

@@ -60,6 +60,7 @@ namespace CrossConnect
         WindowTranslator,
         WindowInternetLink,
         WindowLexiconLink,
+        WindowMediaPlayer,
     }
 
     #endregion Enumerations
@@ -76,7 +77,7 @@ namespace CrossConnect
         public static InstalledBiblesAndCommentaries InstalledBibles = new InstalledBiblesAndCommentaries();
         public static int IsFirstTimeInMainPageSplit;
         public static MainPageSplit MainWindow;
-        public static List<BrowserTitledWindow> OpenWindows = new List<BrowserTitledWindow>();
+        public static List<ITiledWindow> OpenWindows = new List<ITiledWindow>();
         public static BiblePlaceMarkers PlaceMarkers = new BiblePlaceMarkers();
         public static Theme Themes = new Theme();
 
@@ -208,6 +209,20 @@ namespace CrossConnect
             RaiseHistoryChangeEvent();
         }
 
+        public static void AddMediaWindow( string link , string titleBar,string icon)
+        {
+            var state = new SerializableWindowState
+                            {WindowType = WindowType.WindowMediaPlayer, Source = new MediaReader(link, titleBar, icon)};
+            var nextWindow = new MediaPlayerWindow {State = state};
+            nextWindow.State.CurIndex = OpenWindows.Count();
+            nextWindow.State.HtmlFontSize = 20;
+            OpenWindows.Add(nextWindow);
+            if (MainWindow != null)
+            {
+                MainWindow.ReDrawWindows();
+            }
+        }
+
         public static void AddWindow(string bibleToLoad, string bibleDescription, WindowType typeOfWindow,
             double textSize, IBrowserTextSource source = null)
         {
@@ -319,7 +334,7 @@ namespace CrossConnect
                             {
                                 var types = new[]
                                                 {
-                                                    typeof (BrowserTitledWindow.SerializableWindowState),
+                                                    typeof (SerializableWindowState),
                                                     typeof (BibleZtextReader.VersePos),
                                                     typeof (BibleZtextReader.ChapterPos),
                                                     typeof (BibleZtextReader.BookPos),
@@ -334,17 +349,31 @@ namespace CrossConnect
                                                     typeof (DailyPlanReader),
                                                     typeof (PersonalNotesReader),
                                                     typeof (InternetLinkReader),
+                                                    typeof (MediaReader),
                                                     typeof (GreekHebrewDictReader)
                                                 };
                                 var ser =
-                                    new DataContractSerializer(typeof (BrowserTitledWindow.SerializableWindowState),
+                                    new DataContractSerializer(typeof (SerializableWindowState),
                                                                types);
-                                var nextWindow = new BrowserTitledWindow
+                                var state = (SerializableWindowState) ser.ReadObject(reader);
+                                ITiledWindow nextWindow;
+                                if(state.WindowType.Equals(WindowType.WindowMediaPlayer))
+                                {
+                                    nextWindow = new MediaPlayerWindow
                                                      {
-                                                         State =
-                                                             (BrowserTitledWindow.SerializableWindowState)
-                                                             ser.ReadObject(reader)
+                                                         State = state
+
                                                      };
+                                }
+                                else
+                                {
+                                    nextWindow = new BrowserTitledWindow
+                                                     {
+                                                         State = state
+
+                                                     };
+                                }
+
                                 nextWindow.State.Source.Resume();
                                 nextWindow.State.IsResume = true;
                                 OpenWindows.Add(nextWindow);
@@ -448,7 +477,7 @@ namespace CrossConnect
             {
                 var types = new[]
                                 {
-                                    typeof (BrowserTitledWindow.SerializableWindowState),
+                                    typeof (SerializableWindowState),
                                     typeof (BibleZtextReader.VersePos),
                                     typeof (BibleZtextReader.ChapterPos),
                                     typeof (BibleZtextReader.BookPos),
@@ -463,9 +492,10 @@ namespace CrossConnect
                                     typeof (DailyPlanReader),
                                     typeof (PersonalNotesReader),
                                     typeof (InternetLinkReader),
+                                    typeof (MediaReader),
                                     typeof (GreekHebrewDictReader)
                                 };
-                var ser = new DataContractSerializer(typeof (BrowserTitledWindow.SerializableWindowState), types);
+                var ser = new DataContractSerializer(typeof (SerializableWindowState), types);
                 using (var sw = new StringWriter())
                 {
                     var settings = new XmlWriterSettings

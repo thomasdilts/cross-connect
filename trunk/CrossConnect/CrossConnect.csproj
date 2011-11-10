@@ -76,9 +76,14 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AutoRotatePage.cs" />
+    <Compile Include="ITiledWindow.cs" />
+    <Compile Include="MediaPlayerWindow.xaml.cs">
+      <DependentUpon>MediaPlayerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImageBrowse.xaml.cs">
       <DependentUpon>ImageBrowse.xaml</DependentUpon>
     </Compile>
+    <Compile Include="readers\MediaReader.cs" />
     <Compile Include="WebFontSelect.xaml.cs">
       <DependentUpon>WebFontSelect.xaml</DependentUpon>
     </Compile>
@@ -151,6 +156,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BrowserTitledWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MediaPlayerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -354,6 +363,18 @@
     <Content Include="Images\dark\appbar.translate.pressed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\dark\appbar.transport.pause.rest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\dark\appbar.transport.play.rest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\dark\appbar.transport.pause.rest.pressed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\dark\appbar.transport.play.rest.pressed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\light\appbar.speaker.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -367,6 +388,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Properties\themes.xml" />
+    <Content Include="Images\light\appbar.transport.pause.rest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\light\appbar.transport.play.rest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\light\appbar.transport.pause.rest.pressed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\light\appbar.transport.play.rest.pressed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <EmbeddedResource Include="Properties\regex.html" />

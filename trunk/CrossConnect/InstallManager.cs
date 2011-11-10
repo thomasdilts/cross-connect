@@ -287,7 +287,7 @@ namespace CrossConnect
                     }
                     else
                     {
-                        makeSurePathExists(isolatedStorageRoot, entry.Name);
+                        MakeSurePathExists(isolatedStorageRoot, entry.Name);
                         IsolatedStorageFileStream fStream = isolatedStorageRoot.CreateFile(entry.Name);
                         var buffer = new byte[10000];
                         int len;
@@ -317,7 +317,7 @@ namespace CrossConnect
         /// </summary>
         /// <param name = "isolatedStorageRoot"></param>
         /// <param name = "path"></param>
-        private void makeSurePathExists(IsolatedStorageFile isolatedStorageRoot, string path)
+        private static void MakeSurePathExists(IsolatedStorageFile isolatedStorageRoot, string path)
         {
             string[] directories = path.Split("/".ToCharArray());
             string totalTestPath = "";
