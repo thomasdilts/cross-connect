@@ -299,12 +299,24 @@ namespace CrossConnect
                 state.WindowType = selectedType;
                 state.BibleToLoad = bookSelected.Sbmd.InternalName;
                 state.BibleDescription = bookSelected.Sbmd.Name;
+
+                if (state.WindowType == WindowType.WindowDailyPlan)
+                {
+                    App.DailyPlan.PlanBible = state.BibleToLoad;
+                    App.DailyPlan.PlanBibleDescription = state.BibleDescription;
+                    App.DailyPlan.PlanTextSize = sliderTextSize.Value;
+                }
+
                 state.HtmlFontSize = sliderTextSize.Value;
                 ((BrowserTitledWindow)App.OpenWindows[(int) openWindowIndex]).Initialize(state.BibleToLoad, state.BibleDescription,
                                                                   state.WindowType);
             }
             else
             {
+                if (state.WindowType == WindowType.WindowDailyPlan)
+                {
+                    App.DailyPlan.PlanTextSize = sliderTextSize.Value;
+                }
                 state.HtmlFontSize = sliderTextSize.Value;
             }
         }

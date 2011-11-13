@@ -209,20 +209,7 @@ namespace CrossConnect
             }
             _isInSelectionChanged = true;
             var info = (MediaInfo) ((TextBlock) e.AddedItems[0]).Tag;
-            foreach (var win in App.OpenWindows)
-            {
-                if (win.State.WindowType == WindowType.WindowMediaPlayer)
-                {
-                    var mediaWindow = (MediaPlayerWindow)win;
-                    mediaWindow.InitializeMedia(info.Src, _titleBar, _titleBar);
-                    _isInSelectionChanged = false;
-                    if (NavigationService.CanGoBack)
-                    {
-                        NavigationService.GoBack();
-                    }
-                    return;
-                }
-            }
+
             App.AddMediaWindow(info.Src, _titleBar, info.Icon);
             _isInSelectionChanged = false;
             if (NavigationService.CanGoBack)

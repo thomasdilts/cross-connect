@@ -280,7 +280,7 @@ namespace CrossConnect.readers
 
         protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor,
             string htmlForegroundColor, string htmlPhoneAccentColor,
-            double htmlFontSize, string fontFamily, bool isNotesOnly, bool addStartFinishHtml = true)
+            double htmlFontSize, string fontFamily, bool isNotesOnly, bool addStartFinishHtml, bool forceReload)
         {
             bool mustUpdate = string.IsNullOrEmpty(_htmlBackgroundColor);
             _htmlBackgroundColor = htmlBackgroundColor;
@@ -288,7 +288,7 @@ namespace CrossConnect.readers
             _htmlPhoneAccentColor = htmlPhoneAccentColor;
             _fontFamily = fontFamily;
             bool isPageable = IsPageable;
-            if (isPageable || mustUpdate || Math.Abs(_htmlFontSize - htmlFontSize) > Epsilon)
+            if (forceReload || isPageable || mustUpdate || Math.Abs(_htmlFontSize - htmlFontSize) > Epsilon)
             {
                 if (isPageable)
                 {

@@ -44,9 +44,8 @@ namespace Sword.reader
 
         [DataMember(Name = "serial2")]
         public BibleZtextReaderSerialData Serial2 = new BibleZtextReaderSerialData(false, "", "", 0, 0);
-
         [DataMember(Name = "titleBrowserWindow")]
-        private string _titleBrowserWindow = string.Empty;
+        public string TitleBrowserWindow = string.Empty;
 
         #endregion Fields
 
@@ -56,7 +55,7 @@ namespace Sword.reader
             : base(path, iso2DigitLangCode, isIsoEncoding)
         {
             Serial2.CloneFrom(Serial);
-            _titleBrowserWindow = titleBrowserWindow;
+            TitleBrowserWindow = titleBrowserWindow;
         }
 
         #endregion Constructors
@@ -93,7 +92,7 @@ namespace Sword.reader
             verseNum = Serial.PosVerseNum;
             absoluteChaptNum = Serial.PosChaptNum;
             GetInfo(Serial.PosChaptNum, Serial.PosVerseNum, out bookNum, out relChaptNum, out fullName, out title);
-            title = _titleBrowserWindow + " " + fullName + ":" + (relChaptNum + 1);
+            title = TitleBrowserWindow + " " + fullName + ":" + (relChaptNum + 1);
         }
 
         public override string GetVerseTextOnly(DisplaySettings displaySettings, int chapterNumber, int verseNumber)
@@ -127,10 +126,10 @@ namespace Sword.reader
 
         protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor,
             string htmlForegroundColor, string htmlPhoneAccentColor,
-            double htmlFontSize,string fontFamily, bool isNotesOnly, bool addStartFinishHtml = true)
+            double htmlFontSize,string fontFamily, bool isNotesOnly, bool addStartFinishHtml, bool forceReload)
         {
             return GetChapterHtml(displaySettings, Serial.PosChaptNum, htmlBackgroundColor, htmlForegroundColor,
-                                  htmlPhoneAccentColor, htmlFontSize,fontFamily, true, addStartFinishHtml);
+                                  htmlPhoneAccentColor, htmlFontSize,fontFamily, true, addStartFinishHtml, forceReload);
         }
 
         #endregion Methods

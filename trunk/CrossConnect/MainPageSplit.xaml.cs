@@ -31,9 +31,14 @@ namespace CrossConnect
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.IO;
+    using System.IO.IsolatedStorage;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+    using System.Windows.Threading;
 
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Shell;
@@ -43,12 +48,27 @@ namespace CrossConnect
 
     public partial class MainPageSplit
     {
+        #region Fields
+
+        private readonly List<Grid> _windows = new List<Grid>();
+
+        private int _currentScreen;
+        private bool _isInScreenMoving;
+        private DispatcherTimer _moveMultiScreenTimer;
+        private int _screenPosIncrement;
+        private double _screenWidth;
+
+        #endregion Fields
+
         #region Constructors
 
         // Constructor
         public MainPageSplit()
         {
             InitializeComponent();
+            _windows.Add(GridScreen0);
+            _windows.Add(GridScreen1);
+            _windows.Add(GridScreen2);
         }
 
         #endregion Constructors
@@ -57,23 +77,33 @@ namespace CrossConnect
 
         public void ReDrawWindows()
         {
-            LayoutRoot.Children.Clear();
-            LayoutRoot.ColumnDefinitions.Clear();
-            LayoutRoot.RowDefinitions.Clear();
+            foreach (var grid in _windows)
+            {
+                grid.Children.Clear();
+                grid.ColumnDefinitions.Clear();
+                grid.RowDefinitions.Clear();
+            }
+
             if (App.OpenWindows.Count() == 0)
             {
                 var row = new RowDefinition {Height = GridLength.Auto};
-                LayoutRoot.RowDefinitions.Add(row);
+                _windows[0].RowDefinitions.Add(row);
                 row = new RowDefinition {Height = GridLength.Auto};
-                LayoutRoot.RowDefinitions.Add(row);
+                _windows[0].RowDefinitions.Add(row);
                 row = new RowDefinition {Height = new GridLength(0, GridUnitType.Star)};
-                LayoutRoot.RowDefinitions.Add(row);
-
+                _windows[0].RowDefinitions.Add(row);
+                var border = new SolidColorBrush(App.Themes.BorderColor);
+                var fore = new SolidColorBrush(App.Themes.MainFontColor);
+                var back = new SolidColorBrush(App.Themes.MainBackColor);
                 // show just a quick menu to add window or bibles
-                var text = new TextBlock {Text = "Cross Connect", FontSize = 40};
+                var text = new TextBlock {Text = "Cross Connect", FontSize = 40, Foreground = fore};
+
                 Grid.SetRow(text, 0);
-                LayoutRoot.Children.Add(text);
+                _windows[0].Children.Add(text);
                 var but = new Button();
+                but.Background = back;
+                but.Foreground = fore;
+                but.BorderBrush = border;
                 Grid.SetRow(but, 1);
                 if (App.InstalledBibles.InstalledBibles.Count() == 0)
                 {
@@ -85,11 +115,11 @@ namespace CrossConnect
                     but.Content = Translations.Translate("Add new window");
                     but.Click += ButAddWindowClick;
                 }
-                LayoutRoot.Children.Add(but);
+                _windows[0].Children.Add(but);
             }
             else
             {
-                int rowCount = 0;
+                var rowCount = new int[_windows.Count];
                 for (int i = 0; i < App.OpenWindows.Count(); i++)
                 {
                     // make sure we are not doubled up on the events.
@@ -106,19 +136,61 @@ namespace CrossConnect
                     for (int j = 0; j < App.OpenWindows[i].State.NumRowsIown; j++)
                     {
                         var row = new RowDefinition();
-                        LayoutRoot.RowDefinitions.Add(row);
+                        _windows[App.OpenWindows[i].State.Window].RowDefinitions.Add(row);
                     }
-                    Grid.SetRow((FrameworkElement)App.OpenWindows[i], rowCount);
+                    Grid.SetRow((FrameworkElement)App.OpenWindows[i], rowCount[App.OpenWindows[i].State.Window]);
                     Grid.SetRowSpan((FrameworkElement)App.OpenWindows[i], App.OpenWindows[i].State.NumRowsIown);
                     Grid.SetColumn((FrameworkElement)App.OpenWindows[i], 0);
-                    LayoutRoot.Children.Add((UIElement)App.OpenWindows[i]);
-                    rowCount += App.OpenWindows[i].State.NumRowsIown;
+                    _windows[App.OpenWindows[i].State.Window].Children.Add((UIElement)App.OpenWindows[i]);
+                    rowCount[App.OpenWindows[i].State.Window] += App.OpenWindows[i].State.NumRowsIown;
                     App.OpenWindows[i].ShowSizeButtons();
                 }
                 if (App.OpenWindows.Count() == 1)
                 {
                     App.OpenWindows[0].ShowSizeButtons(false);
                 }
+            }
+            if (App.Themes.IsMainBackImage && !string.IsNullOrEmpty(App.Themes.MainBackImage))
+            {
+                //read from isolated storage.
+                using (var isolatedStorageRoot = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    if (isolatedStorageRoot.FileExists(App.WebDirIsolated + "/images/" + App.Themes.MainBackImage))
+                    {
+                        try
+                        {
+                            using (IsolatedStorageFileStream fStream =
+                                isolatedStorageRoot.OpenFile(App.WebDirIsolated + "/images/" + App.Themes.MainBackImage, FileMode.Open))
+                            {
+                                var buffer = new byte[10000];
+                                int len;
+                                var ms = new MemoryStream();
+                                while ((len = fStream.Read(buffer, 0, buffer.GetUpperBound(0))) > 0)
+                                {
+                                    ms.Write(buffer, 0, len);
+                                }
+                                fStream.Close();
+                                ms.Position = 0;
+                                var bitImage = new BitmapImage();
+                                bitImage.SetSource(ms);
+                                var imageBrush = new ImageBrush
+                                {
+                                    ImageSource = bitImage,
+                                };
+                                LayoutMainRoot.Background = imageBrush;
+                            }
+                        }
+                        catch (Exception ee)
+                        {
+                            Debug.WriteLine(ee);
+                            LayoutMainRoot.Background = new SolidColorBrush(App.Themes.MainBackColor);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                LayoutMainRoot.Background = new SolidColorBrush(App.Themes.MainBackColor);
             }
         }
 
@@ -143,15 +215,44 @@ namespace CrossConnect
 
         private void ButGoToPlanClick(object sender, EventArgs e)
         {
-            App.AddWindow("", "", WindowType.WindowDailyPlan,20);
+            App.AddWindow("", "", WindowType.WindowDailyPlan,10);
         }
 
         private void ButHelpClick(object sender, EventArgs e)
         {
             var webBrowserTask = new WebBrowserTask();
-            const string version = "1.0.0.20";
+            const string version = "1.0.0.21";
             webBrowserTask.Uri = new Uri(@"http://www.chaniel.se/crossconnect/help?version=" + version);
             webBrowserTask.Show();
+        }
+
+        private void DoMoveMultiScreenTimerTick(object sender, EventArgs e)
+        {
+            var leftMargin = (int)WindowGrid.Margin.Left;
+            leftMargin += _screenPosIncrement;
+            WindowGrid.Margin = new Thickness(leftMargin, 0, 0, 0);
+            if (Math.Abs(leftMargin + (_currentScreen * _screenWidth)) < 71)
+            {
+                //make sure the position is correct
+                WindowGrid.Margin = new Thickness(-_currentScreen * _screenWidth, 0, 0, 0);
+                _moveMultiScreenTimer.Stop();
+                _isInScreenMoving = false;
+            }
+        }
+
+        private void DrawWindowSelectionButtons()
+        {
+            var border= new SolidColorBrush(App.Themes.BorderColor);
+            var fore=new SolidColorBrush(App.Themes.MainFontColor);
+            var back=new SolidColorBrush(App.Themes.MainBackColor);
+            WindowSelectGrid.Background = back;
+            var buttons=new List<Button> {Screen0Col0, Screen0Col1, Screen0Col2};
+            for (int i = 0; i < buttons.Count(); i++)
+            {
+                buttons[i].Background = _currentScreen == i ? fore : back;
+                buttons[i].Foreground = _currentScreen == i ? back : fore;
+                buttons[i].BorderBrush = border;
+            }
         }
 
         private void GetLast3SecondsChosenVerses(out string textsWithTitles, out string titlesOnly)
@@ -287,6 +388,18 @@ namespace CrossConnect
                     }
                 }
             }
+
+            SetScreenWidthVariable();
+            object objCurrrentScreen;
+            if (PhoneApplicationService.Current.State.TryGetValue("CurrentScreen", out objCurrrentScreen))
+            {
+                _currentScreen = (int)objCurrrentScreen;
+                WindowGrid.Margin = new Thickness(-_currentScreen * _screenWidth, 0, 0, 0);
+                DrawWindowSelectionButtons();
+            }
+            else
+                DrawWindowSelectionButtons();
+
             ReDrawWindows();
             // figure out if this is a light color
             //var color = (Color) Application.Current.Resources["PhoneBackgroundColor"];
@@ -373,12 +486,24 @@ namespace CrossConnect
 
         private void PhoneApplicationPageOrientationChanged(object sender, OrientationChangedEventArgs e)
         {
+            SetScreenWidthVariable();
+            LayoutMainRoot.Width = _screenWidth;
+            foreach (var colDef in WindowSelectGrid.ColumnDefinitions)
+            {
+                colDef.Width = new GridLength(_screenWidth / _windows.Count());
+            }
+            foreach (var colDef in WindowGrid.ColumnDefinitions)
+            {
+                colDef.Width = new GridLength(_screenWidth);
+            }
+            WindowGrid.Margin = new Thickness(-_currentScreen * _screenWidth, 0, 0, 0);
+
             //redraw the browsers
             for (int i = 0; i < App.OpenWindows.Count(); i++)
             {
                 App.OpenWindows[i].CalculateTitleTextWidth();
                 App.OpenWindows[i].ForceReload = true;
-                App.OpenWindows[i].UpdateBrowser();
+                App.OpenWindows[i].UpdateBrowser(true);
             }
         }
 
@@ -390,6 +515,55 @@ namespace CrossConnect
                 nextWindow.HitButtonSmaller -= HitButtonSmaller;
                 nextWindow.HitButtonClose -= HitButtonClose;
             }
+        }
+
+        private void Screen0Col0Click(object sender, RoutedEventArgs e)
+        {
+            ShowScreen(0);
+        }
+
+        private void Screen0Col1Click(object sender, RoutedEventArgs e)
+        {
+            ShowScreen(1);
+        }
+
+        private void Screen0Col2Click(object sender, RoutedEventArgs e)
+        {
+            ShowScreen(2);
+        }
+
+        private void SetScreenWidthVariable()
+        {
+            if (Orientation == PageOrientation.Landscape
+                || Orientation == PageOrientation.LandscapeLeft
+                || Orientation == PageOrientation.LandscapeRight)
+            {
+                _screenWidth = Application.Current.Host.Content.ActualHeight - 70;
+            }
+            else
+            {
+                _screenWidth = Application.Current.Host.Content.ActualWidth;
+            }
+        }
+
+        private void ShowScreen(int screenNum)
+        {
+            if (_isInScreenMoving) return;
+            if (screenNum == _currentScreen) return;
+            _isInScreenMoving = true;
+            if (Math.Abs(_screenWidth) < 0.1) SetScreenWidthVariable();
+            _screenPosIncrement = (_currentScreen - screenNum) / Math.Abs(_currentScreen - screenNum) * 80;
+            _currentScreen = screenNum;
+            PhoneApplicationService.Current.State["CurrentScreen"] = _currentScreen;
+            DrawWindowSelectionButtons();
+            //give a kick start to the animation
+            var leftMargin = (int)WindowGrid.Margin.Left;
+            leftMargin += _screenPosIncrement*3;
+            WindowGrid.Margin = new Thickness(leftMargin, 0, 0, 0);
+            //animate
+            _moveMultiScreenTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(5) };
+            _moveMultiScreenTimer.Tick += DoMoveMultiScreenTimerTick;
+            _moveMultiScreenTimer.Start();
         }
 
         #endregion Methods

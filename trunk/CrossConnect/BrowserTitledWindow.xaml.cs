@@ -118,22 +118,6 @@ namespace CrossConnect
             return "#" + color.ToString().Substring(3, 6);
         }
 
-        public static void ShowInternetLinkWindow(string link, string titleBar)
-        {
-            foreach (var win in App.OpenWindows)
-            {
-                if (win.State.Source is InternetLinkReader)
-                {
-                    var linkReader = (InternetLinkReader) win.State.Source;
-                    linkReader.ShowLink(link, titleBar);
-                    //forceReload = true;
-                    win.UpdateBrowser();
-                    return;
-                }
-            }
-            Deployment.Current.Dispatcher.BeginInvoke(() => DoAsynchronAddInternetWindow(link, titleBar));
-        }
-
         public void CalculateTitleTextWidth()
         {
             int numButtonsShowing = 0;
@@ -173,7 +157,7 @@ namespace CrossConnect
             {
                 numButtonsShowing++;
             }
-            var parent = (MainPageSplit) ((Grid) Parent).Parent;
+            var parent = (MainPageSplit)((Grid)((Grid)((Grid)Parent).Parent).Parent).Parent;
             if (parent.Orientation == PageOrientation.Landscape
                 || parent.Orientation == PageOrientation.LandscapeLeft
                 || parent.Orientation == PageOrientation.LandscapeRight)
@@ -241,6 +225,19 @@ namespace CrossConnect
         public void Initialize(string bibleToLoad, string bibleDescription, WindowType windowType,
             IBrowserTextSource source = null)
         {
+            if(string.IsNullOrEmpty( bibleToLoad) && App.InstalledBibles.InstalledBibles.Count()>0)
+            {
+                var book = App.InstalledBibles.InstalledBibles.FirstOrDefault().Value;
+                bibleToLoad = book.Sbmd.InternalName;
+                bibleDescription = book.Sbmd.Name;
+                _state.HtmlFontSize = 10;
+            }
+            if (windowType==WindowType.WindowDailyPlan && !string.IsNullOrEmpty(App.DailyPlan.PlanBible))
+            {
+                bibleToLoad = App.DailyPlan.PlanBible;
+                bibleDescription = App.DailyPlan.PlanBibleDescription;
+                _state.HtmlFontSize = App.DailyPlan.PlanTextSize;
+            }
             _state.BibleToLoad = bibleToLoad;
             _state.BibleDescription = bibleDescription;
             _state.WindowType = windowType;
@@ -267,7 +264,7 @@ namespace CrossConnect
                                                                         ((Language)
                                                                          book.Value.Sbmd.GetCetProperty(
                                                                              ConfigEntryType.Lang)).Code, isIsoEncoding);
-                                    break;
+                                    return;
                                 case WindowType.WindowBibleNotes:
                                     _state.Source = new BibleNoteReader(bookPath,
                                                                        ((Language)
@@ -280,39 +277,41 @@ namespace CrossConnect
                                                                       ((Language)
                                                                        book.Value.Sbmd.GetCetProperty(
                                                                            ConfigEntryType.Lang)).Code, isIsoEncoding);
-                                    break;
+                                    return;
                                 case WindowType.WindowHistory:
                                     _state.Source = new HistoryReader(bookPath,
                                                                      ((Language)
                                                                       book.Value.Sbmd.GetCetProperty(
                                                                           ConfigEntryType.Lang)).Code, isIsoEncoding);
-                                    break;
+                                    return;
                                 case WindowType.WindowDailyPlan:
+                                    App.DailyPlan.PlanBible=bibleToLoad;
+                                    App.DailyPlan.PlanBibleDescription=bibleDescription;
                                     _state.Source = new DailyPlanReader(bookPath,
                                                                        ((Language)
                                                                         book.Value.Sbmd.GetCetProperty(
                                                                             ConfigEntryType.Lang)).Code, isIsoEncoding);
-                                    break;
+                                    return;
                                 case WindowType.WindowCommentary:
                                     _state.Source = new CommentZtextReader(bookPath,
                                                                           ((Language)
                                                                            book.Value.Sbmd.GetCetProperty(
                                                                                ConfigEntryType.Lang)).Code,
                                                                           isIsoEncoding);
-                                    break;
+                                    return;
                                 case WindowType.WindowAddedNotes:
                                     _state.Source = new PersonalNotesReader(bookPath,
                                                                            ((Language)
                                                                             book.Value.Sbmd.GetCetProperty(
                                                                                 ConfigEntryType.Lang)).Code,
                                                                            isIsoEncoding);
-                                    break;
+                                    return;
                                 case WindowType.WindowTranslator:
                                     _state.Source = new TranslatorReader(bookPath,
                                                                         ((Language)
                                                                          book.Value.Sbmd.GetCetProperty(
                                                                              ConfigEntryType.Lang)).Code, isIsoEncoding);
-                                    break;
+                                    return;
                             }
                         }
                         catch (Exception e3)
@@ -323,6 +322,24 @@ namespace CrossConnect
                         break;
                     }
                 }
+            }
+            if (windowType == WindowType.WindowDailyPlan && App.InstalledBibles.InstalledBibles.Count()>0)
+            {
+                var book = App.InstalledBibles.InstalledBibles.FirstOrDefault();
+                bibleToLoad = book.Value.Sbmd.InternalName;
+                bibleDescription = book.Value.Sbmd.Name;
+                App.DailyPlan.PlanBible = bibleToLoad;
+                App.DailyPlan.PlanBibleDescription = bibleDescription;
+                _state.BibleToLoad = bibleToLoad;
+                _state.BibleDescription = bibleDescription;
+                _state.HtmlFontSize = App.DailyPlan.PlanTextSize;
+                string bookPath =
+                    book.Value.Sbmd.GetCetProperty(ConfigEntryType.ADataPath).ToString().Substring(2);
+                bool isIsoEncoding = !book.Value.Sbmd.GetCetProperty(ConfigEntryType.Encoding).Equals("UTF-8");
+                _state.Source = new DailyPlanReader(bookPath,
+                                   ((Language)
+                                    book.Value.Sbmd.GetCetProperty(
+                                        ConfigEntryType.Lang)).Code, isIsoEncoding);
             }
         }
 
@@ -357,12 +374,13 @@ namespace CrossConnect
             if (_state.IsSynchronized && _state.Source.IsSynchronizeable)
             {
                 _state.Source.MoveChapterVerse(chapterNum, verseNum, false);
-                UpdateBrowser();
+                UpdateBrowser(false);
             }
         }
 
-        public void UpdateBrowser()
+        public void UpdateBrowser(bool isOrientationChangeOnly)
         {
+            if (isOrientationChangeOnly) return;
             Debug.WriteLine("UpdateBrowser start");
             if (_state.Source != null && Parent != null)
             {
@@ -385,7 +403,7 @@ namespace CrossConnect
                     double fontSizeMultiplier = 1;
                     if (Parent != null && ((Grid) Parent).Parent != null)
                     {
-                        var parent = (MainPageSplit) ((Grid) Parent).Parent;
+                        var parent = (MainPageSplit) ((Grid)((Grid)((Grid) Parent).Parent).Parent).Parent;
                         if (parent.Orientation == PageOrientation.Landscape
                             || parent.Orientation == PageOrientation.LandscapeLeft
                             || parent.Orientation == PageOrientation.LandscapeRight)
@@ -413,19 +431,6 @@ namespace CrossConnect
                 }
             }
             Debug.WriteLine("UpdateBrowser end");
-        }
-
-        private static void DoAsynchronAddInternetWindow(string link, string titleBar)
-        {
-            var win = new InternetLinkReader("", "", false);
-            win.ShowLink(link, titleBar);
-            App.AddWindow(
-                "",
-                "",
-                WindowType.WindowInternetLink,
-                10,
-                win);
-            Deployment.Current.Dispatcher.BeginInvoke(() => ShowInternetLinkWindow(link, titleBar));
         }
 
         private static ImageSource GetImage(string path)
@@ -502,7 +507,7 @@ namespace CrossConnect
                                  out titleText);
             PhoneApplicationService.Current.State["ChapterToHear"] = absoluteChaptNum;
             PhoneApplicationService.Current.State["titleBar"] = titleText;
-            var parent = (MainPageSplit) ((Grid) Parent).Parent;
+            var parent = (MainPageSplit)((Grid)((Grid)((Grid)Parent).Parent).Parent).Parent;
             parent.NavigationService.Navigate(new Uri("/SelectToPlay.xaml", UriKind.Relative));
         }
 
@@ -570,7 +575,7 @@ namespace CrossConnect
             PhoneApplicationService.Current.State["openWindowIndex"] = _state.CurIndex;
             PhoneApplicationService.Current.State["InitializeWindowSettings"] = true;
 
-            var parent = (MainPageSplit) ((Grid) Parent).Parent;
+            var parent = (MainPageSplit)((Grid)((Grid)((Grid)Parent).Parent).Parent).Parent;
             parent.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
         }
 
@@ -590,7 +595,7 @@ namespace CrossConnect
             var transition = transitionElement.GetTransition(this);
             transition.Completed += (sender1, e1) =>
                                         {
-                                            UpdateBrowser();
+                                            UpdateBrowser(false);
                                             transition.Stop();
                                             mode = "SlideLeftFadeIn";
                                             transitionElement = null;
@@ -614,7 +619,7 @@ namespace CrossConnect
 
             transition.Completed += (sender1, e1) =>
                                         {
-                                            UpdateBrowser();
+                                            UpdateBrowser(false);
                                             transition.Stop();
                                             mode = "SlideRightFadeIn";
                                             transitionElement = null;
@@ -650,20 +655,10 @@ namespace CrossConnect
             bool[] isTranslateable;
             _state.Source.GetTranslateableTexts(App.DisplaySettings, _state.BibleToLoad, out toTranslate,
                                                out isTranslateable);
-
-            foreach (var win in App.OpenWindows)
-            {
-                if (win.State.Source is TranslatorReader)
-                {
-                    var transReader = (TranslatorReader) win.State.Source;
-                    transReader.TranslateThis(toTranslate, isTranslateable, _state.Source.GetLanguage());
-                    return;
-                }
-            }
             var transReader2 = new TranslatorReader("", "", false);
             App.AddWindow(
-                "",
-                "",
+                _state.BibleToLoad,
+                _state.BibleDescription,
                 WindowType.WindowTranslator,
                 _state.HtmlFontSize,
                 transReader2);
@@ -673,19 +668,6 @@ namespace CrossConnect
         private void ButTranslateManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
         {
             DoManipulation(e);
-        }
-
-        private void DoAsynchronAddLexiconWindow(string link)
-        {
-            var win = new GreekHebrewDictReader("", "", false);
-            win.ShowLink(link);
-            App.AddWindow(
-                "",
-                "",
-                WindowType.WindowLexiconLink,
-                _state.HtmlFontSize,
-                win);
-            //Deployment.Current.Dispatcher.BeginInvoke(() => showLexiconLinkWindow(link));
         }
 
         private void DoManipulation(ManipulationCompletedEventArgs e)
@@ -796,26 +778,10 @@ namespace CrossConnect
             }
         }
 
-        private void ShowLexiconLinkWindow(string link)
-        {
-            foreach (var win in App.OpenWindows)
-            {
-                if (win.State.Source is GreekHebrewDictReader)
-                {
-                    var linkReader = (GreekHebrewDictReader) win.State.Source;
-                    linkReader.ShowLink(link);
-                    win.ForceReload = true;
-                    win.UpdateBrowser();
-                    return;
-                }
-            }
-            Deployment.Current.Dispatcher.BeginInvoke(() => DoAsynchronAddLexiconWindow(link));
-        }
-
         private void SourceChanged()
         {
             ForceReload = true;
-            UpdateBrowser();
+            UpdateBrowser(false);
         }
 
         private void TitleManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
@@ -825,7 +791,7 @@ namespace CrossConnect
 
         private void WebBrowser1Loaded(object sender, RoutedEventArgs e)
         {
-            UpdateBrowser();
+            UpdateBrowser(false);
 
             // get all the right images
             // figure out if this is a light color
@@ -896,11 +862,25 @@ namespace CrossConnect
                     case "STRONG":
                         if (App.DisplaySettings.UseInternetGreekHebrewDict)
                         {
-                            ShowInternetLinkWindow(chapterVerse[i + 1], chapterVerse[i + 1]);
+                            var win = new InternetLinkReader("", "", false);
+                            win.ShowLink(chapterVerse[i + 1], chapterVerse[i + 1]);
+                            App.AddWindow(
+                                _state.BibleToLoad,
+                                _state.BibleDescription,
+                                WindowType.WindowInternetLink,
+                                _state.HtmlFontSize,
+                                win);
                         }
                         else
                         {
-                            ShowLexiconLinkWindow(chapterVerse[i + 1]);
+                            var win = new GreekHebrewDictReader("", "", false);
+                            win.ShowLink(chapterVerse[i + 1]);
+                            App.AddWindow(
+                                _state.BibleToLoad,
+                                _state.BibleDescription,
+                                WindowType.WindowLexiconLink,
+                                _state.HtmlFontSize,
+                                win);
                         }
                         return;
                     case "MORPH":

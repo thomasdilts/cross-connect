@@ -215,8 +215,14 @@ namespace CrossConnect
                             {WindowType = WindowType.WindowMediaPlayer, Source = new MediaReader(link, titleBar, icon)};
             var nextWindow = new MediaPlayerWindow {State = state};
             nextWindow.State.CurIndex = OpenWindows.Count();
-            nextWindow.State.HtmlFontSize = 20;
+            nextWindow.State.HtmlFontSize = 10;
             OpenWindows.Add(nextWindow);
+            object objCurrrentScreen;
+            nextWindow.State.Window = 0;
+            if (PhoneApplicationService.Current.State.TryGetValue("CurrentScreen", out objCurrrentScreen))
+            {
+                nextWindow.State.Window = (int)objCurrrentScreen;
+            }
             if (MainWindow != null)
             {
                 MainWindow.ReDrawWindows();
@@ -227,10 +233,16 @@ namespace CrossConnect
             double textSize, IBrowserTextSource source = null)
         {
             var nextWindow = new BrowserTitledWindow();
+            nextWindow.State.HtmlFontSize = textSize;
             nextWindow.Initialize(bibleToLoad, bibleDescription, typeOfWindow, source);
             nextWindow.State.CurIndex = OpenWindows.Count();
-            nextWindow.State.HtmlFontSize = textSize;
             OpenWindows.Add(nextWindow);
+            object objCurrrentScreen;
+            nextWindow.State.Window = 0;
+            if (PhoneApplicationService.Current.State.TryGetValue("CurrentScreen", out objCurrrentScreen))
+            {
+                nextWindow.State.Window=(int)objCurrrentScreen;
+            }
             if (MainWindow != null)
             {
                 MainWindow.ReDrawWindows();
@@ -317,6 +329,12 @@ namespace CrossConnect
                 if (DailyPlan == null)
                 {
                     DailyPlan = new SerializableDailyPlan();
+                }
+                if(DailyPlan.PlanBible==null)
+                {
+                    DailyPlan.PlanBible = "";
+                    DailyPlan.PlanBibleDescription = "";
+                    DailyPlan.PlanTextSize = 5;
                 }
 
                 OpenWindows.Clear();
@@ -447,6 +465,11 @@ namespace CrossConnect
                 else
                 {
                     Themes.InitializeFromResources();
+                }
+                object objCurrrentScreen;
+                if (IsolatedStorageSettings.ApplicationSettings.TryGetValue("CurrentScreen", out objCurrrentScreen))
+                {
+                    PhoneApplicationService.Current.State["CurrentScreen"] = (int)objCurrrentScreen;
                 }
             }
             catch (Exception ee)
@@ -582,6 +605,14 @@ namespace CrossConnect
             }
             else
                 IsolatedStorageSettings.ApplicationSettings.Remove("Themes");
+            //this particular state must be saved
+            object objCurrrentScreen;
+            int currentScreen = 0;
+            if (PhoneApplicationService.Current.State.TryGetValue("CurrentScreen", out objCurrrentScreen))
+            {
+                currentScreen = (int)objCurrrentScreen;
+            }
+            IsolatedStorageSettings.ApplicationSettings["CurrentScreen"] = currentScreen;
         }
 
         // Code to execute when the application is activated (brought to foreground)
@@ -700,12 +731,18 @@ namespace CrossConnect
             [DataMember(Name = "personalNotes")]
             public Dictionary<int, Dictionary<int, BiblePlaceMarker>> PersonalNotes = 
                 new Dictionary<int, Dictionary<int, BiblePlaceMarker>>();
+            [DataMember]
+            public string PlanBible = "";
+            [DataMember]
+            public string PlanBibleDescription = "";
             [DataMember(Name = "planDayNumber")]
             public int PlanDayNumber;
             [DataMember(Name = "planNumber")]
             public int PlanNumber;
             [DataMember(Name = "planStartDate")]
             public DateTime PlanStartDate = DateTime.Now;
+            [DataMember]
+            public double PlanTextSize = 5;
 
             #endregion Fields
         }

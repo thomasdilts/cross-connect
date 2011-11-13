@@ -142,7 +142,7 @@ namespace CrossConnect.readers
 
         protected override string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor,
             string htmlForegroundColor, string htmlPhoneAccentColor,
-            double htmlFontSize, string fontFamily, bool isNotesOnly, bool addStartFinishHtml = true)
+            double htmlFontSize, string fontFamily, bool isNotesOnly, bool addStartFinishHtml, bool forceReload)
         {
             bool mustUpdate = string.IsNullOrEmpty(_htmlBackgroundColor);
             _htmlBackgroundColor = htmlBackgroundColor;
@@ -150,7 +150,7 @@ namespace CrossConnect.readers
             _htmlPhoneAccentColor = htmlPhoneAccentColor;
             _fontFamily = fontFamily;
             const double epsilon = 0.00000001;
-            if (mustUpdate || Math.Abs(_htmlFontSize - htmlFontSize) > epsilon)
+            if (forceReload || mustUpdate || Math.Abs(_htmlFontSize - htmlFontSize) > epsilon)
             {
                 _displayText = MakeListDisplayText(displaySettings, App.PlaceMarkers.History, htmlBackgroundColor,
                                                   htmlForegroundColor, htmlPhoneAccentColor, htmlFontSize, fontFamily, false, "");

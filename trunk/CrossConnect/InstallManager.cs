@@ -239,6 +239,32 @@ namespace CrossConnect
             }
         }
 
+        /// <summary>
+        ///   Create all the directories necesary to make the given path valid.
+        /// </summary>
+        /// <param name = "isolatedStorageRoot"></param>
+        /// <param name = "path"></param>
+        private static void MakeSurePathExists(IsolatedStorageFile isolatedStorageRoot, string path)
+        {
+            string[] directories = path.Split("/".ToCharArray());
+            string totalTestPath = "";
+            if (directories.Length > 1)
+            {
+                for (int i = 0; i < (directories.Length - 1); i++)
+                {
+                    if (totalTestPath.Length > 0)
+                    {
+                        totalTestPath += "/";
+                    }
+                    totalTestPath += directories[i];
+                    if (!isolatedStorageRoot.DirectoryExists(totalTestPath))
+                    {
+                        isolatedStorageRoot.CreateDirectory(totalTestPath);
+                    }
+                }
+            }
+        }
+
         private void ClientDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             if (ProgressUpdate != null)
@@ -308,32 +334,6 @@ namespace CrossConnect
                 if (ProgressCompleted != null)
                 {
                     ProgressCompleted(exp.Message, e);
-                }
-            }
-        }
-
-        /// <summary>
-        ///   Create all the directories necesary to make the given path valid.
-        /// </summary>
-        /// <param name = "isolatedStorageRoot"></param>
-        /// <param name = "path"></param>
-        private static void MakeSurePathExists(IsolatedStorageFile isolatedStorageRoot, string path)
-        {
-            string[] directories = path.Split("/".ToCharArray());
-            string totalTestPath = "";
-            if (directories.Length > 1)
-            {
-                for (int i = 0; i < (directories.Length - 1); i++)
-                {
-                    if (totalTestPath.Length > 0)
-                    {
-                        totalTestPath += "/";
-                    }
-                    totalTestPath += directories[i];
-                    if (!isolatedStorageRoot.DirectoryExists(totalTestPath))
-                    {
-                        isolatedStorageRoot.CreateDirectory(totalTestPath);
-                    }
                 }
             }
         }

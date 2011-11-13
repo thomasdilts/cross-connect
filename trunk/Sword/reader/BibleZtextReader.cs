@@ -1132,7 +1132,9 @@ namespace Sword.reader
                                     htmlPhoneAccentColor,
                                     htmlFontSize,
                                     fontFamily,
-                                    false));
+                                    false,
+                                    true,
+                                    forceReload));
             tw.Close();
             fs.Close();
 
@@ -1292,10 +1294,11 @@ namespace Sword.reader
         /// <param name = "htmlPhoneAccentColor"></param>
         /// <param name="isNotesOnly"></param>
         /// <param name="addStartFinishHtml"></param>
+        /// <param name="forceReload"></param>
         /// <returns>Entire Chapter without notes and with lots of html markup for each verse</returns>
         protected string GetChapterHtml(DisplaySettings displaySettings, int chapterNumber, string htmlBackgroundColor,
             string htmlForegroundColor, string htmlPhoneAccentColor, double htmlFontSize, string fontFamily,
-            bool isNotesOnly, bool addStartFinishHtml = true)
+            bool isNotesOnly, bool addStartFinishHtml, bool forceReload)
         {
             Debug.WriteLine("GetChapterHtml start");
             var chapterBuffer = GetChapterBytes(chapterNumber);
@@ -1386,10 +1389,10 @@ namespace Sword.reader
 
         protected virtual string GetChapterHtml(DisplaySettings displaySettings, string htmlBackgroundColor,
             string htmlForegroundColor, string htmlPhoneAccentColor,
-            double htmlFontSize, string fontFamily, bool isNotesOnly, bool addStartFinishHtml = true)
+            double htmlFontSize, string fontFamily, bool isNotesOnly, bool addStartFinishHtml, bool forceReload)
         {
             return GetChapterHtml(displaySettings, Serial.PosChaptNum, htmlBackgroundColor, htmlForegroundColor,
-                                  htmlPhoneAccentColor, htmlFontSize, fontFamily, isNotesOnly, addStartFinishHtml);
+                                  htmlPhoneAccentColor, htmlFontSize, fontFamily, isNotesOnly, addStartFinishHtml, forceReload);
         }
 
         protected long GetInt48FromStream(FileStream fs, out bool isEnd)

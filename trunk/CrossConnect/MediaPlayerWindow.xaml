@@ -17,14 +17,14 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="35"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <StackPanel Name="stackPanelButtons" Grid.Row="0" Orientation="Horizontal" Height="35" HorizontalAlignment="Left" Margin="0,0,0,0">
+            <StackPanel Name="stackPanelButtons" Grid.Row="0" Orientation="Horizontal" Height="40" HorizontalAlignment="Left" Margin="0,0,0,0">
                 <TextBlock Width="285"  Margin="7,0,0,0" Grid.Column="1" Grid.Row="0"  Name="title" Text=""  />
-                <local:ImageButton Width="35" Click="ButLargerClick" Image="/Images/dark/appbar.feature.search.rest.png" PressedImage="/Images/dark/appbar.feature.search.rest.pressed.png"  x:Name="butLarger" Template="{StaticResource ImageButtonControlTemplate}"/>
-                <local:ImageButton Width="35" Click="ButSmallerClick" Image="/Images/dark/appbar.minus.rest.png" PressedImage="/Images/dark/appbar.minus.rest.pressed.png"  x:Name="butSmaller" Template="{StaticResource ImageButtonControlTemplate}"/>
-                <local:ImageButton Width="35" Click="ButCloseClick" Image="/Images/dark/appbar.cancel.rest.png" PressedImage="/Images/dark/appbar.cancel.rest.pressed.png"  x:Name="butClose" Template="{StaticResource ImageButtonControlTemplate}"/>  
+                <local:ImageButton Width="40" Click="ButLargerClick" Image="/Images/dark/appbar.feature.search.rest.png" PressedImage="/Images/dark/appbar.feature.search.rest.pressed.png"  x:Name="butLarger" Template="{StaticResource ImageButtonControlTemplate}"/>
+                <local:ImageButton Width="40" Click="ButSmallerClick" Image="/Images/dark/appbar.minus.rest.png" PressedImage="/Images/dark/appbar.minus.rest.pressed.png"  x:Name="butSmaller" Template="{StaticResource ImageButtonControlTemplate}"/>
+                <local:ImageButton Width="40" Click="ButCloseClick" Image="/Images/dark/appbar.cancel.rest.png" PressedImage="/Images/dark/appbar.cancel.rest.pressed.png"  x:Name="butClose" Template="{StaticResource ImageButtonControlTemplate}"/>  
             </StackPanel>
              <Border Name="WebBrowserBorder" BorderBrush="Silver" BorderThickness="2" Grid.Row="1" >
                 <StackPanel Name="AllContent" >

@@ -106,7 +106,7 @@ namespace CrossConnect
             {
                 numButtonsShowing++;
             }
-            var parent = (MainPageSplit) ((Grid) Parent).Parent;
+            var parent = (MainPageSplit)((Grid)((Grid)((Grid)Parent).Parent).Parent).Parent;
             if (parent.Orientation == PageOrientation.Landscape
                 || parent.Orientation == PageOrientation.LandscapeLeft
                 || parent.Orientation == PageOrientation.LandscapeRight)
@@ -159,7 +159,7 @@ namespace CrossConnect
         {
         }
 
-        public void UpdateBrowser()
+        public void UpdateBrowser(bool isOrientationChangeOnly)
         {
             border1.BorderBrush = new SolidColorBrush(App.Themes.BorderColor);
             WebBrowserBorder.BorderBrush = border1.BorderBrush;
@@ -212,7 +212,7 @@ namespace CrossConnect
             WaitingForDownload.Foreground = new SolidColorBrush(App.Themes.AccentColor);
             txtDuration.Foreground = new SolidColorBrush(App.Themes.MainFontColor);
             txtPosition.Foreground = new SolidColorBrush(App.Themes.MainFontColor);
-            var parent = (MainPageSplit)((Grid)Parent).Parent;
+            var parent = (MainPageSplit)((Grid)((Grid)((Grid)Parent).Parent).Parent).Parent;
             if (parent.Orientation == PageOrientation.Landscape
                 || parent.Orientation == PageOrientation.LandscapeLeft
                 || parent.Orientation == PageOrientation.LandscapeRight)
@@ -298,26 +298,36 @@ namespace CrossConnect
 
         private void MediaPlayerDownloadProgressChanged(object sender, RoutedEventArgs e)
         {
-            if (!_isFirstProgressGotten)
+            try
             {
-                _isFirstProgressGotten = true;
-                MediaPlayer.Markers.Clear();
-                var duration = (int)MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
-                for (int i = 0; i < duration; i += 2)
+                if (!_isFirstProgressGotten)
                 {
-                    MediaPlayer.Markers.Add(new TimelineMarker { Time = new TimeSpan(0, 0, 0, i) });
+                    _isFirstProgressGotten = true;
+                    MediaPlayer.Markers.Clear();
+                    var duration = (int)MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+                    for (int i = 0; i < duration; i += 2)
+                    {
+                        MediaPlayer.Markers.Add(new TimelineMarker { Time = new TimeSpan(0, 0, 0, i) });
+                    }
+                    WaitingForDownload.Visibility = Visibility.Collapsed;
+                    butPlayPause.Visibility = Visibility.Visible;
+                    stackContent.Visibility = Visibility.Visible;
+                    SetPlayPauseButton(true);
                 }
-                WaitingForDownload.Visibility = Visibility.Collapsed;
-                butPlayPause.Visibility = Visibility.Visible;
-                stackContent.Visibility = Visibility.Visible;
-                SetPlayPauseButton(true);
+                ProgressDownload.Value = 100 * MediaPlayer.DownloadProgress;
             }
-            ProgressDownload.Value = 100 * MediaPlayer.DownloadProgress;
+            catch (Exception)
+            {
+                if (MediaPlayer != null)
+                {
+                    MediaPlayer.Stop();
+                }
+            }
         }
 
         private void MediaPlayerLoaded(object sender, RoutedEventArgs e)
         {
-            UpdateBrowser();
+            UpdateBrowser(false);
             if (_isLoaded) return;
             _isLoaded = true;
 
@@ -353,8 +363,19 @@ namespace CrossConnect
 
         private void MediaPlayerMarkerReached(object sender, TimelineMarkerRoutedEventArgs e)
         {
-            ProgressPosition.Value = 100 * (MediaPlayer.Position.TotalMinutes / MediaPlayer.NaturalDuration.TimeSpan.TotalMinutes);
-            txtPosition.Text = MediaPlayer.Position.ToString("c").Substring(3, 5);
+            try
+            {
+                ProgressPosition.Value = 100*
+                                         (MediaPlayer.Position.TotalMinutes/
+                                          MediaPlayer.NaturalDuration.TimeSpan.TotalMinutes);
+                txtPosition.Text = MediaPlayer.Position.ToString("c").Substring(3, 5);
+            }catch(Exception)
+            {
+                if(MediaPlayer!=null)
+                {
+                    MediaPlayer.Stop();
+                }
+            }
         }
 
         private void MediaPlayerMediaEnded(object sender, RoutedEventArgs e)

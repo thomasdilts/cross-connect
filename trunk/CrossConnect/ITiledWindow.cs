@@ -44,7 +44,7 @@
 
         void SynchronizeWindow(int chapterNum, int verseNum);
 
-        void UpdateBrowser();
+        void UpdateBrowser(bool isOrientationChangeOnly);
 
         #endregion Methods
     }
@@ -62,6 +62,7 @@
     [KnownType(typeof(SearchReader))]
     [KnownType(typeof(BibleNoteReader))]
     [KnownType(typeof(BibleZtextReader))]
+    [KnownType(typeof(MediaReader))]
     public class SerializableWindowState
     {
         #region Fields
@@ -81,6 +82,8 @@
         public int NumRowsIown = 1;
         [DataMember(Name = "source")]
         public IBrowserTextSource Source;
+        [DataMember]
+        public int Window;
         [DataMember(Name = "windowType")]
         public WindowType WindowType = WindowType.WindowBible;
 
