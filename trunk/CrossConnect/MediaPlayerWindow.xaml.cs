@@ -19,7 +19,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 // <summary>
-// Email: thomas@chaniel.se
+// Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
 
@@ -119,16 +119,6 @@ namespace CrossConnect
             {
                 title.Width = Application.Current.Host.Content.ActualWidth - butClose.Width*numButtonsShowing - 15;
                 title.MaxWidth = title.Width;
-            }
-        }
-
-        public void InitializeMedia(string link, string titleBar, string icon)
-        {
-            State.Source = new MediaReader(link, titleBar, icon);
-            if (MediaPlayer != null)
-            {
-                _isLoaded = false;
-                MediaPlayerLoaded(null, null);
             }
         }
 

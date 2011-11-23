@@ -19,7 +19,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 // <summary>
-// Email: thomas@chaniel.se
+// Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
 
@@ -142,7 +142,7 @@ namespace Sword.reader
 
         [DataMember(Name = "customBibleDownloadLinks")]
         public string CustomBibleDownloadLinks = 
-            @"www.chaniel.se,/crossconnect/bibles/raw,/crossconnect/bibles/biblelist";
+            @"www.cross-connect.se,/bibles/raw,/bibles/biblelist";
         [DataMember(Name = "eachVerseNewLine")]
         public bool EachVerseNewLine;
         [DataMember(Name = "greekDictionaryLink")]
@@ -153,6 +153,8 @@ namespace Sword.reader
             @"http://www.eliyah.com/cgi-bin/strongs.cgi?file=hebrewlexicon&isindex={0}";
         [DataMember(Name = "highlightMarkings")]
         public bool HighlightMarkings;
+        [DataMember]
+        public int NumberOfScreens = 3;
         [DataMember(Name = "showAddedNotesByChapter")]
         public bool ShowAddedNotesByChapter;
         [DataMember(Name = "showBookName")]
@@ -173,7 +175,7 @@ namespace Sword.reader
         public bool SmallVerseNumbers = true;
         [DataMember(Name = "soundLink")]
         public string SoundLink = 
-            @"http://www.chaniel.se/crossconnect/bibles/talking/getabsolutechapter.php?chapternum={0}&language={1}";
+            @"http://www.cross-connect.se/bibles/talking/getabsolutechapter.php?chapternum={0}&language={1}";
         [DataMember(Name = "useInternetGreekHebrewDict")]
         public bool UseInternetGreekHebrewDict;
         [DataMember(Name = "userUniqueGuuid")]
@@ -188,7 +190,7 @@ namespace Sword.reader
         public void CheckForNullAndFix()
         {
             var fixer = new DisplaySettings();
-            if (SoundLink == null)
+            if (SoundLink == null || SoundLink.Equals(@"http://www.chaniel.se/crossconnect/bibles/talking/getabsolutechapter.php?chapternum={0}&language={1}"))
             {
                 SoundLink = fixer.SoundLink;
             }
@@ -200,13 +202,17 @@ namespace Sword.reader
             {
                 HebrewDictionaryLink = fixer.HebrewDictionaryLink;
             }
-            if (CustomBibleDownloadLinks == null)
+            if (CustomBibleDownloadLinks == null || CustomBibleDownloadLinks.Equals(@"www.chaniel.se,/crossconnect/bibles/raw,/crossconnect/bibles/biblelist"))
             {
                 CustomBibleDownloadLinks = fixer.CustomBibleDownloadLinks;
             }
             if (UserUniqueGuuid == null)
             {
                 UserUniqueGuuid = Guid.NewGuid().ToString();
+            }
+            if(NumberOfScreens==0)
+            {
+                NumberOfScreens = 3;
             }
         }
 

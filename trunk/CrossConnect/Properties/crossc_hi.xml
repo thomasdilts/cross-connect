@@ -143,6 +143,7 @@
 <string key="Next">अगला</string>
 <string key="Notes">नोट्स</string>
 <string key="Nothing found">कुछ भी नहीं मिला</string>
+<string key="Number of screens">स्क्रीन की संख्या</string>
 <string key="Ocean wave light">महासागर लहर प्रकाश</string>
 <string key="Ocean wave">महासागर लहर</string>
 <string key="One or more words">एक या अधिक शब्दों</string>
@@ -173,8 +174,8 @@
 <string key="Send mail">मेल भेजें</string>
 <string key="Send message">संदेश भेजें</string>
 <string key="Settings">सेटिंग्स</string>
-<string key="Share this theme">इस विषय साझा करें</string>
-<string key="Show Strong's numbers">दिखाएँ मजबूत संख्या</string>
+<string key="Share this theme">Share इस विषय</string>
+<string key="Show Strong's numbers">दिखाएँ है सशक्त संख्या</string>
 <string key="Show added notes by chapter">अध्याय द्वारा जोड़ा नोट्स दिखाएँ</string>
 <string key="Show note positions">नोट पदों दिखाएँ</string>
 <string key="Show the book name on each verse">प्रत्येक कविता पुस्तक पर नाम दिखाएँ</string>

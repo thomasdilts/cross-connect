@@ -19,7 +19,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 // <summary>
-// Email: thomas@chaniel.se
+// Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
 
@@ -228,7 +228,7 @@ namespace CrossConnect
 
         private void MenuDownloadThemesClick(object sender, EventArgs e)
         {
-            const string url = "http://www.chaniel.se/crossconnect/bibles/themes/themes.zip";
+            const string url = "http://www.cross-connect.se/bibles/themes/themes.zip";
             try
             {
                 var source = new Uri(url);

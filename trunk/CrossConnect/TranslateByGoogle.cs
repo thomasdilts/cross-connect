@@ -19,7 +19,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 // <summary>
-// Email: thomas@chaniel.se
+// Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
 
@@ -42,7 +42,7 @@ namespace CrossConnect
         // Developer application ID. Obtain a free key from https://code.google.com/apis/console/.
         // CrossConnect REST service URL.
         private const string CrossconnectUrl = 
-            "http://www.chaniel.se/crossconnect/translate/gettranslatekey.php?uuid={0}&language={1}";
+            "http://www.cross-connect.se/translate/gettranslatekey.php?uuid={0}&language={1}";
 
         // Google Translate REST service URL.
         private const string ServiceUrl = 

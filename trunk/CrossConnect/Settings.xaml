@@ -14,7 +14,7 @@
     mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     shell:SystemTray.IsVisible="False" xmlns:my="clr-namespace:CrossConnect"
-    Loaded="AutoRotatePageLoaded" BackKeyPress="AutoRotatePageBackKeyPress">
+    xmlns:sys="clr-namespace:System;assembly=mscorlib" Loaded="AutoRotatePageLoaded" BackKeyPress="AutoRotatePageBackKeyPress">
 
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -53,6 +53,16 @@
             </StackPanel>
             <!--ContentPanel - place additional content here-->
             <StackPanel Grid.Row="1" x:Name="ContentPanel" >
+                <toolkit:ListPicker  Name="NumberOfScreens" Header="Number of screens">
+                    <sys:String>1</sys:String>
+                    <sys:String>2</sys:String>
+                    <sys:String>3</sys:String>
+                    <sys:String>4</sys:String>
+                    <sys:String>5</sys:String>
+                    <sys:String>6</sys:String>
+                    <sys:String>7</sys:String>
+                    <sys:String>8</sys:String>
+                </toolkit:ListPicker>
                 <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Highlight text markings" IsChecked="false" Name="highlightMarkings"/>
                 <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Show the words of Jesus in red" IsChecked="false" Name="wordsOfChristRed"/>
                 <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Use small verse numbers" IsChecked="true" Name="smallVerseNumbers"/>

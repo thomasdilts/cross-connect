@@ -4,7 +4,7 @@
 <string key="Add a note">Adaugă o notă</string>
 <string key="Add new window">Adaugă fereastră nouă</string>
 <string key="Add to bookmarks">Adauga la favorite</string>
-<string key="Added notes">Constată Adăugat</string>
+<string key="Added notes">Added notes</string>
 <string key="All words (maximum 3 words)">Toate cuvintele (maxim 3 cuvinte)</string>
 <string key="An error occurred trying to connect to the network. Try again later.">A apărut o eroare încearcă să se conecteze la reţea. Încercaţi din nou mai târziu.</string>
 <string key="Autumn">Toamnă</string>
@@ -143,6 +143,7 @@
 <string key="Next">Următor</string>
 <string key="Notes">Ia act de</string>
 <string key="Nothing found">Nimic găsit</string>
+<string key="Number of screens">Numărul de ecrane</string>
 <string key="Ocean wave light">Ocean val de lumină</string>
 <string key="Ocean wave">Ocean val</string>
 <string key="One or more words">Unul sau mai multe cuvinte</string>

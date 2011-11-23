@@ -9,7 +9,7 @@
 <string key="An error occurred trying to connect to the network. Try again later.">Ġara żball jippruvaw jaqbdu man-netwerk. Erġa 'pprova aktar tard.</string>
 <string key="Autumn">Ħarifa</string>
 <string key="Bible">Bibbja</string>
-<string key="Black and white dark">Dlam iswed u abjad</string>
+<string key="Black and white dark">Skur iswed u abjad</string>
 <string key="Black and white light">Iswed u abjad dawl</string>
 <string key="Blue">Blu</string>
 <string key="Bookmarks">Bookmarks</string>
@@ -143,6 +143,7 @@
 <string key="Next">Li jmiss</string>
 <string key="Notes">Noti</string>
 <string key="Nothing found">Xejn misjuba</string>
+<string key="Number of screens">Numru ta 'skrinijiet</string>
 <string key="Ocean wave light">Oċean mewġ tad-dawl</string>
 <string key="Ocean wave">Oċean mewġa</string>
 <string key="One or more words">Wieħed jew aktar kliem</string>

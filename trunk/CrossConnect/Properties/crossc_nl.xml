@@ -143,6 +143,7 @@
 <string key="Next">Volgende</string>
 <string key="Notes">Opmerkingen</string>
 <string key="Nothing found">Niets gevonden</string>
+<string key="Number of screens">Aantal schermen</string>
 <string key="Ocean wave light">Oceaan golf licht</string>
 <string key="Ocean wave">Zeegolf</string>
 <string key="One or more words">Een of meer woorden</string>
@@ -176,7 +177,7 @@
 <string key="Share this theme">Dit thema delen</string>
 <string key="Show Strong's numbers">Toon Strong's nummers</string>
 <string key="Show added notes by chapter">Show toegevoegd aantekeningen per hoofdstuk</string>
-<string key="Show note positions">U Notitie posities</string>
+<string key="Show note positions">Tonen opmerking posities</string>
 <string key="Show the book name on each verse">Laat het boek de naam van elke vers</string>
 <string key="Show the chapter number on each verse">Toon het hoofdstuk getal op elke vers</string>
 <string key="Show the headings">Toon rubrieken</string>

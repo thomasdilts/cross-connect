@@ -143,6 +143,7 @@
 <string key="Next">Nākamā</string>
 <string key="Notes">Piezīmes</string>
 <string key="Nothing found">Nekas nav atrasts</string>
+<string key="Number of screens">Skaits ekrāni</string>
 <string key="Ocean wave light">Ocean viļņu gaisma</string>
 <string key="Ocean wave">Ocean vilnis</string>
 <string key="One or more words">Vienu vai vairākus vārdus</string>
@@ -198,7 +199,7 @@
 <string key="Themes">Tēmas</string>
 <string key="Title background color">Title fona krāsa</string>
 <string key="Title font color">Title fonta krāsu</string>
-<string key="Too many found. Search stopped">Pārāk daudz atrasts. Meklēt apstājās</string>
+<string key="Too many found. Search stopped">Pārāk daudz atrasts. Meklēšana pārtraukta</string>
 <string key="Translation">Tulkošanas</string>
 <string key="Use an image for the background">Izmantojiet attēlu fona</string>
 <string key="Use internet dictionaries">Izmantojiet interneta vārdnīcas</string>

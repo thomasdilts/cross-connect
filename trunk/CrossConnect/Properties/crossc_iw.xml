@@ -112,7 +112,7 @@
 <string key="Morphology-Noun">שם עצם</string>
 <string key="Morphology-Optative">Optative</string>
 <string key="Morphology-Participle">Participle</string>
-<string key="Morphology-Particle attached (with relative pronoun)">החלקיקים המצורפת (עם כינוי יחסית)</string>
+<string key="Morphology-Particle attached (with relative pronoun)">חלקיקים המצורפת (עם כינוי יחסית)</string>
 <string key="Morphology-Particle, disjunctive particle">, החלקיקים מופרדים החלקיקים</string>
 <string key="Morphology-Passive deponent">Passive המצהיר</string>
 <string key="Morphology-Passive">פסיבי</string>
@@ -143,6 +143,7 @@
 <string key="Next">הבא</string>
 <string key="Notes">הערות</string>
 <string key="Nothing found">שום דבר לא נמצא</string>
+<string key="Number of screens">מספר מסכים</string>
 <string key="Ocean wave light">Ocean גל אור</string>
 <string key="Ocean wave">Ocean גל</string>
 <string key="One or more words">אחד או יותר מילים</string>

@@ -52,30 +52,10 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <Grid x:Name="WindowSelectGrid" Grid.Row="0" Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="45"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="160"/>
-                <ColumnDefinition Width="160"/>
-                <ColumnDefinition Width="160"/>
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Grid.Row="0" x:Name="Screen0Col0" Content="1" Margin="-5,-10,-5,-10" Click="Screen0Col0Click" />
-            <Button Grid.Column="1" Grid.Row="0" x:Name="Screen0Col1" Content="2" Margin="-5,-10,-5,-10" Click="Screen0Col1Click" />
-            <Button Grid.Column="2" Grid.Row="0" x:Name="Screen0Col2" Content="3" Margin="-5,-10,-5,-10" Click="Screen0Col2Click"/>
+
         </Grid>
         <Grid x:Name="WindowGrid" Grid.Row="1" Grid.Column="0" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="480"/>
-                <ColumnDefinition Width="480"/>
-                <ColumnDefinition Width="480"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Row="0" Grid.Column="0" x:Name="GridScreen0">
-            </Grid>
-            <Grid Grid.Row="0" Grid.Column="1" x:Name="GridScreen1">
-            </Grid>
-            <Grid Grid.Row="0" Grid.Column="2" x:Name="GridScreen2">
-            </Grid>
+
         </Grid>
     </Grid>
 

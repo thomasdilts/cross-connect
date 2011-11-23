@@ -143,6 +143,7 @@
 <string key="Next">Próximo</string>
 <string key="Notes">Notas</string>
 <string key="Nothing found">No se ha encontrado</string>
+<string key="Number of screens">Número de pantallas</string>
 <string key="Ocean wave light">Océano de ondas de luz</string>
 <string key="Ocean wave">Las olas del océano</string>
 <string key="One or more words">Una o más palabras</string>
@@ -203,8 +204,8 @@
 <string key="Use an image for the background">Usar una imagen para el fondo</string>
 <string key="Use internet dictionaries">Utilice los diccionarios en Internet</string>
 <string key="Use small verse numbers">Use un número pequeño verso</string>
-<string key="Whole bible">Toda la Biblia</string>
-<string key="Winter">Invierno</string>
+<string key="Whole bible">toda la Biblia</string>
+<string key="Winter">invierno</string>
 <string key="You must first select a verse">Primero debe seleccionar un verso</string>
 <string key="You must have at least one bible">Usted debe tener por lo menos una Biblia</string>
 </translations>

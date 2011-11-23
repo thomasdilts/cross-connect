@@ -58,10 +58,10 @@
 <string key="Main font color">Κύρια χρώμα της γραμματοσειράς</string>
 <string key="Minutes/Day">Λεπτά την ημέρα</string>
 <string key="Morphology-Abbreviated form">Συντετμημένη μορφή</string>
-<string key="Morphology-Accusative">Αιτιατική</string>
+<string key="Morphology-Accusative">Accusative</string>
 <string key="Morphology-Active">Ενεργός</string>
 <string key="Morphology-Adjective">Επίθετο</string>
-<string key="Morphology-Adverb or adverb and particle combined">Επίρρημα επίρρημα ή και συνδυασμό των σωματιδίων</string>
+<string key="Morphology-Adverb or adverb and particle combined">Επίρρημα ή επίρρημα και σε συνδυασμό σωματιδίων</string>
 <string key="Morphology-Aeolic">Αιολικός</string>
 <string key="Morphology-Aorist">Αόριστος</string>
 <string key="Morphology-Apocopated form">Apocopated μορφή</string>
@@ -143,6 +143,7 @@
 <string key="Next">Επόμενη</string>
 <string key="Notes">Σημειώσεις</string>
 <string key="Nothing found">Τίποτα δεν βρέθηκε</string>
+<string key="Number of screens">Αριθμός οθονών</string>
 <string key="Ocean wave light">Ocean κύματος φωτός</string>
 <string key="Ocean wave">Ocean κύματος</string>
 <string key="One or more words">Μία ή περισσότερες λέξεις</string>

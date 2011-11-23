@@ -19,7 +19,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 // <summary>
-// Email: thomas@chaniel.se
+// Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
 
@@ -49,6 +49,7 @@ namespace CrossConnect
 
         private void AutoRotatePageBackKeyPress(object sender, CancelEventArgs e)
         {
+            App.DisplaySettings.NumberOfScreens=int.Parse(NumberOfScreens.SelectedItem.ToString());
             if (highlightMarkings.IsChecked != null)
                 App.DisplaySettings.HighlightMarkings = (bool) highlightMarkings.IsChecked;
             if (wordsOfChristRed.IsChecked != null)
@@ -92,6 +93,7 @@ namespace CrossConnect
 
         private void AutoRotatePageLoaded(object sender, RoutedEventArgs e)
         {
+            NumberOfScreens.Header = Translations.Translate("Number of screens");
             PageTitle.Text = Translations.Translate("Settings");
             butSetDefault.Content = Translations.Translate("Default settings");
             highlightMarkings.Header = Translations.Translate("Highlight text markings");
@@ -117,6 +119,7 @@ namespace CrossConnect
             {
                 try
                 {
+                    NumberOfScreens.SelectedIndex = App.DisplaySettings.NumberOfScreens-1;
                     highlightMarkings.IsChecked = App.DisplaySettings.HighlightMarkings;
                     wordsOfChristRed.IsChecked = App.DisplaySettings.WordsOfChristRed;
                     smallVerseNumbers.IsChecked = App.DisplaySettings.SmallVerseNumbers;

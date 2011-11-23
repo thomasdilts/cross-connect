@@ -143,6 +143,7 @@
 <string key="Next">下一页</string>
 <string key="Notes">注释</string>
 <string key="Nothing found">没有发现</string>
+<string key="Number of screens">屏幕数</string>
 <string key="Ocean wave light">海浪轻</string>
 <string key="Ocean wave">海浪</string>
 <string key="One or more words">一个或多个字</string>
@@ -183,7 +184,7 @@
 <string key="Show the verse number on each verse">上显示每个诗的诗句</string>
 <string key="Show the words of Jesus in red">以红色显示耶稣的话</string>
 <string key="Show word morphology">显示字形态</string>
-<string key="Sky light">天光</string>
+<string key="Sky light">天空光</string>
 <string key="Start each verse on a new line">在一个新行开始每个诗</string>
 <string key="Swimmer light">游泳光</string>
 <string key="Swimmer">游泳</string>

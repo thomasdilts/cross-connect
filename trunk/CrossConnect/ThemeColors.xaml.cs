@@ -19,7 +19,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 // <summary>
-// Email: thomas@chaniel.se
+// Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
 
@@ -243,7 +243,7 @@ namespace CrossConnect
                     //}
                 }
             }
-            var emailComposeTask = new EmailComposeTask { Body = body.ToString(), Subject = Translations.Translate("Share this theme"),To = "crossconnect@chaniel.se"};
+            var emailComposeTask = new EmailComposeTask { Body = body.ToString(), Subject = Translations.Translate("Share this theme"),To = "crossconnect@cross-connect.se"};
             emailComposeTask.Show();
         }
 
