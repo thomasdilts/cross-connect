@@ -69,7 +69,7 @@ namespace CrossConnect
     {
         #region Fields
 
-        public const int MaxNumWindows = 10;
+        public const string Version = "1.0.0.23";
         public const string WebDirIsolated = "webtemporary";
 
         public static SerializableDailyPlan DailyPlan = new SerializableDailyPlan();
@@ -80,6 +80,8 @@ namespace CrossConnect
         public static List<ITiledWindow> OpenWindows = new List<ITiledWindow>();
         public static BiblePlaceMarkers PlaceMarkers = new BiblePlaceMarkers();
         public static Theme Themes = new Theme();
+
+        private const int MaxNumWindows = 30;
 
         /// <summary>
         ///   Avoid double-initialization
@@ -137,20 +139,14 @@ namespace CrossConnect
         ///   Provides easy access to the root frame of the Phone Application.
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
-        public PhoneApplicationFrame RootFrame
+        private PhoneApplicationFrame RootFrame
         {
-            get; private set;
+            get; set;
         }
 
         #endregion Properties
 
         #region Methods
-
-        public static void AddBookmark(int chapterNum, int verseNum)
-        {
-            PlaceMarkers.Bookmarks.Add(new BiblePlaceMarker(chapterNum, verseNum, DateTime.Now));
-            RaiseBookmarkChangeEvent();
-        }
 
         public static void AddBookmark()
         {
@@ -232,8 +228,7 @@ namespace CrossConnect
         public static void AddWindow(string bibleToLoad, string bibleDescription, WindowType typeOfWindow,
             double textSize, IBrowserTextSource source = null)
         {
-            var nextWindow = new BrowserTitledWindow();
-            nextWindow.State.HtmlFontSize = textSize;
+            var nextWindow = new BrowserTitledWindow {State = {HtmlFontSize = textSize}};
             nextWindow.Initialize(bibleToLoad, bibleDescription, typeOfWindow, source);
             nextWindow.State.CurIndex = OpenWindows.Count();
             OpenWindows.Add(nextWindow);
@@ -284,7 +279,83 @@ namespace CrossConnect
             }
         }
 
-        public void LoadPersistantObjects()
+        // Code to execute when the application is activated (brought to foreground)
+        // This code will not execute when the application is first launched
+        private void ApplicationActivated(object sender, ActivatedEventArgs e)
+        {
+            LoadPersistantObjects();
+        }
+
+        // Code to execute when the application is closing (eg, user hit Back)
+        // This code will not execute when the application is deactivated
+        private void ApplicationClosing(object sender, ClosingEventArgs e)
+        {
+            SavePersistantObjects();
+        }
+
+        // Code to execute when the application is deactivated (sent to background)
+        // This code will not execute when the application is closing
+        private void ApplicationDeactivated(object sender, DeactivatedEventArgs e)
+        {
+            SavePersistantObjects();
+        }
+
+        // Code to execute when the application is launching (eg, from Start)
+        // This code will not execute when the application is reactivated
+        private void ApplicationLaunching(object sender, LaunchingEventArgs e)
+        {
+            LoadPersistantObjects();
+        }
+
+        // Code to execute on Unhandled Exceptions
+        private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
+        {
+            if (Debugger.IsAttached)
+            {
+                // An unhandled exception has occurred; break into the debugger
+                Debugger.Break();
+            }
+
+            //MessageBoxResult result = MessageBox.Show(Translations.translate("An error occured. Do you want to completely erase the memory for this program?"), string.Empty, MessageBoxButton.OKCancel);
+            //if (result == MessageBoxResult.OK)
+            //{
+            //    IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
+            //    root.Remove();
+            //    System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings.Clear();
+            //}
+        }
+
+        // Do not add any additional code to this method
+        private void CompleteInitializePhoneApplication(object sender, NavigationEventArgs e)
+        {
+            // Set the root visual to allow the application to render
+            RootVisual = RootFrame;
+
+            // Remove this handler since it is no longer needed
+            RootFrame.Navigated -= CompleteInitializePhoneApplication;
+        }
+
+        // Do not add any additional code to this method
+        private void InitializePhoneApplication()
+        {
+            if (_phoneApplicationInitialized)
+            {
+                return;
+            }
+
+            // Create the frame but don't set it as RootVisual yet; this allows the splash
+            // screen to remain active until the application is ready to render.
+            RootFrame = new TransitionFrame();
+            RootFrame.Navigated += CompleteInitializePhoneApplication;
+
+            // Handle navigation failures
+            RootFrame.NavigationFailed += RootFrame_NavigationFailed;
+
+            // Ensure we don't initialize again
+            _phoneApplicationInitialized = true;
+        }
+
+        private void LoadPersistantObjects()
         {
             DailyPlan = new SerializableDailyPlan();
             OpenWindows.Clear();
@@ -478,7 +549,17 @@ namespace CrossConnect
             }
         }
 
-        public void SavePersistantObjects()
+        // Code to execute if a navigation fails
+        private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
+        {
+            if (Debugger.IsAttached)
+            {
+                // A navigation has failed; break into the debugger
+                Debugger.Break();
+            }
+        }
+
+        private void SavePersistantObjects()
         {
             // remove all current settings.
             for (int i = 0; i < MaxNumWindows; i++)
@@ -613,92 +694,6 @@ namespace CrossConnect
                 currentScreen = (int)objCurrrentScreen;
             }
             IsolatedStorageSettings.ApplicationSettings["CurrentScreen"] = currentScreen;
-        }
-
-        // Code to execute when the application is activated (brought to foreground)
-        // This code will not execute when the application is first launched
-        private void ApplicationActivated(object sender, ActivatedEventArgs e)
-        {
-            LoadPersistantObjects();
-        }
-
-        // Code to execute when the application is closing (eg, user hit Back)
-        // This code will not execute when the application is deactivated
-        private void ApplicationClosing(object sender, ClosingEventArgs e)
-        {
-            SavePersistantObjects();
-        }
-
-        // Code to execute when the application is deactivated (sent to background)
-        // This code will not execute when the application is closing
-        private void ApplicationDeactivated(object sender, DeactivatedEventArgs e)
-        {
-            SavePersistantObjects();
-        }
-
-        // Code to execute when the application is launching (eg, from Start)
-        // This code will not execute when the application is reactivated
-        private void ApplicationLaunching(object sender, LaunchingEventArgs e)
-        {
-            LoadPersistantObjects();
-        }
-
-        // Code to execute on Unhandled Exceptions
-        private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
-        {
-            if (Debugger.IsAttached)
-            {
-                // An unhandled exception has occurred; break into the debugger
-                Debugger.Break();
-            }
-
-            //MessageBoxResult result = MessageBox.Show(Translations.translate("An error occured. Do you want to completely erase the memory for this program?"), string.Empty, MessageBoxButton.OKCancel);
-            //if (result == MessageBoxResult.OK)
-            //{
-            //    IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
-            //    root.Remove();
-            //    System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings.Clear();
-            //}
-        }
-
-        // Do not add any additional code to this method
-        private void CompleteInitializePhoneApplication(object sender, NavigationEventArgs e)
-        {
-            // Set the root visual to allow the application to render
-            RootVisual = RootFrame;
-
-            // Remove this handler since it is no longer needed
-            RootFrame.Navigated -= CompleteInitializePhoneApplication;
-        }
-
-        // Do not add any additional code to this method
-        private void InitializePhoneApplication()
-        {
-            if (_phoneApplicationInitialized)
-            {
-                return;
-            }
-
-            // Create the frame but don't set it as RootVisual yet; this allows the splash
-            // screen to remain active until the application is ready to render.
-            RootFrame = new TransitionFrame();
-            RootFrame.Navigated += CompleteInitializePhoneApplication;
-
-            // Handle navigation failures
-            RootFrame.NavigationFailed += RootFrame_NavigationFailed;
-
-            // Ensure we don't initialize again
-            _phoneApplicationInitialized = true;
-        }
-
-        // Code to execute if a navigation fails
-        private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
-        {
-            if (Debugger.IsAttached)
-            {
-                // A navigation has failed; break into the debugger
-                Debugger.Break();
-            }
         }
 
         #endregion Methods

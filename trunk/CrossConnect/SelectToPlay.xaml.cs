@@ -33,8 +33,6 @@ namespace CrossConnect
     using System.Windows.Controls;
     using System.Xml;
 
-    using CrossConnect.readers;
-
     using Microsoft.Phone.Shell;
     using Microsoft.Phone.Tasks;
 
@@ -56,16 +54,6 @@ namespace CrossConnect
         }
 
         #endregion Constructors
-
-        #region Enumerations
-
-        public enum MediaType
-        {
-            MediaPlayer,
-            MediaExplorer
-        }
-
-        #endregion Enumerations
 
         #region Methods
 
@@ -110,12 +98,10 @@ namespace CrossConnect
                                                 foundMedia.Icon = reader.Value;
                                                 break;
                                             case "viewer":
-                                                foundMedia.Viewer = reader.Value;
                                                 break;
                                             case "player":
                                                 if (reader.Value.Equals("explorer"))
                                                 {
-                                                    foundMedia.Player = MediaType.MediaExplorer;
                                                 }
                                                 break;
                                         }
@@ -160,12 +146,23 @@ namespace CrossConnect
                 MessageBox.Show(
                     Translations.Translate("An error occurred trying to connect to the network. Try again later.") +
                     "; " + exp.Message);
+                if (NavigationService.CanGoBack)
+                {
+                    NavigationService.GoBack();
+                }
             }
+            MsgFromServer.Visibility = string.IsNullOrEmpty(MsgFromServer.Text) ? Visibility.Collapsed : Visibility.Visible;
+            WaitingForDownload.Visibility = Visibility.Collapsed;
+            useMediaPlayer.Visibility = Visibility.Visible;
         }
 
         private void PhoneApplicationPageLoaded(object sender, RoutedEventArgs e)
         {
             PageTitle.Text = Translations.Translate("Select what you want to hear");
+            WaitingForDownload.Visibility = Visibility.Visible;
+            useMediaPlayer.Visibility = Visibility.Collapsed;
+            MsgFromServer.Visibility = Visibility.Collapsed;
+            MsgFromServer.Text = string.Empty;
             SelectList.Items.Clear();
             //do a download.
             object chapterToHear;
@@ -197,6 +194,10 @@ namespace CrossConnect
                     MessageBox.Show(
                         Translations.Translate("An error occurred trying to connect to the network. Try again later.") +
                         "; " + eee.Message);
+                    if (NavigationService.CanGoBack)
+                    {
+                        NavigationService.GoBack();
+                    }
                 }
             }
         }
@@ -208,28 +209,40 @@ namespace CrossConnect
                 return;
             }
             _isInSelectionChanged = true;
+            //clear the selection because we might come here again after the media player
+            SelectList.SelectedIndex = -1;
+            //get what player was selected
             var info = (MediaInfo) ((TextBlock) e.AddedItems[0]).Tag;
-
-            App.AddMediaWindow(info.Src, _titleBar, info.Icon);
-            _isInSelectionChanged = false;
-            if (NavigationService.CanGoBack)
+            if(useMediaPlayer.IsChecked != null && (bool) useMediaPlayer.IsChecked)
             {
-                NavigationService.GoBack();
+                var mediaPlayerLauncher = new MediaPlayerLauncher
+                    {
+                        Media = new Uri(info.Src, UriKind.Absolute)
+                    };
+                mediaPlayerLauncher.Show();
             }
+            else
+            {
+                App.AddMediaWindow(info.Src, _titleBar, info.Icon);
+                if (NavigationService.CanGoBack)
+                {
+                    NavigationService.GoBack();
+                }
+            }
+
+            _isInSelectionChanged = false;
         }
 
         #endregion Methods
 
         #region Nested Types
 
-        public class MediaInfo
+        private class MediaInfo
         {
             #region Fields
 
             public string Icon = string.Empty;
-            public MediaType Player = MediaType.MediaPlayer;
             public string Src = string.Empty;
-            public string Viewer = string.Empty;
 
             #endregion Fields
         }

@@ -86,6 +86,7 @@ namespace CrossConnect
                             Translations.Translate(
                                 "An error occurred trying to connect to the network. Try again later.") + "; " + errMsg);
                         PhoneApplicationPageLoaded(null, null);
+
                     }
                 }
                 else

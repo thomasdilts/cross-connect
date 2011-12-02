@@ -56,7 +56,6 @@ namespace CrossConnect
         private int _currentScreen;
         private bool _isInScreenMoving;
         private DispatcherTimer _moveMultiScreenTimer;
-        private double _screenHeight;
         private int _screenPosIncrement;
         private double _screenWidth;
 
@@ -280,9 +279,8 @@ namespace CrossConnect
 
         private void ButHelpClick(object sender, EventArgs e)
         {
-            var webBrowserTask = new WebBrowserTask();
-            const string version = "1.0.0.23";
-            webBrowserTask.Uri = new Uri(@"http://www.cross-connect.se/help?version=" + version);
+            var webBrowserTask = new WebBrowserTask
+                                     {Uri = new Uri(@"http://www.cross-connect.se/help?version=" + App.Version)};
             webBrowserTask.Show();
         }
 
@@ -593,12 +591,10 @@ namespace CrossConnect
                 || Orientation == PageOrientation.LandscapeRight)
             {
                 _screenWidth = Application.Current.Host.Content.ActualHeight - 70;
-                _screenHeight = Application.Current.Host.Content.ActualWidth;
             }
             else
             {
                 _screenWidth = Application.Current.Host.Content.ActualWidth;
-                _screenHeight = Application.Current.Host.Content.ActualHeight;
             }
         }
 

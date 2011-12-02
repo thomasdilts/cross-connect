@@ -102,9 +102,9 @@ namespace CrossConnect
         public void GetBibleDownloadList(BibleListReturned callbackListRetrieved)
         {
             _callbackListRetrieved = callbackListRetrieved;
-            string url = string.Format("http://www.cross-connect.se/bibles/getserverlist.php?uuid={0}&language={1}",
+            string url = string.Format("http://www.cross-connect.se/bibles/getserverlist.php?uuid={0}&language={1}&version={2}",
                 App.DisplaySettings.UserUniqueGuuid ,
-                Translations.IsoLanguageCode);
+                Translations.IsoLanguageCode, App.Version);
             try
             {
                 var source = new Uri(url);
