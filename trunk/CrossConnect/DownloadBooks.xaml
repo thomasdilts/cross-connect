@@ -44,6 +44,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -52,8 +53,10 @@
             <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}"/>
                 <TextBlock x:Name="PageTitle" Text="Download bibles" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
         </StackPanel>
-        <!--ContentPanel - place additional content here-->
-        <Grid  Grid.Row="1" x:Name="ContentPanel" >
+        <ProgressBar Grid.Row="1" Name="WaitingForDownload" Margin="0,50,0,0" IsIndeterminate="True" />
+            <TextBlock Grid.Row="2" Name="ServerMessage" Text="server message" TextWrapping="Wrap"/>
+            <!--ContentPanel - place additional content here-->
+        <Grid  Grid.Row="3" x:Name="ContentPanel" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>

@@ -281,7 +281,7 @@ namespace CrossConnect
         private void ButHelpClick(object sender, EventArgs e)
         {
             var webBrowserTask = new WebBrowserTask();
-            const string version = "1.0.0.22";
+            const string version = "1.0.0.23";
             webBrowserTask.Uri = new Uri(@"http://www.cross-connect.se/help?version=" + version);
             webBrowserTask.Show();
         }

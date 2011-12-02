@@ -61,29 +61,6 @@ namespace CrossConnect
 
         #region Methods
 
-        public void CallbackFromUpdate(IAsyncResult ar)
-        {
-        }
-
-        public void Do(Action action)
-        {
-            ThreadPool.QueueUserWorkItem(_ =>
-                                             {
-                                                 try
-                                                 {
-                                                     action();
-                                                     //Deployment.Current.Dispatcher.BeginInvoke(() => callback(null));
-                                                 }
-                                                 catch (Exception ee)
-                                                 {
-                                                     Debug.WriteLine("Do (webunziplist) Failed download books; " +
-                                                                     ee.Message);
-                                                     //Deployment.Current.Dispatcher.BeginInvoke(() => callback(null));
-                                                     return;
-                                                 }
-                                             });
-        }
-
         private void ButDownloadBookClick(object sender, RoutedEventArgs e)
         {
             try
@@ -157,6 +134,39 @@ namespace CrossConnect
             }
         }
 
+        private void Do(Action action)
+        {
+            ThreadPool.QueueUserWorkItem(_ =>
+                                             {
+                                                 try
+                                                 {
+                                                     action();
+                                                     //Deployment.Current.Dispatcher.BeginInvoke(() => callback(null));
+                                                 }
+                                                 catch (Exception ee)
+                                                 {
+                                                     Debug.WriteLine("Do (webunziplist) Failed download books; " +
+                                                                     ee.Message);
+                                                     //Deployment.Current.Dispatcher.BeginInvoke(() => callback(null));
+                                                     return;
+                                                 }
+                                             });
+        }
+
+        private void InstallersRetrieved(Dictionary<string, WebInstaller> installers, string message)
+        {
+            foreach (var mapEntry in installers)
+            {
+                selectServer.Items.Add(mapEntry.Key);
+            }
+            ServerMessage.Text = message;
+            selectServer.SelectedIndex = 0;
+            ServerMessage.Visibility = string.IsNullOrEmpty(message) ? Visibility.Collapsed : Visibility.Visible;
+            butDownload.Visibility = Visibility.Visible;
+            selectServer.Visibility = Visibility.Visible;
+            WaitingForDownload.Visibility = Visibility.Collapsed;
+        }
+
         private void PhoneApplicationPageLoaded(object sender, RoutedEventArgs e)
         {
             PageTitle.Text = Translations.Translate("Download bibles");
@@ -170,23 +180,20 @@ namespace CrossConnect
             selectType.Items.Add(Translations.Translate("Bible"));
             selectType.Items.Add(Translations.Translate("Commentaries"));
 
+            WaitingForDownload.Visibility = Visibility.Visible;
             selectType.Visibility = Visibility.Collapsed;
-            butDownload.Visibility = Visibility.Visible;
+            butDownload.Visibility = Visibility.Collapsed;
             butDownloadBook.Visibility = Visibility.Collapsed;
             selectBook.Visibility = Visibility.Collapsed;
             progressBarGetBookList.Visibility = Visibility.Collapsed;
             progressBarGetBook.Visibility = Visibility.Collapsed;
             selectLangauge.Visibility = Visibility.Collapsed;
+            selectServer.Visibility = Visibility.Collapsed;
+            ServerMessage.Visibility = Visibility.Collapsed;
+            ServerMessage.Text = string.Empty;
             selectServer.Items.Clear();
 
-            // Ask the Install Manager for a map of all known module sites
-            IDictionary<string, WebInstaller> installers = _imanager.Installers;
-
-            foreach (var mapEntry in installers)
-            {
-                selectServer.Items.Add(mapEntry.Key);
-            }
-            selectServer.SelectedIndex = 0;
+            _imanager.GetBibleDownloadList(InstallersRetrieved);
         }
 
         private void SbProgressCompleted(object sender, OpenReadCompletedEventArgs e)

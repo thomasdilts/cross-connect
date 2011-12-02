@@ -206,7 +206,7 @@ namespace Sword.reader
             {
                 CustomBibleDownloadLinks = fixer.CustomBibleDownloadLinks;
             }
-            if (UserUniqueGuuid == null)
+            if (string.IsNullOrEmpty(UserUniqueGuuid))
             {
                 UserUniqueGuuid = Guid.NewGuid().ToString();
             }

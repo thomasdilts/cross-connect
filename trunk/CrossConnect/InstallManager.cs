@@ -35,6 +35,7 @@ namespace CrossConnect
     using System.Net;
     using System.Text;
     using System.Windows;
+    using System.Xml;
 
     using ICSharpCode.SharpZipLib.GZip;
     using ICSharpCode.SharpZipLib.Tar;
@@ -52,6 +53,9 @@ namespace CrossConnect
         #region Fields
 
         private readonly Dictionary<string, WebInstaller> _installers = new Dictionary<string, WebInstaller>();
+
+        private BibleListReturned _callbackListRetrieved;
+        private WebClient _client = new WebClient();
 
         #endregion Fields
 
@@ -73,20 +77,16 @@ namespace CrossConnect
                 string catalogDirectory = parts[4];
                 _installers[name] = new WebInstaller(host, packageDirectory, catalogDirectory);
             }
-            if (!string.IsNullOrEmpty(App.DisplaySettings.CustomBibleDownloadLinks))
-            {
-                string[] parts = App.DisplaySettings.CustomBibleDownloadLinks.Split(new[] {','});
-                if (parts.Length == 3 && Uri.IsWellFormedUriString("http://" + parts[0].Trim(), UriKind.Absolute)
-                    && Uri.IsWellFormedUriString("http://" + parts[0].Trim() + parts[1].Trim(), UriKind.Absolute)
-                    && Uri.IsWellFormedUriString("http://" + parts[0].Trim() + parts[2].Trim(), UriKind.Absolute))
-                {
-                    _installers[Translations.Translate("Custom bible download addresses")] =
-                        new WebInstaller(parts[0].Trim(), parts[1].Trim(), parts[2].Trim());
-                }
-            }
+            AddCustomDownloadLink(_installers);
         }
 
         #endregion Constructors
+
+        #region Delegates
+
+        public delegate void BibleListReturned(Dictionary<string, WebInstaller> installers, string message);
+
+        #endregion Delegates
 
         #region Properties
 
@@ -96,9 +96,133 @@ namespace CrossConnect
         }
 
         #endregion Properties
+
+        #region Methods
+
+        public void GetBibleDownloadList(BibleListReturned callbackListRetrieved)
+        {
+            _callbackListRetrieved = callbackListRetrieved;
+            string url = string.Format("http://www.cross-connect.se/bibles/getserverlist.php?uuid={0}&language={1}",
+                App.DisplaySettings.UserUniqueGuuid ,
+                Translations.IsoLanguageCode);
+            try
+            {
+                var source = new Uri(url);
+
+                _client = new WebClient();
+                _client.OpenReadCompleted += ClientOpenReadCompleted;
+                Logger.Debug("download start");
+                _client.OpenReadAsync(source);
+                Logger.Debug("DownloadStringAsync returned");
+            }
+            catch (Exception eee)
+            {
+                _callbackListRetrieved(_installers, string.Empty);
+                Logger.Fail(eee.ToString());
+            }
+        }
+
+        private void AddCustomDownloadLink(Dictionary<string, WebInstaller> installers)
+        {
+            if (!string.IsNullOrEmpty(App.DisplaySettings.CustomBibleDownloadLinks))
+            {
+                string[] parts = App.DisplaySettings.CustomBibleDownloadLinks.Split(new[] { ',' });
+                if (parts.Length == 3 && Uri.IsWellFormedUriString("http://" + parts[0].Trim(), UriKind.Absolute)
+                    && Uri.IsWellFormedUriString("http://" + parts[0].Trim() + parts[1].Trim(), UriKind.Absolute)
+                    && Uri.IsWellFormedUriString("http://" + parts[0].Trim() + parts[2].Trim(), UriKind.Absolute))
+                {
+                    installers[Translations.Translate("Custom bible download addresses")] =
+                        new WebInstaller(parts[0].Trim(), parts[1].Trim(), parts[2].Trim());
+                }
+            }
+        }
+
+        private void ClientOpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
+        {
+            var installers = new Dictionary<string, WebInstaller>();
+            string msgFromServer;
+            try
+            {
+                // for debug
+                //byte[] buffer=new byte[e.Result.Length];
+                //e.Result.Read(buffer, 0, (int)e.Result.Length);
+                //System.Diagnostics.Debug.WriteLine("RawFile: " + System.Text.UTF8Encoding.UTF8.GetString(buffer, 0, (int)e.Result.Length));
+
+                using (XmlReader reader = XmlReader.Create(e.Result))
+                {
+                    string name = string.Empty;
+                    msgFromServer = string.Empty;
+                    string tmpConfig = string.Empty;
+                    string tmpRaw = string.Empty;
+                    string tmpHost = string.Empty;
+                    // Parse the file and get each of the nodes.
+                    while (reader.Read())
+                    {
+                        switch (reader.NodeType)
+                        {
+                            case XmlNodeType.Element:
+                                if (reader.Name.ToLower().Equals("source") && reader.HasAttributes)
+                                {
+                                    tmpConfig = string.Empty;
+                                    tmpRaw = string.Empty;
+                                    tmpHost = string.Empty;
+                                    name = string.Empty;
+                                    reader.MoveToFirstAttribute();
+                                    do
+                                    {
+                                        switch (reader.Name.ToLower())
+                                        {
+                                            case "server":
+                                                tmpHost = reader.Value;
+                                                break;
+                                            case "config":
+                                                tmpConfig = reader.Value;
+                                                break;
+                                            case "raw":
+                                                tmpRaw = reader.Value;
+                                                break;
+                                        }
+                                    } while (reader.MoveToNextAttribute());
+                                }
+                                else if (reader.Name.ToLower().Equals("message"))
+                                {
+                                    name = string.Empty;
+                                }
+                                break;
+                            case XmlNodeType.EndElement:
+                                if (reader.Name.ToLower().Equals("source"))
+                                {
+                                    installers[name] = new WebInstaller(tmpHost, tmpConfig, tmpRaw);
+                                    name = string.Empty;
+                                }
+                                else if (reader.Name.ToLower().Equals("message"))
+                                {
+                                    msgFromServer = name;
+                                    name = string.Empty;
+                                }
+                                break;
+                            case XmlNodeType.Text:
+                                name += reader.Value;
+                                break;
+                        }
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                Logger.Fail(e.ToString());
+                Logger.Fail(exp.ToString());
+                _callbackListRetrieved(_installers, string.Empty);
+                return;
+            }
+            AddCustomDownloadLink(installers);
+            _callbackListRetrieved(installers, msgFromServer);
+        }
+
+        #endregion Methods
     }
 
-    public class Logger
+    public static class Logger
     {
         #region Methods
 
@@ -124,10 +248,10 @@ namespace CrossConnect
     {
         #region Fields
 
-        public const string ZipSuffix = ".zip";
+        public readonly bool IsLoaded;
+        public readonly SwordBookMetaData Sbmd;
 
-        public bool IsLoaded;
-        public SwordBookMetaData Sbmd;
+        private const string ZipSuffix = ".zip";
 
         private WebClient _client = new WebClient();
 
@@ -346,70 +470,39 @@ namespace CrossConnect
         #region Fields
 
         /// <summary>
-        ///   * The directory containing the catalog of all books on the
-        ///   <code>host</code>.
-        /// </summary>
-        public string CatalogDirectory = string.Empty;
-
-        /// <summary>
         ///   * A map of the books in this download area
         /// </summary>
-        public Dictionary<string, SwordBook> Entries = new Dictionary<string, SwordBook>();
+        public readonly Dictionary<string, SwordBook> Entries = new Dictionary<string, SwordBook>();
 
         /// <summary>
         ///   * The remote hostname.
         /// </summary>
-        public string Host;
+        public readonly string Host;
 
         /// <summary>
-        ///   * When we cache a download index
+        ///   * The directory containing zipped books on the <code>host</code>.
         /// </summary>
-        protected internal const string DownloadPrefix = "download-";
+        protected internal readonly string PackageDirectory = string.Empty;
 
         /// <summary>
         ///   * The sword index file
         /// </summary>
-        protected internal const string FileListGz = "mods.d.tar.gz";
+        private const string FileListGz = "mods.d.tar.gz";
 
-        /// <summary>
-        ///   * The relative path of the dir holding the search index files
-        /// </summary>
-        protected internal const string SearchDir = "search/jsword/L1";
-
-        /// <summary>
-        ///   * The suffix of zip books on this server
-        /// </summary>
-        protected internal const string ZipSuffix = ".zip";
+        private readonly Dictionary<string, SwordBook> _books = new Dictionary<string, SwordBook>();
 
         /// <summary>
         ///   * The directory containing the catalog of all books on the
         ///   <code>host</code>.
         /// </summary>
-        protected internal string IndexDirectory = string.Empty;
+        private readonly string _catalogDirectory = string.Empty;
+
+        private WebClient _client = new WebClient();
 
         /// <summary>
         ///   * Do we need to reload the index file
         /// </summary>
-        protected internal bool Loaded;
-
-        /// <summary>
-        ///   * The directory containing zipped books on the <code>host</code>.
-        /// </summary>
-        protected internal string PackageDirectory = string.Empty;
-
-        /// <summary>
-        ///   * The remote proxy hostname.
-        /// </summary>
-        protected internal string ProxyHost;
-
-        /// <summary>
-        ///   * The remote proxy port.
-        /// </summary>
-        protected internal int? ProxyPort;
-
-        private readonly Dictionary<string, SwordBook> _books = new Dictionary<string, SwordBook>();
-
-        private WebClient _client = new WebClient();
+        private bool _loaded;
         private Stream _resultStream;
 
         #endregion Fields
@@ -420,7 +513,7 @@ namespace CrossConnect
         {
             Host = host;
             PackageDirectory = packageDirectory;
-            CatalogDirectory = catalogDirectory;
+            _catalogDirectory = catalogDirectory;
         }
 
         #endregion Constructors
@@ -437,7 +530,7 @@ namespace CrossConnect
 
         public bool IsLoaded
         {
-            get { return Loaded; }
+            get { return _loaded; }
         }
 
         #endregion Properties
@@ -447,14 +540,14 @@ namespace CrossConnect
         public string ReloadBookList()
         {
             _books.Clear();
-            var uri = new Uri("http://" + Host + "/" + CatalogDirectory + "/" + FileListGz);
+            var uri = new Uri("http://" + Host + "/" + _catalogDirectory + "/" + FileListGz);
             string errMsg = Download(uri);
             if (errMsg != null)
             {
-                Loaded = false;
+                _loaded = false;
                 return errMsg;
             }
-            Loaded = true;
+            _loaded = true;
             return null;
         }
 
@@ -471,7 +564,7 @@ namespace CrossConnect
                 {
                     ProgressCompleted(null, null);
                 }
-                Loaded = false;
+                _loaded = false;
                 return;
             }
             var tin = new TarInputStream(gzip);
@@ -534,7 +627,7 @@ namespace CrossConnect
                     catch (Exception exp)
                     {
                         Logger.Fail("Failed to load config for entry: " + @internal);
-                        Loaded = true;
+                        _loaded = true;
                         if (ProgressCompleted != null)
                         {
                             Deployment.Current.Dispatcher.BeginInvoke(() => ProgressCompleted(exp.Message, null));
@@ -544,7 +637,7 @@ namespace CrossConnect
                 }
             }
 
-            Loaded = true;
+            _loaded = true;
             if (ProgressCompleted != null)
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() => ProgressCompleted(null, null));
