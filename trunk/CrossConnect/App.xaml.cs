@@ -69,7 +69,7 @@ namespace CrossConnect
     {
         #region Fields
 
-        public const string Version = "1.0.0.23";
+        public const string Version = "1.0.0.24";
         public const string WebDirIsolated = "webtemporary";
 
         public static SerializableDailyPlan DailyPlan = new SerializableDailyPlan();

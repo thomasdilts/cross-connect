@@ -52,7 +52,7 @@ namespace CrossConnect
     {
         #region Fields
 
-        private readonly Dictionary<string, WebInstaller> _installers = new Dictionary<string, WebInstaller>();
+        private Dictionary<string, WebInstaller> _installers = new Dictionary<string, WebInstaller>();
 
         private BibleListReturned _callbackListRetrieved;
         private WebClient _client = new WebClient();
@@ -216,6 +216,7 @@ namespace CrossConnect
                 return;
             }
             AddCustomDownloadLink(installers);
+            _installers = installers;
             _callbackListRetrieved(installers, msgFromServer);
         }
 
