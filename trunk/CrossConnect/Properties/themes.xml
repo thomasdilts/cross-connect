@@ -1,9 +1,24 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+
 <ccthemes version="1.0">
-  <theme bordercolor="FFFFFFFF" titlebackcolor="FF000000" accentcolor="FFBB14C2" titlefontcolor="FFFFFFFF" font="Segoe WP" ismainbackimage="False" mainbackcolor="FF000000" mainbackimage="" mainfontcolor="FFFFFFFF" isbuttoncolordark="False" uniqid="a7f8e82e-dae5-468a-a209-c7f02e722db9" >Black and white dark</theme>
-  <theme bordercolor="FF000000" titlebackcolor="FFFFFFFF" accentcolor="FFBB14C2" titlefontcolor="FF000000" font="Segoe WP" ismainbackimage="False" mainbackcolor="FFFFFFFF" mainbackimage="" mainfontcolor="FF000000" isbuttoncolordark="True" uniqid="a7f8e82e-dae5-468a-a209-c7f03e722db9" >Black and white light</theme>
-  <theme bordercolor="FFF7048B" titlebackcolor="FFC605E9" accentcolor="FFBB14C2" titlefontcolor="FFBA9DDA" font="Segoe WP" ismainbackimage="False" mainbackcolor="FFB96AC7" mainbackimage="" mainfontcolor="FFDBBBD9" isbuttoncolordark="False" uniqid="a7f8e82e-dae5-468a-a209-c7f04e722db9" >Pink</theme>
-  <theme bordercolor="FF12F902" titlebackcolor="FF125C39" accentcolor="FFD2EBC5" titlefontcolor="FFBECADC" font="Segoe WP" ismainbackimage="False" mainbackcolor="FF0B5F22" mainbackimage="" mainfontcolor="FF86D880" isbuttoncolordark="False" uniqid="a7f8e82e-dae5-468a-a209-c7f01e722db8" >Green</theme>
-  <theme bordercolor="FF070CFA" titlebackcolor="FF2A02F3" accentcolor="FFE800B6" titlefontcolor="FFCFD2EC" font="Segoe WP" ismainbackimage="False" mainbackcolor="FFCFBFF3" mainbackimage="" mainfontcolor="FF3705FF" isbuttoncolordark="False" uniqid="b7f8e82e-dae5-468a-a209-c7f01e722db8" >Blue</theme>
-  <theme bordercolor="FF9F122E" titlebackcolor="FFBA1026" accentcolor="FFE90FF1" titlefontcolor="FFF7C5C9" font="Comic Sans MS" ismainbackimage="False" mainbackcolor="FFF3B5B5" mainbackimage="" mainfontcolor="FFC5150F" isbuttoncolordark="False" uniqid="5959d7f3-e7f5-4980-a91c-eccdffe9d049" >Red</theme>
+  <theme bordercolor="FFFFFFFF" titlebackcolor="FF000000" accentcolor="FFBB14C2" titlefontcolor="FFFFFFFF"
+         font="Segoe WP" ismainbackimage="False" mainbackcolor="FF000000" mainbackimage="" mainfontcolor="FFFFFFFF"
+         isbuttoncolordark="False" uniqid="a7f8e82e-dae5-468a-a209-c7f02e722db9">Black and white dark</theme>
+  <theme bordercolor="FF000000" titlebackcolor="FFFFFFFF" accentcolor="FFBB14C2" titlefontcolor="FF000000"
+         font="Segoe WP" ismainbackimage="False" mainbackcolor="FFFFFFFF" mainbackimage="" mainfontcolor="FF000000"
+         isbuttoncolordark="True" uniqid="a7f8e82e-dae5-468a-a209-c7f03e722db9">
+    Black and white light
+  </theme>
+  <theme bordercolor="FFF7048B" titlebackcolor="FFC605E9" accentcolor="FFBB14C2" titlefontcolor="FFBA9DDA"
+         font="Segoe WP" ismainbackimage="False" mainbackcolor="FFB96AC7" mainbackimage="" mainfontcolor="FFDBBBD9"
+         isbuttoncolordark="False" uniqid="a7f8e82e-dae5-468a-a209-c7f04e722db9">Pink</theme>
+  <theme bordercolor="FF12F902" titlebackcolor="FF125C39" accentcolor="FFD2EBC5" titlefontcolor="FFBECADC"
+         font="Segoe WP" ismainbackimage="False" mainbackcolor="FF0B5F22" mainbackimage="" mainfontcolor="FF86D880"
+         isbuttoncolordark="False" uniqid="a7f8e82e-dae5-468a-a209-c7f01e722db8">Green</theme>
+  <theme bordercolor="FF070CFA" titlebackcolor="FF2A02F3" accentcolor="FFE800B6" titlefontcolor="FFCFD2EC"
+         font="Segoe WP" ismainbackimage="False" mainbackcolor="FFCFBFF3" mainbackimage="" mainfontcolor="FF3705FF"
+         isbuttoncolordark="False" uniqid="b7f8e82e-dae5-468a-a209-c7f01e722db8">Blue</theme>
+  <theme bordercolor="FF9F122E" titlebackcolor="FFBA1026" accentcolor="FFE90FF1" titlefontcolor="FFF7C5C9"
+         font="Comic Sans MS" ismainbackimage="False" mainbackcolor="FFF3B5B5" mainbackimage="" mainfontcolor="FFC5150F"
+         isbuttoncolordark="False" uniqid="5959d7f3-e7f5-4980-a91c-eccdffe9d049">Red</theme>
 </ccthemes>

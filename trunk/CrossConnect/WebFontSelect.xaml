@@ -1,59 +1,56 @@
-﻿<local:AutoRotatePage 
-    x:Class="CrossConnect.WebFontSelect"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
-    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib"
-    xmlns:local="clr-namespace:CrossConnect"
-    FontFamily="{StaticResource PhoneFontFamilyNormal}"
-    FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
-    mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
-    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    shell:SystemTray.IsVisible="False" xmlns:my="clr-namespace:CrossConnect"
-    Loaded="AutoRotatePageLoaded" >
+﻿<local:AutoRotatePage x:Class="CrossConnect.WebFontSelect"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+                      xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:local="clr-namespace:CrossConnect"
+                      FontFamily="{StaticResource PhoneFontFamilyNormal}" FontSize="{StaticResource PhoneFontSizeNormal}"
+                      Foreground="{StaticResource PhoneForegroundBrush}" SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+                      mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
+                      xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+                      shell:SystemTray.IsVisible="False" xmlns:my="clr-namespace:CrossConnect" Loaded="AutoRotatePageLoaded">
 
-    <toolkit:TransitionService.NavigationInTransition>
-        <toolkit:NavigationInTransition>
-            <toolkit:NavigationInTransition.Backward>
-                <toolkit:TurnstileTransition Mode="BackwardIn"/>
-            </toolkit:NavigationInTransition.Backward>
-            <toolkit:NavigationInTransition.Forward>
-                <toolkit:TurnstileTransition Mode="ForwardIn"/>
-            </toolkit:NavigationInTransition.Forward>
-        </toolkit:NavigationInTransition>
-    </toolkit:TransitionService.NavigationInTransition>
-    <toolkit:TransitionService.NavigationOutTransition>
-        <toolkit:NavigationOutTransition>
-            <toolkit:NavigationOutTransition.Backward>
-                <toolkit:TurnstileTransition Mode="BackwardOut"/>
-            </toolkit:NavigationOutTransition.Backward>
-            <toolkit:NavigationOutTransition.Forward>
-                <toolkit:TurnstileTransition Mode="ForwardOut"/>
-            </toolkit:NavigationOutTransition.Forward>
-        </toolkit:NavigationOutTransition>
-    </toolkit:TransitionService.NavigationOutTransition>
+  <toolkit:TransitionService.NavigationInTransition>
+    <toolkit:NavigationInTransition>
+      <toolkit:NavigationInTransition.Backward>
+        <toolkit:TurnstileTransition Mode="BackwardIn" />
+      </toolkit:NavigationInTransition.Backward>
+      <toolkit:NavigationInTransition.Forward>
+        <toolkit:TurnstileTransition Mode="ForwardIn" />
+      </toolkit:NavigationInTransition.Forward>
+    </toolkit:NavigationInTransition>
+  </toolkit:TransitionService.NavigationInTransition>
+  <toolkit:TransitionService.NavigationOutTransition>
+    <toolkit:NavigationOutTransition>
+      <toolkit:NavigationOutTransition.Backward>
+        <toolkit:TurnstileTransition Mode="BackwardOut" />
+      </toolkit:NavigationOutTransition.Backward>
+      <toolkit:NavigationOutTransition.Forward>
+        <toolkit:TurnstileTransition Mode="ForwardOut" />
+      </toolkit:NavigationOutTransition.Forward>
+    </toolkit:NavigationOutTransition>
+  </toolkit:TransitionService.NavigationOutTransition>
 
-    <!--LayoutRoot is the root grid where all page content is placed-->
+  <!--LayoutRoot is the root grid where all page content is placed-->
 
-    <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+  <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" x:Name="TitlePanel" Margin="12,5,0,0" Height="63" VerticalAlignment="Top">
-            <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="Select Font" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
-        </StackPanel>
-        <!--ContentPanel - place additional content here-->
-        <phone:WebBrowser Grid.Row="1" Margin="0 0 0 0" IsScriptEnabled="True" ScriptNotify="WebBrowser1ScriptNotify"  Unloaded="WebBrowser1Unloaded"  Loaded="WebBrowser1Loaded"  Name="webBrowser1"  />
-    </Grid>
+    <!--TitlePanel contains the name of the application and page title-->
+    <StackPanel Grid.Row="0" x:Name="TitlePanel" Margin="12,5,0,0" Height="63" VerticalAlignment="Top">
+      <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}" />
+      <TextBlock x:Name="PageTitle" Text="Select Font" Margin="9,-7,0,0"
+                 Style="{StaticResource PhoneTextTitle2Style}" />
+    </StackPanel>
+    <!--ContentPanel - place additional content here-->
+    <phone:WebBrowser Grid.Row="1" Margin="0 0 0 0" IsScriptEnabled="True" ScriptNotify="WebBrowser1ScriptNotify"
+                      Unloaded="WebBrowser1Unloaded" Loaded="WebBrowser1Loaded" Name="webBrowser1" />
+  </Grid>
 
 
 </local:AutoRotatePage>

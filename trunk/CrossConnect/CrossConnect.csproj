@@ -76,6 +76,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AutoRotatePage.cs" />
+    <Compile Include="CopyTexts.xaml.cs">
+      <DependentUpon>CopyTexts.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ITiledWindow.cs" />
     <Compile Include="MediaPlayerWindow.xaml.cs">
       <DependentUpon>MediaPlayerWindow.xaml</DependentUpon>
@@ -156,6 +159,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BrowserTitledWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CopyTexts.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -1,20 +1,25 @@
-﻿#region Header
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Translations.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   The translations.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+#region Header
 
 // <copyright file="Translations.cs" company="Thomas Dilts">
-//
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
-//
 // This program is free software: you can redistribute it and/or modify
 // it under the +terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
@@ -22,7 +27,6 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
-
 #endregion Header
 
 namespace CrossConnect
@@ -35,17 +39,30 @@ namespace CrossConnect
     using System.Reflection;
     using System.Xml;
 
+    /// <summary>
+    /// The translations.
+    /// </summary>
     public class Translations
     {
-        #region Fields
+        #region Constants and Fields
 
-        private static string _isoLanguageCode = "";
+        /// <summary>
+        /// The _iso language code.
+        /// </summary>
+        private static string _isoLanguageCode = string.Empty;
+
+        /// <summary>
+        /// The _translations.
+        /// </summary>
         private static Dictionary<string, string> _translations;
 
-        #endregion Fields
+        #endregion
 
-        #region Properties
+        #region Public Properties
 
+        /// <summary>
+        /// Gets or sets IsoLanguageCode.
+        /// </summary>
         public static string IsoLanguageCode
         {
             get
@@ -53,7 +70,7 @@ namespace CrossConnect
                 string name;
                 if (string.IsNullOrEmpty(_isoLanguageCode))
                 {
-                    var assem = Assembly.GetExecutingAssembly();
+                    Assembly assem = Assembly.GetExecutingAssembly();
                     string isocode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLower();
                     if (IsolatedStorageSettings.ApplicationSettings.TryGetValue("LanguageIsoCode", out name))
                     {
@@ -62,6 +79,7 @@ namespace CrossConnect
                             name = CultureInfo.CurrentCulture.Name.Replace('-', '_').ToLower();
                         }
                     }
+
                     Stream stream = assem.GetManifestResourceStream("CrossConnect.Properties.crossc_" + name + ".xml");
 
                     if (stream == null)
@@ -73,21 +91,25 @@ namespace CrossConnect
                             name = "en";
                         }
                     }
+
                     if (stream != null)
                     {
                         stream.Close();
                     }
+
                     _isoLanguageCode = name;
                 }
                 else
                 {
                     name = _isoLanguageCode;
                 }
+
                 return name;
             }
+
             set
             {
-                _isoLanguageCode = "";
+                _isoLanguageCode = string.Empty;
                 IsolatedStorageSettings.ApplicationSettings["LanguageIsoCode"] = value;
                 IsolatedStorageSettings.ApplicationSettings.Save();
                 _translations = new Dictionary<string, string>();
@@ -95,10 +117,19 @@ namespace CrossConnect
             }
         }
 
-        #endregion Properties
+        #endregion
 
-        #region Methods
+        #region Public Methods and Operators
 
+        /// <summary>
+        /// The translate.
+        /// </summary>
+        /// <param name="key">
+        /// The key.
+        /// </param>
+        /// <returns>
+        /// The translate.
+        /// </returns>
         public static string Translate(string key)
         {
             if (_translations == null)
@@ -118,17 +149,26 @@ namespace CrossConnect
             return translation;
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// The read translations from file.
+        /// </summary>
         private static void ReadTranslationsFromFile()
         {
-            var assem = Assembly.GetExecutingAssembly();
-            var stream = assem.GetManifestResourceStream("CrossConnect.Properties.crossc_" + IsoLanguageCode + ".xml");
+            Assembly assem = Assembly.GetExecutingAssembly();
+            Stream stream = assem.GetManifestResourceStream(
+                "CrossConnect.Properties.crossc_" + IsoLanguageCode + ".xml");
 
             if (stream != null)
             {
-                using (var reader = XmlReader.Create(stream))
+                using (XmlReader reader = XmlReader.Create(stream))
                 {
                     string key = string.Empty;
                     string translation = string.Empty;
+
                     // Parse the file and get each of the nodes.
                     while (reader.Read())
                     {
@@ -148,15 +188,18 @@ namespace CrossConnect
                                                 key = reader.Value;
                                                 break;
                                         }
-                                    } while (reader.MoveToNextAttribute());
+                                    }
+                                    while (reader.MoveToNextAttribute());
                                 }
+
                                 break;
                             case XmlNodeType.EndElement:
-                                if (reader.Name.ToLower().Equals("string") && !string.IsNullOrEmpty(key) &&
-                                    !string.IsNullOrEmpty(translation))
+                                if (reader.Name.ToLower().Equals("string") && !string.IsNullOrEmpty(key)
+                                    && !string.IsNullOrEmpty(translation))
                                 {
                                     _translations[key] = translation;
                                 }
+
                                 break;
                             case XmlNodeType.Text:
                                 translation += reader.Value;
@@ -169,9 +212,7 @@ namespace CrossConnect
             }
         }
 
-        #endregion Methods
-
-        #region Other
+        #endregion
 
         /*  This next function must be run in .NET 4.0.  NOT IN SILVERLIGHT or WP7
         private static void zCreateAllTranslationFilesFromGoogle()
@@ -257,7 +298,5 @@ namespace CrossConnect
                 sw.Close();
             }
         }*/
-
-        #endregion Other
     }
 }

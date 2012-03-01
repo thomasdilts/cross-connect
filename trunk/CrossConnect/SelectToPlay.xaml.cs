@@ -1,20 +1,25 @@
-﻿#region Header
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SelectToPlay.xaml.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   The select to play.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+#region Header
 
 // <copyright file="SelectToPlay.xaml.cs" company="Thomas Dilts">
-//
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
-//
 // This program is free software: you can redistribute it and/or modify
 // it under the +terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
@@ -22,7 +27,6 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
-
 #endregion Header
 
 namespace CrossConnect
@@ -36,46 +40,81 @@ namespace CrossConnect
     using Microsoft.Phone.Shell;
     using Microsoft.Phone.Tasks;
 
+    /// <summary>
+    /// The select to play.
+    /// </summary>
     public partial class SelectToPlay
     {
-        #region Fields
+        #region Constants and Fields
 
+        /// <summary>
+        /// The _client.
+        /// </summary>
         private WebClient _client = new WebClient();
+
+        /// <summary>
+        /// The _is in selection changed.
+        /// </summary>
         private bool _isInSelectionChanged;
-        private string _titleBar = "";
 
-        #endregion Fields
+        /// <summary>
+        /// The _title bar.
+        /// </summary>
+        private string _titleBar = string.Empty;
 
-        #region Constructors
+        #endregion
 
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectToPlay"/> class.
+        /// </summary>
         public SelectToPlay()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Methods
 
+        /// <summary>
+        /// The client download progress changed.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         private static void ClientDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            //nothing to do here
+            // nothing to do here
         }
 
+        /// <summary>
+        /// The client open read completed.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         private void ClientOpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
         {
             try
             {
                 // for debug
-                //byte[] buffer=new byte[e.Result.Length];
-                //e.Result.Read(buffer, 0, (int)e.Result.Length);
-                //System.Diagnostics.Debug.WriteLine("RawFile: " + System.Text.UTF8Encoding.UTF8.GetString(buffer, 0, (int)e.Result.Length));
+                // byte[] buffer=new byte[e.Result.Length];
+                // e.Result.Read(buffer, 0, (int)e.Result.Length);
+                // System.Diagnostics.Debug.WriteLine("RawFile: " + System.Text.UTF8Encoding.UTF8.GetString(buffer, 0, (int)e.Result.Length));
 
                 using (XmlReader reader = XmlReader.Create(e.Result))
                 {
                     string name = string.Empty;
                     MediaInfo foundMedia = null;
-                    MsgFromServer.Text = "";
+                    this.MsgFromServer.Text = string.Empty;
                     // Parse the file and get each of the nodes.
                     while (reader.Read())
                     {
@@ -103,35 +142,39 @@ namespace CrossConnect
                                                 if (reader.Value.Equals("explorer"))
                                                 {
                                                 }
+
                                                 break;
                                         }
-                                    } while (reader.MoveToNextAttribute());
+                                    }
+                                    while (reader.MoveToNextAttribute());
                                 }
                                 else if (reader.Name.ToLower().Equals("message"))
                                 {
                                     name = string.Empty;
                                 }
+
                                 break;
                             case XmlNodeType.EndElement:
-                                if (reader.Name.ToLower().Equals("source") && foundMedia != null &&
-                                    !string.IsNullOrEmpty(foundMedia.Src) && !string.IsNullOrEmpty(name))
+                                if (reader.Name.ToLower().Equals("source") && foundMedia != null
+                                    && !string.IsNullOrEmpty(foundMedia.Src) && !string.IsNullOrEmpty(name))
                                 {
                                     var block = new TextBlock
-                                                    {
-                                                        Text = name,
-                                                        Style = PageTitle.Style,
-                                                        Tag = foundMedia,
-                                                        Margin = new Thickness(0, 0, 0, 10),
-                                                        TextWrapping = TextWrapping.Wrap
-                                                    };
-                                    SelectList.Items.Add(block);
+                                        {
+                                            Text = name, 
+                                            Style = this.PageTitle.Style, 
+                                            Tag = foundMedia, 
+                                            Margin = new Thickness(0, 0, 0, 10), 
+                                            TextWrapping = TextWrapping.Wrap
+                                        };
+                                    this.SelectList.Items.Add(block);
                                     foundMedia = null;
                                 }
                                 else if (reader.Name.ToLower().Equals("message"))
                                 {
-                                    MsgFromServer.Text = name;
+                                    this.MsgFromServer.Text = name;
                                     name = string.Empty;
                                 }
+
                                 break;
                             case XmlNodeType.Text:
                                 name += reader.Value;
@@ -144,27 +187,40 @@ namespace CrossConnect
             {
                 Logger.Fail(e.ToString());
                 MessageBox.Show(
-                    Translations.Translate("An error occurred trying to connect to the network. Try again later.") +
-                    "; " + exp.Message);
-                if (NavigationService.CanGoBack)
+                    Translations.Translate("An error occurred trying to connect to the network. Try again later.")
+                    + "; " + exp.Message);
+                if (this.NavigationService.CanGoBack)
                 {
-                    NavigationService.GoBack();
+                    this.NavigationService.GoBack();
                 }
             }
-            MsgFromServer.Visibility = string.IsNullOrEmpty(MsgFromServer.Text) ? Visibility.Collapsed : Visibility.Visible;
-            WaitingForDownload.Visibility = Visibility.Collapsed;
-            useMediaPlayer.Visibility = Visibility.Visible;
+
+            this.MsgFromServer.Visibility = string.IsNullOrEmpty(this.MsgFromServer.Text)
+                                                ? Visibility.Collapsed
+                                                : Visibility.Visible;
+            this.WaitingForDownload.Visibility = Visibility.Collapsed;
+            this.useMediaPlayer.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// The phone application page loaded.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         private void PhoneApplicationPageLoaded(object sender, RoutedEventArgs e)
         {
-            PageTitle.Text = Translations.Translate("Select what you want to hear");
-            WaitingForDownload.Visibility = Visibility.Visible;
-            useMediaPlayer.Visibility = Visibility.Collapsed;
-            MsgFromServer.Visibility = Visibility.Collapsed;
-            MsgFromServer.Text = string.Empty;
-            SelectList.Items.Clear();
-            //do a download.
+            this.PageTitle.Text = Translations.Translate("Select what you want to hear");
+            this.WaitingForDownload.Visibility = Visibility.Visible;
+            this.useMediaPlayer.Visibility = Visibility.Collapsed;
+            this.MsgFromServer.Visibility = Visibility.Collapsed;
+            this.MsgFromServer.Text = string.Empty;
+            this.SelectList.Items.Clear();
+
+            // do a download.
             object chapterToHear;
             if (PhoneApplicationService.Current.State.TryGetValue("ChapterToHear", out chapterToHear))
             {
@@ -172,81 +228,97 @@ namespace CrossConnect
                 PhoneApplicationService.Current.State.TryGetValue("titleBar", out titleBar);
                 if (titleBar == null)
                 {
-                    titleBar = "";
+                    titleBar = string.Empty;
                 }
-                _titleBar = (string) titleBar;
-                string url = string.Format(App.DisplaySettings.SoundLink, (int) chapterToHear,
-                                           Translations.IsoLanguageCode);
+
+                this._titleBar = (string)titleBar;
+                string url = string.Format(
+                    App.DisplaySettings.SoundLink, (int)chapterToHear, Translations.IsoLanguageCode);
                 try
                 {
                     var source = new Uri(url);
 
-                    _client = new WebClient();
-                    _client.DownloadProgressChanged += ClientDownloadProgressChanged;
-                    _client.OpenReadCompleted += ClientOpenReadCompleted;
+                    this._client = new WebClient();
+                    this._client.DownloadProgressChanged += ClientDownloadProgressChanged;
+                    this._client.OpenReadCompleted += this.ClientOpenReadCompleted;
                     Logger.Debug("download start");
-                    _client.OpenReadAsync(source);
+                    this._client.OpenReadAsync(source);
                     Logger.Debug("DownloadStringAsync returned");
                 }
                 catch (Exception eee)
                 {
                     Logger.Fail(eee.ToString());
                     MessageBox.Show(
-                        Translations.Translate("An error occurred trying to connect to the network. Try again later.") +
-                        "; " + eee.Message);
-                    if (NavigationService.CanGoBack)
+                        Translations.Translate("An error occurred trying to connect to the network. Try again later.")
+                        + "; " + eee.Message);
+                    if (this.NavigationService.CanGoBack)
                     {
-                        NavigationService.GoBack();
+                        this.NavigationService.GoBack();
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// The select list selection changed.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         private void SelectListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_isInSelectionChanged)
+            if (this._isInSelectionChanged)
             {
                 return;
             }
-            _isInSelectionChanged = true;
-            //clear the selection because we might come here again after the media player
-            SelectList.SelectedIndex = -1;
-            //get what player was selected
-            var info = (MediaInfo) ((TextBlock) e.AddedItems[0]).Tag;
-            if(useMediaPlayer.IsChecked != null && (bool) useMediaPlayer.IsChecked)
+
+            this._isInSelectionChanged = true;
+
+            // clear the selection because we might come here again after the media player
+            this.SelectList.SelectedIndex = -1;
+
+            // get what player was selected
+            var info = (MediaInfo)((TextBlock)e.AddedItems[0]).Tag;
+            if (this.useMediaPlayer.IsChecked != null && (bool)this.useMediaPlayer.IsChecked)
             {
-                var mediaPlayerLauncher = new MediaPlayerLauncher
-                    {
-                        Media = new Uri(info.Src, UriKind.Absolute)
-                    };
+                var mediaPlayerLauncher = new MediaPlayerLauncher { Media = new Uri(info.Src, UriKind.Absolute) };
                 mediaPlayerLauncher.Show();
             }
             else
             {
-                App.AddMediaWindow(info.Src, _titleBar, info.Icon);
-                if (NavigationService.CanGoBack)
+                App.AddMediaWindow(info.Src, this._titleBar, info.Icon);
+                if (this.NavigationService.CanGoBack)
                 {
-                    NavigationService.GoBack();
+                    this.NavigationService.GoBack();
                 }
             }
 
-            _isInSelectionChanged = false;
+            this._isInSelectionChanged = false;
         }
 
-        #endregion Methods
+        #endregion
 
-        #region Nested Types
-
+        /// <summary>
+        /// The media info.
+        /// </summary>
         private class MediaInfo
         {
-            #region Fields
+            #region Constants and Fields
 
+            /// <summary>
+            /// The icon.
+            /// </summary>
             public string Icon = string.Empty;
+
+            /// <summary>
+            /// The src.
+            /// </summary>
             public string Src = string.Empty;
 
-            #endregion Fields
+            #endregion
         }
-
-        #endregion Nested Types
     }
 }

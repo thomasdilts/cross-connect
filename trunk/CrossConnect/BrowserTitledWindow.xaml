@@ -1,40 +1,63 @@
 ﻿<UserControl x:Class="CrossConnect.BrowserTitledWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="clr-namespace:CrossConnect" mc:Ignorable="d"
-    FontFamily="{StaticResource PhoneFontFamilyNormal}"
-    FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
-    d:DesignHeight="427" d:DesignWidth="414" xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:CrossConnect"
+             mc:Ignorable="d" FontFamily="{StaticResource PhoneFontFamilyNormal}" FontSize="{StaticResource PhoneFontSizeNormal}"
+             Foreground="{StaticResource PhoneForegroundBrush}" d:DesignHeight="427" d:DesignWidth="414"
+             xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone">
 
 
-    <Border ManipulationCompleted="Border1ManipulationCompleted" BorderBrush="Silver" BorderThickness="3" Name="border1">
+  <Border ManipulationCompleted="Border1ManipulationCompleted" BorderBrush="Silver" BorderThickness="3"
+          Name="border1">
 
-        <Grid Name="grid1"  ManipulationCompleted="Grid1ManipulationCompleted">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40" ></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <StackPanel Name="stackPanelButtons" Grid.Row="0" Orientation="Horizontal" Height="40" HorizontalAlignment="Left" Margin="0,0,0,0">
-                <local:ImageButton Width="40" Click="ButPreviousClick" Image="/Images/dark/appbar.people.2.rest.png" PressedImage="/Images/dark/appbar.people.2.pressed.rest.png" x:Name="butPrevious" Template="{StaticResource ImageButtonControlTemplate}"/>
-                <TextBlock Width="85" ManipulationCompleted="TitleManipulationCompleted" Margin="7,0,0,0" Grid.Column="1" Grid.Row="0"  Name="title" Text=""  />
-                <local:ImageButton Width="40" Click="ButNextClick" Image="/Images/dark/appbar.people.1.rest.png" PressedImage="/Images/dark/appbar.people.1.rest.pressed.png"  x:Name="butNext" Template="{StaticResource ImageButtonControlTemplate}"/>
-                <local:ImageButton Width="40" ManipulationCompleted="ButMenuManipulationCompleted" Click="ButMenuClick" Image="/Images/dark/appbar.menu.rest.png" PressedImage="/Images/dark/appbar.menu.rest.pressed.png" x:Name="butMenu" Template="{StaticResource ImageButtonControlTemplate}"/>
-                <local:ImageButton Width="40" ManipulationCompleted="ButLinkManipulationCompleted" Click="ButLinkClick" Image="/Images/dark/appbar.linkto.rest.png" PressedImage="/Images/dark/appbar.linkto.rest.pressed.png" x:Name="butLink" Template="{StaticResource ImageButtonControlTemplate}"/>
-                <local:ImageButton Width="40" ManipulationCompleted="ButLargerManipulationCompleted" Click="ButLargerClick" Image="/Images/dark/appbar.feature.search.rest.png" PressedImage="/Images/dark/appbar.feature.search.rest.pressed.png"  x:Name="butLarger" Template="{StaticResource ImageButtonControlTemplate}"/>
-                <local:ImageButton Width="40" ManipulationCompleted="ButSmallerManipulationCompleted" Click="ButSmallerClick" Image="/Images/dark/appbar.minus.rest.png" PressedImage="/Images/dark/appbar.minus.rest.pressed.png"  x:Name="butSmaller" Template="{StaticResource ImageButtonControlTemplate}"/>
-                <local:ImageButton Width="40" ManipulationCompleted="ButHearManipulationCompleted" Click="ButHearClick" Image="/Images/dark/appbar.speaker.png" PressedImage="/Images/dark/appbar.speaker.pressed.png"  x:Name="butHear" Template="{StaticResource ImageButtonControlTemplate}"/>
-                <local:ImageButton Width="40" ManipulationCompleted="ButTranslateManipulationCompleted" Click="ButTranslateClick" Image="/Images/dark/appbar.translate.png" PressedImage="/Images/dark/appbar.translate.pressed.png"  x:Name="butTranslate" Template="{StaticResource ImageButtonControlTemplate}"/>
-                <local:ImageButton Width="40" ManipulationCompleted="ButCloseManipulationCompleted" Click="ButCloseClick" Image="/Images/dark/appbar.cancel.rest.png" PressedImage="/Images/dark/appbar.cancel.rest.pressed.png"  x:Name="butClose" Template="{StaticResource ImageButtonControlTemplate}"/>
-            </StackPanel>
-             <Border Name="WebBrowserBorder" BorderBrush="Silver" BorderThickness="1" Grid.Row="1" >
-                <phone:WebBrowser Margin="0 0 0 0" IsScriptEnabled="True" ScriptNotify="WebBrowser1ScriptNotify"  Unloaded="WebBrowser1Unloaded" Loaded="WebBrowser1Loaded"  Name="webBrowser1"  />
-            </Border>
-        </Grid>
-    </Border>
+    <Grid Name="grid1" ManipulationCompleted="Grid1ManipulationCompleted">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"></ColumnDefinition>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="40"></RowDefinition>
+        <RowDefinition Height="*"></RowDefinition>
+      </Grid.RowDefinitions>
+      <StackPanel Name="stackPanelButtons" Grid.Row="0" Orientation="Horizontal" Height="40"
+                  HorizontalAlignment="Left" Margin="0,0,0,0">
+        <local:ImageButton Width="40" Click="ButPreviousClick" Image="/Images/dark/appbar.people.2.rest.png"
+                           PressedImage="/Images/dark/appbar.people.2.pressed.rest.png" x:Name="butPrevious"
+                           Template="{StaticResource ImageButtonControlTemplate}" />
+        <TextBlock Width="85" ManipulationCompleted="TitleManipulationCompleted" Margin="7,0,0,0"
+                   Grid.Column="1" Grid.Row="0" Name="title" Text="" />
+        <local:ImageButton Width="40" Click="ButNextClick" Image="/Images/dark/appbar.people.1.rest.png"
+                           PressedImage="/Images/dark/appbar.people.1.rest.pressed.png" x:Name="butNext"
+                           Template="{StaticResource ImageButtonControlTemplate}" />
+        <local:ImageButton Width="40" ManipulationCompleted="ButMenuManipulationCompleted" Click="ButMenuClick"
+                           Image="/Images/dark/appbar.menu.rest.png" PressedImage="/Images/dark/appbar.menu.rest.pressed.png" x:Name="butMenu"
+                           Template="{StaticResource ImageButtonControlTemplate}" />
+        <local:ImageButton Width="40" ManipulationCompleted="ButLinkManipulationCompleted" Click="ButLinkClick"
+                           Image="/Images/dark/appbar.linkto.rest.png" PressedImage="/Images/dark/appbar.linkto.rest.pressed.png" x:Name="butLink"
+                           Template="{StaticResource ImageButtonControlTemplate}" />
+        <local:ImageButton Width="40" ManipulationCompleted="ButLargerManipulationCompleted"
+                           Click="ButLargerClick" Image="/Images/dark/appbar.feature.search.rest.png"
+                           PressedImage="/Images/dark/appbar.feature.search.rest.pressed.png" x:Name="butLarger"
+                           Template="{StaticResource ImageButtonControlTemplate}" />
+        <local:ImageButton Width="40" ManipulationCompleted="ButSmallerManipulationCompleted"
+                           Click="ButSmallerClick" Image="/Images/dark/appbar.minus.rest.png"
+                           PressedImage="/Images/dark/appbar.minus.rest.pressed.png" x:Name="butSmaller"
+                           Template="{StaticResource ImageButtonControlTemplate}" />
+        <local:ImageButton Width="40" ManipulationCompleted="ButHearManipulationCompleted" Click="ButHearClick"
+                           Image="/Images/dark/appbar.speaker.png" PressedImage="/Images/dark/appbar.speaker.pressed.png" x:Name="butHear"
+                           Template="{StaticResource ImageButtonControlTemplate}" />
+        <local:ImageButton Width="40" ManipulationCompleted="ButTranslateManipulationCompleted"
+                           Click="ButTranslateClick" Image="/Images/dark/appbar.translate.png"
+                           PressedImage="/Images/dark/appbar.translate.pressed.png" x:Name="butTranslate"
+                           Template="{StaticResource ImageButtonControlTemplate}" />
+        <local:ImageButton Width="40" ManipulationCompleted="ButCloseManipulationCompleted"
+                           Click="ButCloseClick" Image="/Images/dark/appbar.cancel.rest.png"
+                           PressedImage="/Images/dark/appbar.cancel.rest.pressed.png" x:Name="butClose"
+                           Template="{StaticResource ImageButtonControlTemplate}" />
+      </StackPanel>
+      <Border Name="WebBrowserBorder" BorderBrush="Silver" BorderThickness="1" Grid.Row="1">
+        <phone:WebBrowser Margin="0 0 0 0" IsScriptEnabled="True" ScriptNotify="WebBrowser1ScriptNotify"
+                          Unloaded="WebBrowser1Unloaded" Loaded="WebBrowser1Loaded" Name="webBrowser1" />
+      </Border>
+    </Grid>
+  </Border>
 </UserControl>

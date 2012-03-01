@@ -9,6 +9,20 @@
     xmlns:vsm="clr-namespace:System.Windows;assembly=System.Windows">
     <!--Application Resources-->
     <Application.Resources>
+        <Style x:Key="ReadOnlyTextBox" TargetType="TextBox">
+            <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}" />
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid>
+                            <ContentPresenter x:Name="ContentElement" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <ControlTemplate x:Key="ImageButtonControlTemplate" TargetType="local:ImageButton">
             <Grid>
                 <VisualStateManager.VisualStateGroups>
