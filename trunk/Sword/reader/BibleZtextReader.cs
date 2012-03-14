@@ -1751,8 +1751,9 @@ namespace Sword.reader
                                             else
                                             {
                                                 isInPoetry = true;
-                                                AppendText("<blockquote class=\"lg\" width=\"0\">", plainText, noteText, isInElement);
+                                                AppendText("<blockquote style=\"margin: 0 0 0 1.5em;padding 0 0 0 0;\">", plainText, noteText, isInElement);
                                             }
+
                                             isLastElementLineBreak = 1;
 
                                         }
@@ -2061,7 +2062,7 @@ namespace Sword.reader
                                     case "l":
                                         if (!isRaw && !displaySettings.EachVerseNewLine)
                                         {
-                                            AppendText(isInPoetry ? " " : " ", plainText, noteText, isInElement);
+                                            AppendText(" ", plainText, noteText, isInElement);
                                         }
 
                                         break;
