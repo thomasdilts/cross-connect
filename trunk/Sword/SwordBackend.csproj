@@ -119,12 +119,16 @@
     <EmbeddedResource Include="Properties\BibleNames_fi.xml" />
     <EmbeddedResource Include="Properties\BibleNames_fo.xml" />
     <EmbeddedResource Include="Properties\BibleNames_fr.xml" />
-    <EmbeddedResource Include="Properties\BibleNames_he.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_he.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\BibleNames_hu.xml" />
     <EmbeddedResource Include="Properties\BibleNames_id.xml" />
     <EmbeddedResource Include="Properties\BibleNames_in.xml" />
     <EmbeddedResource Include="Properties\BibleNames_it.xml" />
-    <EmbeddedResource Include="Properties\BibleNames_iw.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_iw.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\BibleNames_ko.xml" />
     <EmbeddedResource Include="Properties\BibleNames_la.xml" />
     <EmbeddedResource Include="Properties\BibleNames_lt.xml" />

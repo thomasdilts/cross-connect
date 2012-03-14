@@ -68,9 +68,11 @@ namespace Sword
                 stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + isoLang2DigitCode + ".xml") ??
                          assem.GetManifestResourceStream("Sword.Properties.BibleNames_en.xml");
             }
-            bool isRtl = isoLang2DigitCode.Equals("iw") || isoLang2DigitCode.Equals("he") ||
-                         isoLang2DigitCode.Equals("ar") || isoLang2DigitCode.Equals("ar_EG") ||
-                         isoLang2DigitCode.Equals("fa");
+
+            // This right to left problem was fixed when we went over to xml format. So this code is no longer needed.
+            bool isRtl = false; /* isoLang2DigitCode.Equals("iw") || isoLang2DigitCode.Equals("he") ||
+                          isoLang2DigitCode.Equals("ar") || isoLang2DigitCode.Equals("ar_EG") ||
+                          isoLang2DigitCode.Equals("fa");*/
             int numberBadShortNames = 0;
             if (stream != null)
             {

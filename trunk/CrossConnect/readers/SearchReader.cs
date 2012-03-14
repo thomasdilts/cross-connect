@@ -231,6 +231,7 @@ namespace CrossConnect.readers
                 MatchCollection matches = regex.Matches(chapter);
                 if (matches.Count > 0)
                 {
+                    bool isInPoetry = false;
                     // now we must search each verse in the chapter
                     for (int j = 0; j < this.Chapters[chaptListToSearch[i]].Verses.Count; j++)
                     {
@@ -257,7 +258,8 @@ namespace CrossConnect.readers
                             this.Serial.IsIsoEncoding, 
                             false, 
                             true, 
-                            ref noteMarker);
+                            ref noteMarker,
+                            ref isInPoetry);
                         matches = regex.Matches(verseTxt);
                         Match lastMatch = null;
                         bool foundMatch = false;

@@ -101,6 +101,7 @@ namespace Sword.reader
             var chapterBuffer = GetChapterBytes(chapterNumber);
             var verse = Chapters[chapterNumber].Verses[verseNumber];
             int noteMarker = 'a';
+            bool isInPoetry = false;
             return ParseOsisText(displaySettings,
                                  "",
                                  "",
@@ -110,7 +111,8 @@ namespace Sword.reader
                                  Serial.IsIsoEncoding,
                                  true,
                                  true,
-                                 ref noteMarker);
+                                 ref noteMarker,
+                                 ref isInPoetry);
         }
 
         public override void Resume()

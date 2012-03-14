@@ -129,7 +129,7 @@ namespace CrossConnect
         /// <summary>
         /// The version.
         /// </summary>
-        public const string Version = "1.0.0.24";
+        public const string Version = "1.0.0.25";
 
         /// <summary>
         /// The web dir isolated.
