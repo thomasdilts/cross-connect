@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AddNote.xaml.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The add note.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-#region Header
+﻿#region Header
 
 // <copyright file="AddNote.xaml.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
@@ -27,6 +18,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect
@@ -40,34 +32,19 @@ namespace CrossConnect
 
     using Sword.reader;
 
-    /// <summary>
-    /// The add note.
-    /// </summary>
     public partial class AddNote
     {
-        #region Constructors and Destructors
+        #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AddNote"/> class.
-        /// </summary>
         public AddNote()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Methods
 
-        /// <summary>
-        /// The auto rotate page back key press.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void AutoRotatePageBackKeyPress(object sender, CancelEventArgs e)
         {
             // save if there is something there. otherwise erase an old version if there is one
@@ -85,7 +62,7 @@ namespace CrossConnect
             }
 
             // add the new
-            if (this.TextToAdd.Text.Length > 0)
+            if (TextToAdd.Text.Length > 0)
             {
                 BiblePlaceMarker note = BiblePlaceMarker.Clone(place);
                 if (!App.DailyPlan.PersonalNotes.ContainsKey(place.ChapterNum))
@@ -94,24 +71,15 @@ namespace CrossConnect
                 }
 
                 App.DailyPlan.PersonalNotes[place.ChapterNum][place.VerseNum] = note;
-                note.Note = this.TextToAdd.Text;
+                note.Note = TextToAdd.Text;
             }
 
             App.RaisePersonalNotesChangeEvent();
         }
 
-        /// <summary>
-        /// The auto rotate page loaded.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void AutoRotatePageLoaded(object sender, RoutedEventArgs e)
         {
-            this.PageTitle.Text = Translations.Translate("Add a note");
+            PageTitle.Text = Translations.Translate("Add a note");
 
             // load the verse
             object openWindowIndex;
@@ -133,37 +101,28 @@ namespace CrossConnect
             string title = fullName + " " + (relChaptNum + 1) + ":" + (place.VerseNum + 1) + " - " + state.BibleToLoad;
             string verseText = state.Source.GetVerseTextOnly(App.DisplaySettings, place.ChapterNum, place.VerseNum);
 
-            this.verse.Text =
+            verse.Text =
                 verseText.Replace("<p>", string.Empty).Replace("</p>", string.Empty).Replace("<br />", string.Empty).
                     Replace("\n", " ") + "\n-" + title;
 
-            this.TextToAdd.Text = string.Empty;
+            TextToAdd.Text = string.Empty;
             object noteToAddSaved;
             if (PhoneApplicationService.Current.State.TryGetValue("NoteToAddSaved", out noteToAddSaved))
             {
-                this.TextToAdd.Text = (string)noteToAddSaved;
+                TextToAdd.Text = (string)noteToAddSaved;
             }
             else if (App.DailyPlan.PersonalNotes.ContainsKey(place.ChapterNum)
                      && App.DailyPlan.PersonalNotes[place.ChapterNum].ContainsKey(place.VerseNum))
             {
-                this.TextToAdd.Text = App.DailyPlan.PersonalNotes[place.ChapterNum][place.VerseNum].Note;
+                TextToAdd.Text = App.DailyPlan.PersonalNotes[place.ChapterNum][place.VerseNum].Note;
             }
         }
 
-        /// <summary>
-        /// The text to add key up.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void TextToAddKeyUp(object sender, KeyEventArgs e)
         {
-            PhoneApplicationService.Current.State["NoteToAddSaved"] = this.TextToAdd.Text;
+            PhoneApplicationService.Current.State["NoteToAddSaved"] = TextToAdd.Text;
         }
 
-        #endregion
+        #endregion Methods
     }
 }

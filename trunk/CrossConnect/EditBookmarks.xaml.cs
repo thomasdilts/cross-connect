@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EditBookmarks.xaml.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The edit bookmarks.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-#region Header
+﻿#region Header
 
 // <copyright file="EditBookmarks.xaml.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
@@ -27,6 +18,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect
@@ -35,40 +27,28 @@ namespace CrossConnect
     using System.Windows;
     using System.Windows.Controls;
 
-    /// <summary>
-    /// The edit bookmarks.
-    /// </summary>
     public partial class EditBookmarks
     {
-        #region Constants and Fields
+        #region Fields
 
-        /// <summary>
-        /// The _is in selection changed.
-        /// </summary>
         private bool _isInSelectionChanged;
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EditBookmarks"/> class.
-        /// </summary>
         public EditBookmarks()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Methods
 
-        /// <summary>
-        /// The load list.
-        /// </summary>
         private void LoadList()
         {
-            this.SelectList.Items.Clear();
+            SelectList.Items.Clear();
             List<string> allBookmarks = App.OpenWindows[0].State.Source.MakeListDisplayText(
                 App.DisplaySettings, App.PlaceMarkers.Bookmarks);
 
@@ -78,63 +58,45 @@ namespace CrossConnect
             {
                 var block = new TextBlock
                     {
-                        Text = t.Replace("<p>", string.Empty).Replace("</p>", string.Empty), 
-                        Tag = j--, 
+                        Text = t.Replace("<p>", string.Empty).Replace("</p>", string.Empty),
+                        Tag = j--,
                         TextWrapping = TextWrapping.Wrap
                     };
-                this.SelectList.Items.Add(block);
+                SelectList.Items.Add(block);
             }
         }
 
-        /// <summary>
-        /// The phone application page loaded.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void PhoneApplicationPageLoaded(object sender, RoutedEventArgs e)
         {
-            this.PageTitle.Text = Translations.Translate("Select bookmark to delete");
+            PageTitle.Text = Translations.Translate("Select bookmark to delete");
 
-            this.LoadList();
+            LoadList();
         }
 
-        /// <summary>
-        /// The select list selection changed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void SelectListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (this._isInSelectionChanged)
+            if (_isInSelectionChanged)
             {
                 return;
             }
 
-            this._isInSelectionChanged = true;
+            _isInSelectionChanged = true;
             MessageBoxResult result = MessageBox.Show(Translations.Translate("Delete?"), string.Empty, MessageBoxButton.OKCancel);
             if (result.Equals(MessageBoxResult.OK))
             {
                 var index = (int)((TextBlock)e.AddedItems[0]).Tag;
                 App.PlaceMarkers.Bookmarks.RemoveAt(index);
-                this.LoadList();
+                LoadList();
                 App.RaiseBookmarkChangeEvent();
             }
             else
             {
-                this.SelectList.SelectedItem = null;
+                SelectList.SelectedItem = null;
             }
 
-            this._isInSelectionChanged = false;
+            _isInSelectionChanged = false;
         }
 
-        #endregion
+        #endregion Methods
     }
 }

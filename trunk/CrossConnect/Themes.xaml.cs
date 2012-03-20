@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Themes.xaml.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The themes.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-#region Header
+﻿#region Header
 
 // <copyright file="Themes.xaml.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
@@ -27,6 +18,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect
@@ -48,26 +40,26 @@ namespace CrossConnect
     /// </summary>
     public partial class Themes
     {
-        #region Constants and Fields
+        #region Fields
 
         /// <summary>
         /// The _client.
         /// </summary>
         private WebClient _client;
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Themes"/> class.
         /// </summary>
         public Themes()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Methods
 
@@ -83,7 +75,7 @@ namespace CrossConnect
         private void AutoRotatePageBackKeyPress(object sender, CancelEventArgs e)
         {
             // save the current selection
-            var uniqId = (Guid)((TextBlock)this.SelectList.SelectedItem).Tag;
+            var uniqId = (Guid)((TextBlock)SelectList.SelectedItem).Tag;
             App.Themes.CurrentTheme = uniqId;
 
             // all the windows must be redrawn
@@ -104,37 +96,37 @@ namespace CrossConnect
         /// </param>
         private void AutoRotatePageLoaded(object sender, RoutedEventArgs e)
         {
-            this.PageTitle.Text = Translations.Translate("Select the theme");
+            PageTitle.Text = Translations.Translate("Select the theme");
 
-            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[0]).Text = Translations.Translate("Download");
-            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[1]).Text = Translations.Translate("New");
-            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[2]).Text = Translations.Translate("Edit");
+            ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).Text = Translations.Translate("Download");
+            ((ApplicationBarIconButton)ApplicationBar.Buttons[1]).Text = Translations.Translate("New");
+            ((ApplicationBarIconButton)ApplicationBar.Buttons[2]).Text = Translations.Translate("Edit");
 
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[0]).Text = Translations.Translate("Download");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[1]).Text = Translations.Translate("New");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[2]).Text = Translations.Translate("Edit");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[3]).Text = Translations.Translate("Delete");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[0]).Text = Translations.Translate("Download");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[1]).Text = Translations.Translate("New");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[2]).Text = Translations.Translate("Edit");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[3]).Text = Translations.Translate("Delete");
 
-            this.SelectList.Items.Clear();
+            SelectList.Items.Clear();
 
             // add the default
             var defaultTheme = new TextBlock
                 {
-                    Text = Translations.Translate("Phone default theme"), 
-                    Tag = App.Themes.GetUniqueGuidKey(), 
+                    Text = Translations.Translate("Phone default theme"),
+                    Tag = App.Themes.GetUniqueGuidKey(),
                     TextWrapping = TextWrapping.Wrap
                 };
-            this.SelectList.Items.Add(defaultTheme);
-            this.SelectList.SelectedIndex = 0;
+            SelectList.Items.Add(defaultTheme);
+            SelectList.SelectedIndex = 0;
 
             // add the rest
             foreach (var tema in App.Themes.Themes.OrderBy(p => p.Value.Name))
             {
-                this.SelectList.Items.Add(
+                SelectList.Items.Add(
                     new TextBlock { Text = tema.Value.Name, Tag = tema.Value.UniqId, TextWrapping = TextWrapping.Wrap });
                 if (App.Themes.CurrentTheme.Equals(tema.Value.UniqId))
                 {
-                    this.SelectList.SelectedIndex = this.SelectList.Items.Count() - 1;
+                    SelectList.SelectedIndex = SelectList.Items.Count() - 1;
                 }
             }
         }
@@ -150,7 +142,7 @@ namespace CrossConnect
         /// </param>
         private void ButChangeThemeClick(object sender, EventArgs e)
         {
-            this.MenuChangeThemeClick(sender, e);
+            MenuChangeThemeClick(sender, e);
         }
 
         /// <summary>
@@ -164,7 +156,7 @@ namespace CrossConnect
         /// </param>
         private void ButCreateNewThemeClick(object sender, EventArgs e)
         {
-            this.MenuCreateNewThemeClick(sender, e);
+            MenuCreateNewThemeClick(sender, e);
         }
 
         /// <summary>
@@ -178,7 +170,7 @@ namespace CrossConnect
         /// </param>
         private void ButDownloadThemesClick(object sender, EventArgs e)
         {
-            this.MenuDownloadThemesClick(sender, e);
+            MenuDownloadThemesClick(sender, e);
         }
 
         /// <summary>
@@ -192,7 +184,7 @@ namespace CrossConnect
         /// </param>
         private void ClientDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            this.progressBarDownloadThemes.Value = e.ProgressPercentage;
+            progressBarDownloadThemes.Value = e.ProgressPercentage;
         }
 
         /// <summary>
@@ -207,8 +199,8 @@ namespace CrossConnect
         private void ClientOpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
         {
             var themes = new Theme();
-            this.SelectList.Visibility = Visibility.Visible;
-            this.progressBarDownloadThemes.Visibility = Visibility.Collapsed;
+            SelectList.Visibility = Visibility.Visible;
+            progressBarDownloadThemes.Visibility = Visibility.Collapsed;
             try
             {
                 ZipInputStream zipStream;
@@ -275,7 +267,7 @@ namespace CrossConnect
             }
 
             App.Themes.Merge(themes);
-            this.AutoRotatePageLoaded(null, null);
+            AutoRotatePageLoaded(null, null);
         }
 
         /// <summary>
@@ -290,13 +282,13 @@ namespace CrossConnect
         private void MenuChangeThemeClick(object sender, EventArgs e)
         {
             // save the current selection
-            var uniqId = (Guid)((TextBlock)this.SelectList.SelectedItem).Tag;
+            var uniqId = (Guid)((TextBlock)SelectList.SelectedItem).Tag;
             App.Themes.CurrentTheme = uniqId;
 
             // call the editing page
             PhoneApplicationService.Current.State["ThemeColorsThemeToChange"] = uniqId;
             PhoneApplicationService.Current.State.Remove("WebFontSelectWindowSelection");
-            this.NavigationService.Navigate(new Uri("/ThemeColors.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/ThemeColors.xaml", UriKind.Relative));
         }
 
         /// <summary>
@@ -315,7 +307,7 @@ namespace CrossConnect
             theme.Name = Translations.Translate("New") + " " + (int)(new Random().NextDouble() * 100);
             PhoneApplicationService.Current.State["ThemeColorsThemeToChange"] = theme.UniqId;
             PhoneApplicationService.Current.State.Remove("WebFontSelectWindowSelection");
-            this.NavigationService.Navigate(new Uri("/ThemeColors.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/ThemeColors.xaml", UriKind.Relative));
         }
 
         /// <summary>
@@ -329,12 +321,12 @@ namespace CrossConnect
         /// </param>
         private void MenuDeleteThemeClick(object sender, EventArgs e)
         {
-            var uniqId = (Guid)((TextBlock)this.SelectList.SelectedItem).Tag;
-            this.SelectList.Items.RemoveAt(this.SelectList.SelectedIndex);
-            this.SelectList.SelectedIndex = 0;
+            var uniqId = (Guid)((TextBlock)SelectList.SelectedItem).Tag;
+            SelectList.Items.RemoveAt(SelectList.SelectedIndex);
+            SelectList.SelectedIndex = 0;
             if (uniqId.Equals(App.Themes.CurrentTheme))
             {
-                var defaultId = (Guid)((TextBlock)this.SelectList.Items[0]).Tag;
+                var defaultId = (Guid)((TextBlock)SelectList.Items[0]).Tag;
                 App.Themes.CurrentTheme = defaultId;
             }
 
@@ -356,20 +348,20 @@ namespace CrossConnect
             try
             {
                 var source = new Uri(url);
-                this.SelectList.Visibility = Visibility.Collapsed;
-                this.progressBarDownloadThemes.Visibility = Visibility.Visible;
-                this.progressBarDownloadThemes.Value = 5;
-                this._client = new WebClient();
-                this._client.DownloadProgressChanged += this.ClientDownloadProgressChanged;
-                this._client.OpenReadCompleted += this.ClientOpenReadCompleted;
+                SelectList.Visibility = Visibility.Collapsed;
+                progressBarDownloadThemes.Visibility = Visibility.Visible;
+                progressBarDownloadThemes.Value = 5;
+                _client = new WebClient();
+                _client.DownloadProgressChanged += ClientDownloadProgressChanged;
+                _client.OpenReadCompleted += ClientOpenReadCompleted;
                 Logger.Debug("download start");
-                this._client.OpenReadAsync(source);
+                _client.OpenReadAsync(source);
                 Logger.Debug("DownloadStringAsync returned");
             }
             catch (Exception eee)
             {
-                this.SelectList.Visibility = Visibility.Visible;
-                this.progressBarDownloadThemes.Visibility = Visibility.Collapsed;
+                SelectList.Visibility = Visibility.Visible;
+                progressBarDownloadThemes.Visibility = Visibility.Collapsed;
                 Logger.Fail(eee.ToString());
                 MessageBox.Show(
                     Translations.Translate("An error occurred trying to connect to the network. Try again later.")
@@ -388,11 +380,11 @@ namespace CrossConnect
         /// </param>
         private void SelectListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[2]).IsEnabled = this.SelectList.SelectedIndex != 0;
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[2]).IsEnabled = this.SelectList.SelectedIndex != 0;
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[3]).IsEnabled = this.SelectList.SelectedIndex != 0;
+            ((ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = SelectList.SelectedIndex != 0;
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[2]).IsEnabled = SelectList.SelectedIndex != 0;
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[3]).IsEnabled = SelectList.SelectedIndex != 0;
         }
 
-        #endregion
+        #endregion Methods
     }
 }

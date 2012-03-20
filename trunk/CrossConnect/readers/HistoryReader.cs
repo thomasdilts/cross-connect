@@ -1,15 +1,14 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+﻿#region Header
+
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="HistoryReader.cs" company="">
-//   
+//
 // </copyright>
 // <summary>
 //   Load from a file all the book and verse pointers to the bzz file so that
 //   we can later read the bzz file quickly and efficiently.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-#region Header
-
 // <copyright file="HistoryReader.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
@@ -28,6 +27,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect.readers
@@ -47,7 +47,7 @@ namespace CrossConnect.readers
     [KnownType(typeof(VersePos))]
     public class HistoryReader : BibleZtextReader
     {
-        #region Constants and Fields
+        #region Fields
 
         /// <summary>
         /// The serial 2.
@@ -85,9 +85,9 @@ namespace CrossConnect.readers
         /// </summary>
         private string _htmlPhoneAccentColor = string.Empty;
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HistoryReader"/> class.
@@ -104,8 +104,8 @@ namespace CrossConnect.readers
         public HistoryReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
             : base(path, iso2DigitLangCode, isIsoEncoding)
         {
-            this.Serial2.CloneFrom(this.Serial);
-            App.HistoryChanged += this.AppHistoryChanged;
+            Serial2.CloneFrom(Serial);
+            App.HistoryChanged += AppHistoryChanged;
         }
 
         // destructor
@@ -114,12 +114,12 @@ namespace CrossConnect.readers
         /// </summary>
         ~HistoryReader()
         {
-            App.HistoryChanged -= this.AppHistoryChanged;
+            App.HistoryChanged -= AppHistoryChanged;
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
         /// Gets a value indicating whether IsHearable.
@@ -176,26 +176,26 @@ namespace CrossConnect.readers
             }
         }
 
-        #endregion
+        #endregion Properties
 
-        #region Public Methods and Operators
+        #region Methods
 
         /// <summary>
         /// The app history changed.
         /// </summary>
         public void AppHistoryChanged()
         {
-            this._displayText = this.MakeListDisplayText(
-                App.DisplaySettings, 
-                App.PlaceMarkers.History, 
-                this._htmlBackgroundColor, 
-                this._htmlForegroundColor, 
-                this._htmlPhoneAccentColor, 
-                this._htmlFontSize, 
-                this._fontFamily, 
-                false, 
+            _displayText = MakeListDisplayText(
+                App.DisplaySettings,
+                App.PlaceMarkers.History,
+                _htmlBackgroundColor,
+                _htmlForegroundColor,
+                _htmlPhoneAccentColor,
+                _htmlFontSize,
+                _fontFamily,
+                false,
                 string.Empty);
-            this.RaiseSourceChangedEvent();
+            RaiseSourceChangedEvent();
         }
 
         /// <summary>
@@ -220,11 +220,11 @@ namespace CrossConnect.readers
         /// The title.
         /// </param>
         public override void GetInfo(
-            out int bookNum, 
-            out int absoluteChaptNum, 
-            out int relChaptNum, 
-            out int verseNum, 
-            out string fullName, 
+            out int bookNum,
+            out int absoluteChaptNum,
+            out int relChaptNum,
+            out int verseNum,
+            out string fullName,
             out string title)
         {
             verseNum = 0;
@@ -247,8 +247,8 @@ namespace CrossConnect.readers
         /// </summary>
         public override void Resume()
         {
-            this.Serial.CloneFrom(this.Serial2);
-            App.HistoryChanged += this.AppHistoryChanged;
+            Serial.CloneFrom(Serial2);
+            App.HistoryChanged += AppHistoryChanged;
             base.Resume();
         }
 
@@ -257,12 +257,8 @@ namespace CrossConnect.readers
         /// </summary>
         public override void SerialSave()
         {
-            this.Serial2.CloneFrom(this.Serial);
+            Serial2.CloneFrom(Serial);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The get chapter html.
@@ -298,40 +294,40 @@ namespace CrossConnect.readers
         /// The get chapter html.
         /// </returns>
         protected override string GetChapterHtml(
-            DisplaySettings displaySettings, 
-            string htmlBackgroundColor, 
-            string htmlForegroundColor, 
-            string htmlPhoneAccentColor, 
-            double htmlFontSize, 
-            string fontFamily, 
-            bool isNotesOnly, 
-            bool addStartFinishHtml, 
+            DisplaySettings displaySettings,
+            string htmlBackgroundColor,
+            string htmlForegroundColor,
+            string htmlPhoneAccentColor,
+            double htmlFontSize,
+            string fontFamily,
+            bool isNotesOnly,
+            bool addStartFinishHtml,
             bool forceReload)
         {
-            bool mustUpdate = string.IsNullOrEmpty(this._htmlBackgroundColor);
-            this._htmlBackgroundColor = htmlBackgroundColor;
-            this._htmlForegroundColor = htmlForegroundColor;
-            this._htmlPhoneAccentColor = htmlPhoneAccentColor;
-            this._fontFamily = fontFamily;
+            bool mustUpdate = string.IsNullOrEmpty(_htmlBackgroundColor);
+            _htmlBackgroundColor = htmlBackgroundColor;
+            _htmlForegroundColor = htmlForegroundColor;
+            _htmlPhoneAccentColor = htmlPhoneAccentColor;
+            _fontFamily = fontFamily;
             const double epsilon = 0.00000001;
-            if (forceReload || mustUpdate || Math.Abs(this._htmlFontSize - htmlFontSize) > epsilon)
+            if (forceReload || mustUpdate || Math.Abs(_htmlFontSize - htmlFontSize) > epsilon)
             {
-                this._displayText = this.MakeListDisplayText(
-                    displaySettings, 
-                    App.PlaceMarkers.History, 
-                    htmlBackgroundColor, 
-                    htmlForegroundColor, 
-                    htmlPhoneAccentColor, 
-                    htmlFontSize, 
-                    fontFamily, 
-                    false, 
+                _displayText = MakeListDisplayText(
+                    displaySettings,
+                    App.PlaceMarkers.History,
+                    htmlBackgroundColor,
+                    htmlForegroundColor,
+                    htmlPhoneAccentColor,
+                    htmlFontSize,
+                    fontFamily,
+                    false,
                     string.Empty);
             }
 
-            this._htmlFontSize = htmlFontSize;
-            return this._displayText;
+            _htmlFontSize = htmlFontSize;
+            return _displayText;
         }
 
-        #endregion
+        #endregion Methods
     }
 }

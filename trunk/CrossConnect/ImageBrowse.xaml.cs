@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ImageBrowse.xaml.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The image browse.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-#region Header
+﻿#region Header
 
 // <copyright file="ImageBrowse.xaml.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
@@ -27,6 +18,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect
@@ -42,75 +34,44 @@ namespace CrossConnect
 
     using Microsoft.Phone.Shell;
 
-    /// <summary>
-    /// The image browse.
-    /// </summary>
     public partial class ImageBrowse
     {
-        #region Constants and Fields
+        #region Fields
 
-        /// <summary>
-        /// The _image names.
-        /// </summary>
         private string[] _imageNames = new string[0];
-
-        /// <summary>
-        /// The _now showing picture.
-        /// </summary>
         private int _nowShowingPicture;
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageBrowse"/> class.
-        /// </summary>
         public ImageBrowse()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Methods
 
-        /// <summary>
-        /// The auto rotate page back key press.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void AutoRotatePageBackKeyPress(object sender, CancelEventArgs e)
         {
         }
 
-        /// <summary>
-        /// The auto rotate page loaded.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void AutoRotatePageLoaded(object sender, RoutedEventArgs e)
         {
-            this.PageTitle.Text = Translations.Translate("Select an image");
+            PageTitle.Text = Translations.Translate("Select an image");
 
-            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[0]).Text = Translations.Translate("Previous");
-            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[1]).Text = Translations.Translate("Save");
-            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[2]).Text = Translations.Translate("Next");
+            ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).Text = Translations.Translate("Previous");
+            ((ApplicationBarIconButton)ApplicationBar.Buttons[1]).Text = Translations.Translate("Save");
+            ((ApplicationBarIconButton)ApplicationBar.Buttons[2]).Text = Translations.Translate("Next");
 
             IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
             if (root.DirectoryExists(App.WebDirIsolated + "/images"))
             {
                 try
                 {
-                    this._imageNames = root.GetFileNames(App.WebDirIsolated + "/images/*.*");
+                    _imageNames = root.GetFileNames(App.WebDirIsolated + "/images/*.*");
                 }
                 catch (Exception ee)
                 {
@@ -118,7 +79,7 @@ namespace CrossConnect
                 }
             }
 
-            if (this._imageNames == null || this._imageNames.Count() == 0)
+            if (_imageNames == null || _imageNames.Count() == 0)
             {
                 // if (NavigationService.CanGoBack)
                 // {
@@ -127,99 +88,69 @@ namespace CrossConnect
             }
             else
             {
-                this.LoadCurrentImage();
+                LoadCurrentImage();
             }
         }
 
-        /// <summary>
-        /// The but next click.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void ButNextClick(object sender, EventArgs e)
         {
-            this._nowShowingPicture++;
-            if (this._nowShowingPicture >= this._imageNames.Count())
+            _nowShowingPicture++;
+            if (_nowShowingPicture >= _imageNames.Count())
             {
-                this._nowShowingPicture = 0;
+                _nowShowingPicture = 0;
             }
 
-            this.LoadCurrentImage();
+            LoadCurrentImage();
         }
 
-        /// <summary>
-        /// The but previous click.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void ButPreviousClick(object sender, EventArgs e)
         {
-            this._nowShowingPicture--;
-            if (this._nowShowingPicture < 0)
+            _nowShowingPicture--;
+            if (_nowShowingPicture < 0)
             {
-                this._nowShowingPicture = this._imageNames.Count() - 1;
+                _nowShowingPicture = _imageNames.Count() - 1;
             }
 
-            if (this._nowShowingPicture < 0)
+            if (_nowShowingPicture < 0)
             {
-                this._nowShowingPicture = 0;
+                _nowShowingPicture = 0;
             }
 
-            this.LoadCurrentImage();
+            LoadCurrentImage();
         }
 
-        /// <summary>
-        /// The but select click.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void ButSelectClick(object sender, EventArgs e)
         {
-            if (this._imageNames.Count() > this._nowShowingPicture
-                && !string.IsNullOrEmpty(this._imageNames[this._nowShowingPicture]))
+            if (_imageNames.Count() > _nowShowingPicture
+                && !string.IsNullOrEmpty(_imageNames[_nowShowingPicture]))
             {
                 PhoneApplicationService.Current.State["ImageBrowserSelected"] =
-                    this._imageNames[this._nowShowingPicture];
-                if (this.NavigationService.CanGoBack)
+                    _imageNames[_nowShowingPicture];
+                if (NavigationService.CanGoBack)
                 {
-                    this.NavigationService.GoBack();
+                    NavigationService.GoBack();
                 }
             }
         }
 
-        /// <summary>
-        /// The load current image.
-        /// </summary>
         private void LoadCurrentImage()
         {
-            if (this._imageNames.Count() > this._nowShowingPicture
-                && !string.IsNullOrEmpty(this._imageNames[this._nowShowingPicture]))
+            if (_imageNames.Count() > _nowShowingPicture
+                && !string.IsNullOrEmpty(_imageNames[_nowShowingPicture]))
             {
                 // read from isolated storage.
                 using (IsolatedStorageFile isolatedStorageRoot = IsolatedStorageFile.GetUserStoreForApplication())
                 {
                     if (
                         isolatedStorageRoot.FileExists(
-                            App.WebDirIsolated + "/images/" + this._imageNames[this._nowShowingPicture]))
+                            App.WebDirIsolated + "/images/" + _imageNames[_nowShowingPicture]))
                     {
                         try
                         {
                             using (
                                 IsolatedStorageFileStream fStream =
                                     isolatedStorageRoot.OpenFile(
-                                        App.WebDirIsolated + "/images/" + this._imageNames[this._nowShowingPicture], 
+                                        App.WebDirIsolated + "/images/" + _imageNames[_nowShowingPicture],
                                         FileMode.Open))
                             {
                                 var buffer = new byte[10000];
@@ -234,7 +165,7 @@ namespace CrossConnect
                                 ms.Position = 0;
                                 var bitImage = new BitmapImage();
                                 bitImage.SetSource(ms);
-                                this.ImagePane.Source = bitImage;
+                                ImagePane.Source = bitImage;
                             }
                         }
                         catch (Exception ee)
@@ -246,6 +177,6 @@ namespace CrossConnect
             }
         }
 
-        #endregion
+        #endregion Methods
     }
 }

@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Translations.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The translations.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-#region Header
+﻿#region Header
 
 // <copyright file="Translations.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
@@ -27,6 +18,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect
@@ -44,7 +36,7 @@ namespace CrossConnect
     /// </summary>
     public class Translations
     {
-        #region Constants and Fields
+        #region Fields
 
         /// <summary>
         /// The _iso language code.
@@ -56,9 +48,9 @@ namespace CrossConnect
         /// </summary>
         private static Dictionary<string, string> _translations;
 
-        #endregion
+        #endregion Fields
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
         /// Gets or sets IsoLanguageCode.
@@ -117,9 +109,9 @@ namespace CrossConnect
             }
         }
 
-        #endregion
+        #endregion Properties
 
-        #region Public Methods and Operators
+        #region Methods
 
         /// <summary>
         /// The translate.
@@ -148,10 +140,6 @@ namespace CrossConnect
 
             return translation;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The read translations from file.
@@ -212,7 +200,9 @@ namespace CrossConnect
             }
         }
 
-        #endregion
+        #endregion Methods
+
+        #region Other
 
         /*  This next function must be run in .NET 4.0.  NOT IN SILVERLIGHT or WP7
         private static void zCreateAllTranslationFilesFromGoogle()
@@ -298,5 +288,7 @@ namespace CrossConnect
                 sw.Close();
             }
         }*/
+
+        #endregion Other
     }
 }

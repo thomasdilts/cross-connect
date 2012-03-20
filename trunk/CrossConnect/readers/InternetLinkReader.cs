@@ -1,15 +1,14 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+﻿#region Header
+
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="InternetLinkReader.cs" company="">
-//   
+//
 // </copyright>
 // <summary>
 //   Load from a file all the book and verse pointers to the bzz file so that
 //   we can later read the bzz file quickly and efficiently.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-#region Header
-
 // <copyright file="InternetLinkReader.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
@@ -28,6 +27,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect.readers
@@ -46,7 +46,7 @@ namespace CrossConnect.readers
     [KnownType(typeof(VersePos))]
     public class InternetLinkReader : BibleZtextReader
     {
-        #region Constants and Fields
+        #region Fields
 
         /// <summary>
         /// The link.
@@ -60,9 +60,9 @@ namespace CrossConnect.readers
         [DataMember]
         public string TitleBar = string.Empty;
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InternetLinkReader"/> class.
@@ -81,9 +81,9 @@ namespace CrossConnect.readers
         {
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
         /// Gets a value indicating whether IsExternalLink.
@@ -151,9 +151,9 @@ namespace CrossConnect.readers
             }
         }
 
-        #endregion
+        #endregion Properties
 
-        #region Public Methods and Operators
+        #region Methods
 
         /// <summary>
         /// The get external link.
@@ -168,22 +168,22 @@ namespace CrossConnect.readers
         {
             int number;
             string strongNumber = string.Empty;
-            if (int.TryParse(this.Link.Substring(1), out number))
+            if (int.TryParse(Link.Substring(1), out number))
             {
                 strongNumber = number.ToString();
             }
 
-            if (this.Link.StartsWith("G"))
+            if (Link.StartsWith("G"))
             {
                 return string.Format(displaySettings.GreekDictionaryLink, strongNumber);
             }
 
-            if (this.Link.StartsWith("H"))
+            if (Link.StartsWith("H"))
             {
                 return string.Format(displaySettings.HebrewDictionaryLink, strongNumber);
             }
 
-            return this.Link;
+            return Link;
         }
 
         /// <summary>
@@ -208,11 +208,11 @@ namespace CrossConnect.readers
         /// The title.
         /// </param>
         public override void GetInfo(
-            out int bookNum, 
-            out int absouteChaptNum, 
-            out int relChaptNum, 
-            out int verseNum, 
-            out string fullName, 
+            out int bookNum,
+            out int absouteChaptNum,
+            out int relChaptNum,
+            out int verseNum,
+            out string fullName,
             out string title)
         {
             verseNum = 0;
@@ -220,7 +220,7 @@ namespace CrossConnect.readers
             bookNum = 0;
             relChaptNum = 0;
             fullName = string.Empty;
-            title = this.TitleBar;
+            title = TitleBar;
         }
 
         /// <summary>
@@ -234,10 +234,10 @@ namespace CrossConnect.readers
         /// </param>
         public void ShowLink(string link, string titleBar)
         {
-            this.Link = link;
-            this.TitleBar = titleBar;
+            Link = link;
+            TitleBar = titleBar;
         }
 
-        #endregion
+        #endregion Methods
     }
 }

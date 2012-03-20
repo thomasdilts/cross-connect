@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Theme.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The theme.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-#region Header
+﻿#region Header
 
 // <copyright file="Theme.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
@@ -27,6 +18,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect
@@ -46,40 +38,40 @@ namespace CrossConnect
     /// </summary>
     public class Theme
     {
-        #region Constants and Fields
+        #region Fields
 
         /// <summary>
         /// The font families.
         /// </summary>
         public static readonly Dictionary<string, string> FontFamilies = new Dictionary<string, string> {
-                { "Andale Mono", "font-family: 'andale mono','monotype.com',monaco,'courier new',courier,monospace;" }, 
-                { "Arial Black", "font-family: 'Arial Black',helvetica,sans-serif;" }, 
-                { "Arial", "font-family: arial,helvetica,sans-serif;" }, 
+                { "Andale Mono", "font-family: 'andale mono','monotype.com',monaco,'courier new',courier,monospace;" },
+                { "Arial Black", "font-family: 'Arial Black',helvetica,sans-serif;" },
+                { "Arial", "font-family: arial,helvetica,sans-serif;" },
                 {
-                    "Avant Garde Gothic", 
+                    "Avant Garde Gothic",
                     "font-family: 'Century Gothic','Avant Garde Gothic','Avant Garde','URW Gothic L',helvetica,sans-serif;"
-                    }, 
-                { "Bookman Old Style", "font-family: 'Bookman Old Style','URW Bookman L','itc bookman',times,serif;" }, 
+                    },
+                { "Bookman Old Style", "font-family: 'Bookman Old Style','URW Bookman L','itc bookman',times,serif;" },
                 {
-                    "Century Schoolbook", 
+                    "Century Schoolbook",
                     "font-family: 'Century Schoolbook',Century,'new century schoolbook','Century Schoolbook L',times,serif;"
-                    }, 
-                { "Comic Sans MS", "font-family: 'Comic Sans MS',arial,helvetica,sans-serif;" }, 
-                { "Courier New", "font-family: 'courier new',courier,monospace;" }, 
-                { "Courier", "font-family: courier,monospace;" }, 
-                { "Garamond", "font-family: Garamond,Garamond,'Garamond Antiqua',times,serif;" }, 
-                { "Georgia", "font-family: georgia,times,serif;" }, 
-                { "Helvetica", "font-family: helvetica,sans-serif;" }, 
-                { "Impact", "font-family: impact,helvetica,sans-serif;" }, 
+                    },
+                { "Comic Sans MS", "font-family: 'Comic Sans MS',arial,helvetica,sans-serif;" },
+                { "Courier New", "font-family: 'courier new',courier,monospace;" },
+                { "Courier", "font-family: courier,monospace;" },
+                { "Garamond", "font-family: Garamond,Garamond,'Garamond Antiqua',times,serif;" },
+                { "Georgia", "font-family: georgia,times,serif;" },
+                { "Helvetica", "font-family: helvetica,sans-serif;" },
+                { "Impact", "font-family: impact,helvetica,sans-serif;" },
                 {
-                    "Palatino Linotype", 
+                    "Palatino Linotype",
                     "font-family: 'Palatino Linotype','URW Palladio L','palladio l',palatino,'book antiqua',times,serif;"
-                    }, 
-                { "Segoe WP", "font-family: Segoe WP;" }, 
-                { "Tahoma", "font-family: tahoma,arial,helvetica,sans-serif;" }, 
-                { "Times New Roman", "font-family: 'Times New Roman','Times Roman',TimesNR,times,serif;" }, 
-                { "Times Roman", "font-family: 'Times Roman',times,serif;" }, 
-                { "Trebuchet MS", "font-family: 'Trebuchet MS',arial,helvetica,sans-serif;" }, 
+                    },
+                { "Segoe WP", "font-family: Segoe WP;" },
+                { "Tahoma", "font-family: tahoma,arial,helvetica,sans-serif;" },
+                { "Times New Roman", "font-family: 'Times New Roman','Times Roman',TimesNR,times,serif;" },
+                { "Times Roman", "font-family: 'Times Roman',times,serif;" },
+                { "Trebuchet MS", "font-family: 'Trebuchet MS',arial,helvetica,sans-serif;" },
                 { "Verdana", "font-family: verdana,arial,helvetica,sans-serif;" }
             };
 
@@ -153,9 +145,9 @@ namespace CrossConnect
         /// </summary>
         private Guid _currentTheme = Guid.NewGuid();
 
-        #endregion
+        #endregion Fields
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
         /// Gets or sets CurrentTheme.
@@ -164,37 +156,37 @@ namespace CrossConnect
         {
             get
             {
-                return this._currentTheme;
+                return _currentTheme;
             }
 
             set
             {
-                this._currentTheme = value;
-                if (this.Themes.ContainsKey(this._currentTheme))
+                _currentTheme = value;
+                if (Themes.ContainsKey(_currentTheme))
                 {
-                    this.Clone(this.Themes[this._currentTheme]);
+                    Clone(Themes[_currentTheme]);
                 }
                 else
                 {
                     // set the default values.
-                    this.FontFamily = Application.Current.Resources["PhoneFontFamilyNormal"].ToString();
-                    this.AccentColor = (Color)Application.Current.Resources["PhoneAccentColor"];
-                    this.BorderColor = (Color)Application.Current.Resources["PhoneForegroundColor"];
-                    this.MainFontColor = this.BorderColor;
-                    this.TitleFontColor = this.BorderColor;
-                    this.MainBackColor = (Color)Application.Current.Resources["PhoneBackgroundColor"];
-                    this.TitleBackColor = this.MainBackColor;
-                    this.IsButtonColorDark = (Visibility)Application.Current.Resources["PhoneDarkThemeVisibility"]
+                    FontFamily = Application.Current.Resources["PhoneFontFamilyNormal"].ToString();
+                    AccentColor = (Color)Application.Current.Resources["PhoneAccentColor"];
+                    BorderColor = (Color)Application.Current.Resources["PhoneForegroundColor"];
+                    MainFontColor = BorderColor;
+                    TitleFontColor = BorderColor;
+                    MainBackColor = (Color)Application.Current.Resources["PhoneBackgroundColor"];
+                    TitleBackColor = MainBackColor;
+                    IsButtonColorDark = (Visibility)Application.Current.Resources["PhoneDarkThemeVisibility"]
                                              == Visibility.Collapsed;
-                    this.IsMainBackImage = false;
-                    this.MainBackImage = string.Empty;
+                    IsMainBackImage = false;
+                    MainBackImage = string.Empty;
                 }
             }
         }
 
-        #endregion
+        #endregion Properties
 
-        #region Public Methods and Operators
+        #region Methods
 
         /// <summary>
         /// The clone.
@@ -204,18 +196,18 @@ namespace CrossConnect
         /// </param>
         public void Clone(Theme from)
         {
-            this.BorderColor = from.BorderColor;
-            this.FontFamily = from.FontFamily;
-            this.AccentColor = from.AccentColor;
-            this.IsButtonColorDark = from.IsButtonColorDark;
-            this.IsMainBackImage = from.IsMainBackImage;
-            this.MainBackColor = from.MainBackColor;
-            this.MainBackImage = from.MainBackImage;
-            this.MainFontColor = from.MainFontColor;
-            this.TitleBackColor = from.TitleBackColor;
-            this.TitleFontColor = from.TitleFontColor;
-            this.Name = from.Name;
-            this.UniqId = from.UniqId;
+            BorderColor = from.BorderColor;
+            FontFamily = from.FontFamily;
+            AccentColor = from.AccentColor;
+            IsButtonColorDark = from.IsButtonColorDark;
+            IsMainBackImage = from.IsMainBackImage;
+            MainBackColor = from.MainBackColor;
+            MainBackImage = from.MainBackImage;
+            MainFontColor = from.MainFontColor;
+            TitleBackColor = from.TitleBackColor;
+            TitleFontColor = from.TitleFontColor;
+            Name = from.Name;
+            UniqId = from.UniqId;
         }
 
         /// <summary>
@@ -301,7 +293,7 @@ namespace CrossConnect
                                 }
                                 while (reader.MoveToNextAttribute());
 
-                                this.Themes[foundTheme.UniqId] = foundTheme;
+                                Themes[foundTheme.UniqId] = foundTheme;
                             }
 
                             break;
@@ -331,7 +323,7 @@ namespace CrossConnect
                 }
             }
 
-            this.CurrentTheme = currentTheme;
+            CurrentTheme = currentTheme;
         }
 
         /// <summary>
@@ -342,7 +334,7 @@ namespace CrossConnect
         /// </param>
         public void FromString(string buffer)
         {
-            this.FromByteArray(Encoding.UTF8.GetBytes(buffer));
+            FromByteArray(Encoding.UTF8.GetBytes(buffer));
         }
 
         /// <summary>
@@ -353,7 +345,7 @@ namespace CrossConnect
         public Guid GetUniqueGuidKey()
         {
             Guid key = Guid.NewGuid();
-            if (this.Themes == null)
+            if (Themes == null)
             {
                 return key;
             }
@@ -361,7 +353,7 @@ namespace CrossConnect
             {
                 key = Guid.NewGuid();
             }
-            while (this.Themes.ContainsKey(key));
+            while (Themes.ContainsKey(key));
             return key;
         }
 
@@ -375,7 +367,7 @@ namespace CrossConnect
 
             if (stream != null)
             {
-                this.FromStream(stream, true);
+                FromStream(stream, true);
                 stream.Close();
             }
         }
@@ -391,22 +383,22 @@ namespace CrossConnect
             // try to integrate this into the already existing themes.
             foreach (var tema in themes.Themes)
             {
-                if (this.Themes.ContainsKey(tema.Value.UniqId))
+                if (Themes.ContainsKey(tema.Value.UniqId))
                 {
-                    if (tema.Value.Equals(this.Themes[tema.Value.UniqId]))
+                    if (tema.Value.Equals(Themes[tema.Value.UniqId]))
                     {
                         continue;
                     }
 
                     Guid oldKey = tema.Value.UniqId;
-                    tema.Value.UniqId = this.GetUniqueGuidKey();
-                    if (oldKey.Equals(this._currentTheme))
+                    tema.Value.UniqId = GetUniqueGuidKey();
+                    if (oldKey.Equals(_currentTheme))
                     {
-                        this._currentTheme = tema.Value.UniqId;
+                        _currentTheme = tema.Value.UniqId;
                     }
                 }
 
-                this.Themes[tema.Value.UniqId] = tema.Value;
+                Themes[tema.Value.UniqId] = tema.Value;
             }
         }
 
@@ -441,19 +433,15 @@ namespace CrossConnect
         {
             var sb = new StringBuilder();
             sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-            sb.Append("<ccthemes version=\"1.0\" currenttheme=\"" + this._currentTheme + "\">\n");
-            foreach (var theme in this.Themes)
+            sb.Append("<ccthemes version=\"1.0\" currenttheme=\"" + _currentTheme + "\">\n");
+            foreach (var theme in Themes)
             {
-                sb.Append(this.OneThemeToString(theme.Value));
+                sb.Append(OneThemeToString(theme.Value));
             }
 
             sb.Append("</ccthemes>");
             return sb.ToString();
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The color to string.
@@ -511,12 +499,12 @@ namespace CrossConnect
         /// </returns>
         private bool Equals(Theme from)
         {
-            return this.BorderColor.Equals(from.BorderColor) && this.FontFamily.Equals(from.FontFamily)
-                   && this.AccentColor.Equals(from.AccentColor) && this.IsButtonColorDark.Equals(from.IsButtonColorDark)
-                   && this.IsMainBackImage.Equals(from.IsMainBackImage) && this.MainBackColor.Equals(from.MainBackColor)
-                   && this.MainBackImage.Equals(from.MainBackImage) && this.MainFontColor.Equals(from.MainFontColor)
-                   && this.TitleBackColor.Equals(from.TitleBackColor) && this.TitleFontColor.Equals(from.TitleFontColor)
-                   && this.Name.Equals(from.Name) && this.UniqId.Equals(from.UniqId);
+            return BorderColor.Equals(from.BorderColor) && FontFamily.Equals(from.FontFamily)
+                   && AccentColor.Equals(from.AccentColor) && IsButtonColorDark.Equals(from.IsButtonColorDark)
+                   && IsMainBackImage.Equals(from.IsMainBackImage) && MainBackColor.Equals(from.MainBackColor)
+                   && MainBackImage.Equals(from.MainBackImage) && MainFontColor.Equals(from.MainFontColor)
+                   && TitleBackColor.Equals(from.TitleBackColor) && TitleFontColor.Equals(from.TitleFontColor)
+                   && Name.Equals(from.Name) && UniqId.Equals(from.UniqId);
         }
 
         /// <summary>
@@ -528,10 +516,10 @@ namespace CrossConnect
         private void FromByteArray(byte[] buffer)
         {
             var stream = new MemoryStream(buffer);
-            this.FromStream(stream);
+            FromStream(stream);
             stream.Close();
         }
 
-        #endregion
+        #endregion Methods
     }
 }

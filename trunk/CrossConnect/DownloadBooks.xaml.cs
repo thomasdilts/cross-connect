@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DownloadBooks.xaml.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The download books.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-#region Header
+﻿#region Header
 
 // <copyright file="DownloadBooks.xaml.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
@@ -27,6 +18,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect
@@ -42,148 +34,104 @@ namespace CrossConnect
 
     using Sword;
 
-    /// <summary>
-    /// The download books.
-    /// </summary>
     public partial class DownloadBooks
     {
-        #region Constants and Fields
+        #region Fields
 
-        /// <summary>
-        /// The _imanager.
-        /// </summary>
         private readonly InstallManager _imanager = new InstallManager();
 
-        /// <summary>
-        /// The _is in completed unzipped.
-        /// </summary>
         private bool _isInCompletedUnzipped;
-
-        /// <summary>
-        /// The _sb.
-        /// </summary>
         private SwordBook _sb;
-
-        /// <summary>
-        /// The _web inst.
-        /// </summary>
         private WebInstaller _webInst;
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DownloadBooks"/> class.
-        /// </summary>
         public DownloadBooks()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Methods
 
-        /// <summary>
-        /// The but download book click.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void ButDownloadBookClick(object sender, RoutedEventArgs e)
         {
             try
             {
                 // not much to do, but get the book!!!!!
-                if (this._webInst.Entries != null
-                    && this._webInst.Entries.ContainsKey(this.selectBook.SelectedItem.ToString()))
+                if (_webInst.Entries != null
+                    && _webInst.Entries.ContainsKey(selectBook.SelectedItem.ToString()))
                 {
-                    this.selectType.IsEnabled = false;
-                    this.selectBook.IsEnabled = false;
-                    this.selectLangauge.IsEnabled = false;
-                    this.selectServer.IsEnabled = false;
+                    selectType.IsEnabled = false;
+                    selectBook.IsEnabled = false;
+                    selectLangauge.IsEnabled = false;
+                    selectServer.IsEnabled = false;
 
-                    this.butDownloadBook.Visibility = Visibility.Collapsed;
-                    this._sb = this._webInst.Entries[this.selectBook.SelectedItem.ToString()];
-                    this._sb.ProgressCompleted += this.SbProgressCompleted;
-                    this._sb.ProgressUpdate += this.SbProgressUpdate;
-                    this.progressBarGetBook.Visibility = Visibility.Visible;
-                    this.progressBarGetBook.Value = 5;
-                    string errMsg = this._sb.DownloadBookNow(this._webInst);
+                    butDownloadBook.Visibility = Visibility.Collapsed;
+                    _sb = _webInst.Entries[selectBook.SelectedItem.ToString()];
+                    _sb.ProgressCompleted += SbProgressCompleted;
+                    _sb.ProgressUpdate += SbProgressUpdate;
+                    progressBarGetBook.Visibility = Visibility.Visible;
+                    progressBarGetBook.Value = 5;
+                    string errMsg = _sb.DownloadBookNow(_webInst);
                     if (errMsg != null)
                     {
                         MessageBox.Show(
                             Translations.Translate(
                                 "An error occurred trying to connect to the network. Try again later.") + "; " + errMsg);
-                        this.PhoneApplicationPageLoaded(null, null);
+                        PhoneApplicationPageLoaded(null, null);
                     }
                 }
                 else
                 {
                     MessageBox.Show(
                         Translations.Translate("An error occurred trying to connect to the network. Try again later."));
-                    this.PhoneApplicationPageLoaded(null, null);
+                    PhoneApplicationPageLoaded(null, null);
                 }
             }
             catch (Exception eee)
             {
-                this.selectType.IsEnabled = true;
-                this.selectBook.IsEnabled = true;
-                this.selectLangauge.IsEnabled = true;
-                this.selectServer.IsEnabled = true;
+                selectType.IsEnabled = true;
+                selectBook.IsEnabled = true;
+                selectLangauge.IsEnabled = true;
+                selectServer.IsEnabled = true;
                 MessageBox.Show(
                     Translations.Translate("An error occurred trying to connect to the network. Try again later.")
                     + "; " + eee.Message);
-                this.PhoneApplicationPageLoaded(null, null);
+                PhoneApplicationPageLoaded(null, null);
             }
         }
 
-        /// <summary>
-        /// The but download click.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void ButDownloadClick(object sender, RoutedEventArgs e)
         {
-            this.butDownload.Visibility = Visibility.Collapsed;
+            butDownload.Visibility = Visibility.Collapsed;
 
             // Ask the Install Manager for a map of all known module sites
-            IDictionary<string, WebInstaller> installers = this._imanager.Installers;
-            this._webInst = installers[this.selectServer.SelectedItem.ToString()];
-            this.progressBarGetBookList.Visibility = Visibility.Visible;
-            this.progressBarGetBookList.Maximum = 100;
-            this.progressBarGetBookList.Minimum = 0;
-            this.progressBarGetBookList.Value = 5;
-            this.selectServer.IsEnabled = false;
-            this._webInst.ProgressUpdate += this.WebInstProgressUpdate;
-            this._webInst.ProgressCompleted += this.WebInstProgressCompleted;
+            IDictionary<string, WebInstaller> installers = _imanager.Installers;
+            _webInst = installers[selectServer.SelectedItem.ToString()];
+            progressBarGetBookList.Visibility = Visibility.Visible;
+            progressBarGetBookList.Maximum = 100;
+            progressBarGetBookList.Minimum = 0;
+            progressBarGetBookList.Value = 5;
+            selectServer.IsEnabled = false;
+            _webInst.ProgressUpdate += WebInstProgressUpdate;
+            _webInst.ProgressCompleted += WebInstProgressCompleted;
 
-            string errMsg = this._webInst.ReloadBookList();
+            string errMsg = _webInst.ReloadBookList();
             if (errMsg != null)
             {
                 MessageBox.Show(
                     Translations.Translate("An error occurred trying to connect to the network. Try again later.")
                     + "; " + errMsg);
-                this.selectServer.IsEnabled = true;
-                this.PhoneApplicationPageLoaded(null, null);
+                selectServer.IsEnabled = true;
+                PhoneApplicationPageLoaded(null, null);
                 return;
             }
         }
 
-        /// <summary>
-        /// The do.
-        /// </summary>
-        /// <param name="action">
-        /// The action.
-        /// </param>
         private void Do(Action action)
         {
             ThreadPool.QueueUserWorkItem(
@@ -205,146 +153,101 @@ namespace CrossConnect
                     });
         }
 
-        /// <summary>
-        /// The installers retrieved.
-        /// </summary>
-        /// <param name="installers">
-        /// The installers.
-        /// </param>
-        /// <param name="message">
-        /// The message.
-        /// </param>
         private void InstallersRetrieved(Dictionary<string, WebInstaller> installers, string message)
         {
             foreach (var mapEntry in installers)
             {
-                this.selectServer.Items.Add(mapEntry.Key);
+                selectServer.Items.Add(mapEntry.Key);
             }
 
-            this.ServerMessage.Text = message;
-            this.selectServer.SelectedIndex = 0;
-            this.ServerMessage.Visibility = string.IsNullOrEmpty(message) ? Visibility.Collapsed : Visibility.Visible;
-            this.butDownload.Visibility = Visibility.Visible;
-            this.selectServer.Visibility = Visibility.Visible;
-            this.WaitingForDownload.Visibility = Visibility.Collapsed;
+            ServerMessage.Text = message;
+            selectServer.SelectedIndex = 0;
+            ServerMessage.Visibility = string.IsNullOrEmpty(message) ? Visibility.Collapsed : Visibility.Visible;
+            butDownload.Visibility = Visibility.Visible;
+            selectServer.Visibility = Visibility.Visible;
+            WaitingForDownload.Visibility = Visibility.Collapsed;
         }
 
-        /// <summary>
-        /// The phone application page loaded.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void PhoneApplicationPageLoaded(object sender, RoutedEventArgs e)
         {
-            this.PageTitle.Text = Translations.Translate("Download bibles");
-            this.selectServer.Header = Translations.Translate("Select the server");
-            this.butDownload.Content = Translations.Translate("Download bible list");
-            this.selectLangauge.Header = Translations.Translate("Select the language");
-            this.selectBook.Header = Translations.Translate("Select the bible");
-            this.butDownloadBook.Content = Translations.Translate("Download bible");
-            this.selectType.Header = Translations.Translate("Download type");
-            this.selectType.Items.Clear();
-            this.selectType.Items.Add(Translations.Translate("Bible"));
-            this.selectType.Items.Add(Translations.Translate("Commentaries"));
+            PageTitle.Text = Translations.Translate("Download bibles");
+            selectServer.Header = Translations.Translate("Select the server");
+            butDownload.Content = Translations.Translate("Download bible list");
+            selectLangauge.Header = Translations.Translate("Select the language");
+            selectBook.Header = Translations.Translate("Select the bible");
+            butDownloadBook.Content = Translations.Translate("Download bible");
+            selectType.Header = Translations.Translate("Download type");
+            selectType.Items.Clear();
+            selectType.Items.Add(Translations.Translate("Bible"));
+            selectType.Items.Add(Translations.Translate("Commentaries"));
 
-            this.WaitingForDownload.Visibility = Visibility.Visible;
-            this.selectType.Visibility = Visibility.Collapsed;
-            this.butDownload.Visibility = Visibility.Collapsed;
-            this.butDownloadBook.Visibility = Visibility.Collapsed;
-            this.selectBook.Visibility = Visibility.Collapsed;
-            this.progressBarGetBookList.Visibility = Visibility.Collapsed;
-            this.progressBarGetBook.Visibility = Visibility.Collapsed;
-            this.selectLangauge.Visibility = Visibility.Collapsed;
-            this.selectServer.Visibility = Visibility.Collapsed;
-            this.ServerMessage.Visibility = Visibility.Collapsed;
-            this.ServerMessage.Text = string.Empty;
-            this.selectServer.Items.Clear();
+            WaitingForDownload.Visibility = Visibility.Visible;
+            selectType.Visibility = Visibility.Collapsed;
+            butDownload.Visibility = Visibility.Collapsed;
+            butDownloadBook.Visibility = Visibility.Collapsed;
+            selectBook.Visibility = Visibility.Collapsed;
+            progressBarGetBookList.Visibility = Visibility.Collapsed;
+            progressBarGetBook.Visibility = Visibility.Collapsed;
+            selectLangauge.Visibility = Visibility.Collapsed;
+            selectServer.Visibility = Visibility.Collapsed;
+            ServerMessage.Visibility = Visibility.Collapsed;
+            ServerMessage.Text = string.Empty;
+            selectServer.Items.Clear();
 
-            this._imanager.GetBibleDownloadList(this.InstallersRetrieved);
+            _imanager.GetBibleDownloadList(InstallersRetrieved);
         }
 
-        /// <summary>
-        /// The sb progress completed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void SbProgressCompleted(object sender, OpenReadCompletedEventArgs e)
         {
-            this.selectType.IsEnabled = true;
-            this.selectBook.IsEnabled = true;
-            this.selectLangauge.IsEnabled = true;
-            this.selectServer.IsEnabled = true;
+            selectType.IsEnabled = true;
+            selectBook.IsEnabled = true;
+            selectLangauge.IsEnabled = true;
+            selectServer.IsEnabled = true;
             if (sender != null)
             {
                 MessageBox.Show(
                     Translations.Translate("An error occurred trying to connect to the network. Try again later.")
                     + "; " + (string)sender);
-                this.PhoneApplicationPageLoaded(null, null);
+                PhoneApplicationPageLoaded(null, null);
                 return;
             }
 
-            if (this.selectType.SelectedItem.Equals(Translations.Translate("Commentaries")))
+            if (selectType.SelectedItem.Equals(Translations.Translate("Commentaries")))
             {
-                App.InstalledBibles.AddCommentary(this._sb.Sbmd.InternalName);
+                App.InstalledBibles.AddCommentary(_sb.Sbmd.InternalName);
             }
             else
             {
-                App.InstalledBibles.AddBook(this._sb.Sbmd.InternalName);
+                App.InstalledBibles.AddBook(_sb.Sbmd.InternalName);
             }
 
-            this._sb = null;
-            if (this.NavigationService.CanGoBack)
+            _sb = null;
+            if (NavigationService.CanGoBack)
             {
-                this.NavigationService.GoBack();
+                NavigationService.GoBack();
             }
         }
 
-        /// <summary>
-        /// The sb progress update.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void SbProgressUpdate(object sender, DownloadProgressChangedEventArgs e)
         {
-            this.progressBarGetBook.Value = e.ProgressPercentage;
+            progressBarGetBook.Value = e.ProgressPercentage;
         }
 
-        /// <summary>
-        /// The select langauge selection changed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void SelectLangaugeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (this.selectLangauge != null && this.selectLangauge.SelectedItem != null && this._webInst != null
-                && this._webInst.Entries != null)
+            if (selectLangauge != null && selectLangauge.SelectedItem != null && _webInst != null
+                && _webInst.Entries != null)
             {
-                this.selectBook.Items.Clear();
+                selectBook.Items.Clear();
 
                 // put in the books
                 var allBooks = new Dictionary<string, string>();
-                bool isCommentarySelected = this.selectType.SelectedItem.Equals(Translations.Translate("Commentaries"));
-                bool isBibleSelected = this.selectType.SelectedItem.Equals(Translations.Translate("Bible"));
-                foreach (var book in this._webInst.Entries)
+                bool isCommentarySelected = selectType.SelectedItem.Equals(Translations.Translate("Commentaries"));
+                bool isBibleSelected = selectType.SelectedItem.Equals(Translations.Translate("Bible"));
+                foreach (var book in _webInst.Entries)
                 {
                     var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
-                    if (lang.Name.Equals(this.selectLangauge.SelectedItem)
+                    if (lang.Name.Equals(selectLangauge.SelectedItem)
                         &&
                         ((isBibleSelected
                           && ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper().Equals("ZTEXT"))
@@ -359,70 +262,43 @@ namespace CrossConnect
                 List<KeyValuePair<string, string>> list = allBooks.OrderBy(t => t.Key).ToList();
                 foreach (var x in list)
                 {
-                    this.selectBook.Items.Add(x.Key);
+                    selectBook.Items.Add(x.Key);
                 }
 
-                this.selectType.Visibility = App.InstalledBibles.InstalledBibles.Count > 0
+                selectType.Visibility = App.InstalledBibles.InstalledBibles.Count > 0
                                                  ? Visibility.Visible
                                                  : Visibility.Collapsed;
-                this.selectBook.Visibility = Visibility.Visible;
-                this.butDownloadBook.Visibility = Visibility.Visible;
+                selectBook.Visibility = Visibility.Visible;
+                butDownloadBook.Visibility = Visibility.Visible;
             }
         }
 
-        /// <summary>
-        /// The select server selection changed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void SelectServerSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (this.selectServer != null && this.selectServer.Items.Count > 1)
+            if (selectServer != null && selectServer.Items.Count > 1)
             {
                 // hide everything again.  Make them go through the proceedure
-                this.butDownload.Visibility = Visibility.Visible;
-                this.butDownloadBook.Visibility = Visibility.Collapsed;
-                this.selectBook.Visibility = Visibility.Collapsed;
-                this.progressBarGetBookList.Visibility = Visibility.Collapsed;
-                this.progressBarGetBook.Visibility = Visibility.Collapsed;
-                this.selectLangauge.Visibility = Visibility.Collapsed;
+                butDownload.Visibility = Visibility.Visible;
+                butDownloadBook.Visibility = Visibility.Collapsed;
+                selectBook.Visibility = Visibility.Collapsed;
+                progressBarGetBookList.Visibility = Visibility.Collapsed;
+                progressBarGetBook.Visibility = Visibility.Collapsed;
+                selectLangauge.Visibility = Visibility.Collapsed;
             }
         }
 
-        /// <summary>
-        /// The select type selection changed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void SelectTypeSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // måste reload bible list.
-            if (this.selectType == null || this.selectType.Items.Count() == 0)
+            if (selectType == null || selectType.Items.Count() == 0)
             {
                 return;
             }
 
-            this.WebInstProgressCompletedUnzipped(null, null);
-            this.SelectLangaugeSelectionChanged(sender, e);
+            WebInstProgressCompletedUnzipped(null, null);
+            SelectLangaugeSelectionChanged(sender, e);
         }
 
-        /// <summary>
-        /// The web inst progress completed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void WebInstProgressCompleted(object sender, OpenReadCompletedEventArgs e)
         {
             if (sender != null)
@@ -430,37 +306,28 @@ namespace CrossConnect
                 MessageBox.Show(
                     Translations.Translate("An error occurred trying to connect to the network. Try again later.")
                     + "; " + (string)sender);
-                this.PhoneApplicationPageLoaded(null, null);
+                PhoneApplicationPageLoaded(null, null);
                 return;
             }
 
-            this._webInst.ProgressCompleted -= this.WebInstProgressCompleted;
-            this._webInst.ProgressCompleted += this.WebInstProgressCompletedUnzipped;
-            this.Do(() => this._webInst.UnzipBookList());
+            _webInst.ProgressCompleted -= WebInstProgressCompleted;
+            _webInst.ProgressCompleted += WebInstProgressCompletedUnzipped;
+            Do(() => _webInst.UnzipBookList());
         }
 
-        /// <summary>
-        /// The web inst progress completed unzipped.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void WebInstProgressCompletedUnzipped(object sender, OpenReadCompletedEventArgs e)
         {
-            if (this._isInCompletedUnzipped)
+            if (_isInCompletedUnzipped)
             {
                 return;
             }
 
             try
             {
-                this._isInCompletedUnzipped = true;
-                if (this.selectServer != null)
+                _isInCompletedUnzipped = true;
+                if (selectServer != null)
                 {
-                    this.selectServer.IsEnabled = true;
+                    selectServer.IsEnabled = true;
                 }
 
                 if (sender != null)
@@ -468,34 +335,34 @@ namespace CrossConnect
                     MessageBox.Show(
                         Translations.Translate("An error occurred trying to connect to the network. Try again later.")
                         + "; " + (string)sender);
-                    this.PhoneApplicationPageLoaded(null, null);
-                    this._isInCompletedUnzipped = false;
+                    PhoneApplicationPageLoaded(null, null);
+                    _isInCompletedUnzipped = false;
                     return;
                 }
 
-                if (this.progressBarGetBookList != null)
+                if (progressBarGetBookList != null)
                 {
-                    this.progressBarGetBookList.Visibility = Visibility.Collapsed;
+                    progressBarGetBookList.Visibility = Visibility.Collapsed;
                 }
 
                 // need to load the book selection with all the books.
-                if (this.selectLangauge != null)
+                if (selectLangauge != null)
                 {
-                    this.selectLangauge.IsEnabled = true;
-                    this.selectLangauge.Items.Clear();
+                    selectLangauge.IsEnabled = true;
+                    selectLangauge.Items.Clear();
                 }
 
                 bool isCommentarySelected = false;
-                if (this.selectType != null && this.selectType.SelectedItem != null)
+                if (selectType != null && selectType.SelectedItem != null)
                 {
-                    isCommentarySelected = this.selectType.SelectedItem.Equals(Translations.Translate("Commentaries"));
+                    isCommentarySelected = selectType.SelectedItem.Equals(Translations.Translate("Commentaries"));
                 }
 
-                if (this._webInst != null && this._webInst.IsLoaded && this.selectLangauge != null
-                    && this.selectLangauge.Items != null)
+                if (_webInst != null && _webInst.IsLoaded && selectLangauge != null
+                    && selectLangauge.Items != null)
                 {
                     var allLanguages = new Dictionary<string, Language>();
-                    foreach (var book in this._webInst.Entries)
+                    foreach (var book in _webInst.Entries)
                     {
                         if (isCommentarySelected
                             && ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper().Equals("ZCOM"))
@@ -515,48 +382,39 @@ namespace CrossConnect
                     List<KeyValuePair<string, Language>> list = allLanguages.OrderBy(t => t.Key).ToList();
                     foreach (var x in list)
                     {
-                        if (this.selectLangauge != null)
+                        if (selectLangauge != null)
                         {
-                            this.selectLangauge.Items.Add(x.Key);
+                            selectLangauge.Items.Add(x.Key);
                         }
                     }
 
-                    if (this.selectLangauge != null)
+                    if (selectLangauge != null)
                     {
-                        this.selectLangauge.Visibility = Visibility.Visible;
+                        selectLangauge.Visibility = Visibility.Visible;
                     }
                 }
-                else if (this._webInst != null)
+                else if (_webInst != null)
                 {
                     MessageBox.Show(
                         Translations.Translate("An error occurred trying to connect to the network. Try again later.")
                         + "; " + e.Error.Message);
-                    this.PhoneApplicationPageLoaded(null, null);
+                    PhoneApplicationPageLoaded(null, null);
                 }
             }
             catch (Exception e2)
             {
                 Debug.WriteLine(e2.StackTrace);
-                this.PhoneApplicationPageLoaded(null, null);
+                PhoneApplicationPageLoaded(null, null);
             }
 
-            this._isInCompletedUnzipped = false;
+            _isInCompletedUnzipped = false;
         }
 
-        /// <summary>
-        /// The web inst progress update.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void WebInstProgressUpdate(object sender, DownloadProgressChangedEventArgs e)
         {
-            this.progressBarGetBookList.Value = (double)sender;
+            progressBarGetBookList.Value = (double)sender;
         }
 
-        #endregion
+        #endregion Methods
     }
 }

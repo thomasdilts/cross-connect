@@ -1,15 +1,14 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+﻿#region Header
+
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MediaReader.cs" company="">
-//   
+//
 // </copyright>
 // <summary>
 //   Load from a file all the book and verse pointers to the bzz file so that
 //   we can later read the bzz file quickly and efficiently.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-#region Header
-
 // <copyright file="MediaReader.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
@@ -28,11 +27,19 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect.readers
 {
+    using System.Collections.Generic;
+    using System.IO;
     using System.Runtime.Serialization;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Xml;
+
+    using AudioPlaybackAgent1;
 
     using Sword.reader;
 
@@ -46,53 +53,24 @@ namespace CrossConnect.readers
     [KnownType(typeof(VersePos))]
     public class MediaReader : BibleZtextReader
     {
-        #region Constants and Fields
+        #region Fields
 
-        /// <summary>
-        /// The icon.
-        /// </summary>
         [DataMember]
-        public string Icon = string.Empty;
+        public AudioPlayer.MediaInfo Info;
 
-        /// <summary>
-        /// The link.
-        /// </summary>
-        [DataMember]
-        public string Link = string.Empty;
+        #endregion Fields
 
-        /// <summary>
-        /// The title bar.
-        /// </summary>
-        [DataMember]
-        public string TitleBar = string.Empty;
+        #region Constructors
 
-        #endregion
-
-        #region Constructors and Destructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MediaReader"/> class.
-        /// </summary>
-        /// <param name="link">
-        /// The link.
-        /// </param>
-        /// <param name="titleBar">
-        /// The title bar.
-        /// </param>
-        /// <param name="icon">
-        /// The icon.
-        /// </param>
-        public MediaReader(string link, string titleBar, string icon)
-            : base(string.Empty, "en", false)
+        public MediaReader(AudioPlayer.MediaInfo info)
+            : base(string.Empty, info.Language, false)
         {
-            this.Link = link;
-            this.TitleBar = titleBar;
-            this.Icon = icon;
+            Info = info;
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
         /// Gets a value indicating whether IsExternalLink.
@@ -160,6 +138,6 @@ namespace CrossConnect.readers
             }
         }
 
-        #endregion
+        #endregion Properties
     }
 }

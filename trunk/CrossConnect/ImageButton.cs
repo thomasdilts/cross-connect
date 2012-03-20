@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ImageButton.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   ImageButton control
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-#region Header
+﻿#region Header
 
 // <copyright file="ImageButton.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
@@ -27,6 +18,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect
@@ -35,75 +27,55 @@ namespace CrossConnect
     using System.Windows.Controls;
     using System.Windows.Media;
 
-    /// <summary>
-    /// ImageButton control
-    /// </summary>
     public class ImageButton : Button
     {
-        #region Constants and Fields
+        #region Fields
 
-        /// <summary>
-        ///   Normal State Image dependency property
-        /// </summary>
         public static readonly DependencyProperty ImageProperty = DependencyProperty.Register(
             "Image", typeof(ImageSource), typeof(ImageButton), null);
-
-        /// <summary>
-        ///   Pressed State Image dependency property
-        /// </summary>
         public static readonly DependencyProperty PressedImageProperty = DependencyProperty.Register(
             "PressedImage", typeof(ImageSource), typeof(ImageButton), null);
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImageButton"/> class. 
-        ///   Initializes new instance of ImageButton class
-        /// </summary>
         public ImageButton()
         {
             // Set template for the control
-            this.DefaultStyleKey = typeof(ImageButton);
+            DefaultStyleKey = typeof(ImageButton);
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region Public Properties
+        #region Properties
 
-        /// <summary>
-        ///   Normal State Image property
-        /// </summary>
         public ImageSource Image
         {
             get
             {
-                return (ImageSource)this.GetValue(ImageProperty);
+                return (ImageSource)GetValue(ImageProperty);
             }
 
             set
             {
-                this.SetValue(ImageProperty, value);
+                SetValue(ImageProperty, value);
             }
         }
 
-        /// <summary>
-        ///   Pressed State Image property
-        /// </summary>
         public ImageSource PressedImage
         {
             get
             {
-                return (ImageSource)this.GetValue(PressedImageProperty);
+                return (ImageSource)GetValue(PressedImageProperty);
             }
 
             set
             {
-                this.SetValue(PressedImageProperty, value);
+                SetValue(PressedImageProperty, value);
             }
         }
 
-        #endregion
+        #endregion Properties
     }
 }

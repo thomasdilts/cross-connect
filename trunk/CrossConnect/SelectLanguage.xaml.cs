@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SelectLanguage.xaml.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The select language.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-#region Header
+﻿#region Header
 
 // <copyright file="SelectLanguage.xaml.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
@@ -27,6 +18,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect
@@ -41,17 +33,17 @@ namespace CrossConnect
     /// </summary>
     public partial class SelectLanguage
     {
-        #region Constants and Fields
+        #region Fields
 
         /// <summary>
         /// The supported languages.
         /// </summary>
         private static readonly string[] SupportedLanguages = {
-                                                                  "default", "af", "ar", "az", "be", "bg", "cs", "da", 
-                                                                  "de", "el", "en", "es", "et", "fa", "fi", "fr", "hi", 
-                                                                  "hr", "hu", "hy", "id", "is", "it", "iw", "ja", "ko", 
-                                                                  "lt", "lv", "mk", "ms", "mt", "nl", "no", "pl", "pt", 
-                                                                  "ro", "ru", "sk", "sl", "sq", "sr", "sw", "sv", "th", 
+                                                                  "default", "af", "ar", "az", "be", "bg", "cs", "da",
+                                                                  "de", "el", "en", "es", "et", "fa", "fi", "fr", "hi",
+                                                                  "hr", "hu", "hy", "id", "is", "it", "iw", "ja", "ko",
+                                                                  "lt", "lv", "mk", "ms", "mt", "nl", "no", "pl", "pt",
+                                                                  "ro", "ru", "sk", "sl", "sq", "sr", "sw", "sv", "th",
                                                                   "tl", "tr", "uk", "ur", "vi", "zh", "zh_cn"
                                                               };
 
@@ -60,19 +52,19 @@ namespace CrossConnect
         /// </summary>
         private bool _isInUpdateList;
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectLanguage"/> class.
         /// </summary>
         public SelectLanguage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Methods
 
@@ -87,28 +79,28 @@ namespace CrossConnect
         /// </param>
         private void AutoRotatePageLoaded(object sender, RoutedEventArgs e)
         {
-            this.PageTitle.Text = Translations.Translate("Select the language");
-            this.SelectList.Items.RemoveAt(0);
-            this.SelectList.Items.Insert(0, Translations.Translate("Default system language"));
+            PageTitle.Text = Translations.Translate("Select the language");
+            SelectList.Items.RemoveAt(0);
+            SelectList.Items.Insert(0, Translations.Translate("Default system language"));
 
-            this._isInUpdateList = true;
+            _isInUpdateList = true;
             var isoLanguageCode = (string)IsolatedStorageSettings.ApplicationSettings["LanguageIsoCode"];
             int i;
             for (i = 0; i < SupportedLanguages.Length; i++)
             {
                 if (SupportedLanguages[i].Equals(isoLanguageCode))
                 {
-                    this.SelectList.SelectedIndex = i;
+                    SelectList.SelectedIndex = i;
                     break;
                 }
             }
 
             if (i == SupportedLanguages.Length)
             {
-                this.SelectList.SelectedIndex = 0;
+                SelectList.SelectedIndex = 0;
             }
 
-            this._isInUpdateList = false;
+            _isInUpdateList = false;
         }
 
         /// <summary>
@@ -122,16 +114,16 @@ namespace CrossConnect
         /// </param>
         private void SelectListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!this._isInUpdateList)
+            if (!_isInUpdateList)
             {
-                Translations.IsoLanguageCode = SupportedLanguages[this.SelectList.SelectedIndex];
-                if (this.NavigationService.CanGoBack)
+                Translations.IsoLanguageCode = SupportedLanguages[SelectList.SelectedIndex];
+                if (NavigationService.CanGoBack)
                 {
-                    this.NavigationService.GoBack();
+                    NavigationService.GoBack();
                 }
             }
         }
 
-        #endregion
+        #endregion Methods
     }
 }

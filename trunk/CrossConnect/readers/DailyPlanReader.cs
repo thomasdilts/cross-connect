@@ -1,15 +1,14 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+﻿#region Header
+
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DailyPlanReader.cs" company="">
-//   
+//
 // </copyright>
 // <summary>
 //   Load from a file all the book and verse pointers to the bzz file so that
 //   we can later read the bzz file quickly and efficiently.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-#region Header
-
 // <copyright file="DailyPlanReader.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
@@ -28,6 +27,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect.readers
@@ -45,7 +45,7 @@ namespace CrossConnect.readers
     [DataContract]
     public class DailyPlanReader : BibleZtextReader
     {
-        #region Constants and Fields
+        #region Fields
 
         /// <summary>
         /// The serial 2.
@@ -53,9 +53,9 @@ namespace CrossConnect.readers
         [DataMember(Name = "serial2")]
         public BibleZtextReaderSerialData Serial2 = new BibleZtextReaderSerialData(false, string.Empty, string.Empty, 0, 0);
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DailyPlanReader"/> class.
@@ -72,13 +72,13 @@ namespace CrossConnect.readers
         public DailyPlanReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
             : base(path, iso2DigitLangCode, isIsoEncoding)
         {
-            this.Serial2.CloneFrom(this.Serial);
-            this.SetToFirstChapter();
+            Serial2.CloneFrom(Serial);
+            SetToFirstChapter();
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
         /// Gets a value indicating whether IsHearable.
@@ -146,9 +146,9 @@ namespace CrossConnect.readers
             }
         }
 
-        #endregion
+        #endregion Properties
 
-        #region Public Methods and Operators
+        #region Methods
 
         /// <summary>
         /// The get button window specs.
@@ -206,11 +206,11 @@ namespace CrossConnect.readers
         /// The title.
         /// </param>
         public override void GetInfo(
-            out int bookNum, 
-            out int absoluteChaptNum, 
-            out int relChaptNum, 
-            out int verseNum, 
-            out string fullName, 
+            out int bookNum,
+            out int absoluteChaptNum,
+            out int relChaptNum,
+            out int verseNum,
+            out string fullName,
             out string title)
         {
             int count = DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber].GetUpperBound(0) + 1;
@@ -240,15 +240,15 @@ namespace CrossConnect.readers
         {
             if (isLocalLinkChange)
             {
-                this.Serial.PosChaptNum = chapter;
-                this.Serial.PosVerseNum = verse;
+                Serial.PosChaptNum = chapter;
+                Serial.PosVerseNum = verse;
             }
             else
             {
                 App.DailyPlan.PlanDayNumber = chapter;
 
                 // Changing the chapter is only to fool the base class into understanding that we have changed pages
-                this.Serial.PosChaptNum = this.Serial.PosChaptNum == 0 ? 1 : 0;
+                Serial.PosChaptNum = Serial.PosChaptNum == 0 ? 1 : 0;
             }
         }
 
@@ -257,7 +257,7 @@ namespace CrossConnect.readers
         /// </summary>
         public override void MoveNext()
         {
-            this.Serial.PosVerseNum = 0;
+            Serial.PosVerseNum = 0;
             int count = DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber].GetUpperBound(0) + 1;
             App.DailyPlan.PlanDayNumber++;
             if (App.DailyPlan.PlanDayNumber >= count)
@@ -266,7 +266,7 @@ namespace CrossConnect.readers
             }
 
             // Changing the chapter is only to fool the base class into understanding that we have changed pages
-            this.Serial.PosChaptNum = this.Serial.PosChaptNum == 0 ? 1 : 0;
+            Serial.PosChaptNum = Serial.PosChaptNum == 0 ? 1 : 0;
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace CrossConnect.readers
         /// </summary>
         public override void MovePrevious()
         {
-            this.Serial.PosVerseNum = 0;
+            Serial.PosVerseNum = 0;
             int count = DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber].GetUpperBound(0) + 1;
             App.DailyPlan.PlanDayNumber--;
             if (App.DailyPlan.PlanDayNumber < 0)
@@ -283,7 +283,7 @@ namespace CrossConnect.readers
             }
 
             // Changing the chapter is only to fool the base class into understanding that we have changed pages
-            this.Serial.PosChaptNum = this.Serial.PosChaptNum == 0 ? 1 : 0;
+            Serial.PosChaptNum = Serial.PosChaptNum == 0 ? 1 : 0;
         }
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace CrossConnect.readers
         /// </summary>
         public override void Resume()
         {
-            this.Serial.CloneFrom(this.Serial2);
+            Serial.CloneFrom(Serial2);
             base.Resume();
         }
 
@@ -300,12 +300,8 @@ namespace CrossConnect.readers
         /// </summary>
         public override void SerialSave()
         {
-            this.Serial2.CloneFrom(this.Serial);
+            Serial2.CloneFrom(Serial);
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The get chapter html.
@@ -341,22 +337,22 @@ namespace CrossConnect.readers
         /// The get chapter html.
         /// </returns>
         protected override string GetChapterHtml(
-            DisplaySettings displaySettings, 
-            string htmlBackgroundColor, 
-            string htmlForegroundColor, 
-            string htmlPhoneAccentColor, 
-            double htmlFontSize, 
-            string fontFamily, 
-            bool isNotesOnly, 
-            bool addStartFinishHtml, 
+            DisplaySettings displaySettings,
+            string htmlBackgroundColor,
+            string htmlForegroundColor,
+            string htmlPhoneAccentColor,
+            double htmlFontSize,
+            string fontFamily,
+            bool isNotesOnly,
+            bool addStartFinishHtml,
             bool forceReload)
         {
             string chapterStartHtml = HtmlHeader(
-                displaySettings, 
-                htmlBackgroundColor, 
-                htmlForegroundColor, 
-                htmlPhoneAccentColor, 
-                htmlFontSize, 
+                displaySettings,
+                htmlBackgroundColor,
+                htmlForegroundColor,
+                htmlPhoneAccentColor,
+                htmlFontSize,
                 fontFamily);
             const string chapterEndHtml = "</body></html>";
             var sb = new StringBuilder(chapterStartHtml);
@@ -376,25 +372,25 @@ namespace CrossConnect.readers
                 int relChaptNum;
                 string fullName;
                 string title;
-                this.GetInfo(
-                    DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber][App.DailyPlan.PlanDayNumber][i], 
-                    0, 
-                    out bookNum, 
-                    out relChaptNum, 
-                    out fullName, 
+                GetInfo(
+                    DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber][App.DailyPlan.PlanDayNumber][i],
+                    0,
+                    out bookNum,
+                    out relChaptNum,
+                    out fullName,
                     out title);
                 sb.Append("<h2>" + fullName + " " + (relChaptNum + 1) + "</h2>");
                 sb.Append(
-                    this.GetChapterHtml(
-                        displaySettings, 
-                        DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber][App.DailyPlan.PlanDayNumber][i], 
-                        htmlBackgroundColor, 
-                        htmlForegroundColor, 
-                        htmlPhoneAccentColor, 
-                        htmlFontSize, 
-                        fontFamily, 
-                        false, 
-                        false, 
+                    GetChapterHtml(
+                        displaySettings,
+                        DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber][App.DailyPlan.PlanDayNumber][i],
+                        htmlBackgroundColor,
+                        htmlForegroundColor,
+                        htmlPhoneAccentColor,
+                        htmlFontSize,
+                        fontFamily,
+                        false,
+                        false,
                         forceReload));
             }
 
@@ -414,6 +410,6 @@ namespace CrossConnect.readers
             }
         }
 
-        #endregion
+        #endregion Methods
     }
 }

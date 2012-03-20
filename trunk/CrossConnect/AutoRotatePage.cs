@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutoRotatePage.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The auto rotate page.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-#region Header
+﻿#region Header
 
 // <copyright file="AutoRotatePage.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
@@ -27,6 +18,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect
@@ -36,12 +28,9 @@ namespace CrossConnect
 
     using Microsoft.Phone.Controls;
 
-    /// <summary>
-    /// The auto rotate page.
-    /// </summary>
     public class AutoRotatePage : PhoneApplicationPage
     {
-        #region Constants and Fields
+        #region Fields
 
         /// <summary>
         ///   This varialb eis needed in order to now what was the previous orientation
@@ -49,7 +38,7 @@ namespace CrossConnect
         /// </summary>
         private PageOrientation? _previousOrientation;
 
-        #endregion
+        #endregion Fields
 
         #region Methods
 
@@ -62,7 +51,7 @@ namespace CrossConnect
         {
             base.OnNavigatedFrom(e);
 
-            this._previousOrientation = null;
+            _previousOrientation = null;
         }
 
         /// <summary>
@@ -74,7 +63,7 @@ namespace CrossConnect
         {
             base.OnNavigatedTo(e);
 
-            this._previousOrientation = this.Orientation;
+            _previousOrientation = Orientation;
         }
 
         /// <summary>
@@ -86,7 +75,7 @@ namespace CrossConnect
         {
             base.OnOrientationChanged(e);
 
-            if (this._previousOrientation == null)
+            if (_previousOrientation == null)
             {
                 return;
             }
@@ -94,37 +83,37 @@ namespace CrossConnect
             var transitionElement = new RotateTransition();
 
             // counter clockwise rotation
-            if (this._previousOrientation == PageOrientation.LandscapeRight
+            if (_previousOrientation == PageOrientation.LandscapeRight
                 && e.Orientation == PageOrientation.PortraitUp
                 ||
-                this._previousOrientation == PageOrientation.PortraitUp
+                _previousOrientation == PageOrientation.PortraitUp
                 && e.Orientation == PageOrientation.LandscapeLeft
                 ||
-                this._previousOrientation == PageOrientation.LandscapeLeft
+                _previousOrientation == PageOrientation.LandscapeLeft
                 && e.Orientation == PageOrientation.PortraitDown
                 ||
-                this._previousOrientation == PageOrientation.PortraitDown
+                _previousOrientation == PageOrientation.PortraitDown
                 && e.Orientation == PageOrientation.LandscapeRight)
             {
                 transitionElement.Mode = RotateTransitionMode.In90Clockwise;
             }
-                
+
                 // clockwise rotation
-            else if (this._previousOrientation == PageOrientation.LandscapeLeft
+            else if (_previousOrientation == PageOrientation.LandscapeLeft
                      && e.Orientation == PageOrientation.PortraitUp
                      ||
-                     this._previousOrientation == PageOrientation.PortraitDown
+                     _previousOrientation == PageOrientation.PortraitDown
                      && e.Orientation == PageOrientation.LandscapeLeft
                      ||
-                     this._previousOrientation == PageOrientation.LandscapeRight
+                     _previousOrientation == PageOrientation.LandscapeRight
                      && e.Orientation == PageOrientation.PortraitDown
                      ||
-                     this._previousOrientation == PageOrientation.PortraitUp
+                     _previousOrientation == PageOrientation.PortraitUp
                      && e.Orientation == PageOrientation.LandscapeRight)
             {
                 transitionElement.Mode = RotateTransitionMode.In90Counterclockwise;
             }
-                
+
                 // 180 rotation
             else
             {
@@ -137,9 +126,9 @@ namespace CrossConnect
             transition.Completed += delegate { transition.Stop(); };
             transition.Begin();
 
-            this._previousOrientation = e.Orientation;
+            _previousOrientation = e.Orientation;
         }
 
-        #endregion
+        #endregion Methods
     }
 }

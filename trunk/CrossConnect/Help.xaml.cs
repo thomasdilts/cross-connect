@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Help.xaml.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The help.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-#region Header
+﻿#region Header
 
 // <copyright file="Help.xaml.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
@@ -27,6 +18,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect
@@ -38,34 +30,19 @@ namespace CrossConnect
 
     using Sword.reader;
 
-    /// <summary>
-    /// The help.
-    /// </summary>
     public partial class Help
     {
-        #region Constructors and Destructors
+        #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Help"/> class.
-        /// </summary>
         public Help()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Methods
 
-        /// <summary>
-        /// The web browser loaded.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void WebBrowserLoaded(object sender, RoutedEventArgs e)
         {
             object filePath;
@@ -77,28 +54,28 @@ namespace CrossConnect
 
             if (string.IsNullOrEmpty((string)filePath) || string.IsNullOrEmpty((string)title) || openWindowIndex == null)
             {
-                if (this.NavigationService.CanGoBack)
+                if (NavigationService.CanGoBack)
                 {
-                    this.NavigationService.GoBack();
+                    NavigationService.GoBack();
                 }
 
                 return;
             }
 
-            this.PageTitle.Text = (string)title;
-            Stream st = this.GetType().Assembly.GetManifestResourceStream((string)filePath);
+            PageTitle.Text = (string)title;
+            Stream st = GetType().Assembly.GetManifestResourceStream((string)filePath);
             if (st != null)
             {
                 var sr = new StreamReader(st);
 
                 SerializableWindowState state = App.OpenWindows[(int)openWindowIndex].State;
-                this.webBrowser1.NavigateToString(
+                webBrowser1.NavigateToString(
                     BibleZtextReader.HtmlHeader(
-                        App.DisplaySettings, 
-                        BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"), 
-                        BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"), 
-                        BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"), 
-                        state.HtmlFontSize, 
+                        App.DisplaySettings,
+                        BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"),
+                        BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
+                        BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
+                        state.HtmlFontSize,
                         Theme.FontFamilies[App.Themes.FontFamily]) + sr.ReadToEnd() + "</body></html>");
                 sr.Close();
             }
@@ -109,6 +86,6 @@ namespace CrossConnect
             }
         }
 
-        #endregion
+        #endregion Methods
     }
 }

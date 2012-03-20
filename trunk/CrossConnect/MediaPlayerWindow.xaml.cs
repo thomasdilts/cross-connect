@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MediaPlayerWindow.xaml.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The media player window.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-#region Header
+﻿#region Header
 
 // <copyright file="MediaPlayerWindow.xaml.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
@@ -35,210 +26,152 @@ namespace CrossConnect
     using System.Diagnostics;
     using System.IO;
     using System.IO.IsolatedStorage;
+    using System.Linq;
     using System.Net;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
+    using System.Windows.Threading;
 
-    using CrossConnect.readers;
+    using AudioPlaybackAgent1;
 
+    using Microsoft.Phone.BackgroundAudio;
     using Microsoft.Phone.Controls;
 
-    /// <summary>
-    /// The media player window.
-    /// </summary>
+    using readers;
+
     public partial class MediaPlayerWindow : ITiledWindow
     {
-        #region Constants and Fields
+        #region Fields
 
-        /// <summary>
-        /// The _client.
-        /// </summary>
         private WebClient _client;
-
-        /// <summary>
-        /// The _is first progress gotten.
-        /// </summary>
-        private bool _isFirstProgressGotten;
-
-        /// <summary>
-        /// The _is loaded.
-        /// </summary>
         private bool _isLoaded;
-
-        /// <summary>
-        /// The _is playing.
-        /// </summary>
-        private bool _isPlaying = true;
-
-        /// <summary>
-        /// The _state.
-        /// </summary>
         private SerializableWindowState _state = new SerializableWindowState();
+        private DispatcherTimer _updatePositionTimer;
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MediaPlayerWindow"/> class.
-        /// </summary>
         public MediaPlayerWindow()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            BackgroundAudioPlayer.Instance.PlayStateChanged += InstancePlayStateChanged;
         }
 
-        #endregion
+        #endregion Constructors
 
-        // An event that clients can use to be notified whenever the
-        // elements of the list change.
-        #region Public Events
+        #region Events
 
-        /// <summary>
-        /// The hit button bigger.
-        /// </summary>
         public event EventHandler HitButtonBigger;
 
-        /// <summary>
-        /// The hit button close.
-        /// </summary>
         public event EventHandler HitButtonClose;
 
-        /// <summary>
-        /// The hit button smaller.
-        /// </summary>
         public event EventHandler HitButtonSmaller;
 
-        #endregion
+        #endregion Events
 
-        #region Public Properties
+        #region Properties
 
-        /// <summary>
-        /// Gets or sets a value indicating whether ForceReload.
-        /// </summary>
-        public bool ForceReload { get; set; }
+        public bool ForceReload
+        {
+            get; set;
+        }
 
-        /// <summary>
-        /// Gets or sets State.
-        /// </summary>
         public SerializableWindowState State
         {
             get
             {
-                return this._state;
+                return _state;
             }
 
             set
             {
-                this._state = value;
+                _state = value;
             }
         }
 
-        #endregion
+        #endregion Properties
 
-        #region Public Methods and Operators
+        #region Methods
 
-        /// <summary>
-        /// The calculate title text width.
-        /// </summary>
         public void CalculateTitleTextWidth()
         {
             int numButtonsShowing = 0;
-            if (this.butLarger.Visibility == Visibility.Visible)
+            if (butLarger.Visibility == Visibility.Visible)
             {
                 numButtonsShowing++;
             }
 
-            if (this.butSmaller.Visibility == Visibility.Visible)
+            if (butSmaller.Visibility == Visibility.Visible)
             {
                 numButtonsShowing++;
             }
 
-            if (this.butClose.Visibility == Visibility.Visible)
+            if (butClose.Visibility == Visibility.Visible)
             {
                 numButtonsShowing++;
             }
 
-            var parent = (MainPageSplit)((Grid)((Grid)((Grid)this.Parent).Parent).Parent).Parent;
+            var parent = (MainPageSplit)((Grid)((Grid)((Grid)Parent).Parent).Parent).Parent;
             if (parent.Orientation == PageOrientation.Landscape || parent.Orientation == PageOrientation.LandscapeLeft
                 || parent.Orientation == PageOrientation.LandscapeRight)
             {
-                this.title.Width = Application.Current.Host.Content.ActualHeight
-                                   - this.butClose.Width * numButtonsShowing - 15 - this.butClose.Width * 2;
-                this.title.MaxWidth = this.title.Width;
+                title.Width = Application.Current.Host.Content.ActualHeight
+                                   - butClose.Width * numButtonsShowing - 15 - butClose.Width * 2;
+                title.MaxWidth = title.Width;
             }
             else
             {
-                this.title.Width = Application.Current.Host.Content.ActualWidth
-                                   - this.butClose.Width * numButtonsShowing - 15;
-                this.title.MaxWidth = this.title.Width;
+                title.Width = Application.Current.Host.Content.ActualWidth
+                                   - butClose.Width * numButtonsShowing - 15;
+                title.MaxWidth = title.Width;
             }
         }
 
-        /// <summary>
-        /// The show size buttons.
-        /// </summary>
-        /// <param name="isShow">
-        /// The is show.
-        /// </param>
         public void ShowSizeButtons(bool isShow = true)
         {
             if (!isShow)
             {
-                SetButtonVisibility(this.butLarger, false, string.Empty, string.Empty);
-                SetButtonVisibility(this.butSmaller, false, string.Empty, string.Empty);
-                SetButtonVisibility(this.butClose, false, string.Empty, string.Empty);
+                SetButtonVisibility(butLarger, false, string.Empty, string.Empty);
+                SetButtonVisibility(butSmaller, false, string.Empty, string.Empty);
+                SetButtonVisibility(butClose, false, string.Empty, string.Empty);
             }
             else
             {
                 string colorDir = App.Themes.IsButtonColorDark ? "light" : "dark";
 
                 SetButtonVisibility(
-                    this.butSmaller, 
-                    this._state.NumRowsIown > 1, 
-                    "/Images/" + colorDir + "/appbar.minus.rest.png", 
+                    butSmaller,
+                    _state.NumRowsIown > 1,
+                    "/Images/" + colorDir + "/appbar.minus.rest.png",
                     "/Images/" + colorDir + "/appbar.minus.rest.pressed.png");
                 SetButtonVisibility(
-                    this.butLarger, 
-                    true, 
-                    "/Images/" + colorDir + "/appbar.feature.search.rest.png", 
+                    butLarger,
+                    true,
+                    "/Images/" + colorDir + "/appbar.feature.search.rest.png",
                     "/Images/" + colorDir + "/appbar.feature.search.rest.pressed.png");
                 SetButtonVisibility(
-                    this.butClose, 
-                    true, 
-                    "/Images/" + colorDir + "/appbar.cancel.rest.png", 
+                    butClose,
+                    true,
+                    "/Images/" + colorDir + "/appbar.cancel.rest.png",
                     "/Images/" + colorDir + "/appbar.cancel.rest.pressed.png");
             }
 
-            this.CalculateTitleTextWidth();
+            CalculateTitleTextWidth();
         }
 
-        /// <summary>
-        /// The synchronize window.
-        /// </summary>
-        /// <param name="chapterNum">
-        /// The chapter num.
-        /// </param>
-        /// <param name="verseNum">
-        /// The verse num.
-        /// </param>
         public void SynchronizeWindow(int chapterNum, int verseNum)
         {
         }
 
-        /// <summary>
-        /// The update browser.
-        /// </summary>
-        /// <param name="isOrientationChangeOnly">
-        /// The is orientation change only.
-        /// </param>
         public void UpdateBrowser(bool isOrientationChangeOnly)
         {
-            this.border1.BorderBrush = new SolidColorBrush(App.Themes.BorderColor);
-            this.WebBrowserBorder.BorderBrush = this.border1.BorderBrush;
-            this.grid1.Background = new SolidColorBrush(App.Themes.TitleBackColor);
-            this.title.Foreground = new SolidColorBrush(App.Themes.TitleFontColor);
+            border1.BorderBrush = new SolidColorBrush(App.Themes.BorderColor);
+            WebBrowserBorder.BorderBrush = border1.BorderBrush;
+            grid1.Background = new SolidColorBrush(App.Themes.TitleBackColor);
+            title.Foreground = new SolidColorBrush(App.Themes.TitleFontColor);
             if (App.Themes.IsMainBackImage && !string.IsNullOrEmpty(App.Themes.MainBackImage))
             {
                 // read from isolated storage.
@@ -266,73 +199,44 @@ namespace CrossConnect
                                 var bitImage = new BitmapImage();
                                 bitImage.SetSource(ms);
                                 var imageBrush = new ImageBrush { ImageSource = bitImage, };
-                                this.AllContent.Background = imageBrush;
+                                AllContent.Background = imageBrush;
                             }
                         }
                         catch (Exception ee)
                         {
                             Debug.WriteLine(ee);
-                            this.AllContent.Background = new SolidColorBrush(App.Themes.MainBackColor);
+                            AllContent.Background = new SolidColorBrush(App.Themes.MainBackColor);
                         }
                     }
                 }
             }
             else
             {
-                this.AllContent.Background = new SolidColorBrush(App.Themes.MainBackColor);
+                AllContent.Background = new SolidColorBrush(App.Themes.MainBackColor);
             }
 
-            this.ProgressPosition.Foreground = new SolidColorBrush(App.Themes.AccentColor);
-            this.WaitingForDownload.Foreground = new SolidColorBrush(App.Themes.AccentColor);
-            this.txtDuration.Foreground = new SolidColorBrush(App.Themes.MainFontColor);
-            this.txtPosition.Foreground = new SolidColorBrush(App.Themes.MainFontColor);
-            var parent = (MainPageSplit)((Grid)((Grid)((Grid)this.Parent).Parent).Parent).Parent;
+            ProgressPosition.Foreground = new SolidColorBrush(App.Themes.AccentColor);
+            WaitingForDownload.Foreground = new SolidColorBrush(App.Themes.AccentColor);
+            txtDuration.Foreground = new SolidColorBrush(App.Themes.MainFontColor);
+            txtPosition.Foreground = new SolidColorBrush(App.Themes.MainFontColor);
+            var parent = (MainPageSplit)((Grid)((Grid)((Grid)Parent).Parent).Parent).Parent;
             if (parent.Orientation == PageOrientation.Landscape || parent.Orientation == PageOrientation.LandscapeLeft
                 || parent.Orientation == PageOrientation.LandscapeRight)
             {
-                this.GridProgressBars.Width = Application.Current.Host.Content.ActualHeight - this.txtPosition.Width * 2
-                                              - 15 - 70;
+                GridProgressBars.Width = Application.Current.Host.Content.ActualHeight - txtPosition.Width * 2 - 15 - 70;
             }
             else
             {
-                this.GridProgressBars.Width = Application.Current.Host.Content.ActualWidth - this.txtPosition.Width * 2
-                                              - 15;
+                GridProgressBars.Width = Application.Current.Host.Content.ActualWidth - txtPosition.Width * 2 - 15;
             }
         }
 
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// The get image.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <returns>
-        /// </returns>
         private static ImageSource GetImage(string path)
         {
             var uri = new Uri(path, UriKind.Relative);
             return new BitmapImage(uri);
         }
 
-        /// <summary>
-        /// The set button visibility.
-        /// </summary>
-        /// <param name="but">
-        /// The but.
-        /// </param>
-        /// <param name="isVisible">
-        /// The is visible.
-        /// </param>
-        /// <param name="image">
-        /// The image.
-        /// </param>
-        /// <param name="pressedImage">
-        /// The pressed image.
-        /// </param>
         private static void SetButtonVisibility(ImageButton but, bool isVisible, string image, string pressedImage)
         {
             if (isVisible)
@@ -349,93 +253,77 @@ namespace CrossConnect
             }
         }
 
-        /// <summary>
-        /// The but close click.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void ButCloseClick(object sender, RoutedEventArgs e)
         {
-            if (this.HitButtonClose != null)
+            BackgroundAudioPlayer.Instance.Close();
+            if (HitButtonClose != null)
             {
-                this.HitButtonClose(this, e);
+                HitButtonClose(this, e);
             }
         }
 
-        /// <summary>
-        /// The but larger click.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void ButLargerClick(object sender, RoutedEventArgs e)
         {
-            this._state.NumRowsIown++;
-            this.ShowSizeButtons();
-            if (this.HitButtonBigger != null)
+            _state.NumRowsIown++;
+            ShowSizeButtons();
+            if (HitButtonBigger != null)
             {
-                this.HitButtonBigger(this, e);
+                HitButtonBigger(this, e);
             }
         }
 
-        /// <summary>
-        /// The but play pause click.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        private void ButNextClick(object sender, RoutedEventArgs e)
+        {
+            BackgroundAudioPlayer.Instance.SkipNext();
+
+            // Prevent the user from repeatedly pressing the button and causing
+            // a backlong of button presses to be handled. This button is re-eneabled
+            // in the TrackReady Playstate handler.
+            SetButtonVisibility(false);
+        }
+
         private void ButPlayPauseClick(object sender, RoutedEventArgs e)
         {
-            this.SetPlayPauseButton(!this._isPlaying);
-        }
-
-        /// <summary>
-        /// The but smaller click.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private void ButSmallerClick(object sender, RoutedEventArgs e)
-        {
-            this._state.NumRowsIown--;
-            this.ShowSizeButtons();
-            if (this.HitButtonSmaller != null)
+            if (PlayState.Playing == BackgroundAudioPlayer.Instance.PlayerState)
             {
-                this.HitButtonSmaller(this, e);
+                BackgroundAudioPlayer.Instance.Pause();
+            }
+            else
+            {
+                BackgroundAudioPlayer.Instance.Play();
             }
         }
 
-        /// <summary>
-        /// The icon downloading complete.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        private void ButPreviousClick(object sender, RoutedEventArgs e)
+        {
+            BackgroundAudioPlayer.Instance.SkipPrevious();
+
+            // Prevent the user from repeatedly pressing the button and causing
+            // a backlong of button presses to be handled. This button is re-eneabled
+            // in the TrackReady Playstate handler.
+            SetButtonVisibility(false);
+        }
+
+        private void ButSmallerClick(object sender, RoutedEventArgs e)
+        {
+            _state.NumRowsIown--;
+            ShowSizeButtons();
+            if (HitButtonSmaller != null)
+            {
+                HitButtonSmaller(this, e);
+            }
+        }
+
         private void IconDownloadingComplete(object sender, OpenReadCompletedEventArgs e)
         {
             try
             {
                 var bitImage = new BitmapImage();
                 bitImage.SetSource(e.Result);
-                this.ImageIcon.Source = bitImage;
-                this.ImageIcon.Width = bitImage.PixelWidth;
-                this.ImageIcon.Height = bitImage.PixelHeight;
+                ImageIcon.Source = bitImage;
+                ImageIcon.Width = bitImage.PixelWidth;
+                ImageIcon.Height = bitImage.PixelHeight;
+                ImageIcon.Visibility = Visibility.Visible;
             }
             catch (Exception ee)
             {
@@ -444,207 +332,141 @@ namespace CrossConnect
         }
 
         /// <summary>
-        /// The media player download progress changed.
+        /// Updates the UI with the current song data.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private void MediaPlayerDownloadProgressChanged(object sender, RoutedEventArgs e)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void InstancePlayStateChanged(object sender, EventArgs e)
         {
-            try
+            switch (BackgroundAudioPlayer.Instance.PlayerState)
             {
-                if (!this._isFirstProgressGotten)
-                {
-                    this._isFirstProgressGotten = true;
-                    this.MediaPlayer.Markers.Clear();
-                    var duration = (int)this.MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
-                    for (int i = 0; i < duration; i += 2)
+                case PlayState.BufferingStarted:
+                    break;
+                case PlayState.Playing:
+                    // try to load the icon.
+                    string msg;
+                    var info = AudioPlayer.ReadMediaInfoFromXml(BackgroundAudioPlayer.Instance.Track.Tag, out msg);
+                    ((MediaReader)_state.Source).Info = info;
+
+                    // start timer
+                    _updatePositionTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
+                    _updatePositionTimer.Tick += UpdatePositionTimerTick;
+                    _updatePositionTimer.Start();
+
+                    if (!string.IsNullOrEmpty(info.Icon))
                     {
-                        this.MediaPlayer.Markers.Add(new TimelineMarker { Time = new TimeSpan(0, 0, 0, i) });
+                        try
+                        {
+                            _client = new WebClient();
+                            _client.OpenReadCompleted += IconDownloadingComplete;
+                            _client.OpenReadAsync(new Uri(info.Icon));
+                        }
+                        catch (Exception ee)
+                        {
+                            Debug.WriteLine("Starting icon download error = " + ee);
+                        }
                     }
 
-                    this.WaitingForDownload.Visibility = Visibility.Collapsed;
-                    this.butPlayPause.Visibility = Visibility.Visible;
-                    this.stackContent.Visibility = Visibility.Visible;
-                    this.SetPlayPauseButton(true);
-                }
+                    SetPlayPauseButton(true);  // Change to pause button
+                    butPrevious.IsEnabled = true;
+                    butNext.IsEnabled = true;
+                    break;
 
-                this.ProgressDownload.Value = 100 * this.MediaPlayer.DownloadProgress;
-            }
-            catch (Exception)
-            {
-                if (this.MediaPlayer != null)
-                {
-                    this.MediaPlayer.Stop();
-                }
+                case PlayState.Paused:
+                case PlayState.Stopped:
+                    _updatePositionTimer.Stop();
+                    SetPlayPauseButton(false);     // Change to play button
+                    break;
             }
         }
 
-        /// <summary>
-        /// The media player loaded.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private void MediaPlayerLoaded(object sender, RoutedEventArgs e)
+        private void MediaPlayerWindowLoaded(object sender, RoutedEventArgs e)
         {
-            this.UpdateBrowser(false);
-            if (this._isLoaded)
+            UpdateBrowser(false);
+            if (_isLoaded)
             {
                 return;
             }
 
-            this._isLoaded = true;
-
-            this.butPlayPause.Visibility = Visibility.Collapsed;
-            this.stackContent.Visibility = Visibility.Collapsed;
-            this.WaitingForDownload.Visibility = Visibility.Visible;
-
-            // try to load the icon.
-            if (!string.IsNullOrEmpty(((MediaReader)this.State.Source).Icon))
+            _isLoaded = true;
+            SetButtonVisibility(false);
+            if (BackgroundAudioPlayer.Instance.Track != null)
             {
-                try
-                {
-                    this._client = new WebClient();
-                    this._client.OpenReadCompleted += this.IconDownloadingComplete;
-                    this._client.OpenReadAsync(new Uri(((MediaReader)this.State.Source).Icon));
-                }
-                catch (Exception ee)
-                {
-                    Debug.WriteLine("Starting icon download error = " + ee);
-                }
+                title.Text = BackgroundAudioPlayer.Instance.Track.Title;
             }
 
-            try
+            switch (BackgroundAudioPlayer.Instance.PlayerState)
             {
-                string url = ((MediaReader)this.State.Source).Link;
-                this.title.Text = ((MediaReader)this.State.Source).TitleBar;
-                this.MediaPlayer.Source = new Uri(url);
-            }
-            catch (Exception ee)
-            {
-                Debug.WriteLine("MediaPlayer.Source error = " + ee);
-                this.WaitingForDownload.Visibility = Visibility.Collapsed;
+                case PlayState.Stopped:
+                case PlayState.Shutdown:
+                case PlayState.Error:
+                case PlayState.Unknown:
+                    // lets start it again.
+                    AudioPlayer.StartNewTrack(((MediaReader)_state.Source).Info, App.DisplaySettings.SoundLink);
+                    break;
+                case PlayState.Playing:
+                    break;
             }
         }
 
-        /// <summary>
-        /// The media player marker reached.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private void MediaPlayerMarkerReached(object sender, TimelineMarkerRoutedEventArgs e)
+        private void SetButtonVisibility(bool isButtonsVisible)
         {
-            try
+            butPlayPause.Visibility = isButtonsVisible ? Visibility.Visible : Visibility.Collapsed;
+            butNext.Visibility = isButtonsVisible ? Visibility.Visible : Visibility.Collapsed;
+            butPrevious.Visibility = isButtonsVisible ? Visibility.Visible : Visibility.Collapsed;
+            stackContent.Visibility = isButtonsVisible ? Visibility.Visible : Visibility.Collapsed;
+            WaitingForDownload.Visibility = !isButtonsVisible ? Visibility.Visible : Visibility.Collapsed;
+            if (isButtonsVisible && null != BackgroundAudioPlayer.Instance.Track)
             {
-                this.ProgressPosition.Value = 100
-                                              *
-                                              (this.MediaPlayer.Position.TotalMinutes
-                                               / this.MediaPlayer.NaturalDuration.TimeSpan.TotalMinutes);
-                this.txtPosition.Text = this.MediaPlayer.Position.ToString("c").Substring(3, 5);
-            }
-            catch (Exception)
-            {
-                if (this.MediaPlayer != null)
-                {
-                    this.MediaPlayer.Stop();
-                }
+                txtDuration.Text = BackgroundAudioPlayer.Instance.Track.Duration.ToString("c").Substring(3, 5);
+                title.Text = BackgroundAudioPlayer.Instance.Track.Title;
             }
         }
 
-        /// <summary>
-        /// The media player media ended.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private void MediaPlayerMediaEnded(object sender, RoutedEventArgs e)
-        {
-            this.SetPlayPauseButton(false);
-        }
-
-        /// <summary>
-        /// The media player media failed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private void MediaPlayerMediaFailed(object sender, ExceptionRoutedEventArgs e)
-        {
-            this.WaitingForDownload.Visibility = Visibility.Collapsed;
-            this.butPlayPause.Visibility = Visibility.Collapsed;
-            this.stackContent.Visibility = Visibility.Collapsed;
-            this.SetPlayPauseButton(false);
-        }
-
-        /// <summary>
-        /// The media player media opened.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private void MediaPlayerMediaOpened(object sender, RoutedEventArgs e)
-        {
-            this.txtDuration.Text = this.MediaPlayer.NaturalDuration.TimeSpan.ToString("c").Substring(3, 5);
-        }
-
-        /// <summary>
-        /// The set play pause button.
-        /// </summary>
-        /// <param name="isPlaying">
-        /// The is playing.
-        /// </param>
         private void SetPlayPauseButton(bool isPlaying)
         {
-            this.butPlayPause.Visibility = Visibility.Visible;
-            if (isPlaying)
-            {
-                this.MediaPlayer.Play();
-                this.MediaPlayer.Markers.Clear();
-                var duration = (int)this.MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
-                for (int i = 0; i < duration; i += 2)
-                {
-                    this.MediaPlayer.Markers.Add(new TimelineMarker { Time = new TimeSpan(0, 0, 0, i) });
-                }
-            }
-            else
-            {
-                this.MediaPlayer.Pause();
-            }
+            SetButtonVisibility(true);
 
             string colorDir = App.Themes.IsButtonColorDark ? "light" : "dark";
-            this.butPlayPause.Image =
+            butPlayPause.Image =
                 GetImage(
                     !isPlaying
                         ? "/Images/" + colorDir + "/appbar.transport.play.rest.png"
                         : "/Images/" + colorDir + "/appbar.transport.pause.rest.png");
-            this.butPlayPause.PressedImage =
+            butPlayPause.PressedImage =
                 GetImage(
                     !isPlaying
                         ? "/Images/" + colorDir + "/appbar.transport.play.rest.pressed.png"
                         : "/Images/" + colorDir + "/appbar.transport.pause.rest.pressed.png");
-            this._isPlaying = isPlaying;
         }
 
-        #endregion
+        private void UpdatePositionTimerTick(object sender, EventArgs e)
+        {
+            // we must delay updating of this webbrowser...
+            if (BackgroundAudioPlayer.Instance.Track != null)
+            {
+                try
+                {
+                    ProgressDownload.Value = BackgroundAudioPlayer.Instance.BufferingProgress * 100;
+                    ProgressPosition.Value = 100
+                                                  *
+                                                  (BackgroundAudioPlayer.Instance.Position.Seconds
+                                                   / BackgroundAudioPlayer.Instance.Track.Duration.Seconds);
+                    txtPosition.Text = BackgroundAudioPlayer.Instance.Position.ToString("c").Substring(3, 5);
+                }
+                catch (Exception ee)
+                {
+                    Logger.Debug("crashed UpdatePositionTimerTick; " + ee);
+                }
+            }
+        }
+
+        #endregion Methods
+
+        #region Other
+
+        // An event that clients can use to be notified whenever the
+        // elements of the list change.
+        #endregion Other
     }
 }

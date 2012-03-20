@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MorphologyTranslator.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The morphology translator.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-#region Header
+﻿#region Header
 
 // <copyright file="MorphologyTranslator.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
@@ -27,6 +18,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect
@@ -35,156 +27,105 @@ namespace CrossConnect
     using System.Collections.Generic;
     using System.Diagnostics;
 
-    /// <summary>
-    /// The morphology translator.
-    /// </summary>
     public static class MorphologyTranslator
     {
-        #region Constants and Fields
+        #region Fields
 
-        /// <summary>
-        /// The case.
-        /// </summary>
         private static readonly Dictionary<string, string> Case = new Dictionary<string, string> {
-                { "N", "Nominative" }, 
-                { "V", "Vocative" }, 
-                { "G", "Genitive" }, 
-                { "D", "Dative" }, 
-                { "A", "Accusative" }, 
+                { "N", "Nominative" },
+                { "V", "Vocative" },
+                { "G", "Genitive" },
+                { "D", "Dative" },
+                { "A", "Accusative" },
             };
-
-        /// <summary>
-        /// The gender.
-        /// </summary>
         private static readonly Dictionary<string, string> Gender = new Dictionary<string, string> { { "M", "Masculine" }, { "F", "Feminine" }, { "N", "Neuter" }, };
-
-        /// <summary>
-        /// The number.
-        /// </summary>
         private static readonly Dictionary<string, string> Number = new Dictionary<string, string> { { "S", "Singular" }, { "P", "Plural" }, };
-
-        /// <summary>
-        /// The person.
-        /// </summary>
         private static readonly Dictionary<string, string> Person = new Dictionary<string, string> { { "1", "First person" }, { "2", "Second person" }, { "3", "Third person" } };
-
-        /// <summary>
-        /// The suffixes.
-        /// </summary>
         private static readonly Dictionary<string, string> Suffixes = new Dictionary<string, string> {
-                { "S", "Superlative" }, 
-                { "C", "Comparative" }, 
-                { "ABB", "Abbreviated form" }, 
-                { "I", "Interrogative" }, 
-                { "N", "Negative" }, 
-                { "K", "Contracted form, or two words merged by crasis" }, 
-                { "ATT", "Attic Greek form" }, 
+                { "S", "Superlative" },
+                { "C", "Comparative" },
+                { "ABB", "Abbreviated form" },
+                { "I", "Interrogative" },
+                { "N", "Negative" },
+                { "K", "Contracted form, or two words merged by crasis" },
+                { "ATT", "Attic Greek form" },
                 { "P", "Particle attached (with relative pronoun)" }
             };
-
-        /// <summary>
-        /// The undeclined forms.
-        /// </summary>
         private static readonly Dictionary<string, MorphTrans> UndeclinedForms = new Dictionary<string, MorphTrans> {
-                { "ADV", new MorphTrans(GetSuffix, "Adverb or adverb and particle combined") }, 
-                { "CONJ", new MorphTrans(GetSuffix, "Conjunction or conjunctive particle") }, 
-                { "COND", new MorphTrans(GetSuffix, "Conditional particle or conjunction") }, 
-                { "PRT", new MorphTrans(GetSuffix, "Particle, disjunctive particle") }, 
-                { "PREP", new MorphTrans(GetSuffix, "Preposition") }, 
-                { "INJ", new MorphTrans(GetSuffix, "Interjection") }, 
-                { "ARAM", new MorphTrans(GetSuffix, "Aramaic transliterated word (indeclinable)") }, 
-                { "HEB", new MorphTrans(GetSuffix, "Hebrew transliterated word (indeclinable)") }, 
-                { "N-PRI", new MorphTrans(GetSuffix, "Indeclinable Proper Noun") }, 
-                { "A-NUI", new MorphTrans(GetSuffix, "Indeclinable Numeral (Adjective)") }, 
-                { "N-LI", new MorphTrans(GetSuffix, "Indeclinable Letter (Noun)") }, 
-                { "N-OI", new MorphTrans(GetSuffix, "Indeclinable Noun of Other type") }, 
-                { "N", new MorphTrans(GetDecline, "Noun") }, 
-                { "A", new MorphTrans(GetDecline, "Adjective") }, 
-                { "R", new MorphTrans(GetDecline, "Relative pronoun") }, 
-                { "C", new MorphTrans(GetDecline, "Reciprocal pronoun") }, 
-                { "D", new MorphTrans(GetDecline, "Demonstrative pronoun") }, 
-                { "T", new MorphTrans(GetDecline, "Definite article") }, 
-                { "K", new MorphTrans(GetDecline, "Correlative pronoun") }, 
-                { "I", new MorphTrans(GetDecline, "Interrogative pronoun") }, 
-                { "X", new MorphTrans(GetDecline, "Indefinite pronoun") }, 
-                { "Q", new MorphTrans(GetDecline, "Correlative or interrogative pronoun") }, 
-                { "F", new MorphTrans(GetPerson, "Reflexive pronoun") }, 
-                { "S", new MorphTrans(GetPerson, "Possessive pronoun") }, 
-                { "P", new MorphTrans(GetPerson, "Personal pronoun") }, 
-                { "V", new MorphTrans(GetVerb, "Verb") }, 
+                { "ADV", new MorphTrans(GetSuffix, "Adverb or adverb and particle combined") },
+                { "CONJ", new MorphTrans(GetSuffix, "Conjunction or conjunctive particle") },
+                { "COND", new MorphTrans(GetSuffix, "Conditional particle or conjunction") },
+                { "PRT", new MorphTrans(GetSuffix, "Particle, disjunctive particle") },
+                { "PREP", new MorphTrans(GetSuffix, "Preposition") },
+                { "INJ", new MorphTrans(GetSuffix, "Interjection") },
+                { "ARAM", new MorphTrans(GetSuffix, "Aramaic transliterated word (indeclinable)") },
+                { "HEB", new MorphTrans(GetSuffix, "Hebrew transliterated word (indeclinable)") },
+                { "N-PRI", new MorphTrans(GetSuffix, "Indeclinable Proper Noun") },
+                { "A-NUI", new MorphTrans(GetSuffix, "Indeclinable Numeral (Adjective)") },
+                { "N-LI", new MorphTrans(GetSuffix, "Indeclinable Letter (Noun)") },
+                { "N-OI", new MorphTrans(GetSuffix, "Indeclinable Noun of Other type") },
+                { "N", new MorphTrans(GetDecline, "Noun") },
+                { "A", new MorphTrans(GetDecline, "Adjective") },
+                { "R", new MorphTrans(GetDecline, "Relative pronoun") },
+                { "C", new MorphTrans(GetDecline, "Reciprocal pronoun") },
+                { "D", new MorphTrans(GetDecline, "Demonstrative pronoun") },
+                { "T", new MorphTrans(GetDecline, "Definite article") },
+                { "K", new MorphTrans(GetDecline, "Correlative pronoun") },
+                { "I", new MorphTrans(GetDecline, "Interrogative pronoun") },
+                { "X", new MorphTrans(GetDecline, "Indefinite pronoun") },
+                { "Q", new MorphTrans(GetDecline, "Correlative or interrogative pronoun") },
+                { "F", new MorphTrans(GetPerson, "Reflexive pronoun") },
+                { "S", new MorphTrans(GetPerson, "Possessive pronoun") },
+                { "P", new MorphTrans(GetPerson, "Personal pronoun") },
+                { "V", new MorphTrans(GetVerb, "Verb") },
             };
-
-        /// <summary>
-        /// The verb mood.
-        /// </summary>
         private static readonly Dictionary<string, string> VerbMood = new Dictionary<string, string> {
-                { "I", "Indicative" }, 
-                { "S", "Subjunctive" }, 
-                { "O", "Optative" }, 
-                { "M", "Imperative" }, 
-                { "N", "Infinitive" }, 
-                { "P", "Participle" }, 
-                { "R", "Imperative-sense participle" }, 
+                { "I", "Indicative" },
+                { "S", "Subjunctive" },
+                { "O", "Optative" },
+                { "M", "Imperative" },
+                { "N", "Infinitive" },
+                { "P", "Participle" },
+                { "R", "Imperative-sense participle" },
             };
-
-        /// <summary>
-        /// The verb suffix.
-        /// </summary>
         private static readonly Dictionary<string, string> VerbSuffix = new Dictionary<string, string> {
-                { "M", "Middle significance" }, 
-                { "C", "Contracted form" }, 
-                { "T", "Transitive" }, 
-                { "A", "Aeolic" }, 
-                { "ATT", "Attic" }, 
-                { "AP", "Apocopated form" }, 
-                { "IRR", "Irregular or Impure form" }, 
+                { "M", "Middle significance" },
+                { "C", "Contracted form" },
+                { "T", "Transitive" },
+                { "A", "Aeolic" },
+                { "ATT", "Attic" },
+                { "AP", "Apocopated form" },
+                { "IRR", "Irregular or Impure form" },
             };
-
-        /// <summary>
-        /// The verb tense.
-        /// </summary>
         private static readonly Dictionary<string, string> VerbTense = new Dictionary<string, string> {
-                { "P", "Present" }, 
-                { "I", "Imperfect" }, 
-                { "F", "Future" }, 
-                { "2F", "Second Future" }, 
-                { "A", "Aorist" }, 
-                { "2A", "Second Aorist" }, 
-                { "R", "Perfect" }, 
-                { "2R", "Second perfect" }, 
-                { "L", "Pluperfect" }, 
-                { "2L", "Second pluperfect" }, 
-                { "X", "No tense stated (adverbial imperative)" }, 
+                { "P", "Present" },
+                { "I", "Imperfect" },
+                { "F", "Future" },
+                { "2F", "Second Future" },
+                { "A", "Aorist" },
+                { "2A", "Second Aorist" },
+                { "R", "Perfect" },
+                { "2R", "Second perfect" },
+                { "L", "Pluperfect" },
+                { "2L", "Second pluperfect" },
+                { "X", "No tense stated (adverbial imperative)" },
             };
-
-        /// <summary>
-        /// The verb voice.
-        /// </summary>
         private static readonly Dictionary<string, string> VerbVoice = new Dictionary<string, string> {
-                { "A", "Active" }, 
-                { "M", "Middle" }, 
-                { "P", "Passive" }, 
-                { "E", "Either middle or passive" }, 
-                { "D", "Middle Deponent" }, 
-                { "O", "Passive deponent" }, 
-                { "N", "Middle or passive deponent" }, 
-                { "Q", "Impersonal active" }, 
-                { "X", "No voice stated" }, 
+                { "A", "Active" },
+                { "M", "Middle" },
+                { "P", "Passive" },
+                { "E", "Either middle or passive" },
+                { "D", "Middle Deponent" },
+                { "O", "Passive deponent" },
+                { "N", "Middle or passive deponent" },
+                { "Q", "Impersonal active" },
+                { "X", "No voice stated" },
             };
 
-        #endregion
+        #endregion Fields
 
-        #region Public Methods and Operators
+        #region Methods
 
-        /// <summary>
-        /// The parse robinson.
-        /// </summary>
-        /// <param name="toParse">
-        /// The to parse.
-        /// </param>
-        /// <returns>
-        /// The parse robinson.
-        /// </returns>
         public static string ParseRobinson(string toParse)
         {
             string retInfo = string.Empty;
@@ -216,22 +157,6 @@ namespace CrossConnect
             return retInfo;
         }
 
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// The get decline.
-        /// </summary>
-        /// <param name="len">
-        /// The len.
-        /// </param>
-        /// <param name="toParse">
-        /// The to parse.
-        /// </param>
-        /// <returns>
-        /// The get decline.
-        /// </returns>
         private static string GetDecline(int len, string toParse)
         {
             string retInfo = string.Empty;
@@ -253,18 +178,6 @@ namespace CrossConnect
             return retInfo;
         }
 
-        /// <summary>
-        /// The get person.
-        /// </summary>
-        /// <param name="len">
-        /// The len.
-        /// </param>
-        /// <param name="toParse">
-        /// The to parse.
-        /// </param>
-        /// <returns>
-        /// The get person.
-        /// </returns>
         private static string GetPerson(int len, string toParse)
         {
             string retInfo = string.Empty;
@@ -284,18 +197,6 @@ namespace CrossConnect
             return retInfo;
         }
 
-        /// <summary>
-        /// The get suffix.
-        /// </summary>
-        /// <param name="len">
-        /// The len.
-        /// </param>
-        /// <param name="toParse">
-        /// The to parse.
-        /// </param>
-        /// <returns>
-        /// The get suffix.
-        /// </returns>
         private static string GetSuffix(int len, string toParse)
         {
             var pieces = new string[0];
@@ -313,18 +214,6 @@ namespace CrossConnect
             return retInfo;
         }
 
-        /// <summary>
-        /// The get verb.
-        /// </summary>
-        /// <param name="len">
-        /// The len.
-        /// </param>
-        /// <param name="toParse">
-        /// The to parse.
-        /// </param>
-        /// <returns>
-        /// The get verb.
-        /// </returns>
         private static string GetVerb(int len, string toParse)
         {
             string retInfo = string.Empty;
@@ -372,60 +261,32 @@ namespace CrossConnect
             return retInfo;
         }
 
-        #endregion
+        #endregion Methods
     }
 
-    /// <summary>
-    /// The morph trans.
-    /// </summary>
     public class MorphTrans
     {
-        #region Constants and Fields
+        #region Fields
 
-        /// <summary>
-        /// The descriptive text.
-        /// </summary>
         public string DescriptiveText;
-
-        /// <summary>
-        /// The to do next stage.
-        /// </summary>
         public NextStage ToDoNextStage;
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MorphTrans"/> class.
-        /// </summary>
-        /// <param name="nextStage">
-        /// The next stage.
-        /// </param>
-        /// <param name="descriptiveText">
-        /// The descriptive text.
-        /// </param>
         public MorphTrans(NextStage nextStage, string descriptiveText)
         {
-            this.ToDoNextStage = nextStage;
-            this.DescriptiveText = descriptiveText;
+            ToDoNextStage = nextStage;
+            DescriptiveText = descriptiveText;
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Delegates
 
-        /// <summary>
-        /// The next stage.
-        /// </summary>
-        /// <param name="pos">
-        /// The pos.
-        /// </param>
-        /// <param name="toParse">
-        /// The to parse.
-        /// </param>
         public delegate string NextStage(int pos, string toParse);
 
-        #endregion
+        #endregion Delegates
     }
 }

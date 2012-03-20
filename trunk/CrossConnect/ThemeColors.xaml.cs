@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ThemeColors.xaml.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The theme colors.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-#region Header
+﻿#region Header
 
 // <copyright file="ThemeColors.xaml.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
@@ -27,6 +18,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect
@@ -51,7 +43,7 @@ namespace CrossConnect
     /// </summary>
     public partial class ThemeColors
     {
-        #region Constants and Fields
+        #region Fields
 
         /// <summary>
         /// The _photo chooser task.
@@ -68,21 +60,21 @@ namespace CrossConnect
         /// </summary>
         private string _mainBackImage;
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ThemeColors"/> class.
         /// </summary>
         public ThemeColors()
         {
-            this.InitializeComponent();
-            this._photoChooserTask = new PhotoChooserTask();
-            this._photoChooserTask.Completed += this.PhotoSelectionCompleted;
+            InitializeComponent();
+            _photoChooserTask = new PhotoChooserTask();
+            _photoChooserTask.Completed += PhotoSelectionCompleted;
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Methods
 
@@ -103,30 +95,30 @@ namespace CrossConnect
                 Theme theme;
                 if (App.Themes.Themes.TryGetValue((Guid)unitId, out theme))
                 {
-                    theme.Name = this.ThemeName.Text;
+                    theme.Name = ThemeName.Text;
                     if (string.IsNullOrEmpty(theme.Name))
                     {
                         theme.Name = Translations.Translate("New") + " " + (int)(new Random().NextDouble() * 100);
                     }
 
-                    theme.BorderColor = this.BorderColor.Color;
-                    theme.AccentColor = this.AccentColor.Color;
-                    theme.TitleFontColor = this.TitleFontColor.Color;
-                    theme.TitleBackColor = this.TitleBackgroundColor.Color;
-                    if (this.IsBackgroundImage.IsChecked != null)
+                    theme.BorderColor = BorderColor.Color;
+                    theme.AccentColor = AccentColor.Color;
+                    theme.TitleFontColor = TitleFontColor.Color;
+                    theme.TitleBackColor = TitleBackgroundColor.Color;
+                    if (IsBackgroundImage.IsChecked != null)
                     {
-                        theme.IsMainBackImage = (bool)this.IsBackgroundImage.IsChecked;
+                        theme.IsMainBackImage = (bool)IsBackgroundImage.IsChecked;
                     }
 
-                    theme.MainBackColor = this.MainBackColor.Color;
-                    theme.MainFontColor = this.MainFontColor.Color;
-                    if (this.IsButtonDark.IsChecked != null)
+                    theme.MainBackColor = MainBackColor.Color;
+                    theme.MainFontColor = MainFontColor.Color;
+                    if (IsButtonDark.IsChecked != null)
                     {
-                        theme.IsButtonColorDark = (bool)this.IsButtonDark.IsChecked;
+                        theme.IsButtonColorDark = (bool)IsButtonDark.IsChecked;
                     }
 
-                    theme.MainBackImage = this._mainBackImage;
-                    theme.FontFamily = this._fontFamily;
+                    theme.MainBackImage = _mainBackImage;
+                    theme.FontFamily = _fontFamily;
                     if (App.Themes.CurrentTheme.Equals(theme.UniqId))
                     {
                         App.Themes.Clone(theme);
@@ -146,22 +138,22 @@ namespace CrossConnect
         /// </param>
         private void AutoRotatePageLoaded(object sender, RoutedEventArgs e)
         {
-            this.ThemeNameText.Text = Translations.Translate("Name");
-            this.BorderColorText.Text = Translations.Translate("Border color");
-            this.AccentColorText.Text = Translations.Translate("Accent color");
-            this.TitleFontColorText.Text = Translations.Translate("Title font color");
-            this.TitleBackgroundColorText.Text = Translations.Translate("Title background color");
-            this.IsBackgroundImage.Header = Translations.Translate("Use an image for the background");
-            this.MainBackColorText.Text = Translations.Translate("Main background color");
-            this.MainBackPicture.Text = Translations.Translate("Main background image");
-            this.MainFontColorText.Text = Translations.Translate("Main font color");
-            this.ThemeFont.Text = Translations.Translate("Font");
-            this.IsButtonDark.Header = Translations.Translate("Dark buttons");
-            this.ButGetFromCamera.Content = Translations.Translate("From the camera");
-            this.ButGetFromDownloaded.Content = Translations.Translate("From the downloads");
+            ThemeNameText.Text = Translations.Translate("Name");
+            BorderColorText.Text = Translations.Translate("Border color");
+            AccentColorText.Text = Translations.Translate("Accent color");
+            TitleFontColorText.Text = Translations.Translate("Title font color");
+            TitleBackgroundColorText.Text = Translations.Translate("Title background color");
+            IsBackgroundImage.Header = Translations.Translate("Use an image for the background");
+            MainBackColorText.Text = Translations.Translate("Main background color");
+            MainBackPicture.Text = Translations.Translate("Main background image");
+            MainFontColorText.Text = Translations.Translate("Main font color");
+            ThemeFont.Text = Translations.Translate("Font");
+            IsButtonDark.Header = Translations.Translate("Dark buttons");
+            ButGetFromCamera.Content = Translations.Translate("From the camera");
+            ButGetFromDownloaded.Content = Translations.Translate("From the downloads");
 
-            ((ApplicationBarIconButton)this.ApplicationBar.Buttons[0]).Text = Translations.Translate("Share this theme");
-            ((ApplicationBarMenuItem)this.ApplicationBar.MenuItems[0]).Text = Translations.Translate("Share this theme");
+            ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).Text = Translations.Translate("Share this theme");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[0]).Text = Translations.Translate("Share this theme");
 
             object unitId;
             if (PhoneApplicationService.Current.State.TryGetValue("ThemeColorsThemeToChange", out unitId))
@@ -169,34 +161,34 @@ namespace CrossConnect
                 Theme theme;
                 if (App.Themes.Themes.TryGetValue((Guid)unitId, out theme))
                 {
-                    this.ThemeName.Text = theme.Name;
-                    this.BorderColor.Color = theme.BorderColor;
-                    this.AccentColor.Color = theme.AccentColor;
-                    this.TitleFontColor.Color = theme.TitleFontColor;
-                    this.TitleBackgroundColor.Color = theme.TitleBackColor;
-                    this.IsBackgroundImage.IsChecked = theme.IsMainBackImage;
-                    this.MainBackColor.Color = theme.MainBackColor;
-                    this.MainFontColor.Color = theme.MainFontColor;
-                    this.IsButtonDark.IsChecked = theme.IsButtonColorDark;
-                    this._mainBackImage = theme.MainBackImage;
-                    this._fontFamily = theme.FontFamily;
-                    this.LoadImageToScreen(theme.MainBackImage);
-                    this.SetFontWindow(theme.FontFamily);
+                    ThemeName.Text = theme.Name;
+                    BorderColor.Color = theme.BorderColor;
+                    AccentColor.Color = theme.AccentColor;
+                    TitleFontColor.Color = theme.TitleFontColor;
+                    TitleBackgroundColor.Color = theme.TitleBackColor;
+                    IsBackgroundImage.IsChecked = theme.IsMainBackImage;
+                    MainBackColor.Color = theme.MainBackColor;
+                    MainFontColor.Color = theme.MainFontColor;
+                    IsButtonDark.IsChecked = theme.IsButtonColorDark;
+                    _mainBackImage = theme.MainBackImage;
+                    _fontFamily = theme.FontFamily;
+                    LoadImageToScreen(theme.MainBackImage);
+                    SetFontWindow(theme.FontFamily);
                 }
             }
 
             object changedFont;
             if (PhoneApplicationService.Current.State.TryGetValue("WebFontSelectWindowSelection", out changedFont))
             {
-                this.SetFontWindow((string)changedFont);
-                this._fontFamily = (string)changedFont;
+                SetFontWindow((string)changedFont);
+                _fontFamily = (string)changedFont;
             }
 
             object selectedImage;
             if (PhoneApplicationService.Current.State.TryGetValue("ImageBrowserSelected", out selectedImage))
             {
-                this._mainBackImage = (string)selectedImage;
-                this.LoadImageToScreen(this._mainBackImage);
+                _mainBackImage = (string)selectedImage;
+                LoadImageToScreen(_mainBackImage);
                 PhoneApplicationService.Current.State.Remove("ImageBrowserSelected");
             }
         }
@@ -214,7 +206,7 @@ namespace CrossConnect
         {
             try
             {
-                this._photoChooserTask.Show();
+                _photoChooserTask.Show();
             }
             catch (InvalidOperationException ex)
             {
@@ -234,7 +226,7 @@ namespace CrossConnect
         private void ButGetFromDownloadedClick(object sender, RoutedEventArgs e)
         {
             PhoneApplicationService.Current.State.Remove("ImageBrowserSelected");
-            this.NavigationService.Navigate(new Uri("/ImageBrowse.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/ImageBrowse.xaml", UriKind.Relative));
         }
 
         /// <summary>
@@ -248,7 +240,7 @@ namespace CrossConnect
         /// </param>
         private void ButShareMyThemeClick(object sender, EventArgs e)
         {
-            this.MenuShareMyThemeClick(sender, e);
+            MenuShareMyThemeClick(sender, e);
         }
 
         /// <summary>
@@ -307,12 +299,12 @@ namespace CrossConnect
         /// </param>
         private void LoadImageToScreen(string imageName)
         {
-            MemoryStream ms = this.GetImageStream(imageName);
+            MemoryStream ms = GetImageStream(imageName);
             if (ms != null)
             {
                 var bitImage = new BitmapImage();
                 bitImage.SetSource(ms);
-                this.MainBackImage.Source = bitImage;
+                MainBackImage.Source = bitImage;
             }
         }
 
@@ -357,8 +349,8 @@ namespace CrossConnect
 
             var emailComposeTask = new EmailComposeTask
                 {
-                    Body = body.ToString(), 
-                    Subject = Translations.Translate("Share this theme"), 
+                    Body = body.ToString(),
+                    Subject = Translations.Translate("Share this theme"),
                     To = "crossconnect@cross-connect.se"
                 };
             emailComposeTask.Show();
@@ -383,7 +375,7 @@ namespace CrossConnect
                     bitImage.SetSource(e.ChosenPhoto);
 
                     // image is a Image Control in the form
-                    this.MainBackImage.Source = bitImage;
+                    MainBackImage.Source = bitImage;
                     e.ChosenPhoto.Position = 0;
                     string name = Path.GetFileName(e.OriginalFileName);
                     using (IsolatedStorageFile isolatedStorageRoot = IsolatedStorageFile.GetUserStoreForApplication())
@@ -410,7 +402,7 @@ namespace CrossConnect
                         fStream.Close();
                     }
 
-                    this._mainBackImage = name;
+                    _mainBackImage = name;
                 }
                 catch (Exception eee)
                 {
@@ -440,13 +432,13 @@ namespace CrossConnect
                           + BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor")
                           + ";decoration:none\" href=\"#\" onclick=\"window.external.Notify('" + fontFamily
                           + "'); event.returnValue=false; return false;\" >" + fontFamily + "</a></p>";
-            this.webBrowser1.NavigateToString(
+            webBrowser1.NavigateToString(
                 BibleZtextReader.HtmlHeader(
-                    App.DisplaySettings, 
-                    BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"), 
-                    BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"), 
-                    BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"), 
-                    20, 
+                    App.DisplaySettings,
+                    BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"),
+                    BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
+                    BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
+                    20,
                     string.Empty) + body + "</body></html>");
         }
 
@@ -461,11 +453,11 @@ namespace CrossConnect
         /// </param>
         private void WebBrowser1ScriptNotify(object sender, NotifyEventArgs e)
         {
-            this.AutoRotatePageBackKeyPress(null, null);
-            PhoneApplicationService.Current.State["WebFontSelectWindowSelection"] = this._fontFamily;
-            this.NavigationService.Navigate(new Uri("/WebFontSelect.xaml", UriKind.Relative));
+            AutoRotatePageBackKeyPress(null, null);
+            PhoneApplicationService.Current.State["WebFontSelectWindowSelection"] = _fontFamily;
+            NavigationService.Navigate(new Uri("/WebFontSelect.xaml", UriKind.Relative));
         }
 
-        #endregion
+        #endregion Methods
     }
 }

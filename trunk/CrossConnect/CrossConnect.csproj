@@ -61,6 +61,7 @@
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="Microsoft.Xna.Framework" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -573,6 +574,10 @@
     <EmbeddedResource Include="Resources\AppResources.zh-TW.resx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AudioPlaybackAgent1\AudioPlaybackAgent1.csproj">
+      <Project>{F2BA106B-3098-495F-90DC-D23E5458C95B}</Project>
+      <Name>AudioPlaybackAgent1</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sword\SwordBackend.csproj">
       <Project>{CE4B6565-208F-41DA-B260-30C8758AD9F4}</Project>
       <Name>SwordBackend</Name>

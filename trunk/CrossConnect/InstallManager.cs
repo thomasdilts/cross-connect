@@ -1,12 +1,3 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InstallManager.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   Main entry into the world of Sword for downloading books
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
 #region Header
 
 // <copyright file="InstallManager.cs" company="Thomas Dilts">
@@ -27,6 +18,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect
@@ -49,36 +41,18 @@ namespace CrossConnect
     using Sword.javaprops;
     using Sword.reader;
 
-    /// <summary>
-    /// Main entry into the world of Sword for downloading books
-    /// </summary>
     public class InstallManager
     {
-        #region Constants and Fields
+        #region Fields
 
-        /// <summary>
-        /// The _callback list retrieved.
-        /// </summary>
         private BibleListReturned _callbackListRetrieved;
-
-        /// <summary>
-        /// The _client.
-        /// </summary>
         private WebClient _client = new WebClient();
-
-        /// <summary>
-        /// The _installers.
-        /// </summary>
         private Dictionary<string, WebInstaller> _installers = new Dictionary<string, WebInstaller>();
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InstallManager"/> class. 
-        ///   * Simple ctor
-        /// </summary>
         public InstallManager()
         {
             var sitemap = new JavaProperties("InstallManager.plugin", false);
@@ -90,88 +64,60 @@ namespace CrossConnect
                 string host = parts[2];
                 string packageDirectory = parts[3];
                 string catalogDirectory = parts[4];
-                this._installers[name] = new WebInstaller(host, packageDirectory, catalogDirectory);
+                _installers[name] = new WebInstaller(host, packageDirectory, catalogDirectory);
             }
 
-            this.AddCustomDownloadLink(this._installers);
+            AddCustomDownloadLink(_installers);
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Delegates
 
-        /// <summary>
-        /// The bible list returned.
-        /// </summary>
-        /// <param name="installers">
-        /// The installers.
-        /// </param>
-        /// <param name="message">
-        /// The message.
-        /// </param>
         public delegate void BibleListReturned(Dictionary<string, WebInstaller> installers, string message);
 
-        #endregion
+        #endregion Delegates
 
-        #region Public Properties
+        #region Properties
 
-        /// <summary>
-        /// Gets Installers.
-        /// </summary>
         public Dictionary<string, WebInstaller> Installers
         {
             get
             {
-                return this._installers;
+                return _installers;
             }
         }
 
-        #endregion
+        #endregion Properties
 
-        #region Public Methods and Operators
+        #region Methods
 
-        /// <summary>
-        /// The get bible download list.
-        /// </summary>
-        /// <param name="callbackListRetrieved">
-        /// The callback list retrieved.
-        /// </param>
         public void GetBibleDownloadList(BibleListReturned callbackListRetrieved)
         {
-            this._callbackListRetrieved = callbackListRetrieved;
+            _callbackListRetrieved = callbackListRetrieved;
             string url =
                 string.Format(
-                    "http://www.cross-connect.se/bibles/getserverlist.php?uuid={0}&language={1}&version={2}", 
-                    App.DisplaySettings.UserUniqueGuuid, 
-                    Translations.IsoLanguageCode, 
+                    "http://www.cross-connect.se/bibles/getserverlist.php?uuid={0}&language={1}&version={2}",
+                    App.DisplaySettings.UserUniqueGuuid,
+                    Translations.IsoLanguageCode,
                     App.Version);
             try
             {
                 var source = new Uri(url);
 
-                this._client = new WebClient();
-                this._client.OpenReadCompleted += this.ClientOpenReadCompleted;
+                _client = new WebClient();
+                _client.OpenReadCompleted += ClientOpenReadCompleted;
                 Logger.Debug("download start");
-                this._client.OpenReadAsync(source);
+                _client.OpenReadAsync(source);
                 Logger.Debug("DownloadStringAsync returned");
             }
             catch (Exception eee)
             {
-                this._callbackListRetrieved(this._installers, string.Empty);
+                _callbackListRetrieved(_installers, string.Empty);
                 Logger.Fail(eee.ToString());
             }
         }
 
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// The add custom download link.
-        /// </summary>
-        /// <param name="installers">
-        /// The installers.
-        /// </param>
         private void AddCustomDownloadLink(Dictionary<string, WebInstaller> installers)
         {
             if (!string.IsNullOrEmpty(App.DisplaySettings.CustomBibleDownloadLinks))
@@ -187,15 +133,6 @@ namespace CrossConnect
             }
         }
 
-        /// <summary>
-        /// The client open read completed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void ClientOpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
         {
             var installers = new Dictionary<string, WebInstaller>();
@@ -274,110 +211,67 @@ namespace CrossConnect
             {
                 Logger.Fail(e.ToString());
                 Logger.Fail(exp.ToString());
-                this._callbackListRetrieved(this._installers, string.Empty);
+                _callbackListRetrieved(_installers, string.Empty);
                 return;
             }
 
-            this.AddCustomDownloadLink(installers);
-            this._installers = installers;
-            this._callbackListRetrieved(installers, msgFromServer);
+            AddCustomDownloadLink(installers);
+            _installers = installers;
+            _callbackListRetrieved(installers, msgFromServer);
         }
 
-        #endregion
+        #endregion Methods
     }
 
-    /// <summary>
-    /// The logger.
-    /// </summary>
     public static class Logger
     {
-        #region Public Methods and Operators
+        #region Methods
 
-        /// <summary>
-        /// The debug.
-        /// </summary>
-        /// <param name="message">
-        /// The message.
-        /// </param>
         public static void Debug(string message)
         {
             System.Diagnostics.Debug.WriteLine(DateTime.Now + " " + message);
         }
 
-        /// <summary>
-        /// The fail.
-        /// </summary>
-        /// <param name="message">
-        /// The message.
-        /// </param>
         public static void Fail(string message)
         {
             System.Diagnostics.Debug.WriteLine(DateTime.Now + " " + message);
         }
 
-        /// <summary>
-        /// The warn.
-        /// </summary>
-        /// <param name="message">
-        /// The message.
-        /// </param>
         public static void Warn(string message)
         {
             System.Diagnostics.Debug.WriteLine(DateTime.Now + " " + message);
         }
 
-        #endregion
+        #endregion Methods
     }
 
-    /// <summary>
-    /// The sword book.
-    /// </summary>
     public class SwordBook
     {
-        #region Constants and Fields
+        #region Fields
 
-        /// <summary>
-        /// The is loaded.
-        /// </summary>
         public readonly bool IsLoaded;
-
-        /// <summary>
-        /// The sbmd.
-        /// </summary>
         public readonly SwordBookMetaData Sbmd;
 
-        /// <summary>
-        /// The zip suffix.
-        /// </summary>
         private const string ZipSuffix = ".zip";
 
-        /// <summary>
-        /// The _client.
-        /// </summary>
         private WebClient _client = new WebClient();
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SwordBook"/> class.
-        /// </summary>
-        /// <param name="internalName">
-        /// The internal name.
-        /// </param>
         public SwordBook(string internalName)
         {
-            this.IsLoaded = false;
+            IsLoaded = false;
             try
             {
                 IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
                 IsolatedStorageFileStream stream =
                     root.OpenFile(
-                        BibleZtextReader.DirConf + '/' + internalName.ToLower() + BibleZtextReader.ExtensionConf, 
+                        BibleZtextReader.DirConf + '/' + internalName.ToLower() + BibleZtextReader.ExtensionConf,
                         FileMode.Open);
-                this.Sbmd = new SwordBookMetaData(stream, internalName);
-                this.IsLoaded = true;
+                Sbmd = new SwordBookMetaData(stream, internalName);
+                IsLoaded = true;
             }
             catch (Exception ee)
             {
@@ -385,76 +279,49 @@ namespace CrossConnect
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SwordBook"/> class.
-        /// </summary>
-        /// <param name="buffer">
-        /// The buffer.
-        /// </param>
-        /// <param name="bookName">
-        /// The book name.
-        /// </param>
         public SwordBook(byte[] buffer, string bookName)
         {
-            this.Sbmd = new SwordBookMetaData(buffer, bookName);
-            this.IsLoaded = true;
+            Sbmd = new SwordBookMetaData(buffer, bookName);
+            IsLoaded = true;
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region Public Events
+        #region Events
 
-        /// <summary>
-        /// The progress completed.
-        /// </summary>
         public event OpenReadCompletedEventHandler ProgressCompleted;
 
-        /// <summary>
-        /// The progress update.
-        /// </summary>
         public event DownloadProgressChangedEventHandler ProgressUpdate;
 
-        #endregion
+        #endregion Events
 
-        #region Public Properties
+        #region Properties
 
-        /// <summary>
-        /// Gets Name.
-        /// </summary>
         public string Name
         {
             get
             {
-                return this.Sbmd.Name;
+                return Sbmd.Name;
             }
         }
 
-        #endregion
+        #endregion Properties
 
-        #region Public Methods and Operators
+        #region Methods
 
-        /// <summary>
-        /// The download book now.
-        /// </summary>
-        /// <param name="iManager">
-        /// The i manager.
-        /// </param>
-        /// <returns>
-        /// The download book now.
-        /// </returns>
         public string DownloadBookNow(WebInstaller iManager)
         {
             try
             {
-                string pathToHost = "http://" + iManager.Host + iManager.PackageDirectory + "/" + this.Sbmd.Initials
+                string pathToHost = "http://" + iManager.Host + iManager.PackageDirectory + "/" + Sbmd.Initials
                                     + ZipSuffix;
                 var source = new Uri(pathToHost);
 
-                this._client = new WebClient();
-                this._client.DownloadProgressChanged += this.ClientDownloadProgressChanged;
-                this._client.OpenReadCompleted += this.ClientOpenReadCompleted;
+                _client = new WebClient();
+                _client.DownloadProgressChanged += ClientDownloadProgressChanged;
+                _client.OpenReadCompleted += ClientOpenReadCompleted;
                 Logger.Debug("download start");
-                this._client.OpenReadAsync(source);
+                _client.OpenReadAsync(source);
                 Logger.Debug("DownloadStringAsync returned");
                 return null;
             }
@@ -465,21 +332,18 @@ namespace CrossConnect
             }
         }
 
-        /// <summary>
-        /// The remove bible.
-        /// </summary>
         public void RemoveBible()
         {
             try
             {
                 IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
-                string modFile = BibleZtextReader.DirConf + '/' + this.Sbmd.InternalName.ToLower()
+                string modFile = BibleZtextReader.DirConf + '/' + Sbmd.InternalName.ToLower()
                                  + BibleZtextReader.ExtensionConf;
-                string bookPath = this.Sbmd.GetCetProperty(ConfigEntryType.ADataPath).ToString().Substring(2);
+                string bookPath = Sbmd.GetCetProperty(ConfigEntryType.ADataPath).ToString().Substring(2);
                 var filesToDelete = new[]
                     {
-                        modFile, bookPath + "ot.bzs", bookPath + "ot.bzv", bookPath + "ot.bzz", bookPath + "nt.bzs", 
-                        bookPath + "nt.bzv", bookPath + "nt.bzz" + bookPath + "ot.czs", bookPath + "ot.czv", 
+                        modFile, bookPath + "ot.bzs", bookPath + "ot.bzv", bookPath + "ot.bzz", bookPath + "nt.bzs",
+                        bookPath + "nt.bzv", bookPath + "nt.bzz" + bookPath + "ot.czs", bookPath + "ot.czv",
                         bookPath + "ot.czz", bookPath + "nt.czs", bookPath + "nt.czv", bookPath + "nt.czz"
                     };
                 foreach (string file in filesToDelete)
@@ -502,17 +366,6 @@ namespace CrossConnect
             }
         }
 
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Create all the directories necesary to make the given path valid.
-        /// </summary>
-        /// <param name="isolatedStorageRoot">
-        /// </param>
-        /// <param name="path">
-        /// </param>
         private static void MakeSurePathExists(IsolatedStorageFile isolatedStorageRoot, string path)
         {
             string[] directories = path.Split("/".ToCharArray());
@@ -535,32 +388,14 @@ namespace CrossConnect
             }
         }
 
-        /// <summary>
-        /// The client download progress changed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void ClientDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            if (this.ProgressUpdate != null)
+            if (ProgressUpdate != null)
             {
-                this.ProgressUpdate(sender, e);
+                ProgressUpdate(sender, e);
             }
         }
 
-        /// <summary>
-        /// The client open read completed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void ClientOpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
         {
             try
@@ -572,9 +407,9 @@ namespace CrossConnect
                 }
                 catch (Exception)
                 {
-                    if (this.ProgressCompleted != null)
+                    if (ProgressCompleted != null)
                     {
-                        this.ProgressCompleted(e.Error.Message, e);
+                        ProgressCompleted(e.Error.Message, e);
                     }
 
                     return;
@@ -619,29 +454,26 @@ namespace CrossConnect
                     }
                 }
 
-                if (this.ProgressCompleted != null)
+                if (ProgressCompleted != null)
                 {
-                    this.ProgressCompleted(null, e);
+                    ProgressCompleted(null, e);
                 }
             }
             catch (Exception exp)
             {
-                if (this.ProgressCompleted != null)
+                if (ProgressCompleted != null)
                 {
-                    this.ProgressCompleted(exp.Message, e);
+                    ProgressCompleted(exp.Message, e);
                 }
             }
         }
 
-        #endregion
+        #endregion Methods
     }
 
-    /// <summary>
-    /// The web installer.
-    /// </summary>
     public class WebInstaller
     {
-        #region Constants and Fields
+        #region Fields
 
         /// <summary>
         ///   * A map of the books in this download area
@@ -689,101 +521,71 @@ namespace CrossConnect
         /// </summary>
         private Stream _resultStream;
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebInstaller"/> class.
-        /// </summary>
-        /// <param name="host">
-        /// The host.
-        /// </param>
-        /// <param name="packageDirectory">
-        /// The package directory.
-        /// </param>
-        /// <param name="catalogDirectory">
-        /// The catalog directory.
-        /// </param>
         public WebInstaller(string host, string packageDirectory, string catalogDirectory)
         {
-            this.Host = host;
-            this.PackageDirectory = packageDirectory;
-            this._catalogDirectory = catalogDirectory;
+            Host = host;
+            PackageDirectory = packageDirectory;
+            _catalogDirectory = catalogDirectory;
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region Public Events
+        #region Events
 
-        /// <summary>
-        /// The progress completed.
-        /// </summary>
         public event OpenReadCompletedEventHandler ProgressCompleted;
 
-        /// <summary>
-        /// The progress update.
-        /// </summary>
         public event DownloadProgressChangedEventHandler ProgressUpdate;
 
-        #endregion
+        #endregion Events
 
-        #region Public Properties
+        #region Properties
 
-        /// <summary>
-        /// Gets a value indicating whether IsLoaded.
-        /// </summary>
         public bool IsLoaded
         {
             get
             {
-                return this._loaded;
+                return _loaded;
             }
         }
 
-        #endregion
+        #endregion Properties
 
-        #region Public Methods and Operators
+        #region Methods
 
-        /// <summary>
-        /// The reload book list.
-        /// </summary>
-        /// <returns>
-        /// The reload book list.
-        /// </returns>
         public string ReloadBookList()
         {
-            this._books.Clear();
-            var uri = new Uri("http://" + this.Host + "/" + this._catalogDirectory + "/" + FileListGz);
-            string errMsg = this.Download(uri);
+            _books.Clear();
+            var uri = new Uri("http://" + Host + "/" + _catalogDirectory + "/" + FileListGz);
+            string errMsg = Download(uri);
             if (errMsg != null)
             {
-                this._loaded = false;
+                _loaded = false;
                 return errMsg;
             }
 
-            this._loaded = true;
+            _loaded = true;
             return null;
         }
 
-        /// <summary>
-        /// The unzip book list.
-        /// </summary>
         public void UnzipBookList()
         {
             GZipInputStream gzip;
             try
             {
-                gzip = new GZipInputStream(this._resultStream);
+                gzip = new GZipInputStream(_resultStream);
             }
             catch (Exception)
             {
-                if (this.ProgressCompleted != null)
+                if (ProgressCompleted != null)
                 {
-                    this.ProgressCompleted(null, null);
+                    ProgressCompleted(null, null);
                 }
 
-                this._loaded = false;
+                _loaded = false;
                 return;
             }
 
@@ -791,7 +593,7 @@ namespace CrossConnect
 
             // long streamLength = e.Result.Length;
             // long streamCounter = 0;
-            this.Entries.Clear();
+            Entries.Clear();
             while (true)
             {
                 TarEntry entry = tin.GetNextEntry();
@@ -802,7 +604,7 @@ namespace CrossConnect
 
                 Deployment.Current.Dispatcher.BeginInvoke(
                     () =>
-                    this.ProgressUpdate(50.0 + (this._resultStream.Position * 50.0 / this._resultStream.Length), null));
+                    ProgressUpdate(50.0 + (_resultStream.Position * 50.0 / _resultStream.Length), null));
                 string @internal = entry.Name;
                 if (!entry.IsDirectory)
                 {
@@ -845,15 +647,15 @@ namespace CrossConnect
 
                         // sbmd.Driver = fake;
                         var book = new SwordBook(buffer, @internal);
-                        this.Entries.Add(book.Name, book);
+                        Entries.Add(book.Name, book);
                     }
                     catch (Exception exp)
                     {
                         Logger.Fail("Failed to load config for entry: " + @internal);
-                        this._loaded = true;
-                        if (this.ProgressCompleted != null)
+                        _loaded = true;
+                        if (ProgressCompleted != null)
                         {
-                            Deployment.Current.Dispatcher.BeginInvoke(() => this.ProgressCompleted(exp.Message, null));
+                            Deployment.Current.Dispatcher.BeginInvoke(() => ProgressCompleted(exp.Message, null));
                         }
 
                         return;
@@ -861,85 +663,54 @@ namespace CrossConnect
                 }
             }
 
-            this._loaded = true;
-            if (this.ProgressCompleted != null)
+            _loaded = true;
+            if (ProgressCompleted != null)
             {
-                Deployment.Current.Dispatcher.BeginInvoke(() => this.ProgressCompleted(null, null));
+                Deployment.Current.Dispatcher.BeginInvoke(() => ProgressCompleted(null, null));
             }
 
-            this._resultStream.Close();
-            this._resultStream.Dispose();
+            _resultStream.Close();
+            _resultStream.Dispose();
         }
 
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// The client download progress changed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void ClientDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            if (this.ProgressUpdate != null)
+            if (ProgressUpdate != null)
             {
-                this.ProgressUpdate(e.ProgressPercentage / 2.0, e);
+                ProgressUpdate(e.ProgressPercentage / 2.0, e);
             }
         }
 
-        /// <summary>
-        /// The client open read completed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void ClientOpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
         {
             if (e.Error != null)
             {
-                if (this.ProgressCompleted != null)
+                if (ProgressCompleted != null)
                 {
-                    this.ProgressCompleted(e.Error.Message, null);
+                    ProgressCompleted(e.Error.Message, null);
                 }
 
                 return;
             }
 
-            this._resultStream = e.Result;
-            if (this.ProgressCompleted != null)
+            _resultStream = e.Result;
+            if (ProgressCompleted != null)
             {
-                this.ProgressCompleted(null, null);
+                ProgressCompleted(null, null);
             }
         }
 
-        /// <summary>
-        /// The download.
-        /// </summary>
-        /// <param name="source">
-        /// The source.
-        /// </param>
-        /// <returns>
-        /// The download.
-        /// </returns>
         private string Download(Uri source)
         {
             try
             {
-                this._client = new WebClient { Encoding = Encoding.BigEndianUnicode };
-                this._client.DownloadProgressChanged += this.ClientDownloadProgressChanged;
-                this._client.OpenReadCompleted += this.ClientOpenReadCompleted;
+                _client = new WebClient { Encoding = Encoding.BigEndianUnicode };
+                _client.DownloadProgressChanged += ClientDownloadProgressChanged;
+                _client.OpenReadCompleted += ClientOpenReadCompleted;
                 Logger.Debug("download start");
 
                 // client.DownloadStringAsync(source);
-                this._client.OpenReadAsync(source);
+                _client.OpenReadAsync(source);
                 Logger.Debug("DownloadStringAsync returned");
                 return null;
             }
@@ -950,6 +721,6 @@ namespace CrossConnect
             }
         }
 
-        #endregion
+        #endregion Methods
     }
 }

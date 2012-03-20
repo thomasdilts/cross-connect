@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RemoveBibles.xaml.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The remove bibles.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-#region Header
+﻿#region Header
 
 // <copyright file="RemoveBibles.xaml.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
@@ -27,6 +18,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect
@@ -41,26 +33,26 @@ namespace CrossConnect
     /// </summary>
     public partial class RemoveBibles
     {
-        #region Constants and Fields
+        #region Fields
 
         /// <summary>
         /// The _is in selection changed.
         /// </summary>
         private bool _isInSelectionChanged;
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RemoveBibles"/> class.
         /// </summary>
         public RemoveBibles()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Methods
 
@@ -69,7 +61,7 @@ namespace CrossConnect
         /// </summary>
         private void LoadList()
         {
-            this.SelectList.Items.Clear();
+            SelectList.Items.Clear();
             Dictionary<string, SwordBook> biblesAndCommentaries =
                 App.InstalledBibles.InstalledBibles.Concat(App.InstalledBibles.InstalledCommentaries).ToDictionary(
                     x => x.Key, x => x.Value);
@@ -77,9 +69,9 @@ namespace CrossConnect
             {
                 var block = new TextBlock
                     {
-                       Text = book.Value.Name, Tag = book.Value.Sbmd.Initials, TextWrapping = TextWrapping.Wrap 
+                       Text = book.Value.Name, Tag = book.Value.Sbmd.Initials, TextWrapping = TextWrapping.Wrap
                     };
-                this.SelectList.Items.Add(block);
+                SelectList.Items.Add(block);
             }
         }
 
@@ -94,8 +86,8 @@ namespace CrossConnect
         /// </param>
         private void PhoneApplicationPageLoaded(object sender, RoutedEventArgs e)
         {
-            this.PageTitle.Text = Translations.Translate("Select bible to delete");
-            this.LoadList();
+            PageTitle.Text = Translations.Translate("Select bible to delete");
+            LoadList();
         }
 
         /// <summary>
@@ -109,12 +101,12 @@ namespace CrossConnect
         /// </param>
         private void SelectListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (this._isInSelectionChanged)
+            if (_isInSelectionChanged)
             {
                 return;
             }
 
-            this._isInSelectionChanged = true;
+            _isInSelectionChanged = true;
             SwordBook foundBook = null;
             string foundKey = string.Empty;
             var index = (string)((TextBlock)e.AddedItems[0]).Tag;
@@ -169,17 +161,17 @@ namespace CrossConnect
                     }
 
                     App.InstalledBibles.Save();
-                    this.LoadList();
+                    LoadList();
                 }
                 else
                 {
-                    this.SelectList.SelectedItem = null;
+                    SelectList.SelectedItem = null;
                 }
             }
 
-            this._isInSelectionChanged = false;
+            _isInSelectionChanged = false;
         }
 
-        #endregion
+        #endregion Methods
     }
 }

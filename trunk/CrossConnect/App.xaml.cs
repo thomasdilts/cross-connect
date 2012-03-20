@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="App.xaml.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The window type.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-#region Header
+﻿#region Header
 
 // <copyright file="App.xaml.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
@@ -27,6 +18,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect
@@ -42,6 +34,8 @@ namespace CrossConnect
     using System.Windows.Navigation;
     using System.Xml;
 
+    using AudioPlaybackAgent1;
+
     using CrossConnect.readers;
 
     using Microsoft.Phone.Controls;
@@ -51,153 +45,52 @@ namespace CrossConnect
 
     #region Enumerations
 
-    /// <summary>
-    /// The window type.
-    /// </summary>
     public enum WindowType
     {
-        /// <summary>
-        /// The window bible.
-        /// </summary>
-        WindowBible, 
-
-        /// <summary>
-        /// The window bible notes.
-        /// </summary>
-        WindowBibleNotes, 
-
-        /// <summary>
-        /// The window search.
-        /// </summary>
-        WindowSearch, 
-
-        /// <summary>
-        /// The window history.
-        /// </summary>
-        WindowHistory, 
-
-        /// <summary>
-        /// The window bookmarks.
-        /// </summary>
-        WindowBookmarks, 
-
-        /// <summary>
-        /// The window daily plan.
-        /// </summary>
-        WindowDailyPlan, 
-
-        /// <summary>
-        /// The window added notes.
-        /// </summary>
-        WindowAddedNotes, 
-
-        /// <summary>
-        /// The window commentary.
-        /// </summary>
-        WindowCommentary, 
-
-        /// <summary>
-        /// The window translator.
-        /// </summary>
-        WindowTranslator, 
-
-        /// <summary>
-        /// The window internet link.
-        /// </summary>
-        WindowInternetLink, 
-
-        /// <summary>
-        /// The window lexicon link.
-        /// </summary>
-        WindowLexiconLink, 
-
-        /// <summary>
-        /// The window media player.
-        /// </summary>
-        WindowMediaPlayer, 
+        WindowBible,
+        WindowBibleNotes,
+        WindowSearch,
+        WindowHistory,
+        WindowBookmarks,
+        WindowDailyPlan,
+        WindowAddedNotes,
+        WindowCommentary,
+        WindowTranslator,
+        WindowInternetLink,
+        WindowLexiconLink,
+        WindowMediaPlayer
     }
 
     #endregion Enumerations
 
-    /// <summary>
-    /// The app.
-    /// </summary>
     public partial class App
     {
-        #region Constants and Fields
+        #region Fields
 
-        /// <summary>
-        /// The version.
-        /// </summary>
         public const string Version = "1.0.0.25";
-
-        /// <summary>
-        /// The web dir isolated.
-        /// </summary>
         public const string WebDirIsolated = "webtemporary";
 
-        /// <summary>
-        /// The daily plan.
-        /// </summary>
         public static SerializableDailyPlan DailyPlan = new SerializableDailyPlan();
-
-        /// <summary>
-        /// The display settings.
-        /// </summary>
         public static DisplaySettings DisplaySettings = new DisplaySettings();
-
-        /// <summary>
-        /// The installed bibles.
-        /// </summary>
         public static InstalledBiblesAndCommentaries InstalledBibles = new InstalledBiblesAndCommentaries();
-
-        /// <summary>
-        /// The is first time in main page split.
-        /// </summary>
         public static int IsFirstTimeInMainPageSplit;
-
-        /// <summary>
-        /// The main window.
-        /// </summary>
         public static MainPageSplit MainWindow;
-
-        /// <summary>
-        /// The open windows.
-        /// </summary>
         public static List<ITiledWindow> OpenWindows = new List<ITiledWindow>();
-
-        /// <summary>
-        /// The place markers.
-        /// </summary>
         public static BiblePlaceMarkers PlaceMarkers = new BiblePlaceMarkers();
-
-        /// <summary>
-        /// The themes.
-        /// </summary>
         public static Theme Themes = new Theme();
 
-        /// <summary>
-        /// The max num windows.
-        /// </summary>
         private const int MaxNumWindows = 30;
 
-        /// <summary>
-        ///   Avoid double-initialization
-        /// </summary>
         private bool _phoneApplicationInitialized;
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="App"/> class. 
-        ///   Constructor for the Application object.
-        /// </summary>
         public App()
         {
             // Global handler for uncaught exceptions.
-            this.UnhandledException += this.Application_UnhandledException;
+            UnhandledException += Application_UnhandledException;
 
             // Show graphics profiling information while debugging.
             if (Debugger.IsAttached)
@@ -214,32 +107,23 @@ namespace CrossConnect
             }
 
             // Standard Silverlight initialization
-            this.InitializeComponent();
+            InitializeComponent();
 
             // Phone-specific initialization
-            this.InitializePhoneApplication();
+            InitializePhoneApplication();
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region Public Events
+        #region Events
 
-        /// <summary>
-        /// The book marks changed.
-        /// </summary>
         public static event WindowSourceChanged BookMarksChanged;
 
-        /// <summary>
-        /// The history changed.
-        /// </summary>
         public static event WindowSourceChanged HistoryChanged;
 
-        /// <summary>
-        /// The personal notes changed.
-        /// </summary>
         public static event WindowSourceChanged PersonalNotesChanged;
 
-        #endregion
+        #endregion Events
 
         #region Properties
 
@@ -247,15 +131,15 @@ namespace CrossConnect
         ///   Provides easy access to the root frame of the Phone Application.
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
-        private PhoneApplicationFrame RootFrame { get; set; }
+        private PhoneApplicationFrame RootFrame
+        {
+            get; set;
+        }
 
-        #endregion
+        #endregion Properties
 
-        #region Public Methods and Operators
+        #region Methods
 
-        /// <summary>
-        /// The add bookmark.
-        /// </summary>
         public static void AddBookmark()
         {
             // we take from the history and add to the bookmark
@@ -287,15 +171,6 @@ namespace CrossConnect
             }
         }
 
-        /// <summary>
-        /// The add history.
-        /// </summary>
-        /// <param name="chapterNum">
-        /// The chapter num.
-        /// </param>
-        /// <param name="verseNum">
-        /// The verse num.
-        /// </param>
         public static void AddHistory(int chapterNum, int verseNum)
         {
             // stop repeats
@@ -322,23 +197,12 @@ namespace CrossConnect
             RaiseHistoryChangeEvent();
         }
 
-        /// <summary>
-        /// The add media window.
-        /// </summary>
-        /// <param name="link">
-        /// The link.
-        /// </param>
-        /// <param name="titleBar">
-        /// The title bar.
-        /// </param>
-        /// <param name="icon">
-        /// The icon.
-        /// </param>
-        public static void AddMediaWindow(string link, string titleBar, string icon)
+        public static void AddMediaWindow(AudioPlayer.MediaInfo info)
         {
             var state = new SerializableWindowState
                 {
-                   WindowType = WindowType.WindowMediaPlayer, Source = new MediaReader(link, titleBar, icon) 
+                    WindowType = WindowType.WindowMediaPlayer,
+                    Source = new MediaReader(info)
                 };
             var nextWindow = new MediaPlayerWindow { State = state };
             nextWindow.State.CurIndex = OpenWindows.Count();
@@ -357,29 +221,11 @@ namespace CrossConnect
             }
         }
 
-        /// <summary>
-        /// The add window.
-        /// </summary>
-        /// <param name="bibleToLoad">
-        /// The bible to load.
-        /// </param>
-        /// <param name="bibleDescription">
-        /// The bible description.
-        /// </param>
-        /// <param name="typeOfWindow">
-        /// The type of window.
-        /// </param>
-        /// <param name="textSize">
-        /// The text size.
-        /// </param>
-        /// <param name="source">
-        /// The source.
-        /// </param>
         public static void AddWindow(
-            string bibleToLoad, 
-            string bibleDescription, 
-            WindowType typeOfWindow, 
-            double textSize, 
+            string bibleToLoad,
+            string bibleDescription,
+            WindowType typeOfWindow,
+            double textSize,
             IBrowserTextSource source = null)
         {
             var nextWindow = new BrowserTitledWindow { State = { HtmlFontSize = textSize } };
@@ -399,9 +245,6 @@ namespace CrossConnect
             }
         }
 
-        /// <summary>
-        /// The raise bookmark change event.
-        /// </summary>
         public static void RaiseBookmarkChangeEvent()
         {
             if (BookMarksChanged != null)
@@ -410,9 +253,6 @@ namespace CrossConnect
             }
         }
 
-        /// <summary>
-        /// The raise history change event.
-        /// </summary>
         public static void RaiseHistoryChangeEvent()
         {
             if (HistoryChanged != null)
@@ -421,9 +261,6 @@ namespace CrossConnect
             }
         }
 
-        /// <summary>
-        /// The raise personal notes change event.
-        /// </summary>
         public static void RaisePersonalNotesChangeEvent()
         {
             if (PersonalNotesChanged != null)
@@ -432,18 +269,6 @@ namespace CrossConnect
             }
         }
 
-        /// <summary>
-        /// The synchronize all windows.
-        /// </summary>
-        /// <param name="chapterNum">
-        /// The chapter num.
-        /// </param>
-        /// <param name="verseNum">
-        /// The verse num.
-        /// </param>
-        /// <param name="curIndex">
-        /// The cur index.
-        /// </param>
         public static void SynchronizeAllWindows(int chapterNum, int verseNum, int curIndex)
         {
             for (int i = 0; i < OpenWindows.Count(); i++)
@@ -455,84 +280,36 @@ namespace CrossConnect
             }
         }
 
-        #endregion
-
-        // Code to execute when the application is activated (brought to foreground)
-        // This code will not execute when the application is first launched
-        #region Methods
-
-        /// <summary>
-        /// The application activated.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void ApplicationActivated(object sender, ActivatedEventArgs e)
         {
-            this.LoadPersistantObjects();
+            LoadPersistantObjects();
         }
 
         // Code to execute when the application is closing (eg, user hit Back)
         // This code will not execute when the application is deactivated
-        /// <summary>
-        /// The application closing.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void ApplicationClosing(object sender, ClosingEventArgs e)
         {
-            this.SavePersistantObjects();
+            SavePersistantObjects();
         }
 
         // Code to execute when the application is deactivated (sent to background)
         // This code will not execute when the application is closing
-        /// <summary>
-        /// The application deactivated.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void ApplicationDeactivated(object sender, DeactivatedEventArgs e)
         {
-            this.SavePersistantObjects();
+            SavePersistantObjects();
         }
 
         // Code to execute when the application is launching (eg, from Start)
         // This code will not execute when the application is reactivated
-        /// <summary>
-        /// The application launching.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void ApplicationLaunching(object sender, LaunchingEventArgs e)
         {
-            this.LoadPersistantObjects();
+            LoadPersistantObjects();
+
+            // this is just to force the library to load¨. It is not used.
+            var library = new Microsoft.Xna.Framework.Media.MediaLibrary();
         }
 
         // Code to execute on Unhandled Exceptions
-        /// <summary>
-        /// The application_ unhandled exception.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
             if (Debugger.IsAttached)
@@ -551,50 +328,35 @@ namespace CrossConnect
         }
 
         // Do not add any additional code to this method
-        /// <summary>
-        /// The complete initialize phone application.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void CompleteInitializePhoneApplication(object sender, NavigationEventArgs e)
         {
             // Set the root visual to allow the application to render
-            this.RootVisual = this.RootFrame;
+            RootVisual = RootFrame;
 
             // Remove this handler since it is no longer needed
-            this.RootFrame.Navigated -= this.CompleteInitializePhoneApplication;
+            RootFrame.Navigated -= CompleteInitializePhoneApplication;
         }
 
         // Do not add any additional code to this method
-        /// <summary>
-        /// The initialize phone application.
-        /// </summary>
         private void InitializePhoneApplication()
         {
-            if (this._phoneApplicationInitialized)
+            if (_phoneApplicationInitialized)
             {
                 return;
             }
 
             // Create the frame but don't set it as RootVisual yet; this allows the splash
             // screen to remain active until the application is ready to render.
-            this.RootFrame = new TransitionFrame();
-            this.RootFrame.Navigated += this.CompleteInitializePhoneApplication;
+            RootFrame = new TransitionFrame();
+            RootFrame.Navigated += CompleteInitializePhoneApplication;
 
             // Handle navigation failures
-            this.RootFrame.NavigationFailed += this.RootFrame_NavigationFailed;
+            RootFrame.NavigationFailed += RootFrame_NavigationFailed;
 
             // Ensure we don't initialize again
-            this._phoneApplicationInitialized = true;
+            _phoneApplicationInitialized = true;
         }
 
-        /// <summary>
-        /// The load persistant objects.
-        /// </summary>
         private void LoadPersistantObjects()
         {
             DailyPlan = new SerializableDailyPlan();
@@ -663,13 +425,14 @@ namespace CrossConnect
                             {
                                 var types = new[]
                                     {
-                                        typeof(SerializableWindowState), typeof(BibleZtextReader.VersePos), 
-                                        typeof(BibleZtextReader.ChapterPos), typeof(BibleZtextReader.BookPos), 
-                                        typeof(BibleZtextReader), typeof(BibleNoteReader), 
-                                        typeof(BibleZtextReaderSerialData), typeof(CommentZtextReader), 
-                                        typeof(TranslatorReader), typeof(BookMarkReader), typeof(HistoryReader), 
-                                        typeof(SearchReader), typeof(DailyPlanReader), typeof(PersonalNotesReader), 
-                                        typeof(InternetLinkReader), typeof(MediaReader), typeof(GreekHebrewDictReader)
+                                        typeof(SerializableWindowState), typeof(BibleZtextReader.VersePos),
+                                        typeof(BibleZtextReader.ChapterPos), typeof(BibleZtextReader.BookPos),
+                                        typeof(BibleZtextReader), typeof(BibleNoteReader),
+                                        typeof(BibleZtextReaderSerialData), typeof(CommentZtextReader),
+                                        typeof(TranslatorReader), typeof(BookMarkReader), typeof(HistoryReader),
+                                        typeof(SearchReader), typeof(DailyPlanReader), typeof(PersonalNotesReader),
+                                        typeof(InternetLinkReader), typeof(MediaReader), typeof(GreekHebrewDictReader),
+                                        typeof(AudioPlayer.MediaInfo)
                                     };
                                 var ser = new DataContractSerializer(typeof(SerializableWindowState), types);
                                 var state = (SerializableWindowState)ser.ReadObject(reader);
@@ -766,15 +529,6 @@ namespace CrossConnect
         }
 
         // Code to execute if a navigation fails
-        /// <summary>
-        /// The root frame_ navigation failed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             if (Debugger.IsAttached)
@@ -784,9 +538,6 @@ namespace CrossConnect
             }
         }
 
-        /// <summary>
-        /// The save persistant objects.
-        /// </summary>
         private void SavePersistantObjects()
         {
             // remove all current settings.
@@ -809,20 +560,20 @@ namespace CrossConnect
             {
                 var types = new[]
                     {
-                        typeof(SerializableWindowState), typeof(BibleZtextReader.VersePos), 
-                        typeof(BibleZtextReader.ChapterPos), typeof(BibleZtextReader.BookPos), typeof(BibleZtextReader), 
-                        typeof(BibleNoteReader), typeof(BibleZtextReaderSerialData), typeof(CommentZtextReader), 
-                        typeof(TranslatorReader), typeof(BookMarkReader), typeof(HistoryReader), typeof(SearchReader), 
-                        typeof(DailyPlanReader), typeof(PersonalNotesReader), typeof(InternetLinkReader), 
-                        typeof(MediaReader), typeof(GreekHebrewDictReader)
+                        typeof(SerializableWindowState), typeof(BibleZtextReader.VersePos),
+                        typeof(BibleZtextReader.ChapterPos), typeof(BibleZtextReader.BookPos), typeof(BibleZtextReader),
+                        typeof(BibleNoteReader), typeof(BibleZtextReaderSerialData), typeof(CommentZtextReader),
+                        typeof(TranslatorReader), typeof(BookMarkReader), typeof(HistoryReader), typeof(SearchReader),
+                        typeof(DailyPlanReader), typeof(PersonalNotesReader), typeof(InternetLinkReader),
+                        typeof(MediaReader), typeof(GreekHebrewDictReader), typeof(AudioPlayer.MediaInfo)
                     };
                 var ser = new DataContractSerializer(typeof(SerializableWindowState), types);
                 using (var sw = new StringWriter())
                 {
                     var settings = new XmlWriterSettings
                         {
-                            OmitXmlDeclaration = true, 
-                            Indent = true, 
+                            OmitXmlDeclaration = true,
+                            Indent = true,
                             NamespaceHandling = NamespaceHandling.OmitDuplicates
                         };
                     using (XmlWriter writer = XmlWriter.Create(sw, settings))
@@ -842,7 +593,7 @@ namespace CrossConnect
             {
                 var settings = new XmlWriterSettings
                     {
-                       OmitXmlDeclaration = true, Indent = true, NamespaceHandling = NamespaceHandling.OmitDuplicates 
+                       OmitXmlDeclaration = true, Indent = true, NamespaceHandling = NamespaceHandling.OmitDuplicates
                     };
                 using (XmlWriter writer = XmlWriter.Create(sw, settings))
                 {
@@ -857,7 +608,7 @@ namespace CrossConnect
             {
                 var settings = new XmlWriterSettings
                     {
-                       OmitXmlDeclaration = true, Indent = true, NamespaceHandling = NamespaceHandling.OmitDuplicates 
+                       OmitXmlDeclaration = true, Indent = true, NamespaceHandling = NamespaceHandling.OmitDuplicates
                     };
                 using (XmlWriter writer = XmlWriter.Create(sw, settings))
                 {
@@ -874,7 +625,7 @@ namespace CrossConnect
             {
                 var settings = new XmlWriterSettings
                     {
-                       OmitXmlDeclaration = true, Indent = true, NamespaceHandling = NamespaceHandling.OmitDuplicates 
+                       OmitXmlDeclaration = true, Indent = true, NamespaceHandling = NamespaceHandling.OmitDuplicates
                     };
                 using (XmlWriter writer = XmlWriter.Create(sw, settings))
                 {
@@ -905,96 +656,59 @@ namespace CrossConnect
             IsolatedStorageSettings.ApplicationSettings["CurrentScreen"] = currentScreen;
         }
 
-        #endregion
+        #endregion Methods
 
-        /// <summary>
-        /// The bible place markers.
-        /// </summary>
+        #region Nested Types
+
         [DataContract(IsReference = true)]
         [KnownType(typeof(BiblePlaceMarker))]
         public class BiblePlaceMarkers
         {
-            #region Constants and Fields
+            #region Fields
 
-            /// <summary>
-            /// The bookmarks.
-            /// </summary>
             [DataMember(Name = "bookmarks")]
             public List<BiblePlaceMarker> Bookmarks = new List<BiblePlaceMarker>();
-
-            /// <summary>
-            /// The history.
-            /// </summary>
             [DataMember(Name = "history")]
             public List<BiblePlaceMarker> History = new List<BiblePlaceMarker>();
 
-            #endregion
+            #endregion Fields
         }
 
-        /// <summary>
-        /// The serializable daily plan.
-        /// </summary>
         [DataContract]
         public class SerializableDailyPlan
         {
-            #region Constants and Fields
+            #region Fields
 
-            /// <summary>
-            /// The current chapter number.
-            /// </summary>
             [DataMember(Name = "currentChapterNumber")]
             public int CurrentChapterNumber;
-
-            /// <summary>
-            /// The current verse number.
-            /// </summary>
             [DataMember(Name = "currentVerseNumber")]
             public int CurrentVerseNumber;
-
-            /// <summary>
-            /// The personal notes.
-            /// </summary>
             [DataMember(Name = "personalNotes")]
-            public Dictionary<int, Dictionary<int, BiblePlaceMarker>> PersonalNotes =
+            public Dictionary<int, Dictionary<int, BiblePlaceMarker>> PersonalNotes = 
                 new Dictionary<int, Dictionary<int, BiblePlaceMarker>>();
-
-            /// <summary>
-            /// The plan bible.
-            /// </summary>
             [DataMember]
             public string PlanBible = string.Empty;
-
-            /// <summary>
-            /// The plan bible description.
-            /// </summary>
             [DataMember]
             public string PlanBibleDescription = string.Empty;
-
-            /// <summary>
-            /// The plan day number.
-            /// </summary>
             [DataMember(Name = "planDayNumber")]
             public int PlanDayNumber;
-
-            /// <summary>
-            /// The plan number.
-            /// </summary>
             [DataMember(Name = "planNumber")]
             public int PlanNumber;
-
-            /// <summary>
-            /// The plan start date.
-            /// </summary>
             [DataMember(Name = "planStartDate")]
             public DateTime PlanStartDate = DateTime.Now;
-
-            /// <summary>
-            /// The plan text size.
-            /// </summary>
             [DataMember]
             public double PlanTextSize = 5;
 
-            #endregion
+            #endregion Fields
         }
+
+        #endregion Nested Types
+
+        #region Other
+
+        // Code to execute when the application is activated (brought to foreground)
+        // This code will not execute when the application is first launched
+
+        #endregion Other
     }
 }

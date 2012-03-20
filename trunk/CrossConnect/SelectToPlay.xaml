@@ -50,7 +50,6 @@
                  Style="{StaticResource PhoneTextNormalStyle}" />
     </StackPanel>
     <ProgressBar Grid.Row="1" Name="WaitingForDownload" Margin="0,30,0,0" IsIndeterminate="True" />
-    <toolkit:ToggleSwitch Grid.Row="1" Header="WP7 Media Player" IsChecked="false" Name="useMediaPlayer" />
     <ListBox Grid.Row="2" SelectionChanged="SelectListSelectionChanged" Name="SelectList" />
   </Grid>
 

@@ -3,7 +3,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:CrossConnect"
              mc:Ignorable="d" FontFamily="{StaticResource PhoneFontFamilyNormal}" FontSize="{StaticResource PhoneFontSizeNormal}"
              Foreground="{StaticResource PhoneForegroundBrush}" d:DesignHeight="427" d:DesignWidth="414"
-             xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone">
+             xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone" Loaded="MediaPlayerWindowLoaded">
 
 
   <Border BorderBrush="Silver" BorderThickness="3" Name="border1">
@@ -20,7 +20,8 @@
                   HorizontalAlignment="Left" Margin="0,0,0,0">
         <TextBlock Width="285" Margin="7,0,0,0" Grid.Column="1" Grid.Row="0" Name="title" Text="" />
         <local:ImageButton Width="40" Click="ButLargerClick"
-                           Image="/Images/dark/appbar.feature.search.rest.png" PressedImage="/Images/dark/appbar.feature.search.rest.pressed.png"
+                           Image="/Images/dark/appbar.feature.search.rest.png" 
+                           PressedImage="/Images/dark/appbar.feature.search.rest.pressed.png"
                            x:Name="butLarger" Template="{StaticResource ImageButtonControlTemplate}" />
         <local:ImageButton Width="40" Click="ButSmallerClick" Image="/Images/dark/appbar.minus.rest.png"
                            PressedImage="/Images/dark/appbar.minus.rest.pressed.png" x:Name="butSmaller"
@@ -42,16 +43,20 @@
               <TextBlock TextAlignment="Center" Name="txtDuration" Text="00:00" Width="60" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-              <local:ImageButton VerticalAlignment="Center" Margin="0,0,25,0" Width="55"
-                                 Click="ButPlayPauseClick" Image="/Images/dark/appbar.cancel.rest.png"
-                                 PressedImage="/Images/dark/appbar.cancel.rest.pressed.png" x:Name="butPlayPause"
-                                 Template="{StaticResource ImageButtonControlTemplate}" />
-              <Image Width="55" Name="ImageIcon" />
+                <local:ImageButton VerticalAlignment="Center" Margin="0,0,25,0" Width="55"
+                        Click="ButPreviousClick"  Image="/Images/dark/appbar.cancel.rest.png"
+                        PressedImage="/Images/dark/appbar.cancel.rest.pressed.png" x:Name="butPrevious"
+                        Template="{StaticResource ImageButtonControlTemplate}" />
+                <local:ImageButton VerticalAlignment="Center" Margin="0,0,25,0" Width="55"
+                        Click="ButPlayPauseClick" Image="/Images/dark/appbar.cancel.rest.png"
+                        PressedImage="/Images/dark/appbar.cancel.rest.pressed.png" x:Name="butPlayPause"
+                        Template="{StaticResource ImageButtonControlTemplate}" />
+                <local:ImageButton VerticalAlignment="Center" Margin="0,0,25,0" Width="55"
+                        Click="ButNextClick"  Image="/Images/dark/appbar.cancel.rest.png"
+                        PressedImage="/Images/dark/appbar.cancel.rest.pressed.png" x:Name="butNext"
+                        Template="{StaticResource ImageButtonControlTemplate}" />
+                <Image Width="55" Name="ImageIcon" />
             </StackPanel>
-            <MediaElement Name="MediaPlayer" Volume="1" AutoPlay="True"
-                          DownloadProgressChanged="MediaPlayerDownloadProgressChanged" Loaded="MediaPlayerLoaded"
-                          MarkerReached="MediaPlayerMarkerReached" MediaOpened="MediaPlayerMediaOpened" MediaEnded="MediaPlayerMediaEnded"
-                          MediaFailed="MediaPlayerMediaFailed" />
           </StackPanel>
         </StackPanel>
       </Border>

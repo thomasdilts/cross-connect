@@ -1,15 +1,14 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+﻿#region Header
+
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TranslatorReader.cs" company="">
-//   
+//
 // </copyright>
 // <summary>
 //   Load from a file all the book and verse pointers to the bzz file so that
 //   we can later read the bzz file quickly and efficiently.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-#region Header
-
 // <copyright file="TranslatorReader.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
@@ -28,6 +27,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect.readers
@@ -46,7 +46,7 @@ namespace CrossConnect.readers
     [KnownType(typeof(VersePos))]
     public class TranslatorReader : BibleZtextReader
     {
-        #region Constants and Fields
+        #region Fields
 
         /// <summary>
         /// The display text.
@@ -64,9 +64,9 @@ namespace CrossConnect.readers
         /// </summary>
         private string[] _toTranslate;
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TranslatorReader"/> class.
@@ -85,7 +85,7 @@ namespace CrossConnect.readers
         {
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Delegates
 
@@ -106,9 +106,9 @@ namespace CrossConnect.readers
         /// </param>
         public delegate void ShowProgress(double percent, int totalFound, bool isAbort, bool isFinished);
 
-        #endregion
+        #endregion Delegates
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
         /// Gets a value indicating whether IsHearable.
@@ -165,9 +165,9 @@ namespace CrossConnect.readers
             }
         }
 
-        #endregion
+        #endregion Properties
 
-        #region Public Methods and Operators
+        #region Methods
 
         /// <summary>
         /// The get info.
@@ -191,11 +191,11 @@ namespace CrossConnect.readers
         /// The title.
         /// </param>
         public override void GetInfo(
-            out int bookNum, 
-            out int absouteChaptNum, 
-            out int relChaptNum, 
-            out int verseNum, 
-            out string fullName, 
+            out int bookNum,
+            out int absouteChaptNum,
+            out int relChaptNum,
+            out int verseNum,
+            out string fullName,
             out string title)
         {
             verseNum = 0;
@@ -207,7 +207,7 @@ namespace CrossConnect.readers
         }
 
         /// <summary>
-        /// The translate this.
+        /// The translate 
         /// </summary>
         /// <param name="toTranslate">
         /// The to translate.
@@ -220,8 +220,8 @@ namespace CrossConnect.readers
         /// </param>
         public void TranslateThis(string[] toTranslate, bool[] isTranslateable, string fromLanguage)
         {
-            this._toTranslate = toTranslate;
-            this._isTranslateable = isTranslateable;
+            _toTranslate = toTranslate;
+            _isTranslateable = isTranslateable;
             var ggl = new TranslateByGoogle();
             for (int i = 0; i < isTranslateable.Length; i++)
             {
@@ -230,14 +230,10 @@ namespace CrossConnect.readers
                     continue;
                 }
 
-                ggl.GetGoogleTranslationAsync(toTranslate[i], fromLanguage, this.TextTranslatedByGoogle);
+                ggl.GetGoogleTranslationAsync(toTranslate[i], fromLanguage, TextTranslatedByGoogle);
                 break;
             }
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The get chapter html.
@@ -273,24 +269,24 @@ namespace CrossConnect.readers
         /// The get chapter html.
         /// </returns>
         protected override string GetChapterHtml(
-            DisplaySettings displaySettings, 
-            string htmlBackgroundColor, 
-            string htmlForegroundColor, 
-            string htmlPhoneAccentColor, 
-            double htmlFontSize, 
-            string fontFamily, 
-            bool isNotesOnly, 
-            bool addStartFinishHtml, 
+            DisplaySettings displaySettings,
+            string htmlBackgroundColor,
+            string htmlForegroundColor,
+            string htmlPhoneAccentColor,
+            double htmlFontSize,
+            string fontFamily,
+            bool isNotesOnly,
+            bool addStartFinishHtml,
             bool forceReload)
         {
             // Debug.WriteLine("SearchReader GetChapterHtml.text=" + displayText);
             return HtmlHeader(
-                displaySettings, 
-                htmlBackgroundColor, 
-                htmlForegroundColor, 
-                htmlPhoneAccentColor, 
-                htmlFontSize, 
-                fontFamily) + this.DisplayText + "</body></html>";
+                displaySettings,
+                htmlBackgroundColor,
+                htmlForegroundColor,
+                htmlPhoneAccentColor,
+                htmlFontSize,
+                fontFamily) + DisplayText + "</body></html>";
         }
 
         /// <summary>
@@ -304,29 +300,29 @@ namespace CrossConnect.readers
         /// </param>
         private void TextTranslatedByGoogle(string translation, bool isError)
         {
-            this.DisplayText = string.Empty;
+            DisplayText = string.Empty;
             if (isError)
             {
-                this.DisplayText = translation;
+                DisplayText = translation;
             }
             else
             {
-                for (int i = 0; i < this._isTranslateable.Length; i++)
+                for (int i = 0; i < _isTranslateable.Length; i++)
                 {
-                    if (this._isTranslateable[i])
+                    if (_isTranslateable[i])
                     {
-                        this.DisplayText += translation;
+                        DisplayText += translation;
                     }
                     else
                     {
-                        this.DisplayText += this._toTranslate[i];
+                        DisplayText += _toTranslate[i];
                     }
                 }
             }
 
-            this.RaiseSourceChangedEvent();
+            RaiseSourceChangedEvent();
         }
 
-        #endregion
+        #endregion Methods
     }
 }

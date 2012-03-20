@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WebFontSelect.xaml.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The web font select.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-#region Header
+﻿#region Header
 
 // <copyright file="WebFontSelect.xaml.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
@@ -27,6 +18,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect
@@ -44,17 +36,17 @@ namespace CrossConnect
     /// </summary>
     public partial class WebFontSelect
     {
-        #region Constructors and Destructors
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebFontSelect"/> class.
         /// </summary>
         public WebFontSelect()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Methods
 
@@ -69,7 +61,7 @@ namespace CrossConnect
         /// </param>
         private void AutoRotatePageLoaded(object sender, RoutedEventArgs e)
         {
-            this.PageTitle.Text = Translations.Translate("Select the language");
+            PageTitle.Text = Translations.Translate("Select the language");
 
             var sb = new StringBuilder();
             foreach (var font in Theme.FontFamilies)
@@ -81,13 +73,13 @@ namespace CrossConnect
                     + "'); event.returnValue=false; return false;\" >" + font.Key + "</a></p>");
             }
 
-            this.webBrowser1.NavigateToString(
+            webBrowser1.NavigateToString(
                 BibleZtextReader.HtmlHeader(
-                    App.DisplaySettings, 
-                    BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"), 
-                    BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"), 
-                    BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"), 
-                    20, 
+                    App.DisplaySettings,
+                    BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"),
+                    BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
+                    BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
+                    20,
                     string.Empty) + sb + "</body></html>");
         }
 
@@ -116,9 +108,9 @@ namespace CrossConnect
         private void WebBrowser1ScriptNotify(object sender, NotifyEventArgs e)
         {
             PhoneApplicationService.Current.State["WebFontSelectWindowSelection"] = e.Value;
-            if (this.NavigationService.CanGoBack)
+            if (NavigationService.CanGoBack)
             {
-                this.NavigationService.GoBack();
+                NavigationService.GoBack();
             }
         }
 
@@ -135,6 +127,6 @@ namespace CrossConnect
         {
         }
 
-        #endregion
+        #endregion Methods
     }
 }

@@ -1,15 +1,14 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+﻿#region Header
+
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SearchReader.cs" company="">
-//   
+//
 // </copyright>
 // <summary>
 //   Load from a file all the book and verse pointers to the bzz file so that
 //   we can later read the bzz file quickly and efficiently.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-#region Header
-
 // <copyright file="SearchReader.cs" company="Thomas Dilts">
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
@@ -28,6 +27,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect.readers
@@ -50,7 +50,7 @@ namespace CrossConnect.readers
     [KnownType(typeof(VersePos))]
     public class SearchReader : BibleZtextReader
     {
-        #region Constants and Fields
+        #region Fields
 
         /// <summary>
         /// The display text.
@@ -82,9 +82,9 @@ namespace CrossConnect.readers
         [DataMember]
         public int SearchTypeIndex;
 
-        #endregion
+        #endregion Fields
 
-        #region Constructors and Destructors
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchReader"/> class.
@@ -103,7 +103,7 @@ namespace CrossConnect.readers
         {
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Delegates
 
@@ -124,9 +124,9 @@ namespace CrossConnect.readers
         /// </param>
         public delegate void ShowProgress(double percent, int totalFound, bool isAbort, bool isFinished);
 
-        #endregion
+        #endregion Delegates
 
-        #region Public Properties
+        #region Properties
 
         /// <summary>
         /// Gets a value indicating whether IsHearable.
@@ -183,9 +183,9 @@ namespace CrossConnect.readers
             }
         }
 
-        #endregion
+        #endregion Properties
 
-        #region Public Methods and Operators
+        #region Methods
 
         /// <summary>
         /// The do search.
@@ -209,15 +209,15 @@ namespace CrossConnect.readers
         /// The progress.
         /// </param>
         public void DoSearch(
-            DisplaySettings displaySettings, 
-            int searchTypeIndex, 
-            string searchText, 
-            bool isIgnoreCase, 
-            List<int> chaptListToSearch, 
+            DisplaySettings displaySettings,
+            int searchTypeIndex,
+            string searchText,
+            bool isIgnoreCase,
+            List<int> chaptListToSearch,
             ShowProgress progress)
         {
-            this.SearchTypeIndex = searchTypeIndex;
-            this.SearchText = searchText;
+            SearchTypeIndex = searchTypeIndex;
+            SearchText = searchText;
 
             var displayTextBody = new StringBuilder();
             var regex = new Regex(searchText, isIgnoreCase ? RegexOptions.IgnoreCase : RegexOptions.None);
@@ -226,16 +226,16 @@ namespace CrossConnect.readers
             double lastProcent = 0;
             for (i = 0; i < chaptListToSearch.Count; i++)
             {
-                byte[] chapterBuffer = this.GetChapterBytes(chaptListToSearch[i]);
+                byte[] chapterBuffer = GetChapterBytes(chaptListToSearch[i]);
                 string chapter = Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
                 MatchCollection matches = regex.Matches(chapter);
                 if (matches.Count > 0)
                 {
                     bool isInPoetry = false;
                     // now we must search each verse in the chapter
-                    for (int j = 0; j < this.Chapters[chaptListToSearch[i]].Verses.Count; j++)
+                    for (int j = 0; j < Chapters[chaptListToSearch[i]].Verses.Count; j++)
                     {
-                        VersePos verse = this.Chapters[chaptListToSearch[i]].Verses[j];
+                        VersePos verse = Chapters[chaptListToSearch[i]].Verses[j];
 
                         // clean up the verse and make sure the text is still there.
                         string textId = "CHAP_" + chaptListToSearch[i] + "_VERS_" + j;
@@ -243,21 +243,21 @@ namespace CrossConnect.readers
                                    + "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.Notify('"
                                    + textId + "'); event.returnValue=false; return false;\" >"
                                    + (displaySettings.SmallVerseNumbers ? "<sup>" : "(")
-                                   + this.GetFullName(this.Chapters[chaptListToSearch[i]].Booknum) + " "
-                                   + (this.Chapters[chaptListToSearch[i]].BookRelativeChapterNum + 1) + ":" + (j + 1)
+                                   + GetFullName(Chapters[chaptListToSearch[i]].Booknum) + " "
+                                   + (Chapters[chaptListToSearch[i]].BookRelativeChapterNum + 1) + ":" + (j + 1)
                                    + (displaySettings.SmallVerseNumbers ? " </sup>" : ")");
                         const string htmlSuffix = "</a></p><hr />";
                         int noteMarker = 'a';
-                        string verseTxt = this.ParseOsisText(
-                            displaySettings, 
-                            string.Empty, 
-                            string.Empty, 
-                            chapterBuffer, 
-                            (int)verse.StartPos, 
-                            verse.Length, 
-                            this.Serial.IsIsoEncoding, 
-                            false, 
-                            true, 
+                        string verseTxt = ParseOsisText(
+                            displaySettings,
+                            string.Empty,
+                            string.Empty,
+                            chapterBuffer,
+                            (int)verse.StartPos,
+                            verse.Length,
+                            Serial.IsIsoEncoding,
+                            false,
+                            true,
                             ref noteMarker,
                             ref isInPoetry);
                         matches = regex.Matches(verseTxt);
@@ -300,7 +300,7 @@ namespace CrossConnect.readers
                 }
             }
 
-            this.DisplayText = displayTextBody.ToString();
+            DisplayText = displayTextBody.ToString();
             progress(100, numFoundMatches, chaptListToSearch.Count > i, true);
             Debug.WriteLine("Done searching.");
         }
@@ -327,11 +327,11 @@ namespace CrossConnect.readers
         /// The title.
         /// </param>
         public override void GetInfo(
-            out int bookNum, 
-            out int absouteChaptNum, 
-            out int relChaptNum, 
-            out int verseNum, 
-            out string fullName, 
+            out int bookNum,
+            out int absouteChaptNum,
+            out int relChaptNum,
+            out int verseNum,
+            out string fullName,
             out string title)
         {
             verseNum = 0;
@@ -340,7 +340,7 @@ namespace CrossConnect.readers
             relChaptNum = 0;
             fullName = string.Empty;
             string extraText = string.Empty;
-            switch (this.SearchTypeIndex)
+            switch (SearchTypeIndex)
             {
                 case 0:
                     extraText = Translations.Translate("Whole bible");
@@ -356,12 +356,8 @@ namespace CrossConnect.readers
                     break;
             }
 
-            title = Translations.Translate("Search") + "; " + this.SearchText + "; " + extraText;
+            title = Translations.Translate("Search") + "; " + SearchText + "; " + extraText;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// The get chapter html.
@@ -397,26 +393,26 @@ namespace CrossConnect.readers
         /// The get chapter html.
         /// </returns>
         protected override string GetChapterHtml(
-            DisplaySettings displaySettings, 
-            string htmlBackgroundColor, 
-            string htmlForegroundColor, 
-            string htmlPhoneAccentColor, 
-            double htmlFontSize, 
-            string fontFamily, 
-            bool isNotesOnly, 
-            bool addStartFinishHtml, 
+            DisplaySettings displaySettings,
+            string htmlBackgroundColor,
+            string htmlForegroundColor,
+            string htmlPhoneAccentColor,
+            double htmlFontSize,
+            string fontFamily,
+            bool isNotesOnly,
+            bool addStartFinishHtml,
             bool forceReload)
         {
             // Debug.WriteLine("SearchReader GetChapterHtml.text=" + displayText);
             return HtmlHeader(
-                displaySettings, 
-                htmlBackgroundColor, 
-                htmlForegroundColor, 
-                htmlPhoneAccentColor, 
-                htmlFontSize, 
-                fontFamily) + this.DisplayText + "</body></html>";
+                displaySettings,
+                htmlBackgroundColor,
+                htmlForegroundColor,
+                htmlPhoneAccentColor,
+                htmlFontSize,
+                fontFamily) + DisplayText + "</body></html>";
         }
 
-        #endregion
+        #endregion Methods
     }
 }
