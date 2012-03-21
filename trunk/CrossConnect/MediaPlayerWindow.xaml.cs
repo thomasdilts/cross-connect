@@ -38,6 +38,7 @@ namespace CrossConnect
 
     using Microsoft.Phone.BackgroundAudio;
     using Microsoft.Phone.Controls;
+    using Microsoft.Phone.Tasks;
 
     using readers;
 
@@ -118,14 +119,12 @@ namespace CrossConnect
             if (parent.Orientation == PageOrientation.Landscape || parent.Orientation == PageOrientation.LandscapeLeft
                 || parent.Orientation == PageOrientation.LandscapeRight)
             {
-                title.Width = Application.Current.Host.Content.ActualHeight
-                                   - butClose.Width * numButtonsShowing - 15 - butClose.Width * 2;
+                title.Width = Application.Current.Host.Content.ActualHeight - (butClose.Width * numButtonsShowing) - 15 - (butClose.Width * 2);
                 title.MaxWidth = title.Width;
             }
             else
             {
-                title.Width = Application.Current.Host.Content.ActualWidth
-                                   - butClose.Width * numButtonsShowing - 15;
+                title.Width = Application.Current.Host.Content.ActualWidth - (butClose.Width * numButtonsShowing) - 15;
                 title.MaxWidth = title.Width;
             }
         }
@@ -182,19 +181,19 @@ namespace CrossConnect
                         try
                         {
                             using (
-                                IsolatedStorageFileStream fStream =
+                                IsolatedStorageFileStream stream =
                                     isolatedStorageRoot.OpenFile(
                                         App.WebDirIsolated + "/images/" + App.Themes.MainBackImage, FileMode.Open))
                             {
                                 var buffer = new byte[10000];
                                 int len;
                                 var ms = new MemoryStream();
-                                while ((len = fStream.Read(buffer, 0, buffer.GetUpperBound(0))) > 0)
+                                while ((len = stream.Read(buffer, 0, buffer.GetUpperBound(0))) > 0)
                                 {
                                     ms.Write(buffer, 0, len);
                                 }
 
-                                fStream.Close();
+                                stream.Close();
                                 ms.Position = 0;
                                 var bitImage = new BitmapImage();
                                 bitImage.SetSource(ms);
@@ -223,11 +222,11 @@ namespace CrossConnect
             if (parent.Orientation == PageOrientation.Landscape || parent.Orientation == PageOrientation.LandscapeLeft
                 || parent.Orientation == PageOrientation.LandscapeRight)
             {
-                GridProgressBars.Width = Application.Current.Host.Content.ActualHeight - txtPosition.Width * 2 - 15 - 70;
+                GridProgressBars.Width = Application.Current.Host.Content.ActualHeight - (txtPosition.Width * 2) - 15 - 70;
             }
             else
             {
-                GridProgressBars.Width = Application.Current.Host.Content.ActualWidth - txtPosition.Width * 2 - 15;
+                GridProgressBars.Width = Application.Current.Host.Content.ActualWidth - (txtPosition.Width * 2) - 15;
             }
         }
 
@@ -331,6 +330,23 @@ namespace CrossConnect
             }
         }
 
+        private void ImageIconTap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var info = ((MediaReader)_state.Source).Info;
+            if (info != null && !string.IsNullOrEmpty(info.IconLink))
+            {
+                try
+                {
+                    var webBrowserTask = new WebBrowserTask { Uri = new Uri(info.IconLink) };
+                    webBrowserTask.Show();
+                }
+                catch (Exception ee)
+                {
+                    Debug.WriteLine("ImageIconTap crash; " + ee);
+                }
+            }
+        }
+
         /// <summary>
         /// Updates the UI with the current song data.
         /// </summary>
@@ -346,35 +362,16 @@ namespace CrossConnect
                     // try to load the icon.
                     string msg;
                     var info = AudioPlayer.ReadMediaInfoFromXml(BackgroundAudioPlayer.Instance.Track.Tag, out msg);
-                    ((MediaReader)_state.Source).Info = info;
-
-                    // start timer
-                    _updatePositionTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
-                    _updatePositionTimer.Tick += UpdatePositionTimerTick;
-                    _updatePositionTimer.Start();
-
-                    if (!string.IsNullOrEmpty(info.Icon))
-                    {
-                        try
-                        {
-                            _client = new WebClient();
-                            _client.OpenReadCompleted += IconDownloadingComplete;
-                            _client.OpenReadAsync(new Uri(info.Icon));
-                        }
-                        catch (Exception ee)
-                        {
-                            Debug.WriteLine("Starting icon download error = " + ee);
-                        }
-                    }
-
-                    SetPlayPauseButton(true);  // Change to pause button
-                    butPrevious.IsEnabled = true;
-                    butNext.IsEnabled = true;
+                    ShowTrack(info);
                     break;
 
                 case PlayState.Paused:
                 case PlayState.Stopped:
-                    _updatePositionTimer.Stop();
+                    if (_updatePositionTimer != null)
+                    {
+                        _updatePositionTimer.Stop();
+                    }
+
                     SetPlayPauseButton(false);     // Change to play button
                     break;
             }
@@ -389,6 +386,18 @@ namespace CrossConnect
             }
 
             _isLoaded = true;
+            string colorDir = App.Themes.IsButtonColorDark ? "light" : "dark";
+            SetButtonVisibility(
+                butNext,
+                true,
+                "/Images/" + colorDir + "/appbar.transport.ff.rest.png",
+                "/Images/" + colorDir + "/appbar.transport.ff.pressed.png");
+            SetButtonVisibility(
+                 butPrevious,
+                 true,
+                 "/Images/" + colorDir + "/appbar.transport.rew.rest.png",
+                 "/Images/" + colorDir + "/appbar.transport.rew.pressed.png");
+
             SetButtonVisibility(false);
             if (BackgroundAudioPlayer.Instance.Track != null)
             {
@@ -402,9 +411,20 @@ namespace CrossConnect
                 case PlayState.Error:
                 case PlayState.Unknown:
                     // lets start it again.
-                    AudioPlayer.StartNewTrack(((MediaReader)_state.Source).Info, App.DisplaySettings.SoundLink);
+                    AudioPlayer.StartNewTrack(((MediaReader)_state.Source).Info);
                     break;
                 case PlayState.Playing:
+                case PlayState.Paused:
+                    if (BackgroundAudioPlayer.Instance.Track != null)
+                    {
+                        string msg;
+                        AudioPlayer.MediaInfo info = AudioPlayer.ReadMediaInfoFromXml(BackgroundAudioPlayer.Instance.Track.Tag, out msg);
+                        if (!string.IsNullOrEmpty(info.Src))
+                        {
+                            this.ShowTrack(info);
+                        }
+                    }
+
                     break;
             }
         }
@@ -440,6 +460,43 @@ namespace CrossConnect
                         : "/Images/" + colorDir + "/appbar.transport.pause.rest.pressed.png");
         }
 
+        private void ShowTrack(AudioPlayer.MediaInfo info)
+        {
+            ((MediaReader)_state.Source).Info = info;
+            if (BackgroundAudioPlayer.Instance.PlayerState == PlayState.Playing)
+            {
+                // start timer
+                _updatePositionTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
+                _updatePositionTimer.Tick += UpdatePositionTimerTick;
+                _updatePositionTimer.Start();
+            }
+            else
+            {
+                if (_updatePositionTimer != null)
+                {
+                    _updatePositionTimer.Stop();
+                }
+            }
+
+            if (!string.IsNullOrEmpty(info.Icon))
+            {
+                try
+                {
+                    _client = new WebClient();
+                    _client.OpenReadCompleted += IconDownloadingComplete;
+                    _client.OpenReadAsync(new Uri(info.Icon));
+                }
+                catch (Exception ee)
+                {
+                    Debug.WriteLine("Starting icon download error = " + ee);
+                }
+            }
+
+            SetPlayPauseButton(BackgroundAudioPlayer.Instance.PlayerState == PlayState.Playing);
+            butPrevious.IsEnabled = true;
+            butNext.IsEnabled = true;
+        }
+
         private void UpdatePositionTimerTick(object sender, EventArgs e)
         {
             // we must delay updating of this webbrowser...
@@ -448,11 +505,18 @@ namespace CrossConnect
                 try
                 {
                     ProgressDownload.Value = BackgroundAudioPlayer.Instance.BufferingProgress * 100;
-                    ProgressPosition.Value = 100
-                                                  *
-                                                  (BackgroundAudioPlayer.Instance.Position.Seconds
-                                                   / BackgroundAudioPlayer.Instance.Track.Duration.Seconds);
-                    txtPosition.Text = BackgroundAudioPlayer.Instance.Position.ToString("c").Substring(3, 5);
+                    if (BackgroundAudioPlayer.Instance.Track.Duration.Seconds != 0)
+                    {
+                        ProgressPosition.Value = (100.0 * BackgroundAudioPlayer.Instance.Position.TotalSeconds)
+                                                  / BackgroundAudioPlayer.Instance.Track.Duration.TotalSeconds;
+                        txtPosition.Text = BackgroundAudioPlayer.Instance.Position.ToString("c").Substring(3, 5);
+                        txtDuration.Text = BackgroundAudioPlayer.Instance.Track.Duration.ToString("c").Substring(3, 5);
+                    }
+                    else
+                    {
+                        ProgressPosition.Value = 0;
+                        txtPosition.Text = "00:00";
+                    }
                 }
                 catch (Exception ee)
                 {
@@ -462,11 +526,5 @@ namespace CrossConnect
         }
 
         #endregion Methods
-
-        #region Other
-
-        // An event that clients can use to be notified whenever the
-        // elements of the list change.
-        #endregion Other
     }
 }

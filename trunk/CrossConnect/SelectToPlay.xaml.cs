@@ -189,7 +189,7 @@ namespace CrossConnect
 
             var info = (AudioPlayer.MediaInfo)((TextBlock)e.AddedItems[0]).Tag;
 
-            AudioPlayer.StartNewTrack(info, App.DisplaySettings.SoundLink);
+            AudioPlayer.StartNewTrack(info);
             App.AddMediaWindow(info);
             if (NavigationService.CanGoBack)
             {

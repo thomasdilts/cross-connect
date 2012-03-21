@@ -55,7 +55,7 @@
                         Click="ButNextClick"  Image="/Images/dark/appbar.cancel.rest.png"
                         PressedImage="/Images/dark/appbar.cancel.rest.pressed.png" x:Name="butNext"
                         Template="{StaticResource ImageButtonControlTemplate}" />
-                <Image Width="55" Name="ImageIcon" />
+                <Image Width="55" Name="ImageIcon" Tap="ImageIconTap" />
             </StackPanel>
           </StackPanel>
         </StackPanel>

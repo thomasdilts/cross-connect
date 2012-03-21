@@ -5,19 +5,13 @@
     using System.Diagnostics;
     using System.Globalization;
     using System.IO;
-    using System.IO.IsolatedStorage;
     using System.Linq;
-    using System.Net;
-    using System.Reflection;
     using System.Runtime.Serialization;
     using System.Windows;
-    using System.Windows.Media.Imaging;
-    using System.Windows.Resources;
     using System.Xml;
 
     using Microsoft.Devices;
     using Microsoft.Phone.BackgroundAudio;
-    using Microsoft.Phone.Logging;
 
     using Sword;
     using Sword.reader;
@@ -26,16 +20,8 @@
     {
         #region Fields
 
-        private static string _soundLink = string.Empty;
-
         private static volatile bool _classInitialized;
         private static volatile MediaInfo _currentInfo;
-        private static volatile WebClient _nextClient;
-        private static volatile MediaInfo _nextInfo;
-        private static volatile WebClient _previousClient;
-        private static volatile MediaInfo _previousInfo;
-        private static volatile bool _waitingForNext;
-        private static volatile bool _waitingForPrevious;
 
         #endregion Fields
 
@@ -64,33 +50,6 @@
 
         #region Methods
 
-        public static void GetBookAndChapterFromAbsoluteChapter(int absolutChapter, out int bookNum, out int relChapter)
-        {
-            const int BooksInBible = 66;
-            var booksStartAbsoluteChapter = new int[]
-                {
-                    0, 50, 90, 117, 153, 187, 211, 232, 236, 267, 291, 313, 338, 367, 403, 413, 426, 436, 478, 628, 659,
-                    671, 679, 745, 797, 802, 850, 862, 876, 879, 888, 889, 893, 900, 903, 906, 909, 911, 925, 929, 957,
-                    973, 997, 1018, 1046, 1062, 1078, 1091, 1097, 1103, 1107, 1111, 1116, 1119, 1125, 1129, 1132, 1133,
-                    1146, 1151, 1156, 1159, 1164, 1165, 1166, 1167, 1189
-                };
-            bookNum = 1;
-            relChapter = absolutChapter + 1;
-            for (int i = 1; i <= BooksInBible; i++)
-            {
-                if (absolutChapter < booksStartAbsoluteChapter[i])
-                {
-                    bookNum = i;
-                    relChapter = absolutChapter - booksStartAbsoluteChapter[i - 1] + 1;
-                    break;
-                }
-            }
-
-            // convert all to zero based
-            bookNum--;
-            relChapter--;
-        }
-
         public static MediaInfo ReadMediaInfoFromXml(string xml, out string soundLink)
         {
             MediaInfo info = null;
@@ -106,7 +65,7 @@
                     info = list[0];
                 }
             }
-            catch(Exception ee)
+            catch (Exception ee)
             {
                 Debug.WriteLine("crashed ReadMediaInfoFromFile ;" + ee);
             }
@@ -114,17 +73,18 @@
             return info;
         }
 
-        public static List<MediaInfo> ReadMediaSourcesFile(Stream file, out string sourceLink)
+        public static List<MediaInfo> ReadMediaSourcesFile(Stream file, out string message)
         {
             // for debug
             // byte[] buffer=new byte[e.Result.Length];
             // e.Result.Read(buffer, 0, (int)e.Result.Length);
             // System.Diagnostics.Debug.WriteLine("RawFile: " + System.Text.UTF8Encoding.UTF8.GetString(buffer, 0, (int)e.Result.Length));
-            sourceLink = String.Empty;
+            message = string.Empty;
             var mediaList = new List<MediaInfo>();
+            string biblePattern = string.Empty;
             using (XmlReader reader = XmlReader.Create(file))
             {
-                string name = String.Empty;
+                string name = string.Empty;
                 MediaInfo foundMedia = null;
 
                 // Parse the file and get each of the nodes.
@@ -133,10 +93,11 @@
                     switch (reader.NodeType)
                     {
                         case XmlNodeType.Element:
+                            name = string.Empty;
                             if (reader.Name.ToLower().Equals("source") && reader.HasAttributes)
                             {
                                 foundMedia = new MediaInfo();
-                                name = String.Empty;
+                                name = string.Empty;
                                 reader.MoveToFirstAttribute();
                                 do
                                 {
@@ -144,10 +105,10 @@
                                     {
                                         case "onlynt":
                                             foundMedia.IsNtOnly =
-                                                Boolean.TrueString.ToUpper().Equals(reader.Value.ToUpper());
+                                                bool.TrueString.ToUpper().Equals(reader.Value.ToUpper());
                                             break;
                                         case "abschapter":
-                                            Int32.TryParse(reader.Value, out foundMedia.Chapter);
+                                            int.TryParse(reader.Value, out foundMedia.Chapter);
                                             break;
                                         case "language":
                                             foundMedia.Language = reader.Value;
@@ -160,6 +121,9 @@
                                             break;
                                         case "icon":
                                             foundMedia.Icon = reader.Value;
+                                            break;
+                                        case "iconlink":
+                                            foundMedia.IconLink = reader.Value;
                                             break;
                                         case "viewer":
                                             break;
@@ -175,21 +139,27 @@
                             }
                             else if (reader.Name.ToLower().Equals("message"))
                             {
-                                name = String.Empty;
+                                name = string.Empty;
                             }
 
                             break;
                         case XmlNodeType.EndElement:
                             if (reader.Name.ToLower().Equals("source") && foundMedia != null
-                                && !String.IsNullOrEmpty(foundMedia.Src) && !String.IsNullOrEmpty(name))
+                                && !string.IsNullOrEmpty(foundMedia.Src) && !string.IsNullOrEmpty(name))
                             {
                                 foundMedia.Name = name;
                                 mediaList.Add(foundMedia);
+                                name = string.Empty;
                             }
                             else if (reader.Name.ToLower().Equals("message"))
                             {
-                                sourceLink = name;
-                                name = String.Empty;
+                                message = name;
+                                name = string.Empty;
+                            }
+                            else if (reader.Name.ToLower().Equals("biblepattern"))
+                            {
+                                biblePattern = name;
+                                name = string.Empty;
                             }
 
                             break;
@@ -200,10 +170,15 @@
                 }
             }
 
+            foreach (var media in mediaList)
+            {
+                media.Pattern = biblePattern;
+            }
+
             return mediaList;
         }
 
-        public static void StartNewTrack(MediaInfo info, string soundLink)
+        public static void StartNewTrack(MediaInfo info)
         {
             // I must get some more information to the AudioPlayer thread.
             // I have to do in in the Album and By fields.
@@ -213,7 +188,7 @@
                 string.Empty,
                 string.Empty,
                 string.IsNullOrEmpty(info.Icon) ? null : new Uri(info.Icon),
-                WriteMediaInfoToXml(info, soundLink),
+                WriteMediaInfoToXml(info, string.Empty),
                 EnabledPlayerControls.All);
         }
 
@@ -272,52 +247,36 @@
             switch (playState)
             {
                 case PlayState.TrackEnded:
-                    player.Track = GetNextTrack();
+                    player.Track = GetRelativeTrack(1);
                     break;
                 case PlayState.TrackReady:
-
-                    // recreate from the tag
-                    _currentInfo = ReadMediaInfoFromXml(track.Tag, out _soundLink);
-
-                    if (_nextClient != null)
+                    if (!string.IsNullOrEmpty(track.Tag))
                     {
-                        _nextClient.CancelAsync();
-                        _nextClient = null;
-                    }
+                        // recreate from the tag
+                        string msg;
+                        _currentInfo = ReadMediaInfoFromXml(track.Tag, out msg);
 
-                    _waitingForNext = false;
-                    StartNextTrackSourceDownload();
+                        player.Play();
+                        try
+                        {
+                            var mediaHistoryItem = new MediaHistoryItem();
 
-                    if (_previousClient != null)
-                    {
-                        _previousClient.CancelAsync();
-                        _previousClient = null;
-                    }
+                            var sri = Application.GetResourceStream(new Uri("Images/square173.png", UriKind.Relative));
+                            mediaHistoryItem.ImageStream = sri.Stream;
 
-                    _waitingForPrevious = false;
-                    StartPrevTrackSourceDownload();
-                    player.Play();
-                    try
-                    {
-                        MediaHistoryItem mediaHistoryItem = new MediaHistoryItem();
-
-                        StreamResourceInfo sri =
-                            Application.GetResourceStream(new Uri("ApplicationIcon.png", UriKind.Relative));
-                        mediaHistoryItem.ImageStream = sri.Stream;
-
-                        mediaHistoryItem.Source = track.Source.ToString();
-                        mediaHistoryItem.Title = track.Title;
-                        mediaHistoryItem.PlayerContext.Add(track.Title, track.Title);
-                        MediaHistory.Instance.NowPlaying = mediaHistoryItem;
-                    }
-                    catch (Exception ee)
-                    {
-                        Debug.WriteLine("crash  ; " + ee);
+                            mediaHistoryItem.Source = track.Source.ToString();
+                            mediaHistoryItem.Title = track.Title;
+                            mediaHistoryItem.PlayerContext.Add(track.Title, track.Title);
+                            MediaHistory.Instance.NowPlaying = mediaHistoryItem;
+                        }
+                        catch (Exception ee)
+                        {
+                            Debug.WriteLine("crash  ; " + ee);
+                        }
                     }
 
                     break;
                 case PlayState.Shutdown:
-                    // TODO: Handle the shutdown state here (e.g. save state)
                     break;
                 case PlayState.Unknown:
                     break;
@@ -364,6 +323,7 @@
                     {
                         player.Play();
                     }
+
                     break;
                 case UserAction.Stop:
                     player.Stop();
@@ -381,34 +341,64 @@
                     player.Position = (TimeSpan)param;
                     break;
                 case UserAction.SkipNext:
-                    player.Track = GetNextTrack();
+                    player.Track = GetRelativeTrack(1);
                     break;
                 case UserAction.SkipPrevious:
-                    AudioTrack previousTrack = GetPreviousTrack();
-                    if (previousTrack != null)
-                    {
-                        player.Track = previousTrack;
-                    }
+                    player.Track = GetRelativeTrack(-1);
+
                     break;
             }
 
             this.NotifyComplete();
         }
 
-        private static int AddChapter(int valToAdd)
+        private static int AddChapter(MediaInfo info, int valToAdd)
         {
-            const int BooksInBible = 66;
-            int adjustedChapter = _currentInfo.Chapter + valToAdd;
+            int adjustedChapter = info.Chapter + valToAdd;
             if (adjustedChapter >= BibleZtextReader.ChaptersInBible)
             {
-                adjustedChapter = _currentInfo.IsNtOnly ? BibleZtextReader.ChaptersInOt : 0;
+                adjustedChapter = info.IsNtOnly ? BibleZtextReader.ChaptersInOt : 0;
             }
-            else if (adjustedChapter < 0 || (_currentInfo.IsNtOnly && adjustedChapter < BibleZtextReader.ChaptersInOt))
+            else if (adjustedChapter < 0 || (info.IsNtOnly && adjustedChapter < BibleZtextReader.ChaptersInOt))
             {
                 adjustedChapter = BibleZtextReader.ChaptersInBible - 1;
             }
 
             return adjustedChapter;
+        }
+
+        private static void GetBookAndChapterFromAbsoluteChapter(int absolutChapter, string pattern, string code, out int bookNum, out int relChapter, out string source)
+        {
+            const int BooksInBible = 66;
+            source = string.Empty;
+            var booksStartAbsoluteChapter = new[]
+                {
+                    0, 50, 90, 117, 153, 187, 211, 232, 236, 267, 291, 313, 338, 367, 403, 413, 426, 436, 478, 628, 659,
+                    671, 679, 745, 797, 802, 850, 862, 876, 879, 888, 889, 893, 900, 903, 906, 909, 911, 925, 929, 957,
+                    973, 997, 1018, 1046, 1062, 1078, 1091, 1097, 1103, 1107, 1111, 1116, 1119, 1125, 1129, 1132, 1133,
+                    1146, 1151, 1156, 1159, 1164, 1165, 1166, 1167, 1189
+                };
+            bookNum = 1;
+            relChapter = absolutChapter + 1;
+            for (int i = 1; i <= BooksInBible; i++)
+            {
+                if (absolutChapter < booksStartAbsoluteChapter[i])
+                {
+                    bookNum = i;
+                    relChapter = absolutChapter - booksStartAbsoluteChapter[i - 1] + 1;
+                    break;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(pattern) && !string.IsNullOrEmpty(code))
+            {
+                // http://www.cross-connect.se/bibles/talking/{key}/Bible_{key}_{booknum2d}_{chapternum3d}.mp3
+                source = pattern.Replace("{key}", code).Replace("{booknum2d}", bookNum.ToString("D2")).Replace("{chapternum3d}", relChapter.ToString("D3"));
+            }
+
+            // convert all to zero based
+            bookNum--;
+            relChapter--;
         }
 
         /// <summary>
@@ -422,169 +412,57 @@
         /// (c) MediaStreamSource (null)
         /// </remarks>
         /// <returns>an instance of AudioTrack, or null if the playback is completed</returns>
-        private static AudioTrack GetNextTrack()
+        private static AudioTrack GetRelativeTrack(int relativePostion)
         {
             AudioTrack track = null;
-            if (_nextClient == null && _nextInfo != null && _currentInfo != null)
-            {
-                track = new AudioTrack(
-                    new Uri(_nextInfo.Src),
-                    GetTitle(_nextInfo),
-                    string.Empty,
-                    string.Empty,
-                    string.IsNullOrEmpty(_nextInfo.Icon) ? null : new Uri(_nextInfo.Icon),
-                    WriteMediaInfoToXml(_nextInfo, _soundLink),
-                    EnabledPlayerControls.All);
-
-                // Adjust the media infos
-                _previousInfo = _currentInfo;
-                _currentInfo = _nextInfo;
-                StartNextTrackSourceDownload();
-            }
-            else
-            {
-                _waitingForNext = _nextClient != null || _nextInfo == null;
-            }
-            return track;
-        }
-
-        private static void GetNextTrackFromInternetCompleted(object sender, OpenReadCompletedEventArgs e)
-        {
-            try
+            if (_currentInfo == null && BackgroundAudioPlayer.Instance.Track != null && !string.IsNullOrEmpty(BackgroundAudioPlayer.Instance.Track.Tag))
             {
                 string msg;
-                var mediaList = AudioPlayer.ReadMediaSourcesFile(e.Result, out msg);
-                if (mediaList.Count() == 1)
-                {
-                    _nextInfo = mediaList[0];
-                    if (_waitingForNext)
-                    {
-                        var track = GetNextTrack();
-                        if (track != null)
-                        {
-                            BackgroundAudioPlayer.Instance.Track = track;
-                        }
-
-                        _waitingForNext = false;
-                    }
-                }
-                _nextClient.CancelAsync();
-                _nextClient = null;
+                _currentInfo = ReadMediaInfoFromXml(BackgroundAudioPlayer.Instance.Track.Tag, out msg);
             }
-            catch (Exception exp)
+
+            if (_currentInfo != null)
             {
-                Debug.WriteLine("GetNextTrackFromInternetCompleted failed;" + exp);
-                if (_nextClient != null)
-                {
-                    _nextClient.CancelAsync();
-                }
+                // update the _currentInfo
+                _currentInfo.Chapter = AddChapter(_currentInfo, relativePostion);
+                int bookNum;
+                int relChapterNum;
+                string source;
+                GetBookAndChapterFromAbsoluteChapter(
+                    _currentInfo.Chapter, _currentInfo.Pattern, _currentInfo.Code, out bookNum, out relChapterNum, out source);
+                _currentInfo.Src = source;
+                Debug.WriteLine("starting new track = " + _currentInfo.Src);
 
-                _nextClient = null;
-
-                // try again..
-                StartNextTrackSourceDownload();
-            }
-        }
-
-        /// <summary>
-        /// Implements the logic to get the previous AudioTrack instance.
-        /// </summary>
-        /// <remarks>
-        /// The AudioTrack URI determines the source, which can be:
-        /// (a) Isolated-storage file (Relative URI, represents path in the isolated storage)
-        /// (b) HTTP URL (absolute URI)
-        /// (c) MediaStreamSource (null)
-        /// </remarks>
-        /// <returns>an instance of AudioTrack, or null if previous track is not allowed</returns>
-        private static AudioTrack GetPreviousTrack()
-        {
-            AudioTrack track = null;
-            if (_previousClient == null && _previousInfo != null && _currentInfo != null)
-            {
+                // Create the track
                 track = new AudioTrack(
-                    new Uri(_previousInfo.Src),
-                    GetTitle(_previousInfo),
+                    new Uri(_currentInfo.Src),
+                    GetTitle(_currentInfo),
                     string.Empty,
                     string.Empty,
-                    string.IsNullOrEmpty(_previousInfo.Icon) ? null : new Uri(_previousInfo.Icon),
-                    WriteMediaInfoToXml(_previousInfo, _soundLink),
+                    string.IsNullOrEmpty(_currentInfo.Icon) ? null : new Uri(_currentInfo.Icon),
+                    WriteMediaInfoToXml(_currentInfo, string.Empty),
                     EnabledPlayerControls.All);
-
-                // Adjust the media infos
-                _nextInfo = _currentInfo;
-                _currentInfo = _previousInfo;
-                StartPrevTrackSourceDownload();
             }
 
             return track;
-        }
-
-        private static void GetPreviousTrackFromInternetCompleted(object sender, OpenReadCompletedEventArgs e)
-        {
-            try
-            {
-                string msg;
-                var mediaList = AudioPlayer.ReadMediaSourcesFile(e.Result, out msg);
-                if (mediaList.Count() == 1)
-                {
-                    _previousInfo = mediaList[0];
-                    if (_waitingForPrevious)
-                    {
-                        var track = GetPreviousTrack();
-                        if (track != null)
-                        {
-                            BackgroundAudioPlayer.Instance.Track = track;
-                        }
-
-                        _waitingForPrevious = false;
-                    }
-                }
-
-                _previousClient.CancelAsync();
-                _previousClient = null;
-            }
-            catch (Exception exp)
-            {
-                Debug.WriteLine("GetPreviousTrackFromInternetCompleted failed;" + exp);
-                if (_previousClient != null)
-                {
-                    _previousClient.CancelAsync();
-                }
-
-                _previousClient = null;
-
-                // try again..
-                StartNextTrackSourceDownload();
-            }
         }
 
         private static string GetTitle(MediaInfo info)
         {
             int bookNum;
             int relChapterNum;
+            string source;
             GetBookAndChapterFromAbsoluteChapter(
-                info.Chapter, out bookNum, out relChapterNum);
+                info.Chapter, string.Empty, string.Empty, out bookNum, out relChapterNum, out source);
 
             var bookNames = new BibleNames(info.Language);
             return bookNames.GetFullName(bookNum) + " : " + (relChapterNum + 1).ToString(CultureInfo.InvariantCulture);
         }
 
-        private static string GetTrackName(MediaInfo info)
-        {
-            int bookNum;
-            int relChapterNum;
-            GetBookAndChapterFromAbsoluteChapter(
-                info.Chapter, out bookNum, out relChapterNum);
-
-            var bookNames = new BibleNames(info.Language);
-
-            return bookNames.GetFullName(bookNum);
-        }
-
         private static string ReadableToXmlClean(string toBeCleaned)
         {
-            var specialChar = new string[] { "&", "\"", "'", "<", ">" };
-            var encoded = new string[] { "&amp;", "&quot;", "&apos;", "&lt;", "&gt;" };
+            var specialChar = new[] { "&", "\"", "'", "<", ">" };
+            var encoded = new[] { "&amp;", "&quot;", "&apos;", "&lt;", "&gt;" };
             for (int i = 0; i < specialChar.Count(); i++)
             {
                 toBeCleaned = toBeCleaned.Replace(specialChar[i], encoded[i]);
@@ -593,55 +471,11 @@
             return toBeCleaned;
         }
 
-        private static void StartNextTrackSourceDownload()
-        {
-            _nextInfo = null;
-            string url = string.Format(
-                _soundLink, AddChapter(1), _currentInfo.Language);
-            url += "&code=" + _currentInfo.Code;
-            try
-            {
-                var source = new Uri(url);
-
-                _nextClient = new WebClient();
-                _nextClient.OpenReadCompleted += GetNextTrackFromInternetCompleted;
-                Debug.WriteLine("download start");
-                _nextClient.OpenReadAsync(source);
-                Debug.WriteLine("DownloadStringAsync returned");
-            }
-            catch (Exception eee)
-            {
-                Debug.WriteLine("StartNextTrackSourceDownload failed;" + eee);
-            }
-        }
-
-        private static void StartPrevTrackSourceDownload()
-        {
-            _previousInfo = null;
-            string url = string.Format(
-                _soundLink, AddChapter(-1), _currentInfo.Language);
-            url += "&code=" + _currentInfo.Code;
-            try
-            {
-                var source = new Uri(url);
-
-                _previousClient = new WebClient();
-                _previousClient.OpenReadCompleted += GetPreviousTrackFromInternetCompleted;
-                Debug.WriteLine("download start");
-                _previousClient.OpenReadAsync(source);
-                Debug.WriteLine("DownloadStringAsync returned");
-            }
-            catch (Exception eee)
-            {
-                Debug.WriteLine("StartPrevTrackSourceDownload failed;" + eee);
-            }
-        }
-
         private static string WriteMediaInfoToXml(MediaInfo info, string sourceLink)
         {
-            const string FileContentCoded = @"<?xml version=""1.0"" encoding=""UTF-8""?><cross.connect.talking.bible version=""1.0"" book=""1""><message>{0}</message><source language=""{1}"" abschapter=""{2}"" onlynt=""{3}"" code=""{4}"" src=""{5}"" icon=""{6}"">{7}</source></cross.connect.talking.bible>";
+            const string FileContentCoded = @"<?xml version=""1.0"" encoding=""UTF-8""?><cross.connect.talking.bible version=""1.0"" book=""1""><message>{0}</message><source language=""{1}"" abschapter=""{2}"" onlynt=""{3}"" code=""{4}"" src=""{5}"" icon=""{6}"" iconlink=""{7}"">{8}</source><biblepattern>{9}</biblepattern></cross.connect.talking.bible>";
             return string.Format(
-                FileContentCoded, ReadableToXmlClean(sourceLink), info.Language, info.Chapter, info.IsNtOnly.ToString(CultureInfo.InvariantCulture), info.Code, info.Src, info.Icon, info.Name);
+                FileContentCoded, ReadableToXmlClean(sourceLink), info.Language, info.Chapter, info.IsNtOnly.ToString(CultureInfo.InvariantCulture), info.Code, info.Src, info.Icon, info.IconLink, info.Name, info.Pattern);
         }
 
         /// Code to execute on Unhandled Exceptions
@@ -658,55 +492,29 @@
 
         #region Nested Types
 
-        /// <summary>
-        /// The media info.
-        /// </summary>
         [DataContract]
         public class MediaInfo
         {
             #region Fields
 
-            /// <summary>
-            /// The src.
-            /// </summary>
             [DataMember]
             public int Chapter;
-
-            /// <summary>
-            /// The src.
-            /// </summary>
             [DataMember]
-            public string Code = String.Empty;
-
-            /// <summary>
-            /// The icon.
-            /// </summary>
+            public string Code = string.Empty;
             [DataMember]
-            public string Icon = String.Empty;
-
-            /// <summary>
-            /// The src.
-            /// </summary>
+            public string Icon = string.Empty;
+            [DataMember]
+            public string IconLink = string.Empty;
             [DataMember]
             public bool IsNtOnly;
-
-            /// <summary>
-            /// The src.
-            /// </summary>
             [DataMember]
-            public string Language = String.Empty;
-
-            /// <summary>
-            /// The src.
-            /// </summary>
+            public string Language = string.Empty;
             [DataMember]
-            public string Name = String.Empty;
-
-            /// <summary>
-            /// The src.
-            /// </summary>
+            public string Name = string.Empty;
             [DataMember]
-            public string Src = String.Empty;
+            public string Pattern = string.Empty;
+            [DataMember]
+            public string Src = string.Empty;
 
             #endregion Fields
         }
