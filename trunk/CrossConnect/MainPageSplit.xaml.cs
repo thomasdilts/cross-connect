@@ -53,6 +53,8 @@ namespace CrossConnect
         private int _currentScreen;
         private bool _isInScreenMoving;
         private DispatcherTimer _moveMultiScreenTimer;
+        private int _overrideCurrentScreen = -1;
+        private DispatcherTimer _overrideShowingScreenTimer;
         private int _screenPosIncrement;
         private double _screenWidth;
 
@@ -132,6 +134,17 @@ namespace CrossConnect
                     textsWithTitles += "\n" + Translations.Translate("Added notes") + "\n"
                                        + App.DailyPlan.PersonalNotes[place.ChapterNum][place.VerseNum].Note;
                 }
+            }
+        }
+
+        public void OverRideCurrentlyShowingScreen(int screenNum)
+        {
+            if (_currentScreen != screenNum)
+            {
+                _overrideCurrentScreen = screenNum;
+                _overrideShowingScreenTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1000) };
+                _overrideShowingScreenTimer.Tick += OverRideCurrentlyShowingScreenTimerTick;
+                _overrideShowingScreenTimer.Start();
             }
         }
 
@@ -569,6 +582,12 @@ namespace CrossConnect
         private void MenuThemesClick(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/Themes.xaml", UriKind.Relative));
+        }
+
+        private void OverRideCurrentlyShowingScreenTimerTick(object sender, EventArgs e)
+        {
+            _overrideShowingScreenTimer.Stop();
+            this.ShowScreen(_overrideCurrentScreen);
         }
 
         private void PhoneApplicationPageOrientationChanged(object sender, OrientationChangedEventArgs e)

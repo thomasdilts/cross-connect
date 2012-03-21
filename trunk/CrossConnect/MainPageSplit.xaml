@@ -11,7 +11,7 @@
                       xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
                       shell:SystemTray.IsVisible="False" xmlns:my="clr-namespace:CrossConnect" Unloaded="PhoneApplicationPageUnloaded"
                       Loaded="MainPageLoaded" OrientationChanged="PhoneApplicationPageOrientationChanged"
-                      BackKeyPress="AutoRotatePageBackKeyPress">
+                      BackKeyPress="AutoRotatePageBackKeyPress" >
 
   <toolkit:TransitionService.NavigationInTransition>
     <toolkit:NavigationInTransition>

@@ -18,6 +18,7 @@
 // Email: thomas@cross-connect.se
 // </summary>
 // <author>Thomas Dilts</author>
+
 #endregion Header
 
 namespace CrossConnect
@@ -127,6 +128,12 @@ namespace CrossConnect
                 title.Width = Application.Current.Host.Content.ActualWidth - (butClose.Width * numButtonsShowing) - 15;
                 title.MaxWidth = title.Width;
             }
+        }
+
+        public void RestartToThisMedia(AudioPlayer.MediaInfo info)
+        {
+            ((MediaReader)_state.Source).Info = info;
+            AudioPlayer.StartNewTrack(((MediaReader)_state.Source).Info);
         }
 
         public void ShowSizeButtons(bool isShow = true)

@@ -199,6 +199,18 @@ namespace CrossConnect
 
         public static void AddMediaWindow(AudioPlayer.MediaInfo info)
         {
+            // only one media window allowed
+            for (int i = 0; i < OpenWindows.Count(); i++)
+            {
+                if (OpenWindows[i].State.WindowType == WindowType.WindowMediaPlayer)
+                {
+                    // change the windows view to this one
+                    ((MediaPlayerWindow)OpenWindows[i]).RestartToThisMedia(info);
+                    MainWindow.OverRideCurrentlyShowingScreen(OpenWindows[i].State.Window);
+                    return;
+                }
+            }
+
             var state = new SerializableWindowState
                 {
                     WindowType = WindowType.WindowMediaPlayer,
