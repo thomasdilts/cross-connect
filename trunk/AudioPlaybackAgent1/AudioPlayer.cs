@@ -447,7 +447,7 @@
             return track;
         }
 
-        private static string GetTitle(MediaInfo info)
+        public static string GetTitle(MediaInfo info)
         {
             int bookNum;
             int relChapterNum;

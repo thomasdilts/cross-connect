@@ -134,6 +134,8 @@ namespace CrossConnect
         {
             ((MediaReader)_state.Source).Info = info;
             AudioPlayer.StartNewTrack(((MediaReader)_state.Source).Info);
+            title.Text = AudioPlayer.GetTitle(info);
+            SetButtonVisibility(false);
         }
 
         public void ShowSizeButtons(bool isShow = true)
@@ -370,6 +372,7 @@ namespace CrossConnect
                     string msg;
                     var info = AudioPlayer.ReadMediaInfoFromXml(BackgroundAudioPlayer.Instance.Track.Tag, out msg);
                     ShowTrack(info);
+                    title.Text = BackgroundAudioPlayer.Instance.Track.Title;
                     break;
 
                 case PlayState.Paused:
@@ -406,20 +409,9 @@ namespace CrossConnect
                  "/Images/" + colorDir + "/appbar.transport.rew.pressed.png");
 
             SetButtonVisibility(false);
-            if (BackgroundAudioPlayer.Instance.Track != null)
-            {
-                title.Text = BackgroundAudioPlayer.Instance.Track.Title;
-            }
 
             switch (BackgroundAudioPlayer.Instance.PlayerState)
             {
-                case PlayState.Stopped:
-                case PlayState.Shutdown:
-                case PlayState.Error:
-                case PlayState.Unknown:
-                    // lets start it again.
-                    AudioPlayer.StartNewTrack(((MediaReader)_state.Source).Info);
-                    break;
                 case PlayState.Playing:
                 case PlayState.Paused:
                     if (BackgroundAudioPlayer.Instance.Track != null)
@@ -430,8 +422,19 @@ namespace CrossConnect
                         {
                             this.ShowTrack(info);
                         }
+                        else
+                        {
+                            // do a restart
+                            AudioPlayer.StartNewTrack(((MediaReader)_state.Source).Info);
+                            title.Text = AudioPlayer.GetTitle(((MediaReader)_state.Source).Info);
+                        }
                     }
 
+                    break;
+                default:
+                    // lets start it again.
+                    AudioPlayer.StartNewTrack(((MediaReader)_state.Source).Info);
+                    title.Text = AudioPlayer.GetTitle(((MediaReader)_state.Source).Info);
                     break;
             }
         }
