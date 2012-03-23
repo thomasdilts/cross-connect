@@ -54,38 +54,17 @@ namespace CrossConnect.readers
     {
         #region Fields
 
-        /// <summary>
-        /// The link.
-        /// </summary>
         [DataMember]
         public string Link = string.Empty;
 
-        /// <summary>
-        /// The greek dict.
-        /// </summary>
         private static readonly LexiconFromXmlFile GreekDict = new LexiconFromXmlFile("strongsgreek.xml.gz");
 
-        /// <summary>
-        /// The hebrew dict.
-        /// </summary>
         private static readonly LexiconFromXmlFile HebrewDict = new LexiconFromXmlFile("strongshebrew.xml.gz");
 
         #endregion Fields
 
         #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GreekHebrewDictReader"/> class.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <param name="iso2DigitLangCode">
-        /// The iso 2 digit lang code.
-        /// </param>
-        /// <param name="isIsoEncoding">
-        /// The is iso encoding.
-        /// </param>
         public GreekHebrewDictReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
             : base(path, iso2DigitLangCode, isIsoEncoding)
         {
@@ -95,9 +74,6 @@ namespace CrossConnect.readers
 
         #region Properties
 
-        /// <summary>
-        /// Gets a value indicating whether IsExternalLink.
-        /// </summary>
         public override bool IsExternalLink
         {
             get
@@ -106,9 +82,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsHearable.
-        /// </summary>
         public override bool IsHearable
         {
             get
@@ -117,9 +90,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsPageable.
-        /// </summary>
         public override bool IsPageable
         {
             get
@@ -128,9 +98,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsSearchable.
-        /// </summary>
         public override bool IsSearchable
         {
             get
@@ -139,9 +106,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsSynchronizeable.
-        /// </summary>
         public override bool IsSynchronizeable
         {
             get
@@ -150,9 +114,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsTranslateable.
-        /// </summary>
         public override bool IsTranslateable
         {
             get
@@ -165,27 +126,6 @@ namespace CrossConnect.readers
 
         #region Methods
 
-        /// <summary>
-        /// The get info.
-        /// </summary>
-        /// <param name="bookNum">
-        /// The book num.
-        /// </param>
-        /// <param name="absouteChaptNum">
-        /// The absoute chapt num.
-        /// </param>
-        /// <param name="relChaptNum">
-        /// The rel chapt num.
-        /// </param>
-        /// <param name="verseNum">
-        /// The verse num.
-        /// </param>
-        /// <param name="fullName">
-        /// The full name.
-        /// </param>
-        /// <param name="title">
-        /// The title.
-        /// </param>
         public override void GetInfo(
             out int bookNum,
             out int absouteChaptNum,
@@ -205,32 +145,11 @@ namespace CrossConnect.readers
             title = "Dictionary - " + (Link.StartsWith("G") ? "Greek " : "Hebrew ") + Link.Substring(1);
         }
 
-        /// <summary>
-        /// The get language.
-        /// </summary>
-        /// <returns>
-        /// The get language.
-        /// </returns>
         public override string GetLanguage()
         {
             return "en";
         }
 
-        /// <summary>
-        /// The get translateable texts.
-        /// </summary>
-        /// <param name="displaySettings">
-        /// The display settings.
-        /// </param>
-        /// <param name="bibleToLoad">
-        /// The bible to load.
-        /// </param>
-        /// <param name="toTranslate">
-        /// The to translate.
-        /// </param>
-        /// <param name="isTranslateable">
-        /// The is translateable.
-        /// </param>
         public override void GetTranslateableTexts(
             DisplaySettings displaySettings, string bibleToLoad, out string[] toTranslate, out bool[] isTranslateable)
         {
@@ -260,50 +179,11 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// The show link.
-        /// </summary>
-        /// <param name="link">
-        /// The link.
-        /// </param>
         public void ShowLink(string link)
         {
             Link = link;
         }
 
-        /// <summary>
-        /// The get chapter html.
-        /// </summary>
-        /// <param name="displaySettings">
-        /// The display settings.
-        /// </param>
-        /// <param name="htmlBackgroundColor">
-        /// The html background color.
-        /// </param>
-        /// <param name="htmlForegroundColor">
-        /// The html foreground color.
-        /// </param>
-        /// <param name="htmlPhoneAccentColor">
-        /// The html phone accent color.
-        /// </param>
-        /// <param name="htmlFontSize">
-        /// The html font size.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="isNotesOnly">
-        /// The is notes only.
-        /// </param>
-        /// <param name="addStartFinishHtml">
-        /// The add start finish html.
-        /// </param>
-        /// <param name="forceReload">
-        /// The force reload.
-        /// </param>
-        /// <returns>
-        /// The get chapter html.
-        /// </returns>
         protected override string GetChapterHtml(
             DisplaySettings displaySettings,
             string htmlBackgroundColor,
@@ -346,21 +226,6 @@ namespace CrossConnect.readers
                 fontFamily) + displayText + "</body></html>";
         }
 
-        /// <summary>
-        /// The show references.
-        /// </summary>
-        /// <param name="displayText">
-        /// The display text.
-        /// </param>
-        /// <param name="lexiconEntry">
-        /// The lexicon entry.
-        /// </param>
-        /// <param name="showRecursively">
-        /// The show recursively.
-        /// </param>
-        /// <returns>
-        /// The show references.
-        /// </returns>
         private string ShowReferences(string displayText, LexiconEntry lexiconEntry, bool showRecursively)
         {
             LexiconEntry foundEntry;
@@ -397,56 +262,29 @@ namespace CrossConnect.readers
 
         #region Nested Types
 
-        /// <summary>
-        /// The lexicon entry.
-        /// </summary>
         public class LexiconEntry
         {
             #region Fields
 
-            /// <summary>
-            /// The greek related keys.
-            /// </summary>
             public List<int> GreekRelatedKeys = new List<int>();
 
-            /// <summary>
-            /// The hebrew related keys.
-            /// </summary>
             public List<int> HebrewRelatedKeys = new List<int>();
 
-            /// <summary>
-            /// The key.
-            /// </summary>
             public int Key;
 
-            /// <summary>
-            /// The untranslateable.
-            /// </summary>
             public string Untranslateable;
 
-            /// <summary>
-            /// The value.
-            /// </summary>
             public string Value;
 
             #endregion Fields
 
             #region Constructors
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="LexiconEntry"/> class.
-            /// </summary>
-            /// <param name="key">
-            /// The key.
-            /// </param>
             public LexiconEntry(int key)
             {
                 Key = key;
             }
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="LexiconEntry"/> class.
-            /// </summary>
             public LexiconEntry()
             {
             }
@@ -454,28 +292,16 @@ namespace CrossConnect.readers
             #endregion Constructors
         }
 
-        /// <summary>
-        /// The lexicon from xml file.
-        /// </summary>
         public class LexiconFromXmlFile
         {
             #region Fields
 
-            /// <summary>
-            /// The dict.
-            /// </summary>
             public Dictionary<int, LexiconEntry> Dict = new Dictionary<int, LexiconEntry>();
 
             #endregion Fields
 
             #region Constructors
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="LexiconFromXmlFile"/> class.
-            /// </summary>
-            /// <param name="filepath">
-            /// The filepath.
-            /// </param>
             public LexiconFromXmlFile(string filepath)
             {
                 Assembly assem = Assembly.GetExecutingAssembly();

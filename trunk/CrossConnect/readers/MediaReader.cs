@@ -72,9 +72,6 @@ namespace CrossConnect.readers
 
         #region Properties
 
-        /// <summary>
-        /// Gets a value indicating whether IsExternalLink.
-        /// </summary>
         public override bool IsExternalLink
         {
             get
@@ -83,9 +80,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsHearable.
-        /// </summary>
         public override bool IsHearable
         {
             get
@@ -94,9 +88,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsPageable.
-        /// </summary>
         public override bool IsPageable
         {
             get
@@ -105,9 +96,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsSearchable.
-        /// </summary>
         public override bool IsSearchable
         {
             get
@@ -116,9 +104,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsSynchronizeable.
-        /// </summary>
         public override bool IsSynchronizeable
         {
             get
@@ -127,9 +112,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsTranslateable.
-        /// </summary>
         public override bool IsTranslateable
         {
             get

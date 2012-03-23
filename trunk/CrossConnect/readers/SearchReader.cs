@@ -52,33 +52,18 @@ namespace CrossConnect.readers
     {
         #region Fields
 
-        /// <summary>
-        /// The display text.
-        /// </summary>
         [DataMember]
         public string DisplayText = string.Empty;
 
-        /// <summary>
-        /// The display text html body.
-        /// </summary>
         [DataMember]
         public string DisplayTextHtmlBody = string.Empty;
 
-        /// <summary>
-        /// The search chapter.
-        /// </summary>
         [DataMember]
         public int SearchChapter;
 
-        /// <summary>
-        /// The search text.
-        /// </summary>
         [DataMember]
         public string SearchText = string.Empty;
 
-        /// <summary>
-        /// The search type index.
-        /// </summary>
         [DataMember]
         public int SearchTypeIndex;
 
@@ -86,18 +71,6 @@ namespace CrossConnect.readers
 
         #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SearchReader"/> class.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <param name="iso2DigitLangCode">
-        /// The iso 2 digit lang code.
-        /// </param>
-        /// <param name="isIsoEncoding">
-        /// The is iso encoding.
-        /// </param>
         public SearchReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
             : base(path, iso2DigitLangCode, isIsoEncoding)
         {
@@ -107,30 +80,12 @@ namespace CrossConnect.readers
 
         #region Delegates
 
-        /// <summary>
-        /// The show progress.
-        /// </summary>
-        /// <param name="percent">
-        /// The percent.
-        /// </param>
-        /// <param name="totalFound">
-        /// The total found.
-        /// </param>
-        /// <param name="isAbort">
-        /// The is abort.
-        /// </param>
-        /// <param name="isFinished">
-        /// The is finished.
-        /// </param>
         public delegate void ShowProgress(double percent, int totalFound, bool isAbort, bool isFinished);
 
         #endregion Delegates
 
         #region Properties
 
-        /// <summary>
-        /// Gets a value indicating whether IsHearable.
-        /// </summary>
         public override bool IsHearable
         {
             get
@@ -139,9 +94,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsPageable.
-        /// </summary>
         public override bool IsPageable
         {
             get
@@ -150,9 +102,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsSearchable.
-        /// </summary>
         public override bool IsSearchable
         {
             get
@@ -161,9 +110,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsSynchronizeable.
-        /// </summary>
         public override bool IsSynchronizeable
         {
             get
@@ -172,9 +118,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsTranslateable.
-        /// </summary>
         public override bool IsTranslateable
         {
             get
@@ -187,27 +130,6 @@ namespace CrossConnect.readers
 
         #region Methods
 
-        /// <summary>
-        /// The do search.
-        /// </summary>
-        /// <param name="displaySettings">
-        /// The display settings.
-        /// </param>
-        /// <param name="searchTypeIndex">
-        /// The search type index.
-        /// </param>
-        /// <param name="searchText">
-        /// The search text.
-        /// </param>
-        /// <param name="isIgnoreCase">
-        /// The is ignore case.
-        /// </param>
-        /// <param name="chaptListToSearch">
-        /// The chapt list to search.
-        /// </param>
-        /// <param name="progress">
-        /// The progress.
-        /// </param>
         public void DoSearch(
             DisplaySettings displaySettings,
             int searchTypeIndex,
@@ -305,27 +227,6 @@ namespace CrossConnect.readers
             Debug.WriteLine("Done searching.");
         }
 
-        /// <summary>
-        /// The get info.
-        /// </summary>
-        /// <param name="bookNum">
-        /// The book num.
-        /// </param>
-        /// <param name="absouteChaptNum">
-        /// The absoute chapt num.
-        /// </param>
-        /// <param name="relChaptNum">
-        /// The rel chapt num.
-        /// </param>
-        /// <param name="verseNum">
-        /// The verse num.
-        /// </param>
-        /// <param name="fullName">
-        /// The full name.
-        /// </param>
-        /// <param name="title">
-        /// The title.
-        /// </param>
         public override void GetInfo(
             out int bookNum,
             out int absouteChaptNum,
@@ -359,39 +260,6 @@ namespace CrossConnect.readers
             title = Translations.Translate("Search") + "; " + SearchText + "; " + extraText;
         }
 
-        /// <summary>
-        /// The get chapter html.
-        /// </summary>
-        /// <param name="displaySettings">
-        /// The display settings.
-        /// </param>
-        /// <param name="htmlBackgroundColor">
-        /// The html background color.
-        /// </param>
-        /// <param name="htmlForegroundColor">
-        /// The html foreground color.
-        /// </param>
-        /// <param name="htmlPhoneAccentColor">
-        /// The html phone accent color.
-        /// </param>
-        /// <param name="htmlFontSize">
-        /// The html font size.
-        /// </param>
-        /// <param name="fontFamily">
-        /// The font family.
-        /// </param>
-        /// <param name="isNotesOnly">
-        /// The is notes only.
-        /// </param>
-        /// <param name="addStartFinishHtml">
-        /// The add start finish html.
-        /// </param>
-        /// <param name="forceReload">
-        /// The force reload.
-        /// </param>
-        /// <returns>
-        /// The get chapter html.
-        /// </returns>
         protected override string GetChapterHtml(
             DisplaySettings displaySettings,
             string htmlBackgroundColor,

@@ -48,15 +48,9 @@ namespace CrossConnect.readers
     {
         #region Fields
 
-        /// <summary>
-        /// The link.
-        /// </summary>
         [DataMember]
         public string Link = string.Empty;
 
-        /// <summary>
-        /// The title bar.
-        /// </summary>
         [DataMember]
         public string TitleBar = string.Empty;
 
@@ -64,18 +58,6 @@ namespace CrossConnect.readers
 
         #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InternetLinkReader"/> class.
-        /// </summary>
-        /// <param name="path">
-        /// The path.
-        /// </param>
-        /// <param name="iso2DigitLangCode">
-        /// The iso 2 digit lang code.
-        /// </param>
-        /// <param name="isIsoEncoding">
-        /// The is iso encoding.
-        /// </param>
         public InternetLinkReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
             : base(path, iso2DigitLangCode, isIsoEncoding)
         {
@@ -85,9 +67,6 @@ namespace CrossConnect.readers
 
         #region Properties
 
-        /// <summary>
-        /// Gets a value indicating whether IsExternalLink.
-        /// </summary>
         public override bool IsExternalLink
         {
             get
@@ -96,9 +75,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsHearable.
-        /// </summary>
         public override bool IsHearable
         {
             get
@@ -107,9 +83,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsPageable.
-        /// </summary>
         public override bool IsPageable
         {
             get
@@ -118,9 +91,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsSearchable.
-        /// </summary>
         public override bool IsSearchable
         {
             get
@@ -129,9 +99,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsSynchronizeable.
-        /// </summary>
         public override bool IsSynchronizeable
         {
             get
@@ -140,9 +107,6 @@ namespace CrossConnect.readers
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether IsTranslateable.
-        /// </summary>
         public override bool IsTranslateable
         {
             get
@@ -155,15 +119,6 @@ namespace CrossConnect.readers
 
         #region Methods
 
-        /// <summary>
-        /// The get external link.
-        /// </summary>
-        /// <param name="displaySettings">
-        /// The display settings.
-        /// </param>
-        /// <returns>
-        /// The get external link.
-        /// </returns>
         public override string GetExternalLink(DisplaySettings displaySettings)
         {
             int number;
@@ -186,27 +141,6 @@ namespace CrossConnect.readers
             return Link;
         }
 
-        /// <summary>
-        /// The get info.
-        /// </summary>
-        /// <param name="bookNum">
-        /// The book num.
-        /// </param>
-        /// <param name="absouteChaptNum">
-        /// The absoute chapt num.
-        /// </param>
-        /// <param name="relChaptNum">
-        /// The rel chapt num.
-        /// </param>
-        /// <param name="verseNum">
-        /// The verse num.
-        /// </param>
-        /// <param name="fullName">
-        /// The full name.
-        /// </param>
-        /// <param name="title">
-        /// The title.
-        /// </param>
         public override void GetInfo(
             out int bookNum,
             out int absouteChaptNum,
@@ -223,15 +157,6 @@ namespace CrossConnect.readers
             title = TitleBar;
         }
 
-        /// <summary>
-        /// The show link.
-        /// </summary>
-        /// <param name="link">
-        /// The link.
-        /// </param>
-        /// <param name="titleBar">
-        /// The title bar.
-        /// </param>
         public void ShowLink(string link, string titleBar)
         {
             Link = link;

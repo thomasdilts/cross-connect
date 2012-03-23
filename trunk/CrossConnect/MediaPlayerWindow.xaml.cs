@@ -514,7 +514,7 @@ namespace CrossConnect
             {
                 try
                 {
-                    ProgressDownload.Value = BackgroundAudioPlayer.Instance.BufferingProgress * 100;
+                    ProgressDownload.Value = BackgroundAudioPlayer.Instance.BufferingProgress * 100.0;
                     if (BackgroundAudioPlayer.Instance.Track.Duration.Seconds != 0)
                     {
                         ProgressPosition.Value = (100.0 * BackgroundAudioPlayer.Instance.Position.TotalSeconds)
