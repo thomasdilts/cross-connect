@@ -48,13 +48,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Coding4Fun.Phone.Controls">
+    <Reference Include="Coding4Fun.Phone.Controls, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libraries\Coding4Fun.Phone.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="Coding4Fun.Phone.Controls.Toolkit">
+    <Reference Include="Coding4Fun.Phone.Controls.Toolkit, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libraries\Coding4Fun.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
-    <Reference Include="Coding4Fun.Phone.Site.Controls">
+    <Reference Include="Coding4Fun.Phone.Site.Controls, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libraries\Coding4Fun.Phone.Site.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone" />
