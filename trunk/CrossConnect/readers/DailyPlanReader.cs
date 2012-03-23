@@ -87,7 +87,7 @@ namespace CrossConnect.readers
         {
             get
             {
-                return false;
+                return true;
             }
         }
 
