@@ -171,8 +171,8 @@ namespace CrossConnect.readers
             {
                 App.DailyPlan.PlanDayNumber = chapter;
 
-                // Changing the chapter is only to fool the base class into understanding that we have changed pages
-                Serial.PosChaptNum = Serial.PosChaptNum == 0 ? 1 : 0;
+                Serial.PosChaptNum = DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber][App.DailyPlan.PlanDayNumber][0];
+                Serial.PosVerseNum = 0;
             }
         }
 
