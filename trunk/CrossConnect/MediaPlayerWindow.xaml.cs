@@ -100,33 +100,45 @@ namespace CrossConnect
 
         public void CalculateTitleTextWidth()
         {
-            int numButtonsShowing = 0;
-            if (butLarger.Visibility == Visibility.Visible)
+            try
             {
-                numButtonsShowing++;
-            }
+                int numButtonsShowing = 0;
+                if (butLarger.Visibility == Visibility.Visible)
+                {
+                    numButtonsShowing++;
+                }
 
-            if (butSmaller.Visibility == Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
+                if (butSmaller.Visibility == Visibility.Visible)
+                {
+                    numButtonsShowing++;
+                }
 
-            if (butClose.Visibility == Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
+                if (butClose.Visibility == Visibility.Visible)
+                {
+                    numButtonsShowing++;
+                }
 
-            var parent = (MainPageSplit)((Grid)((Grid)((Grid)Parent).Parent).Parent).Parent;
-            if (parent.Orientation == PageOrientation.Landscape || parent.Orientation == PageOrientation.LandscapeLeft
-                || parent.Orientation == PageOrientation.LandscapeRight)
-            {
-                title.Width = Application.Current.Host.Content.ActualHeight - (butClose.Width * numButtonsShowing) - 15 - (butClose.Width * 2);
-                title.MaxWidth = title.Width;
+                var parent = (MainPageSplit)((Grid)((Grid)((Grid)Parent).Parent).Parent).Parent;
+                if (parent.Orientation == PageOrientation.Landscape
+                    || parent.Orientation == PageOrientation.LandscapeLeft
+                    || parent.Orientation == PageOrientation.LandscapeRight)
+                {
+                    title.Width = Application.Current.Host.Content.ActualHeight - (butClose.Width * numButtonsShowing)
+                                  - 15 - (butClose.Width * 2);
+                    title.MaxWidth = title.Width;
+                }
+                else
+                {
+                    title.Width = Application.Current.Host.Content.ActualWidth - (butClose.Width * numButtonsShowing)
+                                  - 15;
+                    title.MaxWidth = title.Width;
+                }
             }
-            else
+            catch (Exception eee)
             {
-                title.Width = Application.Current.Host.Content.ActualWidth - (butClose.Width * numButtonsShowing) - 15;
-                title.MaxWidth = title.Width;
+                title.Width = 100;
+                title.MaxWidth = 100;
+                Debug.WriteLine(eee);
             }
         }
 

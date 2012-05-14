@@ -121,77 +121,85 @@ namespace CrossConnect
 
         public void CalculateTitleTextWidth()
         {
-            int numButtonsShowing = 0;
-            if (butPrevious != null && butPrevious.Visibility == Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
-
-            if (butNext != null && butNext.Visibility == Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
-
-            if (butMenu != null && butMenu.Visibility == Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
-
-            if (butLink != null && butLink.Visibility == Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
-
-            if (butLarger != null && butLarger.Visibility == Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
-
-            if (butSmaller != null && butSmaller.Visibility == Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
-
-            if (butClose != null && butClose.Visibility == Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
-
-            if (butHear != null && butHear.Visibility == Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
-
-            if (butTranslate != null && butTranslate.Visibility == Visibility.Visible)
-            {
-                numButtonsShowing++;
-            }
-
-            bool isLandscape = false;
             try
             {
-                // this can crash..
-                var parent = (MainPageSplit)((Grid)((Grid)((Grid)Parent).Parent).Parent).Parent;
-                isLandscape = parent.Orientation == PageOrientation.Landscape
-                              || parent.Orientation == PageOrientation.LandscapeLeft
-                              || parent.Orientation == PageOrientation.LandscapeRight;
+                int numButtonsShowing = 0;
+                if (butPrevious != null && butPrevious.Visibility == Visibility.Visible)
+                {
+                    numButtonsShowing++;
+                }
 
-            }
-            catch (Exception)
-            {
+                if (butNext != null && butNext.Visibility == Visibility.Visible)
+                {
+                    numButtonsShowing++;
+                }
 
+                if (butMenu != null && butMenu.Visibility == Visibility.Visible)
+                {
+                    numButtonsShowing++;
+                }
+
+                if (butLink != null && butLink.Visibility == Visibility.Visible)
+                {
+                    numButtonsShowing++;
+                }
+
+                if (butLarger != null && butLarger.Visibility == Visibility.Visible)
+                {
+                    numButtonsShowing++;
+                }
+
+                if (butSmaller != null && butSmaller.Visibility == Visibility.Visible)
+                {
+                    numButtonsShowing++;
+                }
+
+                if (butClose != null && butClose.Visibility == Visibility.Visible)
+                {
+                    numButtonsShowing++;
+                }
+
+                if (butHear != null && butHear.Visibility == Visibility.Visible)
+                {
+                    numButtonsShowing++;
+                }
+
+                if (butTranslate != null && butTranslate.Visibility == Visibility.Visible)
+                {
+                    numButtonsShowing++;
+                }
+
+                bool isLandscape = false;
+                try
+                {
+                    // this can crash..
+                    var parent = (MainPageSplit)((Grid)((Grid)((Grid)Parent).Parent).Parent).Parent;
+                    isLandscape = parent.Orientation == PageOrientation.Landscape
+                                  || parent.Orientation == PageOrientation.LandscapeLeft
+                                  || parent.Orientation == PageOrientation.LandscapeRight;
+
+                }
+                catch (Exception)
+                {
+
+                }
+                if (isLandscape)
+                {
+                    title.Width = Application.Current.Host.Content.ActualHeight - butClose.Width * numButtonsShowing
+                                  - 15 - 70;
+                    title.MaxWidth = title.Width;
+                }
+                else
+                {
+                    title.Width = Application.Current.Host.Content.ActualWidth - butClose.Width * numButtonsShowing - 15;
+                    title.MaxWidth = title.Width;
+                }
             }
-            if (isLandscape)
+            catch(Exception eee)
             {
-                title.Width = Application.Current.Host.Content.ActualHeight
-                                   - butClose.Width * numButtonsShowing - 15 - 70;
-                title.MaxWidth = title.Width;
-            }
-            else
-            {
-                title.Width = Application.Current.Host.Content.ActualWidth
-                                   - butClose.Width * numButtonsShowing - 15;
-                title.MaxWidth = title.Width;
+                title.Width = 100;
+                title.MaxWidth = 100;
+                Debug.WriteLine(eee);
             }
         }
 

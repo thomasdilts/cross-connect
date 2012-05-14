@@ -12,6 +12,27 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioPlaybackAgent1", "AudioPlaybackAgent1\AudioPlaybackAgent1.csproj", "{F2BA106B-3098-495F-90DC-D23E5458C95B}"
 EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://essesrv33:8080/tfs/shared
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = AudioPlaybackAgent1\\AudioPlaybackAgent1.csproj
+		SccProjectName1 = AudioPlaybackAgent1
+		SccLocalPath1 = AudioPlaybackAgent1
+		SccProjectUniqueName2 = CrossConnect\\CrossConnect.csproj
+		SccProjectName2 = CrossConnect
+		SccLocalPath2 = CrossConnect
+		SccProjectUniqueName3 = Sword\\SwordBackend.csproj
+		SccProjectName3 = Sword
+		SccLocalPath3 = Sword
+		SccProjectUniqueName4 = zip2\\Zip.csproj
+		SccProjectName4 = zip2
+		SccLocalPath4 = zip2
+		SccProjectUniqueName5 = zlib\\zlib.csproj
+		SccProjectName5 = zlib
+		SccLocalPath5 = zlib
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

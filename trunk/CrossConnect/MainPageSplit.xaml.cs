@@ -680,10 +680,5 @@ namespace CrossConnect
 
         #endregion Methods
 
-        #region Other
-
-        // Constructor
-
-        #endregion Other
     }
 }

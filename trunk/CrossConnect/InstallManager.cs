@@ -266,9 +266,11 @@ namespace CrossConnect
             try
             {
                 IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
+                string filepath = BibleZtextReader.DirConf + '/' + internalName.ToLower()
+                                  + BibleZtextReader.ExtensionConf;
                 IsolatedStorageFileStream stream =
                     root.OpenFile(
-                        BibleZtextReader.DirConf + '/' + internalName.ToLower() + BibleZtextReader.ExtensionConf,
+                        filepath,
                         FileMode.Open);
                 Sbmd = new SwordBookMetaData(stream, internalName);
                 IsLoaded = true;
