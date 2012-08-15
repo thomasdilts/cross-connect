@@ -83,6 +83,8 @@
         public int Window;
         [DataMember(Name = "windowType")]
         public WindowType WindowType = WindowType.WindowBible;
+        [DataMember]
+        public int VSchrollPosition = 0;
 
         #endregion Fields
     }

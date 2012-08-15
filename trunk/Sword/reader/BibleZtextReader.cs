@@ -730,7 +730,15 @@ namespace Sword.reader
                     htmlPhoneAccentColor));
 
             head.Append("</style>");
-
+            head.Append(
+@"<script type=""text/javascript"">
+function getVerticalScrollPosition() {
+    return document.body.scrollTop.toString();
+}
+function setVerticalScrollPosition(position) {
+    document.body.scrollTop = position;
+}
+</script>");
             head.Append("</head><body>");
             return head.ToString();
         }

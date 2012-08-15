@@ -26,6 +26,7 @@ namespace CrossConnect
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Globalization;
     using System.IO.IsolatedStorage;
     using System.Linq;
     using System.Threading;
@@ -49,6 +50,7 @@ namespace CrossConnect
         #region Fields
 
         private bool _isInGetHtmlAsynchronously;
+        private int _nextVSchroll;
         private string _lastFileName = string.Empty;
         private DateTime _lastManipulationKillTime = DateTime.Now;
         private DispatcherTimer _manipulationTimer;
@@ -117,6 +119,24 @@ namespace CrossConnect
             }
 
             return "#" + color.ToString().Substring(3, 6);
+        }
+
+        public void SetVScroll(int newVSchrollValue)
+        {
+            _nextVSchroll = newVSchrollValue;
+        }
+
+        public int GetVScroll()
+        {
+            try
+            {
+                object pos = this.webBrowser1.InvokeScript("getVerticalScrollPosition");
+                return int.Parse(pos.ToString());
+            }
+            catch (Exception exn)
+            {
+                return 0;
+            }
         }
 
         public void CalculateTitleTextWidth()
@@ -829,17 +849,25 @@ namespace CrossConnect
             ((DispatcherTimer)sender).Stop();
             try
             {
-                int bookNum;
-                int absoluteChaptNum;
-                int relChaptNum;
-                int verseNum;
-                string fullName;
-                string titleText;
-                _state.Source.GetInfo(
-                    out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
-                var source = new Uri(
-                    _lastFileName + "#CHAP_" + absoluteChaptNum + "_VERS_" + verseNum, UriKind.Relative);
-                webBrowser1.Navigate(source);
+                if (_nextVSchroll > 0)
+                {
+                    this.webBrowser1.InvokeScript("setVerticalScrollPosition", _nextVSchroll.ToString(CultureInfo.InvariantCulture));
+                    _nextVSchroll = 0;
+                }
+                else
+                {
+                    int bookNum;
+                    int absoluteChaptNum;
+                    int relChaptNum;
+                    int verseNum;
+                    string fullName;
+                    string titleText;
+                    _state.Source.GetInfo(
+                        out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
+                    var source = new Uri(
+                        _lastFileName + "#CHAP_" + absoluteChaptNum + "_VERS_" + verseNum, UriKind.Relative);
+                    webBrowser1.Navigate(source);
+                }
             }
             catch (Exception ee)
             {

@@ -67,7 +67,7 @@ namespace CrossConnect
     {
         #region Fields
 
-        public const string Version = "1.0.0.27";
+        public const string Version = "1.0.0.28";
         public const string WebDirIsolated = "webtemporary";
 
         public static SerializableDailyPlan DailyPlan = new SerializableDailyPlan();
@@ -456,6 +456,7 @@ namespace CrossConnect
                                 else
                                 {
                                     nextWindow = new BrowserTitledWindow { State = state };
+                                    ((BrowserTitledWindow)nextWindow).SetVScroll(state.VSchrollPosition);
                                 }
 
                                 nextWindow.State.Source.Resume();
@@ -591,6 +592,12 @@ namespace CrossConnect
                     using (XmlWriter writer = XmlWriter.Create(sw, settings))
                     {
                         OpenWindows[i].State.Source.SerialSave();
+                        if (OpenWindows[i].State.WindowType != WindowType.WindowMediaPlayer)
+                        {
+                            // change the windows view to this one
+                            OpenWindows[i].State.VSchrollPosition = ((BrowserTitledWindow)OpenWindows[i]).GetVScroll();
+                        }
+
                         ser.WriteObject(writer, OpenWindows[i].State);
                     }
 
