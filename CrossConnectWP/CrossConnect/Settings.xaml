@@ -1,0 +1,103 @@
+﻿<local:AutoRotatePage x:Class="CrossConnect.Settings" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+                      xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:CrossConnect"
+                      FontFamily="{StaticResource PhoneFontFamilyNormal}" FontSize="{StaticResource PhoneFontSizeNormal}"
+                      Foreground="{StaticResource PhoneForegroundBrush}" SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+                      mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
+                      xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+                      shell:SystemTray.IsVisible="False" xmlns:my="clr-namespace:CrossConnect"
+                      xmlns:sys="clr-namespace:System;assembly=mscorlib" Loaded="AutoRotatePageLoaded"
+                      BackKeyPress="AutoRotatePageBackKeyPress">
+
+  <toolkit:TransitionService.NavigationInTransition>
+    <toolkit:NavigationInTransition>
+      <toolkit:NavigationInTransition.Backward>
+        <toolkit:TurnstileTransition Mode="BackwardIn" />
+      </toolkit:NavigationInTransition.Backward>
+      <toolkit:NavigationInTransition.Forward>
+        <toolkit:TurnstileTransition Mode="ForwardIn" />
+      </toolkit:NavigationInTransition.Forward>
+    </toolkit:NavigationInTransition>
+  </toolkit:TransitionService.NavigationInTransition>
+  <toolkit:TransitionService.NavigationOutTransition>
+    <toolkit:NavigationOutTransition>
+      <toolkit:NavigationOutTransition.Backward>
+        <toolkit:TurnstileTransition Mode="BackwardOut" />
+      </toolkit:NavigationOutTransition.Backward>
+      <toolkit:NavigationOutTransition.Forward>
+        <toolkit:TurnstileTransition Mode="ForwardOut" />
+      </toolkit:NavigationOutTransition.Forward>
+    </toolkit:NavigationOutTransition>
+  </toolkit:TransitionService.NavigationOutTransition>
+
+  <!--LayoutRoot is the root grid where all page content is placed-->
+  <ScrollViewer Name="scrollViewer1">
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <!--TitlePanel contains the name of the application and page title-->
+      <StackPanel Grid.Row="0" x:Name="TitlePanel" Margin="12,5,0,0" Height="63" VerticalAlignment="Top">
+        <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}" />
+        <TextBlock x:Name="PageTitle" Text="Settings" Margin="9,-7,0,0"
+                   Style="{StaticResource PhoneTextTitle2Style}" />
+      </StackPanel>
+      <!--ContentPanel - place additional content here-->
+      <StackPanel Grid.Row="1" x:Name="ContentPanel">
+        <toolkit:ListPicker Name="NumberOfScreens" Header="Number of screens">
+          <sys:String>1</sys:String>
+          <sys:String>2</sys:String>
+          <sys:String>3</sys:String>
+          <sys:String>4</sys:String>
+          <sys:String>5</sys:String>
+          <sys:String>6</sys:String>
+          <sys:String>7</sys:String>
+          <sys:String>8</sys:String>
+        </toolkit:ListPicker>
+        <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Highlight text markings" IsChecked="false"
+                              Name="highlightMarkings" />
+        <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Show the words of Jesus in red" IsChecked="false"
+                              Name="wordsOfChristRed" />
+        <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Use small verse numbers" IsChecked="true"
+                              Name="smallVerseNumbers" />
+        <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Show note positions" IsChecked="false"
+                              Name="showNotePositions" />
+        <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Show the book name on each verse" IsChecked="false"
+                              Name="showBookName" />
+        <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Show the chapter number on each verse"
+                              IsChecked="true" Name="showChapterNumber" />
+        <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Show the verse number on each verse" IsChecked="true"
+                              Name="showVerseNumber" />
+        <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Show Strong's numbers" IsChecked="false"
+                              Name="showStrongsNumbers" />
+        <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Show word morphology" IsChecked="false"
+                              Name="showMorphology" />
+        <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Show the headings" IsChecked="true"
+                              Name="showHeadings" />
+        <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Start each verse on a new line" IsChecked="false"
+                              Name="eachVerseNewLine" />
+        <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Show added notes by chapter" IsChecked="false"
+                              Name="showAddedNotesByChapter" />
+        <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Use internet dictionaries" IsChecked="false"
+                              Name="useInternetGreekHebrewDict" />
+
+        <TextBlock Name="captionHebrewDictionaryLink" Text="Hebrew dictionary internet link" />
+        <TextBox Name="hebrewDictionaryLink" Text="" />
+        <TextBlock Name="captionGreekDictionaryLink" Text="Greek dictionary internet link" />
+        <TextBox Name="greekDictionaryLink" Text="" />
+        <TextBlock Name="captionCustomBibleDownloadLink" Text="Custom bible download address" />
+        <TextBox Name="customBibleDownloadLink" Text="" />
+        <TextBlock Name="captionSoundLink" Text="Talking bible internet link" />
+        <TextBox Name="soundLink" Text="" />
+        <Button Content="Default settings" Name="butSetDefault" Click="ButSetDefaultClick" />
+      </StackPanel>
+    </Grid>
+  </ScrollViewer>
+
+</local:AutoRotatePage>

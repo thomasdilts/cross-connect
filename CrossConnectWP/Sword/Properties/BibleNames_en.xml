@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<biblenames isolang="en" isolocale="" version="1.0" >
+<book keynumber="0" short="Gen" full="Genesis" />
+<book keynumber="1" short="Exo" full="Exodus" />
+<book keynumber="2" short="Lev" full="Leviticus" />
+<book keynumber="3" short="Num" full="Numbers" />
+<book keynumber="4" short="Deu" full="Deuteronomy" />
+<book keynumber="5" short="Jos" full="Joshua" />
+<book keynumber="6" short="Judg" full="Judges" />
+<book keynumber="7" short="Rut" full="Ruth" />
+<book keynumber="8" short="1Sa" full="1 Samuel" />
+<book keynumber="9" short="2Sa" full="2 Samuel" />
+<book keynumber="10" short="1Ki" full="1 Kings" />
+<book keynumber="11" short="2Ki" full="2 Kings" />
+<book keynumber="12" short="1Ch" full="1 Chronicles" />
+<book keynumber="13" short="2Ch" full="2 Chronicles" />
+<book keynumber="14" short="Ezr" full="Ezra" />
+<book keynumber="15" short="Neh" full="Nehemiah" />
+<book keynumber="16" short="Est" full="Esther" />
+<book keynumber="17" short="Job" full="Job" />
+<book keynumber="18" short="Psa" full="Psalms" />
+<book keynumber="19" short="Pro" full="Proverbs" />
+<book keynumber="20" short="Ecc" full="Ecclesiastes" />
+<book keynumber="21" short="Song" full="Song of Solomon" />
+<book keynumber="22" short="Isa" full="Isaiah" />
+<book keynumber="23" short="Jer" full="Jeremiah" />
+<book keynumber="24" short="Lam" full="Lamentations" />
+<book keynumber="25" short="Eze" full="Ezekiel" />
+<book keynumber="26" short="Dan" full="Daniel" />
+<book keynumber="27" short="Hos" full="Hosea" />
+<book keynumber="28" short="Joe" full="Joel" />
+<book keynumber="29" short="Amo" full="Amos" />
+<book keynumber="30" short="Obd" full="Obadiah" />
+<book keynumber="31" short="Jon" full="Jonah" />
+<book keynumber="32" short="Mic" full="Micah" />
+<book keynumber="33" short="Nah" full="Nahum" />
+<book keynumber="34" short="Hab" full="Habakkuk" />
+<book keynumber="35" short="Zep" full="Zephaniah" />
+<book keynumber="36" short="Hag" full="Haggai" />
+<book keynumber="37" short="Zec" full="Zechariah" />
+<book keynumber="38" short="Mal" full="Malachi" />
+<book keynumber="39" short="Mat" full="Matthew" />
+<book keynumber="40" short="Mar" full="Mark" />
+<book keynumber="41" short="Luk" full="Luke" />
+<book keynumber="42" short="Joh" full="John" />
+<book keynumber="43" short="Act" full="Acts" />
+<book keynumber="44" short="Rom" full="Romans" />
+<book keynumber="45" short="1Cor" full="1 Corinthians" />
+<book keynumber="46" short="2Cor" full="2 Corinthians" />
+<book keynumber="47" short="Gal" full="Galatians" />
+<book keynumber="48" short="Eph" full="Ephesians" />
+<book keynumber="49" short="Phili" full="Philippians" />
+<book keynumber="50" short="Col" full="Colossians" />
+<book keynumber="51" short="1Th" full="1 Thessalonians" />
+<book keynumber="52" short="2Th" full="2 Thessalonians" />
+<book keynumber="53" short="1Ti" full="1 Timothy" />
+<book keynumber="54" short="2Ti" full="2 Timothy" />
+<book keynumber="55" short="Tit" full="Titus" />
+<book keynumber="56" short="Phile" full="Philemon" />
+<book keynumber="57" short="Heb" full="Hebrews" />
+<book keynumber="58" short="Jam" full="James" />
+<book keynumber="59" short="1Pe" full="1 Peter" />
+<book keynumber="60" short="2Pe" full="2 Peter" />
+<book keynumber="61" short="1Jo" full="1 John" />
+<book keynumber="62" short="2Jo" full="2 John" />
+<book keynumber="63" short="3Jo" full="3 John" />
+<book keynumber="64" short="Jude" full="Jude" />
+<book keynumber="65" short="Rev" full="Revelation of John" />
+</biblenames>

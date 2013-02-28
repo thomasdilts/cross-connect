@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  <Identity Name="57294ThomasDilts.BibleReaderCrossConnect" Publisher="CN=F67267EA-6C25-400F-81E7-7466BD444D76" Version="2.0.9.31" />
+  <Properties>
+    <DisplayName>Bible Reader Cross Connect</DisplayName>
+    <PublisherDisplayName>ThomasDilts</PublisherDisplayName>
+    <Logo>Assets\splash50x50.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.2.1</OSMinVersion>
+    <OSMaxVersionTested>6.2.1</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="CrossConnect.App">
+      <VisualElements DisplayName="Bible Reader Cross Connect" Logo="Assets\splash150x150.png" SmallLogo="Assets\splash30x30.png" Description="Bible Reader Cross Connect based on the crosswire.org bible database" ForegroundText="light" BackgroundColor="#0000fe">
+        <LockScreen Notification="badge" BadgeLogo="Assets\badge.png" />
+        <DefaultTile ShowName="allLogos" WideLogo="Assets\splash310x150.png" ShortName="CrossConnect" />
+        <SplashScreen Image="Assets\splash.png" BackgroundColor="#0000fe" />
+        <InitialRotationPreference>
+          <Rotation Preference="portrait" />
+          <Rotation Preference="landscape" />
+          <Rotation Preference="portraitFlipped" />
+          <Rotation Preference="landscapeFlipped" />
+        </InitialRotationPreference>
+      </VisualElements>
+      <Extensions>
+        <Extension Category="windows.backgroundTasks" EntryPoint="Crossconnect.App">
+          <BackgroundTasks>
+            <Task Type="audio" />
+            <Task Type="timer" />
+          </BackgroundTasks>
+        </Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>

@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<biblenames isolang="hu" isolocale="" version="1.0">
+  <book keynumber="0" short="1Móz" full="1. Mózes" />
+  <book keynumber="1" short="2Móz" full="2. Mózes" />
+  <book keynumber="2" short="3Móz" full="3. Mózes" />
+  <book keynumber="3" short="4Móz" full="4. Mózes" />
+  <book keynumber="4" short="5Móz" full="5. Mózes" />
+  <book keynumber="5" short="Józs" full="Józsué" />
+  <book keynumber="6" short="Bírá" full="Bírák" />
+  <book keynumber="7" short="Ruth" full="Ruth" />
+  <book keynumber="8" short="1Sám" full="1. Sámuel" />
+  <book keynumber="9" short="2Sám" full="2. Sámuel" />
+  <book keynumber="10" short="1Kir" full="1. Királyok" />
+  <book keynumber="11" short="2Kir" full="2. Királyok" />
+  <book keynumber="12" short="1Kró" full="1. Krónika" />
+  <book keynumber="13" short="2Kró" full="2. Krónika" />
+  <book keynumber="14" short="Ezsd" full="Ezsdrás" />
+  <book keynumber="15" short="Nehé" full="Nehémiás" />
+  <book keynumber="16" short="Eszt" full="Eszter" />
+  <book keynumber="17" short="Jób" full="Jób" />
+  <book keynumber="18" short="Zsol" full="Zsoltárok" />
+  <book keynumber="19" short="Péld" full="Példabeszédek" />
+  <book keynumber="20" short="Préd" full="Prédikátor" />
+  <book keynumber="21" short="Ének" full="Énekek éneke" />
+  <book keynumber="22" short="Ézsa" full="Ézsaiás" />
+  <book keynumber="23" short="Jere" full="Jeremiás" />
+  <book keynumber="24" short="Jere" full="Jeremiás Siralmai" />
+  <book keynumber="25" short="Ezék" full="Ezékiel" />
+  <book keynumber="26" short="Dáni" full="Dániel" />
+  <book keynumber="27" short="Hóse" full="Hóseás" />
+  <book keynumber="28" short="Jóel" full="Jóel" />
+  <book keynumber="29" short="Ámós" full="Ámós" />
+  <book keynumber="30" short="Abdi" full="Abdiás" />
+  <book keynumber="31" short="Jóná" full="Jónás" />
+  <book keynumber="32" short="Mike" full="Mikeás" />
+  <book keynumber="33" short="Náhu" full="Náhum" />
+  <book keynumber="34" short="Haba" full="Habakuk" />
+  <book keynumber="35" short="Sofó" full="Sofóniás" />
+  <book keynumber="36" short="Agge" full="Aggeus" />
+  <book keynumber="37" short="Zaka" full="Zakariás" />
+  <book keynumber="38" short="Mala" full="Malakiás" />
+  <book keynumber="39" short="Máté" full="Máté" />
+  <book keynumber="40" short="Márk" full="Márk" />
+  <book keynumber="41" short="Luká" full="Lukács" />
+  <book keynumber="42" short="Jáno" full="János" />
+  <book keynumber="43" short="Apos" full="Apostolok Cselekedetei" />
+  <book keynumber="44" short="Róma" full="Róma" />
+  <book keynumber="45" short="1Kor" full="1. Korintus" />
+  <book keynumber="46" short="2Kor" full="2. Korintus" />
+  <book keynumber="47" short="Gala" full="Galata" />
+  <book keynumber="48" short="Eféz" full="Efézus" />
+  <book keynumber="49" short="Fili" full="Filippi" />
+  <book keynumber="50" short="Kolo" full="Kolossé" />
+  <book keynumber="51" short="1The" full="1. Thessalonika" />
+  <book keynumber="52" short="2The" full="2. Thessalonika" />
+  <book keynumber="53" short="1Tim" full="1. Timóteus" />
+  <book keynumber="54" short="2Tim" full="2. Timóteus" />
+  <book keynumber="55" short="Titu" full="Titusz" />
+  <book keynumber="56" short="File" full="Filemon" />
+  <book keynumber="57" short="Zsid" full="Zsidókhoz írt levél" />
+  <book keynumber="58" short="Jaka" full="Jakab" />
+  <book keynumber="59" short="1Pét" full="1. Péter" />
+  <book keynumber="60" short="2Pét" full="2. Péter" />
+  <book keynumber="61" short="1Ján" full="1. János" />
+  <book keynumber="62" short="2Ján" full="2. János" />
+  <book keynumber="63" short="3Ján" full="3. János" />
+  <book keynumber="64" short="Júdá" full="Júdás" />
+  <book keynumber="65" short="Jele" full="Jelenések" />
+</biblenames>
