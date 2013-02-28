@@ -1,0 +1,285 @@
+﻿<UserControl
+    x:Class="CrossConnect.BrowserTitledWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CrossConnect"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="600"
+    d:DesignWidth="600">
+
+    <Border BorderBrush="Silver" BorderThickness="3"
+            Name="border1">
+
+        <Grid Name="grid1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <StackPanel Name="stackPanelButtons" Grid.Column="0" Grid.Row="0" Orientation="Vertical"
+                        HorizontalAlignment="Left">
+                <Grid Name="gridPanelButtons1" HorizontalAlignment="Center" Margin="0,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="ButPrevious" Grid.Column="0" Click="ButPreviousClick" HorizontalAlignment="Center"
+                            Style="{StaticResource PreviousAppBarButtonStyle2}" Tag="Edit" />
+                    <Button x:Name="ButNext" Grid.Column="1" Click="ButNextClick" HorizontalAlignment="Center"
+                            Style="{StaticResource NextAppBarButtonStyle2}" Tag="Edit" />
+                    <Button x:Name="ButChapters" Grid.Column="2" Click="ButChapters_OnClick"  HorizontalAlignment="Center"
+                            Style="{StaticResource MoveToFolderAppBarButtonStyle2}" Tag="Edit" />
+                    <Button x:Name="ButSearch" Grid.Column="3" Click="ButSearch_OnClick" HorizontalAlignment="Center"
+                            Style="{StaticResource SearchAppBarButtonStyle2}" Tag="Edit" />
+                    <Button x:Name="ButMenu" Grid.Column="4" Click="ButMenuClick" HorizontalAlignment="Center"
+                            Style="{StaticResource ListAppBarButtonStyle2}" Tag="Edit" />
+                    <Button x:Name="ButLink" Grid.Column="5" Click="ButLinkClick" HorizontalAlignment="Center"
+                            Style="{StaticResource LinkAppBarButtonStyle2}" Tag="Edit" />
+                    <Button x:Name="ButUnLink" Grid.Column="5" Click="ButLinkClick" HorizontalAlignment="Center"
+                            Style="{StaticResource AppBarButtonStyle2}" Tag="Edit">
+                        <Button.Content>
+                            <Image Source="Assets/AppBar/appbar.linkto.rest.pressed.png" />
+                        </Button.Content>
+                    </Button>
+                    <Button x:Name="ButClose" Grid.Column="6" Click="ButCloseClick" HorizontalAlignment="Center"
+                            Style="{StaticResource DeleteAppBarButtonStyle2}" Tag="Edit" />
+                </Grid>
+                <TextBlock Name="title" Text="This is the first strange text" FontSize="18" />
+            </StackPanel>
+            <Rectangle Name="UserInterfaceBlocker" Grid.Row="1" />
+            <Popup x:Name="SearchPopup" Opened="SearchPopup_OnOpened" Closed="SearchPopup_OnClosed" Grid.Row="1"
+                   HorizontalOffset="150" VerticalOffset="-60" IsLightDismissEnabled="True">
+                <Popup.ChildTransitions>
+                    <TransitionCollection>
+                        <PopupThemeTransition />
+                    </TransitionCollection>
+                </Popup.ChildTransitions>
+                <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" BorderThickness="2"
+                        Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <ListBox FontSize="30"  Name="SubMenuSearchPopup" SelectedItem="-1"
+                                 SelectionChanged="SubMenuSearchPopup_OnSelectionChanged">
+                            <ListBoxItem Name="ListBook">Book</ListBoxItem>
+                            <ListBoxItem Name="ListChapter">Chapter</ListBoxItem>
+                            <ListBoxItem Name="ListVerse">Verse</ListBoxItem>
+                        </ListBox>
+                    </StackPanel>
+                </Border>
+            </Popup>
+            <Popup x:Name="BookPopup" Closed="SearchPopup_OnClosed" HorizontalOffset="-100" VerticalOffset="-100"
+                   IsLightDismissEnabled="True">
+                <Popup.ChildTransitions>
+                    <TransitionCollection>
+                        <PopupThemeTransition />
+                    </TransitionCollection>
+                </Popup.ChildTransitions>
+                <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" BorderThickness="2"
+                        Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
+                        <TextBlock Name="ListTitle" Text="Select book" Margin="6 6 6 6" FontSize="18" />
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Name="SelectBookScrollViewer">
+                            <Grid x:Name="ScrollContentGrid" Background="Transparent"></Grid>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Border>
+            </Popup>
+            <Popup x:Name="RealSearchPopup" Closed="SearchPopup_OnClosed" Opened="RealSearchPopup_OnOpened" HorizontalOffset="10" VerticalOffset="-150"
+                   IsLightDismissEnabled="True">
+                <Popup.ChildTransitions>
+                    <TransitionCollection>
+                        <PopupThemeTransition />
+                    </TransitionCollection>
+                </Popup.ChildTransitions>
+                <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" BorderThickness="2"
+                        Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                    <StackPanel>
+                        <Popup x:Name="HelpPopup" HorizontalOffset="-100" VerticalOffset="-100"
+                   IsLightDismissEnabled="True">
+                            <Popup.ChildTransitions>
+                                <TransitionCollection>
+                                    <PopupThemeTransition />
+                                </TransitionCollection>
+                            </Popup.ChildTransitions>
+                            <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" BorderThickness="2"
+                        Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                                <WebView x:Name="webBrowserHelp" MinHeight="400" MinWidth="300"/>
+                            </Border>
+                        </Popup>
+                        <ScrollViewer Name="RealSearchScrollViewer">
+                            <Grid x:Name="LayoutRoot" Background="Transparent">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <!--TitlePanel contains the name of the application and page title-->
+                                <StackPanel Grid.Row="0" x:Name="TitlePanel" Height="33" VerticalAlignment="Top">
+                                    <TextBlock x:Name="PageTitle" Text="Search" FontSize="18" />
+                                </StackPanel>
+                                <!--ContentPanel - place additional content here-->
+                                <StackPanel Grid.Row="1" x:Name="ContentPanel">
+                                    <Button Content="Search" Name="butSearch" Click="ButSearchClick" />
+                                    <TextBox Name="SearchText" Text="" Margin="15 5 15 5" FontSize="18" />
+                                    <StackPanel Orientation="Horizontal"  Margin="0 20 0 0">
+                                    <RadioButton IsChecked="True" GroupName="FastOrSlow" FontSize="18"
+                                                 Content="Fast search"
+                                                 Name="FastSearch" Click="FastSearch_OnClick"/>
+                                        <Button Content="Help" Name="butFastHelp" Click="ButFastHelp_OnClick" />
+                                        </StackPanel>
+                                    <RadioButton GroupName="FastOrSlow" Content="Slow search" FontSize="18"
+                                                 Name="SlowSearch" Click="FastSearch_OnClick" />
+
+                                    <TextBlock x:Name="SearchWhereText" Margin="0 20 0 0" Text="Search where" FontSize="18" />
+                                    <RadioButton IsChecked="True" GroupName="SearchWhere" FontSize="18"
+                                                 Content="Whole bible"
+                                                 Name="WholeBible" />
+                                    <RadioButton GroupName="SearchWhere" Content="Old Testement" FontSize="18"
+                                                 Name="OldTestement" />
+                                    <RadioButton GroupName="SearchWhere" Content="New Testement" FontSize="18"
+                                                 Name="NewTEstement" />
+                                    <RadioButton GroupName="SearchWhere" Content="" FontSize="18" Name="Chapter" />
+                                    <TextBlock x:Name="SearchByText" Margin="0 20 0 0" Text="Search conditions"
+                                               FontSize="18" />
+                                    <RadioButton IsChecked="True" GroupName="SearchBy" FontSize="18"
+                                                 Content="One or more words"
+                                                 Name="OneOrMoreWords" />
+                                    <RadioButton GroupName="SearchBy" FontSize="18" Content="All words (max 3 words)"
+                                                 Name="AllWords" />
+                                    <RadioButton GroupName="SearchBy" FontSize="18"
+                                                 Content="Exact match (Regular expressions)"
+                                                 Name="ExactMatch" />
+                                    <ToggleSwitch Header="Ignore case" Margin="0 20 0 0" FontSize="18" Name="IgnoreCase" />
+                                    <ProgressBar Minimum="0" Maximum="100" Name="ProgressBar1" Height="60" />
+                                    <Button Content="Help on regular expressions" Name="ButHelp" FontSize="18"
+                                            Click="ButHelpClick" />
+                                </StackPanel>
+                        
+                            </Grid>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Border>
+            </Popup>
+            <Popup x:Name="CopyPopup" IsLightDismissEnabled="True" Closed="CopyPopup_OnClosed"
+                   Opened="CopyPopup_OnOpened">
+                <Popup.ChildTransitions>
+                    <TransitionCollection>
+                        <PaneThemeTransition />
+                    </TransitionCollection>
+                </Popup.ChildTransitions>
+                <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" BorderThickness="2"
+                        Background="{StaticResource ApplicationPageBackgroundThemeBrush}" x:Name="copyborder">
+                    <Grid Name="MainPaneCopyPopup">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                            <Button Click="SelectAll_OnClick" Content="Select all" x:Name="SelectAll" />
+                            <Button Click="CopySelection_OnClick" Content="Copy selection" x:Name="CopySelection" />
+                        </StackPanel>
+                        <TextBox Grid.Row="1" Name="SelectText" Style="{StaticResource ReadOnlyTextBox}">
+                        </TextBox>
+
+                    </Grid>
+                </Border>
+            </Popup>
+            <Popup x:Name="AddNotePopup" IsLightDismissEnabled="True" Closed="AddNotePopup_OnClosed"
+                   Opened="AddNotePopup_OnOpened">
+                <Popup.ChildTransitions>
+                    <TransitionCollection>
+                        <PaneThemeTransition />
+                    </TransitionCollection>
+                </Popup.ChildTransitions>
+                <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" BorderThickness="2"
+                        Background="{StaticResource ApplicationPageBackgroundThemeBrush}" x:Name="addborder">
+                    <Grid Name="MainPaneAddNotePopup">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                            <TextBlock x:Name="AddNoteTitle" Margin="20 20 20 20" FontSize="18" />
+                            <TextBlock x:Name="verse" Margin="20 20 20 20" FontSize="14" />
+                        </StackPanel>
+                        <TextBox TextWrapping="Wrap" Grid.Row="1" Name="TextToAdd" FontSize="14">
+                        </TextBox>
+
+                    </Grid>
+                </Border>
+            </Popup>
+            <Popup x:Name="MenuPopup" Opened="MenuPopup_OnOpened" Closed="MenuPopup_OnClosed" Grid.Row="1"
+                   HorizontalOffset="100" VerticalOffset="-40" IsLightDismissEnabled="True">
+                <Popup.ChildTransitions>
+                    <TransitionCollection>
+                        <PopupThemeTransition />
+                    </TransitionCollection>
+                </Popup.ChildTransitions>
+                <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" BorderThickness="2"
+                        Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                    <StackPanel Name="SubMenuStackPanel" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <ListBox FontSize="25" Name="SubMenuMenuPopup" SelectionChanged="SubMenuMenuPopup_OnSelectionChanged"
+                                 SelectedItem="-1">
+                            <ListBoxItem Name="MoveWindowRight">MoveWindowRight</ListBoxItem>
+                            <ListBoxItem Name="MoveWindowLeft">MoveWindowLeft</ListBoxItem>
+                            <ListBoxItem Name="WindowSmaller">WindowSmaller</ListBoxItem>
+                            <ListBoxItem Name="WindowLarger">WindowLarger</ListBoxItem>
+                            <ListBoxItem Name="AddANote">AddANote</ListBoxItem>
+                            <ListBoxItem Name="AddToBookMarks">AddToBookMarks</ListBoxItem>
+                            <ListBoxItem Name="Hear">Hear</ListBoxItem>
+                            <ListBoxItem Name="Translate">Translate</ListBoxItem>
+                            <ListBoxItem Name="Copy">Copy</ListBoxItem>
+                            <ListBoxItem Name="SendMail">SendMail</ListBoxItem>
+                            <ListBoxItem Name="FontSmaller">FontSmaller</ListBoxItem>
+                            <ListBoxItem Name="FontLarger">FontLarger</ListBoxItem>
+                        </ListBox>
+                    </StackPanel>
+                </Border>
+            </Popup>
+            <Popup x:Name="StartAudioPopup" IsLightDismissEnabled="True" Closed="StartAudioPopup_OnClosed"
+                   Opened="StartAudioPopup_OnOpened">
+                <Popup.ChildTransitions>
+                    <TransitionCollection>
+                        <PaneThemeTransition />
+                    </TransitionCollection>
+                </Popup.ChildTransitions>
+                <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" BorderThickness="2"
+                        Background="{StaticResource ApplicationPageBackgroundThemeBrush}" x:Name="audioborder">
+                    <Grid Name="MainPaneStartAudioPopup">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                            <TextBlock x:Name="StartMediaTitle" Margin="20 20 20 20" FontSize="18" />
+                            <TextBlock x:Name="MsgFromServer" Margin="20 20 20 20" FontSize="14" />
+                        </StackPanel>
+                        <ProgressBar Grid.Row="1" Name="WaitingForDownload" Margin="0,30,0,0" IsIndeterminate="True" />
+                        <ScrollViewer Name="scrollViewerStartAudio" Grid.Row="1">
+                            <ListBox SelectionChanged="ListStartAudio_OnSelectionChanged" Grid.Row="1"
+                                     x:Name="ListStartAudio" FontSize="14">
+
+                            </ListBox>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Popup>
+            <Border Name="WebBrowserBorder" BorderBrush="Silver" BorderThickness="1" Grid.Row="1">
+                <WebView Margin="0 0 0 0" SizeChanged="WebBrowser1_OnSizeChanged" Loaded="WebBrowser1Loaded"
+                         Unloaded="WebBrowser1Unloaded" ScriptNotify="WebBrowser1ScriptNotify"
+                          x:Name="webBrowser1" NavigationFailed="webBrowser1_NavigationFailed_1" />
+            </Border>
+        </Grid>
+    </Border>
+
+</UserControl>

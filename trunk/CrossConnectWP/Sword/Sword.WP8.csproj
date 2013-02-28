@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CE4B6565-208F-41DA-B260-30C8758AD9F4}</ProjectGuid>
+    <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sword</RootNamespace>
+    <AssemblyName>Sword</AssemblyName>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
+    <SilverlightVersion>
+    </SilverlightVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <TargetFrameworkIdentifier>WindowsPhone</TargetFrameworkIdentifier>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug.WP8\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release.WP8\</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>Bin\x86\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>
+    </PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>Bin\x86\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>
+    </PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>Bin\ARM\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>
+    </PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>Bin\ARM\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>
+    </PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="BibleNames.cs" />
+    <Compile Include="ConfigEntry.cs" />
+    <Compile Include="ConfigEntryTable.cs" />
+    <Compile Include="ConfigEntryType.cs" />
+    <Compile Include="DailyPlans.cs" />
+    <Compile Include="javaprops\JavaProperties.cs" />
+    <Compile Include="javaprops\JavaPropertyReader.cs" />
+    <Compile Include="Language.cs" />
+    <Compile Include="Languages.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="reader\BibleNoteReader.cs" />
+    <Compile Include="reader\BibleZtextReader.cs" />
+    <Compile Include="reader\CommentZtextReader.cs" />
+    <Compile Include="reader\IBrowserTextSource.cs" />
+    <Compile Include="reader\RawGenTextReader.cs" />
+    <Compile Include="SwordBookMetaData.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\BibleNames_ar_EG.xml" />
+    <EmbeddedResource Include="Properties\iso639full.properties" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Hoot\Hoot.WP8.csproj">
+      <Project>{1896345A-8FAC-4D7E-A754-1509F4AA77D5}</Project>
+      <Name>Hoot.WP8</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\zip2\Zip.WP8.csproj">
+      <Project>{460C536A-FA50-46C0-B9DA-A0B4F8546AEE}</Project>
+      <Name>Zip.WP8</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\zlib\zlib.WP8.csproj">
+      <Project>{EA329551-869B-40A5-BC2A-A415E35A9D98}</Project>
+      <Name>zlib.WP8</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\InstallManager.plugin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\iso639.properties">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\iso639_de.properties">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\iso639_en.properties">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\iso639_fa.properties">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\iso639_in.properties">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\iso639_vi.properties">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\BibleNames_af.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_bg.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_cs.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_da.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_de.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_en.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_es.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_et.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_fa.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_fi.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_fo.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_fr.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_he.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\BibleNames_hu.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_id.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_in.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_it.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_iw.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\BibleNames_ko.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_la.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_lt.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_nb.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_nl.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_nn.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_no.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_pl.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_pt.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_pt_BR.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_ro.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_ru.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_sk.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_sl.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_sv.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\BibleNames_th.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\BibleNames_uk.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_vi.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_zh.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_zh_CN.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\BibleNames_ar.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
+  <ProjectExtensions />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

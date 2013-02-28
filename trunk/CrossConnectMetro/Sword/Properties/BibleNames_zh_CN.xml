@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<biblenames isolang="zh" isolocale="CN" version="1.0">
+  <book keynumber="0" short="创" full="创世记" />
+  <book keynumber="1" short="出" full="出埃及记" />
+  <book keynumber="2" short="利" full="利未记" />
+  <book keynumber="3" short="民" full="民数记" />
+  <book keynumber="4" short="申" full="申命记" />
+  <book keynumber="5" short="书" full="约书亚记" />
+  <book keynumber="6" short="士" full="士师记  " />
+  <book keynumber="7" short="得" full="路得记" />
+  <book keynumber="8" short="撒上" full="撒母耳记上" />
+  <book keynumber="9" short="撒下" full="撒母耳记下" />
+  <book keynumber="10" short="王上" full="列王记上" />
+  <book keynumber="11" short="王下" full="列王记下" />
+  <book keynumber="12" short="代上" full="历代志上" />
+  <book keynumber="13" short="代下" full="历代志下" />
+  <book keynumber="14" short="拉" full="以斯拉记" />
+  <book keynumber="15" short="尼" full="尼希米记" />
+  <book keynumber="16" short="斯" full="以斯帖记" />
+  <book keynumber="17" short="伯" full="约伯记" />
+  <book keynumber="18" short="诗" full="诗篇" />
+  <book keynumber="19" short="箴" full="箴言" />
+  <book keynumber="20" short="传" full="传道书" />
+  <book keynumber="21" short="歌" full="雅歌" />
+  <book keynumber="22" short="赛" full="以赛亚书" />
+  <book keynumber="23" short="耶" full="耶利米书" />
+  <book keynumber="24" short="哀" full="耶利米哀歌" />
+  <book keynumber="25" short="结" full="以西结书" />
+  <book keynumber="26" short="但" full="但以理书" />
+  <book keynumber="27" short="何" full="何西阿书" />
+  <book keynumber="28" short="珥" full="约珥书" />
+  <book keynumber="29" short="摩" full="阿摩司书" />
+  <book keynumber="30" short="俄" full="俄巴底亚书" />
+  <book keynumber="31" short="拿" full="约拿书" />
+  <book keynumber="32" short="弥" full="弥迦书" />
+  <book keynumber="33" short="鸿" full="那鸿书" />
+  <book keynumber="34" short="哈" full="哈巴谷书" />
+  <book keynumber="35" short="番" full="西番雅书" />
+  <book keynumber="36" short="该" full="哈该书" />
+  <book keynumber="37" short="亚" full="撒迦利亚书" />
+  <book keynumber="38" short="玛" full="玛拉基书" />
+  <book keynumber="39" short="太" full="马太福音" />
+  <book keynumber="40" short="可" full="马可福音" />
+  <book keynumber="41" short="路" full="路加福音" />
+  <book keynumber="42" short="约" full="约翰福音" />
+  <book keynumber="43" short="徒" full="使徒行传" />
+  <book keynumber="44" short="罗" full="罗马书" />
+  <book keynumber="45" short="林前" full="歌林多前书" />
+  <book keynumber="46" short="林后" full="歌林多后书" />
+  <book keynumber="47" short="加" full="加拉太书" />
+  <book keynumber="48" short="弗" full="以弗所书" />
+  <book keynumber="49" short="腓" full="腓利比书" />
+  <book keynumber="50" short="西" full="歌罗西书" />
+  <book keynumber="51" short="帖前" full="帖撒罗尼迦前书" />
+  <book keynumber="52" short="帖后" full="帖撒罗尼迦后书" />
+  <book keynumber="53" short="提前" full="提摩太前书" />
+  <book keynumber="54" short="提后" full="提摩太后书" />
+  <book keynumber="55" short="多" full="提多书" />
+  <book keynumber="56" short="门" full="腓利门书" />
+  <book keynumber="57" short="来" full="希伯来书" />
+  <book keynumber="58" short="雅" full="雅各书" />
+  <book keynumber="59" short="彼前" full="彼得前书" />
+  <book keynumber="60" short="彼后" full="彼得后书" />
+  <book keynumber="61" short="约壹" full="约翰一书" />
+  <book keynumber="62" short="约贰" full="约 翰二书" />
+  <book keynumber="63" short="约叁" full="约翰三书" />
+  <book keynumber="64" short="犹" full="犹大书" />
+  <book keynumber="65" short="启" full="启示录" />
+</biblenames>

@@ -1,0 +1,56 @@
+<table border="1" class="innerTable">
+    <tr class="heading"><th scope="colgroup" colspan="2"><h2>Metacharacters Defined</h2></th></tr>
+    <tr><th scope="col">MChar</th><th scope="col">Definition</th></tr>
+    <tr><td>.</td><td>Any character (except \n newline)</td></tr>
+    <tr><td>|</td><td>Alternation.</td></tr>
+    <tr><td>{...}</td><td>Explicit quantifier notation.</td></tr>
+
+    <tr><td>[...]</td><td>Explicit set of characters to match.</td></tr>
+    <tr><td>(...)</td><td>Logical grouping of part of an expression.</td></tr>
+    <tr><td>*</td><td>0 or more of previous expression.</td></tr>
+    <tr><td>+</td><td>1 or more of previous expression.</td></tr>
+    <tr><td>?</td><td>0 or 1 of previous expression; also forces minimal matching when an expression might match several strings within a search string.</td></tr>
+
+    <tr><td>\</td><td>Preceding one of the above, it makes it a literal instead of a special character.  Preceding a special matching character, see below.</td></tr>
+</table>
+
+
+<table border="1" class="innerTable" ID="Table1">
+    <tr class="heading">
+        <th scope="colgroup" colspan="2"><h2>Metacharacter Examples</h2></th></tr>
+
+    <tr><th scope="col">Pattern</th><th scope="col">Sample Matches</th></tr>
+    <tr><td>a.c</td><td>abc, aac, acc, adc, aec, ...</td></tr>
+    <tr><td>bill|ted</td><td>ted, bill</td></tr>
+
+    <tr><td>ab{2}c</td><td>abbc</td></tr>
+    <tr><td>a[bB]c</td><td>abc, aBc</td></tr>
+    <tr><td>(abc){2}</td><td>abcabc</td></tr>
+    <tr><td>ab*c</td><td>ac, abc, abbc, abbbc, ...</td></tr>
+    <tr><td>ab+c</td><td>abc, abbc, abbbc, ...</td></tr>
+
+    <tr><td>ab?c</td><td>ac, abc</td></tr>
+    <tr><td>a\sc</td><td>a c</td></tr>
+</table>			
+	
+<table border="1" class="innerTable">
+    <tr class="heading">
+        <th scope="colgroup" colspan="2"><h2>Character Classes</h2></th></tr>
+    <tr><th scope="col">Char Class</th><th scope="col">Description</th></tr>
+    <tr><td>.</td><td>Matches any character except \n. If modified by the Singleline option, a period character matches any character. For more information, see Regular Expression Options.</td></tr>
+
+    <tr><td>[aeiou]</td><td>Matches any single character included in the specified set of characters.</td></tr>
+    <tr><td>[^aeiou]</td><td>Matches any single character not in the specified set of characters.</td></tr>
+    <tr><td>[0-9a-fA-F]</td><td>Use of a hyphen (–) allows specification of contiguous character ranges.</td></tr>
+    <tr><td>\p{name}</td><td>Matches any character in the named character class specified by {name}. Supported names are Unicode groups and block ranges. For example, Ll, Nd, Z, IsGreek, IsBoxDrawing.</td></tr>
+    <tr><td>\P{name}</td><td>Matches text not included in groups and block ranges specified in {name}.</td></tr>
+
+    <tr><td>\w</td><td>Matches any word character. Equivalent to the Unicode character categories
+                       [\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Pc}]. If ECMAScript-compliant behavior is specified with the ECMAScript option, \w is equivalent to [a-zA-Z_0-9].</td></tr>
+    <tr><td>\W</td><td>Matches any nonword character. Equivalent to the Unicode categories [^\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Pc}]. If ECMAScript-compliant behavior is specified with the ECMAScript option, \W is equivalent to [^a-zA-Z_0-9].</td></tr>
+    <tr><td>\s</td><td>Matches any white-space character. Equivalent to the Unicode character categories [\f\n\r\t\v\x85\p{Z}]. If ECMAScript-compliant behavior is specified with the ECMAScript option, \s is equivalent to [ \f\n\r\t\v].</td></tr>
+    <tr><td>\S</td><td>Matches any non-white-space character. Equivalent to the Unicode character categories [^\f\n\r\t\v\x85\p{Z}]. If ECMAScript-compliant behavior is specified with the ECMAScript option, \S is equivalent to [^ \f\n\r\t\v].</td></tr>
+
+    <tr><td>\d</td><td>Matches any decimal digit. Equivalent to \p{Nd} for Unicode and [0-9] for non-Unicode, ECMAScript behavior.</td></tr>
+    <tr><td>\D</td><td>Matches any nondigit. Equivalent to \P{Nd} for Unicode and [^0-9] for non-Unicode, ECMAScript behavior.</td></tr>
+</table>

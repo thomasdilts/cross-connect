@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<biblenames isolang="ar" isolocale="EG" version="1.0">
+  <book keynumber="0" short="تكوين" full="تكوين" />
+  <book keynumber="1" short="خروج" full="خروج" />
+  <book keynumber="2" short="لاويين" full="لاويين" />
+  <book keynumber="3" short="عدد" full="عدد" />
+  <book keynumber="4" short="تثنية" full="تثنية" />
+  <book keynumber="5" short="يشوع" full="يشوع" />
+  <book keynumber="6" short="قضاه" full="قضاه" />
+  <book keynumber="7" short="راعوث" full="راعوث" />
+  <book keynumber="8" short="صموائيل الاول" full="صموائيل الاول" />
+  <book keynumber="9" short="صموائيل الثاني" full="صموائيل الثاني" />
+  <book keynumber="10" short="ملوك الاول" full="ملوك الاول" />
+  <book keynumber="11" short="ملوك الثاني" full="ملوك الثاني" />
+  <book keynumber="12" short="أخبار الأيام الأول" full="أخبار الأيام الأول" />
+  <book keynumber="13" short="أخبار الأيام الثاني" full="أخبار الأيام الثاني" />
+  <book keynumber="14" short="عزرا" full="عزرا" />
+  <book keynumber="15" short="نحميا" full="نحميا" />
+  <book keynumber="16" short="أستير" full="أستير" />
+  <book keynumber="17" short="أيوب" full="أيوب" />
+  <book keynumber="18" short="مزامير" full="مزامير" />
+  <book keynumber="19" short="أمثال" full="أمثال" />
+  <book keynumber="20" short="الجامعة" full="الجامعة" />
+  <book keynumber="21" short="نشيد الأنشاد" full="نشيد الأنشاد" />
+  <book keynumber="22" short="أشعياء" full="أشعياء" />
+  <book keynumber="23" short="أرميا" full="أرميا" />
+  <book keynumber="24" short="مراثي أرميا" full="مراثي أرميا" />
+  <book keynumber="25" short="حزقيال" full="حزقيال" />
+  <book keynumber="26" short="دانيال" full="دانيال" />
+  <book keynumber="27" short="هوشع" full="هوشع" />
+  <book keynumber="28" short="يوئيل" full="يوئيل" />
+  <book keynumber="29" short="عاموس" full="عاموس" />
+  <book keynumber="30" short="عوبديا" full="عوبديا" />
+  <book keynumber="31" short="يونان" full="يونان" />
+  <book keynumber="32" short="ميخا" full="ميخا" />
+  <book keynumber="33" short="ناحوم" full="ناحوم" />
+  <book keynumber="34" short="حبقوق" full="حبقوق" />
+  <book keynumber="35" short="صفنيا" full="صفنيا" />
+  <book keynumber="36" short="حجي" full="حجي" />
+  <book keynumber="37" short="زكريا" full="زكريا" />
+  <book keynumber="38" short="ملاخي" full="ملاخي" />
+  <book keynumber="39" short="متي" full="متي" />
+  <book keynumber="40" short="مرقس" full="مرقس" />
+  <book keynumber="41" short="لوقا" full="لوقا" />
+  <book keynumber="42" short="يوحنا" full="يوحنا" />
+  <book keynumber="43" short="أعمال الرسل" full="أعمال الرسل" />
+  <book keynumber="44" short="رومية" full="رومية" />
+  <book keynumber="45" short="كورنثوس الأولى" full="كورنثوس الأولى" />
+  <book keynumber="46" short="كورنثوس الثانية" full="كورنثوس الثانية" />
+  <book keynumber="47" short="غلاطية" full="غلاطية" />
+  <book keynumber="48" short="افسس" full="افسس" />
+  <book keynumber="49" short="فيلبى" full="فيلبى" />
+  <book keynumber="50" short="كولوسي" full="كولوسي" />
+  <book keynumber="51" short="تسالونيكى الأولى" full="تسالونيكى الأولى" />
+  <book keynumber="52" short="تسالونيكى الثانية" full="تسالونيكى الثانية" />
+  <book keynumber="53" short="تيموثاوس الأولى" full="تيموثاوس الأولى" />
+  <book keynumber="54" short="تيموثاوس الثانية" full="تيموثاوس الثانية" />
+  <book keynumber="55" short="تيطس" full="تيطس" />
+  <book keynumber="56" short="فيلمون" full="فيلمون" />
+  <book keynumber="57" short="العبرانيين" full="العبرانيين" />
+  <book keynumber="58" short="يعقوب" full="يعقوب" />
+  <book keynumber="59" short="بطرس الأولى" full="بطرس الأولى" />
+  <book keynumber="60" short="بطرس الثانية" full="بطرس الثانية" />
+  <book keynumber="61" short="يوحنا الأولى" full="يوحنا الأولى" />
+  <book keynumber="62" short="يوحنا الثانية" full="يوحنا الثانية" />
+  <book keynumber="63" short="يوحنا الثالثة" full="يوحنا الثالثة" />
+  <book keynumber="64" short="يهوذا" full="يهوذا" />
+  <book keynumber="65" short="الرؤيا" full="الرؤيا" />
+</biblenames>
