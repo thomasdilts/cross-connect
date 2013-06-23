@@ -220,4 +220,7 @@
 <string key="Translate selected text">Þýða valinn texta</string>
 <string key="Listen to this chapter">Hlusta á þessum kafla</string>
 <string key="Fast search help text">A fljótur leita er hægt í fyrsta skipti sem þú notar hana á Biblíunni og fljótur hvert skipti eftir það. A fljótur leita skilar vísur sem innihalda eitthvert af gefnum orðum. Settu "+" fyrir framan hvert orð til að finna allar gefið orð í hverri vísu. Setja "-" fyrir framan orð til að finna allar vísur sem ekki hafa þessi orð. Algildisstafir "*" og "?" er hægt að nota. Í tungumálum með tákn eins og kínversku og japönsku þú verður að setja "*" fyrir og eftir hvern staf. Notaðu aðeins hægur leit til að finna "Strongs" tölur.</string>
+<string key="The bible, chronological">Biblían í tímaröð</string>
+<string key="The New Testement, chronological">The New Testement í tímaröð</string>
+<string key="Show two title rows in each window">Sýna tvær titill raðir í hverjum glugga</string>
 </translations>

@@ -202,4 +202,6 @@
 <string key="Slow search">Kërkim i ngadalshëm</string>
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Hera e parë që ju bëni një kërkim të shpejtë ajo merr një kohë të gjatë. Më pas në kërkim është shumë i shpejtë. A doni të vazhdoni?</string>
 <string key="Fast search help text">Një kërkim i shpejtë është i ngadalshëm për herë të parë që ju përdorni atë në një Biblën dhe të shpejtë çdo kohë pas kësaj. Një kërkim të shpejtë kthen ajetet që përmbajnë çdo një nga fjalët e dhëna. Vendos një "+" në frontin e çdo fjalë për të gjetur të gjitha fjalët e dhënë në çdo ajet. Vendos një "-" në frontin e një fjale për të gjetur të gjitha ajetet që nuk kanë atë fjalë. Si wildcards "*" dhe "?" mund të përdoren. Në gjuhë të përdorur simbolet si kineze dhe japoneze ju duhet të vënë "*" para dhe pas çdo karakter. Përdorni vetëm kërkimin e ngadaltë për të gjetur "vargjeve" numra.</string>
+<string key="The bible, chronological">Bibla në mënyrë kronologjike</string>
+<string key="The New Testement, chronological">Testement ri në mënyrë kronologjike</string>
 </translations>

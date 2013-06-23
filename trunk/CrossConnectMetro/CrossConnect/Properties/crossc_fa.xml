@@ -202,4 +202,6 @@
 <string key="Slow search">جستجو آهسته</string>
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">اولین بار که شما با انجام یک جستجوی سریع آن را مدت زمان طولانی طول می کشد. پس از آن در جستجوی بسیار سریع است. آیا می خواهید ادامه دهید؟</string>
 <string key="Fast search help text">جستجوی سریع در اولین بار استفاده از آن در کتاب مقدس و سریع در هر زمان پس از آن آهسته است. جستجوی سریع در آیه شامل هر یک از کلمات داده شده را برمی گرداند. قرار دادن "+" در جلوی هر کلمه برای پیدا کردن همه از کلمات داده شده در هر آیه است. قرار دادن یک "-" در مقابل یک کلمه برای پیدا کردن همه از آیات که آن کلمه را ندارد. نویسههای عام "*" و "؟" می تواند مورد استفاده قرار گیرد. در زبان با استفاده از نمادها مانند چینی ها و ژاپنی ها شما باید قرار داده است "*" قبل و بعد از هر یک از شخصیت. برای پیدا کردن «Strongs" اعداد با استفاده از تنها جستجو کند.</string>
+<string key="The bible, chronological">کتاب مقدس به ترتیب زمانی</string>
+<string key="The New Testement, chronological">Testement جدید به ترتیب زمانی</string>
 </translations>

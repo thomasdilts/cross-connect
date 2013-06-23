@@ -202,4 +202,6 @@
 <string key="Slow search">Lambat pencarian</string>
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Pertama kali Anda melakukan pencarian cepat dibutuhkan waktu yang lama. Setelah pencarian yang sangat cepat. Apakah Anda ingin melanjutkan?</string>
 <string key="Fast search help text">Sebuah pencarian cepat adalah memperlambat pertama kali Anda menggunakannya pada Alkitab dan cepat setiap kali sesudahnya. Sebuah pencarian cepat kembali ayat-ayat yang mengandung salah satu dari kata-kata yang diberikan. Letakkan "+" di depan setiap kata untuk menemukan semua kata yang diberikan dalam setiap ayat. Letakkan "-" di depan sebuah kata untuk menemukan semua ayat-ayat yang tidak memiliki kata itu. Wildcard "*" dan "?" dapat digunakan. Dalam bahasa menggunakan simbol seperti Cina dan Jepang Anda harus menempatkan "*" sebelum dan sesudah masing-masing karakter. Gunakan hanya pencarian lambat untuk menemukan "Strongs" angka.</string>
+<string key="The bible, chronological">Alkitab secara kronologis</string>
+<string key="The New Testement, chronological">The testement Baru secara kronologis</string>
 </translations>

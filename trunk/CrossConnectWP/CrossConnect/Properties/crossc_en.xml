@@ -220,4 +220,7 @@
   <string key="Listen to this chapter">Listen to this chapter</string>
   <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?</string>
   <string key="Fast search help text">A fast search is slow the first time you use it on a bible and fast each time thereafter. A fast search returns verses containing any one of the given words. Put a "+" in front of each word to find all of the given words in each verse. Put a "-" in front of a word to find all of the verses that don't have that word.  Wildcards "*" and "?" can be used. In languages using symbols like chinese and japanese you must put "*" before and after each character. Use only the slow search to find "Strongs" numbers.</string>
+  <string key="The bible, chronological">The Bible in chronological order</string>
+  <string key="The New Testement, chronological">The New Testement in chronological order</string>
+  <string key="Show two title rows in each window">Show two title rows in each window</string>
 </translations>

@@ -220,4 +220,7 @@
 <string key="Translate selected text">Menerjemahkan teks yang dipilih</string>
 <string key="Listen to this chapter">Dengarkan bab ini</string>
 <string key="Fast search help text">Sebuah pencarian cepat adalah memperlambat pertama kali Anda menggunakannya pada Alkitab dan cepat setiap kali sesudahnya. Sebuah pencarian cepat kembali ayat-ayat yang mengandung salah satu dari kata-kata yang diberikan. Letakkan "+" di depan setiap kata untuk menemukan semua kata yang diberikan dalam setiap ayat. Letakkan "-" di depan sebuah kata untuk menemukan semua ayat-ayat yang tidak memiliki kata itu. Wildcard "*" dan "?" dapat digunakan. Dalam bahasa menggunakan simbol seperti Cina dan Jepang Anda harus menempatkan "*" sebelum dan sesudah masing-masing karakter. Gunakan hanya pencarian lambat untuk menemukan "Strongs" angka.</string>
+<string key="The bible, chronological">Alkitab secara kronologis</string>
+<string key="The New Testement, chronological">The testement Baru secara kronologis</string>
+<string key="Show two title rows in each window">Tampilkan dua baris judul di setiap jendela</string>
 </translations>

@@ -220,4 +220,7 @@
 <string key="Translate selected text">Превод на избран текст</string>
 <string key="Listen to this chapter">Чуйте тази глава</string>
 <string key="Fast search help text">Бързо търсене забави първия път, когато го използвате на библия и бързо всеки път след това. Бързо търсене връща стихове, съдържащи някое от дадените думи. Поставете знак "+" пред всяка дума да намерите всички посочени думи в всеки стих. Поставете а "-" в предната част на думата, да намерите всички стихове, които нямат тази дума. Wildcards "*" и "?" може да се използва. В езици с китайски и японски символи като трябва да се сложи "*" преди и след всеки символ. Използвайте само бавно търсене, за да намерите номера "Strongs".</string>
+<string key="The bible, chronological">Библията в хронологичен ред</string>
+<string key="The New Testement, chronological">The New Testement в хронологичен ред</string>
+<string key="Show two title rows in each window">Покажи две заглавия редове във всеки прозорец</string>
 </translations>

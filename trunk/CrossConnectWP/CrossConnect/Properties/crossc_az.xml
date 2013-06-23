@@ -220,4 +220,7 @@
 <string key="Translate selected text">Seçilmiş mətn tərcümə</string>
 <string key="Listen to this chapter">Bu qrupun dinlə</string>
 <string key="Fast search help text">Sürətli axtarış sonra bir Müqəddəs və sürətli hər zaman onu istifadə ilk dəfə yavaş deyil. Sürətli axtarış verilən sözlərin hər hansı bir olan ayələr qaytarır. Hər ayədə bu sözləri bütün tapmaq üçün hər sözü qarşısında "+" qoyun. Qoyun bir "-" söz yoxdur ki, ayələrin bütün tapmaq bir söz qarşısında. Joker "*" və "?" istifadə edilə bilər. Çin və Yaponiya kimi simvolları istifadə languages ​​siz "*" əvvəl və hər bir xarakter sonra qoymaq lazımdır. "Strongs" nömrələrini tapmaq üçün yalnız yavaş axtarış istifadə edin.</string>
+<string key="The bible, chronological">Xronoloji qaydada Müqəddəs</string>
+<string key="The New Testement, chronological">Xronoloji qaydada yeni Testement</string>
+<string key="Show two title rows in each window">Hər pəncərə iki adı satır göstər</string>
 </translations>

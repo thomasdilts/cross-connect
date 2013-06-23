@@ -62,6 +62,11 @@ namespace CrossConnect
         private void AutoRotatePageBackKeyPress(object sender, CancelEventArgs e)
         {
             App.DisplaySettings.NumberOfScreens = int.Parse(NumberOfScreens.SelectedItem.ToString());
+            if (show2titleRows.IsChecked != null)
+            {
+                App.DisplaySettings.Show2titleRows = (bool)show2titleRows.IsChecked;
+            }
+
             if (highlightMarkings.IsChecked != null)
             {
                 App.DisplaySettings.HighlightMarkings = (bool)highlightMarkings.IsChecked;
@@ -166,6 +171,7 @@ namespace CrossConnect
             PageTitle.Text = Translations.Translate("Settings");
             butSetDefault.Content = Translations.Translate("Default settings");
             highlightMarkings.Header = Translations.Translate("Highlight text markings");
+            show2titleRows.Header = Translations.Translate("Show two title rows in each window");
             wordsOfChristRed.Header = Translations.Translate("Show the words of Jesus in red");
             smallVerseNumbers.Header = Translations.Translate("Use small verse numbers");
             showNotePositions.Header = Translations.Translate("Show note positions");
@@ -189,6 +195,7 @@ namespace CrossConnect
                 try
                 {
                     NumberOfScreens.SelectedIndex = App.DisplaySettings.NumberOfScreens - 1;
+                    show2titleRows.IsChecked = App.DisplaySettings.Show2titleRows;
                     highlightMarkings.IsChecked = App.DisplaySettings.HighlightMarkings;
                     wordsOfChristRed.IsChecked = App.DisplaySettings.WordsOfChristRed;
                     smallVerseNumbers.IsChecked = App.DisplaySettings.SmallVerseNumbers;

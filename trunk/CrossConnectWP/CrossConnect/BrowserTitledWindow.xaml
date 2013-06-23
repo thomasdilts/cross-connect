@@ -15,8 +15,9 @@
         <ColumnDefinition Width="*"></ColumnDefinition>
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
-        <RowDefinition Height="40"></RowDefinition>
-        <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
       </Grid.RowDefinitions>
       <StackPanel Name="stackPanelButtons" Grid.Row="0" Orientation="Horizontal" Height="40"
                   HorizontalAlignment="Left" Margin="0,0,0,0">
@@ -54,7 +55,9 @@
                            PressedImage="/Images/dark/appbar.cancel.rest.pressed.png" x:Name="butClose"
                            Template="{StaticResource ImageButtonControlTemplate}" />
       </StackPanel>
-      <Border Name="WebBrowserBorder" BorderBrush="Silver" BorderThickness="1" Grid.Row="1">
+            <TextBlock ManipulationCompleted="TitleManipulationCompleted" Margin="7,0,0,0"
+                Grid.Column="1" Grid.Row="1" Name="title2" Text="" />
+            <Border Name="WebBrowserBorder" BorderBrush="Silver" BorderThickness="1" Grid.Row="2">
         <phone:WebBrowser Margin="0 0 0 0" IsScriptEnabled="True"  ScriptNotify="WebBrowser1ScriptNotify" 
                           Unloaded="WebBrowser1Unloaded" Loaded="WebBrowser1Loaded" 
                           NavigationFailed="WebBrowser1_OnNavigationFailed" Name="webBrowser1"  />

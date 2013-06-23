@@ -87,7 +87,8 @@ namespace CrossConnect
                     App.DailyPlan.PlanNumber = this.selectPlanType.SelectedIndex;
                     App.DailyPlan.PlanTextSize = this.sliderTextSize.Value;
                     int dayOfPlan = (int)actualDate.Subtract(startDate).TotalDays;
-                    if (dayOfPlan < 0 || dayOfPlan > DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber].GetUpperBound(0))
+                    var schedule = DailyPlans.ZAllPlans(App.DailyPlan.PlanNumber);
+                    if (dayOfPlan < 0 || dayOfPlan > schedule.GetUpperBound(0))
                     {
                         dayOfPlan = 0;
                     }

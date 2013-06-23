@@ -220,4 +220,7 @@
 <string key="Translate selected text">Oversett merket tekst</string>
 <string key="Listen to this chapter">Lytt til dette kapitlet</string>
 <string key="Fast search help text">En rask søk ​​er treg første gang du bruker den på en bibel og rask hver gang etterpå. En rask søk ​​returnerer vers inneholdende enhver av de gitte ord. Sette en "+" foran hvert ord for å finne alle de gitte ordene i hvert vers. Sette en "-" foran et ord for å finne alle versene som ikke har det ordet. Wildcards "*" og "?" kan brukes. I språk ved hjelp av symboler som kinesisk og japansk må du sette "*" før og etter hvert tegn. Bruk bare den langsomme søk for å finne "Strongs" tall.</string>
+<string key="The bible, chronological">Bibelen i kronologisk rekkefølge</string>
+<string key="The New Testement, chronological">The New testement i kronologisk rekkefølge</string>
+<string key="Show two title rows in each window">Vis to tittel rader i hvert vindu</string>
 </translations>
