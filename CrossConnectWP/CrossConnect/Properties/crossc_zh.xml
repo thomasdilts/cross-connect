@@ -220,4 +220,7 @@
 <string key="Translate selected text">翻譯選定的文本</string>
 <string key="Listen to this chapter">聽此章</string>
 <string key="Fast search help text">快速搜索是你第一次使用它的一本聖經和快速每次此後緩慢。快速搜索返回的詩句包含的任何一個給定的單詞。在每節經文中找到所有給定的單詞每個單詞的前面放一個“+”。將一個“ - ”前面的一個詞來找到所有的詩句，沒有這個詞。通配符“*”和“？”都可以使用。在使用符號，如中國和日本的語言中，你必須把“*”之前和之後的每個字符。只能使用慢速搜索找到“Strongs”數字。</string>
+<string key="The bible, chronological">按時間順序排列的聖經</string>
+<string key="The New Testement, chronological">按時間順序排列的新Testement</string>
+<string key="Show two title rows in each window">在每個窗口中顯示兩個標題行</string>
 </translations>

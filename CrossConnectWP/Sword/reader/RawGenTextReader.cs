@@ -63,7 +63,7 @@ namespace Sword.reader
 
         #region Public Methods and Operators
 
-        public string ToString()
+        public new string ToString()
         {
             return this.ChapterNum.ToString();
         }

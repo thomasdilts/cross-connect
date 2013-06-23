@@ -123,7 +123,8 @@ namespace CrossConnect.readers
         {
             if (stage == 0)
             {
-                int count = DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber].GetUpperBound(0) + 1;
+                var schedule = DailyPlans.ZAllPlans(App.DailyPlan.PlanNumber);
+                int count = schedule.GetUpperBound(0) + 1;
 
                 var butColors = new int[count];
                 var values = new int[count];
@@ -150,7 +151,8 @@ namespace CrossConnect.readers
             out string fullName,
             out string title)
         {
-            int count = DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber].GetUpperBound(0) + 1;
+            var schedule = DailyPlans.ZAllPlans(App.DailyPlan.PlanNumber);
+            int count = schedule.GetUpperBound(0) + 1;
             if (App.DailyPlan.PlanDayNumber >= count)
             {
                 App.DailyPlan.PlanDayNumber = 0;
@@ -176,36 +178,38 @@ namespace CrossConnect.readers
             else
             {
                 App.DailyPlan.PlanDayNumber = chapter;
-
-                Serial.PosChaptNum = DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber][App.DailyPlan.PlanDayNumber][0];
+                var schedule = DailyPlans.ZAllPlans(App.DailyPlan.PlanNumber);
+                Serial.PosChaptNum = schedule[App.DailyPlan.PlanDayNumber][0];
                 Serial.PosVerseNum = 0;
             }
         }
 
         public override void MoveNext()
         {
+            var schedule = DailyPlans.ZAllPlans(App.DailyPlan.PlanNumber);
             Serial.PosVerseNum = 0;
-            int count = DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber].GetUpperBound(0) + 1;
+            int count = schedule.GetUpperBound(0) + 1;
             App.DailyPlan.PlanDayNumber++;
             if (App.DailyPlan.PlanDayNumber >= count)
             {
                 App.DailyPlan.PlanDayNumber = 0;
             }
 
-            Serial.PosChaptNum = DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber][App.DailyPlan.PlanDayNumber][0];
+            Serial.PosChaptNum = schedule[App.DailyPlan.PlanDayNumber][0];
         }
 
         public override void MovePrevious()
         {
+            var schedule = DailyPlans.ZAllPlans(App.DailyPlan.PlanNumber);
             Serial.PosVerseNum = 0;
-            int count = DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber].GetUpperBound(0) + 1;
+            int count = schedule.GetUpperBound(0) + 1;
             App.DailyPlan.PlanDayNumber--;
             if (App.DailyPlan.PlanDayNumber < 0)
             {
                 App.DailyPlan.PlanDayNumber = count - 1;
             }
 
-            Serial.PosChaptNum = DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber][App.DailyPlan.PlanDayNumber][0];
+            Serial.PosChaptNum = schedule[App.DailyPlan.PlanDayNumber][0];
         }
 
         public override void Resume()
@@ -230,6 +234,7 @@ namespace CrossConnect.readers
             bool addStartFinishHtml,
             bool forceReload)
         {
+            var schedule = DailyPlans.ZAllPlans(App.DailyPlan.PlanNumber);
             string chapterStartHtml = HtmlHeader(
                 displaySettings,
                 htmlBackgroundColor,
@@ -239,7 +244,7 @@ namespace CrossConnect.readers
                 fontFamily);
             const string ChapterEndHtml = "</body></html>";
             var sb = new StringBuilder(chapterStartHtml);
-            string id = "CHAP_" + DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber][App.DailyPlan.PlanDayNumber][0]
+            string id = "CHAP_" + schedule[App.DailyPlan.PlanDayNumber][0]
                         + "_VERS_0";
             string firstVerseForTheDayRedirect = "<a name=\"" 
                 + id
@@ -252,7 +257,7 @@ namespace CrossConnect.readers
                 + DailyPlans.ZzAllPlansNames[App.DailyPlan.PlanNumber][1] + " " + Translations.Translate("Days")
                 + "</h3>");
             for (int i = 0;
-                 i <= DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber][App.DailyPlan.PlanDayNumber].GetUpperBound(0);
+                 i <= schedule[App.DailyPlan.PlanDayNumber].GetUpperBound(0);
                  i++)
             {
                 int bookNum;
@@ -260,7 +265,7 @@ namespace CrossConnect.readers
                 string fullName;
                 string title;
                 GetInfo(
-                    DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber][App.DailyPlan.PlanDayNumber][i],
+                    schedule[App.DailyPlan.PlanDayNumber][i],
                     0,
                     out bookNum,
                     out relChaptNum,
@@ -271,7 +276,7 @@ namespace CrossConnect.readers
                 sb.Append(
                     GetChapterHtml(
                         displaySettings,
-                        DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber][App.DailyPlan.PlanDayNumber][i],
+                        schedule[App.DailyPlan.PlanDayNumber][i],
                         htmlBackgroundColor,
                         htmlForegroundColor,
                         htmlPhoneAccentColor,
@@ -288,7 +293,8 @@ namespace CrossConnect.readers
 
         public override void SetToFirstChapter()
         {
-            int count = DailyPlans.ZAllPlans[App.DailyPlan.PlanNumber].GetUpperBound(0) + 1;
+            var schedule = DailyPlans.ZAllPlans(App.DailyPlan.PlanNumber);
+            int count = schedule.GetUpperBound(0) + 1;
             if (App.DailyPlan.PlanDayNumber >= count)
             {
                 App.DailyPlan.PlanDayNumber = 0;

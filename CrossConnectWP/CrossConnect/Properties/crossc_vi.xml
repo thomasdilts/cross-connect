@@ -220,4 +220,7 @@
 <string key="Translate selected text">Dịch văn bản đã chọn</string>
 <string key="Listen to this chapter">Nghe chương này</string>
 <string key="Fast search help text">Một tìm kiếm nhanh chóng là làm chậm thời gian đầu tiên bạn sử dụng nó trên một bible và nhanh chóng mỗi lần sau đó. Một tìm kiếm nhanh chóng trả về câu có chứa bất kỳ một trong các từ cho sẵn. Đặt một "+" ở phía trước của mỗi từ để tìm tất cả các từ được đưa ra trong mỗi câu. Đặt một "-" ở phía trước của một từ để tìm tất cả những câu mà không có từ đó. Ký tự đại diện "*" và "?" có thể được sử dụng. Trong các ngôn ngữ bằng cách sử dụng các biểu tượng như Trung Quốc và Nhật Bản, bạn phải đặt "*" trước và sau khi mỗi nhân vật. Chỉ sử dụng tìm kiếm chậm để tìm "Strongs" số.</string>
+<string key="The bible, chronological">Kinh Thánh trong thứ tự thời gian</string>
+<string key="The New Testement, chronological">Các Testement mới trong thứ tự thời gian</string>
+<string key="Show two title rows in each window">Hiển thị hai dòng tiêu đề trong mỗi cửa sổ</string>
 </translations>

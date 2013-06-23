@@ -60,6 +60,9 @@
           <sys:String>7</sys:String>
           <sys:String>8</sys:String>
         </toolkit:ListPicker>
+        <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Show two title rows in each window" IsChecked="false"
+                        Name="show2titleRows" />
+
         <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Highlight text markings" IsChecked="false"
                               Name="highlightMarkings" />
         <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Show the words of Jesus in red" IsChecked="false"

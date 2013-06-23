@@ -1187,12 +1187,25 @@ namespace CrossConnect
             string titleText;
             _state.Source.GetInfo(
                 out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
-            title.Text = titleText + " - "
-                              +
-                              (string.IsNullOrEmpty(_state.BibleDescription)
-                                   ? _state.BibleToLoad
-                                   : _state.BibleDescription)
-                              + "                                                               ";
+            var entireTitleText = titleText + " - "
+                                  +
+                                  (string.IsNullOrEmpty(_state.BibleDescription)
+                                       ? _state.BibleToLoad
+                                       : _state.BibleDescription)
+                                  + "                                                               ";
+            if (App.DisplaySettings.Show2titleRows)
+            {
+                title2.Text = entireTitleText;
+                title2.Visibility = Visibility.Visible;
+                title.Text = "                                                               ";
+                grid1.RowDefinitions[1].Height = grid1.RowDefinitions[0].Height;
+            }
+            else
+            {
+                title.Text = entireTitleText;
+                title2.Visibility = Visibility.Collapsed;
+                grid1.RowDefinitions[1].Height = new System.Windows.GridLength(0);
+            }
         }
 
         #endregion Methods

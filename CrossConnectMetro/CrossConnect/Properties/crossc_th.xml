@@ -202,4 +202,6 @@
 <string key="Slow search">ค้นหาช้า</string>
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">ครั้งแรกที่คุณทำในการค้นหาได้อย่างรวดเร็วก็จะใช้เวลานาน หลังจากนั้นการค้นหาอย่างรวดเร็วมาก คุณต้องการที่จะต่อหรือไม่?</string>
 <string key="Fast search help text">การค้นหาที่รวดเร็วช้าครั้งแรกที่คุณใช้ในพระคัมภีร์และรวดเร็วในแต่ละครั้งที่หลังจากนั้น โองการรวดเร็วค้นหาที่มีคำว่าคนใดคนหนึ่งของคำให้ ใส่เครื่องหมาย "+" ในหน้าของแต่ละคำเพื่อค้นหาทั้งหมดของคำที่กำหนดในแต่ละบทกวี ใส่ "-" ในหน้าของคำที่จะหาข้อพระคัมภีร์ที่ไม่ได้มีคำว่า สัญลักษณ์ "*" และ "?" สามารถนำมาใช้ ในภาษาที่ใช้สัญลักษณ์เช่นจีนและญี่ปุ่นคุณต้องใส่ "*" ก่อนและหลังตัวละครแต่ละตัว ใช้เพียงการค้นหาช้าที่จะหา "Strongs" ตัวเลข</string>
+<string key="The bible, chronological">พระคัมภีร์ตามลำดับ</string>
+<string key="The New Testement, chronological">Testement ใหม่ตามลำดับ</string>
 </translations>

@@ -202,4 +202,6 @@
 <string key="Slow search">Långsam sökning</string>
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Första gången du gör en snabb sökning det tar lång tid. Efteråt söka är mycket snabb. Vill du fortsätta?</string>
 <string key="Fast search help text">En snabb sökning är långsam första gången du använder den på en bibel och snabbt varje gång därefter. En snabb sökning ger verser som innehåller någon av de angivna orden. Sätt ett "+" framför varje ord för att hitta alla de givna orden i varje vers. Sätt en "-" framför ett ord för att hitta alla de verser som inte har det ordet. Jokertecken "*" och "?" kan användas. I språk med symboler som kinesiska och japanska måste du sätta "*" före och efter varje tecken. Använd endast den långsamma sökning för att hitta "Strongs" nummer.</string>
+<string key="The bible, chronological">Bibeln i kronologisk ordning</string>
+<string key="The New Testement, chronological">Den nya testement i kronologisk ordning</string>
 </translations>

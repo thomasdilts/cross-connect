@@ -220,4 +220,7 @@
 <string key="Translate selected text">Përkthejnë tekstin e zgjedhur</string>
 <string key="Listen to this chapter">Dëgjoni këtë kapitull</string>
 <string key="Fast search help text">Një kërkim i shpejtë është i ngadalshëm për herë të parë që ju përdorni atë në një Biblën dhe të shpejtë çdo kohë pas kësaj. Një kërkim të shpejtë kthen ajetet që përmbajnë çdo një nga fjalët e dhëna. Vendos një "+" në frontin e çdo fjalë për të gjetur të gjitha fjalët e dhënë në çdo ajet. Vendos një "-" në frontin e një fjale për të gjetur të gjitha ajetet që nuk kanë atë fjalë. Si wildcards "*" dhe "?" mund të përdoren. Në gjuhë të përdorur simbolet si kineze dhe japoneze ju duhet të vënë "*" para dhe pas çdo karakter. Përdorni vetëm kërkimin e ngadaltë për të gjetur "vargjeve" numra.</string>
+<string key="The bible, chronological">Bibla në mënyrë kronologjike</string>
+<string key="The New Testement, chronological">Testement ri në mënyrë kronologjike</string>
+<string key="Show two title rows in each window">Trego dy rreshtave titull në çdo dritare</string>
 </translations>

@@ -220,4 +220,7 @@
 <string key="Translate selected text">Ittraduċi test magħżula</string>
 <string key="Listen to this chapter">Isma dan il-kapitolu</string>
 <string key="Fast search help text">A tfittxija mgħaġġla hija bil-mod l-ewwel darba li tużah fuq bibbja u veloċi kull darba wara. A tfittxija mgħaġġla jirritorna versi li fihom xi waħda mill-kelmiet mogħtija. Poġġi "+" quddiem ta 'kull kelma biex isibu l-kliem mogħtija f'kull poeżiji. Poġġi "-" quddiem ta 'kelma biex isibu kollha ta' l-versi li ma jkollhomx din il-kelma. Wildcards "*" u "?" jistgħu jintużaw. Fl-lingwi bl-użu ta 'simboli bħal Ċiniż u Ġappuniż inti trid tqiegħed "*" qabel u wara kull karattru. Uża biss it-tfittxija bil-mod biex isibu "strongs" numri.</string>
+<string key="The bible, chronological">Il-Bibbja f'ordni kronoloġika</string>
+<string key="The New Testement, chronological">Il Testement New f'ordni kronoloġika</string>
+<string key="Show two title rows in each window">Uri żewġ ringieli titolu f'kull tieqa</string>
 </translations>

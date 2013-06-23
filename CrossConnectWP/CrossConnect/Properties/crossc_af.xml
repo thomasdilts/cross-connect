@@ -220,4 +220,7 @@
 <string key="Translate selected text">Vertaal geselekteerde teks</string>
 <string key="Listen to this chapter">Luister na hierdie hoofstuk</string>
 <string key="Fast search help text">'N vinnige soektog is stadig die eerste keer dat jy dit op 'n Bybel en vinnig elke keer daarna. 'N vinnige soektog terugkeer verse wat enige een van die gegewe woorde. Plaas 'n "+" in die voorkant van elke woord te vind al van die gegewe woorde in elke vers. Sit 'n "-" in die voorkant van 'n woord om al die verse wat nie daardie woord te vind. Wildcards "*" en "?" gebruik kan word. Jy moet in tale die gebruik van simbole soos Chinese en Japanese "*" voor en na elke karakter. Gebruik slegs die stadige soek "Strongs" getalle te vind.</string>
+<string key="The bible, chronological">Die Bybel in chronologiese volgorde</string>
+<string key="The New Testement, chronological">Die Nuwe Testement in chronologiese volgorde</string>
+<string key="Show two title rows in each window">Toon twee rye titel in elke venster</string>
 </translations>

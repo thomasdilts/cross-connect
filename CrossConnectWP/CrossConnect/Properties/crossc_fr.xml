@@ -220,4 +220,7 @@
 <string key="Translate selected text">Traduire le texte sélectionné</string>
 <string key="Listen to this chapter">Écoutez ce chapitre</string>
 <string key="Fast search help text">Une recherche rapide est de ralentir la première fois que vous l'utilisez sur une bible et rapide à chaque fois par la suite. Une recherche rapide retourne versets contenant l'une quelconque des mots donnés. Mettez un "+" devant chaque mot pour trouver tous les mots donnés dans chaque verset. Mettez un "-" devant un mot pour trouver tous les versets qui n'ont pas ce mot. Les caractères génériques "*" et "?" peuvent être utilisées. Dans les langues utilisant des symboles comme le chinois et le japonais, vous devez mettre "*" avant et après chaque caractère. Utilisez uniquement la recherche du temps à trouver "" Strongs chiffres.</string>
+<string key="The bible, chronological">La Bible dans l'ordre chronologique</string>
+<string key="The New Testement, chronological">Le New Testement dans l'ordre chronologique</string>
+<string key="Show two title rows in each window">Montrer deux lignes de titre dans chaque fenêtre</string>
 </translations>

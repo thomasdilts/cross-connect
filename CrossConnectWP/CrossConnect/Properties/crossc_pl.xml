@@ -220,4 +220,7 @@
 <string key="Translate selected text">Tłumacz zaznaczony tekst</string>
 <string key="Listen to this chapter">Posłuchaj tego rozdziału</string>
 <string key="Fast search help text">Szybkie wyszukiwanie jest powolne pierwszego użycia go na Biblii i szybko za każdym razem później. Szybkie wyszukiwanie zwraca wiersze zawierające jedną z podanych słów. Wpisz znak "+" przed każdym słowem, aby znaleźć wszystkie z podanych słów w każdym wersie. Włóż "-" przed słowem, aby znaleźć wszystkie znaki, które nie mają tego słowa. Symbole wieloznaczne "*" i "?" mogą być stosowane. W językach z wykorzystaniem symboli takich jak chiński i japoński należy umieścić "*" przed i po każdym znaku. Używaj tylko powolne wyszukiwarki, aby znaleźć "Stronga" liczby.</string>
+<string key="The bible, chronological">Biblia w porządku chronologicznym</string>
+<string key="The New Testement, chronological">New Testement w porządku chronologicznym</string>
+<string key="Show two title rows in each window">Pokaż dwóch tytułów wierszy w każdym oknie</string>
 </translations>

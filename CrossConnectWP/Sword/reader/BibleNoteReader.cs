@@ -194,6 +194,9 @@ namespace Sword.reader
         [DataMember(Name = "hebrewDictionaryLink")]
         public string HebrewDictionaryLink = @"http://www.eliyah.com/cgi-bin/strongs.cgi?file=hebrewlexicon&isindex={0}";
 
+        [DataMember(Name = "Show2titleRows")]
+        public bool Show2titleRows;
+
         [DataMember(Name = "highlightMarkings")]
         public bool HighlightMarkings;
 

@@ -220,4 +220,7 @@
 <string key="Translate selected text">選択したテキストを翻訳</string>
 <string key="Listen to this chapter">この章を聴く</string>
 <string key="Fast search help text">高速な検索を使用すると、その後のバイブルと高速たびにそれを最初に使用する時間が遅くなります。高速検索は、与えられた単語のいずれかを含む詩を返します。それぞれの詩の指定されたすべての単語を見つけるために各単語の前に "+"を入れてください。入れて " - "その言葉を持っていない詩のすべてを見つけるために、単語の前にあります。ワイルドカード "*"と "？"使用することができます。中国と日本のような記号を使用して言語では、 "*"の前に、それぞれの文字の後に置かなければなりません。 "強めて"番号を見つけるためだけに遅い検索を使用します。</string>
+<string key="The bible, chronological">年代順に聖書</string>
+<string key="The New Testement, chronological">年代順に新しいTestement</string>
+<string key="Show two title rows in each window">各ウィンドウ内の2つのタイトル行を表示する</string>
 </translations>

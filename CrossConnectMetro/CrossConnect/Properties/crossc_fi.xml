@@ -202,4 +202,6 @@
 <string key="Slow search">Hidas haku</string>
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Ensimmäisen kerran teet nopean haun kestää kauan. Jälkeenpäin haku on erittäin nopea. Haluatko jatkaa?</string>
 <string key="Fast search help text">Nopea haku on hidas ensimmäisen kerran käytät sitä raamattu ja nopea kerta sen jälkeen. Nopea haku palauttaa jakeita, jotka sisältävät jonkin tietyn sanoja. Laita "+" edessä jokaisen sanan löytää kaikki tietyn sanan jokainen jae. Laita "-" eteen sanan löytää kaikki säkeet, jotka eivät ole tätä sanaa. Yleismerkkejä "*" ja "?" voidaan käyttää. Kieliä käyttäen symboleja, kuten Kiinan ja Japanin sinun täytyy laittaa "*" ennen ja jälkeen jokaisen merkin. Käytä vain hitaasti haku löytää "Strongs" numeroita.</string>
+<string key="The bible, chronological">Raamattu kronologisessa järjestyksessä</string>
+<string key="The New Testement, chronological">UT: n aikajärjestyksessä</string>
 </translations>

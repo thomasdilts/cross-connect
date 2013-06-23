@@ -220,4 +220,7 @@
 <string key="Translate selected text">Isalin ang napiling teksto</string>
 <string key="Listen to this chapter">Makinig sa kabanata na ito</string>
 <string key="Fast search help text">Ang isang mabilis na paghahanap ay mapabagal ang unang pagkakataon na gamitin mo ito sa bibliya at mabilis sa bawat oras sandali. Isang mabilis na paghahanap ay nagbalik ng mga bersikulo naglalaman ng anumang isa ng ibinigay na salita. Maglagay ng "+" sa harap ng bawat salita upang mahanap ang lahat ng ibinigay na salita sa bawat taludtod. Maglagay ng "-" sa harap ng isang salita upang mahanap ang lahat ng bersikulo na hindi na salita. Wildcard "*" at "?" ay maaaring magamit. Sa mga wika na paggamit ng mga simbolo tulad ng Tsino at Hapon, dapat mong ilagay "*" bago at pagkatapos ng bawat karakter. Gamitin lamang ang mabagal paghahanap upang mahanap ang "Strongs" numero.</string>
+<string key="The bible, chronological">Ang Bibliya sa magkasunod sunod</string>
+<string key="The New Testement, chronological">Ang Bagong Testement nang magkakasunod sunod</string>
+<string key="Show two title rows in each window">Ipakita ang dalawang mga hanay ng pamagat sa bawat window</string>
 </translations>

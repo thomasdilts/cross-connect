@@ -220,4 +220,7 @@
 <string key="Translate selected text">Preložiť vybraný text</string>
 <string key="Listen to this chapter">Vypočujte k tejto kapitole</string>
 <string key="Fast search help text">Rýchle vyhľadávanie je pomalé pri prvom použití ho na bibliu a rýchle zakaždým potom. Rýchle vyhľadávanie vracia verše obsahujúce niektoré z daných slov. Dať "+" pred každým slovom nájsť všetky daných slov v každom verši. Dajte "-" pred slovo nájsť všetky verše, ktoré nemajú toto slovo. Zástupné znaky "*" a "?" môže byť použitý. V jazykoch pomocou symbolov, ako čínština a japončina musíte dať "*" pred a po každom znaku. Používajte iba pomalé hľadanie nájsť "Strongs" čísla.</string>
+<string key="The bible, chronological">Biblia v chronologickom poradí</string>
+<string key="The New Testement, chronological">Nový Testement v chronologickom poradí</string>
+<string key="Show two title rows in each window">Zobraziť dvoch titulov riadkov v každom okne</string>
 </translations>

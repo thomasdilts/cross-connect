@@ -220,4 +220,7 @@
 <string key="Translate selected text">Kutafsiri kuchaguliwa Nakala</string>
 <string key="Listen to this chapter">Sikiliza sura hii</string>
 <string key="Fast search help text">tafuta haraka ni polepole mara ya kwanza matumizi yake juu ya Biblia na ya haraka kila wakati baada ya hapo. tafuta haraka anarudi aya zenye yoyote moja ya maneno aliyopewa. Kuweka "+" mbele ya kila neno na kupata yote ya maneno yaliyotolewa katika kila mstari. Kuweka "-" mbele ya neno kupata yote ya mistari ya kuwa hawana neno. Wildcards "*" na "?" inaweza kutumika. Katika lugha kutumia ishara kama Kichina na Kijapani lazima kuweka "*" kabla na baada ya tabia ya kila. Tumia tu tafuta mwepesi wa kupata "Ngumu" namba.</string>
+<string key="The bible, chronological">Biblia katika mpangilio</string>
+<string key="The New Testement, chronological">Riwaya za Agano Jipya katika mpangilio</string>
+<string key="Show two title rows in each window">Kuonyesha safu cheo mbili katika kila dirisha</string>
 </translations>
