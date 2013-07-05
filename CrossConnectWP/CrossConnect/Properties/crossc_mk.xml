@@ -223,4 +223,7 @@
 <string key="The bible, chronological">Библијата во хронолошки редослед</string>
 <string key="The New Testement, chronological">Новиот Testement во хронолошки редослед</string>
 <string key="Show two title rows in each window">Покаже две насловот редови во секој прозорец</string>
+<string key="Invalid key. Try again">Невалиден клуч. Обидете се повторно</string>
+<string key="Enter key">Внесете клучни</string>
+<string key="Save">Зачувај</string>
 </translations>

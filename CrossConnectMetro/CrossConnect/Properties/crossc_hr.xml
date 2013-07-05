@@ -204,4 +204,7 @@
 <string key="Fast search help text">Brzo pretraživanje usporiti prvi put kada ga koristiti na Bibliji i brzo svaki put nakon toga. Brzo pretraživanje vraća stihove koji sadrže neku od navedenih riječi. Stavite "+" ispred svake riječi pronaći sve dane riječi u svakom stihu. Put "-" ispred riječi pronaći sve stihove koji nemaju tu riječ. Zamjenski znakovi "*" i "?" može se koristiti. U jezicima koji koriste simbole poput kineske i japanske morate staviti "*" prije i poslije svakog lika. Koristite samo sporo pretraživanje kako bi pronašli "Strongs" brojeve.</string>
 <string key="The bible, chronological">Biblija u kronološkom slijedu</string>
 <string key="The New Testement, chronological">Novi Testement kronološkim redoslijedom</string>
+<string key="Invalid key. Try again">Nevažeći ključ. Pokušaj ponovo</string>
+<string key="Enter key">Enter</string>
+<string key="Save">Spasiti</string>
 </translations>

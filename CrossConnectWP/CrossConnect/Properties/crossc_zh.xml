@@ -223,4 +223,7 @@
 <string key="The bible, chronological">按時間順序排列的聖經</string>
 <string key="The New Testement, chronological">按時間順序排列的新Testement</string>
 <string key="Show two title rows in each window">在每個窗口中顯示兩個標題行</string>
+<string key="Invalid key. Try again">無效的關鍵。再試一次</string>
+<string key="Enter key">回車鍵</string>
+<string key="Save">節省</string>
 </translations>

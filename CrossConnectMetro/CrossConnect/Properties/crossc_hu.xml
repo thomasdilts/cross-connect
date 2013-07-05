@@ -204,4 +204,7 @@
 <string key="Fast search help text">Egy gyors keresés lassú az első alkalom, hogy használja azt a Biblia és gyors minden alkalommal azt követően. Egy gyors keresés visszaadja a verseket tartalmazó valamelyik megadott szavakat. Tegyen egy "+" előtt minden egyes szó, hogy megtalálja az adott szavak minden versben. Tegyen egy "-" előtt egy szó, hogy megtalálja az összes versek, amelyek nem ezt a szót. Helyettesítő karakterek "*" és "?" lehet használni. A nyelvek szimbólumok, mint a kínai és japán meg kell tenni "*" előtt és után minden egyes karakter. Csak a lassú keresést, hogy megtalálja "Strong" számok.</string>
 <string key="The bible, chronological">A Biblia időrendi sorrendben</string>
 <string key="The New Testement, chronological">Az új Testement időrendben</string>
+<string key="Invalid key. Try again">Érvénytelen gombot. Próbálja újra</string>
+<string key="Enter key">Enter gomb</string>
+<string key="Save">Kivéve</string>
 </translations>

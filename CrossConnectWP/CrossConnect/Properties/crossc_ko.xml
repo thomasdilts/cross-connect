@@ -223,4 +223,7 @@
 <string key="The bible, chronological">연대순 성경</string>
 <string key="The New Testement, chronological">연대순으로 새로운 Testement</string>
 <string key="Show two title rows in each window">각 창에서 두 개의 제목 행을 표시합니다</string>
+<string key="Invalid key. Try again">잘못된 키를 누릅니다. 다시 시도</string>
+<string key="Enter key">Enter 키를</string>
+<string key="Save">저장</string>
 </translations>

@@ -26,11 +26,13 @@ namespace CrossConnect
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
-
+    using System.Text;
     using System.Windows;
     using System.Windows.Controls;
 
     using CrossConnect.readers;
+
+    using Hoot;
 
     using Microsoft.Phone.Shell;
 
@@ -174,6 +176,8 @@ namespace CrossConnect
             }
         }
 
+        private bool HasFoundGoodKey = false;
+
         /// <summary>
         /// The phone application page back key press.
         /// </summary>
@@ -186,6 +190,31 @@ namespace CrossConnect
         private void PhoneApplicationPageBackKeyPress(object sender, CancelEventArgs e)
         {
             _isInThisWindow = false;
+
+            object isAddNewWindowOnly;
+            object openWindowIndex;
+            if (!PhoneApplicationService.Current.State.TryGetValue("isAddNewWindowOnly", out isAddNewWindowOnly))
+            {
+                isAddNewWindowOnly = false;
+            }
+
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            {
+                openWindowIndex = 0;
+            }
+
+            if (App.OpenWindows.Count > 0 && !(bool)isAddNewWindowOnly)
+            {
+                SerializableWindowState state = App.OpenWindows[(int)openWindowIndex].State;
+                if (state.Source is BibleZtextReader)
+                {
+                    if (HasFoundGoodKey || ((BibleZtextReader)state.Source).IsLocked)
+                    {
+                        return;
+                    }
+                }
+            }
+
             try
             {
                 if (selectDocumentType.SelectedIndex == 4)
@@ -196,12 +225,6 @@ namespace CrossConnect
                     }
 
                     App.DailyPlan.PlanNumber = selectPlanType.SelectedIndex;
-                }
-
-                object isAddNewWindowOnly;
-                if (!PhoneApplicationService.Current.State.TryGetValue("isAddNewWindowOnly", out isAddNewWindowOnly))
-                {
-                    isAddNewWindowOnly = false;
                 }
 
                 if ((bool)isAddNewWindowOnly)
@@ -220,12 +243,6 @@ namespace CrossConnect
                 }
                 else
                 {
-                    object openWindowIndex;
-                    if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
-                    {
-                        openWindowIndex = 0;
-                    }
-
                     if (App.OpenWindows[(int)openWindowIndex].State.WindowType == WindowType.WindowSearch
                         || App.OpenWindows[(int)openWindowIndex].State.WindowType == WindowType.WindowLexiconLink
                         || App.OpenWindows[(int)openWindowIndex].State.WindowType == WindowType.WindowTranslator)
@@ -453,6 +470,8 @@ namespace CrossConnect
             butListen.Content = Translations.Translate("Listen to this chapter");
             planStartDateCaption.Text = Translations.Translate("Select the daily plan start date");
             selectPlanType.Header = Translations.Translate("Select the daily plan");
+            EnterKeyTitle.Text = Translations.Translate("Enter key");
+            butEnterKeySave.Content = Translations.Translate("Save");
 
             selectDocumentType.Items.Clear();
             selectDocumentType.Items.Add(Translations.Translate("Bible"));
@@ -506,12 +525,41 @@ namespace CrossConnect
             DateSelectPanel.Visibility = Visibility.Collapsed;
             selectPlanType.Visibility = Visibility.Collapsed;
 
-            sliderTextSize.Value = (double)Application.Current.Resources["PhoneFontSizeNormal"] * 5 / 8;
+            EnterKeyTitle.Visibility = Visibility.Collapsed;
+            EnterKeyText.Visibility = Visibility.Collapsed;
+            butEnterKeySave.Visibility = Visibility.Collapsed;
 
+            sliderTextSize.Value = (double)Application.Current.Resources["PhoneFontSizeNormal"] * 5 / 8;
+            bool isLocked = false;
             // must show the current window selections
             if (App.OpenWindows.Count > 0 && !(bool)isAddNewWindowOnly)
             {
                 SerializableWindowState state = App.OpenWindows[(int)openWindowIndex].State;
+                if (state.Source is BibleZtextReader)
+                {
+                    isLocked = ((BibleZtextReader)state.Source).IsLocked;
+                    if (isLocked)
+                    {
+                        EnterKeyTitle.Visibility = Visibility.Visible;
+                        EnterKeyText.Visibility = Visibility.Visible;
+                        butEnterKeySave.Visibility = Visibility.Visible;
+                        EnterKeyText.Focus();
+
+                        butListen.Visibility = Visibility.Collapsed;
+                        butTranslate.Visibility = Visibility.Collapsed;
+                        DateSelectPanel.Visibility = Visibility.Collapsed;
+                        selectPlanType.Visibility = Visibility.Collapsed;
+                        selectDocumentType.Visibility = Visibility.Collapsed;
+                        selectDocument.Visibility = Visibility.Collapsed;
+                        webBrowser1.Visibility=Visibility.Collapsed;
+                        sliderTextSize.Visibility=Visibility.Collapsed;
+                        
+                        planStartDateCaption.Visibility = Visibility.Collapsed;
+                        return;
+
+                    }
+                }
+
                 int bookNum;
                 int relChaptNum;
                 int absoluteChaptNum;
@@ -648,7 +696,7 @@ namespace CrossConnect
             var toTranslate = (string[])obj[0];
             var isTranslateable = (bool[])obj[1];
 
-            var transReader2 = new TranslatorReader(string.Empty, string.Empty, false);
+            var transReader2 = new TranslatorReader(string.Empty, string.Empty, false, string.Empty, string.Empty);
             App.AddWindow(
                 state.BibleToLoad,
                 state.BibleDescription,
@@ -691,6 +739,37 @@ namespace CrossConnect
             PhoneApplicationService.Current.State["titleBar"] = titleText;
             PhoneApplicationService.Current.State["skipWindowSettings"] = true;
             NavigationService.Navigate(new Uri("/SelectToPlay.xaml", UriKind.Relative));
+        }
+
+        private void ButEnterKeySave_OnClick(object sender, RoutedEventArgs e)
+        {
+            object openWindowIndex;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            {
+                openWindowIndex = 0;
+            }
+
+            SerializableWindowState state = App.OpenWindows[(int)openWindowIndex].State;
+            if (((BibleZtextReader)state.Source).IsCipherKeyGood(this.EnterKeyText.Text))
+            {
+                ((BibleZtextReader)state.Source).Serial.CipherKey = this.EnterKeyText.Text;
+                string filenameComplete = ((BibleZtextReader)state.Source).Serial.Path + "CipherKey.txt";
+                var fs = Hoot.File.OpenStreamForWriteAsync(filenameComplete.Replace("/", "\\"), File.CreationCollisionOption.ReplaceExisting);
+                fs.Write(Encoding.UTF8.GetBytes(this.EnterKeyText.Text), 0, this.EnterKeyText.Text.Length);
+                fs.Flush();
+                App.OpenWindows[(int)openWindowIndex].ForceReload = true;
+                App.OpenWindows[(int)openWindowIndex].UpdateBrowser(false);
+                HasFoundGoodKey=true;
+                if (NavigationService.CanGoBack)
+                {
+                    NavigationService.GoBack();
+                }
+            }
+            else
+            {
+                this.EnterKeyTitle.Text = Translations.Translate("Invalid key. Try again"); ;
+
+            }
         }
     }
 }

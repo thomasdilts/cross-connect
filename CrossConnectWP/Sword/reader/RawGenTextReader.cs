@@ -120,7 +120,7 @@ namespace Sword.reader
 
         [DataMember(Name = "serial")]
         public BibleZtextReaderSerialData Serial = new BibleZtextReaderSerialData(
-            false, string.Empty, string.Empty, 0, 0);
+            false, string.Empty, string.Empty, 0, 0, string.Empty, string.Empty);
 
         private int _lastShownChapterNumber = -1;
 

@@ -223,4 +223,7 @@
 <string key="The bible, chronological">कालानुक्रमिक क्रम में बाइबल</string>
 <string key="The New Testement, chronological">कालानुक्रमिक क्रम में नई Testement</string>
 <string key="Show two title rows in each window">हर खिड़की में दो खिताब पंक्तियों दिखाएँ</string>
+<string key="Invalid key. Try again">अवैध कुंजी. फिर से कोशिश करें</string>
+<string key="Enter key">कुंजी दर्ज करें</string>
+<string key="Save">बचाना</string>
 </translations>

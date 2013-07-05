@@ -223,4 +223,7 @@
 <string key="The bible, chronological">Raamattu kronologisessa järjestyksessä</string>
 <string key="The New Testement, chronological">UT: n aikajärjestyksessä</string>
 <string key="Show two title rows in each window">Näytä kaksi otsikko riviä kussakin ikkunassa</string>
+<string key="Invalid key. Try again">Virheellinen avain. Yritä uudelleen</string>
+<string key="Enter key">Enter-näppäintä</string>
+<string key="Save">Säästää</string>
 </translations>

@@ -223,4 +223,7 @@
 <string key="The bible, chronological">Xronoloji qaydada Müqəddəs</string>
 <string key="The New Testement, chronological">Xronoloji qaydada yeni Testement</string>
 <string key="Show two title rows in each window">Hər pəncərə iki adı satır göstər</string>
+<string key="Invalid key. Try again">Yanlış düyməsini basın. Daha cəhd edin</string>
+<string key="Enter key">Düyməsini daxil edin</string>
+<string key="Save">Saxla</string>
 </translations>

@@ -54,7 +54,7 @@ namespace CrossConnect.readers
         #region Constructors
 
         public MediaReader(AudioPlayer.MediaInfo info)
-            : base(string.Empty, info.Language, false)
+            : base(string.Empty, info.Language, false, string.Empty, string.Empty)
         {
             Info = info;
         }

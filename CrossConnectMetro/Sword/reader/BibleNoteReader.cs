@@ -44,7 +44,7 @@ namespace Sword.reader
         #region Fields
 
         [DataMember(Name = "serial2")]
-        public BibleZtextReaderSerialData Serial2 = new BibleZtextReaderSerialData(false, "", "", 0, 0);
+        public BibleZtextReaderSerialData Serial2 = new BibleZtextReaderSerialData(false, "", "", 0, 0, string.Empty, string.Empty);
 
         [DataMember(Name = "titleBrowserWindow")]
         public string TitleBrowserWindow = string.Empty;
@@ -53,8 +53,8 @@ namespace Sword.reader
 
         #region Constructors and Destructors
 
-        public BibleNoteReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string titleBrowserWindow)
-            : base(path, iso2DigitLangCode, isIsoEncoding)
+        public BibleNoteReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string titleBrowserWindow, string cipherKey, string configPath)
+            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath)
         {
             this.Serial2.CloneFrom(this.Serial);
             this.TitleBrowserWindow = titleBrowserWindow;

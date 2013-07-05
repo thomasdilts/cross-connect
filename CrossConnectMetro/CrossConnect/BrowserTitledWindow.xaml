@@ -194,6 +194,31 @@
                     </Grid>
                 </Border>
             </Popup>
+            <Popup x:Name="EnterKeyPopup" IsLightDismissEnabled="True" Closed="EnterKeyPopup_OnClosed"
+                   Opened="EnterKeyPopup_OnOpened">
+                <Popup.ChildTransitions>
+                    <TransitionCollection>
+                        <PaneThemeTransition />
+                    </TransitionCollection>
+                </Popup.ChildTransitions>
+                <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" BorderThickness="2"
+                        Background="{StaticResource ApplicationPageBackgroundThemeBrush}" x:Name="enterkeyborder">
+                    <Grid Name="MainPaneEnterKeyPopup">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="100" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="ErrorEnterKeyText" Grid.Row="0" Text="Enter key" FontSize="18" />
+                        <TextBox Grid.Row="1" Name="EnteredKeyText" >
+                        </TextBox>
+                        <StackPanel Grid.Row="2" Orientation="Horizontal">
+                            <Button Click="SaveKey_OnClick" Content="Save" x:Name="SaveKey"  />
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
+            </Popup>
             <Popup x:Name="AddNotePopup" IsLightDismissEnabled="True" Closed="AddNotePopup_OnClosed"
                    Opened="AddNotePopup_OnOpened">
                 <Popup.ChildTransitions>
@@ -230,6 +255,7 @@
                     <StackPanel Name="SubMenuStackPanel" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <ListBox FontSize="25" Name="SubMenuMenuPopup" SelectionChanged="SubMenuMenuPopup_OnSelectionChanged"
                                  SelectedItem="-1">
+                            <ListBoxItem Name="EnterKey">Enter Key</ListBoxItem>
                             <ListBoxItem Name="MoveWindowRight">MoveWindowRight</ListBoxItem>
                             <ListBoxItem Name="MoveWindowLeft">MoveWindowLeft</ListBoxItem>
                             <ListBoxItem Name="WindowSmaller">WindowSmaller</ListBoxItem>

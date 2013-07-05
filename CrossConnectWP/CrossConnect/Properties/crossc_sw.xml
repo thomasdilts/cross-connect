@@ -223,4 +223,7 @@
 <string key="The bible, chronological">Biblia katika mpangilio</string>
 <string key="The New Testement, chronological">Riwaya za Agano Jipya katika mpangilio</string>
 <string key="Show two title rows in each window">Kuonyesha safu cheo mbili katika kila dirisha</string>
+<string key="Invalid key. Try again">Batili muhimu. Jaribu tena</string>
+<string key="Enter key">Kuingia muhimu</string>
+<string key="Save">Ila</string>
 </translations>

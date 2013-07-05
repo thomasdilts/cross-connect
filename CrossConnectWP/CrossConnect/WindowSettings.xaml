@@ -56,8 +56,11 @@
           <RowDefinition Height="Auto" />
           <RowDefinition Height="Auto" />
           <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -74,11 +77,15 @@
         <toolkit:ListPicker Name="selectDocument" Grid.Row="3" Header="Select the bible">
 
         </toolkit:ListPicker>
-                <Button Content="Listen to this chapter" Grid.Row="4" Name="butListen"
+                <TextBlock Name="EnterKeyTitle" Grid.Row="4" Text="Enter Key" />
+                <TextBox Name="EnterKeyText" Grid.Row="5" Text="" />
+                <Button Content="Save" Grid.Row="6" Name="butEnterKeySave"
+                Click="ButEnterKeySave_OnClick" />
+                <Button Content="Listen to this chapter" Grid.Row="7" Name="butListen"
                 Click="ButListen_OnClick" />
-                <Button Content="Translate selected text" Grid.Row="5" Name="butTranslate" Click="ButTranslate_OnClick" />
-        <phone:WebBrowser Grid.Row="6" Margin="0 0 0 0" Name="webBrowser1" MinHeight="50" /> 
-        <Slider Grid.Row="7" Maximum="37.0" Minimum="5.0" ValueChanged="SliderTextSizeValueChanged"
+                <Button Content="Translate selected text" Grid.Row="8" Name="butTranslate" Click="ButTranslate_OnClick" />
+        <phone:WebBrowser Grid.Row="9" Margin="0 0 0 0" Name="webBrowser1" MinHeight="50" /> 
+        <Slider Grid.Row="10" Maximum="37.0" Minimum="5.0" ValueChanged="SliderTextSizeValueChanged"
                 Name="sliderTextSize" />
       </Grid>
     </Grid>

@@ -223,4 +223,7 @@
 <string key="The bible, chronological">Біблія в хронологічному порядку</string>
 <string key="The New Testement, chronological">Новий Testement в хронологічному порядку</string>
 <string key="Show two title rows in each window">Показати два ряди титул в кожному вікні</string>
+<string key="Invalid key. Try again">Неправильна ключ. Спробуйте ще раз</string>
+<string key="Enter key">Клавіша введення</string>
+<string key="Save">Економити</string>
 </translations>

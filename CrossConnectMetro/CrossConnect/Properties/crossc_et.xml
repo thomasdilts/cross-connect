@@ -204,4 +204,7 @@
 <string key="Fast search help text">Kiire otsing on aeglane te esimest korda seda kasutada piibel ja kiire iga kord pärast seda. Kiire otsing annab salmid sisaldavad mõni antud sõnu. Pane "+" ees iga sõna leida kõik antud sõnad igas salmis. Pane "-" ees sõna leida kõik salmid, mis ei ole sellist sõna. Metamärgid "*" ja "?" saab kasutada. Kui keelt kasutades sümboleid nagu Hiina ja Jaapani peate panna "*" enne ja pärast iga märk. Kasutage ainult aeglane otsingut, et leida "Strongs" numbrid.</string>
 <string key="The bible, chronological">Piibel kronoloogilises järjekorras</string>
 <string key="The New Testement, chronological">Uus Testement kronoloogilises järjekorras</string>
+<string key="Invalid key. Try again">Vigane võti. Proovi uuesti</string>
+<string key="Enter key">Enter</string>
+<string key="Save">Päästma</string>
 </translations>

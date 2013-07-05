@@ -223,4 +223,7 @@
 <string key="The bible, chronological">Ang Bibliya sa magkasunod sunod</string>
 <string key="The New Testement, chronological">Ang Bagong Testement nang magkakasunod sunod</string>
 <string key="Show two title rows in each window">Ipakita ang dalawang mga hanay ng pamagat sa bawat window</string>
+<string key="Invalid key. Try again">Di-wastong key. Subukan muli</string>
+<string key="Enter key">Enter key</string>
+<string key="Save">Iligtas</string>
 </translations>

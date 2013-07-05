@@ -115,8 +115,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libraries\Coding4Fun.Phone.Site.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
-      <HintPath>..\packages\WPtoolkit.4.2012.10.30\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libraries\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -284,8 +285,17 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="CrossConnect.WP8_2013_06_27_12_44_17.sap" />
+    <None Include="CrossConnect.WP8_2013_06_27_12_47_16.sap" />
+    <None Include="CrossConnect.WP8_2013_06_28_17_21_21.sap" />
+    <None Include="CrossConnect.WP8_2013_06_28_17_24_35.sap" />
+    <None Include="CrossConnect.WP8_2013_06_28_17_34_18.sap" />
+    <None Include="CrossConnect.WP8_2013_06_28_17_54_50.sap" />
+    <None Include="CrossConnect.WP8_2013_06_28_21_41_11.sap" />
     <None Include="packages.config" />
-    <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\AppManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
     <EmbeddedResource Include="Properties\strongsgreek.xml.gz" />
     <EmbeddedResource Include="Properties\strongshebrew.xml.gz" />
     <None Include="Properties\WMAppManifest.xml">

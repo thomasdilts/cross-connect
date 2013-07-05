@@ -204,4 +204,7 @@
 <string key="Fast search help text">Ātra meklēšana ir lēns, pirmo reizi, kad lietojat to uz Bībeli un ātri katru reizi pēc tam. Ātra meklēšana atgriež vārsmas satur kādu no dotajiem vārdiem. Put "+" pie katra vārda, lai atrastu visas dotajiem vārdiem katru verse. Put "-" priekšā vārdu, lai atrastu visas vārsmas, kas nav šo vārdu. Aizstājējzīmes "*" un "?" var lietot. Valodās lieto simbolus, piemēram ķīniešu un japāņu jums ir likts "*" pirms un pēc katras raksturu. Izmantojiet tikai lēni meklēšanu, lai atrastu "Strongs" numuriem.</string>
 <string key="The bible, chronological">Bībele hronoloģiskā secībā</string>
 <string key="The New Testement, chronological">Jaunā Testement hronoloģiskā secībā</string>
+<string key="Invalid key. Try again">Nepareiza atslēga. Mēģiniet vēlreiz</string>
+<string key="Enter key">Enter</string>
+<string key="Save">Glābt</string>
 </translations>

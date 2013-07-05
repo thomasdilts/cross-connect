@@ -223,4 +223,7 @@
 <string key="The bible, chronological">A Biblia időrendi sorrendben</string>
 <string key="The New Testement, chronological">Az új Testement időrendben</string>
 <string key="Show two title rows in each window">Mutasd két cím sorok az ablakok</string>
+<string key="Invalid key. Try again">Érvénytelen gombot. Próbálja újra</string>
+<string key="Enter key">Enter gomb</string>
+<string key="Save">Kivéve</string>
 </translations>

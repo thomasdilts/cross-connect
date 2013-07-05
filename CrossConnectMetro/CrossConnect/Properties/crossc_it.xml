@@ -204,4 +204,7 @@
 <string key="Fast search help text">Una ricerca veloce è lento la prima volta che lo si utilizza su una Bibbia e veloce ogni momento successivo. Una ricerca veloce restituisce versi contenenti una qualsiasi delle parole date. Mettete un "+" davanti ad ogni parola per trovare tutte le parole date in ogni verso. Mettete un "-" davanti una parola per trovare tutti i versetti che non hanno quella parola. I caratteri jolly "*" e "?" può essere utilizzato. Nelle lingue che utilizzano simboli come cinese e giapponese si deve mettere "*" prima e dopo ogni carattere. Utilizzare solo la ricerca lenta di trovare "FORZA" numeri.</string>
 <string key="The bible, chronological">La Bibbia in ordine cronologico</string>
 <string key="The New Testement, chronological">Il Nuovo Testement in ordine cronologico</string>
+<string key="Invalid key. Try again">Invalid chiave. Riprovare</string>
+<string key="Enter key">Tasto Invio</string>
+<string key="Save">Salva</string>
 </translations>

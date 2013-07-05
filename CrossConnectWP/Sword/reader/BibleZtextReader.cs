@@ -805,7 +805,7 @@ namespace Sword.reader
 
         [DataMember(Name = "serial")]
         public BibleZtextReaderSerialData Serial = new BibleZtextReaderSerialData(
-            false, string.Empty, string.Empty, 0, 0);
+            false, string.Empty, string.Empty, 0, 0, string.Empty, string.Empty);
 
         protected IndexingBlockType BlockType = IndexingBlockType.Book;
 
@@ -824,13 +824,14 @@ namespace Sword.reader
         /// <param name="path">The path to where the ot.bzs,ot.bzv and ot.bzz and nt files are</param>
         /// <param name="iso2DigitLangCode"></param>
         /// <param name="isIsoEncoding"></param>
-        public BibleZtextReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
+        public BibleZtextReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath)
         {
             this.Serial.Iso2DigitLangCode = iso2DigitLangCode;
             this.Serial.Path = path;
             this.Serial.IsIsoEncoding = isIsoEncoding;
+            this.Serial.CipherKey = cipherKey;
+            this.Serial.ConfigPath = configPath;
         }
-
         public void Initialize()
         {
             this.ReloadSettingsFile();
@@ -1213,6 +1214,21 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                     }
             }
             return null;
+        }
+        public virtual bool IsLocked
+        {
+            get
+            {
+                return this.Serial.CipherKey != null && this.Serial.CipherKey.Length == 0;
+            }
+        }
+        public bool IsCipherKeyGood(string testKey)
+        {
+            var oldCipher = this.Serial.CipherKey;
+            this.Serial.CipherKey = testKey;
+            byte[] chapterBuffer = this.GetChapterBytes(this.Serial.PosChaptNum);
+            this.Serial.CipherKey = oldCipher;
+            return chapterBuffer.Any(p => p != 0);
         }
 
         public virtual string GetChapterHtml(
@@ -1678,7 +1694,9 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             // we must read the entire book up to the chapter we want even though we just want one chapter.
             fs.Position = bookStartPos;
 
-            var zipStream = new ZInputStream(fs);
+            //var zipStream = new ZInputStream(fs);
+            var zipStream = string.IsNullOrEmpty(this.Serial.CipherKey) ? new ZInputStream(fs) : new ZInputStream(new SapphireStream(fs, this.Serial.CipherKey));
+
             var chapterBuffer = new byte[blockLen];
             int totalBytesRead = 0;
             int totalBytesCopied = 0;
@@ -1772,11 +1790,6 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             }
 
             Debug.WriteLine("GetChapterHtml start");
-            byte[] chapterBuffer = this.GetChapterBytes(chapterNumber);
-
-            // for debug
-            //string xxxxxx = Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
-            //Debug.WriteLine("RawChapter: " + xxxxxx);
             var htmlChapter = new StringBuilder();
             ChapterPos versesForChapterPositions = this.Chapters[chapterNumber];
             string chapterStartHtml = string.Empty;
@@ -1792,6 +1805,47 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                     fontFamily);
                 chapterEndHtml = "</body></html>";
             }
+            // if the bible is locked and there is no key. Look for a key.
+            if (this.Serial.CipherKey != null && this.Serial.CipherKey.Length == 0)
+            {
+                try
+                {
+                    string filenameComplete = this.Serial.Path + "CipherKey.txt";
+                    var fs = Hoot.File.OpenStreamForReadAsync(filenameComplete.Replace("/", "\\"));
+                    // get the key from the file.
+                    var buf = new byte[1000];
+                    var len = fs.Read(buf, 0, 1000);
+                    this.Serial.CipherKey = Encoding.UTF8.GetString(buf, 0, len);
+                }
+                catch (Exception ee)
+                {
+                }
+                if (this.Serial.CipherKey.Length == 0)
+                {
+                    try
+                    {
+                        string filenameComplete = this.Serial.ConfigPath;
+                        var fs = Hoot.File.OpenStreamForReadAsync(
+                                this.Serial.ConfigPath.Replace("/", "\\"));
+                        // show the about information instead
+                        var config = new SwordBookMetaData(fs, "xx");
+                        fs.Dispose();
+                        return chapterStartHtml + "This bible is locked. Go to the menu to enter the key.<br /><br />"
+                               + ((string)config.GetCetProperty(ConfigEntryType.About)).Replace("\\par", "<br />")
+                                                                                       .Replace("\\qc", "")
+                               + chapterEndHtml;
+                    }
+                    catch (Exception e)
+                    {
+                        // does not exist
+                    }
+                }
+            }
+            byte[] chapterBuffer = this.GetChapterBytes(chapterNumber);
+
+            // for debug
+            //string xxxxxx = Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
+            //Debug.WriteLine("RawChapter: " + xxxxxx);
 
             string bookName = string.Empty;
             if (displaySettings.ShowBookName)
@@ -2869,6 +2923,12 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
         [DataMember(Name = "posVerseNum")]
         public int PosVerseNum;
 
+        [DataMember(Name = "CipherKey")]
+        public string CipherKey;
+
+        [DataMember(Name = "ConfigPath")]
+        public string ConfigPath;
+
         #endregion
 
         #region Constructors and Destructors
@@ -2879,13 +2939,15 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
         }
 
         public BibleZtextReaderSerialData(
-            bool isIsoEncoding, string iso2DigitLangCode, string path, int posChaptNum, int posVerseNum)
+            bool isIsoEncoding, string iso2DigitLangCode, string path, int posChaptNum, int posVerseNum, string cipherKey, string configPath)
         {
             this.IsIsoEncoding = isIsoEncoding;
             this.Iso2DigitLangCode = iso2DigitLangCode;
             this.Path = path;
             this.PosChaptNum = posChaptNum;
             this.PosVerseNum = posVerseNum;
+            this.CipherKey = cipherKey;
+            this.ConfigPath = configPath;
         }
 
         #endregion
@@ -2899,6 +2961,8 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             this.Path = from.Path;
             this.PosChaptNum = from.PosChaptNum;
             this.PosVerseNum = from.PosVerseNum;
+            this.CipherKey = from.CipherKey;
+            this.ConfigPath = from.ConfigPath;
         }
 
         #endregion

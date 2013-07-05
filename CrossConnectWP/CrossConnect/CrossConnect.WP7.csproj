@@ -387,7 +387,9 @@
     <EmbeddedResource Include="Properties\crossc_ar.xml" />
     <EmbeddedResource Include="Properties\crossc_az.xml" />
     <EmbeddedResource Include="Properties\crossc_be.xml" />
-    <EmbeddedResource Include="Properties\crossc_bg.xml" />
+    <EmbeddedResource Include="Properties\crossc_bg.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\crossc_cs.xml" />
     <EmbeddedResource Include="Properties\crossc_da.xml" />
     <EmbeddedResource Include="Properties\crossc_de.xml" />

@@ -51,8 +51,8 @@ namespace CrossConnect.readers
 
         #region Constructors
 
-        public TranslatorReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
-            : base(path, iso2DigitLangCode, isIsoEncoding)
+        public TranslatorReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath)
+            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath)
         {
         }
 
