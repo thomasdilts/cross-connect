@@ -48,8 +48,8 @@ namespace Sword.reader
         /// <param name="path">The path to where the ot.bzs,ot.bzv and ot.bzz and nt files are</param>
         /// <param name="iso2DigitLangCode"></param>
         /// <param name="isIsoEncoding"></param>
-        public CommentZtextReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
-            : base(path, iso2DigitLangCode, isIsoEncoding)
+        public CommentZtextReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath)
+            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath)
         {
         }
 

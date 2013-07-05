@@ -223,4 +223,7 @@
   <string key="The bible, chronological">The Bible in chronological order</string>
   <string key="The New Testement, chronological">The New Testement in chronological order</string>
   <string key="Show two title rows in each window">Show two title rows in each window</string>
+  <string key="Invalid key. Try again">Invalid key. Try again</string>
+  <string key="Enter key">Enter key</string>
+  <string key="Save">Save</string>
 </translations>

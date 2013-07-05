@@ -62,7 +62,7 @@ namespace CrossConnect.readers
         #region Constructors and Destructors
 
         public GreekHebrewDictReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
-            : base(path, iso2DigitLangCode, isIsoEncoding)
+            : base(path, iso2DigitLangCode, isIsoEncoding, string.Empty, string.Empty)
         {
         }
 

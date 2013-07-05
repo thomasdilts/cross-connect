@@ -223,4 +223,7 @@
 <string key="The bible, chronological">Kronolojik sıraya göre İncil</string>
 <string key="The New Testement, chronological">Kronolojik sıraya göre Yeni Testement</string>
 <string key="Show two title rows in each window">Her pencerede iki başlık satırları göster</string>
+<string key="Invalid key. Try again">Geçersiz anahtar. Tekrar deneyin</string>
+<string key="Enter key">Enter tuşuna</string>
+<string key="Save">Kurtarmak</string>
 </translations>

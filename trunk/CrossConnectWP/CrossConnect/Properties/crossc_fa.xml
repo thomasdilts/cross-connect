@@ -223,4 +223,7 @@
 <string key="The bible, chronological">کتاب مقدس به ترتیب زمانی</string>
 <string key="The New Testement, chronological">Testement جدید به ترتیب زمانی</string>
 <string key="Show two title rows in each window">نمایش دو ردیف عنوان در هر پنجره</string>
+<string key="Invalid key. Try again">کلید نامعتبر است. دوباره سعی کنید</string>
+<string key="Enter key">کلید را وارد کنید</string>
+<string key="Save">جویی در هزینه</string>
 </translations>

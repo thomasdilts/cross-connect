@@ -204,4 +204,7 @@
 <string key="Fast search help text">Una búsqueda rápida es lento la primera vez que lo utilice en una biblia y un rápido tiempo de cada uno después de eso. Una búsqueda rápida devuelve los versículos que contienen cualquiera de las palabras dadas. Ponga un signo "+" delante de cada palabra para encontrar todas las palabras dadas en cada verso. Ponga un signo "-" delante de una palabra a encontrar todos los versículos que no cuentan con esa palabra. Comodines "*" y "?" puede ser utilizado. En las lenguas que utilizan símbolos como el chino y el japonés debe poner "*" antes y después de cada carácter. Utilice sólo la búsqueda lenta para encontrar "Strong" números.</string>
 <string key="The bible, chronological">La Biblia en orden cronológico</string>
 <string key="The New Testement, chronological">El New Testement en orden cronológico</string>
+<string key="Invalid key. Try again">No válido clave. Inténtelo de nuevo</string>
+<string key="Enter key">Tecla Enter</string>
+<string key="Save">Guardar</string>
 </translations>

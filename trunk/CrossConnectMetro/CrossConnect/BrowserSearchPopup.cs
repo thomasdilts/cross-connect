@@ -308,7 +308,7 @@ namespace CrossConnect
             {
                 var source = (BibleZtextReader)this._state.Source;
                 this.SourceSearch = new SearchReader(
-                    source.Serial.Path, source.Serial.Iso2DigitLangCode, source.Serial.IsIsoEncoding);
+                    source.Serial.Path, source.Serial.Iso2DigitLangCode, source.Serial.IsIsoEncoding, source.Serial.CipherKey, source.Serial.ConfigPath);
                 await ((BibleZtextReader)this.SourceSearch).Initialize();
             }
             if (this.IsFastSearch)

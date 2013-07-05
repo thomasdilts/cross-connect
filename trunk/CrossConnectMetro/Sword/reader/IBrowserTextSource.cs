@@ -71,6 +71,8 @@ namespace Sword.reader
 
         bool IsTranslateable { get; }
 
+        bool IsLocked { get; }
+
         #endregion
 
         #region Public Methods and Operators

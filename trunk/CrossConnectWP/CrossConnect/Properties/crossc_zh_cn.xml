@@ -223,4 +223,7 @@
 <string key="The bible, chronological">按时间顺序排列的圣经</string>
 <string key="The New Testement, chronological">按时间顺序排列的新Testement</string>
 <string key="Show two title rows in each window">在每个窗口中显示两个标题行</string>
+<string key="Invalid key. Try again">无效的关键。再试一次</string>
+<string key="Enter key">回车键</string>
+<string key="Save">节省</string>
 </translations>

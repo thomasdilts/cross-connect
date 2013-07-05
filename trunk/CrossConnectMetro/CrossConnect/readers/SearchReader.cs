@@ -71,8 +71,8 @@ namespace CrossConnect.readers
 
         #region Constructors and Destructors
 
-        public SearchReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
-            : base(path, iso2DigitLangCode, isIsoEncoding)
+        public SearchReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath)
+            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath)
         {
         }
 

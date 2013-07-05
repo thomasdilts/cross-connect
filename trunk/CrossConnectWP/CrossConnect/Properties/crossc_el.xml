@@ -223,4 +223,7 @@
 <string key="The bible, chronological">Η Αγία Γραφή σε χρονολογική σειρά</string>
 <string key="The New Testement, chronological">Η Νέα Διαθήκη κατά χρονολογική σειρά</string>
 <string key="Show two title rows in each window">Εμφάνιση δύο σειρές του τίτλου σε κάθε παράθυρο</string>
+<string key="Invalid key. Try again">Μη έγκυρο κλειδί. Δοκιμάστε ξανά</string>
+<string key="Enter key">Πλήκτρο Enter</string>
+<string key="Save">Εκτός</string>
 </translations>

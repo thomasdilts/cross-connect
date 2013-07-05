@@ -204,4 +204,7 @@
 <string key="Fast search help text">A fljótur leita er hægt í fyrsta skipti sem þú notar hana á Biblíunni og fljótur hvert skipti eftir það. A fljótur leita skilar vísur sem innihalda eitthvert af gefnum orðum. Settu "+" fyrir framan hvert orð til að finna allar gefið orð í hverri vísu. Setja "-" fyrir framan orð til að finna allar vísur sem ekki hafa þessi orð. Algildisstafir "*" og "?" er hægt að nota. Í tungumálum með tákn eins og kínversku og japönsku þú verður að setja "*" fyrir og eftir hvern staf. Notaðu aðeins hægur leit til að finna "Strongs" tölur.</string>
 <string key="The bible, chronological">Biblían í tímaröð</string>
 <string key="The New Testement, chronological">The New Testement í tímaröð</string>
+<string key="Invalid key. Try again">Ógildur lykill. Reyndu aftur</string>
+<string key="Enter key">Enter</string>
+<string key="Save">Vista</string>
 </translations>

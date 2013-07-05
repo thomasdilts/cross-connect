@@ -223,4 +223,7 @@
 <string key="The bible, chronological">Kinh Thánh trong thứ tự thời gian</string>
 <string key="The New Testement, chronological">Các Testement mới trong thứ tự thời gian</string>
 <string key="Show two title rows in each window">Hiển thị hai dòng tiêu đề trong mỗi cửa sổ</string>
+<string key="Invalid key. Try again">Không hợp lệ quan trọng. Thử lại</string>
+<string key="Enter key">Nhập từ khóa</string>
+<string key="Save">Tiết kiệm</string>
 </translations>

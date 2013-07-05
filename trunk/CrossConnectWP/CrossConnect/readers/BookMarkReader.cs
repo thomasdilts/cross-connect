@@ -43,7 +43,7 @@ namespace CrossConnect.readers
         #region Fields
 
         [DataMember(Name = "serial2")]
-        public BibleZtextReaderSerialData Serial2 = new BibleZtextReaderSerialData(false, string.Empty, string.Empty, 0, 0);
+        public BibleZtextReaderSerialData Serial2 = new BibleZtextReaderSerialData(false, string.Empty, string.Empty, 0, 0, string.Empty, string.Empty);
 
         private string _displayText = string.Empty;
 
@@ -61,8 +61,8 @@ namespace CrossConnect.readers
 
         #region Constructors
 
-        public BookMarkReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
-            : base(path, iso2DigitLangCode, isIsoEncoding)
+        public BookMarkReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath)
+            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath)
         {
             Serial2.CloneFrom(Serial);
             App.BookMarksChanged += AppBookMarksChanged;

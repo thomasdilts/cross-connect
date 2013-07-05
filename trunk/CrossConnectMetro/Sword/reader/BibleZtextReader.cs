@@ -805,7 +805,7 @@ namespace Sword.reader
 
         [DataMember(Name = "serial")]
         public BibleZtextReaderSerialData Serial = new BibleZtextReaderSerialData(
-            false, string.Empty, string.Empty, 0, 0);
+            false, string.Empty, string.Empty, 0, 0, string.Empty, string.Empty);
 
         protected IndexingBlockType BlockType = IndexingBlockType.Book;
 
@@ -824,11 +824,13 @@ namespace Sword.reader
         /// <param name="path">The path to where the ot.bzs,ot.bzv and ot.bzz and nt files are</param>
         /// <param name="iso2DigitLangCode"></param>
         /// <param name="isIsoEncoding"></param>
-        public BibleZtextReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
+        public BibleZtextReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath)
         {
             this.Serial.Iso2DigitLangCode = iso2DigitLangCode;
             this.Serial.Path = path;
             this.Serial.IsIsoEncoding = isIsoEncoding;
+            this.Serial.CipherKey = cipherKey;
+            this.Serial.ConfigPath = configPath;
         }
 
         public async Task Initialize()
@@ -924,6 +926,14 @@ namespace Sword.reader
             get
             {
                 return true;
+            }
+        }
+
+        public virtual bool IsLocked
+        {
+            get
+            {
+                return this.Serial.CipherKey != null && this.Serial.CipherKey.Length==0;
             }
         }
 
@@ -1640,7 +1650,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
         protected async Task<byte[]> GetChapterBytes(int chapterNumber)
         {
-            Debug.WriteLine("getChapterBytes start");
+            //Debug.WriteLine("getChapterBytes start");
             int numberOfChapters = this.Chapters.Count;
             if (numberOfChapters == 0)
             {
@@ -1661,6 +1671,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             long blockStartPos = versesForChapterPositions.StartPos;
             long blockLen = versesForChapterPositions.Length;
             Stream fs;
+
             string fileName = (chapterNumber < ChaptersInOt) ? "ot." : "nt.";
             try
             {
@@ -1681,8 +1692,9 @@ function SetFontColorForElement(elemntId, colorRgba){
             // adjust the start postion of the stream to where this book begins.
             // we must read the entire book up to the chapter we want even though we just want one chapter.
             fs.Position = bookStartPos;
+            ZInputStream zipStream;
+            zipStream = string.IsNullOrEmpty(this.Serial.CipherKey) ? new ZInputStream(fs) : new ZInputStream(new SapphireStream(fs,this.Serial.CipherKey));
 
-            var zipStream = new ZInputStream(fs);
             var chapterBuffer = new byte[blockLen];
             int totalBytesRead = 0;
             int totalBytesCopied = 0;
@@ -1744,6 +1756,15 @@ function SetFontColorForElement(elemntId, colorRgba){
             return chapterBuffer;
         }
 
+        public async Task<bool> IsCipherKeyGood(string testKey)
+        {
+            var oldCipher = this.Serial.CipherKey;
+            this.Serial.CipherKey = testKey;
+            byte[] chapterBuffer = await this.GetChapterBytes(this.Serial.PosChaptNum);
+            this.Serial.CipherKey = oldCipher;
+            return chapterBuffer.Any(p => p != 0);
+        }
+
         /// <summary>
         ///     Return the entire chapter without notes and with lots of html markup
         /// </summary>
@@ -1776,11 +1797,6 @@ function SetFontColorForElement(elemntId, colorRgba){
             }
 
             Debug.WriteLine("GetChapterHtml start");
-            byte[] chapterBuffer = await this.GetChapterBytes(chapterNumber);
-
-            // for debug
-            //string xxxxxx = Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
-            //Debug.WriteLine("RawChapter: " + xxxxxx);
             var htmlChapter = new StringBuilder();
             ChapterPos versesForChapterPositions = this.Chapters[chapterNumber];
             string chapterStartHtml = string.Empty;
@@ -1816,6 +1832,53 @@ function SetFontColorForElement(elemntId, colorRgba){
             // in some commentaries, the verses repeat. Stop these repeats from comming in!
             var verseRepeatCheck = new Dictionary<long, int>();
             bool isInPoetry = false;
+
+            // if the bible is locked and there is no key. Look for a key.
+            if (this.Serial.CipherKey != null && this.Serial.CipherKey.Length == 0)
+            {
+                try
+                {
+                    string filenameComplete = this.Serial.Path + "CipherKey.txt";
+                    var fs =
+                        await
+                        ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(filenameComplete.Replace("/", "\\"));
+                    // get the key from the file.
+                    var buf = new byte[1000];
+                    var len = await fs.ReadAsync(buf, 0, 1000);
+                    this.Serial.CipherKey = Encoding.UTF8.GetString(buf,0,len);
+                }
+                catch (Exception ee)
+                {
+                }
+                if (this.Serial.CipherKey.Length == 0)
+                {
+                    try
+                    {
+                        string filenameComplete = this.Serial.ConfigPath;
+                        var fs =
+                            await
+                            ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(
+                                this.Serial.ConfigPath.Replace("/", "\\"));
+                        // show the about information instead
+                        var config = new SwordBookMetaData(fs, "xx");
+                        fs.Dispose();
+                        return chapterStartHtml + "This bible is locked. Go to the menu to enter the key.<br /><br />"
+                               + ((string)config.GetCetProperty(ConfigEntryType.About)).Replace("\\par", "<br />")
+                                                                                       .Replace("\\qc", "")
+                               + chapterEndHtml;
+                    }
+                    catch (Exception e)
+                    {
+                        // does not exist
+                    }
+                }
+            }
+            byte[] chapterBuffer = await this.GetChapterBytes(chapterNumber);
+
+            // for debug
+            //string xxxxxx = Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
+            //Debug.WriteLine("RawChapter: " + xxxxxx);
+
             for (int i = 0; i < versesForChapterPositions.Verses.Count; i++)
             {
                 VersePos verse = versesForChapterPositions.Verses[i];
@@ -2058,10 +2121,10 @@ function SetFontColorForElement(elemntId, colorRgba){
                 ms.Position = 0;
 
                 // debug
-                // byte[] buf = new byte[ms.Length]; ms.Read(buf, 0, (int)ms.Length);
-                // string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, buf.Length);
-                // System.Diagnostics.Debug.WriteLine("osisbuf: " + xxxxxx);
-                // ms.Position = 0;
+                //byte[] buf = new byte[ms.Length]; ms.Read(buf, 0, (int)ms.Length);
+                //string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, buf.Length);
+                //System.Diagnostics.Debug.WriteLine("osisbuf: " + xxxxxx);
+                ms.Position = 0;
             }
             catch (Exception ee)
             {
@@ -2864,6 +2927,12 @@ function SetFontColorForElement(elemntId, colorRgba){
         [DataMember(Name = "posVerseNum")]
         public int PosVerseNum;
 
+        [DataMember(Name = "CipherKey")]
+        public string CipherKey;
+
+        [DataMember(Name = "ConfigPath")]
+        public string ConfigPath;
+
         #endregion
 
         #region Constructors and Destructors
@@ -2874,13 +2943,15 @@ function SetFontColorForElement(elemntId, colorRgba){
         }
 
         public BibleZtextReaderSerialData(
-            bool isIsoEncoding, string iso2DigitLangCode, string path, int posChaptNum, int posVerseNum)
+            bool isIsoEncoding, string iso2DigitLangCode, string path, int posChaptNum, int posVerseNum, string cipherKey, string configPath)
         {
             this.IsIsoEncoding = isIsoEncoding;
             this.Iso2DigitLangCode = iso2DigitLangCode;
             this.Path = path;
             this.PosChaptNum = posChaptNum;
             this.PosVerseNum = posVerseNum;
+            this.CipherKey = cipherKey;
+            this.ConfigPath = configPath;
         }
 
         #endregion
@@ -2894,6 +2965,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             this.Path = from.Path;
             this.PosChaptNum = from.PosChaptNum;
             this.PosVerseNum = from.PosVerseNum;
+            this.CipherKey = from.CipherKey;
+            this.ConfigPath = from.ConfigPath;
         }
 
         #endregion

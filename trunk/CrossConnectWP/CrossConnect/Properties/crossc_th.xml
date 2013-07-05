@@ -223,4 +223,7 @@
 <string key="The bible, chronological">พระคัมภีร์ตามลำดับ</string>
 <string key="The New Testement, chronological">Testement ใหม่ตามลำดับ</string>
 <string key="Show two title rows in each window">แสดงชื่อสองแถวในแต่ละหน้าต่าง</string>
+<string key="Invalid key. Try again">ที่สำคัญไม่ถูกต้อง ลองอีกครั้ง</string>
+<string key="Enter key">ปุ่ม Enter</string>
+<string key="Save">ประหยัด</string>
 </translations>

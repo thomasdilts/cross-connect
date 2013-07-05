@@ -204,4 +204,7 @@
   <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?</string>
   <string key="The bible, chronological">The Bible in chronological order</string>
   <string key="The New Testement, chronological">The New Testement in chronological order</string>
+  <string key="Invalid key. Try again">Invalid key. Try again</string>
+  <string key="Enter key">Enter key</string>
+  <string key="Save">Save</string>
 </translations>

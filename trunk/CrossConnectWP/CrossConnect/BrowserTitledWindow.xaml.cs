@@ -347,7 +347,9 @@ namespace CrossConnect
                                     _state.Source = new BibleZtextReader(
                                         bookPath,
                                         ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code,
-                                        isIsoEncoding);
+                                        isIsoEncoding,
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey),
+                                        book.Value.Sbmd.ConfPath);
                                     ((BibleZtextReader)_state.Source).Initialize();
                                     return;
                                 case WindowType.WindowBibleNotes:
@@ -355,21 +357,27 @@ namespace CrossConnect
                                         bookPath,
                                         ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code,
                                         isIsoEncoding,
-                                        Translations.Translate("Notes"));
+                                        Translations.Translate("Notes"),
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey),
+                                        book.Value.Sbmd.ConfPath);
                                     ((BibleZtextReader)_state.Source).Initialize();
                                     break;
                                 case WindowType.WindowBookmarks:
                                     _state.Source = new BookMarkReader(
                                         bookPath,
                                         ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code,
-                                        isIsoEncoding);
+                                        isIsoEncoding,
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey),
+                                        book.Value.Sbmd.ConfPath);
                                     ((BibleZtextReader)_state.Source).Initialize();
                                     return;
                                 case WindowType.WindowHistory:
                                     _state.Source = new HistoryReader(
                                         bookPath,
                                         ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code,
-                                        isIsoEncoding);
+                                        isIsoEncoding,
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey),
+                                        book.Value.Sbmd.ConfPath);
                                     ((BibleZtextReader)_state.Source).Initialize();
                                     return;
                                 case WindowType.WindowDailyPlan:
@@ -378,14 +386,18 @@ namespace CrossConnect
                                     _state.Source = new DailyPlanReader(
                                         bookPath,
                                         ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code,
-                                        isIsoEncoding);
+                                        isIsoEncoding,
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey),
+                                        book.Value.Sbmd.ConfPath);
                                     ((BibleZtextReader)_state.Source).Initialize();
                                     return;
                                 case WindowType.WindowCommentary:
                                     _state.Source = new CommentZtextReader(
                                         bookPath,
                                         ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code,
-                                        isIsoEncoding);
+                                        isIsoEncoding,
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey),
+                                        book.Value.Sbmd.ConfPath);
                                     ((BibleZtextReader)_state.Source).Initialize();
                                     return;
                                 case WindowType.WindowBook:
@@ -399,14 +411,18 @@ namespace CrossConnect
                                     _state.Source = new PersonalNotesReader(
                                         bookPath,
                                         ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code,
-                                        isIsoEncoding);
+                                        isIsoEncoding,
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey),
+                                        book.Value.Sbmd.ConfPath);
                                     ((BibleZtextReader)_state.Source).Initialize();
                                     return;
                                 case WindowType.WindowTranslator:
                                     _state.Source = new TranslatorReader(
                                         bookPath,
                                         ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code,
-                                        isIsoEncoding);
+                                        isIsoEncoding,
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey),
+                                        book.Value.Sbmd.ConfPath);
                                     ((BibleZtextReader)_state.Source).Initialize();
                                     return;
                             }
@@ -435,7 +451,9 @@ namespace CrossConnect
                 string bookPath = book.Value.Sbmd.GetCetProperty(ConfigEntryType.ADataPath).ToString().Substring(2);
                 bool isIsoEncoding = !book.Value.Sbmd.GetCetProperty(ConfigEntryType.Encoding).Equals("UTF-8");
                 _state.Source = new DailyPlanReader(
-                    bookPath, ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code, isIsoEncoding);
+                    bookPath, ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code, isIsoEncoding,
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey),
+                                        book.Value.Sbmd.ConfPath);
                 ((BibleZtextReader)_state.Source).Initialize();
             }
         }
@@ -777,8 +795,8 @@ namespace CrossConnect
                 App.DisplaySettings, _state.BibleToLoad);
             var toTranslate = (string[])obj[0];
             var isTranslateable = (bool[])obj[1];
-            
-            var transReader2 = new TranslatorReader(string.Empty, string.Empty, false);
+
+            var transReader2 = new TranslatorReader(string.Empty, string.Empty, false, string.Empty, string.Empty);
             App.AddWindow(
                 _state.BibleToLoad,
                 _state.BibleDescription,

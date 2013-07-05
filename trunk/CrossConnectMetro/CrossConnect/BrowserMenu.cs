@@ -64,6 +64,7 @@ namespace CrossConnect
 
             bool isHearable = this._state != null && this._state.Source != null && this._state.Source.IsHearable;
             int numberOfWindowsInMyColumn = App.OpenWindows.Count(win => win.State.Window == this._state.Window);
+            this.EnterKey.Visibility = this.State.Source.IsLocked ? Visibility.Visible : Visibility.Collapsed;
             this.MoveWindowRight.Visibility = (this.State.Window < 8) ? Visibility.Visible : Visibility.Collapsed;
             this.MoveWindowLeft.Visibility = (this.State.Window > 0) ? Visibility.Visible : Visibility.Collapsed;
             this.WindowSmaller.Visibility = (numberOfWindowsInMyColumn > 1 && this.State.NumRowsIown > 1)
@@ -86,6 +87,7 @@ namespace CrossConnect
             this.FontSmaller.Visibility = (this.State.HtmlFontSize > 4) ? Visibility.Visible : Visibility.Collapsed;
             this.FontLarger.Visibility = (this.State.HtmlFontSize < 65) ? Visibility.Visible : Visibility.Collapsed;
 
+            this.MoveWindowRight.Content = Translations.Translate("Enter key");
             this.MoveWindowRight.Content = Translations.Translate("Move this window to the right");
             this.MoveWindowLeft.Content = Translations.Translate("Move this window to the left");
             this.WindowSmaller.Content = Translations.Translate("Make this window smaller");
@@ -173,7 +175,7 @@ namespace CrossConnect
                         await this._state.Source.GetTranslateableTexts(App.DisplaySettings, this._state.BibleToLoad);
                     var toTranslate = (string[])reply[0];
                     var isTranslateable = (bool[])reply[1];
-                    var transReader2 = new TranslatorReader(string.Empty, string.Empty, false);
+                    var transReader2 = new TranslatorReader(string.Empty, string.Empty, false, string.Empty, string.Empty);
                     await App.AddWindow(
                         this._state.BibleToLoad,
                         this._state.BibleDescription,
@@ -212,6 +214,11 @@ namespace CrossConnect
                     this.MenuPopup.IsOpen = false;
                     this.MenuMailClick();
                     this.ShowUserInterface(true);
+                    break;
+                case "EnterKey":
+                    this.MenuPopup.IsOpen = false;
+                    this.EnterKey_OnClick();
+                    this.ShowUserInterface(false);
                     break;
             }
             this.SubMenuMenuPopup.SelectedItem = null;

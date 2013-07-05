@@ -204,4 +204,7 @@
 <string key="Fast search help text">Satu carian pantas adalah melambatkan kali pertama anda menggunakannya pada bible dan cepat setiap kali selepas itu. Satu carian pantas kembali ayat-ayat yang mengandungi mana-mana satu perkataan yang diberi. Letakkan tanda "+" di hadapan setiap perkataan untuk mencari semua perkataan yang diberikan dalam setiap ayat. Letakkan "-" di hadapan perkataan untuk mencari semua ayat-ayat yang tidak mempunyai perkataan itu. Wildcard "*" dan "?" boleh digunakan. Dalam bahasa yang menggunakan simbol-simbol seperti cina dan jepun anda mesti meletakkan "*" sebelum dan selepas setiap aksara. Gunakan hanya carian perlahan untuk mencari "Strongs" nombor.</string>
 <string key="The bible, chronological">Alkitab dalam susunan kronologi</string>
 <string key="The New Testement, chronological">The Testement Baru dalam susunan kronologi</string>
+<string key="Invalid key. Try again">Tidak sah utama. Cuba lagi</string>
+<string key="Enter key">Enter</string>
+<string key="Save">Simpan</string>
 </translations>

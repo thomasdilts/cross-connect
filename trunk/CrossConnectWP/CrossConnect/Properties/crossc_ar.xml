@@ -223,4 +223,7 @@
 <string key="The bible, chronological">الكتاب المقدس في الترتيب الزمني</string>
 <string key="The New Testement, chronological">وTestement جديد في الترتيب الزمني</string>
 <string key="Show two title rows in each window">مشاهدة صفين اللقب في كل نافذة</string>
+<string key="Invalid key. Try again">مفتاح غير صالح. حاول مرة أخرى</string>
+<string key="Enter key">مفتاح Enter</string>
+<string key="Save">حفظ</string>
 </translations>

@@ -49,7 +49,7 @@ namespace CrossConnect.readers
         #region Constructors and Destructors
 
         public MediaReader(AudioPlayer.MediaInfo info)
-            : base(string.Empty, info.Language, false)
+            : base(string.Empty, info.Language, false, string.Empty, string.Empty)
         {
             this.Info = info;
         }

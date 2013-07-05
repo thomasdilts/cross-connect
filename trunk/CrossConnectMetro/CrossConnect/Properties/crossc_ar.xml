@@ -204,4 +204,7 @@
 <string key="Fast search help text">A بحث سريع بطيء في المرة الأولى التي تستخدم على الكتاب المقدس وسريعة في كل مرة بعد ذلك. A بحث سريع يعود الآيات التي تحتوي على أي من الكلمات معين. وضع "+" أمام كل كلمة للعثور على كل الكلمات الواردة في كل آية. وضع "-" أمام كلمة للعثور على جميع الآيات التي ليس لديها هذه الكلمة. أحرف البدل "*" و "؟" يمكن استخدامها. في اللغات باستخدام الرموز مثل الصينية واليابانية يجب وضع "*" قبل وبعد كل حرف. فقط استخدام البحث للعثور على بطء "Strongs" الأرقام.</string>
 <string key="The bible, chronological">الكتاب المقدس في الترتيب الزمني</string>
 <string key="The New Testement, chronological">وTestement جديد في الترتيب الزمني</string>
+<string key="Invalid key. Try again">مفتاح غير صالح. حاول مرة أخرى</string>
+<string key="Enter key">مفتاح Enter</string>
+<string key="Save">حفظ</string>
 </translations>

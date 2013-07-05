@@ -223,4 +223,7 @@
 <string key="The bible, chronological">年代順に聖書</string>
 <string key="The New Testement, chronological">年代順に新しいTestement</string>
 <string key="Show two title rows in each window">各ウィンドウ内の2つのタイトル行を表示する</string>
+<string key="Invalid key. Try again">無効なキー。再試行する</string>
+<string key="Enter key">キーを入力する</string>
+<string key="Save">保存</string>
 </translations>

@@ -447,6 +447,11 @@ namespace CrossConnect
                             var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
                             allLanguages[lang.Name] = lang;
                         }
+
+                        //if (((string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey)) != null)
+                        //{
+                        //    Debug.WriteLine(book.Value.Sbmd.GetCetProperty(ConfigEntryType.Description) + "is ciphered, key = " + book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey));
+                        //}
                     }
 
                     List<KeyValuePair<string, Language>> list = allLanguages.OrderBy(t => t.Key).ToList();

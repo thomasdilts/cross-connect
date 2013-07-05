@@ -204,4 +204,7 @@
 <string key="Fast search help text">O căutare rapidă este lent prima dată când o utilizați pe o Biblie și rapid de fiecare dată după aceea. O căutare rapidă returnează versete care conțin oricare dintre cuvintele indicate. Pune un "+" în fața fiecărui cuvânt pentru a găsi toate cuvintele indicate în fiecare verset. Pune-o "-" în fața unui cuvânt pentru a găsi toate versetele care nu au acest cuvânt. Metacaractere "*" și "?" pot fi folosite. În limbile care folosesc simboluri cum ar fi chinezii si japonezii trebuie să pui "*" înainte și după fiecare caracter. Folosiți numai lent căutare pentru a găsi "Strongs" numere.</string>
 <string key="The bible, chronological">Biblia în ordine cronologică</string>
 <string key="The New Testement, chronological">Noul Testement în ordine cronologică</string>
+<string key="Invalid key. Try again">Invalid cheie. Încercați din nou</string>
+<string key="Enter key">Tasta Enter</string>
+<string key="Save">Salva</string>
 </translations>
