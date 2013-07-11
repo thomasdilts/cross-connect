@@ -153,7 +153,7 @@
 <string key="Previous">前</string>
 <string key="Rate this program">评价此程序</string>
 <string key="Red">红色</string>
-<string key="Save">保存</string>
+<string key="Save">节省</string>
 <string key="Search conditions">搜索条件</string>
 <string key="Search where">搜索的地方</string>
 <string key="Search">搜索</string>
@@ -219,11 +219,10 @@
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">你第一次做一个快速搜索，它需要很长的时间。后来搜索是非常快的。你要继续吗？</string>
 <string key="Translate selected text">翻译选定的文本</string>
 <string key="Listen to this chapter">听此章</string>
-<string key="Fast search help text">快速搜索是你第一次使用它的一本圣经和快速每次此后缓慢。快速搜索返回的诗句包含的任何一个给定的单词。在每节经文中找到所有给定的单词每个单词的前面放一个“+”。将一个“ - ”前面的一个词来找到所有的诗句，没有这个词。通配符“*”和“？”都可以使用。在使用符号，如中国和日本的语言中，你必须把“*”之前和之后的每个字符。只能使用慢速搜索找到“Strongs”数字。</string>
 <string key="The bible, chronological">按时间顺序排列的圣经</string>
 <string key="The New Testement, chronological">按时间顺序排列的新Testement</string>
 <string key="Show two title rows in each window">在每个窗口中显示两个标题行</string>
 <string key="Invalid key. Try again">无效的关键。再试一次</string>
 <string key="Enter key">回车键</string>
-<string key="Save">节省</string>
+<string key="Fast search help text">快速搜索是你第一次使用它以后一本圣经和快速每次缓慢。快速搜索返回包含所有给出的单词中的诗句。将在每个单词的前一个“+”，找到任何给定的单词在每个诗句。将一个“ - ”前面一个词来找到所有的诗句，没有这个词。使用通配符“*”和“？”都可以使用。在使用符号，如中国和日本的语言，你必须把“*”之前和之后的每个字符。只有慢速搜索，找到“Strongs”数字。</string>
 </translations>

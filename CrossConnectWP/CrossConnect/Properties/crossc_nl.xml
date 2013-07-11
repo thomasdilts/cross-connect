@@ -153,7 +153,7 @@
 <string key="Previous">Vorig</string>
 <string key="Rate this program">Beoordeel dit programma</string>
 <string key="Red">Rood</string>
-<string key="Save">Besparen</string>
+<string key="Save">Sparen</string>
 <string key="Search conditions">Zoeken voorwaarden</string>
 <string key="Search where">Zoek waar</string>
 <string key="Search">Zoeken</string>
@@ -219,11 +219,10 @@
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">De eerste keer dat u een snelle zoektocht duurt een lange tijd. Daarna zoeken is zeer snel. Wilt u doorgaan?</string>
 <string key="Translate selected text">Vertalen geselecteerde tekst</string>
 <string key="Listen to this chapter">Luister naar dit hoofdstuk</string>
-<string key="Fast search help text">Een snelle zoektocht is langzaam de eerste keer dat je het gebruikt op een bijbel en snelle iedere keer daarna. Een snelle zoekactie had verzen met een van de opgegeven woorden. Zet een "+" voor elk woord om alle gegeven woorden in elk vers vinden. Zet een "-" voor een woord om alle verzen die niet beschikken over dat woord te vinden. Wildcards "*" en "?" worden gebruikt. In talen met behulp van symbolen zoals Chinese en Japanse u moet zetten "*" voor en na elk teken. Gebruik alleen de langzaam zoeken naar "Strongs" nummers te vinden.</string>
 <string key="The bible, chronological">De Bijbel in chronologische volgorde</string>
 <string key="The New Testement, chronological">De Nieuwe Testement in chronologische volgorde</string>
 <string key="Show two title rows in each window">Toon twee titel rijen in elk venster</string>
 <string key="Invalid key. Try again">Ongeldige toets. Probeer het opnieuw</string>
 <string key="Enter key">Enter-toets</string>
-<string key="Save">Sparen</string>
+<string key="Fast search help text">Een snelle zoektocht is langzaam de eerste keer dat je het gebruikt op een bijbel en snel elke keer daarna. Een snelle zoekactie had verzen daarin alle van de opgegeven woorden. Zet een "+" voor elk woord aan een van de opgegeven woorden te vinden in elk vers. Zet een "-" voor een woord om alle van de verzen die dat woord niet hebben vinden. Wildcards "*" en "?" kunnen worden gebruikt. In talen met behulp van symbolen zoals chinese en japanse moet je "*" voor en na elk personage. Gebruik alleen de langzaam zoeken op "Strong" nummers vinden.</string>
 </translations>

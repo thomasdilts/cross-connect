@@ -219,11 +219,10 @@
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Eğer hızlı arama yapmak ilk kez uzun bir zaman alır. Daha sonra arama çok hızlıdır. Devam etmek istiyor musunuz?</string>
 <string key="Translate selected text">Seçili metin Çevir</string>
 <string key="Listen to this chapter">Bu bölümde dinleyin</string>
-<string key="Fast search help text">Bir hızlı arama bundan sonra bir İncil ve hızlı her zaman bunu kullanmak ilk kez yavaş. Bir hızlı arama verilen kelimelerden herhangi birini içeren ayetler döndürür. Her ayette verilen tüm sözcükleri bulmak için her kelimenin önüne "+" koyun. Koy bir "-" O kelime yok ayetlerin tüm bulmak için kelimenin önüne. Jokerler "*" ve "?" kullanılabilir. Çince ve Japonca gibi semboller kullanarak dillerde Eğer "*" önce ve her karakterden sonra koymak gerekir. "Strongs" numaralarını bulmak için sadece yavaş aramayı kullanın.</string>
 <string key="The bible, chronological">Kronolojik sıraya göre İncil</string>
 <string key="The New Testement, chronological">Kronolojik sıraya göre Yeni Testement</string>
 <string key="Show two title rows in each window">Her pencerede iki başlık satırları göster</string>
 <string key="Invalid key. Try again">Geçersiz anahtar. Tekrar deneyin</string>
 <string key="Enter key">Enter tuşuna</string>
-<string key="Save">Kurtarmak</string>
+<string key="Fast search help text">Hızlı arama bundan sonra bir İncil ve hızlı her zaman kullanmak ilk kez yavaş olduğunu. Hızlı arama verilen kelimelerin tüm içeren ayetler verir. Her ayette verilen kelimelerden herhangi birini bulmak için her kelimenin önüne bir "+" koyun. Koyun "-" Bu kelime yok ayetlerin tüm bulmak için kelimenin önüne. Joker "*" ve "?" kullanılabilir. Çince ve Japonca gibi semboller kullanarak dilde Eğer "*" önce ve her karakter sonra koymak gerekir. "Strongs" numaralarını bulmak için sadece yavaş arama kullanın.</string>
 </translations>

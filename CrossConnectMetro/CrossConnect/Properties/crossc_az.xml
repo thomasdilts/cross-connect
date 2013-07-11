@@ -201,10 +201,10 @@
 <string key="Fast search">Tez axtarış</string>
 <string key="Slow search">Yavaş axtarış</string>
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Siz sürətli axtarış ilk dəfə bir uzun zaman alır. Daha sonra axtarış çox tez. Davam etmək istəyirsiniz?</string>
-<string key="Fast search help text">Sürətli axtarış sonra bir Müqəddəs və sürətli hər zaman onu istifadə ilk dəfə yavaş deyil. Sürətli axtarış verilən sözlərin hər hansı bir olan ayələr qaytarır. Hər ayədə bu sözləri bütün tapmaq üçün hər sözü qarşısında "+" qoyun. Qoyun bir "-" söz yoxdur ki, ayələrin bütün tapmaq bir söz qarşısında. Joker "*" və "?" istifadə edilə bilər. Çin və Yaponiya kimi simvolları istifadə languages ​​siz "*" əvvəl və hər bir xarakter sonra qoymaq lazımdır. "Strongs" nömrələrini tapmaq üçün yalnız yavaş axtarış istifadə edin.</string>
 <string key="The bible, chronological">Xronoloji qaydada Müqəddəs</string>
 <string key="The New Testement, chronological">Xronoloji qaydada yeni Testement</string>
 <string key="Invalid key. Try again">Yanlış düyməsini basın. Daha cəhd edin</string>
 <string key="Enter key">Düyməsini daxil edin</string>
 <string key="Save">Saxla</string>
+<string key="Fast search help text">Sürətli axtarış sonra bir Müqəddəs və sürətli hər dəfə onu istifadə ilk dəfə yavaş. A sürətli axtarış verilən sözləri bütün olan ayələr qaytarır. Hər ayənin verilmiş sözlərin hər hansı tapmaq üçün hər sözü qarşısında "+" qoyun. Qoymaq "-" söz yoxdur ki, ayələrini bütün tapmaq üçün bir söz qarşısında. Joker "*" və "?" istifadə edilə bilər. Çin və Yaponiya kimi simvollar istifadə dillərində siz "*" əvvəl və hər bir xarakter sonra qoymaq lazımdır. "Strongs" nömrələrini tapmaq üçün yalnız yavaş axtarış istifadə edin.</string>
 </translations>

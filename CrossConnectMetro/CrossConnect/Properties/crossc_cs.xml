@@ -201,10 +201,10 @@
 <string key="Fast search">Rychlé hledání</string>
 <string key="Slow search">Slow vyhledávání</string>
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Při prvním udělat rychlé vyhledávání trvá dlouho. Poté vyhledávání je velmi rychlé. Chcete pokračovat?</string>
-<string key="Fast search help text">Rychlé vyhledávání je pomalé při prvním použití jej na bibli a rychlé pokaždé poté. Rychlé vyhledávání vrací verše obsahující některou z daných slov. Dát "+" před každým slovem najít všechny daných slov v každém verši. Dejte "-" před slovo najít všechny verše, které nemají toto slovo. Zástupné znaky "*" a "?" může být použit. V jazycích pomocí symbolů, jako čínština a japonština musíte dát "*" před a po každém znaku. Používejte pouze pomalé hledání najít "Strongs" čísla.</string>
 <string key="The bible, chronological">Bible v chronologickém pořadí</string>
 <string key="The New Testement, chronological">Nový Testement v chronologickém pořadí</string>
 <string key="Invalid key. Try again">Neplatný klíč. Zkuste to znovu</string>
 <string key="Enter key">Enter</string>
 <string key="Save">Uložit</string>
+<string key="Fast search help text">Rychlé vyhledávání je pomalý při prvním použití na bibli a rychlý pokaždé, když poté. Rychlé vyhledávání vrací verše obsahující všechny daných slov. Dejte "+" před každým slovem najít některé z daných slov v každém verši. Dejte "-" před slovo najít všechny verše, které nemají to slovo. Zástupné znaky "*" a "?" mohou být použity. V jazycích pomocí symbolů jako je čínština a japonština musíte dát "*" před a po každém znaku. Používejte pouze pomalé hledání najít "Strongs" čísla.</string>
 </translations>

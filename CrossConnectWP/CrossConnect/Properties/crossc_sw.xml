@@ -153,7 +153,7 @@
 <string key="Previous">Kabla</string>
 <string key="Rate this program">Kiwango cha programu hii</string>
 <string key="Red">Nyekundu</string>
-<string key="Save">Kuokoa</string>
+<string key="Save">Ila</string>
 <string key="Search conditions">Tafuta hali ya</string>
 <string key="Search where">Tafuta ambapo</string>
 <string key="Search">Tafuta</string>
@@ -219,11 +219,10 @@
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">mara ya kwanza wewe kufanya ni kutafuta haraka inachukua muda mrefu. Baadaye kutafuta ni ya haraka sana. Je unataka kuendelea?</string>
 <string key="Translate selected text">Kutafsiri kuchaguliwa Nakala</string>
 <string key="Listen to this chapter">Sikiliza sura hii</string>
-<string key="Fast search help text">tafuta haraka ni polepole mara ya kwanza matumizi yake juu ya Biblia na ya haraka kila wakati baada ya hapo. tafuta haraka anarudi aya zenye yoyote moja ya maneno aliyopewa. Kuweka "+" mbele ya kila neno na kupata yote ya maneno yaliyotolewa katika kila mstari. Kuweka "-" mbele ya neno kupata yote ya mistari ya kuwa hawana neno. Wildcards "*" na "?" inaweza kutumika. Katika lugha kutumia ishara kama Kichina na Kijapani lazima kuweka "*" kabla na baada ya tabia ya kila. Tumia tu tafuta mwepesi wa kupata "Ngumu" namba.</string>
 <string key="The bible, chronological">Biblia katika mpangilio</string>
 <string key="The New Testement, chronological">Riwaya za Agano Jipya katika mpangilio</string>
 <string key="Show two title rows in each window">Kuonyesha safu cheo mbili katika kila dirisha</string>
 <string key="Invalid key. Try again">Batili muhimu. Jaribu tena</string>
 <string key="Enter key">Kuingia muhimu</string>
-<string key="Save">Ila</string>
+<string key="Fast search help text">tafuta haraka ni polepole mara ya kwanza kutumia juu ya Biblia na ya haraka kila wakati baada ya hapo. tafuta haraka anarudi aya zenye maneno yote aliyopewa. Kuweka "+" mbele ya kila neno kupata yoyote ya maneno yaliyotolewa katika kila mstari. Kuweka "-" mbele ya neno kupata yote ya mistari kwamba hawana kwamba neno. Wildcards "*" na "?" inaweza kutumika. Katika lugha ya kutumia alama kama Kichina na Kijapani lazima kuweka "*" kabla na baada ya tabia ya kila mmoja. Kutumia tu tafuta mwepesi wa kupata "Ngumu" namba.</string>
 </translations>

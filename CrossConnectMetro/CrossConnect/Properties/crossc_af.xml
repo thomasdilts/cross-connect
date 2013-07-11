@@ -201,10 +201,10 @@
 <string key="Fast search">Vinnige soektog</string>
 <string key="Slow search">Stadig soek</string>
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Die eerste keer wat jy 'n vinnige soektog wat dit neem 'n lang tyd. Daarna soek is baie vinnig. Wil jy voortgaan?</string>
-<string key="Fast search help text">'N vinnige soektog is stadig die eerste keer dat jy dit op 'n Bybel en vinnig elke keer daarna. 'N vinnige soektog terugkeer verse wat enige een van die gegewe woorde. Plaas 'n "+" in die voorkant van elke woord te vind al van die gegewe woorde in elke vers. Sit 'n "-" in die voorkant van 'n woord om al die verse wat nie daardie woord te vind. Wildcards "*" en "?" gebruik kan word. Jy moet in tale die gebruik van simbole soos Chinese en Japanese "*" voor en na elke karakter. Gebruik slegs die stadige soek "Strongs" getalle te vind.</string>
 <string key="The bible, chronological">Die Bybel in chronologiese volgorde</string>
 <string key="The New Testement, chronological">Die Nuwe Testement in chronologiese volgorde</string>
 <string key="Invalid key. Try again">Ongeldig sleutel. Probeer weer</string>
 <string key="Enter key">Tik sleutel</string>
 <string key="Save">Red</string>
+<string key="Fast search help text">'N vinnige soektog is stadig die eerste keer dat jy dit gebruik op 'n Bybel en 'n vinnige elke keer daarna. 'N vinnige soektog op verse wat al die gegewe woorde. Sit 'n "+" in die voorkant van elke woord enige van die gegewe woorde te vind in elke vers. Sit 'n "-" in die voorkant van 'n woord van al die verse wat nie die woord te vind. Wildcards "*" en "?" gebruik kan word. In tale met behulp van simbole soos Chinese en Japannese jy moet sit "*" voor en na elke karakter. Gebruik slegs die stadige search "Strongs" getalle te vind.</string>
 </translations>

@@ -219,11 +219,10 @@
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Prvi put učiniti brzo pretraživanje to traje dugo vremena. Nakon toga u potrazi je vrlo brzo. Želite li nastaviti?</string>
 <string key="Translate selected text">Prijevod odabranog teksta</string>
 <string key="Listen to this chapter">Poslušajte ovom poglavlju</string>
-<string key="Fast search help text">Brzo pretraživanje usporiti prvi put kada ga koristiti na Bibliji i brzo svaki put nakon toga. Brzo pretraživanje vraća stihove koji sadrže neku od navedenih riječi. Stavite "+" ispred svake riječi pronaći sve dane riječi u svakom stihu. Put "-" ispred riječi pronaći sve stihove koji nemaju tu riječ. Zamjenski znakovi "*" i "?" može se koristiti. U jezicima koji koriste simbole poput kineske i japanske morate staviti "*" prije i poslije svakog lika. Koristite samo sporo pretraživanje kako bi pronašli "Strongs" brojeve.</string>
 <string key="The bible, chronological">Biblija u kronološkom slijedu</string>
 <string key="The New Testement, chronological">Novi Testement kronološkim redoslijedom</string>
 <string key="Show two title rows in each window">Pokaži dva reda naslov u svakom prozoru</string>
 <string key="Invalid key. Try again">Nevažeći ključ. Pokušaj ponovo</string>
 <string key="Enter key">Enter</string>
-<string key="Save">Spasiti</string>
+<string key="Fast search help text">Brzo pretraživanje usporiti prvi put kada ga koristiti na Bibliji i brzo svaki put nakon toga. Brzo pretraživanje daje stihove koji sadrže sve zadane riječi. Stavite u "+" ispred svake riječi pronaći bilo koji od navedenih riječi u svakom stihu. Put "-" ispred riječi da biste pronašli sve od stihova koje nemaju tu riječ. Wildcards "*" i "?" može se koristiti. U jezicima koji koriste simbole kao što su kineski i japanski morate staviti "*" prije i poslije svakog lika. Koristite samo sporo pretraživanje kako bi pronašli "Strongs" brojeve.</string>
 </translations>

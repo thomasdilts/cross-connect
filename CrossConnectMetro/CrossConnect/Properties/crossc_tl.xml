@@ -201,10 +201,10 @@
 <string key="Fast search">Mabilis na paghahanap</string>
 <string key="Slow search">Mabagal paghahanap</string>
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Ang unang pagkakataon na gawin sa iyo ng isang mabilis na paghahanap tumatagal ng isang mahabang panahon. Pagkatapos ng paghahanap ay masyadong mabilis. Nais mo bang magpatuloy?</string>
-<string key="Fast search help text">Ang isang mabilis na paghahanap ay mapabagal ang unang pagkakataon na gamitin mo ito sa bibliya at mabilis sa bawat oras sandali. Isang mabilis na paghahanap ay nagbalik ng mga bersikulo naglalaman ng anumang isa ng ibinigay na salita. Maglagay ng "+" sa harap ng bawat salita upang mahanap ang lahat ng ibinigay na salita sa bawat taludtod. Maglagay ng "-" sa harap ng isang salita upang mahanap ang lahat ng bersikulo na hindi na salita. Wildcard "*" at "?" ay maaaring magamit. Sa mga wika na paggamit ng mga simbolo tulad ng Tsino at Hapon, dapat mong ilagay "*" bago at pagkatapos ng bawat karakter. Gamitin lamang ang mabagal paghahanap upang mahanap ang "Strongs" numero.</string>
 <string key="The bible, chronological">Ang Bibliya sa magkasunod sunod</string>
 <string key="The New Testement, chronological">Ang Bagong Testement nang magkakasunod sunod</string>
 <string key="Invalid key. Try again">Di-wastong key. Subukan muli</string>
 <string key="Enter key">Enter key</string>
 <string key="Save">Iligtas</string>
+<string key="Fast search help text">Ang isang mabilis na paghahanap ay mapabagal ang unang pagkakataon na gamitin mo ito sa bibliya at mabilis sa bawat oras pagkatapos. Ang isang mabilis na paghahanap ay nagbabalik bersikulo na naglalaman ng lahat ng mga ibinigay na mga salita. Maglagay ng "+" sa harap ng bawat salita upang mahanap ang anuman sa mga ibinigay na mga salita sa bawat taludtod. Maglagay ng "-" sa harap ng isang salita upang mahanap ang lahat ng mga bersikulo na walang na salita. Wildcard "*" at "?" ay maaaring magamit. Sa mga wika gamit ang mga simbolo tulad ng Tsino at Hapon dapat mong ilagay "*" bago at pagkatapos ng bawat character. Gamitin lamang ang mabagal na paghahanap upang mahanap ang "Strongs" numero.</string>
 </translations>

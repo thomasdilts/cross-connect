@@ -219,11 +219,10 @@
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Kali pertama anda melakukan carian pantas ia mengambil masa yang lama. Selepas itu mencari adalah sangat cepat. Adakah anda mahu meneruskan?</string>
 <string key="Translate selected text">Terjemahkan teks yang dipilih</string>
 <string key="Listen to this chapter">Dengar bab ini</string>
-<string key="Fast search help text">Satu carian pantas adalah melambatkan kali pertama anda menggunakannya pada bible dan cepat setiap kali selepas itu. Satu carian pantas kembali ayat-ayat yang mengandungi mana-mana satu perkataan yang diberi. Letakkan tanda "+" di hadapan setiap perkataan untuk mencari semua perkataan yang diberikan dalam setiap ayat. Letakkan "-" di hadapan perkataan untuk mencari semua ayat-ayat yang tidak mempunyai perkataan itu. Wildcard "*" dan "?" boleh digunakan. Dalam bahasa yang menggunakan simbol-simbol seperti cina dan jepun anda mesti meletakkan "*" sebelum dan selepas setiap aksara. Gunakan hanya carian perlahan untuk mencari "Strongs" nombor.</string>
 <string key="The bible, chronological">Alkitab dalam susunan kronologi</string>
 <string key="The New Testement, chronological">The Testement Baru dalam susunan kronologi</string>
 <string key="Show two title rows in each window">Menunjukkan dua baris tajuk dalam setiap tetingkap</string>
 <string key="Invalid key. Try again">Tidak sah utama. Cuba lagi</string>
 <string key="Enter key">Enter</string>
-<string key="Save">Simpan</string>
+<string key="Fast search help text">Satu carian pantas adalah melambatkan kali pertama anda menggunakan ia pada kitab dan cepat setiap kali selepas itu. Satu carian pantas kembali ayat-ayat yang mengandungi semua perkataan yang diberikan. Meletakkan "+" di depan setiap perkataan untuk mencari mana-mana perkataan yang diberikan dalam setiap ayat. Meletakkan "-" di hadapan perkataan untuk mencari semua ayat-ayat yang tidak mempunyai perkataan itu. Wildcard "*" dan "?" boleh digunakan. Dalam bahasa yang menggunakan simbol-simbol seperti cina dan jepun anda mesti meletakkan "*" sebelum dan selepas setiap watak. Gunakan carian perlahan untuk mencari "Strongs" nombor.</string>
 </translations>

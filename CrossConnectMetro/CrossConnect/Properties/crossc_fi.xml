@@ -201,10 +201,10 @@
 <string key="Fast search">Nopea haku</string>
 <string key="Slow search">Hidas haku</string>
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Ensimmäisen kerran teet nopean haun kestää kauan. Jälkeenpäin haku on erittäin nopea. Haluatko jatkaa?</string>
-<string key="Fast search help text">Nopea haku on hidas ensimmäisen kerran käytät sitä raamattu ja nopea kerta sen jälkeen. Nopea haku palauttaa jakeita, jotka sisältävät jonkin tietyn sanoja. Laita "+" edessä jokaisen sanan löytää kaikki tietyn sanan jokainen jae. Laita "-" eteen sanan löytää kaikki säkeet, jotka eivät ole tätä sanaa. Yleismerkkejä "*" ja "?" voidaan käyttää. Kieliä käyttäen symboleja, kuten Kiinan ja Japanin sinun täytyy laittaa "*" ennen ja jälkeen jokaisen merkin. Käytä vain hitaasti haku löytää "Strongs" numeroita.</string>
 <string key="The bible, chronological">Raamattu kronologisessa järjestyksessä</string>
 <string key="The New Testement, chronological">UT: n aikajärjestyksessä</string>
 <string key="Invalid key. Try again">Virheellinen avain. Yritä uudelleen</string>
 <string key="Enter key">Enter-näppäintä</string>
 <string key="Save">Säästää</string>
+<string key="Fast search help text">Nopea haku on hidas ensimmäisen kerran käytät sitä raamattu ja nopea joka kerta sen jälkeen. Nopea haku palauttaa säkeet sisältää kaikki haetut sanat. Laita "+" edessä jokaisen sanan löytää mitään annetuista sanaa kullakin jae. Laita "-" edessä sana löytää kaikki säkeet, joilla ei ole kyseistä sanaa. Jäkerimerkit "*" ja "?" voidaan käyttää. Vuonna kielien merkkejä, kuten kiina ja japani sinun täytyy laittaa "*" ennen ja jälkeen kunkin merkin. Käytä vain hidas haku löytää "Strongs" numeroita.</string>
 </translations>

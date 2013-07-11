@@ -201,10 +201,10 @@
 <string key="Fast search">Hitro iskanje</string>
 <string key="Slow search">Počasno iskanje</string>
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Ko to storite prvič hitro iskanje traja dolgo časa. Potem iskanje je zelo hiter. Ali želite nadaljevati?</string>
-<string key="Fast search help text">Hitro iskanje je počasi prvič, ko jo uporabite na Biblijo in hitro vsakič kasneje. Hitro iskanje vrne vrstice, ki vsebujejo eno od danih besed. Put "+" pred vsako besedo, da bi našli vseh danih besed v vsakem verzu. Put "-" pred besedo, da bi našli vse od verzov, ki nimajo te besede. Jokerje "*" in "?" mogoče uporabiti. V jezikih, ki uporabljajo simbole, kot so kitajski in japonski morate dati "*" pred in po vsakem značaja. Uporabljajte samo počasno iskanje, da bi našli "Strongs" številke.</string>
 <string key="The bible, chronological">Sveto pismo v kronološkem vrstnem redu</string>
 <string key="The New Testement, chronological">Nova Testement v kronološkem vrstnem redu</string>
 <string key="Invalid key. Try again">Neveljaven ključ. Poskusite še enkrat</string>
 <string key="Enter key">Tipko Enter</string>
 <string key="Save">Šparajte</string>
+<string key="Fast search help text">Hitro iskanje je počasi prvič, ko ga uporabljate na Biblijo in hitro vsakič zatem. Hitro iskanje vrne vrstice vsebujejo vse danih besed. Damo "+" pred vsako besedo, da je bil vsak od navedenih besed v vsaki pesmi. Put "-" pred besedo, da bi našli vse verzov, ki nimajo te besede. Džokerji "*" in "?" se lahko uporabljajo. V jezikih, ki uporabljajo simbole, kot so kitajski in japonski morate dati "*" pred in po vsakem značaja. Uporabljajte le počasno iskanje, da bi našli "Strongs" številke.</string>
 </translations>
