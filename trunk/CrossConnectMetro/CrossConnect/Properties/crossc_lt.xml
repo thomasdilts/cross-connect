@@ -201,10 +201,10 @@
 <string key="Fast search">Greita paieška</string>
 <string key="Slow search">Lėtai paieška</string>
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Pirmą kartą padaryti Greita paieška užima daug laiko. Po to ieškoti yra labai greitas. Ar norite tęsti?</string>
-<string key="Fast search help text">Greita paieška yra lėtas Bibliją ir greitai kiekvieną kartą, kai jį naudoti po to, kai pirmą kartą. Greita paieška grąžina eilutes, kurių sudėtyje yra bet vienas iš pateiktų žodžių. Įdėkite "+" priešais kiekvieną žodį, rasti visų pateiktų žodžių kiekvienoje eilutėje. Įdėti "-" prieš žodžio rasti visų eilučių, kurios neturi, kad žodis. Pakaitos simbolius "*" ir "?" gali būti naudojamas. Naudojant simbolius, pavyzdžiui, kinų ir japonų kalbomis, jūs turite įdėti "*" prieš ir po kiekvieno požymio. Naudokite tik lėtai paiešką rasti "strongs" numerius.</string>
 <string key="The bible, chronological">Chronologine tvarka Biblija</string>
 <string key="The New Testement, chronological">Naujas Testement chronologine tvarka</string>
 <string key="Invalid key. Try again">Neteisingas raktas. Bandykite dar kartą</string>
 <string key="Enter key">Enter</string>
 <string key="Save">Taupyti</string>
+<string key="Fast search help text">Greita paieška yra lėtas, kai pirmą kartą jį naudoti ant Biblijos ir greitai kiekvieną kartą po to. Greitai ieškos eilučių, kurių sudėtyje yra visi duotieji žodžiai. Įdėkite "+" priešais kiekvieną žodį rasti bet kurį iš pateiktų žodžių kiekvienoje eilutėje. Įdėkite "-" priešais žodį surasti visus eilėraščių, kurie neturi šį žodį. Pakaitos simboliai "*" ir "?" gali būti naudojamas. Į kalbų simboliais, pavyzdžiui, kinų ir japonų turite įdėti "*" prieš ir po kiekvieno požymio. Naudokite tik lėtai, norėdami rasti "strongs" numerius.</string>
 </translations>

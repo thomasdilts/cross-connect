@@ -123,9 +123,9 @@ namespace hOOt
             DateTime dt = FastDateTime.Now;
             // query indexes
             string[] words = filter.Split(' ');
-            bool defaulttoand = false;
-            if (filter.IndexOfAny(new char[] { '+', '-' }, 0) >= 0)
-                defaulttoand = true;
+            bool defaulttoOr = false;
+            if (filter.IndexOfAny(new char[] { '+' }, 0) >= 0)
+                defaulttoOr = true;
 
             WAHBitArray bits = null;
 
@@ -135,13 +135,13 @@ namespace hOOt
                 string word = s;
                 if (s == "") continue;
 
-                OPERATION op = OPERATION.OR;
-                if (defaulttoand)
-                    op = OPERATION.AND;
+                OPERATION op = OPERATION.AND;
+                if (defaulttoOr)
+                    op = OPERATION.OR;
 
                 if (s.StartsWith("+"))
                 {
-                    op = OPERATION.AND;
+                    op = OPERATION.OR;
                     word = s.Replace("+", "");
                 }
 
@@ -168,7 +168,6 @@ namespace hOOt
                     }
                     if (wildbits == null)
                     {
-                        // empty object but important in AND functionality.
                         wildbits = new WAHBitArray();
                     }
 
@@ -184,7 +183,7 @@ namespace hOOt
                 {
                     // empty object but important in AND functionality.
                     var ba = new WAHBitArray();
-                    bits = DoBitOperation(bits, ba, op, maxsize);                    
+                    bits = DoBitOperation(bits, ba, op, maxsize);
                 }
             }
             if (bits == null)

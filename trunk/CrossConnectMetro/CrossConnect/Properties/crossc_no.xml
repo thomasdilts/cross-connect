@@ -201,10 +201,10 @@
 <string key="Fast search">Rask søk</string>
 <string key="Slow search">Slow søk</string>
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Første gang du gjør et raskt søk det tar lang tid. Etterpå søker er svært rask. Vil du fortsette?</string>
-<string key="Fast search help text">En rask søk ​​er treg første gang du bruker den på en bibel og rask hver gang etterpå. En rask søk ​​returnerer vers inneholdende enhver av de gitte ord. Sette en "+" foran hvert ord for å finne alle de gitte ordene i hvert vers. Sette en "-" foran et ord for å finne alle versene som ikke har det ordet. Wildcards "*" og "?" kan brukes. I språk ved hjelp av symboler som kinesisk og japansk må du sette "*" før og etter hvert tegn. Bruk bare den langsomme søk for å finne "Strongs" tall.</string>
 <string key="The bible, chronological">Bibelen i kronologisk rekkefølge</string>
 <string key="The New Testement, chronological">The New testement i kronologisk rekkefølge</string>
 <string key="Invalid key. Try again">Ugyldig nøkkel. Prøv på nytt</string>
 <string key="Enter key">Enter-tasten</string>
 <string key="Save">Lagre</string>
+<string key="Fast search help text">En rask søk ​​er treg første gang du bruker den på en bibel og rask hver gang etterpå. En rask søk ​​gir vers som inneholder alle de gitte ord. Sette en "+" foran hvert ord for å finne noen av de gitte ord i hvert vers. Sette en "-" foran et ord for å finne alle de versene som ikke har det ordet. Wildcards "*" og "?" kan brukes. I språk ved hjelp av symboler som kinesisk og japansk må du sette "*" før og etter hvert tegn. Bruk bare den langsomme søk for å finne "Strongs" tall.</string>
 </translations>

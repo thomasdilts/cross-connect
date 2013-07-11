@@ -201,10 +201,10 @@
 <string key="Fast search">Kiire otsing</string>
 <string key="Slow search">Aeglane otsing</string>
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Esimene kord, kui teha kiire otsingu see võtab kaua aega. Hiljem otsimine on väga kiire. Kas soovite jätkata?</string>
-<string key="Fast search help text">Kiire otsing on aeglane te esimest korda seda kasutada piibel ja kiire iga kord pärast seda. Kiire otsing annab salmid sisaldavad mõni antud sõnu. Pane "+" ees iga sõna leida kõik antud sõnad igas salmis. Pane "-" ees sõna leida kõik salmid, mis ei ole sellist sõna. Metamärgid "*" ja "?" saab kasutada. Kui keelt kasutades sümboleid nagu Hiina ja Jaapani peate panna "*" enne ja pärast iga märk. Kasutage ainult aeglane otsingut, et leida "Strongs" numbrid.</string>
 <string key="The bible, chronological">Piibel kronoloogilises järjekorras</string>
 <string key="The New Testement, chronological">Uus Testement kronoloogilises järjekorras</string>
 <string key="Invalid key. Try again">Vigane võti. Proovi uuesti</string>
 <string key="Enter key">Enter</string>
 <string key="Save">Päästma</string>
+<string key="Fast search help text">Kiire otsing on aeglane te esimest korda seda kasutada piibli ja kiire iga kord pärast seda. Kiire otsing annab salmi, mis sisaldab kõiki antud sõnad. Pane "+" ees iga sõna leida mõni antud sõna igas salmis. Pane "-" ees sõna leida kõik salmid, mis ei ole seda sõna. Metamärke "*" ja "?" saab kasutada. Kui keelt kasutades sümboleid nagu Hiina ja Jaapani peate panna "*" enne ja pärast iga märk. Kasutage ainult aeglane otsingut "Strongs" numbrid.</string>
 </translations>

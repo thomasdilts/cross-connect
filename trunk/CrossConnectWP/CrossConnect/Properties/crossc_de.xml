@@ -153,7 +153,7 @@
 <string key="Previous">Vorherige</string>
 <string key="Rate this program">Bewerten Sie das Programm</string>
 <string key="Red">Rot</string>
-<string key="Save">Sparen</string>
+<string key="Save">Speichern</string>
 <string key="Search conditions">Suchbedingungen</string>
 <string key="Search where">Suche in</string>
 <string key="Search">Suche</string>
@@ -219,11 +219,10 @@
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Das erste Mal, wenn Sie eine schnelle Suche dauert es eine lange Zeit. Danach suchen ist sehr schnell. Möchten Sie den Vorgang fortsetzen?</string>
 <string key="Translate selected text">Übersetzen ausgewählten Text</string>
 <string key="Listen to this chapter">Hören Sie zu diesem Kapitel</string>
-<string key="Fast search help text">Eine schnelle Suche ist langsam das erste Mal Sie es auf einer Bibel und schnell jedes Mal danach. Eine schnelle Suche gibt Verse, die eine der angegebenen Wörter. Legen Sie ein "+" vor jedem Wort, um alle angegebenen Wörter in jedem Vers zu finden. Setzen Sie ein "-" vor einem Wort alle Verse, die nicht über dieses Wort zu finden. Wildcards "*" und "?" können verwendet werden. In Sprachen mit Symbolen wie Chinesisch und Japanisch müssen Sie einen "*" vor und nach jedem Zeichen. Verwenden Sie nur die langsame Suche auf "Strongs" Zahlen zu finden.</string>
 <string key="The bible, chronological">Die Bibel in chronologischer Reihenfolge</string>
 <string key="The New Testement, chronological">Die New Testement in chronologischer Reihenfolge</string>
 <string key="Show two title rows in each window">Zeigen zwei Titelzeilen in jedem Fenster</string>
 <string key="Invalid key. Try again">Ungültige Schlüssellänge. Versuchen Sie es erneut</string>
 <string key="Enter key">Enter-Taste</string>
-<string key="Save">Speichern</string>
+<string key="Fast search help text">Eine schnelle Suche ist langsam das erste Mal, wenn Sie es auf eine Bibel und schnell jedes Mal danach. Eine schnelle Suche gibt Verse, die alle angegebenen Wörter. Setzen Sie ein "+" vor jedem Wort zu einem der angegebenen Wörter in jedem Vers zu finden. Setzen Sie ein "-" vor einem Wort, alle Verse, die nicht über dieses Wort zu finden. Wildcards "*" und "?" verwendet werden. In Sprachen mit Hilfe von Symbolen wie Chinesisch und Japanisch müssen Sie einen "*" vor und nach den einzelnen Zeichen. Verwenden Sie nur die langsame Suche nach "Strongs" Zahlen zu finden.</string>
 </translations>

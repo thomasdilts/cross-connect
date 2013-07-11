@@ -201,10 +201,10 @@
 <string key="Fast search">Szybkie wyszukiwanie</string>
 <string key="Slow search">Powolne wyszukiwanie</string>
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Pierwszy raz zrobić szybkie wyszukiwanie to zajmuje dużo czasu. Następnie poszukiwania jest bardzo szybkie. Czy chcesz kontynuować?</string>
-<string key="Fast search help text">Szybkie wyszukiwanie jest powolne pierwszego użycia go na Biblii i szybko za każdym razem później. Szybkie wyszukiwanie zwraca wiersze zawierające jedną z podanych słów. Wpisz znak "+" przed każdym słowem, aby znaleźć wszystkie z podanych słów w każdym wersie. Włóż "-" przed słowem, aby znaleźć wszystkie znaki, które nie mają tego słowa. Symbole wieloznaczne "*" i "?" mogą być stosowane. W językach z wykorzystaniem symboli takich jak chiński i japoński należy umieścić "*" przed i po każdym znaku. Używaj tylko powolne wyszukiwarki, aby znaleźć "Stronga" liczby.</string>
 <string key="The bible, chronological">Biblia w porządku chronologicznym</string>
 <string key="The New Testement, chronological">New Testement w porządku chronologicznym</string>
 <string key="Invalid key. Try again">Nieprawidłowy klucz. Spróbuj ponownie</string>
 <string key="Enter key">Enter</string>
 <string key="Save">Oszczędzać</string>
+<string key="Fast search help text">Szybkie wyszukiwanie jest powolny pierwszego użycia go na Biblii i szybkiego każdym późniejszym terminie. Szybkie wyszukiwanie zwraca wiersze zawierające wszystkie podane słowa. Włóż "+" przed każdym słowem, aby znaleźć żadnego z podanych słów w każdym wierszu. Umieść "-" przed słowem, aby znaleźć wszystkie znaki, które nie mają tego słowa. Symbole wieloznaczne "*" i "?" mogą być stosowane. W językach z wykorzystaniem symboli, takich jak chiński i japoński należy umieścić "*" przed i po każdym znaku. Używaj tylko powolne wyszukiwanie, aby znaleźć "Stronga" numery.</string>
 </translations>

@@ -153,7 +153,7 @@
 <string key="Previous">קודם</string>
 <string key="Rate this program">דרג את תוכנית</string>
 <string key="Red">אדום</string>
-<string key="Save">להציל</string>
+<string key="Save">לחסוך</string>
 <string key="Search conditions">חיפוש תנאי</string>
 <string key="Search where">חיפוש שם</string>
 <string key="Search">חיפוש</string>
@@ -219,11 +219,10 @@
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">הפעם הראשונה שאתה עושה חיפוש מהיר זה לוקח הרבה זמן. אחר כך חפש הוא מאוד מהיר. האם ברצונך להמשיך?</string>
 <string key="Translate selected text">תרגום טקסט נבחר</string>
 <string key="Listen to this chapter">תקשיב לפרק הזה</string>
-<string key="Fast search help text">חיפוש מהיר הוא להאט את הפעם הראשונה שאתה משתמש בו על התנ"ך ומהיר בכל עת לאחר מכן. חיפוש מהיר מחזיר פסוקים המכילים כל אחת מהמילים הנתונות. שים את הסימן "+" לפני כל מילה כדי למצוא את כל המילים הנתונות בכל פסוק. שים "-" לפני מילה כדי למצוא את כל הפסוקים שאין להם את המילה הזאת. תווים כלליים "*" ו "?" ניתן להשתמש בו. בשפות באמצעות סמלים כמו סיני ויפני אתה חייב לשים "*" לפני ואחרי כל תו. השתמש רק בחיפוש האיטי כדי למצוא מספרים "סטרונג".</string>
 <string key="The bible, chronological">התנ"ך על פי סדר כרונולוגי</string>
 <string key="The New Testement, chronological">Testement החדש לפי סדר כרונולוגי</string>
 <string key="Show two title rows in each window">הצג שתי שורות כותרת בכל חלון</string>
 <string key="Invalid key. Try again">לא חוקי מפתח. נסה שוב</string>
 <string key="Enter key">מקש Enter</string>
-<string key="Save">לחסוך</string>
+<string key="Fast search help text">חיפוש מהיר הוא להאט את הפעם הראשונה שאתה משתמש בו על התנ"ך ומהיר בכל עת לאחר מכן. חיפוש מהיר מחזיר פסוקים המכילים את כל המילים נתון. שים "+" מול כל מילה למצוא כל אחת מהמילים נתון בכל פסוק. שים "-" לפני מילה כדי למצוא את כל פסוקים שאין להם את המילה הזאת. תווים כלליים "*" ו "?" ניתן להשתמש בו. בשפות באמצעות סמלים כמו סיני ויפני אתה חייב לשים "*" לפני ואחרי כל תו. השתמש רק בחיפוש האיטי כדי למצוא מספרים "סטרונג".</string>
 </translations>

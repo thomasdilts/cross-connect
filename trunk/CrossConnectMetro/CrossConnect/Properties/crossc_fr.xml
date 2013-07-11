@@ -201,10 +201,10 @@
 <string key="Fast search">Recherche rapide</string>
 <string key="Slow search">Recherche lente</string>
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">La première fois que vous effectuez une recherche rapide, il prend beaucoup de temps. Après la recherche est très rapide. Voulez-vous continuer?</string>
-<string key="Fast search help text">Une recherche rapide est de ralentir la première fois que vous l'utilisez sur une bible et rapide à chaque fois par la suite. Une recherche rapide retourne versets contenant l'une quelconque des mots donnés. Mettez un "+" devant chaque mot pour trouver tous les mots donnés dans chaque verset. Mettez un "-" devant un mot pour trouver tous les versets qui n'ont pas ce mot. Les caractères génériques "*" et "?" peuvent être utilisées. Dans les langues utilisant des symboles comme le chinois et le japonais, vous devez mettre "*" avant et après chaque caractère. Utilisez uniquement la recherche du temps à trouver "" Strongs chiffres.</string>
 <string key="The bible, chronological">La Bible dans l'ordre chronologique</string>
 <string key="The New Testement, chronological">Le New Testement dans l'ordre chronologique</string>
 <string key="Invalid key. Try again">Invalide clé. Essayez à nouveau</string>
 <string key="Enter key">Enter</string>
 <string key="Save">Sauvegarder</string>
+<string key="Fast search help text">Une recherche rapide est ralentir la première fois que vous l'utilisez sur une bible et rapide à chaque fois par la suite. Une recherche rapide retourne versets contenant tous les mots donnés. Mettez un "+" en face de chaque mot pour trouver l'un des mots donnés dans chaque verset. Mettez un "-" devant un mot pour trouver tous les versets qui n'ont pas ce mot. Les caractères génériques "*" et "?" peuvent être utilisés. Dans les langues utilisant des symboles comme le chinois et le japonais, vous devez mettre "*" avant et après chaque caractère. Utilisez uniquement la recherche du temps à trouver des nombres "Strongs".</string>
 </translations>

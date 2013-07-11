@@ -153,7 +153,7 @@
 <string key="Previous">Предишен</string>
 <string key="Rate this program">Оценете тази програма</string>
 <string key="Red">Червен</string>
-<string key="Save">Запази</string>
+<string key="Save">Спасяване</string>
 <string key="Search conditions">Условия за търсене</string>
 <string key="Search where">Търсене където</string>
 <string key="Search">Търсене</string>
@@ -219,11 +219,10 @@
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">Първият път, когато направи бързо търсене отнема дълго време. След търсене е много бърз. Искате ли да продължите?</string>
 <string key="Translate selected text">Превод на избран текст</string>
 <string key="Listen to this chapter">Чуйте тази глава</string>
-<string key="Fast search help text">Бързо търсене забави първия път, когато го използвате на библия и бързо всеки път след това. Бързо търсене връща стихове, съдържащи някое от дадените думи. Поставете знак "+" пред всяка дума да намерите всички посочени думи в всеки стих. Поставете а "-" в предната част на думата, да намерите всички стихове, които нямат тази дума. Wildcards "*" и "?" може да се използва. В езици с китайски и японски символи като трябва да се сложи "*" преди и след всеки символ. Използвайте само бавно търсене, за да намерите номера "Strongs".</string>
 <string key="The bible, chronological">Библията в хронологичен ред</string>
 <string key="The New Testement, chronological">The New Testement в хронологичен ред</string>
 <string key="Show two title rows in each window">Покажи две заглавия редове във всеки прозорец</string>
 <string key="Invalid key. Try again">Невалиден ключ. Опитайте отново</string>
 <string key="Enter key">Въведете ключ</string>
-<string key="Save">Спасяване</string>
+<string key="Fast search help text">A бързо търсене е бавно първия път, когато го използвате на Библията и бързо всеки път след това. Бързо търсене не върна стихове, съдържащи всички посочени думи. Сложете един "+" пред всяка дума, за да намерите нито един от дадените думи във всеки стих. Поставете "-" пред думата, за да намерите всички стихове, които нямат тази дума. Заместващи символи "*" и "?" може да се използва. В езиците, които използват символи като китайски и японски трябва да постави "*" преди и след всеки символ. Използвайте само бавно търсене, за да намерите "Strongs" номера.</string>
 </translations>

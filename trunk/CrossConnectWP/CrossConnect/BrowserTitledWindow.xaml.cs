@@ -913,7 +913,7 @@ namespace CrossConnect
                 _nextVSchroll = 0;
                 if (_nextVSchroll > 0)
                 {
-                    this.webBrowser1.InvokeScript("setVerticalScrollPosition", _nextVSchroll.ToString(CultureInfo.InvariantCulture));
+                    //this.webBrowser1.InvokeScript("setVerticalScrollPosition", _nextVSchroll.ToString(CultureInfo.InvariantCulture));
                     _nextVSchroll = 0;
                 }
                 else
@@ -1179,6 +1179,9 @@ namespace CrossConnect
                 {
                     this.webBrowser1.InvokeScript(
                         "HighlightTheElement", new[] { DoBackgroundWebHighlightingverseId, DoBackgroundWebHighlightinglastVerseId });
+                    this.webBrowser1.InvokeScript(
+                        "ScrollToAnchor",
+                        new[] { DoBackgroundWebHighlightingverseId });
                 }
                 catch (Exception)
                 {

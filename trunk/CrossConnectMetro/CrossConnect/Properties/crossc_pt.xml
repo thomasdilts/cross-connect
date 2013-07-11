@@ -201,10 +201,10 @@
 <string key="Fast search">Pesquisa rápida</string>
 <string key="Slow search">Pesquisa lenta</string>
 <string key="The first time you do a fast search it takes a long time. Afterwards searching is very quick. Do you want to continue?">A primeira vez que você fizer uma pesquisa rápida que leva um longo tempo. Depois procura é muito rápido. Você quer continuar?</string>
-<string key="Fast search help text">Uma busca rápida é retardar a primeira vez que você usá-lo em uma bíblia e rápido cada tempo depois. Uma busca rápida retorna versos que contenham qualquer uma das palavras de dados. Coloque um "+" na frente de cada palavra para encontrar todas as palavras dadas em cada verso. Coloque um "-" na frente de uma palavra para encontrar todos os versículos que não têm essa palavra. Curingas "*" e "?" pode ser usado. Em linguagens através de símbolos como chinês e japonês você deve colocar "*" antes e depois de cada personagem. Use apenas a busca lenta para encontrar "Strongs" números.</string>
 <string key="The bible, chronological">A Bíblia em ordem cronológica</string>
 <string key="The New Testement, chronological">The New Testement em ordem cronológica</string>
 <string key="Invalid key. Try again">Inválido chave. Tente novamente</string>
 <string key="Enter key">Enter</string>
 <string key="Save">Salvar</string>
+<string key="Fast search help text">Uma busca rápida é retardar a primeira vez que você usá-lo em uma bíblia e rápido cada vez que depois disso. Uma busca rápida retorna versos que contêm todas as palavras dadas. Coloque um "+" na frente de cada palavra para encontrar qualquer uma das palavras dadas em cada verso. Colocar um "-" na frente de uma palavra para encontrar todos os versículos que não têm essa palavra. Curingas "*" e "?" podem ser usados. Em linguagens através de símbolos como o chinês eo japonês você deve colocar "*" antes e depois de cada personagem. Utilize apenas a busca lenta para encontrar números de "Strong".</string>
 </translations>
