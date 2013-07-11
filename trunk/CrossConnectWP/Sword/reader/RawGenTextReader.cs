@@ -979,247 +979,247 @@ function SetFontColorForElement(elemntId, colorRgba){
                                     AppendText("<br />", plainText, noteText, isInElement);
                                     isLastElementLineBreak = 1;
                                 }
-                                else if (reader.Name.Equals("lb"))
-                                {
+                            }
+                            else if (reader.Name.Equals("lb"))
+                            {
 
-                                    if (!isRaw && !displaySettings.EachVerseNewLine)
+                                if (!isRaw && !displaySettings.EachVerseNewLine)
+                                {
+                                    string paragraphXml = isLastElementLineBreak == 0 ? "<br />" : " ";
+                                    if (reader.HasAttributes)
                                     {
-                                        string paragraphXml = isLastElementLineBreak == 0 ? "<br />" : " ";
-                                        if (reader.HasAttributes)
+                                        reader.MoveToFirstAttribute();
+                                        if (reader.Name.Equals("type"))
                                         {
-                                            reader.MoveToFirstAttribute();
-                                            if (reader.Name.Equals("type"))
                                             {
+                                                paragraphXml = reader.Value.Equals("x-end-paragraph")
+                                                                   ? "</p>"
+                                                                   : (reader.Value.Equals("x-begin-paragraph")
+                                                                          ? "<p>"
+                                                                          : "<br />");
+                                            }
+                                        }
+                                    }
+
+                                    AppendText(paragraphXml, plainText, noteText, isInElement);
+                                    isLastElementLineBreak = 1;
+                                }
+                            }
+                            else if (reader.Name.Equals("title"))
+                            {
+                                isInTitle = true;
+                                if (!(noTitles || !displaySettings.ShowHeadings) && !isRaw)
+                                {
+                                    AppendText("<h3>", plainText, noteText, isInElement);
+                                }
+                            }
+                            else if (reader.Name.Equals("reference"))
+                            {
+                            }
+                            else if (reader.Name.Equals("lg"))
+                            {
+                                if (!isRaw && !displaySettings.EachVerseNewLine)
+                                {
+                                    if (isInPoetry)
+                                    {
+                                        isInPoetry = false;
+                                        AppendText("</blockquote>", plainText, noteText, isInElement);
+                                    }
+                                    else
+                                    {
+                                        isInPoetry = true;
+                                        AppendText(
+                                            "<blockquote style=\"margin: 0 0 0 1.5em;padding 0 0 0 0;\">",
+                                            plainText,
+                                            noteText,
+                                            isInElement);
+                                    }
+
+                                    isLastElementLineBreak = 1;
+                                }
+                            }
+                            else if (reader.Name.Equals("l"))
+                            {
+                                if (!isRaw && !displaySettings.EachVerseNewLine && isLastElementLineBreak == 0)
+                                {
+                                    AppendText(isInPoetry ? "<br />" : " ", plainText, noteText, isInElement);
+                                    isLastElementLineBreak = 1;
+                                }
+                            }
+                            else if (reader.Name.Equals("FI"))
+                            {
+                                if (!isRaw && !isNotesOnly && displaySettings.ShowNotePositions)
+                                {
+                                    plainText.Append(
+                                        (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
+                                        + this.convertNoteNumToId(noteIdentifier)
+                                        + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
+                                    noteIdentifier++;
+                                }
+
+                                if (!isChaptNumGivenNotes && !isRaw)
+                                {
+                                    noteText.Append("<p>" + chapterNumber);
+                                    isChaptNumGivenNotes = true;
+                                }
+
+                                noteText.Append("(");
+                                isInInjectionElement = true;
+                            }
+                            else if (reader.Name.Equals("RF"))
+                            {
+                            }
+                            else if (reader.Name.Equals("note"))
+                            {
+                                if (!isRaw && !isNotesOnly && displaySettings.ShowNotePositions)
+                                {
+                                    plainText.Append(
+                                        (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
+                                        + this.convertNoteNumToId(noteIdentifier)
+                                        + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
+                                    noteIdentifier++;
+                                }
+
+                                if (!isChaptNumGivenNotes && !isRaw)
+                                {
+                                    noteText.Append("<p>" + chapterNumber);
+                                    isChaptNumGivenNotes = true;
+                                }
+
+                                isInElement = true;
+                            }
+                            else if (reader.Name.Equals("hi"))
+                            {
+                                if (!isRaw)
+                                {
+                                    AppendText("<i>", plainText, noteText, isInElement);
+                                }
+                            }
+                            else if (reader.Name.Equals("Rf"))
+                            {
+                                isInElement = false;
+                            }
+                            else if (reader.Name.Equals("Fi"))
+                            {
+                                noteText.Append(") ");
+                                isInInjectionElement = false;
+                            }
+                            else if (reader.Name.Equals("q"))
+                            {
+                                if (!isRaw && !isNotesOnly)
+                                {
+                                    if (reader.HasAttributes)
+                                    {
+                                        reader.MoveToFirstAttribute();
+                                        do
+                                        {
+                                            if (displaySettings.WordsOfChristRed && reader.Name.Equals("who"))
+                                            {
+                                                if (reader.Value.ToLower().Equals("jesus"))
                                                 {
-                                                    paragraphXml = reader.Value.Equals("x-end-paragraph")
-                                                                       ? "</p>"
-                                                                       : (reader.Value.Equals("x-begin-paragraph")
-                                                                              ? "<p>"
-                                                                              : "<br />");
+                                                    AppendText(
+                                                        "<span class=\"christ\">", plainText, noteText, isInElement);
+                                                    isInQuote = true;
+                                                }
+                                            }
+
+                                            if (reader.Name.Equals("marker"))
+                                            {
+                                                AppendText(reader.Value, plainText, noteText, isInElement);
+                                            }
+                                        }
+                                        while (reader.MoveToNextAttribute());
+                                    }
+                                }
+                            }
+                            else if (reader.Name.Equals("w"))
+                            {
+                                // <w lemma="strong:G1078" morph="robinson:N-GSF">γενεσεως</w>
+                                if ((displaySettings.ShowStrongsNumbers || displaySettings.ShowMorphology) && !isRaw
+                                    && !isNotesOnly)
+                                {
+                                    lemmaText = string.Empty;
+                                    morphText = string.Empty;
+                                    if (reader.HasAttributes)
+                                    {
+                                        reader.MoveToFirstAttribute();
+
+                                        do
+                                        {
+                                            if (displaySettings.ShowStrongsNumbers && reader.Name.Equals("lemma"))
+                                            {
+                                                string[] lemmas = reader.Value.Split(' ');
+                                                foreach (string lemma in lemmas)
+                                                {
+                                                    if (lemma.StartsWith("strong:"))
+                                                    {
+                                                        if (!string.IsNullOrEmpty(lemmaText))
+                                                        {
+                                                            lemmaText += ",";
+                                                        }
+
+                                                        lemmaText +=
+                                                            "<a class=\"strongsmorph\" href=\"#\" onclick=\"window.external.notify('STRONG_"
+                                                            + lemma.Substring(7)
+                                                            + "'); event.returnValue=false; return false;\" >"
+                                                            + lemma.Substring(8) + "</a>";
+                                                    }
+                                                }
+                                            }
+                                            else if (displaySettings.ShowMorphology && reader.Name.Equals("morph"))
+                                            {
+                                                string[] morphs = reader.Value.Split(' ');
+                                                foreach (string morph in morphs)
+                                                {
+                                                    if (morph.StartsWith("robinson:"))
+                                                    {
+                                                        string subMorph = morph.Substring(9);
+                                                        if (!string.IsNullOrEmpty(morphText))
+                                                        {
+                                                            morphText += ",";
+                                                        }
+
+                                                        morphText +=
+                                                            "<a class=\"strongsmorph\" href=\"#\" onclick=\"window.external.notify('MORPH_"
+                                                            + subMorph
+                                                            + "'); event.returnValue=false; return false;\" >"
+                                                            + subMorph + "</a>";
+                                                    }
                                                 }
                                             }
                                         }
-
-                                        AppendText(paragraphXml, plainText, noteText, isInElement);
-                                        isLastElementLineBreak = 1;
+                                        while (reader.MoveToNextAttribute());
                                     }
                                 }
-                                else if (reader.Name.Equals("title"))
+                            }
+                            else if (reader.Name.Equals("versee"))
+                            {
+                                AppendText(" ", plainText, noteText, isInElement);
+                            }
+                            else
+                            {
+                                if (reader.IsEmptyElement)
                                 {
-                                    isInTitle = true;
-                                    if (!(noTitles || !displaySettings.ShowHeadings) && !isRaw)
-                                    {
-                                        AppendText("<h3>", plainText, noteText, isInElement);
-                                    }
+                                    AppendText("<" + reader.Name + "/>", plainText, noteText, isInElement);
                                 }
-                                else if (reader.Name.Equals("reference"))
+                                else
                                 {
-                                }
-                                else if (reader.Name.Equals("lg"))
-                                {
-                                    if (!isRaw && !displaySettings.EachVerseNewLine)
+                                    AppendText("<" + reader.Name, plainText, noteText, isInElement);
+                                    if (reader.HasAttributes)
                                     {
-                                        if (isInPoetry)
+                                        reader.MoveToFirstAttribute();
+                                        do
                                         {
-                                            isInPoetry = false;
-                                            AppendText("</blockquote>", plainText, noteText, isInElement);
-                                        }
-                                        else
-                                        {
-                                            isInPoetry = true;
                                             AppendText(
-                                                "<blockquote style=\"margin: 0 0 0 1.5em;padding 0 0 0 0;\">",
+                                                " " + reader.Name + "=\"" + reader.Value + "\"",
                                                 plainText,
                                                 noteText,
                                                 isInElement);
                                         }
-
-                                        isLastElementLineBreak = 1;
-                                    }
-                                }
-                                else if (reader.Name.Equals("l"))
-                                {
-                                    if (!isRaw && !displaySettings.EachVerseNewLine && isLastElementLineBreak == 0)
-                                    {
-                                        AppendText(isInPoetry ? "<br />" : " ", plainText, noteText, isInElement);
-                                        isLastElementLineBreak = 1;
-                                    }
-                                }
-                                else if (reader.Name.Equals("FI"))
-                                {
-                                    if (!isRaw && !isNotesOnly && displaySettings.ShowNotePositions)
-                                    {
-                                        plainText.Append(
-                                            (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
-                                            + this.convertNoteNumToId(noteIdentifier)
-                                            + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
-                                        noteIdentifier++;
+                                        while (reader.MoveToNextAttribute());
                                     }
 
-                                    if (!isChaptNumGivenNotes && !isRaw)
-                                    {
-                                        noteText.Append("<p>" + chapterNumber);
-                                        isChaptNumGivenNotes = true;
-                                    }
-
-                                    noteText.Append("(");
-                                    isInInjectionElement = true;
-                                }
-                                else if (reader.Name.Equals("RF"))
-                                {
-                                }
-                                else if (reader.Name.Equals("note"))
-                                {
-                                    if (!isRaw && !isNotesOnly && displaySettings.ShowNotePositions)
-                                    {
-                                        plainText.Append(
-                                            (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
-                                            + this.convertNoteNumToId(noteIdentifier)
-                                            + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
-                                        noteIdentifier++;
-                                    }
-
-                                    if (!isChaptNumGivenNotes && !isRaw)
-                                    {
-                                        noteText.Append("<p>" + chapterNumber);
-                                        isChaptNumGivenNotes = true;
-                                    }
-
-                                    isInElement = true;
-                                }
-                                else if (reader.Name.Equals("hi"))
-                                {
-                                    if (!isRaw)
-                                    {
-                                        AppendText("<i>", plainText, noteText, isInElement);
-                                    }
-                                }
-                                else if (reader.Name.Equals("Rf"))
-                                {
-                                    isInElement = false;
-                                }
-                                else if (reader.Name.Equals("Fi"))
-                                {
-                                    noteText.Append(") ");
-                                    isInInjectionElement = false;
-                                }
-                                else if (reader.Name.Equals("q"))
-                                {
-                                    if (!isRaw && !isNotesOnly)
-                                    {
-                                        if (reader.HasAttributes)
-                                        {
-                                            reader.MoveToFirstAttribute();
-                                            do
-                                            {
-                                                if (displaySettings.WordsOfChristRed && reader.Name.Equals("who"))
-                                                {
-                                                    if (reader.Value.ToLower().Equals("jesus"))
-                                                    {
-                                                        AppendText(
-                                                            "<span class=\"christ\">", plainText, noteText, isInElement);
-                                                        isInQuote = true;
-                                                    }
-                                                }
-
-                                                if (reader.Name.Equals("marker"))
-                                                {
-                                                    AppendText(reader.Value, plainText, noteText, isInElement);
-                                                }
-                                            }
-                                            while (reader.MoveToNextAttribute());
-                                        }
-                                    }
-                                }
-                                else if (reader.Name.Equals("w"))
-                                {
-                                    // <w lemma="strong:G1078" morph="robinson:N-GSF">γενεσεως</w>
-                                    if ((displaySettings.ShowStrongsNumbers || displaySettings.ShowMorphology) && !isRaw
-                                        && !isNotesOnly)
-                                    {
-                                        lemmaText = string.Empty;
-                                        morphText = string.Empty;
-                                        if (reader.HasAttributes)
-                                        {
-                                            reader.MoveToFirstAttribute();
-
-                                            do
-                                            {
-                                                if (displaySettings.ShowStrongsNumbers && reader.Name.Equals("lemma"))
-                                                {
-                                                    string[] lemmas = reader.Value.Split(' ');
-                                                    foreach (string lemma in lemmas)
-                                                    {
-                                                        if (lemma.StartsWith("strong:"))
-                                                        {
-                                                            if (!string.IsNullOrEmpty(lemmaText))
-                                                            {
-                                                                lemmaText += ",";
-                                                            }
-
-                                                            lemmaText +=
-                                                                "<a class=\"strongsmorph\" href=\"#\" onclick=\"window.external.notify('STRONG_"
-                                                                + lemma.Substring(7)
-                                                                + "'); event.returnValue=false; return false;\" >"
-                                                                + lemma.Substring(8) + "</a>";
-                                                        }
-                                                    }
-                                                }
-                                                else if (displaySettings.ShowMorphology && reader.Name.Equals("morph"))
-                                                {
-                                                    string[] morphs = reader.Value.Split(' ');
-                                                    foreach (string morph in morphs)
-                                                    {
-                                                        if (morph.StartsWith("robinson:"))
-                                                        {
-                                                            string subMorph = morph.Substring(9);
-                                                            if (!string.IsNullOrEmpty(morphText))
-                                                            {
-                                                                morphText += ",";
-                                                            }
-
-                                                            morphText +=
-                                                                "<a class=\"strongsmorph\" href=\"#\" onclick=\"window.external.notify('MORPH_"
-                                                                + subMorph
-                                                                + "'); event.returnValue=false; return false;\" >"
-                                                                + subMorph + "</a>";
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            while (reader.MoveToNextAttribute());
-                                        }
-                                    }
-                                }
-                                else if (reader.Name.Equals("versee"))
-                                {
-                                    AppendText(" ", plainText, noteText, isInElement);
-                                }
-                                else
-                                {
-                                    if (reader.IsEmptyElement)
-                                    {
-                                        AppendText("<" + reader.Name + "/>", plainText, noteText, isInElement);
-                                    }
-                                    else
-                                    {
-                                        AppendText("<" + reader.Name, plainText, noteText, isInElement);
-                                        if (reader.HasAttributes)
-                                        {
-                                            reader.MoveToFirstAttribute();
-                                            do
-                                            {
-                                                AppendText(
-                                                    " " + reader.Name + "=\"" + reader.Value + "\"",
-                                                    plainText,
-                                                    noteText,
-                                                    isInElement);
-                                            }
-                                            while (reader.MoveToNextAttribute());
-                                        }
-
-                                        AppendText(">", plainText, noteText, isInElement);
-                                    }
+                                    AppendText(">", plainText, noteText, isInElement);
                                 }
                             }
                         }
