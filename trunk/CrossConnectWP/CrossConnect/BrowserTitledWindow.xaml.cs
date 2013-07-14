@@ -934,7 +934,7 @@ namespace CrossConnect
                             "ScrollToAnchor",
                             new[] { idd });
                         var tempLastItem = this._lastSelectedItem;
-                        SetBackgroundColorOnVerse(idd, tempLastItem);
+                        SetBackgroundColorOnVerse(idd, tempLastItem, true);
                         this._lastSelectedItem = idd;
                     }
                     catch (Exception ee)
@@ -1119,7 +1119,7 @@ namespace CrossConnect
                     if (this._lastSelectedItem == null) { this._lastSelectedItem = string.Empty; }
                     string id = "CHAP_" + chapterNum + "_VERS_" + verseNum;
                     var tempLastItem = this._lastSelectedItem;
-                    SetBackgroundColorOnVerse(id, tempLastItem);
+                    SetBackgroundColorOnVerse(id, tempLastItem, false);
                     this._lastSelectedItem = id;
                     //this.webBrowser1.InvokeScript("SetFontColorForElement", new[] { id, "Red" });
                     /*Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -1151,11 +1151,13 @@ namespace CrossConnect
 
         private string DoBackgroundWebHighlightingverseId;
         private string DoBackgroundWebHighlightinglastVerseId;
+        private bool DoBackgroundWebHighlightinglastMoveToAnchor;
 
-        private void SetBackgroundColorOnVerse(string verseId, string lastVerseId)
+        private void SetBackgroundColorOnVerse(string verseId, string lastVerseId, bool moveToAnchor)
         {
             DoBackgroundWebHighlightingverseId = verseId;
             DoBackgroundWebHighlightinglastVerseId = lastVerseId;
+            DoBackgroundWebHighlightinglastMoveToAnchor = moveToAnchor;
             updateHighlightTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1.0) };
             _state.IsResume = false;
             updateHighlightTimer.Tick += DoBackgroundWebHighlighting;
@@ -1179,9 +1181,10 @@ namespace CrossConnect
                 {
                     this.webBrowser1.InvokeScript(
                         "HighlightTheElement", new[] { DoBackgroundWebHighlightingverseId, DoBackgroundWebHighlightinglastVerseId });
-                    this.webBrowser1.InvokeScript(
-                        "ScrollToAnchor",
-                        new[] { DoBackgroundWebHighlightingverseId });
+                    if (DoBackgroundWebHighlightinglastMoveToAnchor)
+                    {
+                        this.webBrowser1.InvokeScript("ScrollToAnchor", new[] { DoBackgroundWebHighlightingverseId });
+                    }
                 }
                 catch (Exception)
                 {
