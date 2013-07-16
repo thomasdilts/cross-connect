@@ -111,7 +111,14 @@ namespace CrossConnect
         {
             if (this.downloadedFile != null)
             {
-                await this.downloadedFile.DeleteAsync();
+                try
+                {
+                    await this.downloadedFile.DeleteAsync();
+                }
+                catch (Exception ee)
+                {
+                    
+                }
                 this.downloadedFile = null;
             }
         }

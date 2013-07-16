@@ -471,6 +471,8 @@ namespace CrossConnect
                 {
                     this.ProgressCompleted(error);
                 }
+
+                return;
             }
 
             try

@@ -224,7 +224,7 @@ namespace CrossConnect
             App.ShowUserInterface(false);
         }
 
-        private void ThemeReset_OnClick(object sender, RoutedEventArgs e)
+        private async void ThemeReset_OnClick(object sender, RoutedEventArgs e)
         {
             var dialog =
                 new MessageDialog(
@@ -238,7 +238,7 @@ namespace CrossConnect
                             App.ShowUserInterface(true);
                             this.RedrawMainScreen(true);
                         }));
-            dialog.ShowAsync();
+            await dialog.ShowAsync();
         }
 
         private void ThemeSave_OnClick(object sender, RoutedEventArgs e)
