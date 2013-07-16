@@ -31,6 +31,7 @@ namespace CrossConnect
     using Sword;
 
     using Windows.Storage;
+    using Windows.UI.Core;
     using Windows.UI.Popups;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
@@ -51,7 +52,7 @@ namespace CrossConnect
 
         #region Methods
 
-        private void ButDownloadBookClick(object sender, RoutedEventArgs e)
+        private async void ButDownloadBookClick(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -78,7 +79,7 @@ namespace CrossConnect
                                 Translations.Translate(
                                     "An error occurred trying to connect to the network. Try again later.") + "; "
                                 + errMsg);
-                        dialog.ShowAsync();
+                        await dialog.ShowAsync();
                         this.MenuDownloadBibleClick(null, null);
                     }
                 }
@@ -88,7 +89,7 @@ namespace CrossConnect
                         new MessageDialog(
                             Translations.Translate(
                                 "An error occurred trying to connect to the network. Try again later."));
-                    dialog.ShowAsync();
+                    await dialog.ShowAsync();
                     this.MenuDownloadBibleClick(null, null);
                 }
             }
@@ -107,7 +108,7 @@ namespace CrossConnect
             }
         }
 
-        private void ButDownloadClick(object sender, RoutedEventArgs e)
+        private async void ButDownloadClick(object sender, RoutedEventArgs e)
         {
             this.butDownload.Visibility = Visibility.Collapsed;
 
@@ -129,7 +130,7 @@ namespace CrossConnect
                     new MessageDialog(
                         Translations.Translate("An error occurred trying to connect to the network. Try again later.")
                         + "; " + errMsg);
-                dialog.ShowAsync();
+                await dialog.ShowAsync();
                 this.selectServer.IsEnabled = true;
                 this.MenuDownloadBibleClick(null, null);
                 return;
@@ -216,7 +217,7 @@ namespace CrossConnect
                     new MessageDialog(
                         Translations.Translate("An error occurred trying to connect to the network. Try again later.")
                         + "; " + error);
-                dialog.ShowAsync();
+                await dialog.ShowAsync();
                 this.MenuDownloadBibleClick(null, null);
                 return;
             }
@@ -353,7 +354,7 @@ namespace CrossConnect
             this.SelectLangaugeSelectionChanged(sender, e);
         }
 
-        private void WebInstProgressCompleted(string error)
+        private async void WebInstProgressCompleted(string error)
         {
             if (!string.IsNullOrEmpty(error))
             {
@@ -372,7 +373,7 @@ namespace CrossConnect
             this.selectType.SelectedItem = 0;
         }
 
-        private void WebInstProgressCompletedUnzipped(string error)
+        private async void WebInstProgressCompletedUnzipped(string error)
         {
             if (this._isInCompletedUnzipped)
             {
@@ -393,7 +394,7 @@ namespace CrossConnect
                         new MessageDialog(
                             Translations.Translate(
                                 "An error occurred trying to connect to the network. Try again later.") + "; " + error);
-                    dialog.ShowAsync();
+                    await dialog.ShowAsync();
                     this.MenuDownloadBibleClick(null, null);
                     this._isInCompletedUnzipped = false;
                     return;
@@ -477,7 +478,7 @@ namespace CrossConnect
                         new MessageDialog(
                             Translations.Translate(
                                 "An error occurred trying to connect to the network. Try again later."));
-                    dialog.ShowAsync();
+                    await dialog.ShowAsync();
                     this.MenuDownloadBibleClick(null, null);
                 }
             }

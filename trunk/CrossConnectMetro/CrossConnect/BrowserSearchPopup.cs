@@ -122,7 +122,7 @@ namespace CrossConnect
             this._numFoundVerses = totalFound;
         }
 
-        public void UpdateProgressBar()
+        public async void UpdateProgressBar()
         {
             if (SearchingObject.IsSearchFinishedReported)
             {
@@ -140,7 +140,7 @@ namespace CrossConnect
                 if (this._numFoundVerses == 0)
                 {
                     var dialog = new MessageDialog(Translations.Translate("Nothing found"));
-                    dialog.ShowAsync();
+                    await dialog.ShowAsync();
                     this.ShowControls(true);
                 }
                 else
@@ -148,7 +148,7 @@ namespace CrossConnect
                     if (this.IsAbort)
                     {
                         var dialog = new MessageDialog(Translations.Translate("Too many found. Search stopped"));
-                        dialog.ShowAsync();
+                        await dialog.ShowAsync();
                     }
 
                     App.AddWindow(
@@ -340,7 +340,7 @@ namespace CrossConnect
                                 tmr.Start();
                             }));
                     dialog.Commands.Add(new UICommand(Translations.Translate("Cancel")));
-                    dialog.ShowAsync();
+                    await dialog.ShowAsync();
                 }
                 else
                 {

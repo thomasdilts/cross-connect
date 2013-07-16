@@ -326,14 +326,16 @@ namespace CrossConnect
         private void BottomAppBar1_Closed_1(object sender, object e)
         {
             App.ShowUserInterface(true);
+            
         }
 
         private void BottomAppBar1_Opened_1(object sender, object e)
         {
             this.scrollViewerBottomAppBar1.MaxWidth = Window.Current.Bounds.Width;
             this.scrollViewerTopAppBar1.MaxWidth = Window.Current.Bounds.Width;
-
-            App.ShowUserInterface(false);
+            this.Dispatcher.RunAsync(CoreDispatcherPriority.Low, () => App.ShowUserInterface(false));
+            //App.ShowUserInterface(false);
+            BottomAppBar.IsOpen = true;
         }
 
         private void ButAddBookmarkClick(object sender, RoutedEventArgs e)
@@ -667,6 +669,5 @@ namespace CrossConnect
         }
 
         #endregion
-
     }
 }

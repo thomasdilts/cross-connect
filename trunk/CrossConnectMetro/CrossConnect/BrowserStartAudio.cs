@@ -125,7 +125,7 @@ namespace CrossConnect
                     new MessageDialog(
                         Translations.Translate("An error occurred trying to connect to the network. Try again later.")
                         + "; " + errorMessage);
-                dialog.ShowAsync();
+                await dialog.ShowAsync();
                 this.StartAudioPopup.IsOpen = false;
             }
 

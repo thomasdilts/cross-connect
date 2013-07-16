@@ -91,7 +91,7 @@
         <!-- Details for selected item -->
         
         <ScrollViewer
-            Margin=" 0,40,0,40"
+            Margin=" 0,0,0,5"
             x:Name="itemDetail"
             AutomationProperties.AutomationId="ItemDetailScrollViewer"
             Grid.Row="0"
@@ -108,13 +108,13 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Image Grid.Row="1" Margin="0,0,20,0" Width="30" Height="30" Source="{Binding Image}"
+                <Image Grid.Row="1" Margin="0,0,20,0" Width="30" Height="22" Source="{Binding Image}"
                        Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" />
                 <StackPanel x:Name="itemDetailTitlePanel" Grid.Row="1" Grid.Column="1">
-                    <TextBlock x:Name="itemTitle" Margin="0,-10,0,0" Text="Cross-Connect"
+                    <TextBlock x:Name="itemTitle" Margin="0,-10,0,-10" Text="Cross-Connect"
                                Style="{StaticResource SubheaderTextStyle}" />
                 </StackPanel>
-                <Grid Margin="0 0 0 15" x:Name="WindowGrid" Grid.Row="3" Grid.Column="1"></Grid>
+                    <Grid Margin=" 0,0,0,12" x:Name="WindowGrid" Grid.Row="3" Grid.Column="1"></Grid>
             </Grid>
                 <Grid Name="RightSpacer" Width="40"></Grid>
             </StackPanel>

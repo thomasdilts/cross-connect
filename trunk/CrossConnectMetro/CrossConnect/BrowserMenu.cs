@@ -23,6 +23,7 @@
 
 namespace CrossConnect
 {
+    using System;
     using System.Linq;
 
     using CrossConnect.readers;
@@ -32,12 +33,13 @@ namespace CrossConnect
     using Windows.UI.Popups;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Input;
 
     public sealed partial class BrowserTitledWindow
     {
         #region Methods
 
-        private void AddANote_Click_1(object sender, RoutedEventArgs e)
+        private async void AddANote_Click_1(object sender, RoutedEventArgs e)
         {
             if (App.PlaceMarkers.History.Count > 0)
             {
@@ -47,7 +49,7 @@ namespace CrossConnect
             else
             {
                 var dialog = new MessageDialog(Translations.Translate("You must first select a verse"));
-                dialog.ShowAsync();
+                await dialog.ShowAsync();
             }
         }
 
