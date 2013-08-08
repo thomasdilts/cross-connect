@@ -303,7 +303,7 @@
             <Border Name="WebBrowserBorder" BorderBrush="Silver" BorderThickness="1" Grid.Row="1">
                 <WebView Margin="0 0 0 0" SizeChanged="WebBrowser1_OnSizeChanged" Loaded="WebBrowser1Loaded"
                          Unloaded="WebBrowser1Unloaded" ScriptNotify="WebBrowser1ScriptNotify"
-                          x:Name="webBrowser1" NavigationFailed="webBrowser1_NavigationFailed_1" />
+                          x:Name="webBrowser1" LoadCompleted="WebBrowser1_OnLoadCompleted" NavigationFailed="webBrowser1_NavigationFailed_1" />
             </Border> 
         </Grid> 
     </Border>

@@ -44,6 +44,7 @@ namespace CrossConnect
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Media;
     using Windows.UI.Xaml.Media.Imaging;
+    using Windows.UI.Xaml.Navigation;
 
     public sealed partial class BrowserTitledWindow : ITiledWindow
     {
@@ -150,21 +151,22 @@ namespace CrossConnect
                 // this will often crash because the window no longer exists OR has not had the chance to create itself yet.
                 this.webBrowser1.NavigateToString(createdFile);
 
-                if (this._state.Source.IsSynchronizeable || this._state.Source.IsLocalChangeDuringLink)
+                if (!_isNextOrPrevious && (this._state.Source.IsSynchronizeable || this._state.Source.IsLocalChangeDuringLink))
                 {
                     // The window wont show the correct verse if we dont wait a few seconds before showing it.
-                    /*
-                    var tmr = new DispatcherTimer { Interval = TimeSpan.FromSeconds(_state.IsResume ? 2.5 : 1.5) };
+//                    var tmr = new DispatcherTimer { Interval = TimeSpan.FromSeconds(_state.IsResume ? 2.5 : 1.5) };
+                    var tmr = new DispatcherTimer { Interval = TimeSpan.FromSeconds(_state.IsResume ? 1.5 : 0.5) };
                     _state.IsResume = false;
                     tmr.Tick += OnTimerTick;
-                    tmr.Start();*/
-                    this.Dispatcher.RunAsync(
-                        CoreDispatcherPriority.Low,
-                        () => this.Dispatcher.RunAsync(CoreDispatcherPriority.Low, () => this.OnTimerTick(null, null)));
+                    tmr.Start();
+                    //this.Dispatcher.RunAsync(
+                    //    CoreDispatcherPriority.Low,
+                    //    () => this.Dispatcher.RunAsync(CoreDispatcherPriority.Low, () => this.OnTimerTick(null, null)));
                 }
             }
             catch (Exception e)
             {
+                this._isNextOrPrevious = false;
                 Debug.WriteLine("CallbackFromUpdate webBrowser1.Navigate crash; " + e.Message);
                 return;
             }
@@ -183,9 +185,11 @@ namespace CrossConnect
             //    tmr.Tick += OnTimerTick;
             //    tmr.Start();
             //}
-
+            _isNextOrPrevious = false;
             Debug.WriteLine("CallbackFromUpdate end");
         }
+
+        private bool _isNextOrPrevious;
 
         public void DelayUpdateBrowser()
         {
@@ -529,12 +533,14 @@ namespace CrossConnect
 
         private void ButNextClick(object sender, RoutedEventArgs e)
         {
+            this._isNextOrPrevious = true;
             this._state.Source.MoveNext();
             this.UpdateBrowser(false);
         }
 
         private void ButPreviousClick(object sender, RoutedEventArgs e)
         {
+            this._isNextOrPrevious = true;
             this._state.Source.MovePrevious();
             this.UpdateBrowser(false);
         }
@@ -884,5 +890,9 @@ namespace CrossConnect
 
         #endregion
 
+        private void WebBrowser1_OnLoadCompleted(object sender, NavigationEventArgs e)
+        {
+            Debug.WriteLine("WebBrowser1_OnLoadCompleted " + e.SourcePageType);
+        }
     }
 }
