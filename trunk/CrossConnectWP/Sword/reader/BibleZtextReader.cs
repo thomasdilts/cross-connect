@@ -2660,6 +2660,7 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                         long chapterStartPos = 0;
                         ChapterPos chapt = null;
                         long lastNonZeroStartPos = 0;
+                        long lastNonZeroLength = 0;
                         int length = 0;
                         for (int k = 0; k < VersesInChapter[i][j]; k++)
                         {
@@ -2671,6 +2672,11 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                             }
 
                             length = this.GetShortIntFromStream(fs, out isEnd);
+                            if (length != 0)
+                            {
+                                lastNonZeroLength = length;
+                            } 
+                            
                             if (k == 0)
                             {
                                 chapterStartPos = startPos;
@@ -2707,7 +2713,7 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                         // update the chapter length now that we know it
                         if (chapt != null)
                         {
-                            chapt.Length = (int)(lastNonZeroStartPos - chapterStartPos) + length;
+                            chapt.Length = (int)(lastNonZeroStartPos - chapterStartPos) + lastNonZeroLength;
                             this.Chapters.Add(chapt);
                         }
 
