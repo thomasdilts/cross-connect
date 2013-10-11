@@ -69,7 +69,7 @@ namespace CrossConnect
     {
         #region Fields
 
-        public const string Version = "2.0.8.4";
+        public const string Version = "2.0.8.5";
         public const string WebDirIsolated = "webtemporary";
 
         public static SerializableDailyPlan DailyPlan = new SerializableDailyPlan();
@@ -380,7 +380,7 @@ namespace CrossConnect
             DailyPlan = new SerializableDailyPlan();
             OpenWindows.Clear();
             PlaceMarkers = new BiblePlaceMarkers();
-            IsolatedStorageSettings.ApplicationSettings["LanguageIsoCode"] = "default";
+            //IsolatedStorageSettings.ApplicationSettings["LanguageIsoCode"] = "default";
             InstalledBibles.Initialize();
             DisplaySettings = new DisplaySettings();
             try
