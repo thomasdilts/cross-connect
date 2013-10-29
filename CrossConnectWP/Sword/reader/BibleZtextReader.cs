@@ -1901,6 +1901,11 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                             false,
                             ref noteIdentifier,
                             ref isInPoetry);
+                        if (isInPoetry && (i == versesForChapterPositions.Verses.Count - 1))
+                        {
+                            // we must end the indentations
+                            verseTxt += "</blockquote>";
+                        }
                     }
                     catch (Exception e)
                     {
