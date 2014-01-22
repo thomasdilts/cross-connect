@@ -35,6 +35,7 @@ namespace CrossConnect.readers
 
     using Sword;
     using Sword.reader;
+    using Sword.versification;
 
     using Windows.Storage;
     using Windows.Storage.Streams;
@@ -79,9 +80,19 @@ namespace CrossConnect.readers
             string source;
             GetBookAndChapterFromAbsoluteChapter(
                 info.Chapter, string.Empty, string.Empty, out bookNum, out relChapterNum, out source);
-
+            var canon = CanonManager.GetCanon("KJV");
+            CanonBookDef book = null;
+            //Chapters 
+            if (bookNum >= canon.OldTestBooks.Count())
+            {
+                book = canon.NewTestBooks[bookNum - canon.OldTestBooks.Count()];
+            }
+            else
+            {
+                book = canon.OldTestBooks[bookNum];
+            }
             var bookNames = new BibleNames(info.Language);
-            return bookNames.GetFullName(bookNum) + " : " + (relChapterNum + 1).ToString(CultureInfo.InvariantCulture);
+            return bookNames.GetFullName(book.ShortName1,book.FullName) + " : " + (relChapterNum + 1).ToString(CultureInfo.InvariantCulture);
         }
 
         public static async Task<List<MediaInfo>> ReadMediaSourcesFile(StorageFile downloadedFile)
@@ -220,13 +231,18 @@ namespace CrossConnect.readers
         private static int AddChapter(MediaInfo info, int valToAdd)
         {
             int adjustedChapter = info.Chapter + valToAdd;
-            if (adjustedChapter >= BibleZtextReader.ChaptersInBible)
+            var canonKjv = CanonManager.GetCanon("KJV");
+            var lastBook = canonKjv.NewTestBooks[canonKjv.NewTestBooks.Count() - 1];
+            var lastOtBook = canonKjv.OldTestBooks[canonKjv.OldTestBooks.Count() - 1];
+            var chaptersInBible = lastBook.NumberOfChapters + lastBook.VersesInChapterStartIndex;
+            var chaptersInOldTestement = lastOtBook.NumberOfChapters + lastOtBook.VersesInChapterStartIndex;
+            if (adjustedChapter >= chaptersInBible)
             {
-                adjustedChapter = info.IsNtOnly ? BibleZtextReader.ChaptersInOt : 0;
+                adjustedChapter = info.IsNtOnly ? chaptersInOldTestement : 0;
             }
-            else if (adjustedChapter < 0 || (info.IsNtOnly && adjustedChapter < BibleZtextReader.ChaptersInOt))
+            else if (adjustedChapter < 0 || (info.IsNtOnly && adjustedChapter < chaptersInOldTestement))
             {
-                adjustedChapter = BibleZtextReader.ChaptersInBible - 1;
+                adjustedChapter = chaptersInBible - 1;
             }
 
             return adjustedChapter;

@@ -37,6 +37,7 @@ namespace CrossConnect
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Controls.Primitives;
     using Windows.UI.Xaml.Media;
+    using Sword.versification;
 
     public sealed partial class MediaPlayerWindow
     {
@@ -242,16 +243,17 @@ namespace CrossConnect
             {
                 this.ListChapter.Content = Translations.Translate("Select a chapter to view");
                 this.ListBook.Content = Translations.Translate("Select a book to view");
+                var canonKjv = CanonManager.GetCanon("KJV");
 
                 //may need to hide chapter...
                 bool showChapter = true;
-                for (int i = 0; i < BibleZtextReader.BooksInBible; i++)
+                foreach (var book in canonKjv.BookByShortName)
                 {
-                    if (((MediaReader)this._state.Source).Info.Chapter == BibleZtextReader.FirstChapternumInBook[i])
+                    if (((MediaReader)this._state.Source).Info.Chapter == book.Value.VersesInChapterStartIndex)
                     {
-                        showChapter = BibleZtextReader.ChaptersInBook[i] > 1;
+                        showChapter = book.Value.NumberOfChapters > 1;
                         break;
-                    }
+                    }                    
                 }
 
                 this.ListChapter.Visibility = showChapter ? Visibility.Visible : Visibility.Collapsed;
@@ -286,7 +288,9 @@ namespace CrossConnect
                 }
                 else
                 {
-                    this._state.Source.MoveChapterVerse((int)((Button)sender).Tag, 0, false, this._state.Source);
+                    var canonKjv = CanonManager.GetCanon("KJV");
+                    var book = canonKjv.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
+                    this._state.Source.MoveChapterVerse(book.ShortName1,(int)((Button)sender).Tag, 0, false, this._state.Source);
 
                     this.BookPopup.IsOpen = false;
                     this.SearchPopup.IsOpen = false;
@@ -321,7 +325,9 @@ namespace CrossConnect
 
         private void SecondClick(object sender, RoutedEventArgs e)
         {
-            this._state.Source.MoveChapterVerse((int)((Button)sender).Tag, 0, false, this._state.Source);
+            var canonKjv = CanonManager.GetCanon("KJV");
+            var book = canonKjv.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
+            this._state.Source.MoveChapterVerse(book.ShortName1, (int)((Button)sender).Tag, 0, false, this._state.Source);
             this.BookPopup.IsOpen = false;
             this.SearchPopup.IsOpen = false;
             ((MediaReader)this._state.Source).Info.Chapter = (int)((Button)sender).Tag;

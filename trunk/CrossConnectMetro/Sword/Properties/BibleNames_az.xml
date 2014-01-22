@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<biblenames isolang="az" isolocale="" version="1.0">
+<book key="Gen" short="YARADILIŞ KİTABI" full="YARADILIŞ KİTABI" />
+<book key="Exod" short="ÇIXIŞ KİTABI" full="ÇIXIŞ KİTABI" />
+<book key="Lev" short="LEVİLİLƏR KİTABI" full="LEVİLİLƏR KİTABI" />
+<book key="Num" short="SAYLAR KİTABI" full="SAYLAR KİTABI" />
+<book key="Deut" short="QANUNUN TƏKRARI KİTABI" full="QANUNUN TƏKRARI KİTABI" />
+<book key="Josh" short="YEŞUA PEYĞƏMBƏRİN KİTABI" full="YEŞUA PEYĞƏMBƏRİN KİTABI" />
+<book key="Judg" short="HAKİMLƏR KİTABI" full="HAKİMLƏR KİTABI" />
+<book key="Ruth" short="RUT KİTABI" full="RUT KİTABI" />
+<book key="1Sam" short="BİRİNCİ ŞAMUEL KİTABI" full="BİRİNCİ ŞAMUEL KİTABI" />
+<book key="2Sam" short="İKİNCİ ŞAMUEL KİTABI" full="İKİNCİ ŞAMUEL KİTABI" />
+<book key="1Kgs" short="BİRİNCİ PADŞAHLAR KİTABI" full="BİRİNCİ PADŞAHLAR KİTABI" />
+<book key="2Kgs" short="İKİNCİ PADŞAHLAR KİTABI" full="İKİNCİ PADŞAHLAR KİTABI" />
+<book key="1Chr" short="BİRİNCİ SALNAMƏLƏR KİTABI" full="BİRİNCİ SALNAMƏLƏR KİTABI" />
+<book key="2Chr" short="İKİNCİ SALNAMƏLƏR KİTABI" full="İKİNCİ SALNAMƏLƏR KİTABI" />
+<book key="Ezra" short="EZRA KİTABI" full="EZRA KİTABI" />
+<book key="Neh" short="NEHEMYA KİTABI" full="NEHEMYA KİTABI" />
+<book key="Esth" short="ESTER KİTABI" full="ESTER KİTABI" />
+<book key="Job" short="ƏYYUB KİTABI" full="ƏYYUB KİTABI" />
+<book key="Ps" short="ZƏBUR" full="ZƏBUR" />
+<book key="Prov" short="SÜLEYMANIN MƏSƏLLƏRİ" full="SÜLEYMANIN MƏSƏLLƏRİ" />
+<book key="Eccl" short="VAİZ KİTABI" full="VAİZ KİTABI" />
+<book key="Song" short="NƏĞMƏLƏR NƏĞMƏSİ KİTABI" full="NƏĞMƏLƏR NƏĞMƏSİ KİTABI" />
+<book key="Isa" short="YEŞAYA PEYĞƏMBƏRİN KİTABI" full="YEŞAYA PEYĞƏMBƏRİN KİTABI" />
+<book key="Jer" short="YEREMYA PEYĞƏMBƏRİN KİTABI" full="YEREMYA PEYĞƏMBƏRİN KİTABI" />
+<book key="Lam" short="MƏRSİYƏLƏR KİTABI" full="MƏRSİYƏLƏR KİTABI" />
+<book key="Ezek" short="YEZEKEL PEYĞƏMBƏRİN KİTABI" full="YEZEKEL PEYĞƏMBƏRİN KİTABI" />
+<book key="Dan" short="DANİEL PEYĞƏMBƏRİN KİTABI" full="DANİEL PEYĞƏMBƏRİN KİTABI" />
+<book key="Hos" short="HUŞƏ PEYĞƏMBƏRİN KİTABI" full="HUŞƏ PEYĞƏMBƏRİN KİTABI" />
+<book key="Joel" short="YOEL PEYĞƏMBƏRİN KİTABI" full="YOEL PEYĞƏMBƏRİN KİTABI" />
+<book key="Amos" short="AMOS PEYĞƏMBƏRİN KİTABI" full="AMOS PEYĞƏMBƏRİN KİTABI" />
+<book key="Obad" short="AVDİYA PEYĞƏMBƏRİN KİTABI" full="AVDİYA PEYĞƏMBƏRİN KİTABI" />
+<book key="Jonah" short="YUNUS PEYĞƏMBƏRİN KİTABI" full="YUNUS PEYĞƏMBƏRİN KİTABI" />
+<book key="Mic" short="MİKEYA PEYĞƏMBƏRİN KİTABI" full="MİKEYA PEYĞƏMBƏRİN KİTABI" />
+<book key="Nah" short="NAHUM PEYĞƏMBƏRİN KİTABI" full="NAHUM PEYĞƏMBƏRİN KİTABI" />
+<book key="Hab" short="HABAQQUQ PEYĞƏMBƏRİN KİTABI" full="HABAQQUQ PEYĞƏMBƏRİN KİTABI" />
+<book key="Zeph" short="SEFANYA PEYĞƏMBƏRİN KİTABI" full="SEFANYA PEYĞƏMBƏRİN KİTABI" />
+<book key="Hag" short="HAQQAY PEYĞƏMBƏRİN KİTABI" full="HAQQAY PEYĞƏMBƏRİN KİTABI" />
+<book key="Zech" short="ZƏKƏRİYYƏ PEYĞƏMBƏRİN KİTABI" full="ZƏKƏRİYYƏ PEYĞƏMBƏRİN KİTABI" />
+<book key="Mal" short="MALAKİ PEYĞƏMBƏRİN KİTABI" full="MALAKİ PEYĞƏMBƏRİN KİTABI" />
+<book key="Matt" short="MATTANIN NƏQL ETDİYİ MÜJDƏ" full="MATTANIN NƏQL ETDİYİ MÜJDƏ" />
+<book key="Mark" short="MARKIN NƏQL ETDİYİ MÜJDƏ" full="MARKIN NƏQL ETDİYİ MÜJDƏ" />
+<book key="Luke" short="LUKANIN NƏQL ETDİYİ MÜJDƏ" full="LUKANIN NƏQL ETDİYİ MÜJDƏ" />
+<book key="John" short="YƏHYANIN NƏQL ETDİYİ MÜJDƏ" full="YƏHYANIN NƏQL ETDİYİ MÜJDƏ" />
+<book key="Acts" short="HƏVARİLƏRİN İŞLƏRİ" full="HƏVARİLƏRİN İŞLƏRİ" />
+<book key="Rom" short="PAULUN ROMALILARA MƏKTUBU" full="PAULUN ROMALILARA MƏKTUBU" />
+<book key="1Cor" short="PAULUN KORİNFLİLƏRƏ BİRİNCİ MƏKTUBU" full="PAULUN KORİNFLİLƏRƏ BİRİNCİ MƏKTUBU" />
+<book key="2Cor" short="PAULUN KORİNFLİLƏRƏ İKİNCİ MƏKTUBU" full="PAULUN KORİNFLİLƏRƏ İKİNCİ MƏKTUBU" />
+<book key="Gal" short="PAULUN QALATİYALILARA MƏKTUBU" full="PAULUN QALATİYALILARA MƏKTUBU" />
+<book key="Eph" short="PAULUN EFESLİLƏRƏ MƏKTUBU" full="PAULUN EFESLİLƏRƏ MƏKTUBU" />
+<book key="Phil" short="PAULUN FİLİPİLİLƏRƏ MƏKTUBU" full="PAULUN FİLİPİLİLƏRƏ MƏKTUBU" />
+<book key="Col" short="PAULUN KOLOSSELİLƏRƏ MƏKTUBU" full="PAULUN KOLOSSELİLƏRƏ MƏKTUBU" />
+<book key="1Thess" short="PAULUN SALONİKLİLƏRƏ BİRİNCİ MƏKTUBU" full="PAULUN SALONİKLİLƏRƏ BİRİNCİ MƏKTUBU" />
+<book key="2Thess" short="PAULUN SALONİKLİLƏRƏ İKİNCİ MƏKTUBU" full="PAULUN SALONİKLİLƏRƏ İKİNCİ MƏKTUBU" />
+<book key="1Tim" short="PAULUN TİMOTEYƏ BİRİNCİ MƏKTUBU" full="PAULUN TİMOTEYƏ BİRİNCİ MƏKTUBU" />
+<book key="2Tim" short="PAULUN TİMOTEYƏ İKİNCİ MƏKTUBU" full="PAULUN TİMOTEYƏ İKİNCİ MƏKTUBU" />
+<book key="Titus" short="PAULUN TİTƏ MƏKTUBU" full="PAULUN TİTƏ MƏKTUBU" />
+<book key="Phlm" short="PAULUN FİLİMONA MƏKTUBU" full="PAULUN FİLİMONA MƏKTUBU" />
+<book key="Heb" short="İBRANİLƏRƏ MƏKTUB" full="İBRANİLƏRƏ MƏKTUB" />
+<book key="Jas" short="YAQUBUN MƏKTUBU" full="YAQUBUN MƏKTUBU" />
+<book key="1Pet" short="PETERİN BİRİNCİ MƏKTUBU" full="PETERİN BİRİNCİ MƏKTUBU" />
+<book key="2Pet" short="PETERİN İKİNCİ MƏKTUBU" full="PETERİN İKİNCİ MƏKTUBU" />
+<book key="1John" short="1YƏHYANIN BİRİNCİ MƏKTUBU" full="1YƏHYANIN BİRİNCİ MƏKTUBU" />
+<book key="2John" short="2YƏHYANIN İKİNCİ MƏKTUBU" full="2YƏHYANIN İKİNCİ MƏKTUBU" />
+<book key="3John" short="3YƏHYANIN ÜÇÜNCÜ MƏKTUBU" full="3YƏHYANIN ÜÇÜNCÜ MƏKTUBU" />
+<book key="Jude" short="Yəhd" full="Yəhd" />
+<book key="Rev" short="YƏHYAYA NAZİL OLAN VƏHY" full="YƏHYAYA NAZİL OLAN VƏHY" />
+</biblenames>

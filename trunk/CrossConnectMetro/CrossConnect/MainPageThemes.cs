@@ -55,6 +55,13 @@ namespace CrossConnect
                 this.TitleBackgroundColor.ColorPicked = theme.TitleBackColor;
                 this.MainBackColor.ColorPicked = theme.MainBackColor;
                 this.MainFontColor.ColorPicked = theme.MainFontColor;
+                this.WordsOfChristRed.ColorPicked = theme.WordsOfChristRed;
+                this.Highlight1.ColorPicked = theme.ColorHighligt[0];
+                this.Highlight2.ColorPicked = theme.ColorHighligt[1];
+                this.Highlight3.ColorPicked = theme.ColorHighligt[2];
+                this.Highlight4.ColorPicked = theme.ColorHighligt[3];
+                this.Highlight5.ColorPicked = theme.ColorHighligt[4];
+                this.Highlight6.ColorPicked = theme.ColorHighligt[5];
                 this.FrameColor.ColorPicked = theme.FrameColor;
                 ItemCollection itemCollection = this.FontComboBox.Items;
                 if (itemCollection != null)
@@ -109,7 +116,13 @@ namespace CrossConnect
                 theme.AccentColor = this.AccentColor.ColorPicked;
                 theme.TitleFontColor = this.TitleFontColor.ColorPicked;
                 theme.TitleBackColor = this.TitleBackgroundColor.ColorPicked;
-
+                theme.WordsOfChristRed = this.WordsOfChristRed.ColorPicked;
+                theme.ColorHighligt[0] = this.Highlight1.ColorPicked;
+                theme.ColorHighligt[1] = this.Highlight2.ColorPicked;
+                theme.ColorHighligt[2] = this.Highlight3.ColorPicked;
+                theme.ColorHighligt[3] = this.Highlight4.ColorPicked;
+                theme.ColorHighligt[4] = this.Highlight5.ColorPicked;
+                theme.ColorHighligt[5] = this.Highlight6.ColorPicked;
                 theme.MainBackColor = this.MainBackColor.ColorPicked;
                 theme.MainFontColor = this.MainFontColor.ColorPicked;
                 theme.FrameColor = this.FrameColor.ColorPicked;
@@ -160,6 +173,13 @@ namespace CrossConnect
             this.TitleBackgroundColor.TextCaption = Translations.Translate("Title background color");
             this.MainBackColor.TextCaption = Translations.Translate("Main background color");
             this.MainFontColor.TextCaption = Translations.Translate("Main font color");
+            this.WordsOfChristRed.TextCaption = Translations.Translate("Show the words of Jesus in red");
+            this.Highlight1.TextCaption = Translations.Translate("Highlight color") + " 1 => " + App.DisplaySettings.HighlightName1;
+            this.Highlight2.TextCaption = Translations.Translate("Highlight color") + " 2 => " + App.DisplaySettings.HighlightName2;
+            this.Highlight3.TextCaption = Translations.Translate("Highlight color") + " 3 => " + App.DisplaySettings.HighlightName3;
+            this.Highlight4.TextCaption = Translations.Translate("Highlight color") + " 4 => " + App.DisplaySettings.HighlightName4;
+            this.Highlight5.TextCaption = Translations.Translate("Highlight color") + " 5 => " + App.DisplaySettings.HighlightName5;
+            this.Highlight6.TextCaption = Translations.Translate("Highlight color") + " 6 => " + App.DisplaySettings.HighlightName6;
             this.ThemeFont.Text = Translations.Translate("Font");
             this.FrameColor.TextCaption = Translations.Translate("Frame color");
             this.ThemeSave.Content = Translations.Translate("Save as new theme");

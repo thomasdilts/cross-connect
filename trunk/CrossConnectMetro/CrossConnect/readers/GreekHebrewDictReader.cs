@@ -62,7 +62,7 @@ namespace CrossConnect.readers
         #region Constructors and Destructors
 
         public GreekHebrewDictReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
-            : base(path, iso2DigitLangCode, isIsoEncoding, string.Empty, string.Empty)
+            : base(path, iso2DigitLangCode, isIsoEncoding, string.Empty, string.Empty, string.Empty)
         {
         }
 
@@ -127,6 +127,8 @@ namespace CrossConnect.readers
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
             HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
@@ -160,21 +162,20 @@ namespace CrossConnect.readers
                 htmlBackgroundColor,
                 htmlForegroundColor,
                 htmlPhoneAccentColor,
+                htmlWordsOfChristColor,
                 htmlFontSize,
                 fontFamily) + displayText + "</body></html>";
         }
 
         public override void GetInfo(
-            out int bookNum,
-            out int absouteChaptNum,
+            out string bookShortName,
             out int relChaptNum,
             out int verseNum,
             out string fullName,
             out string title)
         {
             verseNum = 0;
-            absouteChaptNum = 0;
-            bookNum = 0;
+            bookShortName = string.Empty;
             relChaptNum = 0;
             fullName = this.Link;
 

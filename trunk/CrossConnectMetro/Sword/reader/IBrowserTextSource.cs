@@ -84,6 +84,8 @@ namespace Sword.reader
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
             HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
@@ -93,8 +95,7 @@ namespace Sword.reader
         string GetExternalLink(DisplaySettings displaySettings);
 
         void GetInfo(
-            out int bookNum,
-            out int absoluteChaptNum,
+            out string bookShortName,
             out int relChaptNum,
             out int verseNum,
             out string fullName,
@@ -104,11 +105,11 @@ namespace Sword.reader
 
         Task<object[]> GetTranslateableTexts(DisplaySettings displaySettings, string bibleToLoad);
 
-        Task<string> GetVerseTextOnly(DisplaySettings displaySettings, int chapterNumber, int verseNum);
+        Task<string> GetVerseTextOnly(DisplaySettings displaySettings,string bookName, int chapterNumber, int verseNum);
 
         Task<List<string>> MakeListDisplayText(DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay);
 
-        void MoveChapterVerse(int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source);
+        void MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source);
 
         void MoveNext();
 
@@ -119,6 +120,8 @@ namespace Sword.reader
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
             HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightColor,
             double htmlFontSize,
             string fontFamily,
             string fileErase,

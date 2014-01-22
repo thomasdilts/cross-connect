@@ -30,6 +30,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Sword.reader;
+using Sword.versification;
 
 namespace CrossConnect
 {
@@ -55,7 +56,7 @@ namespace CrossConnect
             Assembly assem = Assembly.Load(new AssemblyName("CrossConnect"));
             Stream stream = assem.GetManifestResourceStream(
                 "CrossConnect.Properties.verses.xml");
-
+            var canon = CanonManager.GetCanon("KJV");
             if (stream != null)
             {
                 using (XmlReader reader = XmlReader.Create(stream))
@@ -84,7 +85,8 @@ namespace CrossConnect
                                         }
                                     }
                                     while (reader.MoveToNextAttribute());
-                                    markers.Add(new BiblePlaceMarker(chapter, verse, now));
+                                    var book = canon.GetBookFromAbsoluteChapter(chapter);
+                                    markers.Add(new BiblePlaceMarker(book.ShortName1, chapter-book.VersesInChapterStartIndex, verse, now));
                                 }
 
                                 break;

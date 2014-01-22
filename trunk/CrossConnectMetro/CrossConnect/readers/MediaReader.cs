@@ -25,9 +25,10 @@ namespace CrossConnect.readers
 {
     using System.Collections.Generic;
     using System.Runtime.Serialization;
-
+    using System.Linq;
     using Sword;
     using Sword.reader;
+    using Sword.versification;
 
     /// <summary>
     ///     Load from a file all the book and verse pointers to the bzz file so that
@@ -49,7 +50,7 @@ namespace CrossConnect.readers
         #region Constructors and Destructors
 
         public MediaReader(AudioPlayer.MediaInfo info)
-            : base(string.Empty, info.Language, false, string.Empty, string.Empty)
+            : base(string.Empty, info.Language, false, string.Empty, string.Empty, string.Empty)
         {
             this.Info = info;
         }
@@ -112,6 +113,7 @@ namespace CrossConnect.readers
 
         public override ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton)
         {
+            var canon = CanonManager.GetCanon("KJV");
             switch (stage)
             {
                 case 0:
@@ -125,28 +127,35 @@ namespace CrossConnect.readers
                             this.BookNames = new BibleNames(this.Serial.Iso2DigitLangCode);
                         }
 
-                        string[] buttonNamesStart = this.BookNames.GetAllShortNames();
-                        if (!this.BookNames.ExistsShortNames)
-                        {
-                            buttonNamesStart = this.BookNames.GetAllFullNames();
-                        }
+                        //string[] buttonNamesStart = this.BookNames.GetAllShortNames();
+                        //if (!this.BookNames.ExistsShortNames)
+                        //{
+                        //    buttonNamesStart = this.BookNames.GetAllFullNames();
+                        //}
 
+                        int bookCounter = 0;
                         //always add the old testement.
                         if (!this.Info.IsNtOnly)
                         {
-                            for (int i = 0; i < BooksInOt; i++)
+                            foreach (var book in canon.OldTestBooks)
                             {
-                                colors.Add(ChapterCategories[i]);
-                                values.Add(FirstChapternumInBook[i]);
-                                buttonNames.Add(buttonNamesStart[i]);
+                                colors.Add(ChapterCategories[book.ShortName1]);
+                                values.Add(bookCounter);
+                                buttonNames.Add(this.BookNames.GetShortName(book.ShortName1));
+                                bookCounter++;
                             }
                         }
-
-                        for (int i = BooksInOt; i < BooksInBible; i++)
+                        else
                         {
-                            colors.Add(ChapterCategories[i]);
-                            values.Add(FirstChapternumInBook[i]);
-                            buttonNames.Add(buttonNamesStart[i]);
+                            bookCounter = canon.OldTestBooks.Count();
+                        }
+
+                        foreach (var book in canon.NewTestBooks)
+                        {
+                            colors.Add(ChapterCategories[book.ShortName1]);
+                            values.Add(bookCounter);
+                            buttonNames.Add(this.BookNames.GetShortName(book.ShortName1));
+                            bookCounter++;
                         }
 
                         return new ButtonWindowSpecs(
@@ -161,31 +170,25 @@ namespace CrossConnect.readers
                 case 1:
                     {
                         //Chapters 
-                        int booknum = 0;
-                        for (int i = 0; i < BooksInBible; i++)
+                        CanonBookDef book = null;
+                        //Chapters 
+                        if (lastSelectedButton >= canon.OldTestBooks.Count())
                         {
-                            if (lastSelectedButton == FirstChapternumInBook[i])
-                            {
-                                booknum = i;
-                                break;
-                            }
-
-                            if (lastSelectedButton < FirstChapternumInBook[i])
-                            {
-                                booknum = i - 1;
-                                break;
-                            }
+                            book = canon.NewTestBooks[lastSelectedButton - canon.OldTestBooks.Count()];
+                        }
+                        else
+                        {
+                            book = canon.OldTestBooks[lastSelectedButton];
                         }
 
                         // set up the array for the chapter selection
-                        int numOfChapters = ChaptersInBook[booknum];
+                        int numOfChapters = book.NumberOfChapters;
 
                         if (numOfChapters <= 1)
                         {
                             return null;
                         }
 
-                        // Color butColor = (Color)Application.Current.Resources["PhoneForegroundColor"];
                         var butColors = new int[numOfChapters];
                         var values = new int[numOfChapters];
                         var butText = new string[numOfChapters];
@@ -193,7 +196,7 @@ namespace CrossConnect.readers
                         {
                             butColors[i] = 0;
                             butText[i] = (i + 1).ToString();
-                            values[i] = FirstChapternumInBook[booknum] + i;
+                            values[i] = book.VersesInChapterStartIndex + i;
                         }
 
                         // do a nice transition

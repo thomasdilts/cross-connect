@@ -50,7 +50,7 @@ namespace CrossConnect.readers
         #region Constructors and Destructors
 
         public InternetLinkReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
-            : base(path, iso2DigitLangCode, isIsoEncoding, string.Empty, string.Empty)
+            : base(path, iso2DigitLangCode, isIsoEncoding, string.Empty, string.Empty, string.Empty)
         {
         }
 
@@ -133,16 +133,14 @@ namespace CrossConnect.readers
         }
 
         public override void GetInfo(
-            out int bookNum,
-            out int absouteChaptNum,
+            out string bookShortName,
             out int relChaptNum,
             out int verseNum,
             out string fullName,
             out string title)
         {
             verseNum = 0;
-            absouteChaptNum = 0;
-            bookNum = 0;
+            bookShortName = string.Empty;
             relChaptNum = 0;
             fullName = string.Empty;
             title = this.TitleBar;

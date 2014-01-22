@@ -30,6 +30,7 @@ namespace CrossConnect.readers
     using System.Threading.Tasks;
 
     using Sword.reader;
+    using Sword.versification;
 
     /// <summary>
     ///     Load from a file all the book and verse pointers to the bzz file so that
@@ -67,12 +68,14 @@ namespace CrossConnect.readers
 
         private HtmlColorRgba _htmlPhoneAccentColor;
 
+        private HtmlColorRgba _htmlWordsOfChristColor;
+
         #endregion
 
         #region Constructors and Destructors
 
-        public PersonalNotesReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath)
-            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath)
+        public PersonalNotesReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification)
+            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification)
         {
             this.Serial2.CloneFrom(this.Serial);
             App.PersonalNotesChanged += this.AppPersonalNotesChanged;
@@ -100,7 +103,7 @@ namespace CrossConnect.readers
         {
             get
             {
-                int count = App.DailyPlan.PersonalNotes.Sum(dict => dict.Value.Count);
+                int count = App.DailyPlan.PersonalNotesVersified.Sum(dict => dict.Value.Sum(dict2 => dict2.Value.Count));
                 return App.DisplaySettings.ShowAddedNotesByChapter || count > LimitForPaging;
             }
         }
@@ -176,6 +179,7 @@ namespace CrossConnect.readers
                         this._htmlBackgroundColor,
                         this._htmlForegroundColor,
                         this._htmlPhoneAccentColor,
+                        this._htmlWordsOfChristColor,
                         this._htmlFontSize,
                         this._fontFamily,
                         false,
@@ -192,6 +196,7 @@ namespace CrossConnect.readers
                         this._htmlBackgroundColor,
                         this._htmlForegroundColor,
                         this._htmlPhoneAccentColor,
+                        this._htmlWordsOfChristColor,
                         this._htmlFontSize,
                         this._fontFamily,
                         true,
@@ -208,29 +213,23 @@ namespace CrossConnect.readers
             if (stage == 0)
             {
                 var books = new Dictionary<int, int>();
-                int count = App.DailyPlan.PersonalNotes.Count;
+                int count = App.DailyPlan.PersonalNotesVersified.Count;
                 var butColors = new int[count];
                 var values = new int[count];
                 var butText = new string[count];
 
-                var keys = new int[count];
-                App.DailyPlan.PersonalNotes.Keys.CopyTo(keys, 0);
-                var sortedKeys = new List<int>(keys);
-                sortedKeys.Sort(CompareIntegersDescending);
-
-                string[] buttonNamesStart = this.BookNames.GetAllShortNames();
-                if (!this.BookNames.ExistsShortNames)
-                {
-                    buttonNamesStart = this.BookNames.GetAllFullNames();
-                }
+                var keys = new string[count];
+                App.DailyPlan.PersonalNotesVersified.Keys.CopyTo(keys, 0);
+                var sortedKeys = new List<string>(keys);
+                canon.SortNames(sortedKeys);
 
                 for (int i = 0; i < count; i++)
                 {
-                    int bookNum = GetBookNumForChapterNum(sortedKeys[i]);
+                    int bookNum = canon.GetBibleNumber(sortedKeys[i]);
                     if (!books.ContainsKey(bookNum))
                     {
-                        butColors[books.Count] = ChapterCategories[bookNum];
-                        butText[books.Count] = buttonNamesStart[bookNum];
+                        butColors[books.Count] = ChapterCategories[sortedKeys[i]];
+                        butText[books.Count] = this.BookNames.GetShortName(sortedKeys[i]);
                         values[books.Count] = bookNum;
 
                         books.Add(bookNum, bookNum);
@@ -248,30 +247,27 @@ namespace CrossConnect.readers
             }
             else
             {
-                int count = App.DailyPlan.PersonalNotes.Count;
+                CanonBookDef book = canon.GetBookFromBookNumber(lastSelectedButton);
+                var allInBook = App.DailyPlan.PersonalNotesVersified[book.ShortName1];
+                int count = allInBook.Keys.Count();
+                var keys = new int[count];
+                allInBook.Keys.CopyTo(keys, 0);
+                var sortedKeys = new List<int>(keys);
+                sortedKeys.Sort();
+
                 var butColors = new int[count];
                 var values = new int[count];
                 var butText = new string[count];
 
-                var keys = new int[count];
-                App.DailyPlan.PersonalNotes.Keys.CopyTo(keys, 0);
-                var sortedKeys = new List<int>(keys);
-                sortedKeys.Sort(CompareIntegersDescending);
-                int chapterCount = 0;
                 for (int i = 0; i < count; i++)
                 {
-                    int bookNum = GetBookNumForChapterNum(sortedKeys[i]);
-                    if (lastSelectedButton == bookNum)
-                    {
-                        butColors[chapterCount] = 0;
-                        butText[chapterCount] = (sortedKeys[i] - FirstChapternumInBook[bookNum] + 1).ToString();
-                        values[chapterCount] = sortedKeys[i] - lastSelectedButton;
-                        chapterCount++;
-                    }
+                    butColors[i] = 0;
+                    butText[i] = (sortedKeys[i] + 1).ToString();
+                    values[i] = sortedKeys[i];
                 }
 
                 return new ButtonWindowSpecs(
-                    stage, "Select a chapter to view", chapterCount, butColors, butText, values, ButtonSize.Small);
+                    stage, "Select a chapter to view", count, butColors, butText, values, ButtonSize.Small);
             }
         }
 
@@ -280,6 +276,8 @@ namespace CrossConnect.readers
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
             HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
@@ -290,6 +288,7 @@ namespace CrossConnect.readers
             this._htmlBackgroundColor = htmlBackgroundColor;
             this._htmlForegroundColor = htmlForegroundColor;
             this._htmlPhoneAccentColor = htmlPhoneAccentColor;
+            this._htmlWordsOfChristColor = htmlWordsOfChristColor;
             this._fontFamily = fontFamily;
             bool isPageable = this.IsPageable;
             if (forceReload || isPageable || mustUpdate || Math.Abs(this._htmlFontSize - htmlFontSize) > Epsilon)
@@ -305,6 +304,7 @@ namespace CrossConnect.readers
                             htmlBackgroundColor,
                             htmlForegroundColor,
                             htmlPhoneAccentColor,
+                            htmlWordsOfChristColor,
                             htmlFontSize,
                             fontFamily,
                             false,
@@ -321,6 +321,7 @@ namespace CrossConnect.readers
                             htmlBackgroundColor,
                             htmlForegroundColor,
                             htmlPhoneAccentColor,
+                            htmlWordsOfChristColor,
                             htmlFontSize,
                             this._fontFamily,
                             true,
@@ -333,47 +334,76 @@ namespace CrossConnect.readers
         }
 
         public override void GetInfo(
-            out int bookNum,
-            out int absoluteChaptNum,
+            out string bookShortName,
             out int relChaptNum,
             out int verseNum,
             out string fullName,
             out string title)
         {
-            base.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out title);
+            base.GetInfo(out bookShortName, out relChaptNum, out verseNum, out fullName, out title);
             title = Translations.Translate("Added notes");
         }
 
-        public override void MoveChapterVerse(int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
+        public override void MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
         {
             if (!(source is BibleZtextReader))
             {
                 return;
-            } 
-            
-            this.MoveChapterVerse(chapter, verse, isLocalLinkChange, false);
+            }
+
+            this.MoveChapterVerse(bookShortName, chapter, verse, isLocalLinkChange, false);
         }
 
         public override void MoveNext()
         {
             int nextChapter = this.Serial.PosChaptNum + 1;
-            if (nextChapter >= ChaptersInBible)
+            var book = canon.BookByShortName[this.Serial.PosBookShortName];
+            if (nextChapter >= book.NumberOfChapters)
             {
-                nextChapter = 0;
+                // must go to the next book.
+                if((book.NumberOfChapters + book.VersesInChapterStartIndex + 1)>canon.GetNumChaptersInBible())
+                {
+                    // no more books left. Go to the first one.
+                    var nextBook = canon.GetBookFromAbsoluteChapter(0);
+                    this.MoveChapterVerse(nextBook.ShortName1, 0, 0, false, false);
+                }
+                else
+                {
+                    var nextBook = canon.GetBookFromAbsoluteChapter(book.NumberOfChapters + book.VersesInChapterStartIndex + 1);
+                    this.MoveChapterVerse(nextBook.ShortName1, 0, 0, false, false);
+                }
             }
-
-            this.MoveChapterVerse(nextChapter, 0, false, false);
+            else
+            {
+                this.MoveChapterVerse(this.Serial.PosBookShortName, nextChapter, 0, false, false);
+            }
         }
 
         public override void MovePrevious()
         {
             int prevChapter = this.Serial.PosChaptNum - 1;
+            var book = canon.BookByShortName[this.Serial.PosBookShortName];
             if (prevChapter < 0)
             {
-                prevChapter = ChaptersInBible;
+                // must go to the previous book.
+                if (book.VersesInChapterStartIndex == 0)
+                {
+                    // no more previous books left. Go to the last one.
+                    var lastBook = canon.NewTestBooks.Any() ? canon.NewTestBooks[canon.NewTestBooks.Count() - 1] : canon.OldTestBooks[canon.OldTestBooks.Count() - 1];
+                    this.MoveChapterVerse(lastBook.ShortName1, lastBook.NumberOfChapters-1, 0, false, false);
+                }
+                else
+                {
+                    var previousBook = canon.GetBookFromAbsoluteChapter(book.VersesInChapterStartIndex - 1);
+                    this.MoveChapterVerse(previousBook.ShortName1, previousBook.NumberOfChapters -1, 0, false, false);
+                }
+            }
+            else
+            {
+                this.MoveChapterVerse(this.Serial.PosBookShortName, prevChapter, 0, false, false);
             }
 
-            this.MoveChapterVerse(prevChapter, 0, false, true);
+
         }
 
         public override async Task Resume()
@@ -391,19 +421,6 @@ namespace CrossConnect.readers
         #endregion
 
         #region Methods
-
-        private static int GetBookNumForChapterNum(int chapterNum)
-        {
-            for (int i = 0; i < FirstChapternumInBook.Length; i++)
-            {
-                if (FirstChapternumInBook[i] > chapterNum)
-                {
-                    return i - 1;
-                }
-            }
-
-            return BooksInBible - 1;
-        }
 
         /// <returns>
         /// </returns>
@@ -441,7 +458,7 @@ namespace CrossConnect.readers
             return returnList;
         }
 
-        private void MoveChapterVerse(int chapter, int verse, bool isLocalLinkChange, bool forcePrevious)
+        private void MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, bool forcePrevious)
         {
             int count = App.DailyPlan.PersonalNotes.Count;
             if (count > 0)
@@ -489,7 +506,8 @@ namespace CrossConnect.readers
 
         public override void SetToFirstChapter()
         {
-            this.MoveChapterVerse(0, 0, false, false);
+            var book = canon.OldTestBooks.Any() ? canon.OldTestBooks[0] : canon.NewTestBooks[0];
+            this.MoveChapterVerse(book.ShortName1, 0, 0, false, false);
         }
 
         #endregion

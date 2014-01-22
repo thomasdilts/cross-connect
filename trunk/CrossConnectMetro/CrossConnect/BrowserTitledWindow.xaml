@@ -194,6 +194,47 @@
                     </Grid>
                 </Border>
             </Popup>
+            <Popup x:Name="HighlightPopup" IsLightDismissEnabled="True" Closed="HighlightPopup_OnClosed"
+                   Opened="HighlightPopup_OnOpened">
+                <Popup.ChildTransitions>
+                    <TransitionCollection>
+                        <PaneThemeTransition />
+                    </TransitionCollection>
+                </Popup.ChildTransitions>
+                <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" BorderThickness="2"
+                        Background="{StaticResource ApplicationPageBackgroundThemeBrush}" x:Name="highlightborder">
+                    <Grid Name="MainPaneHighlightPopup">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Vertical"  Margin="0 20 0 0">
+                            <RadioButton IsChecked="False" GroupName="Highlighting" FontSize="18"
+                                                 Content="Highlight"
+                                                 Name="SelectHighlight1" Click="SelectHighlight_OnClick"/>
+                            <RadioButton IsChecked="False" GroupName="Highlighting" FontSize="18"
+                                                 Content="Highlight"
+                                                 Name="SelectHighlight2" Click="SelectHighlight_OnClick"/>
+                            <RadioButton IsChecked="False" GroupName="Highlighting" FontSize="18"
+                                                 Content="Highlight"
+                                                 Name="SelectHighlight3" Click="SelectHighlight_OnClick"/>
+                            <RadioButton IsChecked="False" GroupName="Highlighting" FontSize="18"
+                                                 Content="Highlight"
+                                                 Name="SelectHighlight4" Click="SelectHighlight_OnClick"/>
+                            <RadioButton IsChecked="False" GroupName="Highlighting" FontSize="18"
+                                                 Content="Highlight"
+                                                 Name="SelectHighlight5" Click="SelectHighlight_OnClick"/>
+                            <RadioButton IsChecked="False" GroupName="Highlighting" FontSize="18"
+                                                 Content="Highlight"
+                                                 Name="SelectHighlight6" Click="SelectHighlight_OnClick"/>
+                            <RadioButton IsChecked="False" GroupName="Highlighting" FontSize="18"
+                                                 Content="None"
+                                                 Name="SelectHighlightNone" Click="SelectHighlight_OnClick"/>
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
+            </Popup>
             <Popup x:Name="EnterKeyPopup" IsLightDismissEnabled="True" Closed="EnterKeyPopup_OnClosed"
                    Opened="EnterKeyPopup_OnOpened">
                 <Popup.ChildTransitions>
@@ -264,6 +305,7 @@
                             <ListBoxItem Name="AddToBookMarks">AddToBookMarks</ListBoxItem>
                             <ListBoxItem Name="Hear">Hear</ListBoxItem>
                             <ListBoxItem Name="Translate">Translate</ListBoxItem>
+                            <ListBoxItem Name="Highlight">Highlight</ListBoxItem>
                             <ListBoxItem Name="Copy">Copy</ListBoxItem>
                             <ListBoxItem Name="SendMail">SendMail</ListBoxItem>
                             <ListBoxItem Name="FontSmaller">FontSmaller</ListBoxItem>

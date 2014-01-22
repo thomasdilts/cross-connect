@@ -160,6 +160,10 @@
                                           Name="showAddedNotesByChapter" />
                             <ToggleSwitch Header="Use internet dictionaries" IsOn="false"
                                           Name="useInternetGreekHebrewDict" />
+                            <ToggleSwitch Header="Use highlighting" IsOn="true"
+                                          Name="useHighlighting" />
+                            <ToggleSwitch Header="Use remote storage of settings" IsOn="true"
+                                          Name="useRemoteStorage" />
 
                             <TextBlock Name="captionHebrewDictionaryLink" Text="Hebrew dictionary internet link" />
                             <TextBox Name="hebrewDictionaryLink" Text="" Margin="10 10 10 10" />
@@ -169,6 +173,18 @@
                             <TextBox Name="customBibleDownloadLink" Text="" Margin="10 10 10 10" />
                             <TextBlock Name="captionSoundLink" Text="Talking bible internet link" />
                             <TextBox Name="soundLink" Text="" Margin="10 10 10 10" />
+                            <TextBlock Name="captionHightlight1" Text="Name Hightlight1" />
+                            <TextBox Name="highlightName1" Text="" Margin="10 10 10 10" />
+                            <TextBlock Name="captionHightlight2" Text="Name Hightlight2" />
+                            <TextBox Name="highlightName2" Text="" Margin="10 10 10 10" />
+                            <TextBlock Name="captionHightlight3" Text="Name Hightlight3" />
+                            <TextBox Name="highlightName3" Text="" Margin="10 10 10 10" />
+                            <TextBlock Name="captionHightlight4" Text="Name Hightlight4" />
+                            <TextBox Name="highlightName4" Text="" Margin="10 10 10 10" />
+                            <TextBlock Name="captionHightlight5" Text="Name Hightlight5" />
+                            <TextBox Name="highlightName5" Text="" Margin="10 10 10 10" />
+                            <TextBlock Name="captionHightlight6" Text="Name Hightlight6" />
+                            <TextBox Name="highlightName6" Text="" Margin="10 10 10 10" />
                             <Button Content="Default settings" Name="butSettingsDefault"
                                     Click="ButSettingsDefault_OnClick" />
                         </StackPanel>
@@ -513,6 +529,13 @@
                             <local:ColorPicker x:Name="TitleFontColor"></local:ColorPicker>
                             <local:ColorPicker x:Name="TitleBackgroundColor"></local:ColorPicker>
                             <local:ColorPicker x:Name="FrameColor"></local:ColorPicker>
+                            <local:ColorPicker x:Name="WordsOfChristRed"></local:ColorPicker>
+                            <local:ColorPicker x:Name="Highlight1"></local:ColorPicker>
+                            <local:ColorPicker x:Name="Highlight2"></local:ColorPicker>
+                            <local:ColorPicker x:Name="Highlight3"></local:ColorPicker>
+                            <local:ColorPicker x:Name="Highlight4"></local:ColorPicker>
+                            <local:ColorPicker x:Name="Highlight5"></local:ColorPicker>
+                            <local:ColorPicker x:Name="Highlight6"></local:ColorPicker>
                             <Button Name="ThemeCopy" Content="Theme Copy" Click="Copy_OnClick" />
                             <Button Name="ThemePaste" Content="Theme Paste" Click="Paste_OnClick" />
                             <Button Name="ThemeReset" Content="Factory reset themes" Click="ThemeReset_OnClick" />

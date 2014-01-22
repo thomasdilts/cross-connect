@@ -205,7 +205,7 @@ namespace CrossConnect.readers
                                 Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length), true);
 
 
-                        string textId = "CHAP_" + chaptListToSearch[index] + "_VERS_0";
+                        string textId = "RAWBOOK_" + chaptListToSearch[index] + "_0";
                         string s = "<p><a name=\"" + textId
                                    + "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.notify('"
                                    + textId + "'); event.returnValue=false; return false;\" >";
@@ -260,7 +260,7 @@ namespace CrossConnect.readers
                         foreach (Match match in matches)
                         {
                             // clean up the verse and make sure the text is still there.
-                            string textId = "CHAP_" + chaptListToSearch[i] + "_VERS_0";
+                            string textId = "RAWBOOK_" + chaptListToSearch[i] + "_0";
                             string s = "<p><a name=\"" + textId
                                        + "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.notify('"
                                        + textId + "'); event.returnValue=false; return false;\" >"
@@ -318,6 +318,8 @@ namespace CrossConnect.readers
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
             HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
@@ -330,21 +332,20 @@ namespace CrossConnect.readers
                 htmlBackgroundColor,
                 htmlForegroundColor,
                 htmlPhoneAccentColor,
+                htmlWordsOfChristColor,
                 htmlFontSize,
                 fontFamily) + this.DisplayText + "</body></html>";
         }
 
         public override void GetInfo(
-            out int bookNum,
-            out int absouteChaptNum,
+            out string bookShortName,
             out int relChaptNum,
             out int verseNum,
             out string fullName,
             out string title)
         {
             verseNum = 0;
-            absouteChaptNum = 0;
-            bookNum = 0;
+            bookShortName = string.Empty;
             relChaptNum = 0;
             fullName = string.Empty;
             string extraText = string.Empty;

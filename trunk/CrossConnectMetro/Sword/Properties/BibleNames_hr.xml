@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<biblenames isolang="hr" isolocale="" version="1.0">
+<book key="Gen" short="KNJIGA POSTANKA" full="KNJIGA POSTANKA" />
+<book key="Exod" short="KNJIGA IZLASKA" full="KNJIGA IZLASKA" />
+<book key="Lev" short="LEVITSKI ZAKONIK" full="LEVITSKI ZAKONIK" />
+<book key="Num" short="KNJIGA BROJEVA" full="KNJIGA BROJEVA" />
+<book key="Deut" short="PONOVLJENI ZAKON" full="PONOVLJENI ZAKON" />
+<book key="Josh" short="JOŠUA" full="JOŠUA" />
+<book key="Judg" short="SUCI" full="SUCI" />
+<book key="Ruth" short="KNJIGA O RUTI" full="KNJIGA O RUTI" />
+<book key="1Sam" short="PRVA KNJIGA O SAMUELU" full="PRVA KNJIGA O SAMUELU" />
+<book key="2Sam" short="DRUGA KNJIGA O SAMUELU" full="DRUGA KNJIGA O SAMUELU" />
+<book key="1Kgs" short="PRVA KNJIGA O KRALJEVIMA" full="PRVA KNJIGA O KRALJEVIMA" />
+<book key="2Kgs" short="DRUGA KNJIGA O KRALJEVIMA" full="DRUGA KNJIGA O KRALJEVIMA" />
+<book key="1Chr" short="PRVA KNJIGA LJETOPISA" full="PRVA KNJIGA LJETOPISA" />
+<book key="2Chr" short="DRUGA KNJIGA LJETOPISA" full="DRUGA KNJIGA LJETOPISA" />
+<book key="Ezra" short="KNJIGA EZRINA" full="KNJIGA EZRINA" />
+<book key="Neh" short="KNJIGA NEHEMIJINA" full="KNJIGA NEHEMIJINA" />
+<book key="Esth" short="KNJIGA O ESTERI" full="KNJIGA O ESTERI" />
+<book key="Job" short="KNJIGA O JOBU" full="KNJIGA O JOBU" />
+<book key="Ps" short="PSALMI" full="PSALMI" />
+<book key="Prov" short="MUDRE IZREKE" full="MUDRE IZREKE" />
+<book key="Eccl" short="KNJIGA PROPOVJEDNIKA" full="KNJIGA PROPOVJEDNIKA" />
+<book key="Song" short="PJESMA NAD PJESMAMA" full="PJESMA NAD PJESMAMA" />
+<book key="Isa" short="KNJIGA PROROKA IZAIJE" full="KNJIGA PROROKA IZAIJE" />
+<book key="Jer" short="KNJIGA PROROKA JEREMIJE" full="KNJIGA PROROKA JEREMIJE" />
+<book key="Lam" short="TUŽALJKE (PLAČ JEREMIJIN)" full="TUŽALJKE (PLAČ JEREMIJIN)" />
+<book key="Ezek" short="KNJIGA PROROKA EZEKIELA" full="KNJIGA PROROKA EZEKIELA" />
+<book key="Dan" short="KNJIGA PROROKA DANIELA" full="KNJIGA PROROKA DANIELA" />
+<book key="Hos" short="KNJIGA PROROKA HOŠEA" full="KNJIGA PROROKA HOŠEA" />
+<book key="Joel" short="KNJIGA PROROKA JOELA" full="KNJIGA PROROKA JOELA" />
+<book key="Amos" short="KNJIGA PROROKA AMOSA" full="KNJIGA PROROKA AMOSA" />
+<book key="Obad" short="KNJIGA PROROKA OBADIJE" full="KNJIGA PROROKA OBADIJE" />
+<book key="Jonah" short="KNJIGA PROROKA JONE" full="KNJIGA PROROKA JONE" />
+<book key="Mic" short="KNJIGA PROROKA MIHEJA" full="KNJIGA PROROKA MIHEJA" />
+<book key="Nah" short="KNJIGA PROROKA NAHUMA" full="KNJIGA PROROKA NAHUMA" />
+<book key="Hab" short="KNJIGA PROROKA HABAKUKA" full="KNJIGA PROROKA HABAKUKA" />
+<book key="Zeph" short="KNJIGA PROROKA SEFANIJE" full="KNJIGA PROROKA SEFANIJE" />
+<book key="Hag" short="KNJIGA PROROKA HAGAJA" full="KNJIGA PROROKA HAGAJA" />
+<book key="Zech" short="KNJIGA PROROKA ZAHARIJE" full="KNJIGA PROROKA ZAHARIJE" />
+<book key="Mal" short="KNJIGA PROROKA MALAHIJE" full="KNJIGA PROROKA MALAHIJE" />
+<book key="Matt" short="EVANĐELJE PO MATEJU" full="EVANĐELJE PO MATEJU" />
+<book key="Mark" short="EVANĐELJE PO MARKU" full="EVANĐELJE PO MARKU" />
+<book key="Luke" short="EVANĐELJE PO LUKI" full="EVANĐELJE PO LUKI" />
+<book key="John" short="EVANĐELJE PO IVANU" full="EVANĐELJE PO IVANU" />
+<book key="Acts" short="DJELA APOSTOLSKA" full="DJELA APOSTOLSKA" />
+<book key="Rom" short="POSLANICA RIMLJANIMA" full="POSLANICA RIMLJANIMA" />
+<book key="1Cor" short="PRVA POSLANICA KORINĆANIMA" full="PRVA POSLANICA KORINĆANIMA" />
+<book key="2Cor" short="DRUGA POSLANICA KORINĆANIMA" full="DRUGA POSLANICA KORINĆANIMA" />
+<book key="Gal" short="POSLANICA GALAĆANIMA" full="POSLANICA GALAĆANIMA" />
+<book key="Eph" short="POSLANICA EFEŽANIMA" full="POSLANICA EFEŽANIMA" />
+<book key="Phil" short="POSLANICA FILIPLJNIMA" full="POSLANICA FILIPLJNIMA" />
+<book key="Col" short="POSLANICA KOLOŠANIMA" full="POSLANICA KOLOŠANIMA" />
+<book key="1Thess" short="PRVA POSLANICA SOLUNJANIMA" full="PRVA POSLANICA SOLUNJANIMA" />
+<book key="2Thess" short="DRUGA POSLANICA SOLUNJANIMA" full="DRUGA POSLANICA SOLUNJANIMA" />
+<book key="1Tim" short="PRVA POSLANICA TIMOTEJU" full="PRVA POSLANICA TIMOTEJU" />
+<book key="2Tim" short="DRUGA POSLANICA TIMOTEJU" full="DRUGA POSLANICA TIMOTEJU" />
+<book key="Titus" short="POSLANICA TITU" full="POSLANICA TITU" />
+<book key="Phlm" short="POSLANICA FILEMONU" full="POSLANICA FILEMONU" />
+<book key="Heb" short="POSLANICA HEBREJIMA" full="POSLANICA HEBREJIMA" />
+<book key="Jas" short="JAKOVLJEVA POSLANICA" full="JAKOVLJEVA POSLANICA" />
+<book key="1Pet" short="PRVA PETROVA POSLANICA" full="PRVA PETROVA POSLANICA" />
+<book key="2Pet" short="DRUGA PETROVA POSLANICA" full="DRUGA PETROVA POSLANICA" />
+<book key="1John" short="PRVA IVANOVA POSLANICA" full="PRVA IVANOVA POSLANICA" />
+<book key="2John" short="DRUGA IVANOVA POSLANICA" full="DRUGA IVANOVA POSLANICA" />
+<book key="3John" short="TREĆA IVANOVA POSLANICA" full="TREĆA IVANOVA POSLANICA" />
+<book key="Jude" short="JUDINA POSLANICA" full="JUDINA POSLANICA" />
+<book key="Rev" short="OTKRIVENJE" full="OTKRIVENJE" />
+</biblenames>

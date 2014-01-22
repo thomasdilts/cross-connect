@@ -132,6 +132,7 @@
     <Compile Include="BadgeHelper.cs" />
     <Compile Include="BrowserAddNote.cs" />
     <Compile Include="BrowserChooseBook.cs" />
+    <Compile Include="BrowserHighlight.cs" />
     <Compile Include="BrowserCopy.cs" />
     <Compile Include="BrowserMenu.cs" />
     <Compile Include="BrowserSearchPopup.cs" />
@@ -324,7 +325,9 @@
     <EmbeddedResource Include="Properties\crossc_zh.xml" />
     <EmbeddedResource Include="Properties\crossc_zh_cn.xml" />
     <EmbeddedResource Include="Properties\regex.html" />
-    <EmbeddedResource Include="Properties\themes.xml" />
+    <EmbeddedResource Include="Properties\themes.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

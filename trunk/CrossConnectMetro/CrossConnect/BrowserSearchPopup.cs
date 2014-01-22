@@ -67,7 +67,7 @@ namespace CrossConnect
 
         public string TextToSearch = string.Empty;
 
-        private int _currentBookNum;
+        private string _currentBookName;
 
         private int _numFoundVerses;
 
@@ -246,7 +246,9 @@ namespace CrossConnect
 
             if (this.WholeBible.IsChecked != null && (bool)this.WholeBible.IsChecked)
             {
-                for (int i = 0; i < BibleZtextReader.ChaptersInBible; i++)
+                var source = (BibleZtextReader)this._state.Source;
+
+                for (int i = 0; i < source.canon.GetNumChaptersInBible(); i++)
                 {
                     this.Chapters.Add(i);
                 }
@@ -255,7 +257,8 @@ namespace CrossConnect
             }
             else if (this.OldTestement.IsChecked != null && (bool)this.OldTestement.IsChecked)
             {
-                for (int i = 0; i < BibleZtextReader.ChaptersInOt; i++)
+                var source = (BibleZtextReader)this._state.Source;
+                for (int i = 0; i < source.canon.GetNumChaptersInOldTestement(); i++)
                 {
                     this.Chapters.Add(i);
                 }
@@ -264,7 +267,8 @@ namespace CrossConnect
             }
             else if (this.NewTEstement.IsChecked != null && (bool)this.NewTEstement.IsChecked)
             {
-                for (int i = BibleZtextReader.ChaptersInOt; i < BibleZtextReader.ChaptersInBible; i++)
+                var source = (BibleZtextReader)this._state.Source;
+                for (int i = source.canon.GetNumChaptersInOldTestement(); i < source.canon.GetNumChaptersInBible(); i++)
                 {
                     this.Chapters.Add(i);
                 }
@@ -274,15 +278,11 @@ namespace CrossConnect
             else
             {
                 // we must find the first chapter in the current book.
-                int chapter = 0;
-                for (int i = 0; i < this._currentBookNum; i++)
-                {
-                    chapter += BibleZtextReader.ChaptersInBook[i];
-                }
+                var source = (BibleZtextReader)this._state.Source;
+                var book = source.canon.BookByShortName[this._currentBookName];
 
                 // add all the chapters up to the last chapter in the book.
-                int lastChapterInBook = chapter + BibleZtextReader.ChaptersInBook[this._currentBookNum];
-                for (int i = chapter; i < lastChapterInBook; i++)
+                for (int i = book.VersesInChapterStartIndex; i < book.VersesInChapterStartIndex + book.NumberOfChapters; i++)
                 {
                     this.Chapters.Add(i);
                 }
@@ -308,7 +308,7 @@ namespace CrossConnect
             {
                 var source = (BibleZtextReader)this._state.Source;
                 this.SourceSearch = new SearchReader(
-                    source.Serial.Path, source.Serial.Iso2DigitLangCode, source.Serial.IsIsoEncoding, source.Serial.CipherKey, source.Serial.ConfigPath);
+                    source.Serial.Path, source.Serial.Iso2DigitLangCode, source.Serial.IsIsoEncoding, source.Serial.CipherKey, source.Serial.ConfigPath, source.Serial.Versification);
                 await ((BibleZtextReader)this.SourceSearch).Initialize();
             }
             if (this.IsFastSearch)
@@ -392,13 +392,12 @@ namespace CrossConnect
 
         private void RealSearchPopupLoaded(object sender, RoutedEventArgs e)
         {
-            int dummy2;
             string fullName;
             string text;
             int verseNum;
-            int absoluteChaptNum;
+            int chaptNum;
             this._state.Source.GetInfo(
-                out this._currentBookNum, out absoluteChaptNum, out dummy2, out verseNum, out fullName, out text);
+                out this._currentBookName, out chaptNum, out verseNum, out fullName, out text);
             this.Chapter.Content = fullName;
 
             this.PageTitle.Text = Translations.Translate("Search");

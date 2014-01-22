@@ -85,6 +85,7 @@ namespace CrossConnect
                                        : Visibility.Collapsed;
             this.Translate.Visibility = this.AddANote.Visibility;
             this.Copy.Visibility = this.AddANote.Visibility;
+            this.Highlight.Visibility = this.AddANote.Visibility;
             this.SendMail.Visibility = this.AddANote.Visibility;
             this.FontSmaller.Visibility = (this.State.HtmlFontSize > 4) ? Visibility.Visible : Visibility.Collapsed;
             this.FontLarger.Visibility = (this.State.HtmlFontSize < 65) ? Visibility.Visible : Visibility.Collapsed;
@@ -99,6 +100,7 @@ namespace CrossConnect
             this.Hear.Content = Translations.Translate("Listen to this chapter");
             this.Translate.Content = Translations.Translate("Translate to the current language");
             this.Copy.Content = Translations.Translate("Copy the last selected verses");
+            this.Highlight.Content = Translations.Translate("Highlight");
             this.SendMail.Content = Translations.Translate("Share the last selected verses");
             this.FontSmaller.Content = Translations.Translate("Make the text size smaller");
             this.FontLarger.Content = Translations.Translate("Make the text size larger");
@@ -177,7 +179,7 @@ namespace CrossConnect
                         await this._state.Source.GetTranslateableTexts(App.DisplaySettings, this._state.BibleToLoad);
                     var toTranslate = (string[])reply[0];
                     var isTranslateable = (bool[])reply[1];
-                    var transReader2 = new TranslatorReader(string.Empty, string.Empty, false, string.Empty, string.Empty);
+                    var transReader2 = new TranslatorReader(string.Empty, string.Empty, false, string.Empty, string.Empty, string.Empty);
                     await App.AddWindow(
                         this._state.BibleToLoad,
                         this._state.BibleDescription,
@@ -210,6 +212,11 @@ namespace CrossConnect
                 case "Copy":
                     this.MenuPopup.IsOpen = false;
                     this.Copy_OnClick();
+                    this.ShowUserInterface(false);
+                    break;
+                case "Highlight":
+                    this.MenuPopup.IsOpen = false;
+                    this.Highlight_OnClick();
                     this.ShowUserInterface(false);
                     break;
                 case "SendMail":

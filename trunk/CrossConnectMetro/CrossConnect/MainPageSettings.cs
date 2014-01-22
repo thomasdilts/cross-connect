@@ -123,7 +123,14 @@ namespace CrossConnect
             App.DisplaySettings.CustomBibleDownloadLinks = this.customBibleDownloadLink.Text;
             App.DisplaySettings.SoundLink = this.soundLink.Text;
             App.DisplaySettings.UseInternetGreekHebrewDict = this.useInternetGreekHebrewDict.IsOn;
-
+            App.DisplaySettings.HighlightName1 = this.highlightName1.Text;
+            App.DisplaySettings.HighlightName2 = this.highlightName2.Text;
+            App.DisplaySettings.HighlightName3 = this.highlightName3.Text;
+            App.DisplaySettings.HighlightName4 = this.highlightName4.Text;
+            App.DisplaySettings.HighlightName5 = this.highlightName5.Text;
+            App.DisplaySettings.HighlightName6 = this.highlightName6.Text;
+            App.DisplaySettings.UseHighlights = this.useHighlighting.IsOn;
+            App.DisplaySettings.UseRemoteStorage = this.useRemoteStorage.IsOn;
             App.RaiseBookmarkChangeEvent();
             App.RaiseHistoryChangeEvent();
             App.RaisePersonalNotesChangeEvent();
@@ -159,7 +166,15 @@ namespace CrossConnect
             this.captionCustomBibleDownloadLink.Text = Translations.Translate("Custom bible download addresses");
             this.captionSoundLink.Text = Translations.Translate("Talking bible internet link");
             this.useInternetGreekHebrewDict.Header = Translations.Translate("Use internet dictionaries");
+            this.captionHightlight1.Text = Translations.Translate("Highlight name") + " 1";
+            this.captionHightlight2.Text = Translations.Translate("Highlight name") + " 2";
+            this.captionHightlight3.Text = Translations.Translate("Highlight name") + " 3";
+            this.captionHightlight4.Text = Translations.Translate("Highlight name") + " 4";
+            this.captionHightlight5.Text = Translations.Translate("Highlight name") + " 5";
+            this.captionHightlight6.Text = Translations.Translate("Highlight name") + " 6";
             this.butSettingsDefault.Content = Translations.Translate("Default settings");
+            this.useHighlighting.Header = Translations.Translate("Use highlighting");
+            this.useRemoteStorage.Header = Translations.Translate("Use remote storage");
 
             bool successfulInitialize = false;
             while (!successfulInitialize)
@@ -182,7 +197,15 @@ namespace CrossConnect
                     this.greekDictionaryLink.Text = App.DisplaySettings.GreekDictionaryLink;
                     this.customBibleDownloadLink.Text = App.DisplaySettings.CustomBibleDownloadLinks;
                     this.soundLink.Text = App.DisplaySettings.SoundLink;
+                    this.highlightName1.Text = App.DisplaySettings.HighlightName1;
+                    this.highlightName2.Text = App.DisplaySettings.HighlightName2;
+                    this.highlightName3.Text = App.DisplaySettings.HighlightName3;
+                    this.highlightName4.Text = App.DisplaySettings.HighlightName4;
+                    this.highlightName5.Text = App.DisplaySettings.HighlightName5;
+                    this.highlightName6.Text = App.DisplaySettings.HighlightName6;
                     this.useInternetGreekHebrewDict.IsOn = App.DisplaySettings.UseInternetGreekHebrewDict;
+                    this.useHighlighting.IsOn = App.DisplaySettings.UseHighlights;
+                    this.useRemoteStorage.IsOn = App.DisplaySettings.UseRemoteStorage;
 
                     successfulInitialize = true;
                 }

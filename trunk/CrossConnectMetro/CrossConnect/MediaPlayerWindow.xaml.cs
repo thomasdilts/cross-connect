@@ -141,7 +141,7 @@ namespace CrossConnect
         {
         }
 
-        public void SynchronizeWindow(int chapterNum, int verseNum, IBrowserTextSource source)
+        public void SynchronizeWindow(string bookShortName, int chapterNum, int verseNum, IBrowserTextSource source)
         {
         }
 

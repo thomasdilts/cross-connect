@@ -58,7 +58,7 @@ namespace CrossConnect
 
         void ShowUserInterface(bool isShow);
 
-        void SynchronizeWindow(int chapterNum, int verseNum, IBrowserTextSource source);
+        void SynchronizeWindow(string bookShortName, int chapterNum, int verseNum, IBrowserTextSource source);
 
         void UpdateBrowser(bool isOrientationChangeOnly);
 

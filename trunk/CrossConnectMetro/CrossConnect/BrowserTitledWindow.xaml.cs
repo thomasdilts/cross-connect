@@ -121,6 +121,8 @@ namespace CrossConnect
                     return ConvertColorToHtmlRgba(App.Themes.MainFontColor);
                 case "PhoneAccentColor":
                     return ConvertColorToHtmlRgba(App.Themes.AccentColor);
+                case "PhoneWordsOfChristColor":
+                    return ConvertColorToHtmlRgba(App.Themes.WordsOfChristRed);
             }
 
             return null;
@@ -132,18 +134,15 @@ namespace CrossConnect
             this._isInGetHtmlAsynchronously = false;
             this._lastFileName = createdFile;
 
-            int absoluteChaptNum = 0;
             int relChaptNum;
             int verseNum = 0;
             if (this._state.Source.IsSynchronizeable || this._state.Source.IsLocalChangeDuringLink)
             {
-                int bookNum;
+                string bookShortName;
                 string fullName;
                 string titleText;
                 this._state.Source.GetInfo(
-                    out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
-                //source = new Uri("ms-appx-web:///" + /*App.WebDirIsolated + "/" +*/
-                //    _lastFileName /*+ "#CHAP_" + absoluteChaptNum + "_VERS_" + verseNum*/,UriKind.Absolute);
+                    out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
             }
 
             try
@@ -268,7 +267,8 @@ namespace CrossConnect
                                         ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code,
                                         isIsoEncoding,
                                         (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey),
-                                        book.Value.Sbmd.ConfPath);
+                                        book.Value.Sbmd.ConfPath,
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Versification));
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     return;
                                 case WindowType.WindowBibleNotes:
@@ -278,7 +278,8 @@ namespace CrossConnect
                                         isIsoEncoding,
                                         Translations.Translate("Notes"),
                                         (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey),
-                                        book.Value.Sbmd.ConfPath);
+                                        book.Value.Sbmd.ConfPath,
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Versification));
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     break;
                                 case WindowType.WindowBookmarks:
@@ -287,7 +288,8 @@ namespace CrossConnect
                                         ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code,
                                         isIsoEncoding,
                                         (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey),
-                                        book.Value.Sbmd.ConfPath);
+                                        book.Value.Sbmd.ConfPath,
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Versification));
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     return;
                                 case WindowType.WindowHistory:
@@ -296,7 +298,8 @@ namespace CrossConnect
                                         ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code,
                                         isIsoEncoding,
                                         (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey),
-                                        book.Value.Sbmd.ConfPath);
+                                        book.Value.Sbmd.ConfPath,
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Versification));
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     return;
                                 case WindowType.WindowDailyPlan:
@@ -307,7 +310,8 @@ namespace CrossConnect
                                         ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code,
                                         isIsoEncoding,
                                         (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey),
-                                        book.Value.Sbmd.ConfPath);
+                                        book.Value.Sbmd.ConfPath,
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Versification));
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     return;
                                 case WindowType.WindowCommentary:
@@ -316,7 +320,8 @@ namespace CrossConnect
                                         ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code,
                                         isIsoEncoding,
                                         (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey),
-                                        book.Value.Sbmd.ConfPath);
+                                        book.Value.Sbmd.ConfPath,
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Versification));
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     return;
                                 case WindowType.WindowBook:
@@ -332,7 +337,8 @@ namespace CrossConnect
                                         ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code,
                                         isIsoEncoding,
                                         (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey),
-                                        book.Value.Sbmd.ConfPath);
+                                        book.Value.Sbmd.ConfPath,
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Versification));
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     return;
                                 case WindowType.WindowTranslator:
@@ -341,7 +347,8 @@ namespace CrossConnect
                                         ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code,
                                         isIsoEncoding,
                                         (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey),
-                                        book.Value.Sbmd.ConfPath);
+                                        book.Value.Sbmd.ConfPath,
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Versification));
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     return;
                             }
@@ -371,7 +378,8 @@ namespace CrossConnect
                 bool isIsoEncoding = !book.Value.Sbmd.GetCetProperty(ConfigEntryType.Encoding).Equals("UTF-8");
                 this._state.Source = new DailyPlanReader(
                     bookPath, ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code, isIsoEncoding,
-                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey),book.Value.Sbmd.ConfPath);
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey), book.Value.Sbmd.ConfPath,
+                                        (string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Versification));
                 await ((BibleZtextReader)this._state.Source).Initialize();
             }
         }
@@ -402,11 +410,11 @@ namespace CrossConnect
             }
         }
 
-        public void SynchronizeWindow(int chapterNum, int verseNum, IBrowserTextSource source)
+        public void SynchronizeWindow(string bookShortName, int chapterNum, int verseNum, IBrowserTextSource source)
         {
             if (this._state.IsSynchronized && this._state.Source.IsSynchronizeable)
             {
-                this._state.Source.MoveChapterVerse(chapterNum, verseNum, false, source);
+                this._state.Source.MoveChapterVerse(bookShortName, chapterNum, verseNum, false, source);
                 this.UpdateBrowser(false);
             }
         }
@@ -456,6 +464,12 @@ namespace CrossConnect
                     HtmlColorRgba backcolor = GetBrowserColor("PhoneBackgroundColor");
                     HtmlColorRgba forecolor = GetBrowserColor("PhoneForegroundColor");
                     HtmlColorRgba accentcolor = GetBrowserColor("PhoneAccentColor");
+                    HtmlColorRgba htmlWordsOfChristColor = GetBrowserColor("PhoneWordsOfChristColor");
+                    HtmlColorRgba[] htmlHighlights = new HtmlColorRgba[6];
+                    for (int i = 0; i < 6; i++)
+                    {
+                        htmlHighlights[i] = ConvertColorToHtmlRgba(App.Themes.ColorHighligt[i]);
+                    }
 
                     string fontFamily;
                     if (!Theme.FontFamilies.TryGetValue(App.Themes.FontFamily, out fontFamily))
@@ -473,6 +487,8 @@ namespace CrossConnect
                         backcolor,
                         forecolor,
                         accentcolor,
+                        htmlWordsOfChristColor,
+                        htmlHighlights,
                         this._state.HtmlFontSize * fontSizeMultiplier,
                         fontFamily,
                         App.WebDirIsolated + "/" + this._lastFileName);
@@ -560,6 +576,8 @@ namespace CrossConnect
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
             HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightColor,
             double htmlFontSize,
             string fontFamily,
             string fileErase)
@@ -582,6 +600,8 @@ namespace CrossConnect
                         htmlBackgroundColor,
                         htmlForegroundColor,
                         htmlPhoneAccentColor,
+                        htmlWordsOfChristColor,
+                        htmlHighlightColor,
                         htmlFontSize,
                         fontFamily,
                         false,
@@ -627,17 +647,17 @@ namespace CrossConnect
             }
             else
             {
-                int bookNum;
+                string bookShortName;
                 int absoluteChaptNum;
                 int relChaptNum;
                 int verseNum;
                 string fullName;
                 string titleText;
                 this._state.Source.GetInfo(
-                    out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
+                    out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
                 try
                 {
-                    this._lastSelectedItem = "CHAP_" + absoluteChaptNum + "_VERS_" + verseNum;
+                    this._lastSelectedItem = bookShortName + "_" + relChaptNum + "_" + verseNum; 
                     this.webBrowser1.InvokeScript(
                         "ScrollToAnchor",
                         new[] { this._lastSelectedItem, ConvertColorToHtmlRgba(App.Themes.AccentColor).GetHtmlRgba() });
@@ -648,40 +668,6 @@ namespace CrossConnect
                 }
             }
         }
-
-        //private void OnTimerTick(object sender, object e)
-        //{
-        //    Debug.WriteLine("OnTimerTick start");
-
-        //    // we must delay updating of this webbrowser...
-        //    //((DispatcherTimer)sender).Stop();
-        //    try
-        //    {
-        //        if (_nextVSchroll > 0)
-        //        {
-        //            this.webBrowser1.InvokeScript("setVerticalScrollPosition",new[]{ _nextVSchroll.ToString(CultureInfo.InvariantCulture)});
-        //            _nextVSchroll = 0;
-        //        }
-        //        else
-        //        {
-        //            int bookNum;
-        //            int absoluteChaptNum;
-        //            int relChaptNum;
-        //            int verseNum;
-        //            string fullName;
-        //            string titleText;
-        //            _state.Source.GetInfo(
-        //                out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
-        //            var source = new Uri("ms-appx-web:///" + /* App.WebDirIsolated + "/" +*/
-        //                _lastFileName /*+ "#CHAP_" + absoluteChaptNum + "_VERS_" + verseNum*/);
-        //            webBrowser1.Navigate(source);
-        //        }
-        //    }
-        //    catch (Exception ee)
-        //    {
-        //        Debug.WriteLine("OnTimerTick Failed; " + ee.Message);
-        //    }
-        //}
 
         private void SourceChanged()
         {
@@ -731,125 +717,118 @@ namespace CrossConnect
         private async void WebBrowser1ScriptNotify(object sender, NotifyEventArgs e)
         {
             string[] chapterVerse = e.Value.Split('_');
-            int chapterNum = -1;
-            int verseNum = -1;
-            for (int i = 0; i < chapterVerse.Length; i += 2)
+            if (e.Value.Contains("STRONG"))
             {
-                switch (chapterVerse[i])
+                if (App.DisplaySettings.UseInternetGreekHebrewDict)
                 {
-                    case "CHAP":
-                        int.TryParse(chapterVerse[i + 1], out chapterNum);
-                        break;
-                    case "VERS":
-                        int.TryParse(chapterVerse[i + 1], out verseNum);
-                        break;
-                    case "STRONG":
-
-                        if (App.DisplaySettings.UseInternetGreekHebrewDict)
+                    ITiledWindow foundWin = null;
+                    foreach (ITiledWindow win in App.OpenWindows)
+                    {
+                        if (win.State.WindowType == WindowType.WindowInternetLink)
                         {
-                            ITiledWindow foundWin = null;
-                            foreach (ITiledWindow win in App.OpenWindows)
-                            {
-                                if (win.State.WindowType == WindowType.WindowInternetLink)
-                                {
-                                    foundWin = win;
-                                }
-                            }
-                            if (foundWin == null)
-                            {
-                                var win = new InternetLinkReader(string.Empty, string.Empty, false);
-                                win.ShowLink(chapterVerse[i + 1], chapterVerse[i + 1]);
-                                await App.AddWindow(
-                                    this._state.BibleToLoad,
-                                    this._state.BibleDescription,
-                                    WindowType.WindowInternetLink,
-                                    this._state.HtmlFontSize,
-                                    this.State.Window,
-                                    win);
-                            }
-                            else
-                            {
-                                ((InternetLinkReader)foundWin.State.Source).ShowLink(
-                                    chapterVerse[i + 1], chapterVerse[i + 1]);
-                                foundWin.UpdateBrowser(false);
-                            }
+                            foundWin = win;
                         }
-                        else
+                    }
+                    if (foundWin == null)
+                    {
+                        var win = new InternetLinkReader(string.Empty, string.Empty, false);
+                        win.ShowLink(chapterVerse[1], chapterVerse[1]);
+                        await App.AddWindow(
+                            this._state.BibleToLoad,
+                            this._state.BibleDescription,
+                            WindowType.WindowInternetLink,
+                            this._state.HtmlFontSize,
+                            this.State.Window,
+                            win);
+                    }
+                    else
+                    {
+                        ((InternetLinkReader)foundWin.State.Source).ShowLink(
+                            chapterVerse[1], chapterVerse[1]);
+                        foundWin.UpdateBrowser(false);
+                    }
+                }
+                else
+                {
+                    ITiledWindow foundWin = null;
+                    foreach (ITiledWindow win in App.OpenWindows)
+                    {
+                        if (win.State.WindowType == WindowType.WindowLexiconLink)
                         {
-                            ITiledWindow foundWin = null;
-                            foreach (ITiledWindow win in App.OpenWindows)
-                            {
-                                if (win.State.WindowType == WindowType.WindowLexiconLink)
-                                {
-                                    foundWin = win;
-                                }
-                            }
-                            if (foundWin == null)
-                            {
-                                var win = new GreekHebrewDictReader(string.Empty, string.Empty, false);
-                                win.ShowLink(chapterVerse[i + 1]);
-                                await App.AddWindow(
-                                    this._state.BibleToLoad,
-                                    this._state.BibleDescription,
-                                    WindowType.WindowLexiconLink,
-                                    this._state.HtmlFontSize,
-                                    this.State.Window,
-                                    win);
-                            }
-                            else
-                            {
-                                ((GreekHebrewDictReader)foundWin.State.Source).ShowLink(chapterVerse[i + 1]);
-                                foundWin.UpdateBrowser(false);
-                            }
+                            foundWin = win;
                         }
-
-                        return;
-                    case "MORPH":
-                        // todo complete the morphology.
-                        string morphology = MorphologyTranslator.ParseRobinson(chapterVerse[i + 1]);
-                        var dialog = new MessageDialog(morphology);
-                        dialog.ShowAsync();
-                        return;
+                    }
+                    if (foundWin == null)
+                    {
+                        var win = new GreekHebrewDictReader(string.Empty, string.Empty, false);
+                        win.ShowLink(chapterVerse[1]);
+                        await App.AddWindow(
+                            this._state.BibleToLoad,
+                            this._state.BibleDescription,
+                            WindowType.WindowLexiconLink,
+                            this._state.HtmlFontSize,
+                            this.State.Window,
+                            win);
+                    }
+                    else
+                    {
+                        ((GreekHebrewDictReader)foundWin.State.Source).ShowLink(chapterVerse[1]);
+                        foundWin.UpdateBrowser(false);
+                    }
                 }
             }
-
-            if (chapterNum >= 0 && verseNum >= 0)
+            else if (e.Value.Contains("MORPH"))
             {
-                if (this._state.Source.IsLocalChangeDuringLink)
+                // todo complete the morphology.
+                string morphology = MorphologyTranslator.ParseRobinson(chapterVerse[1]);
+                var dialog = new MessageDialog(morphology);
+                dialog.ShowAsync();
+            }
+            else if (chapterVerse.Count()>=3)
+            {
+                string bookShortName = chapterVerse[0];
+                int chapterNum = -1;
+                int verseNum = -1;
+                int.TryParse(chapterVerse[1], out chapterNum);
+                int.TryParse(chapterVerse[2], out verseNum);
+                if (chapterNum >= 0 && verseNum >= 0)
                 {
-                    this._state.Source.MoveChapterVerse(chapterNum, verseNum, true, this._state.Source);
-                    this.WriteTitle();
-                }
-                try
-                {
-                    string id = "CHAP_" + chapterNum + "_VERS_" + verseNum;
-                    this.webBrowser1.InvokeScript(
-                        "SetFontColorForElement",
-                        new[] { id, ConvertColorToHtmlRgba(App.Themes.AccentColor).GetHtmlRgba() });
-                    if (!string.IsNullOrEmpty(this._lastSelectedItem) && !this._lastSelectedItem.Equals(id))
+                    if (this._state.Source.IsLocalChangeDuringLink)
                     {
-                        try
+                        this._state.Source.MoveChapterVerse(bookShortName, chapterNum, verseNum, true, this._state.Source);
+                        this.WriteTitle();
+                    }
+                    try
+                    {
+                        string id = bookShortName + "_" + chapterNum + "_" + verseNum;
+                        this.webBrowser1.InvokeScript(
+                            "SetFontColorForElement",
+                            new[] { id, ConvertColorToHtmlRgba(App.Themes.AccentColor).GetHtmlRgba() });
+                        if (!string.IsNullOrEmpty(this._lastSelectedItem) && !this._lastSelectedItem.Equals(id))
                         {
-                            this.webBrowser1.InvokeScript(
-                                "SetFontColorForElement",
-                                new[]
+                            try
+                            {
+                                this.webBrowser1.InvokeScript(
+                                    "SetFontColorForElement",
+                                    new[]
                                     {
                                         this._lastSelectedItem,
                                         ConvertColorToHtmlRgba(App.Themes.MainFontColor).GetHtmlRgba()
                                     });
+                            }
+                            catch (Exception)
+                            {
+                            }
                         }
-                        catch (Exception)
-                        {
-                        }
+                        this._lastSelectedItem = id;
                     }
-                    this._lastSelectedItem = id;
-                }
-                catch (Exception)
-                {
-                }
-                App.SynchronizeAllWindows(chapterNum, verseNum, this._state.CurIndex, this._state.Source);
+                    catch (Exception)
+                    {
+                    }
+                    App.SynchronizeAllWindows(bookShortName, chapterNum, verseNum, this._state.CurIndex, this._state.Source);
 
-                App.AddHistory(chapterNum, verseNum);
+                    App.AddHistory(bookShortName, chapterNum, verseNum);
+                }
             }
         }
 
@@ -868,14 +847,13 @@ namespace CrossConnect
 
         private void WriteTitle()
         {
-            int bookNum;
-            int absoluteChaptNum;
+            string bookNum;
             int relChaptNum;
             int verseNum;
             string fullName;
             string titleText;
             this._state.Source.GetInfo(
-                out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
+                out bookNum, out relChaptNum, out verseNum, out fullName, out titleText);
             this.title.Text = titleText + " - "
                               + (string.IsNullOrEmpty(this._state.BibleDescription)
                                      ? this._state.BibleToLoad
