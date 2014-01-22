@@ -51,8 +51,8 @@ namespace CrossConnect.readers
 
         #region Constructors and Destructors
 
-        public TranslatorReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath)
-            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath)
+        public TranslatorReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification)
+            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification)
         {
         }
 
@@ -115,6 +115,8 @@ namespace CrossConnect.readers
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
             HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
@@ -127,21 +129,20 @@ namespace CrossConnect.readers
                 htmlBackgroundColor,
                 htmlForegroundColor,
                 htmlPhoneAccentColor,
+                htmlWordsOfChristColor,
                 htmlFontSize,
                 fontFamily) + this.DisplayText + "</body></html>";
         }
 
         public override void GetInfo(
-            out int bookNum,
-            out int absouteChaptNum,
+            out string bookShortName,
             out int relChaptNum,
             out int verseNum,
             out string fullName,
             out string title)
         {
             verseNum = 0;
-            absouteChaptNum = 0;
-            bookNum = 0;
+            bookShortName = string.Empty;
             relChaptNum = 0;
             fullName = string.Empty;
             title = Translations.Translate("Translation");

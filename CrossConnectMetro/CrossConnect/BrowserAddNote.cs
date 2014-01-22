@@ -39,16 +39,14 @@ namespace CrossConnect
 
             // they are in reverse order again,
             BiblePlaceMarker place = App.PlaceMarkers.History[App.PlaceMarkers.History.Count - 1];
-            int bookNum;
-            int relChaptNum;
             string fullName;
             string titleText;
-            ((BibleZtextReader)this._state.Source).GetInfo(
-                place.ChapterNum, place.VerseNum, out bookNum, out relChaptNum, out fullName, out titleText);
-            string title = fullName + " " + (relChaptNum + 1) + ":" + (place.VerseNum + 1) + " - "
+            ((BibleZtextReader)this._state.Source).GetInfo(place.BookShortName,
+                place.ChapterNum, place.VerseNum, out fullName, out titleText);
+            string title = fullName + " " + (place.ChapterNum + 1) + ":" + (place.VerseNum + 1) + " - "
                            + this._state.BibleToLoad;
             string verseText =
-                await this._state.Source.GetVerseTextOnly(App.DisplaySettings, place.ChapterNum, place.VerseNum);
+                await this._state.Source.GetVerseTextOnly(App.DisplaySettings,place.BookShortName, place.ChapterNum, place.VerseNum);
 
             this.verse.Text =
                 verseText.Replace("<p>", string.Empty)
@@ -57,10 +55,11 @@ namespace CrossConnect
                          .Replace("\n", " ") + "\n-" + title;
 
             this.TextToAdd.Text = string.Empty;
-            if (App.DailyPlan.PersonalNotes.ContainsKey(place.ChapterNum)
-                && App.DailyPlan.PersonalNotes[place.ChapterNum].ContainsKey(place.VerseNum))
+            if (App.DailyPlan.PersonalNotesVersified.ContainsKey(place.BookShortName)
+                && App.DailyPlan.PersonalNotesVersified[place.BookShortName].ContainsKey(place.ChapterNum)
+                && App.DailyPlan.PersonalNotesVersified[place.BookShortName][place.ChapterNum].ContainsKey(place.VerseNum))
             {
-                this.TextToAdd.Text = App.DailyPlan.PersonalNotes[place.ChapterNum][place.VerseNum].Note;
+                this.TextToAdd.Text = App.DailyPlan.PersonalNotesVersified[place.BookShortName][place.ChapterNum][place.VerseNum].Note;
             }
             MainPageSplit.SideBarShowPopup(this.AddNotePopup, this.MainPaneAddNotePopup);
         }
@@ -72,13 +71,18 @@ namespace CrossConnect
             BiblePlaceMarker place = App.PlaceMarkers.History[App.PlaceMarkers.History.Count - 1];
 
             // erase the old first
-            if (App.DailyPlan.PersonalNotes.ContainsKey(place.ChapterNum)
-                && App.DailyPlan.PersonalNotes[place.ChapterNum].ContainsKey(place.VerseNum))
+            if (App.DailyPlan.PersonalNotesVersified.ContainsKey(place.BookShortName)
+                && App.DailyPlan.PersonalNotesVersified[place.BookShortName].ContainsKey(place.ChapterNum)
+                && App.DailyPlan.PersonalNotesVersified[place.BookShortName][place.ChapterNum].ContainsKey(place.VerseNum))
             {
-                App.DailyPlan.PersonalNotes[place.ChapterNum].Remove(place.VerseNum);
-                if (App.DailyPlan.PersonalNotes[place.ChapterNum].Count == 0)
+                App.DailyPlan.PersonalNotesVersified[place.BookShortName][place.ChapterNum].Remove(place.VerseNum);
+                if (App.DailyPlan.PersonalNotesVersified[place.BookShortName][place.ChapterNum].Count == 0)
                 {
-                    App.DailyPlan.PersonalNotes.Remove(place.ChapterNum);
+                    App.DailyPlan.PersonalNotesVersified[place.BookShortName].Remove(place.ChapterNum);
+                    if (App.DailyPlan.PersonalNotesVersified[place.BookShortName].Count == 0)
+                    {
+                        App.DailyPlan.PersonalNotesVersified.Remove(place.BookShortName);
+                    }
                 }
             }
 
@@ -86,12 +90,17 @@ namespace CrossConnect
             if (this.TextToAdd.Text.Length > 0)
             {
                 BiblePlaceMarker note = BiblePlaceMarker.Clone(place);
-                if (!App.DailyPlan.PersonalNotes.ContainsKey(place.ChapterNum))
+                if (!App.DailyPlan.PersonalNotesVersified.ContainsKey(place.BookShortName))
                 {
-                    App.DailyPlan.PersonalNotes.Add(place.ChapterNum, new Dictionary<int, BiblePlaceMarker>());
+                    App.DailyPlan.PersonalNotesVersified.Add(place.BookShortName, new Dictionary<int,Dictionary<int, BiblePlaceMarker>>());
                 }
 
-                App.DailyPlan.PersonalNotes[place.ChapterNum][place.VerseNum] = note;
+                if (!App.DailyPlan.PersonalNotesVersified[place.BookShortName].ContainsKey(place.ChapterNum))
+                {
+                    App.DailyPlan.PersonalNotesVersified[place.BookShortName].Add(place.ChapterNum, new Dictionary<int, BiblePlaceMarker>());
+                }
+
+                App.DailyPlan.PersonalNotesVersified[place.BookShortName][place.ChapterNum][place.VerseNum] = note;
                 note.Note = this.TextToAdd.Text;
             }
 

@@ -125,6 +125,7 @@ namespace CrossConnect
             App.ShowUserInterface(true);
 
             App.MainWindow.ReDrawWindows(false);
+            App.SavePersistantWindows();
         }
 
         private void AddWindowPopup_OnOpened(object sender, object e)
@@ -423,6 +424,7 @@ namespace CrossConnect
                             BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"),
                             BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
                             BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
+                            BrowserTitledWindow.GetBrowserColor("PhoneWordsOfChristColor"),
                             e.NewValue,
                             Theme.FontFamilies[App.Themes.FontFamily]) + "<a class=\"normalcolor\" href=\"#\">"
                         + Translations.Translate("Text size") + "</a>" + "</body></html>");

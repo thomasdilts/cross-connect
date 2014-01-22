@@ -67,16 +67,14 @@ namespace CrossConnect
             for (int j = foundVerses.Count - 1; j >= 0; j--)
             {
                 BiblePlaceMarker place = foundVerses[j];
-                int bookNum;
-                int relChaptNum;
                 string fullName;
                 string titleText;
-                ((BibleZtextReader)this._state.Source).GetInfo(
-                    place.ChapterNum, place.VerseNum, out bookNum, out relChaptNum, out fullName, out titleText);
-                string title = fullName + " " + (relChaptNum + 1) + ":" + (place.VerseNum + 1) + " - "
+                ((BibleZtextReader)this._state.Source).GetInfo(place.BookShortName,
+                    place.ChapterNum, place.VerseNum, out fullName, out titleText);
+                string title = fullName + " " + (place.ChapterNum + 1) + ":" + (place.VerseNum + 1) + " - "
                                + this._state.BibleToLoad;
                 string verseText =
-                    await this._state.Source.GetVerseTextOnly(App.DisplaySettings, place.ChapterNum, place.VerseNum);
+                    await this._state.Source.GetVerseTextOnly(App.DisplaySettings, place.BookShortName, place.ChapterNum, place.VerseNum);
 
                 if (!string.IsNullOrEmpty(titlesOnly))
                 {
@@ -90,11 +88,12 @@ namespace CrossConnect
                              .Replace("</p>", string.Empty)
                              .Replace("<br />", string.Empty)
                              .Replace("\n", " ") + "\n-" + title;
-                if (App.DailyPlan.PersonalNotes.ContainsKey(place.ChapterNum)
-                    && App.DailyPlan.PersonalNotes[place.ChapterNum].ContainsKey(place.VerseNum))
+                if (App.DailyPlan.PersonalNotesVersified.ContainsKey(place.BookShortName)
+                    && App.DailyPlan.PersonalNotesVersified[place.BookShortName].ContainsKey(place.ChapterNum)
+                    && App.DailyPlan.PersonalNotesVersified[place.BookShortName][place.ChapterNum].ContainsKey(place.VerseNum))
                 {
                     textsWithTitles += "\n" + Translations.Translate("Added notes") + "\n"
-                                       + App.DailyPlan.PersonalNotes[place.ChapterNum][place.VerseNum].Note;
+                                       + App.DailyPlan.PersonalNotesVersified[place.BookShortName][place.ChapterNum][place.VerseNum].Note;
                 }
             }
             return new[] { textsWithTitles, titlesOnly };

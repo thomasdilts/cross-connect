@@ -647,7 +647,7 @@ namespace Sword
                     if (type == null)
                     {
                         //Logger.Warn("Extra entry in " + @internal + " of " + configEntry.Name);
-                        this._extra.Add(key, configEntry);
+                        this._extra[key] = configEntry;
                     }
                     else if (type.IsSynthetic)
                     {

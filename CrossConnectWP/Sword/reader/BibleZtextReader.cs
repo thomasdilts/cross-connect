@@ -1014,13 +1014,13 @@ namespace Sword.reader
         {
             var head = new StringBuilder();
             head.Append(
-                "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+                "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />");
 
             head.Append("<style>");
 
             head.Append(
                 string.Format(
-                    "body {{background:{0};color:{1};font-size:{2}pt;margin:0;padding:0;{3} }}",
+                    "body {{background:{0};color:{1};font-size:{2}pt;margin:10;padding:0;{3} }}",
                     htmlBackgroundColor,
                     htmlForegroundColor,
                     (int)(htmlFontSize + 0.5),

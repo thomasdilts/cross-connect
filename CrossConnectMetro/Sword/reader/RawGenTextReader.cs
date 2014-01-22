@@ -70,7 +70,7 @@ namespace Sword.reader
 
         public static BiblePlaceMarker Clone(BiblePlaceMarker toClone)
         {
-            var newMarker = new BiblePlaceMarker(toClone.ChapterNum, toClone.VerseNum, toClone.When)
+            var newMarker = new BiblePlaceMarker(toClone.BookShortName, toClone.ChapterNum, toClone.VerseNum, toClone.When)
                                 {
                                     Note =
                                         toClone
@@ -311,6 +311,7 @@ function SetFontColorForElement(elemntId, colorRgba){
     HtmlColorRgba htmlBackgroundColor,
     HtmlColorRgba htmlForegroundColor,
     HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
     double htmlFontSize,
     string fontFamily)
         {
@@ -345,7 +346,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 string.Format(
                     " a.normalcolor:link span.christ {{ color: {1}; }}  a.normalcolor span.christ:visited {{ color: {3}; }}  a.normalcolor span.christ:hover {{ color: {2}; }} a.normalcolor:hover {{ color: {0}; }} ",
                     htmlPhoneAccentColor.GetHtmlRgba(),
-                    BibleZtextReader.ColorWordsOfChrist.GetHtmlRgba(),
+                    htmlWordsOfChristColor.GetHtmlRgba(),
                     htmlPhoneAccentColor.GetHtmlRgba(),
                     htmlPhoneAccentColor.GetHtmlRgba()));
 
@@ -446,6 +447,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
             HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
@@ -460,6 +463,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                     htmlBackgroundColor,
                     htmlForegroundColor,
                     htmlPhoneAccentColor,
+                    htmlWordsOfChristColor,
                     htmlFontSize,
                     fontFamily,
                     isNotesOnly,
@@ -485,24 +489,22 @@ function SetFontColorForElement(elemntId, colorRgba){
         }
 
         public virtual void GetInfo(
-            out int bookNum,
-            out int absoluteChaptNum,
+            out string bookShortName,
             out int relChaptNum,
             out int verseNum,
             out string fullName,
             out string title)
         {
             verseNum = this.Serial.PosVerseNum;
-            absoluteChaptNum = this.Serial.PosChaptNum;
-            this.GetInfo(
-                this.Serial.PosChaptNum, this.Serial.PosVerseNum, out bookNum, out relChaptNum, out fullName, out title);
+            relChaptNum = this.Serial.PosChaptNum;
+            bookShortName = this.Serial.PosBookShortName;
+            this.GetInfo(bookShortName,
+                this.Serial.PosChaptNum, this.Serial.PosVerseNum, out fullName, out title);
         }
 
-        public void GetInfo(
-            int chapterNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title)
+        public void GetInfo(string bookShortName,
+            int chapterNum, int verseNum, out string fullName, out string title)
         {
-            bookNum = 0;
-            relChaptNum = 0;
             fullName = string.Empty;
             title = string.Empty;
             if (this.Chapters.Count == 0)
@@ -520,8 +522,6 @@ function SetFontColorForElement(elemntId, colorRgba){
                     parent = parent.Parent;
                 }
 
-                bookNum = 0;
-                relChaptNum = chapterNum;
                 fullName = chapt.Title;
                 title = titleText;
             }
@@ -541,15 +541,14 @@ function SetFontColorForElement(elemntId, colorRgba){
             var toTranslate = new string[2];
             var isTranslateable = new bool[2];
 
-            int bookNum;
+            string bookShortName;
             int relChaptNum;
             string fullName;
             string titleText;
             int verseNum;
-            int absoluteChaptNum;
 
-            this.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
-            string verseText = await this.GetVerseTextOnly(displaySettings, absoluteChaptNum, verseNum);
+            this.GetInfo(out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
+            string verseText = await this.GetVerseTextOnly(displaySettings, bookShortName, relChaptNum, verseNum);
 
             toTranslate[0] = "<p>" + fullName + " " + (relChaptNum + 1) + ":" + (verseNum + 1) + " - " + bibleToLoad
                              + "</p>";
@@ -571,7 +570,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         /// <param name="verseNumber">Verse number beginning with zero for the first verse</param>
         /// <returns>Verse raw</returns>
         public virtual async Task<string> GetVerseTextOnly(
-            DisplaySettings displaySettings, int chapterNumber, int verseNumber)
+            DisplaySettings displaySettings, string shortBookName, int chapterNumber, int verseNumber)
         {
             return string.Empty;
         }
@@ -584,7 +583,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return returnList;
         }
 
-        public virtual void MoveChapterVerse(int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
+        public virtual void MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
         {
             try
             {
@@ -679,6 +678,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
             HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightColor,
             double htmlFontSize,
             string fontFamily,
             string fileErase,
@@ -750,6 +751,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                     htmlBackgroundColor,
                     htmlForegroundColor,
                     htmlPhoneAccentColor,
+                    htmlWordsOfChristColor,
+                    htmlHighlightColor,
                     htmlFontSize,
                     fontFamily,
                     false,
@@ -856,6 +859,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
             HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
@@ -884,6 +888,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                     htmlBackgroundColor,
                     htmlForegroundColor,
                     htmlPhoneAccentColor,
+                    htmlWordsOfChristColor,
                     htmlFontSize,
                     fontFamily);
                 chapterEndHtml = "</body></html>";

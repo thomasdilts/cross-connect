@@ -45,6 +45,7 @@ namespace CrossConnect
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Notifications;
     using NotificationsExtensions.TileContent;
+    using Sword.versification;
 
     /// <summary>
     ///     Provides application-specific behavior to supplement the default Application class.
@@ -67,6 +68,7 @@ namespace CrossConnect
         private const string PersistantObjectsThemesFileName = "_Themes.xml";
         private const string PersistantObjectsDisplaySettingsFileName = "_DisplaySettings.xml";
         private const string PersistantObjectsMarkersFileName = "_Markers.xml";
+        private const string PersistantObjectsHighlightFileName = "_Highlights.xml";
 
         #endregion
 
@@ -126,13 +128,13 @@ namespace CrossConnect
                 if (PlaceMarkers.Bookmarks.Count > 0)
                 {
                     BiblePlaceMarker lastBookmark = PlaceMarkers.Bookmarks[PlaceMarkers.Bookmarks.Count - 1];
-                    if (last.ChapterNum == lastBookmark.ChapterNum && last.VerseNum == lastBookmark.VerseNum)
+                    if (last.BookShortName.Equals(lastBookmark.BookShortName) && last.ChapterNum == lastBookmark.ChapterNum && last.VerseNum == lastBookmark.VerseNum)
                     {
                         PlaceMarkers.Bookmarks.RemoveAt(PlaceMarkers.Bookmarks.Count - 1);
                     }
                 }
 
-                PlaceMarkers.Bookmarks.Add(new BiblePlaceMarker(last.ChapterNum, last.VerseNum, DateTime.Now));
+                PlaceMarkers.Bookmarks.Add(new BiblePlaceMarker(last.BookShortName, last.ChapterNum, last.VerseNum, DateTime.Now));
 
                 // don't let this get more then a 100
                 if (PlaceMarkers.Bookmarks.Count > 100)
@@ -149,19 +151,19 @@ namespace CrossConnect
             SavePersistantMarkers();
         }
 
-        public static void AddHistory(int chapterNum, int verseNum)
+        public static void AddHistory(string bookShortName, int chapterNum, int verseNum)
         {
             // stop repeats
             if (PlaceMarkers.History.Count > 0)
             {
                 BiblePlaceMarker last = PlaceMarkers.History[PlaceMarkers.History.Count - 1];
-                if (last.ChapterNum == chapterNum && last.VerseNum == verseNum)
+                if (last.BookShortName.Equals(bookShortName) && last.ChapterNum == chapterNum && last.VerseNum == verseNum)
                 {
                     PlaceMarkers.History.RemoveAt(PlaceMarkers.History.Count - 1);
                 }
             }
 
-            PlaceMarkers.History.Add(new BiblePlaceMarker(chapterNum, verseNum, DateTime.Now));
+            PlaceMarkers.History.Add(new BiblePlaceMarker(bookShortName, chapterNum, verseNum, DateTime.Now));
 
             // don't let this get more then a 100
             if (PlaceMarkers.History.Count > 100)
@@ -282,16 +284,10 @@ namespace CrossConnect
                 string titlesOnly = string.Empty;
                 string textsWithTitles = string.Empty;
                 BiblePlaceMarker place = item.Value;
-                int bookNum;
-                int relChaptNum;
-                string fullName;
-                string titleText;
-                ((BibleZtextReader)foundWindowToUse.State.Source).GetInfo(
-                    place.ChapterNum, place.VerseNum, out bookNum, out relChaptNum, out fullName, out titleText);
-                string title = ((BibleZtextReader)foundWindowToUse.State.Source).BookNames.GetShortName(bookNum) + " " + (relChaptNum + 1) + ":" + (place.VerseNum + 1) + " - "
+                string title = ((BibleZtextReader)foundWindowToUse.State.Source).BookNames.GetShortName(place.BookShortName) + " " + (place.ChapterNum + 1) + ":" + (place.VerseNum + 1) + " - "
                                + foundWindowToUse.State.BibleDescription;
                 string verseText =
-                    await foundWindowToUse.State.Source.GetVerseTextOnly(App.DisplaySettings, place.ChapterNum, place.VerseNum);
+                    await foundWindowToUse.State.Source.GetVerseTextOnly(App.DisplaySettings, place.BookShortName, place.ChapterNum, place.VerseNum);
 
                 titlesOnly += title;
                 textsWithTitles +=
@@ -375,13 +371,13 @@ namespace CrossConnect
             }
         }
 
-        public static void SynchronizeAllWindows(int chapterNum, int verseNum, int curIndex, IBrowserTextSource source)
+        public static void SynchronizeAllWindows(string bookShortName, int chapterNum, int verseNum, int curIndex, IBrowserTextSource source)
         {
             for (int i = 0; i < OpenWindows.Count(); i++)
             {
                 if (i != curIndex)
                 {
-                    OpenWindows[i].SynchronizeWindow(chapterNum, verseNum, source);
+                    OpenWindows[i].SynchronizeWindow(bookShortName, chapterNum, verseNum, source);
                 }
             }
         }
@@ -454,7 +450,40 @@ namespace CrossConnect
                 try
                 {
                     // Get the input stream for the SessionState file
-                    StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(filename);
+                    StorageFile file = null;
+                    if (DisplaySettings.UseRemoteStorage)
+                    {
+                        // attempt first remote, then local
+                        try
+                        {
+                            file = await ApplicationData.Current.RoamingFolder.GetFileAsync(filename);
+                        }
+                        catch (Exception)
+                        {
+                        }
+
+                        if (file == null)
+                        {
+                            file = await ApplicationData.Current.LocalFolder.GetFileAsync(filename);
+                        }
+                    }
+                    else
+                    {
+                        // attempt first local, then remote
+                        try
+                        {
+                            file = await ApplicationData.Current.LocalFolder.GetFileAsync(filename);
+                        }
+                        catch (Exception)
+                        {
+                        }
+
+                        if (file == null)
+                        {
+                            file = await ApplicationData.Current.RoamingFolder.GetFileAsync(filename);
+                        }
+                    }
+
                     using (IInputStream inStream = await file.OpenSequentialReadAsync())
                     {
                         // Deserialize the Session State
@@ -492,6 +521,7 @@ namespace CrossConnect
             
             // We must now save all the settings in the different NEW file names
             SavePersistantDisplaySettings();
+            SavePersistantHighlighting();
             SavePersistantMarkers();
             SavePersistantThemes();
             SavePersistantWindows();
@@ -523,6 +553,38 @@ namespace CrossConnect
             if (DailyPlan == null)
             {
                 DailyPlan = new SerializableDailyPlan();
+            }
+            else
+            {
+                if(DailyPlan.PersonalNotes.Any())
+                {
+                    //convert to the new note system
+                    var canon = CanonManager.GetCanon("KJV");
+                    foreach (var chapter in DailyPlan.PersonalNotes)
+	                {
+                        var book = canon.GetBookFromAbsoluteChapter(chapter.Key);
+                        foreach (var verse in chapter.Value)
+	                    {
+                            BiblePlaceMarker note = BiblePlaceMarker.Clone(verse.Value);
+                            note.BookShortName = book.ShortName1;
+                            note.VerseNum = note.VerseNum - book.VersesInChapterStartIndex;
+                            if (!App.DailyPlan.PersonalNotesVersified.ContainsKey(note.BookShortName))
+                            {
+                                App.DailyPlan.PersonalNotesVersified.Add(note.BookShortName, new Dictionary<int, Dictionary<int, BiblePlaceMarker>>());
+                            }
+
+                            if (!App.DailyPlan.PersonalNotesVersified[note.BookShortName].ContainsKey(note.ChapterNum))
+                            {
+                                App.DailyPlan.PersonalNotesVersified[note.BookShortName].Add(note.ChapterNum, new Dictionary<int, BiblePlaceMarker>());
+                            }
+
+                            App.DailyPlan.PersonalNotesVersified[note.BookShortName][note.ChapterNum][note.VerseNum] = note;
+	                    }		 
+	                }
+
+                }
+
+                DailyPlan.PersonalNotes = new Dictionary<int,Dictionary<int,BiblePlaceMarker>>();
             }
 
             if (DailyPlan.PlanBible == null)
@@ -636,6 +698,24 @@ namespace CrossConnect
 
             DisplaySettings.CheckForNullAndFix();
         }
+        private void LoadPersistantHighlighting(Dictionary<String, Object> objectsToLoad)
+        {
+            object markerXmlData;
+            DisplaySettings.highlighter = new Highlighter();
+            if (objectsToLoad.TryGetValue("Highlights", out markerXmlData))
+            {
+                using (var sr = new StringReader((string)markerXmlData))
+                {
+                    var settings = new XmlReaderSettings();
+                    using (XmlReader reader = XmlReader.Create(sr, settings))
+                    {
+                        var types = new[] { typeof(DisplaySettings) };
+                        var ser = new DataContractSerializer(typeof(DisplaySettings), types);
+                        DisplaySettings.highlighter.FromString((string)ser.ReadObject(reader));
+                    }
+                }
+            }
+        }
 
         private void LoadPersistantMarkers(Dictionary<String, Object> objectsToLoad)
         {
@@ -658,6 +738,11 @@ namespace CrossConnect
             if (PlaceMarkers == null)
             {
                 PlaceMarkers = new BiblePlaceMarkers();
+            }
+            else
+            {
+                BiblePlaceMarkers.FixOldStyleMarkers(PlaceMarkers.Bookmarks);
+                BiblePlaceMarkers.FixOldStyleMarkers(PlaceMarkers.History);
             }
         }
 
@@ -682,11 +767,23 @@ namespace CrossConnect
                 }
 
                 await InstalledBibles.Initialize();
+                var tempUseRemoteStorage = true;
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("UseRemoteStorage"))
+                {
+                    // temporarily set the UseRemoteStorage
+                    tempUseRemoteStorage = (bool)ApplicationData.Current.LocalSettings.Values.ContainsKey("UseRemoteStorage");
+                    DisplaySettings.UseRemoteStorage = tempUseRemoteStorage;
+                }
 
-                var objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsThemesFileName);
-                LoadPersistantThemes(objectsToLoad);
-                objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsDisplaySettingsFileName);
+                var objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsDisplaySettingsFileName);
                 LoadPersistantDisplaySettings(objectsToLoad);
+                DisplaySettings.UseRemoteStorage = tempUseRemoteStorage;
+                ApplicationData.Current.LocalSettings.Values["UseRemoteStorage"] = DisplaySettings.UseRemoteStorage;
+                
+                objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsThemesFileName);
+                LoadPersistantThemes(objectsToLoad);
+                objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsHighlightFileName);
+                LoadPersistantHighlighting(objectsToLoad);
                 objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsMarkersFileName);
                 LoadPersistantMarkers(objectsToLoad);
                 objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsWindowsFileName);
@@ -710,13 +807,13 @@ namespace CrossConnect
         private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
 
-            SavePersistantWindows();
+            await SavePersistantWindows();
             SuspendingDeferral deferral = e.SuspendingOperation.GetDeferral();
             await SuspensionManager.SaveAsync();
             deferral.Complete();
         }
 
-        private static void SavePersistantWindows()
+        public static async Task SavePersistantWindows()
         {
             var objectsToSave = new Dictionary<string, object>();
             for (int i = 0; i < OpenWindows.Count(); i++)
@@ -776,10 +873,10 @@ namespace CrossConnect
                 objectsToSave["DailyPlan"] = sw.ToString();
             }
 
-            SavePersistantObjects(objectsToSave, PersistantObjectsWindowsFileName);
+            await SavePersistantObjects(objectsToSave, PersistantObjectsWindowsFileName);
         }
 
-        public static void SavePersistantThemes()
+        public static async void SavePersistantThemes()
         {
             var objectsToSave = new Dictionary<string, object>();
             if (Themes.Themes.Count() > 0)
@@ -792,10 +889,10 @@ namespace CrossConnect
                 objectsToSave.Remove("Themes");
             }
 
-            SavePersistantObjects(objectsToSave, PersistantObjectsThemesFileName);
+            await SavePersistantObjects(objectsToSave, PersistantObjectsThemesFileName);
         }
 
-        public static void SavePersistantDisplaySettings()
+        public static async void SavePersistantDisplaySettings()
         {
             var objectsToSave = new Dictionary<string, object>();
             var types2 = new[] { typeof(DisplaySettings) };
@@ -815,11 +912,19 @@ namespace CrossConnect
 
                 objectsToSave["DisplaySettings"] = sw.ToString();
             }
-
-            SavePersistantObjects(objectsToSave, PersistantObjectsDisplaySettingsFileName);
+            // UseRemoteStorage is always local
+            ApplicationData.Current.LocalSettings.Values["UseRemoteStorage"] = DisplaySettings.UseRemoteStorage;
+            await SavePersistantObjects(objectsToSave, PersistantObjectsDisplaySettingsFileName);
         }
 
-        public static void SavePersistantMarkers()
+        public static async void SavePersistantHighlighting()
+        {
+            var objectsToSave = new Dictionary<string, object>();
+            objectsToSave["Highlights"] = DisplaySettings.highlighter.ToString();
+            await SavePersistantObjects(objectsToSave, PersistantObjectsHighlightFileName);
+        }
+
+        public static async void SavePersistantMarkers()
         {
             var objectsToSave = new Dictionary<string, object>();
             // add new settings.
@@ -842,10 +947,10 @@ namespace CrossConnect
                 objectsToSave["BiblePlaceMarkers"] = sw.ToString();
             }
 
-            SavePersistantObjects(objectsToSave, PersistantObjectsMarkersFileName);
+            await SavePersistantObjects(objectsToSave, PersistantObjectsMarkersFileName);
         }
 
-        private static async void SavePersistantObjects(Dictionary<string, object> objectsToSave, string filename)
+        private static async Task SavePersistantObjects(Dictionary<string, object> objectsToSave, string filename)
         {
             try
             {
@@ -855,10 +960,20 @@ namespace CrossConnect
                 serializer.WriteObject(sessionData, objectsToSave);
 
                 // Get an output stream for the SessionState file and write the state asynchronously
-                StorageFile file =
-                    await
-                    ApplicationData.Current.LocalFolder.CreateFileAsync(
-                        filename, CreationCollisionOption.ReplaceExisting);
+                StorageFile file = null;
+                if(DisplaySettings.UseRemoteStorage)
+                {
+                    file = await
+                        ApplicationData.Current.RoamingFolder.CreateFileAsync(
+                            filename, CreationCollisionOption.ReplaceExisting);
+                }
+                else
+                {
+                    file = await
+                        ApplicationData.Current.LocalFolder.CreateFileAsync(
+                            filename, CreationCollisionOption.ReplaceExisting);
+                }
+
                 using (Stream fileStream = await file.OpenStreamForWriteAsync())
                 {
                     sessionData.Seek(0, SeekOrigin.Begin);
@@ -888,6 +1003,19 @@ namespace CrossConnect
             public List<BiblePlaceMarker> History = new List<BiblePlaceMarker>();
 
             #endregion
+
+            public static void FixOldStyleMarkers(List<BiblePlaceMarker> maybeOldStyleMarkers)
+            {
+                if(maybeOldStyleMarkers.Count()>0 && string.IsNullOrEmpty(maybeOldStyleMarkers[0].BookShortName))
+                {
+                    var canon = CanonManager.GetCanon("KJV");
+                    foreach (var mark in maybeOldStyleMarkers)
+                    {
+                        var book = canon.GetBookFromAbsoluteChapter(mark.ChapterNum);
+                        mark.ChapterNum = mark.ChapterNum - book.VersesInChapterStartIndex;
+                    }
+                }
+            }
         }
 
         [DataContract]
@@ -904,6 +1032,10 @@ namespace CrossConnect
             [DataMember(Name = "personalNotes")]
             public Dictionary<int, Dictionary<int, BiblePlaceMarker>> PersonalNotes =
                 new Dictionary<int, Dictionary<int, BiblePlaceMarker>>();
+
+            [DataMember(Name = "PersonalNotesVersified")]
+            public Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> PersonalNotesVersified =
+                new Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>>();
 
             [DataMember]
             public string PlanBible = string.Empty;

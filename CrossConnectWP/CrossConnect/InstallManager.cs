@@ -652,7 +652,7 @@ namespace CrossConnect
 
                         // sbmd.Driver = fake;
                         var book = new SwordBook(buffer, @internal);
-                        Entries.Add(book.Name, book);
+                        Entries[book.Name] = book;
                     }
                     catch (Exception exp)
                     {

@@ -1,70 +1,69 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <biblenames isolang="th" isolocale="" version="1.0">
-  <book keynumber="0" short="ปฐมกาล" full="ปฐมกาล" />
-  <book keynumber="1" short="อพยพ" full="อพยพ" />
-  <book keynumber="2" short="เลวีนิติ" full="เลวีนิติ" />
-  <book keynumber="3" short="กันดารวิถี" full="กันดารวิถี" />
-  <book keynumber="4" short="เฉลยธรรมบัญญัติ" full="เฉลยธรรมบัญญัติ" />
-  <book keynumber="5" short="โยชูวา" full="โยชูวา" />
-  <book keynumber="6" short="ผู้วินิจฉัย" full="ผู้วินิจฉัย" />
-  <book keynumber="7" short="นางรูธ" full="นางรูธ" />
-  <book keynumber="8" short="1 ซามูเอล" full="1 ซามูเอล" />
-  <book keynumber="9" short="2 ซามูเอล" full="2 ซามูเอล" />
-  <book keynumber="10" short="1 พงศ์กษัตริย์" full="1 พงศ์กษัตริย์" />
-  <book keynumber="11" short="2 พงศ์กษัตริย์" full="2 พงศ์กษัตริย์" />
-  <book keynumber="12" short="1 พงศาวดาร" full="1 พงศาวดาร" />
-  <book keynumber="13" short="2 พงศาวดาร" full="2 พงศาวดาร" />
-  <book keynumber="14" short="เอสรา" full="เอสรา" />
-  <book keynumber="15" short="เนหมีย์" full="เนหมีย์" />
-  <book keynumber="16" short="เอสเธอร์" full="เอสเธอร์" />
-  <book keynumber="17" short="โยบ" full="โยบ" />
-  <book keynumber="18" short="สดุดี" full="สดุดี" />
-  <book keynumber="19" short="สุภาษิต" full="สุภาษิต" />
-  <book keynumber="20" short="ปัญญาจารย์" full="ปัญญาจารย์" />
-  <book keynumber="21" short="เพลงซาโลมอน" full="เพลงซาโลมอน" />
-  <book keynumber="22" short="อิสยาห์" full="อิสยาห์" />
-  <book keynumber="23" short="เยเรมีย์" full="เยเรมีย์" />
-  <book keynumber="24" short="บทเพลงคร่ำครวญ" full="บทเพลงคร่ำครวญ" />
-  <book keynumber="25" short="เอเสเคียล" full="เอเสเคียล" />
-  <book keynumber="26" short="ดาเนียล" full="ดาเนียล" />
-  <book keynumber="27" short="โฮเชยา" full="โฮเชยา" />
-  <book keynumber="28" short="โยเอล" full="โยเอล" />
-  <book keynumber="29" short="อาโมส" full="อาโมส" />
-  <book keynumber="30" short="โอบาดีห์" full="โอบาดีห์" />
-  <book keynumber="31" short="โยนาห์" full="โยนาห์" />
-  <book keynumber="32" short="มีคาห์" full="มีคาห์" />
-  <book keynumber="33" short="นาฮูม" full="นาฮูม" />
-  <book keynumber="34" short="ฮาบากุก" full="ฮาบากุก" />
-  <book keynumber="35" short="เศฟันยาห์" full="เศฟันยาห์" />
-  <book keynumber="36" short="ฮักกัย" full="ฮักกัย" />
-  <book keynumber="37" short="เศคาริยาห์" full="เศคาริยาห์" />
-  <book keynumber="38" short="มาลาคี" full="มาลาคี" />
-  <book keynumber="39" short="มัทธิว" full="มัทธิว" />
-  <book keynumber="40" short="มาระโก" full="มาระโก" />
-  <book keynumber="41" short="ลูกา" full="ลูกา" />
-  <book keynumber="42" short="ยอห์น" full="ยอห์น" />
-  <book keynumber="43" short="กิจการ" full="กิจการ" />
-  <book keynumber="44" short="โรม" full="โรม" />
-  <book keynumber="45" short="1 โครินธ์" full="1 โครินธ์" />
-  <book keynumber="46" short="2 โครินธ์" full="2 โครินธ์" />
-  <book keynumber="47" short="กาลาเทีย" full="กาลาเทีย" />
-  <book keynumber="48" short="เอเฟซัส" full="เอเฟซัส" />
-  <book keynumber="49" short="ฟีลิปปี" full="ฟีลิปปี" />
-  <book keynumber="50" short="โคโลสี" full="โคโลสี" />
-  <book keynumber="51" short="1 เธสะโลนิกา" full="1 เธสะโลนิกา" />
-  <book keynumber="52" short="2 เธสะโลนิกา" full="2 เธสะโลนิกา" />
-  <book keynumber="53" short="1 ทิโมธี" full="1 ทิโมธี" />
-  <book keynumber="54" short="2 ทิโมธี" full="2 ทิโมธี" />
-  <book keynumber="55" short="ทิตัส" full="ทิตัส" />
-  <book keynumber="56" short="ฟีเลโมน" full="ฟีเลโมน" />
-  <book keynumber="57" short="ฮีบรู" full="ฮีบรู" />
-  <book keynumber="58" short="ยากอบ" full="ยากอบ" />
-  <book keynumber="59" short="1 เปโตร" full="1 เปโตร" />
-  <book keynumber="60" short="2 เปโตร" full="2 เปโตร" />
-  <book keynumber="61" short="1 ยอห์น" full="1 ยอห์น" />
-  <book keynumber="62" short="2 ยอห์น" full="2 ยอห์น" />
-  <book keynumber="63" short="3 ยอห์น" full="3 ยอห์น" />
-  <book keynumber="64" short="ยูดาห์" full="ยูดาห์" />
-  <book keynumber="65" short="วิวรณ์" full="วิวรณ์" />
+<book key="Gen" short="ปฐมกาล" full="ปฐมกาล" />
+<book key="Exod" short="อพยพ" full="อพยพ" />
+<book key="Lev" short="เลวีนิติ" full="เลวีนิติ" />
+<book key="Num" short="กันดารวิถี" full="กันดารวิถี" />
+<book key="Deut" short="เฉลยธรรมบัญญัติ" full="เฉลยธรรมบัญญัติ" />
+<book key="Josh" short="โยชูวา" full="โยชูวา" />
+<book key="Judg" short="ผู้วินิจฉัย" full="ผู้วินิจฉัย" />
+<book key="Ruth" short="นางรูธ" full="นางรูธ" />
+<book key="1Sam" short="1 ซามูเอล" full="1 ซามูเอล" />
+<book key="2Sam" short="2 ซามูเอล" full="2 ซามูเอล" />
+<book key="1Kgs" short="1 พงศ์กษัตริย์" full="1 พงศ์กษัตริย์" />
+<book key="2Kgs" short="2 พงศ์กษัตริย์" full="2 พงศ์กษัตริย์" />
+<book key="1Chr" short="1 พงศาวดาร" full="1 พงศาวดาร" />
+<book key="2Chr" short="2 พงศาวดาร" full="2 พงศาวดาร" />
+<book key="Ezra" short="เอสรา" full="เอสรา" />
+<book key="Neh" short="เนหมีย์" full="เนหมีย์" />
+<book key="Esth" short="เอสเธอร์" full="เอสเธอร์" />
+<book key="Job" short="โยบ" full="โยบ" />
+<book key="Ps" short="สดุดี" full="สดุดี" />
+<book key="Prov" short="สุภาษิต" full="สุภาษิต" />
+<book key="Eccl" short="ปัญญาจารย์" full="ปัญญาจารย์" />
+<book key="Song" short="เพลงซาโลมอน" full="เพลงซาโลมอน" />
+<book key="Isa" short="อิสยาห์" full="อิสยาห์" />
+<book key="Jer" short="เยเรมีย์" full="เยเรมีย์" />
+<book key="Lam" short="บทเพลงคร่ำครวญ" full="บทเพลงคร่ำครวญ" />
+<book key="Ezek" short="เอเสเคียล" full="เอเสเคียล" />
+<book key="Dan" short="ดาเนียล" full="ดาเนียล" />
+<book key="Hos" short="โฮเชยา" full="โฮเชยา" />
+<book key="Joel" short="โยเอล" full="โยเอล" />
+<book key="Amos" short="อาโมส" full="อาโมส" />
+<book key="Obad" short="โอบาดีห์" full="โอบาดีห์" />
+<book key="Jonah" short="โยนาห์" full="โยนาห์" />
+<book key="Mic" short="มีคาห์" full="มีคาห์" />
+<book key="Nah" short="นาฮูม" full="นาฮูม" />
+<book key="Hab" short="ฮาบากุก" full="ฮาบากุก" />
+<book key="Zeph" short="เศฟันยาห์" full="เศฟันยาห์" />
+<book key="Hag" short="ฮักกัย" full="ฮักกัย" />
+<book key="Zech" short="เศคาริยาห์" full="เศคาริยาห์" />
+<book key="Mal" short="มาลาคี" full="มาลาคี" />
+<book key="Matt" short="มัทธิว" full="มัทธิว" />
+<book key="Mark" short="มาระโก" full="มาระโก" />
+<book key="Luke" short="ลูกา" full="ลูกา" />
+<book key="John" short="ยอห์น" full="ยอห์น" />
+<book key="Acts" short="กิจการ" full="กิจการ" />
+<book key="Rom" short="โรม" full="โรม" />
+<book key="1Cor" short="1 โครินธ์" full="1 โครินธ์" />
+<book key="2Cor" short="2 โครินธ์" full="2 โครินธ์" />
+<book key="Gal" short="กาลาเทีย" full="กาลาเทีย" />
+<book key="Eph" short="เอเฟซัส" full="เอเฟซัส" />
+<book key="Phil" short="ฟีลิปปี" full="ฟีลิปปี" />
+<book key="Col" short="โคโลสี" full="โคโลสี" />
+<book key="1Thess" short="1 เธสะโลนิกา" full="1 เธสะโลนิกา" />
+<book key="2Thess" short="2 เธสะโลนิกา" full="2 เธสะโลนิกา" />
+<book key="1Tim" short="1 ทิโมธี" full="1 ทิโมธี" />
+<book key="2Tim" short="2 ทิโมธี" full="2 ทิโมธี" />
+<book key="Titus" short="ทิตัส" full="ทิตัส" />
+<book key="Phlm" short="ฟีเลโมน" full="ฟีเลโมน" />
+<book key="Heb" short="ฮีบรู" full="ฮีบรู" />
+<book key="Jas" short="ยากอบ" full="ยากอบ" />
+<book key="1Pet" short="1 เปโตร" full="1 เปโตร" />
+<book key="2Pet" short="2 เปโตร" full="2 เปโตร" />
+<book key="1John" short="1 ยอห์น" full="1 ยอห์น" />
+<book key="2John" short="2 ยอห์น" full="2 ยอห์น" />
+<book key="3John" short="3 ยอห์น" full="3 ยอห์น" />
+<book key="Jude" short="ยูดาห์" full="ยูดาห์" />
+<book key="Rev" short="วิวรณ์" full="วิวรณ์" />
 </biblenames>

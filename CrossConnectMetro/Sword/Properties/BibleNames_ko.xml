@@ -1,70 +1,69 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <biblenames isolang="ko" isolocale="" version="1.0">
-  <book keynumber="0" short="창" full="창세기" />
-  <book keynumber="1" short="출" full="출애굽기" />
-  <book keynumber="2" short="레" full="레위기" />
-  <book keynumber="3" short="민" full="민수기" />
-  <book keynumber="4" short="신" full="신명기" />
-  <book keynumber="5" short="여" full="여호수아" />
-  <book keynumber="6" short="삿" full="사사기" />
-  <book keynumber="7" short="룻" full="룻기" />
-  <book keynumber="8" short="삼상" full="사무엘상" />
-  <book keynumber="9" short="삼하" full="사무엘하" />
-  <book keynumber="10" short="왕상" full="열왕기상" />
-  <book keynumber="11" short="왕하" full="열왕기하" />
-  <book keynumber="12" short="대상" full="역대상" />
-  <book keynumber="13" short="대하" full="역대하" />
-  <book keynumber="14" short="스" full="에스라" />
-  <book keynumber="15" short="느" full="느헤미야" />
-  <book keynumber="16" short="에" full="에스더" />
-  <book keynumber="17" short="욥" full="욥기" />
-  <book keynumber="18" short="시" full="시편" />
-  <book keynumber="19" short="잠" full="잠언" />
-  <book keynumber="20" short="전" full="전도서" />
-  <book keynumber="21" short="아" full="아가" />
-  <book keynumber="22" short="사" full="이사야" />
-  <book keynumber="23" short="렘" full="예레미야" />
-  <book keynumber="24" short="애" full="예레미야애가" />
-  <book keynumber="25" short="겔" full="에스겔" />
-  <book keynumber="26" short="단" full="다니엘" />
-  <book keynumber="27" short="호" full="호세아" />
-  <book keynumber="28" short="욜" full="요엘" />
-  <book keynumber="29" short="암" full="아모스" />
-  <book keynumber="30" short="옵" full="오바댜" />
-  <book keynumber="31" short="욘" full="요나" />
-  <book keynumber="32" short="미" full="미가" />
-  <book keynumber="33" short="나" full="나훔" />
-  <book keynumber="34" short="합" full="하박국" />
-  <book keynumber="35" short="습" full="스바냐" />
-  <book keynumber="36" short="학" full="학개" />
-  <book keynumber="37" short="슥" full="스가랴" />
-  <book keynumber="38" short="말" full="말라기" />
-  <book keynumber="39" short="마" full="마태복음" />
-  <book keynumber="40" short="막" full="마가복음" />
-  <book keynumber="41" short="눅" full="누가복음" />
-  <book keynumber="42" short="요" full="요한복음" />
-  <book keynumber="43" short="행" full="사도행전" />
-  <book keynumber="44" short="롬" full="로마서" />
-  <book keynumber="45" short="고전" full="고린도전서" />
-  <book keynumber="46" short="고후" full="고린도후서" />
-  <book keynumber="47" short="갈" full="갈라디아서" />
-  <book keynumber="48" short="엡" full="에베소서" />
-  <book keynumber="49" short="빌" full="빌립보서" />
-  <book keynumber="50" short="골" full="골로새서" />
-  <book keynumber="51" short="살전" full="데살로니가전서" />
-  <book keynumber="52" short="살후" full="데살로니가후서" />
-  <book keynumber="53" short="딤전" full="디모데전서" />
-  <book keynumber="54" short="딤후" full="디모데후서" />
-  <book keynumber="55" short="딛" full="디도서" />
-  <book keynumber="56" short="몬" full="빌레몬서" />
-  <book keynumber="57" short="히" full="히브리서" />
-  <book keynumber="58" short="약" full="야고보서" />
-  <book keynumber="59" short="벧전" full="베드로전서" />
-  <book keynumber="60" short="벧후" full="베드로후서" />
-  <book keynumber="61" short="요일" full="요한일서" />
-  <book keynumber="62" short="요이" full="요한이서" />
-  <book keynumber="63" short="요삼" full="요한삼서" />
-  <book keynumber="64" short="유" full="유다서" />
-  <book keynumber="65" short="계" full="요한계시록" />
+<book key="Gen" short="창세기" full="창세기" />
+<book key="Exod" short="출애굽기" full="출애굽기" />
+<book key="Lev" short="레위기" full="레위기" />
+<book key="Num" short="민수기" full="민수기" />
+<book key="Deut" short="신명기" full="신명기" />
+<book key="Josh" short="여호수아" full="여호수아" />
+<book key="Judg" short="사사기" full="사사기" />
+<book key="Ruth" short="룻기" full="룻기" />
+<book key="1Sam" short="사무엘상" full="사무엘상" />
+<book key="2Sam" short="사무엘하" full="사무엘하" />
+<book key="1Kgs" short="열왕기상" full="열왕기상" />
+<book key="2Kgs" short="열왕기하" full="열왕기하" />
+<book key="1Chr" short="역대상" full="역대상" />
+<book key="2Chr" short="역대하" full="역대하" />
+<book key="Ezra" short="에스라" full="에스라" />
+<book key="Neh" short="느헤미야" full="느헤미야" />
+<book key="Esth" short="에스더" full="에스더" />
+<book key="Job" short="욥기" full="욥기" />
+<book key="Ps" short="시편" full="시편" />
+<book key="Prov" short="잠언" full="잠언" />
+<book key="Eccl" short="전도서" full="전도서" />
+<book key="Song" short="아가" full="아가" />
+<book key="Isa" short="이사야" full="이사야" />
+<book key="Jer" short="예레미야" full="예레미야" />
+<book key="Lam" short="예레미야애가" full="예레미야애가" />
+<book key="Ezek" short="에스겔" full="에스겔" />
+<book key="Dan" short="다니엘" full="다니엘" />
+<book key="Hos" short="호세아" full="호세아" />
+<book key="Joel" short="요엘" full="요엘" />
+<book key="Amos" short="아모스" full="아모스" />
+<book key="Obad" short="오바댜" full="오바댜" />
+<book key="Jonah" short="요나" full="요나" />
+<book key="Mic" short="미가" full="미가" />
+<book key="Nah" short="나훔" full="나훔" />
+<book key="Hab" short="하박국" full="하박국" />
+<book key="Zeph" short="스바냐" full="스바냐" />
+<book key="Hag" short="학개" full="학개" />
+<book key="Zech" short="스가랴" full="스가랴" />
+<book key="Mal" short="말라기" full="말라기" />
+<book key="Matt" short="마태복음" full="마태복음" />
+<book key="Mark" short="마가복음" full="마가복음" />
+<book key="Luke" short="누가복음" full="누가복음" />
+<book key="John" short="요한복음" full="요한복음" />
+<book key="Acts" short="사도행전" full="사도행전" />
+<book key="Rom" short="로마서" full="로마서" />
+<book key="1Cor" short="고린도전서" full="고린도전서" />
+<book key="2Cor" short="고린도후서" full="고린도후서" />
+<book key="Gal" short="갈라디아서" full="갈라디아서" />
+<book key="Eph" short="에베소서" full="에베소서" />
+<book key="Phil" short="빌립보서" full="빌립보서" />
+<book key="Col" short="골로새서" full="골로새서" />
+<book key="1Thess" short="데살로니가전서" full="데살로니가전서" />
+<book key="2Thess" short="데살로니가후서" full="데살로니가후서" />
+<book key="1Tim" short="디모데전서" full="디모데전서" />
+<book key="2Tim" short="디모데후서" full="디모데후서" />
+<book key="Titus" short="디도서" full="디도서" />
+<book key="Phlm" short="빌레몬서" full="빌레몬서" />
+<book key="Heb" short="히브리서" full="히브리서" />
+<book key="Jas" short="야고보서" full="야고보서" />
+<book key="1Pet" short="베드로전서" full="베드로전서" />
+<book key="2Pet" short="베드로후서" full="베드로후서" />
+<book key="1John" short="요한일서" full="요한일서" />
+<book key="2John" short="요한이서" full="요한이서" />
+<book key="3John" short="요한삼서" full="요한삼서" />
+<book key="Jude" short="유다서" full="유다서" />
+<book key="Rev" short="요한계시록" full="요한계시록" />
 </biblenames>

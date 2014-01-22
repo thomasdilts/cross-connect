@@ -28,8 +28,12 @@
 namespace Sword.reader
 {
     using System;
+    using System.Collections.Generic;
+    using System.IO;
     using System.Runtime.Serialization;
+    using System.Text;
     using System.Threading.Tasks;
+    using System.Xml;
 
     /// <summary>
     ///     Load from a file all the book and verse pointers to the bzz file so that
@@ -53,8 +57,8 @@ namespace Sword.reader
 
         #region Constructors and Destructors
 
-        public BibleNoteReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string titleBrowserWindow, string cipherKey, string configPath)
-            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath)
+        public BibleNoteReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string titleBrowserWindow, string cipherKey, string configPath, string versification)
+            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification)
         {
             this.Serial2.CloneFrom(this.Serial);
             this.TitleBrowserWindow = titleBrowserWindow;
@@ -105,6 +109,8 @@ namespace Sword.reader
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
             HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightingColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
@@ -115,10 +121,13 @@ namespace Sword.reader
                 await
                 this.GetChapterHtml(
                     displaySettings,
+                    this.Serial.PosBookShortName,
                     this.Serial.PosChaptNum,
                     htmlBackgroundColor,
                     htmlForegroundColor,
                     htmlPhoneAccentColor,
+                    htmlWordsOfChristColor,
+                    htmlHighlightingColor,
                     htmlFontSize,
                     fontFamily,
                     true,
@@ -127,25 +136,26 @@ namespace Sword.reader
         }
 
         public override void GetInfo(
-            out int bookNum,
-            out int absoluteChaptNum,
+            out string bookShortName,
             out int relChaptNum,
             out int verseNum,
             out string fullName,
             out string title)
         {
             verseNum = this.Serial.PosVerseNum;
-            absoluteChaptNum = this.Serial.PosChaptNum;
-            this.GetInfo(
-                this.Serial.PosChaptNum, this.Serial.PosVerseNum, out bookNum, out relChaptNum, out fullName, out title);
+            relChaptNum = this.Serial.PosChaptNum;
+            bookShortName = this.Serial.PosBookShortName;
+            this.GetInfo(bookShortName,
+                this.Serial.PosChaptNum, this.Serial.PosVerseNum, out fullName, out title);
             title = this.TitleBrowserWindow + " " + fullName + ":" + (relChaptNum + 1);
         }
 
         public override async Task<string> GetVerseTextOnly(
-            DisplaySettings displaySettings, int chapterNumber, int verseNumber)
+            DisplaySettings displaySettings, string bookShortName, int chapterNumber, int verseNumber)
         {
             //give them the notes if you can.
-            Task<byte[]> chapterBuffer = this.GetChapterBytes(chapterNumber);
+            var book = canon.BookByShortName[bookShortName];
+            Task<byte[]> chapterBuffer = this.GetChapterBytes(chapterNumber + book.VersesInChapterStartIndex);
             VersePos verse = this.Chapters[chapterNumber].Verses[verseNumber];
             int noteMarker = 'a';
             bool isInPoetry = false;
@@ -240,6 +250,31 @@ namespace Sword.reader
         [DataMember(Name = "wordsOfChristRed")]
         public bool WordsOfChristRed;
 
+        [DataMember]
+        public string HighlightName1 = "Highlight 1";
+
+        [DataMember]
+        public string HighlightName2 = "Highlight 2";
+
+        [DataMember]
+        public string HighlightName3 = "Highlight 3";
+
+        [DataMember]
+        public string HighlightName4 = "Highlight 4";
+
+        [DataMember]
+        public string HighlightName5 = "Highlight 5";
+
+        [DataMember]
+        public string HighlightName6 = "Highlight 6";
+
+        [DataMember]
+        public bool UseHighlights = true;
+
+        [DataMember]
+        public bool UseRemoteStorage = true;
+
+        public Highlighter highlighter = new Highlighter();
         #endregion
 
         #region Public Methods and Operators
@@ -275,6 +310,32 @@ namespace Sword.reader
             {
                 this.NumberOfScreens = 3;
             }
+            if (string.IsNullOrEmpty(this.HighlightName1))
+            {
+                this.HighlightName1 = "Highlight 1";
+            }
+            if (string.IsNullOrEmpty(this.HighlightName2))
+            {
+                this.HighlightName2 = "Highlight 2";
+            }
+            if (string.IsNullOrEmpty(this.HighlightName3))
+            {
+                this.HighlightName3 = "Highlight 3";
+            }
+            if (string.IsNullOrEmpty(this.HighlightName4))
+            {
+                this.HighlightName4 = "Highlight 4";
+            }
+            if (string.IsNullOrEmpty(this.HighlightName5))
+            {
+                this.HighlightName5 = "Highlight 5";
+            }
+            if (string.IsNullOrEmpty(this.HighlightName6))
+            {
+                UseHighlights = true;
+                UseRemoteStorage = true;
+                this.HighlightName6 = "Highlight 6";
+            }
         }
 
         public DisplaySettings Clone()
@@ -286,6 +347,7 @@ namespace Sword.reader
                                  GreekDictionaryLink = this.GreekDictionaryLink,
                                  HebrewDictionaryLink = this.HebrewDictionaryLink,
                                  HighlightMarkings = this.HighlightMarkings,
+                                 NumberOfScreens = this.NumberOfScreens,
                                  ShowAddedNotesByChapter = this.ShowAddedNotesByChapter,
                                  ShowBookName = this.ShowBookName,
                                  ShowChapterNumber = this.ShowChapterNumber,
@@ -298,11 +360,127 @@ namespace Sword.reader
                                  SoundLink = this.SoundLink,
                                  WordsOfChristRed = this.WordsOfChristRed,
                                  UserUniqueGuuid = this.UserUniqueGuuid,
-                                 UseInternetGreekHebrewDict = this.UseInternetGreekHebrewDict
+                                 UseInternetGreekHebrewDict = this.UseInternetGreekHebrewDict,
+                                 HighlightName1 = this.HighlightName1,
+                                 HighlightName2 = this.HighlightName2,
+                                 HighlightName3 = this.HighlightName3,
+                                 HighlightName4 = this.HighlightName4,
+                                 HighlightName5 = this.HighlightName5,
+                                 HighlightName6 = this.HighlightName6,
+                                 UseHighlights = this.UseHighlights,
+                                 UseRemoteStorage = this.UseRemoteStorage
                              };
+            cloned.highlighter = this.highlighter;
             return cloned;
         }
 
         #endregion
+    }
+
+    public class Highlighter
+    {
+        public enum Highlight
+        {
+            COLOR_1 = 0,
+            COLOR_2 = 1,
+            COLOR_3 = 2,
+            COLOR_4 = 3,
+            COLOR_5 = 4,
+            COLOR_6 = 5,
+            COLOR_NONE = 6
+        }
+
+        private Dictionary<string, Highlight> HighlightedVerses = new Dictionary<string, Highlight>();
+
+        public Highlight GetHighlightForChapter(int chapterNumber, int verseNumber)
+        {
+            var highlight = Highlight.COLOR_NONE;
+            if (!HighlightedVerses.TryGetValue(GetChapterVerseKey(chapterNumber, verseNumber), out highlight))
+            {
+                return Highlight.COLOR_NONE;
+            }
+
+            return highlight;
+        }
+
+        public void AddHighlight(int chapter, int verse, Highlight color)
+        {
+            HighlightedVerses[GetChapterVerseKey(chapter, verse)] = color;
+        }
+
+        public void RemoveHighlight(int chapter, int verse)
+        {
+            HighlightedVerses.Remove(GetChapterVerseKey(chapter, verse));
+        }
+
+        private string GetChapterVerseKey(int chapter, int verse)
+        {
+            return chapter + "_" + verse;
+        }
+
+        public string ToString()
+        {
+            var xmlReturn = new StringBuilder("<highlightedverses>");
+            foreach (var item in HighlightedVerses)
+            {
+                xmlReturn.Append("<hl key=\"" + item.Key + "\" val=\"" + item.Value + "\" />");
+            }
+
+            xmlReturn.Append("</highlightedverses>");
+            return xmlReturn.ToString();
+        }
+
+        public void FromStream(Stream stream)
+        {
+            HighlightedVerses = new Dictionary<string, Highlight>();
+            using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings { IgnoreWhitespace = true }))
+            {
+                // Parse the file and get each of the nodes.
+                while (reader.Read())
+                {
+                    switch (reader.NodeType)
+                    {
+                        case XmlNodeType.Element:
+                            if (reader.Name.ToLower().Equals("hl") && reader.HasAttributes)
+                            {
+                                string key = string.Empty;
+                                string value = string.Empty;
+                                reader.MoveToFirstAttribute();
+                                do
+                                {
+                                    switch (reader.Name.ToLower())
+                                    {
+                                        case "key":
+                                            key = reader.Value;
+                                            break;
+                                        case "val":
+                                            value = reader.Value;
+                                            break;
+                                    }
+                                }
+                                while (reader.MoveToNextAttribute());
+                                Highlight foundHighlight;
+                                if (Enum.TryParse(value, out foundHighlight))
+                                {
+                                    HighlightedVerses[key] = foundHighlight;
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        public void FromString(string buffer)
+        {
+            this.FromByteArray(Encoding.UTF8.GetBytes(buffer));
+        }
+
+        private void FromByteArray(byte[] buffer)
+        {
+            var stream = new MemoryStream(buffer);
+            this.FromStream(stream);
+            stream.Dispose();
+        }
     }
 }

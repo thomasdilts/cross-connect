@@ -30,6 +30,7 @@ namespace CrossConnect.readers
 
     using Sword;
     using Sword.reader;
+    using Sword.versification;
 
     /// <summary>
     ///     Load from a file all the book and verse pointers to the bzz file so that
@@ -48,8 +49,8 @@ namespace CrossConnect.readers
 
         #region Constructors and Destructors
 
-        public DailyPlanReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath)
-            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath)
+        public DailyPlanReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification)
+            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification)
         {
             this.Serial2.CloneFrom(this.Serial);
             this.SetToFirstChapter();
@@ -140,25 +141,29 @@ namespace CrossConnect.readers
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
             HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
             bool forceReload)
         {
+            var canonKjv = CanonManager.GetCanon("KJV");
             string chapterStartHtml = HtmlHeader(
                 displaySettings,
                 htmlBackgroundColor,
                 htmlForegroundColor,
                 htmlPhoneAccentColor,
+                htmlWordsOfChristColor,
                 htmlFontSize,
                 fontFamily);
             var schedule = DailyPlans.ZAllPlans(App.DailyPlan.PlanNumber);
             const string ChapterEndHtml = "</body></html>";
+            var book = canonKjv.GetBookFromAbsoluteChapter(schedule[App.DailyPlan.PlanDayNumber][0]);
             var sb = new StringBuilder(chapterStartHtml);
-            string firstVerseForTheDayRedirect = "<a name=\"" + "CHAP_"
-                                                 + schedule[
-                                                     App.DailyPlan.PlanDayNumber][0] + "_VERS_0" + "\"></a>";
+            string firstVerseForTheDayRedirect = "<a name=\"" + book.ShortName1 + "_"
+                                                 + (schedule[App.DailyPlan.PlanDayNumber][0]-book.VersesInChapterStartIndex) + "_0" + "\"></a>";
             sb.Append(
                 firstVerseForTheDayRedirect + "<h3>" + Translations.Translate("Day") + " "
                 + (App.DailyPlan.PlanDayNumber + 1) + ", "
@@ -176,22 +181,24 @@ namespace CrossConnect.readers
                 string fullName;
                 string title;
                 this.GetInfo(
-                    schedule[App.DailyPlan.PlanDayNumber][i],
+                    book.ShortName1,
+                    schedule[App.DailyPlan.PlanDayNumber][i]-book.VersesInChapterStartIndex,
                     0,
-                    out bookNum,
-                    out relChaptNum,
                     out fullName,
                     out title);
 
-                sb.Append("<h2>" + fullName + " " + (relChaptNum + 1) + "</h2>");
+                sb.Append("<h2>" + fullName + " " + (schedule[App.DailyPlan.PlanDayNumber][i] - book.VersesInChapterStartIndex + 1) + "</h2>");
                 sb.Append(
                     await
                     this.GetChapterHtml(
                         displaySettings,
-                        schedule[App.DailyPlan.PlanDayNumber][i],
+                        book.ShortName1,
+                        schedule[App.DailyPlan.PlanDayNumber][i]-book.VersesInChapterStartIndex,
                         htmlBackgroundColor,
                         htmlForegroundColor,
                         htmlPhoneAccentColor,
+                        htmlWordsOfChristColor,
+                        htmlHighlightColor,
                         htmlFontSize,
                         fontFamily,
                         false,
@@ -204,8 +211,7 @@ namespace CrossConnect.readers
         }
 
         public override void GetInfo(
-            out int bookNum,
-            out int absoluteChaptNum,
+            out string bookShortName,
             out int relChaptNum,
             out int verseNum,
             out string fullName,
@@ -218,12 +224,12 @@ namespace CrossConnect.readers
                 App.DailyPlan.PlanDayNumber = 0;
             }
 
-            base.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out title);
+            base.GetInfo(out bookShortName, out relChaptNum, out verseNum, out fullName, out title);
             title = App.DailyPlan.PlanStartDate.AddDays(App.DailyPlan.PlanDayNumber).ToString("yyyy-MM-dd") + " "
                     + Translations.Translate("Daily plan");
         }
 
-        public override void MoveChapterVerse(int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
+        public override void MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
         {
             if (!(source is BibleZtextReader))
             {
@@ -231,6 +237,7 @@ namespace CrossConnect.readers
             }
             if (isLocalLinkChange)
             {
+                this.Serial.PosBookShortName = bookShortName;
                 this.Serial.PosChaptNum = chapter;
                 this.Serial.PosVerseNum = verse;
             }

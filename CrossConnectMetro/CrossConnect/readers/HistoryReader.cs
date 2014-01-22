@@ -57,12 +57,14 @@ namespace CrossConnect.readers
 
         private HtmlColorRgba _htmlPhoneAccentColor;
 
+        private HtmlColorRgba _htmlWordsOfChristColor;
+
         #endregion
 
         #region Constructors and Destructors
 
-        public HistoryReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath)
-            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath)
+        public HistoryReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification)
+            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification)
         {
             this.Serial2.CloneFrom(this.Serial);
             App.HistoryChanged += this.AppHistoryChanged;
@@ -132,6 +134,7 @@ namespace CrossConnect.readers
                     this._htmlBackgroundColor,
                     this._htmlForegroundColor,
                     this._htmlPhoneAccentColor,
+                    this._htmlWordsOfChristColor,
                     this._htmlFontSize,
                     this._fontFamily,
                     false,
@@ -144,6 +147,8 @@ namespace CrossConnect.readers
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
             HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
@@ -154,6 +159,7 @@ namespace CrossConnect.readers
             this._htmlBackgroundColor = htmlBackgroundColor;
             this._htmlForegroundColor = htmlForegroundColor;
             this._htmlPhoneAccentColor = htmlPhoneAccentColor;
+            this._htmlWordsOfChristColor = htmlWordsOfChristColor;
             this._fontFamily = fontFamily;
             const double epsilon = 0.00000001;
             if (forceReload || mustUpdate || Math.Abs(this._htmlFontSize - htmlFontSize) > epsilon)
@@ -166,6 +172,7 @@ namespace CrossConnect.readers
                         htmlBackgroundColor,
                         htmlForegroundColor,
                         htmlPhoneAccentColor,
+                        htmlWordsOfChristColor,
                         htmlFontSize,
                         fontFamily,
                         false,
@@ -177,22 +184,21 @@ namespace CrossConnect.readers
         }
 
         public override void GetInfo(
-            out int bookNum,
-            out int absoluteChaptNum,
+            out string bookShortName,
             out int relChaptNum,
             out int verseNum,
             out string fullName,
             out string title)
         {
             verseNum = 0;
-            bookNum = 0;
-            absoluteChaptNum = 0;
+            bookShortName = string.Empty;
             relChaptNum = 0;
             fullName = string.Empty;
             if (App.PlaceMarkers.History.Count > 0)
             {
                 BiblePlaceMarker place = App.PlaceMarkers.History[App.PlaceMarkers.History.Count - 1];
-                absoluteChaptNum = place.ChapterNum;
+                bookShortName = place.BookShortName;
+                relChaptNum = place.ChapterNum;
                 verseNum = place.VerseNum;
             }
 

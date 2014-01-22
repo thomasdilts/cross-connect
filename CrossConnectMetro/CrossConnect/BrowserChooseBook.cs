@@ -256,16 +256,16 @@ namespace CrossConnect
                                                : Visibility.Visible;
 
                 //may need to hide chapter...
-                int bookNum;
-                int absoluteChaptNum;
+                string shortBookName;
                 int relChaptNum;
                 int verseNum;
                 string fullName;
                 string title;
                 this._state.Source.GetInfo(
-                    out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out title);
+                    out shortBookName, out relChaptNum, out verseNum, out fullName, out title);
+                var book = ((BibleZtextReader)this._state.Source).canon.BookByShortName[shortBookName];
 
-                this.ListChapter.Visibility = BibleZtextReader.ChaptersInBook[bookNum] > 1 && !(this._state.Source is RawGenTextReader) && !(this._state.Source is DailyPlanReader)
+                this.ListChapter.Visibility = book.NumberOfChapters > 1 && !(this._state.Source is RawGenTextReader) && !(this._state.Source is DailyPlanReader)
                                                   ? Visibility.Visible
                                                   : Visibility.Collapsed;
                 this.SubMenuSearchPopup.SelectedItem = null;
@@ -348,23 +348,23 @@ namespace CrossConnect
                             this.BookPopup.IsOpen = true;
                             this.SearchPopup.IsOpen = false;
                         }
-                        int bookNum;
-                        int absoluteChaptNum;
+                        string bookShortName;
                         int relChaptNum;
                         int verseNum;
                         string fullName;
                         string title;
                         this._state.Source.GetInfo(
-                            out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out title);
+                            out bookShortName, out relChaptNum, out verseNum, out fullName, out title);
+                        var book = ((BibleZtextReader)this._state.Source).canon.BookByShortName[bookShortName];
                         ButtonWindowSpecs specs = this._state.Source.GetButtonWindowSpecs(
-                            1, BibleZtextReader.FirstChapternumInBook[bookNum]);
+                            1, book.VersesInChapterStartIndex);
                         if (specs != null)
                         {
                             this.ReloadBookPopupWindow(specs);
                         }
                         else
                         {
-                            this._state.Source.MoveChapterVerse(relChaptNum, 0, false, this._state.Source);
+                            this._state.Source.MoveChapterVerse(bookShortName, relChaptNum, 0, false, this._state.Source);
 
                             this.BookPopup.IsOpen = false;
                             this.SearchPopup.IsOpen = false;
@@ -379,22 +379,22 @@ namespace CrossConnect
                             this.BookPopup.IsOpen = true;
                             this.SearchPopup.IsOpen = false;
                         }
-                        int bookNum;
-                        int absoluteChaptNum;
+                        string bookShortName;
                         int relChaptNum;
                         int verseNum;
                         string fullName;
                         string title;
                         this._state.Source.GetInfo(
-                            out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out title);
-                        ButtonWindowSpecs specs = this._state.Source.GetButtonWindowSpecs(2, absoluteChaptNum);
+                            out bookShortName, out relChaptNum, out verseNum, out fullName, out title);
+                        var book = ((BibleZtextReader)this._state.Source).canon.BookByShortName[bookShortName];
+                        ButtonWindowSpecs specs = this._state.Source.GetButtonWindowSpecs(2, book.VersesInChapterStartIndex + relChaptNum);
                         if (specs != null)
                         {
                             this.ReloadBookPopupWindow(specs);
                         }
                         else
                         {
-                            this._state.Source.MoveChapterVerse(relChaptNum, 0, false, this._state.Source);
+                            this._state.Source.MoveChapterVerse(bookShortName, relChaptNum, 0, false, this._state.Source);
 
                             this.BookPopup.IsOpen = false;
                             this.SearchPopup.IsOpen = false;
@@ -415,16 +415,19 @@ namespace CrossConnect
             }
             else
             {
+                // convert book number to a chapter number
+                var book1 = ((BibleZtextReader)this._state.Source).canon.GetBookFromBookNumber((int)((Button)sender).Tag);
                 // go directly to verse
-                specs = this._state.Source.GetButtonWindowSpecs(2, (int)((Button)sender).Tag);
+                specs = this._state.Source.GetButtonWindowSpecs(2, book1.VersesInChapterStartIndex);
                 if (specs != null)
                 {
-                    this._selectBibleBookSecondSelection = (int)((Button)sender).Tag;
+                    this._selectBibleBookSecondSelection = book1.VersesInChapterStartIndex;
                     this.ReloadBookPopupWindow(specs);
                 }
                 else
                 {
-                    this._state.Source.MoveChapterVerse((int)((Button)sender).Tag, 0, false, this._state.Source);
+                    var book = ((BibleZtextReader)this._state.Source).canon.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
+                    this._state.Source.MoveChapterVerse(book.ShortName1, (int)((Button)sender).Tag - book.VersesInChapterStartIndex, 0, false, this._state.Source);
 
                     this.BookPopup.IsOpen = false;
                     this.SearchPopup.IsOpen = false;
@@ -443,7 +446,8 @@ namespace CrossConnect
             }
             else
             {
-                this._state.Source.MoveChapterVerse((int)((Button)sender).Tag, 0, false, this._state.Source);
+                var book = ((BibleZtextReader)this._state.Source).canon.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
+                this._state.Source.MoveChapterVerse(book.ShortName1, (int)((Button)sender).Tag - book.VersesInChapterStartIndex, 0, false, this._state.Source);
                 this.BookPopup.IsOpen = false;
                 this.SearchPopup.IsOpen = false;
                 this.UpdateBrowser(false);
@@ -460,7 +464,8 @@ namespace CrossConnect
             }
             else
             {
-                this._state.Source.MoveChapterVerse(this._selectBibleBookSecondSelection, (int)((Button)sender).Tag, false, this._state.Source);
+                var book = ((BibleZtextReader)this._state.Source).canon.GetBookFromAbsoluteChapter(this._selectBibleBookSecondSelection);
+                this._state.Source.MoveChapterVerse(book.ShortName1, this._selectBibleBookSecondSelection - book.VersesInChapterStartIndex, (int)((Button)sender).Tag, false, this._state.Source);
                 this.BookPopup.IsOpen = false;
                 this.SearchPopup.IsOpen = false;
                 this._nextVSchroll = 0;
@@ -470,11 +475,13 @@ namespace CrossConnect
 
         private void FourthClick(object sender, RoutedEventArgs e)
         {
-            this._state.Source.MoveChapterVerse((int)((Button)sender).Tag, 0, false, this._state.Source);
-                this.BookPopup.IsOpen = false;
-                this.SearchPopup.IsOpen = false;
-                this._nextVSchroll = 0;
-                this.UpdateBrowser(false);
+
+            var book = ((BibleZtextReader)this._state.Source).canon.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
+            this._state.Source.MoveChapterVerse(book.ShortName1, (int)((Button)sender).Tag - book.VersesInChapterStartIndex, 0, false, this._state.Source);
+            this.BookPopup.IsOpen = false;
+            this.SearchPopup.IsOpen = false;
+            this._nextVSchroll = 0;
+            this.UpdateBrowser(false);
         }
 
         #endregion

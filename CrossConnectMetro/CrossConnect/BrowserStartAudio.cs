@@ -33,6 +33,7 @@ namespace CrossConnect
     using Windows.UI.Popups;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
+    using Sword.versification;
 
     public sealed partial class BrowserTitledWindow
     {
@@ -176,22 +177,25 @@ namespace CrossConnect
             this.ListStartAudio.Items.Clear();
 
             // do a download.
-            int bookNum;
+            string bookShortName;
             int absoluteChaptNum;
             int relChaptNum;
             int verseNum;
             string fullName;
             string titleText;
             this._state.Source.GetInfo(
-                out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
+                out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
             object language = this._state.Source.GetLanguage();
             ;
             string titleBar = titleText;
 
-            this._chapter = absoluteChaptNum;
+            var canonKjv = CanonManager.GetCanon("KJV");
+            var book = canonKjv.BookByShortName[bookShortName];
+
+            this._chapter = book.VersesInChapterStartIndex + relChaptNum;
             this._language = (string)language;
             this._titleBar = titleBar;
-            string url = string.Format(App.DisplaySettings.SoundLink, absoluteChaptNum, language);
+            string url = string.Format(App.DisplaySettings.SoundLink, book.VersesInChapterStartIndex + relChaptNum, language);
             try
             {
                 this._client = new WebClient();

@@ -173,6 +173,10 @@ namespace CrossConnect
 
         public Color TitleFontColor;
 
+        public Color WordsOfChristRed;
+
+        public Color[] ColorHighligt=new Color[6];
+
         public Guid UniqId;
 
         private Guid _currentTheme = Guid.NewGuid();
@@ -211,6 +215,13 @@ namespace CrossConnect
                     this.IsButtonColorDark = false;
                     this.IsMainBackImage = false;
                     this.MainBackImage = string.Empty;
+                    this.WordsOfChristRed = StringToColor("FFFF1439");
+                    this.ColorHighligt[0] = StringToColor("FFE6E600");
+                    this.ColorHighligt[1] = StringToColor("FFE86C19");
+                    this.ColorHighligt[2] = StringToColor("FF19D119");
+                    this.ColorHighligt[3] = StringToColor("FF25B8B8");
+                    this.ColorHighligt[4] = StringToColor("FFFF66FF");
+                    this.ColorHighligt[5] = StringToColor("FFAD5C33");
                 }
             }
         }
@@ -227,8 +238,11 @@ namespace CrossConnect
                    + theme.FontFamily + "\" " + "ismainbackimage=\"" + theme.IsMainBackImage + "\" "
                    + "mainbackcolor=\"" + ColorToString(theme.MainBackColor) + "\" " + "mainbackimage=\""
                    + theme.MainBackImage + "\" " + "mainfontcolor=\"" + ColorToString(theme.MainFontColor) + "\" "
-                   + "framecolor=\"" + ColorToString(theme.FrameColor) + "\" " + "isbuttoncolordark=\""
-                   + theme.IsButtonColorDark + "\" " + "uniqid=\"" + theme.UniqId + "\" " + ">" + theme.Name
+                   + "framecolor=\"" + ColorToString(theme.FrameColor) + "\" " + "wordsofchrist=\"" + ColorToString(theme.WordsOfChristRed) + "\" " + "isbuttoncolordark=\""
+                   + theme.IsButtonColorDark + "\" " + "uniqid=\"" + theme.UniqId + "\" " + "highlight1=\"" + ColorToString(theme.ColorHighligt[0]) + "\" " 
+                   + "highlight2=\"" + ColorToString(theme.ColorHighligt[1]) + "\" " + "highlight3=\"" + ColorToString(theme.ColorHighligt[2]) + "\" " 
+                   + "highlight4=\"" + ColorToString(theme.ColorHighligt[3]) + "\" " + "highlight5=\"" + ColorToString(theme.ColorHighligt[4]) + "\" "
+                   + "highlight6=\"" + ColorToString(theme.ColorHighligt[5]) + "\" " + ">" + theme.Name
                    + "</theme>\n";
         }
 
@@ -245,15 +259,19 @@ namespace CrossConnect
             this.TitleBackColor = from.TitleBackColor;
             this.TitleFontColor = from.TitleFontColor;
             this.FrameColor = from.FrameColor;
+            this.WordsOfChristRed = from.WordsOfChristRed;
             this.Name = from.Name;
             this.UniqId = from.UniqId;
+            for (int i = 0; i < from.ColorHighligt.Length; i++)
+            {
+                this.ColorHighligt[i] = from.ColorHighligt[i];
+            }
         }
 
         public void FromStream(Stream stream, bool isTranslateNames = false)
         {
             Guid currentTheme = Guid.NewGuid();
             Guid bogustheme = currentTheme;
-
             using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings { IgnoreWhitespace = true }))
             {
                 Theme foundTheme = null;
@@ -281,7 +299,13 @@ namespace CrossConnect
                             else if (reader.Name.ToLower().Equals("theme") && reader.HasAttributes)
                             {
                                 foundTheme = new Theme();
-
+                                foundTheme.WordsOfChristRed = StringToColor("FFFF1439");
+                                foundTheme.ColorHighligt[0] = StringToColor("FFE6E600");
+                                foundTheme.ColorHighligt[1] = StringToColor("FFE86C19");
+                                foundTheme.ColorHighligt[2] = StringToColor("FF19D119");
+                                foundTheme.ColorHighligt[3] = StringToColor("FF25B8B8");
+                                foundTheme.ColorHighligt[4] = StringToColor("FFFF66FF");
+                                foundTheme.ColorHighligt[5] = StringToColor("FFAD5C33");
                                 reader.MoveToFirstAttribute();
                                 do
                                 {
@@ -317,11 +341,32 @@ namespace CrossConnect
                                         case "framecolor":
                                             foundTheme.FrameColor = StringToColor(reader.Value);
                                             break;
+                                        case "wordsofchrist":
+                                            foundTheme.WordsOfChristRed = StringToColor(reader.Value);
+                                            break;
                                         case "isbuttoncolordark":
                                             foundTheme.IsButtonColorDark = reader.Value.ToLower().Equals("true");
                                             break;
                                         case "uniqid":
                                             Guid.TryParse(reader.Value, out foundTheme.UniqId);
+                                            break;
+                                        case "highlight1":
+                                            foundTheme.ColorHighligt[0] = StringToColor(reader.Value);
+                                            break;
+                                        case "highlight2":
+                                            foundTheme.ColorHighligt[1] = StringToColor(reader.Value);
+                                            break;
+                                        case "highlight3":
+                                            foundTheme.ColorHighligt[2] = StringToColor(reader.Value);
+                                            break;
+                                        case "highlight4":
+                                            foundTheme.ColorHighligt[3] = StringToColor(reader.Value);
+                                            break;
+                                        case "highlight5":
+                                            foundTheme.ColorHighligt[4] = StringToColor(reader.Value);
+                                            break;
+                                        case "highlight6":
+                                            foundTheme.ColorHighligt[5] = StringToColor(reader.Value);
                                             break;
                                     }
                                 }
@@ -473,7 +518,7 @@ namespace CrossConnect
                    && this.IsMainBackImage.Equals(from.IsMainBackImage) && this.MainBackColor.Equals(from.MainBackColor)
                    && this.MainBackImage.Equals(from.MainBackImage) && this.MainFontColor.Equals(from.MainFontColor)
                    && this.TitleBackColor.Equals(from.TitleBackColor) && this.TitleFontColor.Equals(from.TitleFontColor)
-                   && this.FrameColor.Equals(from.FrameColor) && this.Name.Equals(from.Name)
+                   && this.FrameColor.Equals(from.FrameColor) && this.WordsOfChristRed.Equals(from.WordsOfChristRed) && this.Name.Equals(from.Name)
                    && this.UniqId.Equals(from.UniqId);
         }
 
