@@ -178,6 +178,28 @@ namespace CrossConnect
             SavePersistantMarkers();
         }
 
+        private static DispatcherTimer TimerForSavingWindows=null;
+
+        public static void StartTimerForSavingWindows()
+        {
+            if(TimerForSavingWindows!=null)
+            {
+                TimerForSavingWindows.Stop();
+            }
+
+            TimerForSavingWindows = new DispatcherTimer();
+            TimerForSavingWindows.Tick += OnTimerForSavingWindowsTick;
+            TimerForSavingWindows.Interval = TimeSpan.FromSeconds(7);
+            TimerForSavingWindows.Start();
+        }
+
+        private static async void OnTimerForSavingWindowsTick(object sender, object e)
+        {
+            TimerForSavingWindows.Stop();
+            TimerForSavingWindows = null;
+            await SavePersistantWindows();
+        }
+
         public static void StartTimerForNotifications()
         {
             var tmr = new DispatcherTimer();
@@ -442,50 +464,62 @@ namespace CrossConnect
             Window.Current.Activate();
         }
 
-        private async Task<Dictionary<String, Object>> LoadPersistantObjectsFromFile(string filename)
+        private static async Task<StorageFolder> GetUsedFolderNoFail(string testFileName = null, bool AlwaysLocal=false)
+        {
+            StorageFolder folder = null;
+            if (DisplaySettings.UseRemoteStorage && !AlwaysLocal)
+            {
+                folder = ApplicationData.Current.RoamingFolder;
+                if(testFileName!=null)
+                {
+                    if (!await BibleZtextReader.FileExists(folder, testFileName))
+                    {
+                        if (!await BibleZtextReader.FileExists(ApplicationData.Current.LocalFolder, testFileName))
+                        {
+                            folder = ApplicationData.Current.LocalFolder;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                folder = ApplicationData.Current.LocalFolder;
+                if (testFileName != null)
+                {
+                    if (!await BibleZtextReader.FileExists(folder, testFileName))
+                    {
+                        if (!await BibleZtextReader.FileExists(ApplicationData.Current.RoamingFolder, testFileName))
+                        {
+                            folder = ApplicationData.Current.RoamingFolder;
+                        }
+                    }
+                }
+            }
+
+            return folder;
+        }
+
+        private async Task<Dictionary<String, Object>> LoadPersistantObjectsFromFile(string filename, bool alwaysLocal=false)
         {
             var objectsToLoad = new Dictionary<String, Object>();
-            if (await BibleZtextReader.FileExists(filename))
+
+            StorageFolder folder = await GetUsedFolderNoFail(filename, alwaysLocal);
+            if (await BibleZtextReader.FileExists(folder, filename))
             {
                 try
                 {
                     // Get the input stream for the SessionState file
-                    StorageFile file = null;
-                    if (DisplaySettings.UseRemoteStorage)
-                    {
-                        // attempt first remote, then local
-                        try
-                        {
-                            file = await ApplicationData.Current.RoamingFolder.GetFileAsync(filename);
-                        }
-                        catch (Exception)
-                        {
-                        }
-
-                        if (file == null)
-                        {
-                            file = await ApplicationData.Current.LocalFolder.GetFileAsync(filename);
-                        }
-                    }
-                    else
-                    {
-                        // attempt first local, then remote
-                        try
-                        {
-                            file = await ApplicationData.Current.LocalFolder.GetFileAsync(filename);
-                        }
-                        catch (Exception)
-                        {
-                        }
-
-                        if (file == null)
-                        {
-                            file = await ApplicationData.Current.RoamingFolder.GetFileAsync(filename);
-                        }
-                    }
+                    StorageFile file = await folder.GetFileAsync(filename);
 
                     using (IInputStream inStream = await file.OpenSequentialReadAsync())
                     {
+                        // debugging start
+                        byte[] buff = new byte[20000];
+                        var xx = inStream.AsStreamForRead().Read(buff, 0, buff.Length);
+                        string all = System.Text.UTF8Encoding.UTF8.GetString(buff, 0, xx);
+                        inStream.AsStreamForRead().Position = 0;
+                        // debugging stop
+
                         // Deserialize the Session State
                         var serializer = new DataContractSerializer(
                             typeof(Dictionary<string, object>), new[] { typeof(string) });
@@ -704,16 +738,18 @@ namespace CrossConnect
             DisplaySettings.highlighter = new Highlighter();
             if (objectsToLoad.TryGetValue("Highlights", out markerXmlData))
             {
-                using (var sr = new StringReader((string)markerXmlData))
-                {
-                    var settings = new XmlReaderSettings();
-                    using (XmlReader reader = XmlReader.Create(sr, settings))
-                    {
-                        var types = new[] { typeof(DisplaySettings) };
-                        var ser = new DataContractSerializer(typeof(DisplaySettings), types);
-                        DisplaySettings.highlighter.FromString((string)ser.ReadObject(reader));
-                    }
-                }
+                DisplaySettings.highlighter.FromString((string)markerXmlData);
+                //using (var sr = new StringReader((string)markerXmlData))
+                //{
+                    
+                //    var settings = new XmlReaderSettings();
+                //    using (XmlReader reader = XmlReader.Create(sr, settings))
+                //    {
+                //        var types = new[] { typeof(Highlighter), typeof(BiblePlaceMarker) };
+                //        var ser = new DataContractSerializer(typeof(Highlighter), types);
+                //        DisplaySettings.highlighter.FromString((string)ser.ReadObject(reader));
+                //    }
+                //}
             }
         }
 
@@ -746,10 +782,12 @@ namespace CrossConnect
             }
         }
 
-        private async Task<bool> LoadPersistantObjects()
+        private async Task<bool> LoadPersistantObjects(bool alwaysLocal=false)
         {
+            StorageFolder folder = await GetUsedFolderNoFail(PersistantObjectsFileName, alwaysLocal);
+
             // The next line is a one time only thing. Afterwards the file is deleted and never created again.
-            if (await BibleZtextReader.FileExists(PersistantObjectsFileName))
+            if (await BibleZtextReader.FileExists(folder, PersistantObjectsFileName))
             {
                 return await LoadPersistantOldUpdate();
             }
@@ -767,19 +805,15 @@ namespace CrossConnect
                 }
 
                 await InstalledBibles.Initialize();
-                var tempUseRemoteStorage = true;
-                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("UseRemoteStorage"))
-                {
-                    // temporarily set the UseRemoteStorage
-                    tempUseRemoteStorage = (bool)ApplicationData.Current.LocalSettings.Values.ContainsKey("UseRemoteStorage");
-                    DisplaySettings.UseRemoteStorage = tempUseRemoteStorage;
-                }
 
-                var objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsDisplaySettingsFileName);
+                var objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsDisplaySettingsFileName, true);
                 LoadPersistantDisplaySettings(objectsToLoad);
-                DisplaySettings.UseRemoteStorage = tempUseRemoteStorage;
-                ApplicationData.Current.LocalSettings.Values["UseRemoteStorage"] = DisplaySettings.UseRemoteStorage;
-                
+                // once more now with the "UseRemoteStorage" properly set
+                if(DisplaySettings.UseRemoteStorage)
+                {
+                    objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsDisplaySettingsFileName);
+                    LoadPersistantDisplaySettings(objectsToLoad);
+                }
                 objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsThemesFileName);
                 LoadPersistantThemes(objectsToLoad);
                 objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsHighlightFileName);
@@ -806,8 +840,10 @@ namespace CrossConnect
         /// <param name="e">Details about the suspend request.</param>
         private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
-
-            await SavePersistantWindows();
+            if (TimerForSavingWindows != null)
+            {
+                TimerForSavingWindows.Stop();
+            }
             SuspendingDeferral deferral = e.SuspendingOperation.GetDeferral();
             await SuspensionManager.SaveAsync();
             deferral.Complete();
@@ -913,8 +949,11 @@ namespace CrossConnect
                 objectsToSave["DisplaySettings"] = sw.ToString();
             }
             // UseRemoteStorage is always local
-            ApplicationData.Current.LocalSettings.Values["UseRemoteStorage"] = DisplaySettings.UseRemoteStorage;
-            await SavePersistantObjects(objectsToSave, PersistantObjectsDisplaySettingsFileName);
+            await SavePersistantObjects(objectsToSave, PersistantObjectsDisplaySettingsFileName, true);
+            if (DisplaySettings.UseRemoteStorage)
+            {
+                await SavePersistantObjects(objectsToSave, PersistantObjectsDisplaySettingsFileName);
+            }
         }
 
         public static async void SavePersistantHighlighting()
@@ -950,7 +989,7 @@ namespace CrossConnect
             await SavePersistantObjects(objectsToSave, PersistantObjectsMarkersFileName);
         }
 
-        private static async Task SavePersistantObjects(Dictionary<string, object> objectsToSave, string filename)
+        private static async Task SavePersistantObjects(Dictionary<string, object> objectsToSave, string filename, bool alwaysLocal=false)
         {
             try
             {
@@ -960,19 +999,9 @@ namespace CrossConnect
                 serializer.WriteObject(sessionData, objectsToSave);
 
                 // Get an output stream for the SessionState file and write the state asynchronously
-                StorageFile file = null;
-                if(DisplaySettings.UseRemoteStorage)
-                {
-                    file = await
-                        ApplicationData.Current.RoamingFolder.CreateFileAsync(
+                StorageFolder folder = await GetUsedFolderNoFail(null, alwaysLocal);
+                StorageFile file = await folder.CreateFileAsync(
                             filename, CreationCollisionOption.ReplaceExisting);
-                }
-                else
-                {
-                    file = await
-                        ApplicationData.Current.LocalFolder.CreateFileAsync(
-                            filename, CreationCollisionOption.ReplaceExisting);
-                }
 
                 using (Stream fileStream = await file.OpenStreamForWriteAsync())
                 {
@@ -983,7 +1012,7 @@ namespace CrossConnect
             }
             catch (Exception e)
             {
-                throw new SuspensionManagerException(e);
+                //throw new SuspensionManagerException(e);
             }
         }
 

@@ -421,6 +421,7 @@ namespace CrossConnect
 
         public void UpdateBrowser(bool isOrientationChangeOnly)
         {
+            App.StartTimerForSavingWindows();
             if (isOrientationChangeOnly)
             {
                 return;

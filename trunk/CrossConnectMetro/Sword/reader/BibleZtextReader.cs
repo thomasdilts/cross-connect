@@ -504,11 +504,11 @@ namespace Sword.reader
             return false;
         }
 
-        public static async Task<bool> FileExists(string filePath)
+        public static async Task<bool> FileExists(StorageFolder folder, string filePath)
         {
             try
             {
-                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(filePath.Replace("/", "\\"));
+                StorageFile file = await folder.GetFileAsync(filePath.Replace("/", "\\"));
                 return true;
             }
             catch (Exception)
@@ -965,6 +965,12 @@ function SetFontColorForElement(elemntId, colorRgba){
 
         public virtual void MoveNext()
         {
+
+            if(this.Serial==null || canon == null)
+            {
+                return;
+            }
+
             int nextChapter = this.Serial.PosChaptNum + 1;
             var book = canon.BookByShortName[this.Serial.PosBookShortName];
             if (nextChapter >= book.NumberOfChapters)
@@ -986,7 +992,6 @@ function SetFontColorForElement(elemntId, colorRgba){
             {
                 this.MoveChapterVerse(this.Serial.PosBookShortName, nextChapter, 0, false, this);
             }
-
 
 /*
 
@@ -1626,7 +1631,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 BiblePlaceMarker place = listToDisplay[j];
                 var book = canon.BookByShortName[place.BookShortName];
                 ChapterPos chaptPos = this.Chapters[place.ChapterNum + book.VersesInChapterStartIndex];
-                byte[] chapterBuffer = await this.GetChapterBytes(place.ChapterNum);
+                byte[] chapterBuffer = await this.GetChapterBytes(place.ChapterNum + book.VersesInChapterStartIndex);
 
                 // for debug
                 // string all = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
@@ -2376,10 +2381,14 @@ function SetFontColorForElement(elemntId, colorRgba){
 
         private async Task<bool> ReloadSettingsFile()
         {
+            if(canon==null)
+            {
+                canon = CanonManager.GetCanon(this.Serial.Versification);
+            }
             this.Chapters = new List<ChapterPos>();
             this.BlockType = IndexingBlockType.Book;
             // the name must be unique of course
-            if (await FileExists(this.Serial.Path + "ot.czs") || await FileExists(this.Serial.Path + "nt.czs"))
+            if (await FileExists(ApplicationData.Current.LocalFolder, this.Serial.Path + "ot.czs") || await FileExists(ApplicationData.Current.LocalFolder, this.Serial.Path + "nt.czs"))
             {
                 this.BlockType = IndexingBlockType.Chapter;
             }

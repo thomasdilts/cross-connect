@@ -125,7 +125,7 @@ namespace CrossConnect
             App.ShowUserInterface(true);
 
             App.MainWindow.ReDrawWindows(false);
-            App.SavePersistantWindows();
+            App.StartTimerForSavingWindows();
         }
 
         private void AddWindowPopup_OnOpened(object sender, object e)
