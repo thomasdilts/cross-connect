@@ -34,6 +34,7 @@ namespace CrossConnect
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Input;
+    using Sword.versification;
 
     public sealed partial class BrowserTitledWindow
     {
@@ -51,6 +52,23 @@ namespace CrossConnect
                 var dialog = new MessageDialog(Translations.Translate("You must first select a verse"));
                 await dialog.ShowAsync();
             }
+        }
+        private bool ExistsBibleBookInKjv()
+        {
+            string bookShortName;
+            int relChaptNum;
+            int verseNum;
+            string fullName;
+            string titleText;
+            this._state.Source.GetInfo(
+                out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
+            var canonKjv = CanonManager.GetCanon("KJV");
+            CanonBookDef book;
+            if (!canonKjv.BookByShortName.TryGetValue(bookShortName, out book))
+            {
+                return false;
+            }
+            return true;
         }
 
         private void ButMenuClick(object sender, RoutedEventArgs e)
@@ -80,7 +98,7 @@ namespace CrossConnect
                                            ? Visibility.Visible
                                            : Visibility.Collapsed;
             this.AddToBookMarks.Visibility = this.AddANote.Visibility;
-            this.Hear.Visibility = this._state != null && this._state.Source != null && this._state.Source.IsHearable
+            this.Hear.Visibility = this._state != null && this._state.Source != null && this._state.Source.IsHearable && ExistsBibleBookInKjv()
                                        ? Visibility.Visible
                                        : Visibility.Collapsed;
             this.Translate.Visibility = this.AddANote.Visibility;

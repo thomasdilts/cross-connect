@@ -167,6 +167,20 @@ namespace CrossConnect
 
         private async void StartAudio_OnClick()
         {
+            string bookShortName;
+            int relChaptNum;
+            int verseNum;
+            string fullName;
+            string titleText;
+            this._state.Source.GetInfo(
+                out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText); 
+            var canonKjv = CanonManager.GetCanon("KJV");
+            CanonBookDef book;
+            if (!canonKjv.BookByShortName.TryGetValue(bookShortName, out book))
+            {
+                return;
+            } 
+            
             MainPageSplit.SideBarShowPopup(
                 this.StartAudioPopup, this.MainPaneStartAudioPopup, this.scrollViewerStartAudio);
 
@@ -177,20 +191,9 @@ namespace CrossConnect
             this.ListStartAudio.Items.Clear();
 
             // do a download.
-            string bookShortName;
-            int absoluteChaptNum;
-            int relChaptNum;
-            int verseNum;
-            string fullName;
-            string titleText;
-            this._state.Source.GetInfo(
-                out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
-            object language = this._state.Source.GetLanguage();
-            ;
-            string titleBar = titleText;
 
-            var canonKjv = CanonManager.GetCanon("KJV");
-            var book = canonKjv.BookByShortName[bookShortName];
+            object language = this._state.Source.GetLanguage();
+            string titleBar = titleText;
 
             this._chapter = book.VersesInChapterStartIndex + relChaptNum;
             this._language = (string)language;
