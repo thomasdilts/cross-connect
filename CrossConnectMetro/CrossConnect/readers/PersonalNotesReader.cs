@@ -403,7 +403,7 @@ namespace CrossConnect.readers
             for (int i = sortedNotes.Count()-1; i >=0 ; i--)
             {
                 var marker = sortedNotes[i];
-                if (SortByBibleChapterVerse(testMarker, marker) > 0)
+                if (Highlighter.SortByBibleChapterVerse(testMarker, marker) > 0)
                 {
                     this.Serial.PosBookShortName = marker.BookShortName;
                     this.Serial.PosChaptNum = marker.ChapterNum;
@@ -438,22 +438,9 @@ namespace CrossConnect.readers
 
         #region Methods
 
-        private Dictionary<string, int> BooksByNumber = null;
-
         private List<BiblePlaceMarker> GetSortedList(string bookShortName, int chapterNumber, bool inludeAll, bool reverseOrder)
         {
             var returnList = new List<BiblePlaceMarker>();
-            if (BooksByNumber == null)
-            {
-                BooksByNumber = new Dictionary<string, int>(); 
-                var booksInOrder = BibleZtextReader.ChapterCategories.Keys.ToArray();
-                int i=0;
-                foreach (var item in booksInOrder)
-                {
-                    BooksByNumber[item] = i;
-                    i++;
-                }
-            }
             
             foreach (var book in App.DailyPlan.PersonalNotesVersified)
             {
@@ -470,32 +457,13 @@ namespace CrossConnect.readers
                 }
             }
 
-            returnList.Sort(SortByBibleChapterVerse);
+            returnList.Sort(Highlighter.SortByBibleChapterVerse);
             if (reverseOrder)
             {
                 returnList.Reverse();
             }
 
             return returnList;
-        }
-
-        protected int SortByBibleChapterVerse(BiblePlaceMarker name1, BiblePlaceMarker name2)
-        {
-            int nameNum1;
-            int nameNum2;
-            if (!BooksByNumber.TryGetValue(name1.BookShortName, out nameNum1))
-            {
-                nameNum1 = 999;
-            }
-            if (!BooksByNumber.TryGetValue(name2.BookShortName, out nameNum2))
-            {
-                nameNum2 = 999;
-            }
-
-            var nameCompare = nameNum1.CompareTo(nameNum2);
-            var chaptCompare = name1.ChapterNum.CompareTo(name2.ChapterNum);
-            var verseCompare = name1.VerseNum.CompareTo(name2.VerseNum);
-            return nameCompare != 0 ? nameCompare : (chaptCompare != 0 ? chaptCompare : verseCompare);
         }
 
         private void MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, bool forcePrevious)
@@ -513,7 +481,7 @@ namespace CrossConnect.readers
                         this.Serial.PosVerseNum = 0;
                         return;
                     }
-                    else if (SortByBibleChapterVerse(testMarker, marker)<0)
+                    else if (Highlighter.SortByBibleChapterVerse(testMarker, marker) < 0)
                     {
                         this.Serial.PosBookShortName = marker.BookShortName;
                         this.Serial.PosChaptNum = marker.ChapterNum;

@@ -792,7 +792,7 @@ namespace CrossConnect
                 int verseNum = -1;
                 int.TryParse(chapterVerse[1], out chapterNum);
                 int.TryParse(chapterVerse[2], out verseNum);
-                if (chapterNum >= 0 && verseNum >= 0)
+                if (!string.IsNullOrEmpty(bookShortName) && chapterNum >= 0 && verseNum >= 0)
                 {
                     if (this._state.Source.IsLocalChangeDuringLink)
                     {

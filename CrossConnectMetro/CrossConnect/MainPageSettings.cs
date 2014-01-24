@@ -33,6 +33,8 @@ namespace CrossConnect
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Controls.Primitives;
     using Windows.UI.Xaml.Media;
+    using Windows.ApplicationModel.DataTransfer;
+    using Windows.UI.Popups;
 
     public sealed partial class MainPageSplit
     {
@@ -217,6 +219,57 @@ namespace CrossConnect
                     // we could try to repair it but lets take no chances.
                     App.DisplaySettings = new DisplaySettings();
                 }
+            }
+        }
+
+        private async void butImportBookmarksHighlightsAndNotes_Click(object sender, RoutedEventArgs e)
+        {
+            DataPackageView dataPackageView = Clipboard.GetContent();
+            if (dataPackageView.Contains(StandardDataFormats.Text))
+            {
+                string message = Translations.Translate("Successful import");
+                try
+                {
+                    string text = await dataPackageView.GetTextAsync();
+                    Highlighter.FromString(text, "note", true, null, App.DailyPlan.PersonalNotesVersified);
+                    Highlighter.FromString(text, "bookmark", false, App.PlaceMarkers.Bookmarks, null);
+                    App.DisplaySettings.highlighter.FromString(text);
+                }
+                catch (Exception ex)
+                {
+                    message = Translations.Translate("Unsuccessful import:\n" + ex.Message );
+                }
+
+                var dialog =
+                    new MessageDialog(message);
+                dialog.ShowAsync();
+            }
+            App.RaiseBookmarkChangeEvent();
+            App.RaisePersonalNotesChangeEvent();
+            App.SavePersistantMarkers();
+            App.SavePersistantHighlighting();
+            App.StartTimerForSavingWindows();
+
+        }
+
+        private void butExportBookmarksHighlightsAndNotes_Click(object sender, RoutedEventArgs e)
+        {
+            var dataPackage = new DataPackage();
+            dataPackage.SetText(
+                    "<crossconnectbookmarksnoteshighlights>\n" +
+                    App.DisplaySettings.highlighter.ToStringNoRoot() +
+                    Highlighter.ExportMarkersDictionary("note",  App.DailyPlan.PersonalNotesVersified) +
+                    Highlighter.ExportMarkersList("bookmark",  App.PlaceMarkers.Bookmarks) +
+                    "</crossconnectbookmarksnoteshighlights>" 
+                );
+            try
+            {
+                // Set the DataPackage to clipboard. 
+                Clipboard.SetContent(dataPackage);
+            }
+            catch (Exception ex)
+            {
+                // Copying data to Clipboard can potentially fail - for example, if another application is holding Clipboard open 
             }
         }
 

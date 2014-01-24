@@ -732,14 +732,14 @@ namespace CrossConnect
 
             DisplaySettings.CheckForNullAndFix();
         }
+
         private void LoadPersistantHighlighting(Dictionary<String, Object> objectsToLoad)
         {
             object markerXmlData;
             DisplaySettings.highlighter = new Highlighter();
             if (objectsToLoad.TryGetValue("Highlights", out markerXmlData))
             {
-                DisplaySettings.highlighter.FromString((string)markerXmlData);
-                //using (var sr = new StringReader((string)markerXmlData))
+                DisplaySettings.highlighter.FromString((string)markerXmlData);                //using (var sr = new StringReader((string)markerXmlData))
                 //{
                     
                 //    var settings = new XmlReaderSettings();
@@ -1042,6 +1042,7 @@ namespace CrossConnect
                     {
                         var book = canon.GetBookFromAbsoluteChapter(mark.ChapterNum);
                         mark.ChapterNum = mark.ChapterNum - book.VersesInChapterStartIndex;
+                        mark.BookShortName = book.ShortName1;
                     }
                 }
             }
