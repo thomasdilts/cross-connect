@@ -181,7 +181,7 @@ namespace Sword.reader
         /// <summary>
         ///     Chapters divided into categories
         /// </summary>
-        protected static readonly Dictionary<string, int> ChapterCategories = new Dictionary<string, int> 
+        public static readonly Dictionary<string, int> ChapterCategories = new Dictionary<string, int> 
         {
             {"Gen",1},
             {"Exod",1},
@@ -1486,7 +1486,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                          + stopVerseMarking;
                 string verseTxt;
                 string id = bookShortName + "_" + chapterNumber + "_" + i;
-                string restartText = "<a name=\"" + id + "\"></a><a " + GetHighlightStyle(displaySettings, htmlHighlightingColor, chapterNumber, i) + " class=\"normalcolor\" id=\"" + id
+                string restartText = "<a name=\"" + id + "\"></a><a " + GetHighlightStyle(displaySettings, htmlHighlightingColor, bookShortName, chapterNumber, i) + " class=\"normalcolor\" id=\"" + id
                                      + "\" href=\"#\" onclick=\"window.external.notify('" + id
                                      + "'); event.returnValue=false; return false;\" > ";
                 string startText = htmlChapterText + restartText;
@@ -1574,18 +1574,15 @@ function SetFontColorForElement(elemntId, colorRgba){
             return buf[3] * 0x100000 + buf[2] * 0x10000 + buf[1] * 0x100 + buf[0];
         }
 
-        private string GetHighlightStyle(DisplaySettings displaySettings, HtmlColorRgba[] htmlHighlightingColor, int chapter, int verse)
+        private string GetHighlightStyle(DisplaySettings displaySettings, HtmlColorRgba[] htmlHighlightingColor, string book, int chapter, int verse)
         {
             var style = string.Empty;
-            var highlight = displaySettings.highlighter.GetHighlightForChapter(chapter, verse);
+            var highlight = displaySettings.highlighter.GetHighlightForVerse(book, chapter, verse);
             if(highlight == Highlighter.Highlight.COLOR_NONE)
             {
                 return string.Empty;
             }
             return "style=\"background-color:" + htmlHighlightingColor[(int)highlight].GetHtmlRgba() + ";\"";
-
-            
-            return style;
         }
 
         protected async Task<string> MakeListDisplayText(

@@ -24,7 +24,7 @@
 namespace CrossConnect
 {
     using System.Collections.Generic;
-
+    using System.Linq;
     using Sword.reader;
 
     public sealed partial class BrowserTitledWindow
@@ -68,43 +68,12 @@ namespace CrossConnect
         {
             App.ShowUserInterface(true);
             // save if there is something there. otherwise erase an old version if there is one
-            BiblePlaceMarker place = App.PlaceMarkers.History[App.PlaceMarkers.History.Count - 1];
-
-            // erase the old first
-            if (App.DailyPlan.PersonalNotesVersified.ContainsKey(place.BookShortName)
-                && App.DailyPlan.PersonalNotesVersified[place.BookShortName].ContainsKey(place.ChapterNum)
-                && App.DailyPlan.PersonalNotesVersified[place.BookShortName][place.ChapterNum].ContainsKey(place.VerseNum))
+            if (App.PlaceMarkers.History.Any())
             {
-                App.DailyPlan.PersonalNotesVersified[place.BookShortName][place.ChapterNum].Remove(place.VerseNum);
-                if (App.DailyPlan.PersonalNotesVersified[place.BookShortName][place.ChapterNum].Count == 0)
-                {
-                    App.DailyPlan.PersonalNotesVersified[place.BookShortName].Remove(place.ChapterNum);
-                    if (App.DailyPlan.PersonalNotesVersified[place.BookShortName].Count == 0)
-                    {
-                        App.DailyPlan.PersonalNotesVersified.Remove(place.BookShortName);
-                    }
-                }
+                BiblePlaceMarker place = App.PlaceMarkers.History[App.PlaceMarkers.History.Count - 1];
+                Highlighter.AddBiblePlaceMarker(place.BookShortName, place.ChapterNum, place.VerseNum, this.TextToAdd.Text, App.DailyPlan.PersonalNotesVersified);
+                App.RaisePersonalNotesChangeEvent();
             }
-
-            // add the new
-            if (this.TextToAdd.Text.Length > 0)
-            {
-                BiblePlaceMarker note = BiblePlaceMarker.Clone(place);
-                if (!App.DailyPlan.PersonalNotesVersified.ContainsKey(place.BookShortName))
-                {
-                    App.DailyPlan.PersonalNotesVersified.Add(place.BookShortName, new Dictionary<int,Dictionary<int, BiblePlaceMarker>>());
-                }
-
-                if (!App.DailyPlan.PersonalNotesVersified[place.BookShortName].ContainsKey(place.ChapterNum))
-                {
-                    App.DailyPlan.PersonalNotesVersified[place.BookShortName].Add(place.ChapterNum, new Dictionary<int, BiblePlaceMarker>());
-                }
-
-                App.DailyPlan.PersonalNotesVersified[place.BookShortName][place.ChapterNum][place.VerseNum] = note;
-                note.Note = this.TextToAdd.Text;
-            }
-
-            App.RaisePersonalNotesChangeEvent();
         }
 
         private void AddNotePopup_OnOpened(object sender, object e)

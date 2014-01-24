@@ -187,6 +187,10 @@
                             <TextBox Name="highlightName6" Text="" Margin="10 10 10 10" />
                             <Button Content="Default settings" Name="butSettingsDefault"
                                     Click="ButSettingsDefault_OnClick" />
+                            <Button Content="Export to the clipboard Bookmarks, Highlights And Notes" Name="butExportBookmarksHighlightsAndNotes"
+                                    Click="butExportBookmarksHighlightsAndNotes_Click" />
+                            <Button Content="Import from the clipboard Bookmarks, Highlights And Notes" Name="butImportBookmarksHighlightsAndNotes"
+                                    Click="butImportBookmarksHighlightsAndNotes_Click" />
                         </StackPanel>
 
                     </ScrollViewer>
