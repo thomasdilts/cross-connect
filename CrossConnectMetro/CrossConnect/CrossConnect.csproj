@@ -14,7 +14,7 @@
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>CrossConnect_StoreKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
-    <PackageCertificateThumbprint>DD7C683184FBD8A675EB9DD1C6190B0ACCC098B5</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>7F2065C67DFD6157889C3164AAF07251294478B3</PackageCertificateThumbprint>
     <!-- <SupportedCultures>es-ES;fr-FR;it-IT;de-DE;af-AF;ar-AR;az-AZ;be-BE;bg-BG;cs-CS;da-DA;el-EL;et-ET;fa-FA;fi-FI;hi-HI;hr-HR;hu-HU;hy-HY;id-ID;is-IS;iw-IW;ja-JA;ko-KO;lt-LT;lv-LV;mk-MK;ms-MS;mt-MT;nl-NL;no-NO;pl-PL;pt-PT;ro-RO;ru-RU;sk-SK;sl-SL;sq-SQ;sr-SR;sv-SV;sw-SW;th-TH;tl-TL;tr-TR;uk-UK;ur-UR;vi-VI;zh-CN;zh-TW</SupportedCultures> -->
     <SupportedCultures>es-ES;fr-FR;it-IT;de-DE;af-AF;ar-AR;az-AZ;be-BE;bg-BG;cs-CS;da-DA;el-EL;et-ET;fa-FA;fi-FI;hi-HI;hr-HR;hu-HU;hy-HY;id-ID;is-IS;iw-IW;ja-JA;ko-KO;lt-LT;lv-LV;mk-MK;ms-MS;mt-MT;nl-NL;no-NO;pl-PL;pt-PT;ro-RO;ru-RU;sk-SK;sl-SL;sq-SQ;sr-SR;sv-SV;sw-SW;th-TH;tl-TL;tr-TR;uk-UK;ur-UR;vi-VI;zh-CN;zh-TW</SupportedCultures>
   </PropertyGroup>
@@ -245,6 +245,7 @@
     <PRIResource Include="Locale\vi\resource.resw" />
     <PRIResource Include="Locale\zh-cn\resource.resw" />
     <PRIResource Include="Locale\zh-TW\resource.resw" />
+    <None Include="CrossConnect_TemporaryKey.pfx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
