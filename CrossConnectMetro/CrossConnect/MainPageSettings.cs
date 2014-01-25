@@ -177,6 +177,8 @@ namespace CrossConnect
             this.butSettingsDefault.Content = Translations.Translate("Default settings");
             this.useHighlighting.Header = Translations.Translate("Use highlighting");
             this.useRemoteStorage.Header = Translations.Translate("Use remote storage");
+            butExportBookmarksHighlightsAndNotes.Content = Translations.Translate("Copy bookmarks, highlights and notes to the clipboard");
+            butImportBookmarksHighlightsAndNotes.Content = Translations.Translate("Import bookmarks, highlights and notes from the clipboard");
 
             bool successfulInitialize = false;
             while (!successfulInitialize)
@@ -237,7 +239,7 @@ namespace CrossConnect
                 }
                 catch (Exception ex)
                 {
-                    message = Translations.Translate("Unsuccessful import:\n" + ex.Message );
+                    message = Translations.Translate("Unsuccessful import") + "\n" + ex.Message;
                 }
 
                 var dialog =

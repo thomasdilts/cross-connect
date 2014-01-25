@@ -1672,7 +1672,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 {
                     htmlListText.Append(
                         verseTxt + "</p><p>" + (displaySettings.SmallVerseNumbers ? "<sup>" : "(") + notesTitle
-                        + (displaySettings.SmallVerseNumbers ? "</sup>" : ") ") + place.Note + "</a></p><hr />");
+                        + (displaySettings.SmallVerseNumbers ? "</sup>" : ") ") + "<br />" + place.Note.Replace("\n","<br />") + "</a></p><hr />");
                 }
             }
 
