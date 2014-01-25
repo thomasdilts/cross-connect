@@ -153,7 +153,7 @@ namespace CrossConnect
                     theme.FromString(text);
                     App.Themes.Themes[theme.UniqId] = theme;
                     App.Themes.CurrentTheme = theme.UniqId;
-                    this.LoadState(null, null);
+                    this.FillWindowWithValues(App.Themes.CurrentTheme);
                 }
                 catch (Exception ex)
                 {

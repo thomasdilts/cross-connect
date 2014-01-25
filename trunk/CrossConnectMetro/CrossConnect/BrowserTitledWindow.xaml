@@ -209,25 +209,25 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Vertical"  Margin="0 20 0 0">
-                            <RadioButton IsChecked="False" GroupName="Highlighting" FontSize="18"
+                            <RadioButton IsChecked="False" Padding="20 20 20 20" GroupName="Highlighting" FontSize="18"
                                                  Content="Highlight"
                                                  Name="SelectHighlight1" Click="SelectHighlight_OnClick"/>
-                            <RadioButton IsChecked="False" GroupName="Highlighting" FontSize="18"
+                            <RadioButton IsChecked="False" Padding="20 20 20 20" GroupName="Highlighting" FontSize="18"
                                                  Content="Highlight"
                                                  Name="SelectHighlight2" Click="SelectHighlight_OnClick"/>
-                            <RadioButton IsChecked="False" GroupName="Highlighting" FontSize="18"
+                            <RadioButton IsChecked="False" Padding="20 20 20 20" GroupName="Highlighting" FontSize="18"
                                                  Content="Highlight"
                                                  Name="SelectHighlight3" Click="SelectHighlight_OnClick"/>
-                            <RadioButton IsChecked="False" GroupName="Highlighting" FontSize="18"
+                            <RadioButton IsChecked="False" Padding="20 20 20 20" GroupName="Highlighting" FontSize="18"
                                                  Content="Highlight"
                                                  Name="SelectHighlight4" Click="SelectHighlight_OnClick"/>
-                            <RadioButton IsChecked="False" GroupName="Highlighting" FontSize="18"
+                            <RadioButton IsChecked="False" Padding="20 20 20 20" GroupName="Highlighting" FontSize="18"
                                                  Content="Highlight"
                                                  Name="SelectHighlight5" Click="SelectHighlight_OnClick"/>
-                            <RadioButton IsChecked="False" GroupName="Highlighting" FontSize="18"
+                            <RadioButton IsChecked="False" Padding="20 20 20 20" GroupName="Highlighting" FontSize="18"
                                                  Content="Highlight"
                                                  Name="SelectHighlight6" Click="SelectHighlight_OnClick"/>
-                            <RadioButton IsChecked="False" GroupName="Highlighting" FontSize="18"
+                            <RadioButton IsChecked="False" Padding="20 20 20 20" GroupName="Highlighting" FontSize="18"
                                                  Content="None"
                                                  Name="SelectHighlightNone" Click="SelectHighlight_OnClick"/>
                         </StackPanel>
@@ -272,13 +272,12 @@
                     <Grid Name="MainPaneAddNotePopup">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <StackPanel Grid.Row="0" Orientation="Horizontal">
-                            <TextBlock x:Name="AddNoteTitle" Margin="20 20 20 20" FontSize="18" />
-                            <TextBlock x:Name="verse" Margin="20 20 20 20" FontSize="14" />
-                        </StackPanel>
-                        <TextBox TextWrapping="Wrap" Grid.Row="1" Name="TextToAdd" FontSize="14">
+                        <TextBlock Grid.Row="0" x:Name="AddNoteTitle" Margin="20 20 20 20" FontSize="18" />
+                        <TextBlock Grid.Row="1" x:Name="verse" Margin="20 20 20 20" TextWrapping="Wrap" FontSize="14" />
+                        <TextBox TextWrapping="Wrap"  AcceptsReturn="True" Grid.Row="2" Name="TextToAdd" FontSize="14">
                         </TextBox>
 
                     </Grid>

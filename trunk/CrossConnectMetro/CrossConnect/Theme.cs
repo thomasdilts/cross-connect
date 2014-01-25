@@ -216,12 +216,12 @@ namespace CrossConnect
                     this.IsMainBackImage = false;
                     this.MainBackImage = string.Empty;
                     this.WordsOfChristRed = StringToColor("FFFF1439");
-                    this.ColorHighligt[0] = StringToColor("FFE6E600");
-                    this.ColorHighligt[1] = StringToColor("FFE86C19");
-                    this.ColorHighligt[2] = StringToColor("FF19D119");
-                    this.ColorHighligt[3] = StringToColor("FF25B8B8");
-                    this.ColorHighligt[4] = StringToColor("FFFF66FF");
-                    this.ColorHighligt[5] = StringToColor("FFAD5C33");
+                    this.ColorHighligt[0] = StringToColor("88E6E600");
+                    this.ColorHighligt[1] = StringToColor("88E86C19");
+                    this.ColorHighligt[2] = StringToColor("8819D119");
+                    this.ColorHighligt[3] = StringToColor("8825B8B8");
+                    this.ColorHighligt[4] = StringToColor("88FF66FF");
+                    this.ColorHighligt[5] = StringToColor("88AD5C33");
                 }
             }
         }
@@ -300,12 +300,12 @@ namespace CrossConnect
                             {
                                 foundTheme = new Theme();
                                 foundTheme.WordsOfChristRed = StringToColor("FFFF1439");
-                                foundTheme.ColorHighligt[0] = StringToColor("FFE6E600");
-                                foundTheme.ColorHighligt[1] = StringToColor("FFE86C19");
-                                foundTheme.ColorHighligt[2] = StringToColor("FF19D119");
-                                foundTheme.ColorHighligt[3] = StringToColor("FF25B8B8");
-                                foundTheme.ColorHighligt[4] = StringToColor("FFFF66FF");
-                                foundTheme.ColorHighligt[5] = StringToColor("FFAD5C33");
+                                foundTheme.ColorHighligt[0] = StringToColor("88E6E600");
+                                foundTheme.ColorHighligt[1] = StringToColor("88E86C19");
+                                foundTheme.ColorHighligt[2] = StringToColor("8819D119");
+                                foundTheme.ColorHighligt[3] = StringToColor("8825B8B8");
+                                foundTheme.ColorHighligt[4] = StringToColor("88FF66FF");
+                                foundTheme.ColorHighligt[5] = StringToColor("88AD5C33");
                                 reader.MoveToFirstAttribute();
                                 do
                                 {

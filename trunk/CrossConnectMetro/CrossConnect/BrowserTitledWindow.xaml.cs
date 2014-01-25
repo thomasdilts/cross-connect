@@ -553,6 +553,7 @@ namespace CrossConnect
             this._isNextOrPrevious = true;
             this._state.Source.MoveNext();
             this.UpdateBrowser(false);
+            App.StartTimerForSavingWindows();
         }
 
         private void ButPreviousClick(object sender, RoutedEventArgs e)
@@ -560,6 +561,7 @@ namespace CrossConnect
             this._isNextOrPrevious = true;
             this._state.Source.MovePrevious();
             this.UpdateBrowser(false);
+            App.StartTimerForSavingWindows();
         }
 
         private void ButSmallerClick(object sender, RoutedEventArgs e)
@@ -649,7 +651,6 @@ namespace CrossConnect
             else
             {
                 string bookShortName;
-                int absoluteChaptNum;
                 int relChaptNum;
                 int verseNum;
                 string fullName;

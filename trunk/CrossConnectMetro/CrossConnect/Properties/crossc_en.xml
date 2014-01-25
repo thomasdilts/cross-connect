@@ -207,4 +207,13 @@
   <string key="Enter key">Enter key</string>
   <string key="Save">Save</string>
   <string key="Fast search help text">A fast search is slow the first time you use it on a bible and fast each time thereafter. A fast search returns verses containing all of the given words. Put a "+" in front of each word to find any of the given words in each verse. Put a "-" in front of a word to find all of the verses that don't have that word.  Wildcards "*" and "?" can be used. In languages using symbols like chinese and japanese you must put "*" before and after each character. Use only the slow search to find "Strongs" numbers.</string>
+
+    <string key="Unsuccessful import">Unsuccessful import</string>
+    <string key="Successful import">Successful import</string>
+    <string key="Highlight name">Highlight name</string>
+    <string key="Use highlighting">Use highlighting</string>
+    <string key="Use remote storage">Use remote storage</string>
+    <string key="Copy bookmarks, highlights and notes to the clipboard">Copy bookmarks, highlights and notes to the clipboard</string>
+    <string key="Import bookmarks, highlights and notes from the clipboard">Import bookmarks, highlights and notes from the clipboard</string>
+    <string key="Highlight">Highlight</string>
 </translations>
