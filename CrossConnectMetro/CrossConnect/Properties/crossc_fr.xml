@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Clé non valide. Essayez à nouveau</string>
 <string key="Enter key">Entrez la clé</string>
 <string key="Save">Sauver</string>
-<string key="Fast search help text">Une recherche rapide est de ralentir la première fois que vous l'utilisez sur une bible et rapide à chaque fois par la suite. Une recherche rapide retourne vers contenant tous les mots donnés. Mettez un "+" en face de chaque mot pour trouver l'un des mots proposés dans chaque verset. Mettez un "-" devant un mot pour trouver tous les versets qui n'ont pas ce mot. Les caractères génériques "*" et "?" peuvent être utilisés. Dans les langues à l'aide de symboles comme chinois et japonais, vous devez mettre "*" avant et après chaque caractère. Utilisez uniquement la recherche lente pour trouver des numéros "Strongs".</string>
 <string key="Unsuccessful import">Importation échoué</string>
 <string key="Successful import">Importation réussie</string>
 <string key="Highlight name">Mettez en surbrillance le nom</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">signets de copie, les faits saillants et les notes dans le presse papier</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Importer des signets, surlignages et notes du presse-papiers</string>
 <string key="Highlight">Highlight</string>
+<string key="Synchronize to every verse">Synchroniser à chaque verset</string>
 </translations>

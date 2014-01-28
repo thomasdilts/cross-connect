@@ -49,8 +49,8 @@ namespace CrossConnect.readers
 
         #region Constructors and Destructors
 
-        public MediaReader(AudioPlayer.MediaInfo info)
-            : base(string.Empty, info.Language, false, string.Empty, string.Empty, string.Empty)
+        public MediaReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification,AudioPlayer.MediaInfo info)
+            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification)
         {
             this.Info = info;
         }
@@ -111,9 +111,60 @@ namespace CrossConnect.readers
 
         #region Public Methods and Operators
 
+        public override void MoveNext()
+        {
+            if (this.Serial == null || canon == null)
+            {
+                return;
+            }
+
+            if(!App.DisplaySettings.SyncMediaVerses)
+            {
+                base.MoveNext();
+                return;
+            }
+
+            int nextVerse = this.Serial.PosVerseNum + 1;
+            var book = canon.BookByShortName[this.Serial.PosBookShortName];
+            if (nextVerse >= canon.VersesInChapter[book.VersesInChapterStartIndex + this.Serial.PosChaptNum])
+            {
+                base.MoveNext();
+            }
+            else
+            {
+                this.MoveChapterVerse(this.Serial.PosBookShortName, this.Serial.PosChaptNum, nextVerse, false, this);
+            }
+            App.SynchronizeAllWindows(this.Serial.PosBookShortName, this.Serial.PosChaptNum, nextVerse, -1, this);
+        }
+
+        public override void MovePrevious()
+        {
+            if (this.Serial == null || canon == null)
+            {
+                return;
+            }
+
+            if (!App.DisplaySettings.SyncMediaVerses)
+            {
+                base.MovePrevious();
+                return;
+            }
+
+            int nextVerse = this.Serial.PosVerseNum - 1;
+            if (nextVerse < 0)
+            {
+                base.MovePrevious();
+            }
+            else
+            {
+                this.MoveChapterVerse(this.Serial.PosBookShortName, this.Serial.PosChaptNum, nextVerse, false, this);
+            }
+            App.SynchronizeAllWindows(this.Serial.PosBookShortName, this.Serial.PosChaptNum, nextVerse, -1, this);
+        }
+
+
         public override ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton)
         {
-            var canon = CanonManager.GetCanon("KJV");
             switch (stage)
             {
                 case 0:

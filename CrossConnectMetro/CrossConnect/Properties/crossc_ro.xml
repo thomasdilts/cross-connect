@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Cheie invalid. Încercați din nou</string>
 <string key="Enter key">Tasta Enter</string>
 <string key="Save">Salva</string>
-<string key="Fast search help text">O căutare rapidă este lent prima dată când o utilizați pe o Biblie și rapid de fiecare dată după aceea. O căutare rapidă returnează versete care conțin toate cuvintele date. Pune un "+" în fața fiecare cuvânt pentru a găsi oricare dintre cuvintele indicate în fiecare verset. Pune un "-" în fața unui cuvânt pentru a găsi toate versetele care nu au acel cuvânt. Metacaractere "*" și "?" pot fi utilizate. În limbi folosind simboluri cum ar fi chineză și japoneză trebuie să pună "*", înainte și după fiecare caracter. Folosiți numai căutarea lent pentru a găsi numere "Strongs".</string>
 <string key="Unsuccessful import">Import succes</string>
 <string key="Successful import">Import de succes</string>
 <string key="Highlight name">Evidențiați nume</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Marcajele de copiere, scoate în evidență și note la clipboard</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Marcajele de import, scoate în evidență și note din clipboard</string>
 <string key="Highlight">Evidențiați</string>
+<string key="Synchronize to every verse">Sincroniza la fiecare verset</string>
 </translations>

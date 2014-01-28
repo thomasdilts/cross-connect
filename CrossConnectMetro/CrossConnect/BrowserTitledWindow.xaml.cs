@@ -127,7 +127,7 @@ namespace CrossConnect
 
             return null;
         }
-
+        
         public void CallbackFromUpdate(string createdFile)
         {
             Debug.WriteLine("CallbackFromUpdate start");
@@ -150,7 +150,7 @@ namespace CrossConnect
                 // this will often crash because the window no longer exists OR has not had the chance to create itself yet.
                 this.webBrowser1.NavigateToString(createdFile);
 
-                if (!_isNextOrPrevious && (this._state.Source.IsSynchronizeable || this._state.Source.IsLocalChangeDuringLink))
+/*                if (!_isNextOrPrevious && (this._state.Source.IsSynchronizeable || this._state.Source.IsLocalChangeDuringLink))
                 {
                     // The window wont show the correct verse if we dont wait a few seconds before showing it.
 //                    var tmr = new DispatcherTimer { Interval = TimeSpan.FromSeconds(_state.IsResume ? 2.5 : 1.5) };
@@ -161,7 +161,7 @@ namespace CrossConnect
                     //this.Dispatcher.RunAsync(
                     //    CoreDispatcherPriority.Low,
                     //    () => this.Dispatcher.RunAsync(CoreDispatcherPriority.Low, () => this.OnTimerTick(null, null)));
-                }
+                }*/
             }
             catch (Exception e)
             {
@@ -187,6 +187,7 @@ namespace CrossConnect
             _isNextOrPrevious = false;
             Debug.WriteLine("CallbackFromUpdate end");
         }
+        
 
         private bool _isNextOrPrevious;
 
@@ -198,11 +199,11 @@ namespace CrossConnect
             tmr.Start();
         }
 
-        public int GetVScroll()
+        public async Task<int> GetVScroll()
         {
             try
             {
-                object pos = this.webBrowser1.InvokeScript("getVerticalScrollPosition", new string[0]);
+                object pos = await this.webBrowser1.InvokeScriptAsync("getVerticalScrollPosition", new string[0]);
                 return int.Parse(pos.ToString());
             }
             catch (Exception exn)
@@ -414,11 +415,153 @@ namespace CrossConnect
         {
             if (this._state.IsSynchronized && this._state.Source.IsSynchronizeable)
             {
+                string relbookShortName;
+                int relChaptNum;
+                int relverseNum;
+                string fullName;
+                string title;
+                _state.Source.GetInfo(
+                    out relbookShortName,
+                    out relChaptNum,
+                    out relverseNum,
+                    out fullName,
+                    out title);
+                bool isBookAndChapterTheSame = bookShortName.Equals(relbookShortName) && relChaptNum.Equals(chapterNum);
                 this._state.Source.MoveChapterVerse(bookShortName, chapterNum, verseNum, false, source);
-                this.UpdateBrowser(false);
+                if (!isBookAndChapterTheSame)
+                {
+                    this.UpdateBrowser(false);
+                }
+                else 
+                {
+                    try
+                    {
+                        this.webBrowser1.InvokeScriptAsync(
+                            "SetFontColorForElement",
+                            new[]
+                            {
+                                this._lastSelectedItem,
+                                ConvertColorToHtmlRgba(App.Themes.MainFontColor).GetHtmlRgba()
+                            });                        
+                        this._lastSelectedItem = bookShortName + "_" + chapterNum + "_" + verseNum;
+
+                        this.webBrowser1.InvokeScriptAsync(
+                            "SetFontColorForElement",
+                            new[] { this._lastSelectedItem, ConvertColorToHtmlRgba(App.Themes.AccentColor).GetHtmlRgba() });
+                        this.webBrowser1.InvokeScriptAsync(
+                             "ShowNode",
+                            new[] { this._lastSelectedItem });
+                       
+                        //this.webBrowser1.InvokeScriptAsync(
+                        //    "ScrollToAnchor",
+                        //    new[] { this._lastSelectedItem, ConvertColorToHtmlRgba(App.Themes.AccentColor).GetHtmlRgba() });
+                    }
+                    catch (Exception ee)
+                    {
+                        Debug.WriteLine("crashed: " + ee.Message);
+                    } 
+                    this.WriteTitle();
+                }
             }
         }
 
+        public async void UpdateBrowser(bool isOrientationChangeOnly)
+        {
+            App.StartTimerForSavingWindows();
+            if (isOrientationChangeOnly)
+            {
+                return;
+            }
+            this.border1.BorderBrush = new SolidColorBrush(App.Themes.BorderColor);
+            this.WebBrowserBorder.BorderBrush = this.border1.BorderBrush;
+            this.grid1.Background = new SolidColorBrush(App.Themes.TitleBackColor);
+            this.title.Foreground = new SolidColorBrush(App.Themes.TitleFontColor);
+            Debug.WriteLine("UpdateBrowser start");
+            if (this._state.Source != null && this.Parent != null)
+            {
+                if (this._state.Source.IsExternalLink)
+                {
+                    try
+                    {
+                        var source = new Uri(this._state.Source.GetExternalLink(App.DisplaySettings));
+                        //webBrowser1.Base = string.Empty;
+                        this.webBrowser1.Navigate(source);
+                        this.WriteTitle();
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("UpdateBrowser webBrowser1.Navigate ; " + e.Message);
+                    }
+                }
+                else
+                {
+                    double fontSizeMultiplier = 1;
+                    if (this.Parent != null && ((Grid)this.Parent).Parent != null)
+                    {
+                        //var parent = (MainPageSplit)((Grid)((Grid)((Grid)Parent).Parent).Parent).Parent;
+                        //if (parent.Orientation == PageOrientation.Landscape
+                        //    || parent.Orientation == PageOrientation.LandscapeLeft
+                        //    || parent.Orientation == PageOrientation.LandscapeRight)
+                        //{
+                        //    // we must adjust the font size for the new orientation. otherwise the font is too big.
+                        //    // fontSizeMultiplier = parent.ActualHeight/parent.ActualWidth;
+                        //}
+                    }
+
+                    HtmlColorRgba backcolor = GetBrowserColor("PhoneBackgroundColor");
+                    HtmlColorRgba forecolor = GetBrowserColor("PhoneForegroundColor");
+                    HtmlColorRgba accentcolor = GetBrowserColor("PhoneAccentColor");
+                    HtmlColorRgba htmlWordsOfChristColor = GetBrowserColor("PhoneWordsOfChristColor");
+                    HtmlColorRgba[] htmlHighlights = new HtmlColorRgba[6];
+                    for (int i = 0; i < 6; i++)
+                    {
+                        htmlHighlights[i] = ConvertColorToHtmlRgba(App.Themes.ColorHighligt[i]);
+                    }
+
+                    string fontFamily;
+                    if (!Theme.FontFamilies.TryGetValue(App.Themes.FontFamily, out fontFamily))
+                    {
+                        fontFamily = Theme.FontFamilies.First().Key;
+                    }
+
+                    if (App.Themes.IsMainBackImage && !string.IsNullOrEmpty(App.Themes.MainBackImage))
+                    {
+                        fontFamily += "background-image:url('/images/" + App.Themes.MainBackImage + "');";
+                    }
+
+                    try
+                    {
+                        string createdFileName =
+                            await
+                            this._state.Source.GetChapterHtml(
+                                App.DisplaySettings.Clone(),
+                                backcolor,
+                                forecolor,
+                                accentcolor,
+                                htmlWordsOfChristColor,
+                                htmlHighlights,
+                                this._state.HtmlFontSize * fontSizeMultiplier,
+                                fontFamily,
+                                false,
+                                true,
+                                this.ForceReload);
+                        this.ForceReload = false;
+                        this.CallbackFromUpdate(createdFileName);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("GetHtmlAsynchronously Failed; " + e.Message);
+                        this.CallbackFromUpdate(string.Empty);
+                        return;
+                    }
+
+                }
+            }
+
+            Debug.WriteLine("UpdateBrowser end");
+
+        }
+        /*
         public void UpdateBrowser(bool isOrientationChangeOnly)
         {
             App.StartTimerForSavingWindows();
@@ -498,6 +641,7 @@ namespace CrossConnect
 
             Debug.WriteLine("UpdateBrowser end");
         }
+        */
 
         #endregion
 
@@ -634,7 +778,7 @@ namespace CrossConnect
 
             this.UpdateBrowser(false);
         }
-
+        /*
         private void OnTimerTick(object sender, object e)
         {
             if (sender != null)
@@ -644,7 +788,7 @@ namespace CrossConnect
 
             if (this._nextVSchroll > 0)
             {
-                this.webBrowser1.InvokeScript(
+                this.webBrowser1.InvokeScriptAsync(
                     "setVerticalScrollPosition", new[] { this._nextVSchroll.ToString(CultureInfo.InvariantCulture) });
                 this._nextVSchroll = 0;
             }
@@ -659,8 +803,8 @@ namespace CrossConnect
                     out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
                 try
                 {
-                    this._lastSelectedItem = bookShortName + "_" + relChaptNum + "_" + verseNum; 
-                    this.webBrowser1.InvokeScript(
+                    this._lastSelectedItem = bookShortName + "_" + relChaptNum + "_" + verseNum;
+                    this.webBrowser1.InvokeScriptAsync(
                         "ScrollToAnchor",
                         new[] { this._lastSelectedItem, ConvertColorToHtmlRgba(App.Themes.AccentColor).GetHtmlRgba() });
                 }
@@ -670,7 +814,7 @@ namespace CrossConnect
                 }
             }
         }
-
+        */
         private void SourceChanged()
         {
             this.ForceReload = true;
@@ -679,7 +823,7 @@ namespace CrossConnect
 
         private void WebBrowser1Loaded(object sender, RoutedEventArgs e)
         {
-            this.webBrowser1.AllowedScriptNotifyUris = WebView.AnyScriptNotifyUri;
+            //this.webBrowser1.AllowedScriptNotifyUris = WebView.AnyScriptNotifyUri;
 
             this.UpdateBrowser(false);
 
@@ -803,14 +947,14 @@ namespace CrossConnect
                     try
                     {
                         string id = bookShortName + "_" + chapterNum + "_" + verseNum;
-                        this.webBrowser1.InvokeScript(
+                        await this.webBrowser1.InvokeScriptAsync(
                             "SetFontColorForElement",
                             new[] { id, ConvertColorToHtmlRgba(App.Themes.AccentColor).GetHtmlRgba() });
                         if (!string.IsNullOrEmpty(this._lastSelectedItem) && !this._lastSelectedItem.Equals(id))
                         {
                             try
                             {
-                                this.webBrowser1.InvokeScript(
+                                await this.webBrowser1.InvokeScriptAsync(
                                     "SetFontColorForElement",
                                     new[]
                                     {
@@ -832,6 +976,37 @@ namespace CrossConnect
                     App.AddHistory(bookShortName, chapterNum, verseNum);
                 }
             }
+        }
+        private async void ScrollToThisVerse(string bookShortName, int chapterNum, int verseNum)
+        {
+            try
+            {
+                string id = bookShortName + "_" + chapterNum + "_" + verseNum;
+                await this.webBrowser1.InvokeScriptAsync(
+                    "SetFontColorForElement",
+                    new[] { id, ConvertColorToHtmlRgba(App.Themes.AccentColor).GetHtmlRgba() });
+                if (!string.IsNullOrEmpty(this._lastSelectedItem) && !this._lastSelectedItem.Equals(id))
+                {
+                    try
+                    {
+                        await this.webBrowser1.InvokeScriptAsync(
+                            "SetFontColorForElement",
+                            new[]
+                            {
+                                this._lastSelectedItem,
+                                ConvertColorToHtmlRgba(App.Themes.MainFontColor).GetHtmlRgba()
+                            });
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+                this._lastSelectedItem = id;
+            }
+            catch (Exception)
+            {
+            }
+
         }
 
         private void WebBrowser1Unloaded(object sender, RoutedEventArgs e)
@@ -873,6 +1048,18 @@ namespace CrossConnect
         private void WebBrowser1_OnLoadCompleted(object sender, NavigationEventArgs e)
         {
             Debug.WriteLine("WebBrowser1_OnLoadCompleted " + e.SourcePageType);
+        }
+
+        private void webBrowser1_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
+        {
+            string bookShortName;
+            int relChaptNum;
+            int verseNum;
+            string fullName;
+            string titleText;
+            this._state.Source.GetInfo(
+                out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
+            ScrollToThisVerse(bookShortName, relChaptNum, verseNum);
         }
     }
 }

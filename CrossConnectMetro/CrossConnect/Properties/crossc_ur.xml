@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">غلط چابی. دوبارہ کوشش کریں</string>
 <string key="Enter key">کلید درج کریں</string>
 <string key="Save">محفوظ کریں</string>
-<string key="Fast search help text">ایک روزہ کی تلاش اس کے بعد بائبل اور روزہ ہر ایک کو وقت پر اس کا استعمال پہلی بار سست ہے. ایک روزہ تلاش دیئے گئے الفاظ کی سب مشتمل آیات کی واپسی. ہر آیت میں دی گئی الفاظ کی کسی بھی تلاش کرنے کے لئے ہر لفظ کے سامنے میں ایک "+" رکھو. ڈال دیا "-" وہ لفظ نہیں ہے آیات کے تمام تلاش کرنے کے لئے ایک لفظ کے سامنے. وائلڈکارڈ "*" اور "؟" استعمال کیا جا سکتا. چینی اور جاپانی جیسے علامات کا استعمال کرتے ہوئے زبانوں میں آپ کو ہر کردار سے پہلے اور بعد "*" ڈال ضروری ہے. "Strongs" تعداد کو تلاش کرنے کے لئے صرف سست تلاش کے لئے استعمال کریں.</string>
 <string key="Unsuccessful import">ناکام درآمد</string>
 <string key="Successful import">کامیاب درآمد</string>
 <string key="Highlight name">نام نمایاں</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">کلپ بورڈ میں کاپی بک مارکس، روشنی ڈالی گئی ہے اور نوٹ</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">درآمد بک مارکس، روشنی ڈالی گئی ہے اور کلپ بورڈ سے نوٹ</string>
 <string key="Highlight">نمایاں کریں</string>
+<string key="Synchronize to every verse">ہر آیت پر ہم آہنگ</string>
 </translations>

@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">کلید نامعتبر است. دوباره سعی کنید</string>
 <string key="Enter key">کلیدی را وارد کنید</string>
 <string key="Save">جویی در هزینه</string>
-<string key="Fast search help text">جستجوی سریع کاهش سرعت اولین بار شما از آن استفاده در هر زمان کتاب مقدس و به سرعت پس از آن. جستجوی سریع باز می گردد آیات شامل تمام کلمات داده شده. قرار دادن یک "+" در جلوی هر کلمه برای پیدا کردن هر یک از کلمات داده شده در هر آیه. قرار دهید "-" در مقابل یک کلمه برای پیدا کردن همه از آیات که آن کلمه را ندارد. نویسه عام "*" و "؟" می تواند مورد استفاده قرار گیرد. در زبان با استفاده از کاراکتر مثل چینی و ژاپنی شما باید قبل و بعد از هر یک از شخصیت را "*". استفاده از تنها جستجوی آهسته برای پیدا کردن "strongs در" اعداد.</string>
 <string key="Unsuccessful import">واردات ناموفق</string>
 <string key="Successful import">واردات موفق</string>
 <string key="Highlight name">نام نماد</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">بوک مارک کپی، برجسته و یادداشت ها به کلیپ بورد</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">بوک مارک واردات، برجسته و یادداشت ها را از کلیپ بورد</string>
 <string key="Highlight">نماد</string>
+<string key="Synchronize to every verse">همگام سازی به هر آیه</string>
 </translations>

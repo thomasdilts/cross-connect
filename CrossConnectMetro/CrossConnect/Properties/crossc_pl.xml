@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Nieprawidłowy klucz. Spróbuj ponownie</string>
 <string key="Enter key">Klawisz Enter</string>
 <string key="Save">Oszczędzać</string>
-<string key="Fast search help text">Szybkie wyszukiwanie jest spowolnienie czasu pierwszego użycia go na biblii i szybki każdym późniejszym czasie. Szybkie wyszukiwanie zwraca wiersze zawierające wszystkie podane słowa. Umieścić "+" przed każdym słowem, aby znaleźć żadnego z podanych słów w każdym wersie. Umieścić "-" przed słowem, aby znaleźć wszystkie wersety, które nie mają tego słowa. Symboli wieloznacznych "*" i "?" mogą być użyte. W językach z wykorzystaniem symboli, takich jak chiński i japoński należy umieścić "*" przed i po każdym znaku. Używaj tylko powolne wyszukiwanie, aby znaleźć numery "Stronga".</string>
 <string key="Unsuccessful import">Nieudany import</string>
 <string key="Successful import">Udane import</string>
 <string key="Highlight name">Podświetlić nazwę</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Kopiowanie zakładek i notatek, pasemka do schowka</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Importowanie zakładek i notatek, podkreśla ze schowka</string>
 <string key="Highlight">Atrakcja</string>
+<string key="Synchronize to every verse">Synchronizacji do każdego wersetu</string>
 </translations>

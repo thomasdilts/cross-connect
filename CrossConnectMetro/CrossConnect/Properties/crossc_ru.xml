@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Неверный ключ. Попробуйте еще раз</string>
 <string key="Enter key">Введите ключ</string>
 <string key="Save">Экономить</string>
-<string key="Fast search help text">Быстрый поиск замедлить первый раз вы его используете на Библии и быстрой каждый раз после этого. Быстрый поиск возвращает стихи, содержащие все заданные слова. Положите "+" перед каждым словом, чтобы найти любой из данных слов в каждом стихе. Положите "-" перед словом, чтобы найти все стихи, которые не имеют этого слова. Групповые символы "*" и "?" можно использовать. В языках, использующих символы как китайский и японский вы должны поставить "*" до и после каждого символа. Используйте только медленный поиск, чтобы найти "Strongs" номера.</string>
 <string key="Unsuccessful import">Неудачная импорт</string>
 <string key="Successful import">Успешное импорт</string>
 <string key="Highlight name">Выделите имя</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Копирование закладки, основные моменты и заметки в буфер обмена</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Импорт закладок, основные моменты и заметки из буфера обмена</string>
 <string key="Highlight">Основной момент</string>
+<string key="Synchronize to every verse">Синхронизация, чтобы каждый стих</string>
 </translations>

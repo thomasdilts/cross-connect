@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Ongeldig sleutel. Probeer weer</string>
 <string key="Enter key">Tik sleutel</string>
 <string key="Save">Red</string>
-<string key="Fast search help text">'N vinnige soektog is stadig die eerste keer dat jy dit gebruik op 'n Bybel en 'n vinnige elke keer daarna. 'N vinnige soektog op verse wat al die gegewe woorde. Sit 'n "+" in die voorkant van elke woord enige van die gegewe woorde in elke vers te vind. Sit 'n "-" in die voorkant van 'n woord van al die verse wat nie die woord te vind. Wildcards "*" en "?" gebruik kan word. In tale gebruik simbole soos Chinese en Japannese moet jy "*" voor en na elke karakter. Gebruik slegs die stadige search "Strongs" getalle te vind.</string>
 <string key="Unsuccessful import">Onsuksesvol invoer</string>
 <string key="Successful import">Suksesvolle invoer</string>
 <string key="Highlight name">Kies 'n naam</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Kopie boekmerke, hoogtepunte en notas na die knipbord</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Invoer boekmerke, hoogtepunte en notas van die knipbord</string>
 <string key="Highlight">Hoogtepunt</string>
+<string key="Synchronize to every verse">Sinchroniseer om elke vers</string>
 </translations>

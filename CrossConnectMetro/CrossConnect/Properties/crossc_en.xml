@@ -216,4 +216,5 @@
     <string key="Copy bookmarks, highlights and notes to the clipboard">Copy bookmarks, highlights and notes to the clipboard</string>
     <string key="Import bookmarks, highlights and notes from the clipboard">Import bookmarks, highlights and notes from the clipboard</string>
     <string key="Highlight">Highlight</string>
+    <string key="Synchronize to every verse">Synchronize to every verse</string>
 </translations>

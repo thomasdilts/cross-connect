@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Chave inválida. Tente novamente</string>
 <string key="Enter key">Tecla Enter</string>
 <string key="Save">Salvar</string>
-<string key="Fast search help text">Uma busca rápida é retardar a primeira vez que você usá-lo em uma bíblia e rápido cada vez que depois disso. Uma busca rápida retorna versos contendo todas as palavras dadas. Coloque um "+" na frente de cada palavra para encontrar qualquer uma das palavras dadas em cada verso. Coloque um "-" na frente de uma palavra para encontrar todos os versos que não têm essa palavra. Wildcards "*" e "?" pode ser usado. Em linguagens que usam símbolos como chinês e japonês você deve colocar "*" antes e depois de cada personagem. Use apenas a busca lenta para encontrar números "Strongs".</string>
 <string key="Unsuccessful import">Importação sem êxito</string>
 <string key="Successful import">Importação de sucesso</string>
 <string key="Highlight name">Realce o nome</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Bookmarks Copiar, destaques e notas para a área de transferência</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Importar marcadores, destaques e notas da área de transferência</string>
 <string key="Highlight">Ponto alto</string>
+<string key="Synchronize to every verse">Sincronizar a cada verso</string>
 </translations>

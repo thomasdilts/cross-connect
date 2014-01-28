@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Ógildur lykill. Reyndu aftur</string>
 <string key="Enter key">Enter</string>
 <string key="Save">Vista</string>
-<string key="Fast search help text">A fljótur leita er hægt í fyrsta skipti sem þú notar það á Biblíuna og fljótur í hvert sinn eftir það. A fljótur leita skilar vísur innihalda öll gefin orð. Setja "+" fyrir framan hvert orð til að finna eitthvað af gefnum orðum í hverju versi. Setja "-" fyrir framan orð til að finna allar vísur sem hafa ekki þessi orð. Algildisstafir "*" og "?" Hægt er að nota. Í tungumála með tákn, eins og kínversku og japönsku þú verður að setja "*" fyrir og eftir hvern staf. Nota aðeins hæga leit til að finna "strongs" tölur.</string>
 <string key="Unsuccessful import">Misheppnaður innflutningur</string>
 <string key="Successful import">Vel heppnuðu innflutningur</string>
 <string key="Highlight name">Hápunktur nafn</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Afrita bókamerki, hápunktur og skýringar á klemmuspjald</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Flytja inn bókamerki, hápunktur og athugasemdum frá klemmuspjald</string>
 <string key="Highlight">Highlight</string>
+<string key="Synchronize to every verse">Samstilla við hvert vers</string>
 </translations>

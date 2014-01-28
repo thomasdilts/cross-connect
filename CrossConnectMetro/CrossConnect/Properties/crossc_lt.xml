@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Neteisingas raktas. Bandykite dar kartą</string>
 <string key="Enter key">Enter</string>
 <string key="Save">Sutaupyti</string>
-<string key="Fast search help text">Greita paieška yra lėtas, kai pirmą kartą jį naudoti ant Biblijos ir greitai kiekvieną kartą po to. Greita paieška grįžta eilutes, kuriose yra visi duotieji žodžiai. Įdėkite "+" prieš kiekvieno žodžio rasti vienu iš žemiau nurodytų žodžių kiekvienoje eilutėje. Įdėkite "-" prieš žodį surasti visus eilėmis, kad neturi tokio žodžio. Pakaitos simboliai "*" ir "?" gali būti naudojamas. Kalbomis, naudojant simbolius, pavyzdžiui, kinų ir japonų turite įdėti "*" prieš ir po kiekvieno požymio. Naudokite tik lėtai, norėdami rasti "strongs" numerius.</string>
 <string key="Unsuccessful import">Nesėkmingas importas</string>
 <string key="Successful import">Sėkmingas importas</string>
 <string key="Highlight name">Pažymėkite vardą</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Kopijuoti žymes, renginiai ir pastabos iškarpinę</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Importuoti žymas, renginiai ir užrašai iš iškarpinę</string>
 <string key="Highlight">Pabrėžti</string>
+<string key="Synchronize to every verse">Sinchronizuoti kiekvieną stichijos</string>
 </translations>

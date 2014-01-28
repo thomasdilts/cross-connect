@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Ongeldige sleutel. Probeer opnieuw</string>
 <string key="Enter key">Enter-toets</string>
 <string key="Save">Besparen</string>
-<string key="Fast search help text">Een snelle zoektocht is traag de eerste keer dat je het gebruikt op een bijbel en snel elke keer daarna. Een snelle zoekactie had verzen die alle van de opgegeven woorden. Zet een "+" voor elk woord een van de opgegeven woorden te vinden in elk vers. Zet een "-" voor een woord om alle verzen die dat woord niet hebben vinden. Wildcards "*" en "?" kunnen worden gebruikt. In talen met behulp van symbolen zoals chinese en japanse moet je "*" voor en na elk personage. Gebruik alleen de langzaam zoeken naar "Strong" nummers te vinden.</string>
 <string key="Unsuccessful import">Mislukte import</string>
 <string key="Successful import">Succesvolle import</string>
 <string key="Highlight name">Markeer naam</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Kopiëren bladwijzers, markeringen en notities naar het klembord</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Bladwijzers, markeringen en notities van het klembord importeren</string>
 <string key="Highlight">Highlight</string>
+<string key="Synchronize to every verse">Synchroniseren met elk vers</string>
 </translations>

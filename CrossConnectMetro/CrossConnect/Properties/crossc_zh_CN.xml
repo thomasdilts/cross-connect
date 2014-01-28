@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">无效的密钥。再试一次</string>
 <string key="Enter key">回车键</string>
 <string key="Save">节省</string>
-<string key="Fast search help text">快速搜索是慢你第一次以后一本圣经和快速每次上使用它。快速搜索返回一个包含所有给定单词的诗句。把一个“+”在每个字的前面找到任何给定的单词在每节经文。把一个“ - ”在一个词来找到所有没有这个词的诗句面前。通配符“*”和“？”都可以使用。在使用像中国和日本的符号语言，你必须把“*”的每个字符之前和之后。只能使用慢速搜索，找到“Strongs”的数字。</string>
 <string key="Unsuccessful import">进口不成功</string>
 <string key="Successful import">成功导入</string>
 <string key="Highlight name">突出显示名称</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">复制书签，突出显示和注释到剪贴板</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">导入书签，亮点和从剪贴板笔记</string>
 <string key="Highlight">突出</string>
+<string key="Synchronize to every verse">同步到每一节经文</string>
 </translations>

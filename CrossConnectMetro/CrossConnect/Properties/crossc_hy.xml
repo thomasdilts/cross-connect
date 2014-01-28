@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Անվավեր բանալին. Փորձեք կրկին</string>
 <string key="Enter key">Մուտքագրեք բանալին</string>
 <string key="Save">Պահել</string>
-<string key="Fast search help text">A արագ որոնման դանդաղ, առաջին անգամ, երբ դուք օգտագործել այն որպես Աստվածաշնչի եւ արագ յուրաքանչյուր անգամ դրանից հետո. A արագ որոնում վերադառնում հատվածներ պարունակող բոլոր տրված բառերը. Ներդրեք "+" - ի դիմաց, յուրաքանչյուր բառի գտնել որեւէ տվյալ բառերի յուրաքանչյուր չափածո. Ներդրեք "-" առջեւ: Մի խոսքով գտնել բոլոր քառյակներ, որոնք չունեն այդ բառը. Wildcards "*" եւ "?" կարող է օգտագործվել: Լեզուներով `օգտագործելով նշաններ, ինչպիսիք են չինական եւ ճապոնական դուք պետք է տեղադրել" * "առաջ եւ հետո յուրաքանչյուր բնույթ է կրում: Օգտագործեք միայն դանդաղ որոնման գտնել «STRONGS» համարներով.</string>
 <string key="Unsuccessful import">Անհաջող ներմուծումը</string>
 <string key="Successful import">Հաջող ներմուծումը</string>
 <string key="Highlight name">Կարեւորում անունը</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Պատճենեք էջանիշեր, կարեւորում է եւ նշում է clipboard</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Ներմուծում էջանիշեր, կարեւորում է եւ նշում է, clipboard</string>
 <string key="Highlight">Փաստ</string>
+<string key="Synchronize to every verse">Միարժամանակ տեղի ունենալ յուրաքանչյուր չափածո</string>
 </translations>

@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Ewlieni Invalid. Erġa 'pprova</string>
 <string key="Enter key">Enter</string>
 <string key="Save">Ħlief</string>
-<string key="Fast search help text">A tfittxija mgħaġġla hija bil-mod l-ewwel darba li tużah fuq bibbja u veloċi kull darba wara. A search fast prospetti versi li fihom kollha tal-kliem mogħtija. Poġġi "+" quddiem ta 'kull kelma li ssib xi tal-kliem mogħtija f'kull poeżiji. Poġġi "-" quddiem ta 'kelma li ssib kollha ta' l-versi li ma jkollhomx din il-kelma. Wildcards "*" u "?" jistgħu jintużaw. F'lingwi permezz ta 'simboli bħal Ċiniżi u Ġappuniżi inti trid tqiegħed "*" qabel u wara kull karattru. Uża biss it-tfittxija bil-mod biex isibu "strongs" numri.</string>
 <string key="Unsuccessful import">Importazzjoni bla suċċess</string>
 <string key="Successful import">Importazzjoni Successful</string>
 <string key="Highlight name">Highlight isem</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Bookmarks kopja, jenfasizza u noti għall-clipboard</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Bookmarks importazzjoni, jenfasizza u noti mill-clipboard</string>
 <string key="Highlight">Highlight</string>
+<string key="Synchronize to every verse">Jissinkronizzaw għal kull poeżiji</string>
 </translations>

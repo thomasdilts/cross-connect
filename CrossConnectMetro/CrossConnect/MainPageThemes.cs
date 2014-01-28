@@ -230,13 +230,16 @@ namespace CrossConnect
 
         private void ThemePopup_OnClosed(object sender, object e)
         {
-            var selectedThemeGuid = (Guid)((TextBlock)this.ThemesComboBox.Items[this.ThemesComboBox.SelectedIndex]).Tag;
-            Theme theme = this.GetUpdatedTheme();
-            App.Themes.Themes[selectedThemeGuid] = theme;
-            App.Themes.CurrentTheme = selectedThemeGuid;
-            App.ShowUserInterface(true);
-            this.RecolorScreen();
-            App.SavePersistantThemes();
+            if (this.ThemesComboBox.SelectedIndex >= 0)
+            {
+                var selectedThemeGuid = (Guid)((TextBlock)this.ThemesComboBox.Items[this.ThemesComboBox.SelectedIndex]).Tag;
+                Theme theme = this.GetUpdatedTheme();
+                App.Themes.Themes[selectedThemeGuid] = theme;
+                App.Themes.CurrentTheme = selectedThemeGuid;
+                App.ShowUserInterface(true);
+                this.RecolorScreen();
+                App.SavePersistantThemes();
+            }
         }
 
         private void ThemePopup_OnOpened(object sender, object e)

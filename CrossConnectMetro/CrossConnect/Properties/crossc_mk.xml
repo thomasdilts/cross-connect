@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Невалиден клуч. Обидете се повторно</string>
 <string key="Enter key">Внесете клучни</string>
 <string key="Save">Зачувај</string>
-<string key="Fast search help text">А брзо пребарување е бавен првиот пат кога ќе го користите на Библијата и брзо секој пат потоа. А брзо пребарување враќа стихови ги содржи сите на дадените зборови. Стави "+" пред секој збор да се најде некој од дадените зборови во секој стих. Стави "-" пред зборот е да ги најдете сите на стихови кои немаат тој збор. Џокери "*" и "?" може да се користи. На јазиците користејќи симболи како кинески и јапонски мора да се стави "*" пред и по секој лик. Користете само бавно пребарување да се најде "Strongs" броеви.</string>
 <string key="Unsuccessful import">Неуспешен увоз</string>
 <string key="Successful import">Успешна увоз</string>
 <string key="Highlight name">Нагласи име</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Копија обележувачи, нагласува и белешки на таблата со исечоци</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Увоз обележувачи, нагласува и белешки од таблата со исечоци</string>
 <string key="Highlight">Врв</string>
+<string key="Synchronize to every verse">Синхронизирате со секој стих</string>
 </translations>

@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Ugyldig nøgle. Prøv igen</string>
 <string key="Enter key">Enter-tasten</string>
 <string key="Save">Gem</string>
-<string key="Fast search help text">En hurtig søgning er langsom første gang, du bruger det på en bibel og hurtig hver gang derefter. En hurtig søgning returnerer vers indeholder alle de givne ord. Sæt et "+" foran hvert ord for at finde nogen af ​​de givne ord i hvert vers. Sæt et "-" foran et ord for at finde alle de vers, der ikke har det ord. Wildcards "*" og "?" kan anvendes. I sprog ved hjælp af symboler som kinesisk og japansk, skal du sætte "*" før og efter hvert tegn. Brug kun den langsomme søgning for at finde "Strongs" numre.</string>
 <string key="Unsuccessful import">Mislykket import</string>
 <string key="Successful import">Vellykket import</string>
 <string key="Highlight name">Fremhæv navn</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Kopiering bogmærker, højdepunkter og noter til klippebordet</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Import af bogmærker, højdepunkter og noter fra klippebordet</string>
 <string key="Highlight">Highlight</string>
+<string key="Synchronize to every verse">Synkroniser til alle vers</string>
 </translations>

@@ -1,31 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="57294ThomasDilts.BibleReaderCrossConnect" Publisher="CN=F67267EA-6C25-400F-81E7-7466BD444D76" Version="2.0.9.44" />
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
+  <Identity Name="57294ThomasDilts.BibleReaderCrossConnect" Publisher="CN=F67267EA-6C25-400F-81E7-7466BD444D76" Version="2.1.9.45" />
   <Properties>
     <DisplayName>Bible Reader Cross Connect</DisplayName>
     <PublisherDisplayName>ThomasDilts</PublisherDisplayName>
     <Logo>Assets\splash50x50.png</Logo>
   </Properties>
   <Prerequisites>
-    <OSMinVersion>6.2.1</OSMinVersion>
-    <OSMaxVersionTested>6.2.1</OSMaxVersionTested>
+    <OSMinVersion>6.3.0</OSMinVersion>
+    <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
   </Prerequisites>
   <Resources>
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="CrossConnect.App">
-      <VisualElements DisplayName="Bible Reader Cross Connect" Logo="Assets\splash150x150.png" SmallLogo="Assets\splash30x30.png" Description="Bible Reader Cross Connect based on the crosswire.org bible database" ForegroundText="light" BackgroundColor="#0000fe">
-        <LockScreen Notification="badge" BadgeLogo="Assets\badge.png" />
-        <DefaultTile ShowName="allLogos" WideLogo="Assets\splash310x150.png" ShortName="CrossConnect" />
-        <SplashScreen Image="Assets\splash.png" BackgroundColor="#0000fe" />
-        <InitialRotationPreference>
-          <Rotation Preference="portrait" />
-          <Rotation Preference="landscape" />
-          <Rotation Preference="portraitFlipped" />
-          <Rotation Preference="landscapeFlipped" />
-        </InitialRotationPreference>
-      </VisualElements>
       <Extensions>
         <Extension Category="windows.backgroundTasks" EntryPoint="Crossconnect.App">
           <BackgroundTasks>
@@ -34,6 +23,22 @@
           </BackgroundTasks>
         </Extension>
       </Extensions>
+      <m2:VisualElements DisplayName="Bible Reader Cross Connect" Description="Bible Reader Cross Connect based on the crosswire.org bible database" BackgroundColor="#0000fe" ForegroundText="light" Square150x150Logo="Assets\splash150x150.png" Square30x30Logo="Assets\splash30x30.png">
+        <m2:DefaultTile ShortName="CrossConnect" Wide310x150Logo="Assets\splash310x150.png">
+          <m2:ShowNameOnTiles>
+            <m2:ShowOn Tile="square150x150Logo" />
+            <m2:ShowOn Tile="wide310x150Logo" />
+          </m2:ShowNameOnTiles>
+        </m2:DefaultTile>
+        <m2:LockScreen Notification="badge" BadgeLogo="Assets\badge.png" />
+        <m2:InitialRotationPreference>
+          <m2:Rotation Preference="portrait" />
+          <m2:Rotation Preference="landscape" />
+          <m2:Rotation Preference="portraitFlipped" />
+          <m2:Rotation Preference="landscapeFlipped" />
+        </m2:InitialRotationPreference>
+        <m2:SplashScreen BackgroundColor="#0000fe" Image="Assets\splash.png" />
+      </m2:VisualElements>
     </Application>
   </Applications>
   <Capabilities>

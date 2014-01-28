@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Chính không hợp lệ. Thử lại</string>
 <string key="Enter key">Nhập từ khóa</string>
 <string key="Save">Tiết kiệm</string>
-<string key="Fast search help text">Một tìm kiếm nhanh chóng là làm chậm lần đầu tiên bạn sử dụng nó trên một mỗi kinh thánh và nhanh chóng thời gian sau đó. Một tìm kiếm nhanh chóng trả về câu có chứa tất cả các từ nhất định. Đặt một "+" ở phía trước của mỗi từ để tìm bất cứ từ nào được đưa ra trong mỗi câu. Đặt một "-" ở phía trước của một từ để tìm tất cả các câu không có từ đó. Ký tự đại diện "*" và "?" có thể được sử dụng. Trong các ngôn ngữ sử dụng các ký hiệu như Trung Quốc và Nhật Bản bạn phải đặt "*" trước và sau mỗi nhân vật. Chỉ sử dụng tìm kiếm chậm để tìm "Strongs" con số.</string>
 <string key="Unsuccessful import">Nhập khẩu không thành công</string>
 <string key="Successful import">Nhập khẩu thành công</string>
 <string key="Highlight name">Làm nổi bật tên</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Bản sao đánh dấu trang, nổi bật và ghi chú vào clipboard</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Nhập dấu trang, nổi bật và ghi chú từ clipboard</string>
 <string key="Highlight">Điểm nổi bật</string>
+<string key="Synchronize to every verse">Đồng bộ hóa với tất cả các câu</string>
 </translations>

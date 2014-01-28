@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Kunci tidak valid. Coba lagi</string>
 <string key="Enter key">Enter</string>
 <string key="Save">Menyimpan</string>
-<string key="Fast search help text">Sebuah pencarian cepat memperlambat pertama kali Anda menggunakannya pada Alkitab dan cepat setiap kali sesudahnya. Sebuah pencarian cepat kembali ayat-ayat yang mengandung semua kata yang diberikan. Letakkan "+" di depan setiap kata untuk menemukan kata-kata yang diberikan dalam setiap ayat. Letakkan "-" di depan kata untuk menemukan semua ayat-ayat yang tidak memiliki kata itu. Wildcard "*" dan "?" dapat digunakan. Dalam bahasa dengan menggunakan simbol-simbol seperti Cina dan Jepang Anda harus menempatkan "*" sebelum dan setelah masing-masing karakter. Gunakan hanya pencarian lambat untuk mencari nomor "Strongs".</string>
 <string key="Unsuccessful import">Impor Gagal</string>
 <string key="Successful import">Impor Sukses</string>
 <string key="Highlight name">Sorot nama</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Copy bookmark, menyoroti dan catatan ke clipboard</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Impor bookmark, menyoroti dan catatan dari clipboard</string>
 <string key="Highlight">Menyoroti</string>
+<string key="Synchronize to every verse">Sinkronisasi ke setiap ayat</string>
 </translations>

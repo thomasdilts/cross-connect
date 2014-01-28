@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">מפתח לא חוקי. נסה שוב</string>
 <string key="Enter key">מקש Enter</string>
 <string key="Save">להציל</string>
-<string key="Fast search help text">חיפוש מהיר הוא להאט את הפעם הראשונה שאתה משתמש בו על התנ"ך ומהיר בכל עת לאחר מכן. חיפוש מהיר חוזר פסוקים המכילים את כל המילים נתון. שים את "+" בחזית של כל מילה כדי למצוא את כל המילים נתון בכל פסוק. שים "-" לפני מילה כדי למצוא את כל הפסוקים שאין להם את המילה הזאת. בתווים כלליים "*" ו "?" ניתן להשתמש בם. בשפות באמצעות סמלים כמו סיני ויפני אתה חייב לשים "*" לפני ואחרי כל תו. השתמש בחיפוש האיטי רק כדי למצוא את המספרים "סטרונג".</string>
 <string key="Unsuccessful import">יבוא לא מוצלח</string>
 <string key="Successful import">יבוא מוצלח</string>
 <string key="Highlight name">הדגש שם</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">סימניות העתקה, מדגיש והערות ללוח</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">ייבא סימניות, מדגיש והערות מהלוח</string>
 <string key="Highlight">שיא</string>
+<string key="Synchronize to every verse">סנכרן לכל פסוק</string>
 </translations>

@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Di-wastong key. Subukan muli</string>
 <string key="Enter key">Ipasok ang key</string>
 <string key="Save">Iligtas</string>
-<string key="Fast search help text">Ang isang mabilis na paghahanap ay mapabagal ang unang pagkakataon na gamitin mo ito sa isang bibliya at mabilis sa bawat oras pagkatapos. Nagbabalik Isang mabilis na paghahanap verses na naglalaman ng lahat ng ibinigay na mga salita. Maglagay ng "+" sa harap ng bawat salita upang hanapin ang anuman sa mga ibinigay na mga salita sa bawat taludtod. Maglagay ng "-" sa harap ng isang salita upang hanapin ang lahat ng mga verses na walang na salita. Wildcard "*" at "?" ay maaaring magamit. Sa mga wika gamit ang mga simbolo tulad ng Tsino at Hapon ay dapat mong ilagay ang "*" bago at pagkatapos ng bawat character. Gamitin lamang ang mabagal sa paghahanap upang mahanap ang "Strongs" numero.</string>
 <string key="Unsuccessful import">Hindi matagumpay ang pag-import</string>
 <string key="Successful import">Ang matagumpay na pag-import</string>
 <string key="Highlight name">I-highlight ang pangalan</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Kopyahin ang mga bookmark, mga highlight at tala sa clipboard</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Mag-import ng mga bookmark, mga highlight at tala mula sa clipboard</string>
 <string key="Highlight">I-highlight</string>
+<string key="Synchronize to every verse">I-synchronize sa bawat taludtod</string>
 </translations>
