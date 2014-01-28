@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Érvénytelen kulcs. Próbálja újra</string>
 <string key="Enter key">Enter gomb</string>
 <string key="Save">Kivéve</string>
-<string key="Fast search help text">A gyors keresés lassú az első alkalommal, amikor használja a Biblia és gyors minden alkalommal azt követően. Egy gyors keresés eredményeként verseket tartalmazza az összes az adott szót. Tegyél egy "+" előtt minden egyes szót találni az adott szó minden versben. Tegyél egy "-" előtt egy szót, hogy megtalálja a verseket, amelyek nem ezt a szót. Helyettesítő karakterek "*" és a "?" lehet használni. A nyelv a szimbólumok, mint a kínai és a japán meg kell tenni "*" előtt és után minden karakter. Csak lassú kereső, hogy megtalálja "Strong" számokat.</string>
 <string key="Unsuccessful import">Sikertelen import</string>
 <string key="Successful import">Sikeres import</string>
 <string key="Highlight name">Jelölje ki a nevet</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Másolás könyvjelzőket, kiemeléseket és jegyzeteket a vágólapra</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Import könyvjelzőket, kiemeléseket és jegyzeteket a vágólapra</string>
 <string key="Highlight">Fénypont</string>
+<string key="Synchronize to every verse">Szinkronizálása minden vers</string>
 </translations>

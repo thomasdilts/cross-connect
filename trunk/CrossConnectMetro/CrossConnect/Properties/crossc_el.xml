@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Μη έγκυρο κλειδί. Δοκιμάστε ξανά</string>
 <string key="Enter key">Πλήκτρο Enter</string>
 <string key="Save">Εκτός</string>
-<string key="Fast search help text">Μια γρήγορη αναζήτηση είναι αργή την πρώτη φορά που το χρησιμοποιείτε σε μια Αγία Γραφή και γρήγορα κάθε χρόνο στη συνέχεια. Μια γρήγορη αναζήτηση επιστρέφει στίχους που περιέχουν όλες τις λέξεις δοθεί. Βάλτε ένα "+" μπροστά από κάθε λέξη για να βρείτε κάποια από τις δεδομένες λέξεις σε κάθε στίχο. Βάλτε ένα "-" μπροστά από μια λέξη για να βρείτε όλα τα εδάφια που δεν έχουν αυτή τη λέξη. Οι χαρακτήρες μπαλαντέρ "*" και "?" μπορεί να χρησιμοποιηθεί. Στις γλώσσες που χρησιμοποιούν σύμβολα όπως κινέζικα και ιαπωνικά πρέπει να βάλετε "*" πριν και μετά από κάθε χαρακτήρα. Χρησιμοποιήστε μόνο το αργό αναζήτησης για να βρείτε τους αριθμούς "Strongs".</string>
 <string key="Unsuccessful import">Ανεπιτυχής εισαγωγή</string>
 <string key="Successful import">Η επιτυχής εισαγωγή</string>
 <string key="Highlight name">Επισημάνετε το όνομα</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Αντιγραφή σελιδοδείκτες, αναδεικνύει και τις σημειώσεις στο πρόχειρο</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Εισαγωγή σελιδοδεικτών, αναδεικνύει και τις σημειώσεις από το πρόχειρο</string>
 <string key="Highlight">Αποκορύφωμα</string>
+<string key="Synchronize to every verse">Συγχρονισμός σε κάθε στίχο</string>
 </translations>

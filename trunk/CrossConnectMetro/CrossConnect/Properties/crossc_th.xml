@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">ที่สำคัญไม่ถูกต้อง ลองอีกครั้ง</string>
 <string key="Enter key">ป้อนคีย์</string>
 <string key="Save">ประหยัด</string>
-<string key="Fast search help text">การค้นหาที่รวดเร็วช้าครั้งแรกที่คุณใช้ในพระคัมภีร์และรวดเร็วในแต่ละครั้งนั้น การค้นหาที่รวดเร็วกลับกลอนที่มีทั้งหมดของคำที่กำหนด ใส่ "+" ในหน้าของแต่ละคำที่จะหาคำใดก็ได้ที่ได้รับในแต่ละบทกวี ใส่ "-" ในหน้าของคำเพื่อค้นหาทั้งหมดของบทที่ไม่ได้มีคำว่า สัญลักษณ์ "*" และ "?" สามารถนำมาใช้ ในภาษาที่ใช้สัญลักษณ์เช่นจีนและญี่ปุ่นที่คุณต้องใส่ "*" ก่อนและหลังตัวละครแต่ละตัว ใช้เพียงการค้นหาช้าที่จะหาตัวเลข "Strongs"</string>
 <string key="Unsuccessful import">นำเข้าไม่ประสบความสำเร็จ</string>
 <string key="Successful import">การนำเข้าที่ประสบความสำเร็จ</string>
 <string key="Highlight name">ชื่อไฮไลท์</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">คัดลอกบุ๊คมาร์คไฮไลท์และบันทึกไปยังคลิปบอร์ด</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">นำเข้าบุ๊ก, ไฮไลท์และบันทึกจากคลิปบอร์ด</string>
 <string key="Highlight">ไฮไลต์</string>
+<string key="Synchronize to every verse">ประสานไปยังทุกข้อ</string>
 </translations>

@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Nederīgs taustiņu. Mēģiniet vēlreiz</string>
 <string key="Enter key">Ievadīšanas taustiņu</string>
 <string key="Save">Glābt</string>
-<string key="Fast search help text">Ātra meklēšana ir lēna pirmo reizi, kad lietojat to uz Bībeles un ātri katru reizi pēc tam. Ātra meklēšana atgriež vārsmas, kas satur visus dotajiem vārdiem. Put "+" pie katra vārda atrast kādu no dotajiem vārdiem katrā verse. Put "-" pie vārda, lai atrastu visas vārsmas, kas nav šo vārdu. Aizstājējzīmes "*" un "?" var lietot. Valodās, izmantojot simbolus, piemēram, ķīniešu un japāņu jums ir likts "*", pirms un pēc katras raksturu. Izmantojiet tikai lēni meklēšanu, lai atrastu "strongs" numurus.</string>
 <string key="Unsuccessful import">Neveiksmīga imports</string>
 <string key="Successful import">Veiksmīga imports</string>
 <string key="Highlight name">Izcelt nosaukumu</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Kopēt grāmatzīmes, izceļ un piezīmes uz starpliktuvi</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Importēt grāmatzīmes, izceļ un atzīmē no starpliktuves</string>
 <string key="Highlight">Izcelt</string>
+<string key="Synchronize to every verse">Sinhronizēt katru dzejolis</string>
 </translations>

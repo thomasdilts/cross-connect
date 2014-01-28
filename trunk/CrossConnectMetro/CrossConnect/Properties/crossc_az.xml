@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Yanlış düyməsini basın. Daha cəhd edin</string>
 <string key="Enter key">Düyməsini daxil edin</string>
 <string key="Save">Saxla</string>
-<string key="Fast search help text">A sürətli axtarış sonra bir Müqəddəs və sürətli hər vaxt onu istifadə ilk dəfə yavaş deyil. A sürətli axtarış verilmiş sözləri bütün olan ayələri qaytarır. Hər ayədə bu sözlərin hər hansı tapmaq üçün hər bir söz qarşısında "+" qoyun. Qoyun bir "-" söz yoxdur ki, bütün ayələr tapmaq üçün söz qarşısında. Joker "*" və "?" istifadə edilə bilər. Çin və japanese kimi simvolları istifadə edərək dillərdə hər bir xarakter əvvəl və sonra "*" qoymaq lazımdır. "Strongs" nömrələrini tapmaq üçün yalnız yavaş axtarış istifadə edin.</string>
 <string key="Unsuccessful import">Uğursuz idxal</string>
 <string key="Successful import">Uğurlu idxal</string>
 <string key="Highlight name">Adı seçin</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Panoya Copy bookmarks, highlights və qeydlər</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">İdxal bookmarks, highlights və Panodan qeydlər</string>
 <string key="Highlight">Highlight</string>
+<string key="Synchronize to every verse">Hər ayənin sinxronizasiya</string>
 </translations>

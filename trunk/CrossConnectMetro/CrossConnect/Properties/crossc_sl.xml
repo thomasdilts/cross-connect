@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Neveljaven ključ. Poskusite znova</string>
 <string key="Enter key">Tipko Enter</string>
 <string key="Save">Shranite</string>
-<string key="Fast search help text">Hitro iskanje je počasi prvič, ko ga uporabljate na Sveto pismo, in hitro vsakem pozneje. Hitro iskanje vrne vrstice vsebujejo vse danih besed. Put "+" pred vsako besedo našli nobenega od navedenih besed v vsaki pesmi. Put "-" pred besedo bi našli vse verzov, ki nimajo te besede. Nadomestni znaki "*" in "?" se lahko uporabljajo. V jezikih, ki uporabljajo simbole, kot so kitajski in japonski morate dati "*" pred in po vsakem značaja. Uporabljajte le počasno iskanje, da bi našli številke "Strongs".</string>
 <string key="Unsuccessful import">Neuspešna uvoz</string>
 <string key="Successful import">Uspešna uvoz</string>
 <string key="Highlight name">Označite ime</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Kopiranje zaznamki, poudarja in opozarja na odložišče</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Uvoz zaznamkov, poudarja in zabeležke v odložišče</string>
 <string key="Highlight">Vrhunec</string>
+<string key="Synchronize to every verse">Sinhronizacijo na vsak verz</string>
 </translations>

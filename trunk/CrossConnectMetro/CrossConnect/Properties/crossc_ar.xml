@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">مفتاح صالح. حاول مرة أخرى</string>
 <string key="Enter key">مفتاح الدخول</string>
 <string key="Save">حفظ</string>
-<string key="Fast search help text">بحث سريع هو إبطاء المرة الأولى التي تستخدم ذلك على الكتاب المقدس وسريعة في كل مرة بعد ذلك. بحث سريع يعود الآيات التي تحتوي على جميع كلمات معينة. وضع "+" أمام كل كلمة في العثور على أي من الكلمات الواردة في كل آية. وضع "-" أمام كلمة للعثور على جميع الآيات التي ليس لديها هذه الكلمة. أحرف البدل "*" و "؟" يمكن استخدامها. في اللغات التي تستخدم رموز مثل الصينية واليابانية يجب وضع "*" قبل وبعد كل حرف. فقط استخدام البحث للعثور على أرقام بطيئة "Strongs".</string>
 <string key="Unsuccessful import">استيراد فاشلة</string>
 <string key="Successful import">استيراد ناجحة</string>
 <string key="Highlight name">تسليط الضوء على اسم</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">نسخة والعناوين، ويسلط الضوء على الملاحظات إلى الحافظة</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">استيراد الإشارات، ويسلط الضوء على الملاحظات من الحافظة</string>
 <string key="Highlight">تسليط الضوء على</string>
+<string key="Synchronize to every verse">مزامنة إلى كل آية</string>
 </translations>

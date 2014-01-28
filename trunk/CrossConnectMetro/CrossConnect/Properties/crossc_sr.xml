@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Неважећи кључ. Покушајте поново</string>
 <string key="Enter key">Типка на тастатури</string>
 <string key="Save">Сачувати</string>
-<string key="Fast search help text">Брза претрага је успорити први пут када га користите на Библију и брзе сваки пут после тога. Брзу претрагу враћа стихове који садрже све задате речи. Пут "+" испред сваке речи да пронађе било који од датих речи у сваком стиху. Пут "-" испред речи пронашли све стихове које немају ту реч. Вилдцардс "*" и "?" може да се користи. У језицима који користе симболе као што су кинески и јапански морате ставити "*" пре и после сваког знака. Користите само споро претрагу да пронађете "Стронгс" бројеве.</string>
 <string key="Unsuccessful import">Неуспешан увоз</string>
 <string key="Successful import">Успешан увоз</string>
 <string key="Highlight name">Истакните име</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Копирање маркери, наглашава и белешке у оставу</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Увоз обележивача, наглашава и белешке из оставе</string>
 <string key="Highlight">Врхунац</string>
+<string key="Synchronize to every verse">Синхронизација у сваком стиху</string>
 </translations>

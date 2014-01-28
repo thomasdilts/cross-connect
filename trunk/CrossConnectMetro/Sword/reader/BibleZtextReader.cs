@@ -570,6 +570,10 @@ function getVerticalScrollPosition() {
 function setVerticalScrollPosition(position) {
     document.body.scrollTop = position;
 }
+function ShowNode (elemntId) {
+    var element = document.getElementById(elemntId);
+    document.documentElement.scrollTop = element.offsetTop;
+}
 function ScrollToAnchor(anchor, colorRgba) {
     window.location.hash=anchor;
     SetFontColorForElement(anchor, colorRgba);
@@ -879,7 +883,12 @@ function SetFontColorForElement(elemntId, colorRgba){
         public virtual async Task<string> GetVerseTextOnly(
             DisplaySettings displaySettings, string shortBookName, int chapterNumber, int verseNumber)
         {
-            var book = canon.BookByShortName[shortBookName];
+            CanonBookDef book;
+            if (!canon.BookByShortName.TryGetValue(shortBookName, out book) || chapterNumber >= book.NumberOfChapters || verseNumber >= canon.VersesInChapter[chapterNumber])
+            {
+                return string.Empty;
+            }
+
             byte[] chapterBuffer = await this.GetChapterBytes(chapterNumber + book.VersesInChapterStartIndex);
 
             // debug only
@@ -901,7 +910,39 @@ function SetFontColorForElement(elemntId, colorRgba){
                 ref isInPoetry,
                 true);
         }
+        public virtual async Task<string> GetVerseTextOnly(DisplaySettings displaySettings, string bookShortName, int chapterNumber)
+        {
+            CanonBookDef book;
+            if (!canon.BookByShortName.TryGetValue(bookShortName, out book) || chapterNumber >= book.NumberOfChapters)
+            {
+                return string.Empty;
+            }
 
+            //give them the notes if you can.
+
+            var  chapterBuffer = await this.GetChapterBytes(chapterNumber + book.VersesInChapterStartIndex);
+            var verses = this.Chapters[chapterNumber].Verses;
+            int noteMarker = 'a';
+            bool isInPoetry = false;
+            var returnText = new StringBuilder();
+            foreach (var verse in verses)
+            {
+                returnText.Append(this.ParseOsisText(
+                displaySettings,
+                string.Empty,
+                string.Empty,
+                chapterBuffer,
+                (int)verse.StartPos,
+                verse.Length,
+                this.Serial.IsIsoEncoding,
+                false,
+                true,
+                ref noteMarker,
+                ref isInPoetry,
+                true));
+            }
+            return returnText.ToString();
+        }
         public async Task<List<string>> MakeListDisplayText(
             DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay)
         {
@@ -1626,13 +1667,19 @@ function SetFontColorForElement(elemntId, colorRgba){
             for (int j = listToDisplay.Count - 1; j >= 0; j--)
             {
                 BiblePlaceMarker place = listToDisplay[j];
-                var book = canon.BookByShortName[place.BookShortName];
+
+                CanonBookDef book;
+                if (!canon.BookByShortName.TryGetValue(place.BookShortName, out book) || place.ChapterNum >= book.NumberOfChapters || place.VerseNum >= canon.VersesInChapter[place.ChapterNum])
+                {
+                    continue;
+                }
                 ChapterPos chaptPos = this.Chapters[place.ChapterNum + book.VersesInChapterStartIndex];
                 byte[] chapterBuffer = await this.GetChapterBytes(place.ChapterNum + book.VersesInChapterStartIndex);
+                ChapterPos versesForChapterPositions = this.Chapters[place.ChapterNum + book.VersesInChapterStartIndex];
+                VersePos verse = versesForChapterPositions.Verses[place.VerseNum];
 
                 // for debug
                 // string all = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
-                ChapterPos versesForChapterPositions = this.Chapters[place.ChapterNum + book.VersesInChapterStartIndex];
 
                 if (showBookTitles && lastBookNum != chaptPos.Booknum)
                 {
@@ -1646,7 +1693,6 @@ function SetFontColorForElement(elemntId, colorRgba){
                                          + stopVerseMarking;
 
                 string textId = place.BookShortName + "_" + place.ChapterNum + "_" + place.VerseNum;
-                VersePos verse = versesForChapterPositions.Verses[place.VerseNum];
                 int noteMarker = 'a';
                 string verseTxt = this.ParseOsisText(
                     displaySettings,

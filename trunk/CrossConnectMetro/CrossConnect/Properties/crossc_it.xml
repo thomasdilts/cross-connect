@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Tasto non valido. Riprovare</string>
 <string key="Enter key">Tasto Invio</string>
 <string key="Save">Salvare</string>
-<string key="Fast search help text">Una ricerca veloce è lento la prima volta che si utilizza su una Bibbia e veloce ogni momento successivo. Una ricerca veloce restituisce versetti che contengono tutte le parole date. Mettere un "+" davanti a ogni parola di trovare una qualsiasi delle parole date in ogni versetto. Mettere un "-" davanti una parola per trovare tutti i versi che non hanno quella parola. I caratteri jolly "*" e "?" può essere utilizzato. In lingue che usano simboli come cinese e giapponese devi mettere "*" prima e dopo ogni carattere. Utilizzare solo la ricerca lento a trovare i numeri "Strongs".</string>
 <string key="Unsuccessful import">Importazione non riuscito</string>
 <string key="Successful import">Importazione di successo</string>
 <string key="Highlight name">Evidenziare il nome</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Copia segnalibri, evidenziazioni e note negli appunti</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Importa segnalibri, evidenziazioni e note dalla clipboard</string>
 <string key="Highlight">Evidenzia</string>
+<string key="Synchronize to every verse">Sincronizzare ad ogni versetto</string>
 </translations>

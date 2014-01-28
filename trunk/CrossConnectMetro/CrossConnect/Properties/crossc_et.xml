@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Vigane võti. Proovi uuesti</string>
 <string key="Enter key">Enter klahvi</string>
 <string key="Save">Päästma</string>
-<string key="Fast search help text">Kiire otsing on aeglane te esimest korda seda kasutada Piiblit ja kiire iga kord pärast seda. Kiire otsing annab salmid sisaldavad kõik antud sõnad. Pane "+" ees iga sõna leida mõni antud sõna igas salmis. Pane "-" ees sõna leida kõik salmid, mis ei ole sellist sõna. Metamärke "*" ja "?" saab kasutada. Kui keelt kasutades sümboleid nagu Hiina ja Jaapani peate panna "*" enne ja pärast iga märk. Kasutage ainult aeglane otsingut, et leida "Strongs" numbrid.</string>
 <string key="Unsuccessful import">Ebaõnnestunud import</string>
 <string key="Successful import">Edukad import</string>
 <string key="Highlight name">Highlight nimi</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Kopeeri järjehoidjate esile ja lisades lõikelauale</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Impordi järjehoidjad, esile ja noodid lõikelauale</string>
 <string key="Highlight">Tipphetk</string>
+<string key="Synchronize to every verse">Sünkroonida iga salm</string>
 </translations>

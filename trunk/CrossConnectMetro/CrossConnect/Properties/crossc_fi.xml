@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Virheellinen avain. Yritä uudelleen</string>
 <string key="Enter key">Enter-näppäin</string>
 <string key="Save">Tallentaa</string>
-<string key="Fast search help text">Nopea haku on hidas ensimmäisen kerran käytät sitä raamattu ja nopea joka kerta sen jälkeen. Nopea haku palauttaa säkeet sisältää kaikki haetut sanat. Laita "+" edessä jokaisen sanan löytää jonkin tietyn sanaa kullakin jae. Laita "-" edessä sana löytää kaikki säkeet, joilla ei ole kyseistä sanaa. Jokerimerkkejä '*' ja '?' voidaan käyttää. Vuonna kielien merkkejä, kuten kiina ja japani sinun täytyy laittaa "*" ennen ja jälkeen kunkin merkin. Käytä vain hidas haku löytää "Strongs" numeroita.</string>
 <string key="Unsuccessful import">Epäonnistuneita tuonti</string>
 <string key="Successful import">Onnistunut tuonti</string>
 <string key="Highlight name">Korosta nimi</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Kopioi kirjanmerkit, korostukset ja muistiinpanot leikepöydälle</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Tuo kirjanmerkit, korostukset ja muistiinpanot leikepöydältä</string>
 <string key="Highlight">Kohokohta</string>
+<string key="Synchronize to every verse">Synkronoida jokaisen jakeen</string>
 </translations>

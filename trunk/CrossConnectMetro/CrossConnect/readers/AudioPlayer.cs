@@ -288,36 +288,6 @@ namespace CrossConnect.readers
             relChapter--;
         }
 
-        private static string ReadableToXmlClean(string toBeCleaned)
-        {
-            var specialChar = new[] { "&", "\"", "'", "<", ">" };
-            var encoded = new[] { "&amp;", "&quot;", "&apos;", "&lt;", "&gt;" };
-            for (int i = 0; i < specialChar.Count(); i++)
-            {
-                toBeCleaned = toBeCleaned.Replace(specialChar[i], encoded[i]);
-            }
-
-            return toBeCleaned;
-        }
-
-        private static string WriteMediaInfoToXml(MediaInfo info, string sourceLink)
-        {
-            const string FileContentCoded =
-                @"<?xml version=""1.0"" encoding=""UTF-8""?><cross.connect.talking.bible version=""1.0"" book=""1""><message>{0}</message><source language=""{1}"" abschapter=""{2}"" onlynt=""{3}"" code=""{4}"" src=""{5}"" icon=""{6}"" iconlink=""{7}"">{8}</source><biblepattern>{9}</biblepattern></cross.connect.talking.bible>";
-            return string.Format(
-                FileContentCoded,
-                ReadableToXmlClean(sourceLink),
-                info.Language,
-                info.Chapter,
-                info.IsNtOnly.ToString(),
-                info.Code,
-                info.Src,
-                info.Icon,
-                info.IconLink,
-                info.Name,
-                info.Pattern);
-        }
-
         #endregion
 
         [DataContract]
@@ -327,6 +297,15 @@ namespace CrossConnect.readers
 
             [DataMember]
             public int Chapter;
+
+            [DataMember]
+            public string Book;
+
+            [DataMember]
+            public string VoiceName;
+
+            [DataMember]
+            public int Verse;
 
             [DataMember]
             public string Code = string.Empty;

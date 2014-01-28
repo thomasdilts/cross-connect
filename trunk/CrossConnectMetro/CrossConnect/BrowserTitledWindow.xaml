@@ -303,6 +303,7 @@
                             <ListBoxItem Name="AddANote">AddANote</ListBoxItem>
                             <ListBoxItem Name="AddToBookMarks">AddToBookMarks</ListBoxItem>
                             <ListBoxItem Name="Hear">Hear</ListBoxItem>
+                            <ListBoxItem Name="TTS">TTS Text to speech</ListBoxItem>
                             <ListBoxItem Name="Translate">Translate</ListBoxItem>
                             <ListBoxItem Name="Highlight">Highlight</ListBoxItem>
                             <ListBoxItem Name="Copy">Copy</ListBoxItem>
@@ -326,6 +327,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="0" Orientation="Horizontal">
                             <TextBlock x:Name="StartMediaTitle" Margin="20 20 20 20" FontSize="18" />
@@ -338,13 +340,14 @@
 
                             </ListBox>
                         </ScrollViewer>
+                        <ToggleSwitch Header="SyncVerses" Grid.Row="2" Margin="0 20 0 0" FontSize="18" Name="SyncVerses" />
                     </Grid>
                 </Border>
             </Popup>
             <Border Name="WebBrowserBorder" BorderBrush="Silver" BorderThickness="1" Grid.Row="1">
                 <WebView Margin="0 0 0 0" SizeChanged="WebBrowser1_OnSizeChanged" Loaded="WebBrowser1Loaded"
                          Unloaded="WebBrowser1Unloaded" ScriptNotify="WebBrowser1ScriptNotify"
-                          x:Name="webBrowser1" LoadCompleted="WebBrowser1_OnLoadCompleted" NavigationFailed="webBrowser1_NavigationFailed_1" />
+                          x:Name="webBrowser1" LoadCompleted="WebBrowser1_OnLoadCompleted" NavigationFailed="webBrowser1_NavigationFailed_1" NavigationCompleted="webBrowser1_NavigationCompleted" />
             </Border> 
         </Grid> 
     </Border>

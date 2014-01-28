@@ -308,9 +308,16 @@ namespace CrossConnect
                 BiblePlaceMarker place = item.Value;
                 string title = ((BibleZtextReader)foundWindowToUse.State.Source).BookNames.GetShortName(place.BookShortName) + " " + (place.ChapterNum + 1) + ":" + (place.VerseNum + 1) + " - "
                                + foundWindowToUse.State.BibleDescription;
-                string verseText =
-                    await foundWindowToUse.State.Source.GetVerseTextOnly(App.DisplaySettings, place.BookShortName, place.ChapterNum, place.VerseNum);
-
+                string verseText = string.Empty;
+                try
+                {
+                    verseText = await foundWindowToUse.State.Source.GetVerseTextOnly(App.DisplaySettings, place.BookShortName, place.ChapterNum, place.VerseNum);
+                }
+                catch(Exception)
+                {
+                    //this text is not in that bible.
+                    continue;
+                }
                 titlesOnly += title;
                 textsWithTitles +=
                     verseText.Replace("<p>", string.Empty)
@@ -880,7 +887,7 @@ namespace CrossConnect
                         if (OpenWindows[i].State.WindowType != WindowType.WindowMediaPlayer)
                         {
                             // change the windows view to this one
-                            OpenWindows[i].State.VSchrollPosition = ((BrowserTitledWindow)OpenWindows[i]).GetVScroll();
+                            OpenWindows[i].State.VSchrollPosition = await ((BrowserTitledWindow)OpenWindows[i]).GetVScroll();
                         }
 
                         ser.WriteObject(writer, OpenWindows[i].State);

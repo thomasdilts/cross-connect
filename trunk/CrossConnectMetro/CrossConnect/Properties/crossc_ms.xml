@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Kekunci tidak sah. Cuba lagi</string>
 <string key="Enter key">Masukkan kunci</string>
 <string key="Save">Jimat</string>
-<string key="Fast search help text">Satu carian cepat adalah melambatkan kali pertama anda menggunakannya pada bible dan cepat setiap kali selepas itu. Satu carian pantas kembali ayat-ayat yang mengandungi semua perkataan yang diberikan. Letakkan "+" di hadapan setiap perkataan untuk mencari mana-mana perkataan yang diberikan dalam setiap ayat. Letakkan "-" di hadapan perkataan untuk mencari semua ayat-ayat yang tidak mempunyai perkataan itu. Kad bebas "*" dan "?" boleh digunakan. Dalam bahasa menggunakan simbol-simbol seperti cina dan jepun anda perlu meletakkan "*" sebelum dan selepas setiap aksara. Gunakan hanya carian lambat untuk mencari "Strongs" nombor.</string>
 <string key="Unsuccessful import">Import yang tidak berjaya</string>
 <string key="Successful import">Import yang berjaya</string>
 <string key="Highlight name">Menyerlahkan nama</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Penanda buku salinan, acara kemuncak dan nota ke clipboard</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Import tanda, acara kemuncak dan nota daripada papan klip</string>
 <string key="Highlight">Highlight</string>
+<string key="Synchronize to every verse">Segerakkan kepada setiap ayat</string>
 </translations>

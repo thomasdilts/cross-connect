@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">अवैध कुंजी. फिर से कोशिश करें</string>
 <string key="Enter key">प्रवेश कुंजी</string>
 <string key="Save">बचाना</string>
-<string key="Fast search help text">एक तेजी से खोज आप उसके बाद एक बाइबिल और तेजी से हर समय पर इसका इस्तेमाल पहली बार धीमी है. एक तेजी से खोज दिए गए शब्दों के सभी युक्त छंद देता है. प्रत्येक कविता में दिए गए शब्दों से किसी को खोजने के लिए हर शब्द के सामने एक "+" डाल दिया. रखो एक "-" कि शब्द नहीं है कि छंद के सभी को खोजने के लिए एक शब्द के सामने. वाइल्डकार्ड "*" और "?" इस्तेमाल किया जा सकता है. चीनी और जापानी जैसे प्रतीकों का उपयोग कर भाषाओं में आपको हर किरदार के पहले और बाद में "*" लाना चाहिए. "Strongs" नंबर खोजने के लिए ही धीमी गति से खोज का उपयोग करें.</string>
 <string key="Unsuccessful import">असफल आयात</string>
 <string key="Successful import">सफल आयात</string>
 <string key="Highlight name">नाम हाइलाइट</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">क्लिपबोर्ड में कॉपी बुकमार्क्स, पर प्रकाश डाला गया और नोट्स</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">बुकमार्क आयात करें, पर प्रकाश डाला गया और क्लिपबोर्ड से नोट्स</string>
 <string key="Highlight">उभार</string>
+<string key="Synchronize to every verse">हर कविता को सिंक्रनाइज़</string>
 </translations>

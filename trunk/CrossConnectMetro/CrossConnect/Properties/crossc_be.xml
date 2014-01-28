@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Няправільны ключ. Паспрабуйце яшчэ раз</string>
 <string key="Enter key">Калі ласка, увядзіце ключ</string>
 <string key="Save">Эканоміць</string>
-<string key="Fast search help text">Хуткі пошук запаволіць першы раз вы яго выкарыстоўваеце на Бібліі і хуткай кожны раз пасля гэтага. Хуткі пошук вяртае вершы, якія змяшчаюць усе зададзеныя словы. Пакладзеце "+" перад кожным словам, каб знайсці любы з дадзеных слоў у кожным вершы. Пакладзеце "-" перад словам, каб знайсці ўсе вершы, якія не маюць гэтага слова. Групавыя сімвалы "*" і "?" можна выкарыстаць. У мовах, якія выкарыстоўваюць сімвалы як кітайскі і японскі вы павінны паставіць "*" да і пасля кожнага знака. Выкарыстоўвайце толькі павольны пошук, каб знайсці "Strongs" нумары.</string>
 <string key="Unsuccessful import">Няўдалая імпарт</string>
 <string key="Successful import">Паспяховае імпарт</string>
 <string key="Highlight name">Вылучыце імя</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Капіяванне закладкі, асноўныя моманты і нататкі ў буфер абмену</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Імпарт закладак, асноўныя моманты і нататкі з буфера абмену</string>
 <string key="Highlight">Асноўны момант</string>
+<string key="Synchronize to every verse">Сінхранізацыя, каб кожны верш</string>
 </translations>

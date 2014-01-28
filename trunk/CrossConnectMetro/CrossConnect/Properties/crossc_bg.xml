@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Невалиден ключ. Опитайте отново</string>
 <string key="Enter key">Въведете ключ</string>
 <string key="Save">Спасяване</string>
-<string key="Fast search help text">A бързо търсене е забавяне на първия път, когато го използвате на библия и бързо всяко време след това. A бързо търсене връща стихове, съдържащи всички от дадените думи. Сложете един "+" пред всяка дума, за да намерите някой от дадените думи във всеки стих. Сложете един "-" пред думата, за да намерите всички стихове, които нямат тази дума. Wildcards "*" и "?" може да се използва. В езици, използващи символи като китайски и японски трябва да поставите "*" преди и след всеки символ. Използвайте само бавно търсене, за да намерите "Strongs" номера.</string>
 <string key="Unsuccessful import">Неуспял внос</string>
 <string key="Successful import">Успешно внос</string>
 <string key="Highlight name">Маркирайте име</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Копиране на отметки, акценти и бележки към клипборда</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Импортиране на отметки, акценти и нотки от клипборда</string>
 <string key="Highlight">Връхна точка</string>
+<string key="Synchronize to every verse">Синхронизиране на всеки стих</string>
 </translations>

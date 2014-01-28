@@ -34,6 +34,7 @@ namespace CrossConnect
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Sword.versification;
+    using Windows.Media.SpeechSynthesis;
 
     public sealed partial class BrowserTitledWindow
     {
@@ -53,7 +54,7 @@ namespace CrossConnect
 
         #region Public Methods and Operators
 
-        public static void AddMediaWindow(AudioPlayer.MediaInfo info)
+        public async void AddMediaWindow(AudioPlayer.MediaInfo info)
         {
             // only one media window allowed
             for (int i = 0; i < App.OpenWindows.Count(); i++)
@@ -66,12 +67,15 @@ namespace CrossConnect
                     return;
                 }
             }
-
+            var serial = ((Sword.reader.BibleZtextReader)this._state.Source).Serial;
             var state = new SerializableWindowState
-                            {
-                                WindowType = WindowType.WindowMediaPlayer,
-                                Source = new MediaReader(info)
-                            };
+            {
+                WindowType = WindowType.WindowMediaPlayer,
+                Source = new MediaReader(serial.Path,serial.Iso2DigitLangCode,serial.IsIsoEncoding,serial.CipherKey,serial.ConfigPath,serial.Versification, info),
+                BibleDescription = this._state.BibleDescription
+            };
+            await state.Source.Resume();
+            state.Source.MoveChapterVerse(serial.PosBookShortName, serial.PosChaptNum, serial.PosVerseNum, true, state.Source);
             var nextWindow = new MediaPlayerWindow { State = state };
             nextWindow.State.CurIndex = App.OpenWindows.Count();
             nextWindow.State.HtmlFontSize = 20;
@@ -147,10 +151,22 @@ namespace CrossConnect
 
             // clear the selection because we might come here again after the media player
             this.ListStartAudio.SelectedIndex = -1;
-
-            var info = (AudioPlayer.MediaInfo)((TextBlock)e.AddedItems[0]).Tag;
-
+            AudioPlayer.MediaInfo info = null;
+            if (((TextBlock)e.AddedItems[0]).Tag is AudioPlayer.MediaInfo)
+            {
+                info = (AudioPlayer.MediaInfo)((TextBlock)e.AddedItems[0]).Tag;
+            }
+            else
+            {
+                App.DisplaySettings.SyncMediaVerses = SyncVerses.IsOn;
+                var serial = ((Sword.reader.BibleZtextReader)this._state.Source).Serial;
+                info = new AudioPlayer.MediaInfo { Book = serial.PosBookShortName, Verse = serial.PosVerseNum, Chapter = serial.PosChaptNum, VoiceName = ((VoiceInformation)((TextBlock)e.AddedItems[0]).Tag).DisplayName,  };
+            }
             AddMediaWindow(info);
+
+            App.StartTimerForSavingWindows();
+            App.SavePersistantDisplaySettings();
+
             this._isInSelectionChanged = false;
             this.StartAudioPopup.IsOpen = false;
         }
@@ -163,6 +179,36 @@ namespace CrossConnect
         private void StartAudioPopup_OnOpened(object sender, object e)
         {
             App.ShowUserInterface(false);
+        }
+
+        private async void StartTTS_OnClick()
+        {
+            //show the voices available.
+            // get all of the installed voices
+            var voices = Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices;
+            SyncVerses.Visibility = Visibility.Visible;
+            SyncVerses.Header = Translations.Translate("Synchronize to every verse");
+            SyncVerses.IsOn = App.DisplaySettings.SyncMediaVerses;
+            // get the currently selected voice
+            this.ListStartAudio.Items.Clear();
+            foreach (VoiceInformation voice in voices)
+            {
+                var item = new TextBlock
+                {
+                    Text = voice.DisplayName + " : " + voice.Language,
+                    Style = this.PageTitle.Style,
+                    Tag = voice,
+                    Name = voice.DisplayName,
+                    Margin = new Thickness(0, 0, 0, 10),
+                    TextWrapping = TextWrapping.Wrap
+                };
+                this.ListStartAudio.Items.Add(item);
+            }
+            MainPageSplit.SideBarShowPopup(
+                this.StartAudioPopup, this.MainPaneStartAudioPopup, this.scrollViewerStartAudio);
+
+            this.StartMediaTitle.Text = Translations.Translate("Select what you want to hear");
+            WaitingForDownload.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
 
         private async void StartAudio_OnClick()
@@ -179,8 +225,9 @@ namespace CrossConnect
             if (!canonKjv.BookByShortName.TryGetValue(bookShortName, out book))
             {
                 return;
-            } 
-            
+            }
+            SyncVerses.Visibility = Visibility.Collapsed;
+            WaitingForDownload.Visibility = Windows.UI.Xaml.Visibility.Visible;
             MainPageSplit.SideBarShowPopup(
                 this.StartAudioPopup, this.MainPaneStartAudioPopup, this.scrollViewerStartAudio);
 

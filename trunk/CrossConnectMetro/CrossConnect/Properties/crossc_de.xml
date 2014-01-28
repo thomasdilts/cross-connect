@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Ungültige Taste. Versuchen Sie es erneut</string>
 <string key="Enter key">Enter-Taste</string>
 <string key="Save">Sparen</string>
-<string key="Fast search help text">Eine schnelle Suche ist langsam der ersten Zeit, die Sie auf eine Bibel und schnell jedes Mal danach verwenden. Eine schnelle Suche gibt Verse, die alle der gegebenen Worte. Setzen Sie ein "+" vor jedem Wort, um eine der angegebenen Wörter in jedem Vers zu finden. Setzen Sie ein "-" vor einem Wort, alle Verse, die nicht über dieses Wort zu finden. Wildcards "*" und "?" verwendet werden. In Sprachen mit Symbolen wie chinesische und japanische müssen Sie vor und nach jedem Zeichen setzen "*". Verwenden Sie nur die langsame Suche auf "Strongs"-Nummern zu finden.</string>
 <string key="Unsuccessful import">Erfolglose Import</string>
 <string key="Successful import">Erfolgreiche Import</string>
 <string key="Highlight name">Markieren Sie den Namen</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Kopieren Lesezeichen, Markierungen und Notizen in die Zwischenablage</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Import Lesezeichen, Markierungen und Notizen aus der Zwischenablage</string>
 <string key="Highlight">Highlight</string>
+<string key="Synchronize to every verse">Synchronisieren Sie zu jedem Vers</string>
 </translations>

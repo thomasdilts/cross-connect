@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Muhimu batili. Jaribu tena</string>
 <string key="Enter key">Kuingia muhimu</string>
 <string key="Save">Ila</string>
-<string key="Fast search help text">kutafuta kwa haraka ni polepole mara ya kwanza matumizi yake juu ya Biblia na ya haraka kila wakati baada ya hapo. kutafuta kwa haraka anarudi mistari zenye maneno yote aliyopewa. Kuweka "+" mbele ya kila neno kwa kupata yoyote ya maneno kutolewa katika kila mstari. Kuweka "-" mbele ya neno kupata yote ya mistari kwamba hawana neno hilo. Wildcards "*" na "?" inaweza kutumika. Katika lugha kwa kutumia alama kama Kichina na Kijapani lazima kuweka "*" kabla na baada ya kila tabia. Kutumia tu search mwepesi wa kupata "Ngumu" idadi.</string>
 <string key="Unsuccessful import">Haikufanikiwa kuagiza</string>
 <string key="Successful import">Mafanikio kuagiza</string>
 <string key="Highlight name">Kuonyesha jina</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Nakala bookmarks, mambo muhimu na maelezo ya clipboard</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Import bookmarks, mambo muhimu na maelezo kutoka clipboard</string>
 <string key="Highlight">Highlight</string>
+<string key="Synchronize to every verse">Synchronize kwa kila mstari</string>
 </translations>

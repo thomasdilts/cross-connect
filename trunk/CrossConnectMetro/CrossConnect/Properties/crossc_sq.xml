@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Kyç të pavlefshme. Provoni përsëri</string>
 <string key="Enter key">Enter</string>
 <string key="Save">Ruaj</string>
-<string key="Fast search help text">Një kërkim të shpejtë është ngadalësojë hera e parë që e përdorin atë në një biblik dhe të shpejtë çdo kohë pas kësaj. Një kërkim të shpejtë të kthimit vargje përmbajnë të gjitha fjalët e dhënë. Vendos një "+" para çdo fjalë për të gjetur ndonjë nga fjalët e dhëna në çdo varg. Vendos një "-" para një fjalë për të gjetur të gjitha ajetet që nuk kanë këtë fjalë. Wildcards "*" dhe "?" mund të përdoret. Në gjuhë duke përdorur simbolet si kineze dhe japanese ju duhet të vënë "*" para dhe pas çdo karakter. Përdorni vetëm kërko të ngadalshëm për të gjetur "STRONGS" numra.</string>
 <string key="Unsuccessful import">Import pasuksesshme</string>
 <string key="Successful import">Import të suksesshme</string>
 <string key="Highlight name">Highlight emrin</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Bookmarks Copy, nxjerr në pah dhe shënimet në clipboard</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Bookmarks importit, nxjerr në pah dhe shënime nga clipboard</string>
 <string key="Highlight">Theksoj</string>
+<string key="Synchronize to every verse">Synchronize të secilës strofë</string>
 </translations>

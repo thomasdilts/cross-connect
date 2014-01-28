@@ -35,6 +35,7 @@ namespace CrossConnect
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Input;
     using Sword.versification;
+    using Windows.Media.SpeechSynthesis;
 
     public sealed partial class BrowserTitledWindow
     {
@@ -101,6 +102,9 @@ namespace CrossConnect
             this.Hear.Visibility = this._state != null && this._state.Source != null && this._state.Source.IsHearable && ExistsBibleBookInKjv()
                                        ? Visibility.Visible
                                        : Visibility.Collapsed;
+            this.TTS.Visibility = this._state != null && this._state.Source != null && this._state.Source.IsHearable && SpeechSynthesizer.AllVoices.Any()
+                                       ? Visibility.Visible
+                                       : Visibility.Collapsed;
             this.Translate.Visibility = this.AddANote.Visibility;
             this.Copy.Visibility = this.AddANote.Visibility;
             this.Highlight.Visibility = this.AddANote.Visibility;
@@ -116,6 +120,7 @@ namespace CrossConnect
             this.AddANote.Content = Translations.Translate("Add a note to a verse");
             this.AddToBookMarks.Content = Translations.Translate("Bookmark this verse");
             this.Hear.Content = Translations.Translate("Listen to this chapter");
+            this.TTS.Content = "(TTS) " + Translations.Translate("Listen to this chapter");
             this.Translate.Content = Translations.Translate("Translate to the current language");
             this.Copy.Content = Translations.Translate("Copy the last selected verses");
             this.Highlight.Content = Translations.Translate("Highlight");
@@ -188,6 +193,11 @@ namespace CrossConnect
                 case "Hear":
                     this.MenuPopup.IsOpen = false;
                     this.StartAudio_OnClick();
+                    this.ShowUserInterface(false);
+                    break;
+                case "TTS":
+                    this.MenuPopup.IsOpen = false;
+                    this.StartTTS_OnClick();
                     this.ShowUserInterface(false);
                     break;
                 case "Translate":

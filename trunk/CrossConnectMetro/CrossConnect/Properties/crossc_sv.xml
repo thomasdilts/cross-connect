@@ -206,13 +206,13 @@
 <string key="Invalid key. Try again">Ogiltig nyckel. Försök igen</string>
 <string key="Enter key">Enter</string>
 <string key="Save">Spara</string>
-<string key="Fast search help text">En snabb sökning är långsam den första gången du använder den på en bibel och snabbt varje gång därefter. En snabb sökning ger verser som innehåller alla givna ord. Sätt en "+" framför varje ord för att hitta något av de angivna orden i varje vers. Sätt en "-" framför ett ord för att hitta alla de verser som inte har det ordet. Jokertecken "*" och "?" kan användas. I språk med symboler som kinesiska och japanska måste du sätta "*" före och efter varje tecken. Använd endast den långsamma sökning för att hitta "Strongs" nummer.</string>
 <string key="Unsuccessful import">Misslyckad import</string>
 <string key="Successful import">Framgångsrik import</string>
 <string key="Highlight name">Markera namn</string>
 <string key="Use highlighting">Använd markeringen</string>
 <string key="Use remote storage">Använd fjärrlagring</string>
-<string key="Copy bookmarks, highlights and notes to the clipboard">Kopiera bokmärken, highlights och noter till klippbordet</string>
-<string key="Import bookmarks, highlights and notes from the clipboard">Importera bokmärken, highlights och anteckningar från klippbordet</string>
+<string key="Copy bookmarks, highlights and notes to the clipboard">Kopiera bokmärken, höjdpunkter och noter till klippbordet</string>
+<string key="Import bookmarks, highlights and notes from the clipboard">Importera bokmärken, höjdpunkter och anteckningar från klippbordet</string>
 <string key="Highlight">Highlight</string>
+<string key="Synchronize to every verse">Synkronisera till varje vers</string>
 </translations>

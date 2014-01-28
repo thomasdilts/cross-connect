@@ -206,4 +206,5 @@
 <string key="Invalid key. Try again">Geçersiz anahtar. Tekrar deneyin</string>
 <string key="Enter key">Enter tuşuna</string>
 <string key="Save">Kurtarmak</string>
+<string key="Synchronize to every verse">Her ayet için senkronize</string>
 </translations>

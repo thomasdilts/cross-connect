@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Clave no válida. Inténtelo de nuevo</string>
 <string key="Enter key">Tecla Enter</string>
 <string key="Save">Guardar</string>
-<string key="Fast search help text">Una búsqueda rápida es lento la primera vez que lo utilice en una biblia y rápido cada vez que a partir de entonces. Una búsqueda rápida devuelve versículos que contienen todas las palabras dadas. Ponga un "+" delante de cada palabra para encontrar cualquiera de las palabras dadas en cada verso. Ponga un signo "-" delante de una palabra a encontrar todos los versículos que no cuentan con esa palabra. Los comodines "*" y "?" puede ser utilizado. En lenguajes que usan símbolos como el chino y el japonés debe poner "*" antes y después de cada carácter. Utilice sólo la búsqueda lenta para encontrar números "Strongs".</string>
 <string key="Unsuccessful import">Importación sin éxito</string>
 <string key="Successful import">Importación exitosa</string>
 <string key="Highlight name">Resalte el nombre</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Copiar marcadores, resaltados y notas en el portapapeles</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Importar marcadores, resaltados y notas desde el portapapeles</string>
 <string key="Highlight">Punto culminante</string>
+<string key="Synchronize to every verse">Sincronizar a cada verso</string>
 </translations>

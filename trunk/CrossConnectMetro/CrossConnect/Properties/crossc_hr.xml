@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Neispravan ključ. Pokušaj ponovno</string>
 <string key="Enter key">Enter</string>
 <string key="Save">Spasiti</string>
-<string key="Fast search help text">Brzo traženje je usporiti prvi put kada ga koristiti na Bibliju i brzo svaki put nakon toga. Brzo traženje vraća stihove koji sadrže sve zadane riječi. Put "+" ispred svake riječi pronaći bilo koje od navedenih riječi u svakom stihu. Put "-" ispred riječi kako bi pronašli sve od stihova koje nemaju tu riječ. Zamjenski znakovi "*" i "?" mogu se koristiti. U jezike koriste simbole poput kineske i japanske morate staviti "*" prije i poslije svakog lika. Koristite samo spor pretraživanje kako bi pronašli "Strongs" brojeve.</string>
 <string key="Unsuccessful import">Neuspješan uvoz</string>
 <string key="Successful import">Uspješna uvoz</string>
 <string key="Highlight name">Označite ime</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Kopiranje oznake, ističe i bilješke uz prijenosnik</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Uvoz oznaka, ističe i bilješke iz prijenosnika</string>
 <string key="Highlight">Vrhunac</string>
+<string key="Synchronize to every verse">Sinkronizacija svakom stihu</string>
 </translations>

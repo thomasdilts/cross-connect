@@ -206,7 +206,6 @@
 <string key="Invalid key. Try again">Neplatný kľúč. Skúste to znova</string>
 <string key="Enter key">Enter</string>
 <string key="Save">Uložiť</string>
-<string key="Fast search help text">Rýchle hľadanie je pomalé prvýkrát ho použiť na bibliu a rýchly zakaždým potom. Rýchle vyhľadávanie vracia verše, ktoré obsahujú všetky daných slov. Vložte "+" pred každým slovom nájsť niektoré z daných slov v každom verši. Dajte "-" pred slovo nájsť všetky verše, ktoré nemajú toto slovo. Zástupné znaky "*" a "?" môžu byť použité. V jazykoch pomocou symbolov, ako je čínština a japončina musíte dať "*" pred a po každom znaku. Používajte iba pomalé hľadanie nájsť "Strongs" čísla.</string>
 <string key="Unsuccessful import">Neúspešný import</string>
 <string key="Successful import">Úspešný import</string>
 <string key="Highlight name">Zvýraznite meno</string>
@@ -215,4 +214,5 @@
 <string key="Copy bookmarks, highlights and notes to the clipboard">Kopírovanie záložiek, zvýraznenie a poznámok do schránky</string>
 <string key="Import bookmarks, highlights and notes from the clipboard">Import záložiek, zvýraznenie a poznámky zo schránky</string>
 <string key="Highlight">Zdôrazniť</string>
+<string key="Synchronize to every verse">Synchronizácia na každom verši</string>
 </translations>

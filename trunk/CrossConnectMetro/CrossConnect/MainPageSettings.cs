@@ -133,6 +133,7 @@ namespace CrossConnect
             App.DisplaySettings.HighlightName6 = this.highlightName6.Text;
             App.DisplaySettings.UseHighlights = this.useHighlighting.IsOn;
             App.DisplaySettings.UseRemoteStorage = this.useRemoteStorage.IsOn;
+            App.DisplaySettings.SyncMediaVerses = this.SyncVerses.IsOn;
             App.RaiseBookmarkChangeEvent();
             App.RaiseHistoryChangeEvent();
             App.RaisePersonalNotesChangeEvent();
@@ -177,6 +178,7 @@ namespace CrossConnect
             this.butSettingsDefault.Content = Translations.Translate("Default settings");
             this.useHighlighting.Header = Translations.Translate("Use highlighting");
             this.useRemoteStorage.Header = Translations.Translate("Use remote storage");
+            this.SyncVerses.Header = Translations.Translate("Synchronize to every verse");
             butExportBookmarksHighlightsAndNotes.Content = Translations.Translate("Copy bookmarks, highlights and notes to the clipboard");
             butImportBookmarksHighlightsAndNotes.Content = Translations.Translate("Import bookmarks, highlights and notes from the clipboard");
 
@@ -210,6 +212,7 @@ namespace CrossConnect
                     this.useInternetGreekHebrewDict.IsOn = App.DisplaySettings.UseInternetGreekHebrewDict;
                     this.useHighlighting.IsOn = App.DisplaySettings.UseHighlights;
                     this.useRemoteStorage.IsOn = App.DisplaySettings.UseRemoteStorage;
+                    this.SyncVerses.IsOn = App.DisplaySettings.SyncMediaVerses;
 
                     successfulInitialize = true;
                 }
