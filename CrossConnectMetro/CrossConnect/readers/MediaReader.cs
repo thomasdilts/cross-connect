@@ -134,7 +134,7 @@ namespace CrossConnect.readers
             {
                 this.MoveChapterVerse(this.Serial.PosBookShortName, this.Serial.PosChaptNum, nextVerse, false, this);
             }
-            App.SynchronizeAllWindows(this.Serial.PosBookShortName, this.Serial.PosChaptNum, nextVerse, -1, this);
+            App.SynchronizeAllWindows(this.Serial.PosBookShortName, this.Serial.PosChaptNum, this.Serial.PosVerseNum, -1, this);
         }
 
         public override void MovePrevious()

@@ -40,8 +40,6 @@
                             Style="{StaticResource PlayAppBarButtonStyle2}" Tag="Edit" />
                     <Button x:Name="ButNext" Grid.Column="2" Click="ButNextClick" HorizontalAlignment="Center"
                             Style="{StaticResource NextAppBarButtonStyle2}" Tag="Edit" />
-                    <Button x:Name="ButSearch" Grid.Column="3" Click="ButSearch_OnClick" HorizontalAlignment="Center"
-                            Style="{StaticResource SearchAppBarButtonStyle2}" Tag="Edit" />
                     <Button x:Name="ButMenu" Grid.Column="4" Click="ButMenuClick" HorizontalAlignment="Center"
                             Style="{StaticResource ListAppBarButtonStyle2}" Tag="Edit" />
                     <Button x:Name="ButClose" Grid.Column="5" Click="ButCloseClick" HorizontalAlignment="Center"

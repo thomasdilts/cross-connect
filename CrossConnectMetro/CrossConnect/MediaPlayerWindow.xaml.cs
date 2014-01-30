@@ -163,7 +163,7 @@ namespace CrossConnect
                     out verseNum,
                     out fullName,
                     out title);
-                string chapterdata;
+                string chapterdata=null;
                 if (this.title != null)
                 {
                     this.title.Text = title + " - "
@@ -174,38 +174,58 @@ namespace CrossConnect
                     MediaControl.TrackName = this.title.Text;
                     MediaControl.ArtistName = ((MediaReader)this._state.Source).Info.Name;
                 }
-                if (!App.DisplaySettings.SyncMediaVerses)
+                var synthesizer = this.GetSynthesizer(info);
+                if (stream != null)
                 {
-                    chapterdata = await ((BibleZtextReader)this._state.Source).GetVerseTextOnly(App.DisplaySettings, bookShortName, relChaptNum);
+                    //this.myMedia.Stop();
+                    //this.myMedia.ReleasePointerCaptures();
+                    stream.Dispose();
+                    stream = null;
+                    //await Task.Delay(TimeSpan.FromSeconds(1));
                 }
                 else
                 {
-                    chapterdata = await ((BibleZtextReader)this._state.Source).GetVerseTextOnly(App.DisplaySettings, bookShortName, relChaptNum, verseNum);  
+                    await Task.Delay(TimeSpan.FromSeconds(3));
                 }
-                
-                try
+
+                while (string.IsNullOrEmpty(chapterdata))
                 {
-                    var synthesizer = this.GetSynthesizer(info);
-                    if(stream != null)
+                    if (!App.DisplaySettings.SyncMediaVerses)
                     {
-                        //this.myMedia.Stop();
-                        //this.myMedia.ReleasePointerCaptures();
-                        stream.Dispose();
-                        stream = null;
-                    } 
+                        chapterdata = await ((BibleZtextReader)this._state.Source).GetVerseTextOnly(App.DisplaySettings, bookShortName, relChaptNum);
+                    }
                     else
                     {
-                        await Task.Delay(TimeSpan.FromSeconds(3));
+                        chapterdata = await ((BibleZtextReader)this._state.Source).GetVerseTextOnly(App.DisplaySettings, bookShortName, relChaptNum, verseNum);
                     }
-                    var data = chapterdata.Replace("\n", string.Empty);
-                    stream = await synthesizer.SynthesizeTextToStreamAsync(data);
+
+                    chapterdata = chapterdata.Trim().Replace("\n", string.Empty).Replace(".", ". ");
+                    if(!string.IsNullOrEmpty(chapterdata))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        this._state.Source.MoveNext();
+                    }
+                }
+                if (!App.DisplaySettings.SyncMediaVerses)
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(1));
+                } 
+                try
+                {
+                    stream = await synthesizer.SynthesizeTextToStreamAsync(chapterdata);
                     if(stream == null)
                     {
                         // try one more time
                         await Task.Delay(TimeSpan.FromSeconds(3));
-                        stream = await synthesizer.SynthesizeTextToStreamAsync(data);
+                        stream = await synthesizer.SynthesizeTextToStreamAsync(chapterdata);
                     }
-                    this.myMedia.SetSource(stream, stream.ContentType);
+                    if (stream != null)
+                    {
+                        this.myMedia.SetSource(stream, stream.ContentType);
+                    }
 
                 }
                 catch(Exception e)

@@ -355,9 +355,9 @@ namespace CrossConnect
                         string title;
                         this._state.Source.GetInfo(
                             out bookShortName, out relChaptNum, out verseNum, out fullName, out title);
-                        var book = ((BibleZtextReader)this._state.Source).canon.BookByShortName[bookShortName];
+                        var bookNum = ((BibleZtextReader)this._state.Source).canon.GetBibleNumber(bookShortName);
                         ButtonWindowSpecs specs = this._state.Source.GetButtonWindowSpecs(
-                            1, book.VersesInChapterStartIndex);
+                            1, bookNum);
                         if (specs != null)
                         {
                             this.ReloadBookPopupWindow(specs);

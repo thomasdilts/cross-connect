@@ -236,7 +236,7 @@ namespace CrossConnect
         #endregion
 
         #region Methods
-
+        /*
         private void ButSearch_OnClick(object sender, RoutedEventArgs e)
         {
             if (!this.SearchPopup.IsOpen)
@@ -269,7 +269,7 @@ namespace CrossConnect
                     this.SearchPopup);
             }
         }
-
+        */
         private void FirstClick(object sender, RoutedEventArgs e)
         {
             ButtonWindowSpecs specs = this._state.Source.GetButtonWindowSpecs(1, (int)((Button)sender).Tag);
