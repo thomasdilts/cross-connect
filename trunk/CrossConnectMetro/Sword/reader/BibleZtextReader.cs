@@ -884,7 +884,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             DisplaySettings displaySettings, string shortBookName, int chapterNumber, int verseNumber)
         {
             CanonBookDef book;
-            if (!canon.BookByShortName.TryGetValue(shortBookName, out book) || chapterNumber >= book.NumberOfChapters || verseNumber >= canon.VersesInChapter[chapterNumber])
+            if (!canon.BookByShortName.TryGetValue(shortBookName, out book) || chapterNumber >= book.NumberOfChapters || verseNumber >= canon.VersesInChapter[chapterNumber + book.VersesInChapterStartIndex])
             {
                 return string.Empty;
             }
@@ -921,6 +921,13 @@ function SetFontColorForElement(elemntId, colorRgba){
             //give them the notes if you can.
 
             var  chapterBuffer = await this.GetChapterBytes(chapterNumber + book.VersesInChapterStartIndex);
+            return RawGenTextReader.CleanXml(Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length), true);
+
+            /*
+
+
+
+
             var verses = this.Chapters[chapterNumber].Verses;
             int noteMarker = 'a';
             bool isInPoetry = false;
@@ -941,7 +948,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 ref isInPoetry,
                 true));
             }
-            return returnText.ToString();
+            return returnText.ToString();*/
         }
         public async Task<List<string>> MakeListDisplayText(
             DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay)

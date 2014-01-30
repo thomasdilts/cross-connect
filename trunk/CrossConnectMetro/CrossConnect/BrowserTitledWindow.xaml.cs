@@ -434,33 +434,7 @@ namespace CrossConnect
                 }
                 else 
                 {
-                    try
-                    {
-                        this.webBrowser1.InvokeScriptAsync(
-                            "SetFontColorForElement",
-                            new[]
-                            {
-                                this._lastSelectedItem,
-                                ConvertColorToHtmlRgba(App.Themes.MainFontColor).GetHtmlRgba()
-                            });                        
-                        this._lastSelectedItem = bookShortName + "_" + chapterNum + "_" + verseNum;
-
-                        this.webBrowser1.InvokeScriptAsync(
-                            "SetFontColorForElement",
-                            new[] { this._lastSelectedItem, ConvertColorToHtmlRgba(App.Themes.AccentColor).GetHtmlRgba() });
-                        this.webBrowser1.InvokeScriptAsync(
-                             "ShowNode",
-                            new[] { this._lastSelectedItem });
-                       
-                        //this.webBrowser1.InvokeScriptAsync(
-                        //    "ScrollToAnchor",
-                        //    new[] { this._lastSelectedItem, ConvertColorToHtmlRgba(App.Themes.AccentColor).GetHtmlRgba() });
-                    }
-                    catch (Exception ee)
-                    {
-                        Debug.WriteLine("crashed: " + ee.Message);
-                    } 
-                    this.WriteTitle();
+                    ScrollToThisVerse(bookShortName, chapterNum, verseNum);
                 }
             }
         }
@@ -1002,6 +976,10 @@ namespace CrossConnect
                     }
                 }
                 this._lastSelectedItem = id;
+                await this.webBrowser1.InvokeScriptAsync(
+                     "ShowNode",
+                    new[] { this._lastSelectedItem });
+                this.WriteTitle();
             }
             catch (Exception)
             {
