@@ -294,8 +294,8 @@ namespace CrossConnect
 
                     this.BookPopup.IsOpen = false;
                     this.SearchPopup.IsOpen = false;
-                    ((MediaReader)this._state.Source).Info.Chapter = (int)((Button)sender).Tag;
-                    this.RestartToThisMedia(((MediaReader)this._state.Source).Info);
+                    Info.Chapter = (int)((Button)sender).Tag;
+                    this.RestartToThisMedia();
                 }
             }
         }
@@ -330,8 +330,8 @@ namespace CrossConnect
             this._state.Source.MoveChapterVerse(book.ShortName1, (int)((Button)sender).Tag, 0, false, this._state.Source);
             this.BookPopup.IsOpen = false;
             this.SearchPopup.IsOpen = false;
-            ((MediaReader)this._state.Source).Info.Chapter = (int)((Button)sender).Tag;
-            this.RestartToThisMedia(((MediaReader)this._state.Source).Info);
+            Info.Chapter = (int)((Button)sender).Tag;
+            this.RestartToThisMedia();
         }
 
         private void SubMenuSearchPopup_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -360,14 +360,14 @@ namespace CrossConnect
                         }
 
                         ButtonWindowSpecs specs = this._state.Source.GetButtonWindowSpecs(
-                            1, ((MediaReader)this._state.Source).Info.Chapter);
+                            1, Info.Chapter);
                         if (specs != null)
                         {
                             this.ReloadBookPopupWindow(specs);
                         }
                         else
                         {
-                            this.RestartToThisMedia(((MediaReader)this._state.Source).Info);
+                            this.RestartToThisMedia();
 
                             this.BookPopup.IsOpen = false;
                             this.SearchPopup.IsOpen = false;

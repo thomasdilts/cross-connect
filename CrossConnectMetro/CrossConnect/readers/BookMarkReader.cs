@@ -124,6 +124,13 @@ namespace CrossConnect.readers
 
         #region Public Methods and Operators
 
+        public override async Task<IBrowserTextSource> Clone()
+        {
+            var cloned = new BookMarkReader(this.Serial.Path, this.Serial.Iso2DigitLangCode, this.Serial.IsIsoEncoding, this.Serial.CipherKey, this.Serial.ConfigPath, this.Serial.Versification);
+            await cloned.Resume();
+            return cloned;
+        }
+
         public async void AppBookMarksChanged()
         {
             this._displayText =
@@ -140,6 +147,20 @@ namespace CrossConnect.readers
                     false,
                     string.Empty);
             this.RaiseSourceChangedEvent();
+        }
+
+        public override async Task<string> GetTTCtext(bool isVerseOnly)
+        {
+            var text = await MakeListTtcHearingText(App.PlaceMarkers.Bookmarks);
+            return string.IsNullOrEmpty(text) ? "empty" : text;
+        }
+        public override void MoveNext(bool isVerseMove)
+        {
+
+        }
+        public override void MovePrevious(bool isVerseMove)
+        {
+
         }
 
         public override async Task<string> GetChapterHtml(

@@ -142,6 +142,22 @@ namespace CrossConnect.readers
             this.RaiseSourceChangedEvent();
         }
 
+        public override async Task<string> GetTTCtext(bool isVerseOnly)
+        {
+            var text = await MakeListTtcHearingText(App.PlaceMarkers.History);
+            return string.IsNullOrEmpty(text) ? "empty" : text;
+        }
+
+        public override void MoveNext(bool isVerseMove)
+        {
+
+        }
+        public override void MovePrevious(bool isVerseMove)
+        {
+
+        }
+
+
         public override async Task<string> GetChapterHtml(
             DisplaySettings displaySettings,
             HtmlColorRgba htmlBackgroundColor,
@@ -212,6 +228,12 @@ namespace CrossConnect.readers
             await base.Resume();
         }
 
+        public override async Task<IBrowserTextSource> Clone()
+        {
+            var cloned = new HistoryReader(this.Serial.Path, this.Serial.Iso2DigitLangCode, this.Serial.IsIsoEncoding, this.Serial.CipherKey, this.Serial.ConfigPath, this.Serial.Versification);
+            await cloned.Resume();
+            return cloned;
+        }
         public override void SerialSave()
         {
             this.Serial2.CloneFrom(this.Serial);

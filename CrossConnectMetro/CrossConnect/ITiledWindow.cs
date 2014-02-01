@@ -144,6 +144,21 @@ namespace CrossConnect
         [DataMember(Name = "windowType")]
         public WindowType WindowType = WindowType.WindowBible;
 
+        [DataMember]
+        public string VoiceName = string.Empty;
+        
+        [DataMember]
+        public bool IsNtOnly = false;
+        
+        [DataMember]
+        public string Pattern = string.Empty;
+
+        [DataMember]
+        public string Src = string.Empty;
+
+        [DataMember]
+        public string code = string.Empty;
+
         #endregion
     }
 }

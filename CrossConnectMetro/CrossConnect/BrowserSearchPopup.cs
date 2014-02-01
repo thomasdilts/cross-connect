@@ -243,54 +243,55 @@ namespace CrossConnect
             this.IsSearchFinished = false;
             this.IsSearchFinishedReported = false;
             this.IsFastSearch = (this.FastSearch.IsChecked != null && (bool)this.FastSearch.IsChecked);
-
-            if (this.WholeBible.IsChecked != null && (bool)this.WholeBible.IsChecked)
+            if (this._state.Source is BibleZtextReader)
             {
                 var source = (BibleZtextReader)this._state.Source;
-
-                for (int i = 0; i < source.canon.GetNumChaptersInBible(); i++)
+                if (this.WholeBible.IsChecked != null && (bool)this.WholeBible.IsChecked)
                 {
-                    this.Chapters.Add(i);
+                    for (int i = 0; i < source.canon.GetNumChaptersInBible(); i++)
+                    {
+                        this.Chapters.Add(i);
+                    }
+
+                    this.SearchTypeIndex = 0;
+                }
+                else if (this.OldTestement.IsChecked != null && (bool)this.OldTestement.IsChecked)
+                {
+                    for (int i = 0; i < source.canon.GetNumChaptersInOldTestement(); i++)
+                    {
+                        this.Chapters.Add(i);
+                    }
+
+                    this.SearchTypeIndex = 1;
+                }
+                else if (this.NewTEstement.IsChecked != null && (bool)this.NewTEstement.IsChecked)
+                {
+                    for (int i = source.canon.GetNumChaptersInOldTestement(); i < source.canon.GetNumChaptersInBible(); i++)
+                    {
+                        this.Chapters.Add(i);
+                    }
+
+                    this.SearchTypeIndex = 2;
+                }
+                else
+                {
+                    // we must find the first chapter in the current book.
+                    var book = source.canon.BookByShortName[this._currentBookName];
+
+                    // add all the chapters up to the last chapter in the book.
+                    for (int i = book.VersesInChapterStartIndex; i < book.VersesInChapterStartIndex + book.NumberOfChapters; i++)
+                    {
+                        this.Chapters.Add(i);
+                    }
+
+                    this.SearchTypeIndex = 3;
                 }
 
-                this.SearchTypeIndex = 0;
-            }
-            else if (this.OldTestement.IsChecked != null && (bool)this.OldTestement.IsChecked)
-            {
-                var source = (BibleZtextReader)this._state.Source;
-                for (int i = 0; i < source.canon.GetNumChaptersInOldTestement(); i++)
-                {
-                    this.Chapters.Add(i);
-                }
-
-                this.SearchTypeIndex = 1;
-            }
-            else if (this.NewTEstement.IsChecked != null && (bool)this.NewTEstement.IsChecked)
-            {
-                var source = (BibleZtextReader)this._state.Source;
-                for (int i = source.canon.GetNumChaptersInOldTestement(); i < source.canon.GetNumChaptersInBible(); i++)
-                {
-                    this.Chapters.Add(i);
-                }
-
-                this.SearchTypeIndex = 2;
-            }
-            else
-            {
-                // we must find the first chapter in the current book.
-                var source = (BibleZtextReader)this._state.Source;
-                var book = source.canon.BookByShortName[this._currentBookName];
-
-                // add all the chapters up to the last chapter in the book.
-                for (int i = book.VersesInChapterStartIndex; i < book.VersesInChapterStartIndex + book.NumberOfChapters; i++)
-                {
-                    this.Chapters.Add(i);
-                }
-
-                this.SearchTypeIndex = 3;
-            }
-
-            if (this._state.Source is RawGenTextReader)
+                this.SourceSearch = new SearchReader(
+                    source.Serial.Path, source.Serial.Iso2DigitLangCode, source.Serial.IsIsoEncoding, source.Serial.CipherKey, source.Serial.ConfigPath, source.Serial.Versification);
+                await ((BibleZtextReader)this.SourceSearch).Initialize();
+            } 
+            else if (this._state.Source is RawGenTextReader)
             {
                 this.Chapters = new List<int>();
                 for (int i = 0; i < ((RawGenTextReader)this._state.Source).Chapters.Count; i++)
@@ -304,13 +305,7 @@ namespace CrossConnect
                     source.Serial.Path, source.Serial.Iso2DigitLangCode, source.Serial.IsIsoEncoding);
                 await ((RawGenTextReader)this.SourceSearch).Initialize();
             }
-            else
-            {
-                var source = (BibleZtextReader)this._state.Source;
-                this.SourceSearch = new SearchReader(
-                    source.Serial.Path, source.Serial.Iso2DigitLangCode, source.Serial.IsIsoEncoding, source.Serial.CipherKey, source.Serial.ConfigPath, source.Serial.Versification);
-                await ((BibleZtextReader)this.SourceSearch).Initialize();
-            }
+
             if (this.IsFastSearch)
             {
                 var indexes = new string[] { "_deleted.idx", "index.mgbmp", "index.mgbmr", "index.words" };

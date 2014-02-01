@@ -314,21 +314,26 @@ namespace Sword.versification
         public Canon()
         {
             var oldTestBooks = OldTestBooks;
-            int i = 0;
+            int absoluteStartChapter = 0;
+            int bookNum = 0;
             BookByShortName = new Dictionary<string, CanonBookDef>();
             foreach (var book in oldTestBooks)
             {
                 BookByShortName[book.ShortName1] = book;
-                book.VersesInChapterStartIndex = i;
-                i+=book.NumberOfChapters;
+                book.VersesInChapterStartIndex = absoluteStartChapter;
+                book.BookNum = bookNum;
+                bookNum++;
+                absoluteStartChapter += book.NumberOfChapters;
             }
 
             var newTestBooks = NewTestBooks;
             foreach (var book in newTestBooks)
             {
                 BookByShortName[book.ShortName1] = book;
-                book.VersesInChapterStartIndex = i;
-                i += book.NumberOfChapters;
+                book.VersesInChapterStartIndex = absoluteStartChapter;
+                book.BookNum = bookNum;
+                bookNum++;
+                absoluteStartChapter += book.NumberOfChapters;
             }
         }
 
@@ -469,6 +474,7 @@ namespace Sword.versification
         public string ShortName2 { get; set; }
         public int NumberOfChapters { get; set; }
         public int VersesInChapterStartIndex { get; set; }
+        public int BookNum { get; set; }
         public CanonBookDef(string FullName, string ShortName1, string ShortName2, int NumberOfChapters)
         {
             this.FullName = FullName;

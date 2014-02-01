@@ -91,6 +91,14 @@ namespace CrossConnect.readers
 
         #region Public Properties
 
+
+        public override bool IsTTChearable
+        {
+            get
+            {
+                return false;
+            }
+        }
         public override bool IsHearable
         {
             get
@@ -356,7 +364,7 @@ namespace CrossConnect.readers
             this.MoveChapterVerse(bookShortName, chapter, verse, isLocalLinkChange, false);
         }
 
-        public override void MoveNext()
+        public override void MoveNext(bool isVerse)
         {
             int nextChapter = this.Serial.PosChaptNum + 1;
             var book = canon.BookByShortName[this.Serial.PosBookShortName];
@@ -381,7 +389,7 @@ namespace CrossConnect.readers
             }
         }
 
-        public override void MovePrevious()
+        public override void MovePrevious(bool isVerse)
         {
             int prevChapter = this.Serial.PosChaptNum - 1;
             var book = canon.BookByShortName[this.Serial.PosBookShortName];

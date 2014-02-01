@@ -182,6 +182,14 @@ namespace Sword.reader
             }
         }
 
+        public virtual bool IsTTChearable
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public virtual bool IsLocalChangeDuringLink
         {
             get
@@ -233,6 +241,14 @@ namespace Sword.reader
         #endregion
 
         #region Public Methods and Operators
+
+        public async Task<IBrowserTextSource> Clone()
+        {
+            var cloned = new RawGenTextReader(this.Serial.Path, this.Serial.Iso2DigitLangCode, this.Serial.IsIsoEncoding);
+            await cloned.Resume();
+            cloned.MoveChapterVerse(this.Serial.PosBookShortName, this.Serial.PosChaptNum, this.Serial.PosVerseNum, false, cloned);
+            return cloned;
+        }
 
         public static async Task<bool> FileExists(string filePath)
         {
@@ -611,7 +627,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             }
         }
 
-        public virtual void MoveNext()
+        public virtual void MoveNext(bool isVerse)
         {
             this.Serial.PosChaptNum++;
             this.Serial.PosVerseNum = 0;
@@ -642,7 +658,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             }
         }
 
-        public virtual void MovePrevious()
+        public virtual void MovePrevious(bool isVerse)
         {
             this.Serial.PosChaptNum--;
             this.Serial.PosVerseNum = 0;
@@ -837,6 +853,18 @@ function SetFontColorForElement(elemntId, colorRgba){
                 return Encoding.UTF8.GetBytes("Does not exist");
             }
             return chapterdata;
+        }
+
+        public virtual async Task<string> GetTTCtext(bool isVerseOnly)
+        {
+            if (this.Chapters.Count == 0)
+            {
+                return string.Empty;
+            }
+
+            Debug.WriteLine("GetChapterHtml start");
+            byte[] chapterBuffer = await this.GetChapterBytes(this.Serial.PosChaptNum);
+            return RawGenTextReader.CleanXml(Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length), true).Replace(".", ". ");
         }
 
         /// <summary>
@@ -1740,13 +1768,13 @@ function SetFontColorForElement(elemntId, colorRgba){
         {
             // find the first available chapter.
             this.Serial.PosChaptNum = 0;
-            this.MoveNext();
+            this.MoveNext(false);
             if (this.Serial.PosChaptNum == 1)
             {
-                this.MovePrevious();
+                this.MovePrevious(false);
                 if (this.Serial.PosChaptNum != 0)
                 {
-                    this.MoveNext();
+                    this.MoveNext(false);
                 }
             }
         }

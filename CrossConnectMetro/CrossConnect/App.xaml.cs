@@ -657,7 +657,7 @@ namespace CrossConnect
                                                     typeof(TranslatorReader), typeof(BookMarkReader),
                                                     typeof(HistoryReader), typeof(SearchReader), typeof(DailyPlanReader),
                                                     typeof(PersonalNotesReader), typeof(InternetLinkReader),
-                                                    typeof(MediaReader), typeof(GreekHebrewDictReader), typeof(RawGenSearchReader),
+                                                    typeof(GreekHebrewDictReader), typeof(RawGenSearchReader),
                                                     typeof(AudioPlayer.MediaInfo), typeof(RawGenTextReader), typeof(RawGenTextPlaceMarker)
                                                 };
                             var ser = new DataContractSerializer(typeof(SerializableWindowState), types);
@@ -666,15 +666,31 @@ namespace CrossConnect
                             if (state.WindowType.Equals(WindowType.WindowMediaPlayer))
                             {
                                 nextWindow = new MediaPlayerWindow { State = state };
+                                await nextWindow.State.Source.Resume();
+                                nextWindow.State.IsResume = true;
+                                string bookShortName;
+                                int relChaptNum;
+                                int verseNum;
+                                string fullName;
+                                string title;
+                                nextWindow.State.Source.GetInfo(out bookShortName,
+                                    out relChaptNum,
+                                    out verseNum,
+                                    out fullName,
+                                    out title);
+                                var canon = CanonManager.GetCanon("KJV");
+                                var book = canon.BookByShortName[bookShortName];
+                                var info = new AudioPlayer.MediaInfo() { Book = bookShortName, Chapter = book.VersesInChapterStartIndex + relChaptNum, Verse = verseNum, VoiceName = nextWindow.State.VoiceName, IsNtOnly = nextWindow.State.IsNtOnly, Pattern = nextWindow.State.Pattern, Src = nextWindow.State.Src, Code=nextWindow.State.code };
+                                ((MediaPlayerWindow)nextWindow).SetMediaInfo(nextWindow.State, info);
                             }
                             else
                             {
                                 nextWindow = new BrowserTitledWindow { State = state };
                                 ((BrowserTitledWindow)nextWindow).SetVScroll(state.VSchrollPosition);
+                                await nextWindow.State.Source.Resume();
+                                nextWindow.State.IsResume = true;
                             }
 
-                            await nextWindow.State.Source.Resume();
-                            nextWindow.State.IsResume = true;
                             OpenWindows.Add(nextWindow);
 
                             // nextWindow.Initialize(nextWindow.state.bibleToLoad, nextWindow.state.windowType);
@@ -868,7 +884,7 @@ namespace CrossConnect
                                     typeof(BibleZtextReader), typeof(BibleNoteReader), typeof(BibleZtextReaderSerialData),
                                     typeof(CommentZtextReader), typeof(TranslatorReader), typeof(BookMarkReader),
                                     typeof(HistoryReader), typeof(SearchReader), typeof(DailyPlanReader),
-                                    typeof(PersonalNotesReader), typeof(InternetLinkReader), typeof(MediaReader),
+                                    typeof(PersonalNotesReader), typeof(InternetLinkReader),
                                     typeof(GreekHebrewDictReader), typeof(AudioPlayer.MediaInfo), typeof(RawGenTextReader), 
                                     typeof(RawGenTextPlaceMarker), typeof(RawGenSearchReader)
                                 };

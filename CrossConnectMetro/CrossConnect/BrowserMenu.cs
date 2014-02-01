@@ -65,7 +65,8 @@ namespace CrossConnect
                 out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
             var canonKjv = CanonManager.GetCanon("KJV");
             CanonBookDef book;
-            if (!canonKjv.BookByShortName.TryGetValue(bookShortName, out book))
+
+            if (string.IsNullOrEmpty(bookShortName) || !canonKjv.BookByShortName.TryGetValue(bookShortName, out book))
             {
                 return false;
             }
@@ -84,6 +85,7 @@ namespace CrossConnect
             // Which items are to be in the menu.
 
             bool isHearable = this._state != null && this._state.Source != null && this._state.Source.IsHearable;
+            bool isTTChearable = this._state != null && this._state.Source != null && this._state.Source.IsTTChearable;
             int numberOfWindowsInMyColumn = App.OpenWindows.Count(win => win.State.Window == this._state.Window);
             this.EnterKey.Visibility = this.State.Source.IsLocked ? Visibility.Visible : Visibility.Collapsed;
             this.MoveWindowRight.Visibility = (this.State.Window < 8) ? Visibility.Visible : Visibility.Collapsed;
@@ -102,7 +104,7 @@ namespace CrossConnect
             this.Hear.Visibility = this._state != null && this._state.Source != null && this._state.Source.IsHearable && ExistsBibleBookInKjv()
                                        ? Visibility.Visible
                                        : Visibility.Collapsed;
-            this.TTS.Visibility = this._state != null && this._state.Source != null && this._state.Source.IsHearable && SpeechSynthesizer.AllVoices.Any()
+            this.TTS.Visibility = this._state != null && this._state.Source != null && this._state.Source.IsTTChearable && SpeechSynthesizer.AllVoices.Any()
                                        ? Visibility.Visible
                                        : Visibility.Collapsed;
             this.Translate.Visibility = this.AddANote.Visibility;

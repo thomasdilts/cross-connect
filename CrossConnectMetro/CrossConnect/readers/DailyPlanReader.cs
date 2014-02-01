@@ -60,6 +60,14 @@ namespace CrossConnect.readers
 
         #region Public Properties
 
+
+        public override bool IsTTChearable
+        {
+            get
+            {
+                return false;
+            }
+        }
         public override bool IsHearable
         {
             get
@@ -251,7 +259,7 @@ namespace CrossConnect.readers
             }
         }
 
-        public override void MoveNext()
+        public override void MoveNext(bool isVerse)
         {
             this.Serial.PosVerseNum = 0;
             var schedule = DailyPlans.ZAllPlans(App.DailyPlan.PlanNumber);
@@ -265,7 +273,7 @@ namespace CrossConnect.readers
             this.Serial.PosChaptNum = schedule[App.DailyPlan.PlanDayNumber][0];
         }
 
-        public override void MovePrevious()
+        public override void MovePrevious(bool isVerse)
         {
             var schedule = DailyPlans.ZAllPlans(App.DailyPlan.PlanNumber);
             this.Serial.PosVerseNum = 0;
