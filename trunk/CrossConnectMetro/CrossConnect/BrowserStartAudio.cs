@@ -62,20 +62,24 @@ namespace CrossConnect
                 if (App.OpenWindows[i].State.WindowType == WindowType.WindowMediaPlayer)
                 {
                     // change the windows view to this one
-                    ((MediaPlayerWindow)App.OpenWindows[i]).RestartToThisMedia(info);
-                    //App.MainWindow.OverRideCurrentlyShowingScreen(App.OpenWindows[i].State.Window);
+                    var thestate = new SerializableWindowState
+                    {
+                        WindowType = WindowType.WindowMediaPlayer,
+                        Source = await this._state.Source.Clone(),
+                        BibleDescription = this._state.BibleDescription
+                    };
+                    ((MediaPlayerWindow)App.OpenWindows[i]).SetMediaInfo(thestate, info);
                     return;
                 }
             }
-            var serial = ((Sword.reader.BibleZtextReader)this._state.Source).Serial;
+
             var state = new SerializableWindowState
             {
                 WindowType = WindowType.WindowMediaPlayer,
-                Source = new MediaReader(serial.Path,serial.Iso2DigitLangCode,serial.IsIsoEncoding,serial.CipherKey,serial.ConfigPath,serial.Versification, info),
+                Source = await this._state.Source.Clone(),
                 BibleDescription = this._state.BibleDescription
             };
-            await state.Source.Resume();
-            state.Source.MoveChapterVerse(serial.PosBookShortName, serial.PosChaptNum, serial.PosVerseNum, true, state.Source);
+
             var nextWindow = new MediaPlayerWindow { State = state };
             nextWindow.State.CurIndex = App.OpenWindows.Count();
             nextWindow.State.HtmlFontSize = 20;
@@ -85,6 +89,8 @@ namespace CrossConnect
             {
                 App.MainWindow.ReDrawWindows();
             }
+
+            nextWindow.SetMediaInfo(nextWindow.State, info);
         }
 
         #endregion
@@ -159,8 +165,17 @@ namespace CrossConnect
             else
             {
                 App.DisplaySettings.SyncMediaVerses = SyncVerses.IsOn;
-                var serial = ((Sword.reader.BibleZtextReader)this._state.Source).Serial;
-                info = new AudioPlayer.MediaInfo { Book = serial.PosBookShortName, Verse = serial.PosVerseNum, Chapter = serial.PosChaptNum, VoiceName = ((VoiceInformation)((TextBlock)e.AddedItems[0]).Tag).DisplayName,  };
+                string bookShortName;
+                int relChaptNum;
+                int verseNum;
+                string fullName;
+                string title;
+                this._state.Source.GetInfo(out bookShortName,
+                    out relChaptNum,
+                    out verseNum,
+                    out fullName,
+                    out title);
+                info = new AudioPlayer.MediaInfo { Book = bookShortName, Verse = verseNum, Chapter = relChaptNum, VoiceName = ((VoiceInformation)((TextBlock)e.AddedItems[0]).Tag).DisplayName, };
             }
             AddMediaWindow(info);
 

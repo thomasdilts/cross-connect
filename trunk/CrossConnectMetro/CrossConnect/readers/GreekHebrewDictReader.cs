@@ -86,6 +86,14 @@ namespace CrossConnect.readers
             }
         }
 
+        public override bool IsTTChearable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public override bool IsPageable
         {
             get

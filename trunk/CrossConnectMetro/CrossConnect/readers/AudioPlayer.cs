@@ -75,24 +75,14 @@ namespace CrossConnect.readers
 
         public static string GetTitle(MediaInfo info)
         {
-            int bookNum;
+            string bookShortName;
+            string bookFullName;
             int relChapterNum;
             string source;
             GetBookAndChapterFromAbsoluteChapter(
-                info.Chapter, string.Empty, string.Empty, out bookNum, out relChapterNum, out source);
-            var canon = CanonManager.GetCanon("KJV");
-            CanonBookDef book = null;
-            //Chapters 
-            if (bookNum >= canon.OldTestBooks.Count())
-            {
-                book = canon.NewTestBooks[bookNum - canon.OldTestBooks.Count()];
-            }
-            else
-            {
-                book = canon.OldTestBooks[bookNum];
-            }
+                info.Chapter, string.Empty, string.Empty, out bookShortName, out bookFullName, out relChapterNum, out source);
             var bookNames = new BibleNames(info.Language);
-            return bookNames.GetFullName(book.ShortName1,book.FullName) + " : " + (relChapterNum + 1).ToString(CultureInfo.InvariantCulture);
+            return bookNames.GetFullName(bookShortName, bookFullName) + " : " + (relChapterNum + 1).ToString(CultureInfo.InvariantCulture);
         }
 
         public static async Task<List<MediaInfo>> ReadMediaSourcesFile(StorageFile downloadedFile)
@@ -203,24 +193,27 @@ namespace CrossConnect.readers
             return mediaList;
         }
 
-        public static void SetRelativeChapter(int relativePostion, MediaInfo currentInfo)
+        public static void SetRelativeChapter(int relativePostion, MediaInfo currentInfo, IBrowserTextSource bibleSource)
         {
             if (currentInfo != null)
             {
                 // update the _currentInfo
                 currentInfo.Chapter = AddChapter(currentInfo, relativePostion);
-                int bookNum;
+                string bookName;
+                string bookFullName;
                 int relChapterNum;
                 string source;
                 GetBookAndChapterFromAbsoluteChapter(
                     currentInfo.Chapter,
                     currentInfo.Pattern,
                     currentInfo.Code,
-                    out bookNum,
+                    out bookName,
+                    out bookFullName,
                     out relChapterNum,
                     out source);
                 currentInfo.Src = source;
                 Debug.WriteLine("starting new track = " + currentInfo.Src);
+                bibleSource.MoveChapterVerse(bookName, relChapterNum, 0, false, bibleSource);
             }
         }
 
@@ -249,43 +242,22 @@ namespace CrossConnect.readers
         }
 
         private static void GetBookAndChapterFromAbsoluteChapter(
-            int absolutChapter, string pattern, string code, out int bookNum, out int relChapter, out string source)
+            int absolutChapter, string pattern, string code, out string bookNameshort, out string bookFullName, out int relChapter, out string source)
         {
-            const int BooksInBible = 66;
+            var canon = CanonManager.GetCanon("KJV");
             source = string.Empty;
-            var booksStartAbsoluteChapter = new[]
-                                                {
-                                                    0, 50, 90, 117, 153, 187, 211, 232, 236, 267, 291, 313, 338, 367, 403,
-                                                    413, 426, 436, 478, 628, 659, 671, 679, 745, 797, 802, 850, 862, 876,
-                                                    879, 888, 889, 893, 900, 903, 906, 909, 911, 925, 929, 957, 973, 997,
-                                                    1018, 1046, 1062, 1078, 1091, 1097, 1103, 1107, 1111, 1116, 1119, 1125
-                                                    , 1129, 1132, 1133, 1146, 1151, 1156, 1159, 1164, 1165, 1166, 1167,
-                                                    1189
-                                                };
-            bookNum = 1;
-            relChapter = absolutChapter + 1;
-            for (int i = 1; i <= BooksInBible; i++)
-            {
-                if (absolutChapter < booksStartAbsoluteChapter[i])
-                {
-                    bookNum = i;
-                    relChapter = absolutChapter - booksStartAbsoluteChapter[i - 1] + 1;
-                    break;
-                }
-            }
-
+            var book = canon.GetBookFromAbsoluteChapter(absolutChapter);
+            relChapter = absolutChapter - book.VersesInChapterStartIndex;
+            bookNameshort = book.ShortName1;
+            bookFullName = book.FullName;
             if (!string.IsNullOrEmpty(pattern) && !string.IsNullOrEmpty(code))
             {
                 // http://www.cross-connect.se/bibles/talking/{key}/Bible_{key}_{booknum2d}_{chapternum3d}.mp3
                 source =
                     pattern.Replace("{key}", code)
-                           .Replace("{booknum2d}", bookNum.ToString("D2"))
-                           .Replace("{chapternum3d}", relChapter.ToString("D3"));
+                           .Replace("{booknum2d}", (book.BookNum + 1).ToString("D2"))
+                           .Replace("{chapternum3d}", (relChapter + 1).ToString("D3"));
             }
-
-            // convert all to zero based
-            bookNum--;
-            relChapter--;
         }
 
         #endregion

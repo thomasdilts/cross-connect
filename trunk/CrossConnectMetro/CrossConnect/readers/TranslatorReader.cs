@@ -66,6 +66,15 @@ namespace CrossConnect.readers
 
         #region Public Properties
 
+
+        public override bool IsTTChearable
+        {
+            get
+            {
+                return false;
+            }
+        }
+        
         public override bool IsHearable
         {
             get

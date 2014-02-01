@@ -50,6 +50,8 @@ namespace CrossConnect
 
         private DispatcherTimer _updatePositionTimer;
 
+        private AudioPlayer.MediaInfo Info = null;
+
         #endregion
 
         #region Constructors and Destructors
@@ -121,13 +123,13 @@ namespace CrossConnect
             tmr.Start();
         }
         private static SpeechSynthesizer _synth = null;
-        private SpeechSynthesizer GetSynthesizer(AudioPlayer.MediaInfo info)
+        private SpeechSynthesizer GetSynthesizer()
         {
 
-            if(_synth==null || !_synth.Voice.DisplayName.Equals(info.VoiceName))
+            if(_synth==null || !_synth.Voice.DisplayName.Equals(Info.VoiceName))
             {
                 _synth = new SpeechSynthesizer();
-                VoiceInformation uniqueVoice = SpeechSynthesizer.AllVoices.FirstOrDefault(v => v.DisplayName.Equals(info.VoiceName));
+                VoiceInformation uniqueVoice = SpeechSynthesizer.AllVoices.FirstOrDefault(v => v.DisplayName.Equals(Info.VoiceName));
                 _synth.Voice = uniqueVoice;
             }
 
@@ -136,19 +138,22 @@ namespace CrossConnect
 
         private static SpeechSynthesisStream stream = null;
 
-        public async void RestartToThisMedia(AudioPlayer.MediaInfo info)
+        private async void RestartToThisMedia()
         {
-            ((MediaReader)this._state.Source).Info = info;
-            if(string.IsNullOrEmpty(info.VoiceName))
+            if (Info == null || (string.IsNullOrEmpty(Info.VoiceName) && string.IsNullOrEmpty(Info.Src)))
             {
-                AudioPlayer.SetRelativeChapter(0, info);
-                this.myMedia.Source = new Uri(((MediaReader)this._state.Source).Info.Src);
+                return;
+            }
+            if (string.IsNullOrEmpty(Info.VoiceName))
+            {
+                AudioPlayer.SetRelativeChapter(0, Info, this.State.Source);
+                this.myMedia.Source = new Uri(Info.Src);
                 if (this.title != null)
                 {
-                    this.title.Text = AudioPlayer.GetTitle(info) + "        " + ((MediaReader)this._state.Source).Info.Name;
+                    this.title.Text = AudioPlayer.GetTitle(Info) + "        " + Info.Name;
                     this.SetButtonVisibility(false);
                     MediaControl.TrackName = this.title.Text;
-                    MediaControl.ArtistName = ((MediaReader)this._state.Source).Info.Name;
+                    MediaControl.ArtistName = Info.Name;
                 }
             }
             else
@@ -172,9 +177,9 @@ namespace CrossConnect
                                      : this._state.BibleDescription);
                     this.SetButtonVisibility(false);
                     MediaControl.TrackName = this.title.Text;
-                    MediaControl.ArtistName = ((MediaReader)this._state.Source).Info.Name;
+                    MediaControl.ArtistName = Info.Name;
                 }
-                var synthesizer = this.GetSynthesizer(info);
+                var synthesizer = this.GetSynthesizer();
                 if (stream != null)
                 {
                     //this.myMedia.Stop();
@@ -190,29 +195,29 @@ namespace CrossConnect
 
                 while (string.IsNullOrEmpty(chapterdata))
                 {
-                    if (!App.DisplaySettings.SyncMediaVerses)
-                    {
-                        chapterdata = await ((BibleZtextReader)this._state.Source).GetVerseTextOnly(App.DisplaySettings, bookShortName, relChaptNum);
-                    }
-                    else
-                    {
-                        chapterdata = await ((BibleZtextReader)this._state.Source).GetVerseTextOnly(App.DisplaySettings, bookShortName, relChaptNum, verseNum);
-                    }
-
-                    chapterdata = chapterdata.Trim().Replace("\n", string.Empty).Replace(".", ". ");
+                    chapterdata = await this._state.Source.GetTTCtext(App.DisplaySettings.SyncMediaVerses);
                     if(!string.IsNullOrEmpty(chapterdata))
                     {
                         break;
                     }
                     else
                     {
-                        this._state.Source.MoveNext();
+                        this._state.Source.MoveNext(App.DisplaySettings.SyncMediaVerses);
                     }
                 }
                 if (!App.DisplaySettings.SyncMediaVerses)
                 {
                     await Task.Delay(TimeSpan.FromSeconds(1));
                 } 
+                else
+                {
+                    this._state.Source.GetInfo(out bookShortName,
+                        out relChaptNum,
+                        out verseNum,
+                        out fullName,
+                        out title);
+                    App.SynchronizeAllWindows(bookShortName, relChaptNum, verseNum, -1, this._state.Source);
+                }
                 try
                 {
                     stream = await synthesizer.SynthesizeTextToStreamAsync(chapterdata);
@@ -233,6 +238,7 @@ namespace CrossConnect
                     Debug.WriteLine(e);
                 }
             }
+            App.StartTimerForSavingWindows();
         }
 
         public void ShowSizeButtons(bool isShow = true)
@@ -281,18 +287,18 @@ namespace CrossConnect
 
         private void ButNextClick(object sender, RoutedEventArgs e)
         {
-            if (((MediaReader)this._state.Source).Info != null)
+            if (Info != null)
             {
-                if (string.IsNullOrEmpty(((MediaReader)this._state.Source).Info.VoiceName))
+                if (string.IsNullOrEmpty(Info.VoiceName))
                 {
-                    AudioPlayer.SetRelativeChapter(1, ((MediaReader)this._state.Source).Info);
+                    AudioPlayer.SetRelativeChapter(1, Info, this.State.Source);
                 }
                 else
                 {
-                    ((BibleZtextReader)this._state.Source).MoveNext();
+                    this._state.Source.MoveNext(App.DisplaySettings.SyncMediaVerses);
                 }
 
-                this.RestartToThisMedia(((MediaReader)this._state.Source).Info);
+                this.RestartToThisMedia();
             }
 
             // Prevent the user from repeatedly pressing the button and causing
@@ -313,17 +319,17 @@ namespace CrossConnect
 
         private void ButPreviousClick(object sender, RoutedEventArgs e)
         {
-            if (((MediaReader)this._state.Source).Info != null)
+            if (Info != null)
             {
-                if (string.IsNullOrEmpty(((MediaReader)this._state.Source).Info.VoiceName))
+                if (string.IsNullOrEmpty(Info.VoiceName))
                 {
-                    AudioPlayer.SetRelativeChapter(-1, ((MediaReader)this._state.Source).Info);
+                    AudioPlayer.SetRelativeChapter(-1, Info, this.State.Source);
                 }
                 else
                 {
-                    ((BibleZtextReader)this._state.Source).MovePrevious();
+                    this._state.Source.MovePrevious(App.DisplaySettings.SyncMediaVerses);
                 }
-                this.RestartToThisMedia(((MediaReader)this._state.Source).Info);
+                this.RestartToThisMedia();
             }
 
             // Prevent the user from repeatedly pressing the button and causing
@@ -334,7 +340,7 @@ namespace CrossConnect
 
         private void ImageIcon_OnTapped(object sender, TappedRoutedEventArgs e)
         {
-            AudioPlayer.MediaInfo info = ((MediaReader)this._state.Source).Info;
+            AudioPlayer.MediaInfo info = Info;
             if (info != null && !string.IsNullOrEmpty(info.IconLink))
             {
                 try
@@ -409,25 +415,39 @@ namespace CrossConnect
             {
                 case MediaElementState.Playing:
                 case MediaElementState.Paused:
-                    if (((MediaReader)this._state.Source).Info != null)
+                    if (Info != null)
                     {
-                        if (!string.IsNullOrEmpty(((MediaReader)this._state.Source).Info.Src))
+                        if (!string.IsNullOrEmpty(Info.Src))
                         {
-                            this.ShowTrack(((MediaReader)this._state.Source).Info);
+                            this.ShowTrack(Info);
                         }
                         else
                         {
                             // do a restart
-                            this.RestartToThisMedia(((MediaReader)this._state.Source).Info);
+                            this.RestartToThisMedia();
                         }
                     }
 
                     break;
+                case MediaElementState.Closed:
+                    break;
                 default:
                     // lets start it again.
-                    this.RestartToThisMedia(((MediaReader)this._state.Source).Info);
+                    this.RestartToThisMedia();
                     break;
             }
+        }
+
+        public void SetMediaInfo(SerializableWindowState theState, AudioPlayer.MediaInfo info)
+        {
+            this._state = theState;
+            this.Info = info;
+            theState.VoiceName = info.VoiceName;
+            theState.Src = info.Src;
+            theState.Pattern = info.Pattern;
+            theState.IsNtOnly = info.IsNtOnly;
+            theState.code = info.Code;
+            this.RestartToThisMedia();
         }
 
         private void MediaPlayerWindow_OnLayoutUpdated(object sender, object e)
@@ -458,7 +478,7 @@ namespace CrossConnect
                     break;
                 case MediaElementState.Playing:
                     // try to load the icon.
-                    AudioPlayer.MediaInfo info = ((MediaReader)this._state.Source).Info;
+                    AudioPlayer.MediaInfo info = Info;
                     this.ShowTrack(info);
                     //title.Text = AudioPlayer.GetTitle(info);
                     this.SetButtonVisibility(true);
@@ -542,7 +562,7 @@ namespace CrossConnect
 
         private void ShowTrack(AudioPlayer.MediaInfo info)
         {
-            ((MediaReader)this._state.Source).Info = info;
+            Info = info;
             if (this.myMedia.CurrentState == MediaElementState.Playing)
             {
                 // start timer
@@ -570,7 +590,7 @@ namespace CrossConnect
 
         private void UpdatePositionTimerTick(object sender, object other)
         {
-            AudioPlayer.MediaInfo info = ((MediaReader)this._state.Source).Info;
+            AudioPlayer.MediaInfo info = Info;
             if (info != null && info.Src != null)
             {
                 try

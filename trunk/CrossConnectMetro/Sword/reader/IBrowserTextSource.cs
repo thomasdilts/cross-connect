@@ -61,6 +61,8 @@ namespace Sword.reader
 
         bool IsHearable { get; }
 
+        bool IsTTChearable { get; }
+
         bool IsLocalChangeDuringLink { get; }
 
         bool IsPageable { get; }
@@ -103,17 +105,21 @@ namespace Sword.reader
 
         string GetLanguage();
 
+        Task<IBrowserTextSource> Clone();
+
         Task<object[]> GetTranslateableTexts(DisplaySettings displaySettings, string bibleToLoad);
 
-        Task<string> GetVerseTextOnly(DisplaySettings displaySettings,string bookName, int chapterNumber, int verseNum);
+        Task<string> GetVerseTextOnly(DisplaySettings displaySettings, string bookName, int chapterNumber, int verseNum);
+
+        Task<string> GetTTCtext(bool isVerseOnly);
 
         Task<List<string>> MakeListDisplayText(DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay);
 
         void MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source);
 
-        void MoveNext();
+        void MoveNext(bool isVerse);
 
-        void MovePrevious();
+        void MovePrevious(bool isVerse);
 
         Task<string> PutHtmlTofile(
             DisplaySettings displaySettings,

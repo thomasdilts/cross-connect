@@ -328,6 +328,15 @@ namespace Sword.reader
             this.SetToFirstChapter();
         }
 
+        public virtual async Task<IBrowserTextSource> Clone()
+        {
+            var cloned = new BibleZtextReader(this.Serial.Path, this.Serial.Iso2DigitLangCode, this.Serial.IsIsoEncoding, this.Serial.CipherKey, this.Serial.ConfigPath, this.Serial.Versification);
+            await cloned.Resume();
+            cloned.MoveChapterVerse(this.Serial.PosBookShortName, this.Serial.PosChaptNum, this.Serial.PosVerseNum, false, cloned);
+            return cloned;
+        }
+
+
         #endregion
 
         #region Public Events
@@ -371,6 +380,14 @@ namespace Sword.reader
         }
 
         public virtual bool IsHearable
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public virtual bool IsTTChearable
         {
             get
             {
@@ -910,6 +927,38 @@ function SetFontColorForElement(elemntId, colorRgba){
                 ref isInPoetry,
                 true);
         }
+
+        public virtual async Task<string> GetTTCtext(bool isVerseOnly)
+        {
+            CanonBookDef book;
+            if (!canon.BookByShortName.TryGetValue(this.Serial.PosBookShortName, out book))
+            {
+                return string.Empty;
+            }
+
+            var chapterBuffer = await this.GetChapterBytes(this.Serial.PosChaptNum + book.VersesInChapterStartIndex);
+
+            if (isVerseOnly)
+            {
+                VersePos verse = this.Chapters[book.VersesInChapterStartIndex + this.Serial.PosChaptNum].Verses[this.Serial.PosVerseNum];
+                if (verse.Length == 0)
+                {
+                    return string.Empty;
+                }
+
+                if (verse.StartPos >= chapterBuffer.Length || (verse.StartPos + verse.Length) > chapterBuffer.Length)
+                {
+                    return " POSSIBLE ERROR IN BIBLE, TEXT MISSING HERE ";
+                }
+                return RawGenTextReader.CleanXml(Encoding.UTF8.GetString(chapterBuffer, (int)verse.StartPos, (int)verse.Length), true).Replace(".", ". ");
+            }
+            else
+            {
+                return RawGenTextReader.CleanXml(Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length), true).Replace(".",". ");
+            }
+        }
+
+
         public virtual async Task<string> GetVerseTextOnly(DisplaySettings displaySettings, string bookShortName, int chapterNumber)
         {
             CanonBookDef book;
@@ -1011,7 +1060,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             }
         }
 
-        public virtual void MoveNext()
+        public virtual void MoveNext(bool isVerseMove)
         {
 
             if(this.Serial==null || canon == null)
@@ -1019,8 +1068,23 @@ function SetFontColorForElement(elemntId, colorRgba){
                 return;
             }
 
-            int nextChapter = this.Serial.PosChaptNum + 1;
             var book = canon.BookByShortName[this.Serial.PosBookShortName];
+            if (isVerseMove)
+            {
+                int nextVerse = this.Serial.PosVerseNum + 1;
+                if (nextVerse >= canon.VersesInChapter[book.VersesInChapterStartIndex + this.Serial.PosChaptNum])
+                {
+                    this.MoveNext(false);
+                }
+                else
+                {
+                    this.MoveChapterVerse(this.Serial.PosBookShortName, this.Serial.PosChaptNum, nextVerse, false, this);
+                }
+
+                return;
+            }
+
+            int nextChapter = this.Serial.PosChaptNum + 1;
             if (nextChapter >= book.NumberOfChapters)
             {
                 // must go to the next book.
@@ -1075,10 +1139,25 @@ function SetFontColorForElement(elemntId, colorRgba){
  */
         }
 
-        public virtual void MovePrevious()
+        public virtual void MovePrevious(bool isVerseMove)
         {
-            int prevChapter = this.Serial.PosChaptNum - 1;
             var book = canon.BookByShortName[this.Serial.PosBookShortName];
+            if (isVerseMove)
+            {
+                int nextVerse = this.Serial.PosVerseNum - 1;
+                if (nextVerse < 0)
+                {
+                    this.MovePrevious(false);
+                }
+                else
+                {
+                    this.MoveChapterVerse(this.Serial.PosBookShortName, this.Serial.PosChaptNum, nextVerse, false, this);
+                }
+
+                return;
+            }
+
+            int prevChapter = this.Serial.PosChaptNum - 1;
             if (prevChapter < 0)
             {
                 // must go to the previous book.
@@ -1633,6 +1712,38 @@ function SetFontColorForElement(elemntId, colorRgba){
             return "style=\"background-color:" + htmlHighlightingColor[(int)highlight].GetHtmlRgba() + ";\"";
         }
 
+        protected async Task<string> MakeListTtcHearingText(
+            List<BiblePlaceMarker> listToDisplay)
+        {
+
+            var listText = new StringBuilder();
+            for (int j = listToDisplay.Count - 1; j >= 0; j--)
+            {
+                BiblePlaceMarker place = listToDisplay[j];
+                CanonBookDef book;
+                if (!canon.BookByShortName.TryGetValue(place.BookShortName, out book) || place.ChapterNum >= book.NumberOfChapters || place.VerseNum >= canon.VersesInChapter[place.ChapterNum + book.VersesInChapterStartIndex])
+                {
+                    continue;
+                }
+                ChapterPos chaptPos = this.Chapters[place.ChapterNum + book.VersesInChapterStartIndex];
+                byte[] chapterBuffer = await this.GetChapterBytes(place.ChapterNum + book.VersesInChapterStartIndex);
+                VersePos verse = chaptPos.Verses[place.VerseNum];
+                if (verse.Length == 0)
+                {
+                    return string.Empty;
+                }
+
+                if (verse.StartPos >= chapterBuffer.Length || (verse.StartPos + verse.Length) > chapterBuffer.Length)
+                {
+                    return " POSSIBLE ERROR IN BIBLE, TEXT MISSING HERE ";
+                }
+                listText.Append(this.GetFullName(chaptPos.Booknum) + " "
+                    + (chaptPos.BookRelativeChapterNum + 1) + ":" + (place.VerseNum + 1) + " . " + 
+                    RawGenTextReader.CleanXml(Encoding.UTF8.GetString(chapterBuffer, (int)verse.StartPos, (int)verse.Length), true).Replace(".", ". "));
+            }
+
+            return listText.ToString();
+        }
         protected async Task<string> MakeListDisplayText(
             DisplaySettings displaySettings,
             List<BiblePlaceMarker> listToDisplay,
@@ -1676,7 +1787,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 BiblePlaceMarker place = listToDisplay[j];
 
                 CanonBookDef book;
-                if (!canon.BookByShortName.TryGetValue(place.BookShortName, out book) || place.ChapterNum >= book.NumberOfChapters || place.VerseNum >= canon.VersesInChapter[place.ChapterNum])
+                if (!canon.BookByShortName.TryGetValue(place.BookShortName, out book) || place.ChapterNum >= book.NumberOfChapters || place.VerseNum >= canon.VersesInChapter[place.ChapterNum + book.VersesInChapterStartIndex])
                 {
                     continue;
                 }
@@ -1733,7 +1844,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return htmlListText.ToString();
         }
 
-        protected string ParseOsisText(
+        protected virtual string ParseOsisText(
             DisplaySettings displaySettings,
             string chapterNumber,
             string restartText,
@@ -2453,13 +2564,13 @@ function SetFontColorForElement(elemntId, colorRgba){
             this.Serial.PosBookShortName = canon.BookByShortName.First().Value.ShortName1;
             // find the first available chapter.
             this.Serial.PosChaptNum = 0;
-            this.MoveNext();
+            this.MoveNext(false);
             if (this.Serial.PosChaptNum == 1)
             {
-                this.MovePrevious();
+                this.MovePrevious(false);
                 if (this.Serial.PosChaptNum != 0)
                 {
-                    this.MoveNext();
+                    this.MoveNext(false);
                 }
             }
         }

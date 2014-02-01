@@ -263,9 +263,9 @@ namespace CrossConnect
                 string title;
                 this._state.Source.GetInfo(
                     out shortBookName, out relChaptNum, out verseNum, out fullName, out title);
-                var book = ((BibleZtextReader)this._state.Source).canon.BookByShortName[shortBookName];
+                var book = !string.IsNullOrEmpty(shortBookName) ? ((BibleZtextReader)this._state.Source).canon.BookByShortName[shortBookName]:null;
 
-                this.ListChapter.Visibility = book.NumberOfChapters > 1 && !(this._state.Source is RawGenTextReader) && !(this._state.Source is DailyPlanReader)
+                this.ListChapter.Visibility = (book==null || book.NumberOfChapters > 1) && !(this._state.Source is RawGenTextReader) && !(this._state.Source is DailyPlanReader)
                                                   ? Visibility.Visible
                                                   : Visibility.Collapsed;
                 this.SubMenuSearchPopup.SelectedItem = null;
@@ -446,8 +446,19 @@ namespace CrossConnect
             }
             else
             {
-                var book = ((BibleZtextReader)this._state.Source).canon.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
-                this._state.Source.MoveChapterVerse(book.ShortName1, (int)((Button)sender).Tag - book.VersesInChapterStartIndex, 0, false, this._state.Source);
+                var bookname = string.Empty;
+                var chapter = 0;
+                if (this._state.Source is BibleZtextReader)
+                {
+                    var book = ((BibleZtextReader)this._state.Source).canon.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
+                    bookname = book.ShortName1;
+                    chapter = (int)((Button)sender).Tag - book.VersesInChapterStartIndex;
+                }
+                else
+                {
+                    chapter = (int)((Button)sender).Tag;
+                }
+                this._state.Source.MoveChapterVerse(bookname, chapter, 0, false, this._state.Source);
                 this.BookPopup.IsOpen = false;
                 this.SearchPopup.IsOpen = false;
                 this.UpdateBrowser(false);
@@ -464,8 +475,20 @@ namespace CrossConnect
             }
             else
             {
-                var book = ((BibleZtextReader)this._state.Source).canon.GetBookFromAbsoluteChapter(this._selectBibleBookSecondSelection);
-                this._state.Source.MoveChapterVerse(book.ShortName1, this._selectBibleBookSecondSelection - book.VersesInChapterStartIndex, (int)((Button)sender).Tag, false, this._state.Source);
+                var bookname = string.Empty;
+                var chapter = 0;
+                if (this._state.Source is BibleZtextReader)
+                {
+                    var book = ((BibleZtextReader)this._state.Source).canon.GetBookFromAbsoluteChapter(this._selectBibleBookSecondSelection);
+                    bookname = book.ShortName1;
+                    chapter = this._selectBibleBookSecondSelection - book.VersesInChapterStartIndex;
+                }
+                else
+                {
+                    chapter = this._selectBibleBookSecondSelection;
+                }
+
+                this._state.Source.MoveChapterVerse(bookname,  chapter, (int)((Button)sender).Tag, false, this._state.Source);
                 this.BookPopup.IsOpen = false;
                 this.SearchPopup.IsOpen = false;
                 this._nextVSchroll = 0;
@@ -475,9 +498,19 @@ namespace CrossConnect
 
         private void FourthClick(object sender, RoutedEventArgs e)
         {
-
-            var book = ((BibleZtextReader)this._state.Source).canon.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
-            this._state.Source.MoveChapterVerse(book.ShortName1, (int)((Button)sender).Tag - book.VersesInChapterStartIndex, 0, false, this._state.Source);
+            var bookname = string.Empty;
+            var chapter = 0;
+            if(this._state.Source is BibleZtextReader)
+            {
+                var book = ((BibleZtextReader)this._state.Source).canon.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
+                bookname = book.ShortName1;
+                chapter = (int)((Button)sender).Tag - book.VersesInChapterStartIndex;
+            }
+            else
+            {
+                chapter = (int)((Button)sender).Tag;
+            }
+            this._state.Source.MoveChapterVerse(bookname, chapter, 0, false, this._state.Source);
             this.BookPopup.IsOpen = false;
             this.SearchPopup.IsOpen = false;
             this._nextVSchroll = 0;

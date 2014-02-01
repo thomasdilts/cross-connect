@@ -413,7 +413,7 @@ namespace CrossConnect
 
         public void SynchronizeWindow(string bookShortName, int chapterNum, int verseNum, IBrowserTextSource source)
         {
-            if (this._state.IsSynchronized && this._state.Source.IsSynchronizeable)
+            if (!string.IsNullOrEmpty(bookShortName) &&  this._state.IsSynchronized && this._state.Source.IsSynchronizeable)
             {
                 string relbookShortName;
                 int relChaptNum;
@@ -669,7 +669,7 @@ namespace CrossConnect
         private void ButNextClick(object sender, RoutedEventArgs e)
         {
             this._isNextOrPrevious = true;
-            this._state.Source.MoveNext();
+            this._state.Source.MoveNext(false);
             this.UpdateBrowser(false);
             App.StartTimerForSavingWindows();
         }
@@ -677,7 +677,7 @@ namespace CrossConnect
         private void ButPreviousClick(object sender, RoutedEventArgs e)
         {
             this._isNextOrPrevious = true;
-            this._state.Source.MovePrevious();
+            this._state.Source.MovePrevious(false);
             this.UpdateBrowser(false);
             App.StartTimerForSavingWindows();
         }

@@ -172,7 +172,6 @@
     <Compile Include="readers\GreekHebrewDictReader.cs" />
     <Compile Include="readers\HistoryReader.cs" />
     <Compile Include="readers\InternetLinkReader.cs" />
-    <Compile Include="readers\MediaReader.cs" />
     <Compile Include="readers\PersonalNotesReader.cs" />
     <Compile Include="readers\SearchReader.cs" />
     <Compile Include="readers\TranslateByGoogle.cs" />
