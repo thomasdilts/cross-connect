@@ -89,7 +89,8 @@
                               Name="showAddedNotesByChapter" />
         <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Use internet dictionaries" IsChecked="false"
                               Name="useInternetGreekHebrewDict" />
-
+        <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Use highlighting" Name="useHighlighting" />
+        <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="SyncVerses" Name="SyncVerses" />
         <TextBlock Name="captionHebrewDictionaryLink" Text="Hebrew dictionary internet link" />
         <TextBox Name="hebrewDictionaryLink" Text="" />
         <TextBlock Name="captionGreekDictionaryLink" Text="Greek dictionary internet link" />
@@ -98,8 +99,39 @@
         <TextBox Name="customBibleDownloadLink" Text="" />
         <TextBlock Name="captionSoundLink" Text="Talking bible internet link" />
         <TextBox Name="soundLink" Text="" />
+        <TextBlock Name="captionHightlight1" Text="Name Hightlight1" />
+        <TextBox Name="highlightName1" Text="" Margin="10 10 10 10" />
+        <TextBlock Name="captionHightlight2" Text="Name Hightlight2" />
+        <TextBox Name="highlightName2" Text="" Margin="10 10 10 10" />
+        <TextBlock Name="captionHightlight3" Text="Name Hightlight3" />
+        <TextBox Name="highlightName3" Text="" Margin="10 10 10 10" />
+        <TextBlock Name="captionHightlight4" Text="Name Hightlight4" />
+        <TextBox Name="highlightName4" Text="" Margin="10 10 10 10" />
+        <TextBlock Name="captionHightlight5" Text="Name Hightlight5" />
+        <TextBox Name="highlightName5" Text="" Margin="10 10 10 10" />
+        <TextBlock Name="captionHightlight6" Text="Name Hightlight6" />
+        <TextBox Name="highlightName6" Text="" Margin="10 10 10 10" />
         <Button Content="Default settings" Name="butSetDefault" Click="ButSetDefaultClick" />
-      </StackPanel>
+        <Button Name="butExportBookmarksHighlightsAndNotes"
+                    Click="butExportBookmarksHighlightsAndNotes_Click">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                            <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+        </Button> 
+        <Button Name="butImportBookmarksHighlightsAndNotes"
+                        Click="butImportBookmarksHighlightsAndNotes_Click" >
+            <Button.ContentTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+                </DataTemplate>
+            </Button.ContentTemplate>
+            </Button>
+                <ScrollViewer Name="scrollViewer2" MaxHeight="350">
+                    <TextBox TextWrapping="Wrap" AcceptsReturn="True"  Name="ImportTextBox" Text="" Margin="10 10 10 10" />
+                </ScrollViewer>
+            </StackPanel>
     </Grid>
   </ScrollViewer>
 

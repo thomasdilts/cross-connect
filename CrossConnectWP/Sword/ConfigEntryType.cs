@@ -116,9 +116,8 @@ namespace Sword
                                                                    "TEI"
                                                                };
 
-        public static readonly string[] AVersificationPicks = new[]
-                                                                  { "KJV", "KJVA", "NRSV", "NRSVA", "Leningrad", "MT" };
-
+        public static readonly string[] AVersificationPicks = new[] { "KJV", "Leningrad", "MT", "KJVA", "NRSV", "NRSVA", "Synodal", "SynodalProt", "Vulg", "German", "Luther", "Catholic", "Catholic2", "LXX", "Orthodox" };
+ 
         /// <summary>
         ///     * The short name of this book.
         /// </summary>

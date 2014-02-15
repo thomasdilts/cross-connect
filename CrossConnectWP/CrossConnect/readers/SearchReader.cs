@@ -31,7 +31,7 @@ namespace CrossConnect.readers
     using System.Text;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using System.Windows;
+    using System.Threading.Tasks;
 
     using Hoot;
 
@@ -71,8 +71,8 @@ namespace CrossConnect.readers
 
         #region Constructors and Destructors
 
-        public SearchReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath)
-            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath)
+        public SearchReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification)
+            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification)
         {
         }
 
@@ -86,6 +86,15 @@ namespace CrossConnect.readers
 
         #region Public Properties
 
+
+        public override bool IsTTChearable
+        {
+            get
+            {
+                return false;
+            }
+        }
+        
         public override bool IsHearable
         {
             get
@@ -130,7 +139,7 @@ namespace CrossConnect.readers
 
         #region Public Methods and Operators
 
-        public void DoSearch(
+        public async void DoSearch(
             DisplaySettings displaySettings,
             int searchTypeIndex,
             string searchText,
@@ -144,93 +153,81 @@ namespace CrossConnect.readers
             this.SearchText = searchText;
             if (isFastSearch)
             {
-                var indexes = new string[] { "_deleted.idx", "index.mgbmp", "index.mgbmr", "index.words" };
+                var indexes = new string[] { "_deleted.idx","index.mgbmp","index.mgbmr","index.words"};
                 bool existsIndexes = true;
-                var xx = Hoot.File.GetFiles(this.Serial.Path.Replace("/", "\\"));
                 foreach (var index in indexes)
                 {
-                    if (!Hoot.File.Exists(Path.Combine(this.Serial.Path.Replace("/", "\\"), index)))
+                    if (!await Hoot.File.Exists(Path.Combine(this.Serial.Path.Replace("/", "\\"), index)))
                     {
                         existsIndexes = false;
                         break;
                     }
                 }
                 progress(0, this.Found, false, false);
-                hOOt.Hoot hoot = null;
-                for (int i = 0; i < 2; i++)
-                {
-                    try
-                    {
-                        hoot = new hOOt.Hoot();
-                        hoot.Initialize(this.Serial.Path.Replace("/", "\\"), "index");
-                        break;
-                    }
-                    catch (Exception ee)
-                    {
-                    }
-
-                    foreach (var index in indexes)
-                    {
-                        Hoot.File.Delete(Path.Combine(this.Serial.Path.Replace("/", "\\"), index));
-                    }
-                }
+                var hoot = new hOOt.Hoot();
+                await hoot.Initialize(this.Serial.Path.Replace("/", "\\"), "index");
                 progress(10, this.Found, false, false);
                 if (!existsIndexes)
                 {
                     double lastReportedProgress = 0;
-                    for (int i = 0; i < BibleZtextReader.ChaptersInBible; i++)
+                    var bookCounter=0;
+                    var totalNumChapters = canon.NewTestBooks.Count() > 0 ? canon.NewTestBooks[canon.NewTestBooks.Count() - 1].VersesInChapterStartIndex + canon.NewTestBooks[canon.NewTestBooks.Count() - 1].NumberOfChapters : canon.OldTestBooks[canon.OldTestBooks.Count() - 1].VersesInChapterStartIndex + canon.OldTestBooks[canon.OldTestBooks.Count() - 1].NumberOfChapters;
+                    foreach (var book in canon.BookByShortName)
                     {
-                        byte[] chapterBuffer = this.GetChapterBytes(i);
-                        if (chapterBuffer.Length > 20)
+                        for (int i = 0; i < book.Value.NumberOfChapters; i++)
                         {
-                            // now we must search each verse in the chapter
-                            for (int j = 0; j < this.Chapters[i].Verses.Count; j++)
+                            byte[] chapterBuffer = await this.GetChapterBytes(book.Value.VersesInChapterStartIndex + i);
+                            if (chapterBuffer.Length > 20)
                             {
-                                VersePos verse = this.Chapters[i].Verses[j];
-                                if (verse.Length > 0 && verse.StartPos < chapterBuffer.Length)
+                                // now we must search each verse in the chapter
+                                for (int j = 0; j < this.Chapters[book.Value.VersesInChapterStartIndex + i].Verses.Count; j++)
                                 {
-                                    //these next 3 rows are a faster method of getting text that proved to have too many errors.
-                                    var verseBytes = new byte[verse.Length];
-                                    Array.Copy(chapterBuffer, (int)verse.StartPos, verseBytes, 0, verse.Length);
-                                    var verseText = RawGenTextReader.CleanXml(Encoding.UTF8.GetString(verseBytes, 0, verseBytes.Length), true);
-                                    //This is the safer method, but MUCH slower
-                                    //int noteMarker = 'a';
-                                    //bool isInPoetry = false;
-                                    //string verseText = this.ParseOsisText(
-                                    //    displaySettings,
-                                    //    string.Empty,
-                                    //    string.Empty,
-                                    //    chapterBuffer,
-                                    //    (int)verse.StartPos,
-                                    //    verse.Length,
-                                    //    this.Serial.IsIsoEncoding,
-                                    //    false,
-                                    //    true,
-                                    //    ref noteMarker,
-                                    //    ref isInPoetry); 
-                                    hoot.Index(i * 1000 + j, verseText);
+                                    VersePos verse = this.Chapters[book.Value.VersesInChapterStartIndex + i].Verses[j];
+                                    if (verse.Length > 0 && verse.StartPos < chapterBuffer.Length)
+                                    {
+                                        //these next 3 rows are a faster method of getting text that proved to have too many errors.
+                                        var verseBytes = new byte[verse.Length];
+                                        Array.Copy(chapterBuffer, (int)verse.StartPos, verseBytes, 0, verse.Length);
+                                        var verseText = RawGenTextReader.CleanXml(Encoding.UTF8.GetString(verseBytes, 0, verseBytes.Length), true);
+                                        //This is the safer method, but MUCH slower
+                                        //int noteMarker = 'a';
+                                        //bool isInPoetry = false;
+                                        //string verseText = this.ParseOsisText(
+                                        //    displaySettings,
+                                        //    string.Empty,
+                                        //    string.Empty,
+                                        //    chapterBuffer,
+                                        //    (int)verse.StartPos,
+                                        //    verse.Length,
+                                        //    this.Serial.IsIsoEncoding,
+                                        //    false,
+                                        //    true,
+                                        //    ref noteMarker,
+                                        //    ref isInPoetry); 
+                                        await hoot.Index((book.Value.VersesInChapterStartIndex + i) * 1000 + j, verseText);
+                                    }
                                 }
                             }
-                        }
 
-                        double percent = i * 80 / BibleZtextReader.ChaptersInBible;
-                        if (percent > lastReportedProgress)
-                        {
-                            progress(percent, 0, false, false);
-                        }
+                            double percent = (book.Value.VersesInChapterStartIndex + i) * 80 / totalNumChapters;
+                            if (percent > lastReportedProgress)
+                            {
+                                progress(percent, 0, false, false);
+                            }
 
-                        lastReportedProgress = percent;
+                            lastReportedProgress = percent;
+                        }
+                        bookCounter++;
                     }
 
-                    hoot.Save();
-                    //hoot.OptimizeIndex();
+                    await hoot.Save();
+                    //await hoot.OptimizeIndex();
                 }
                 progress(80, this.Found, false, false);
                 // time to do the search
-                var foundIndexes = hoot.Query(this.SearchText, 10000);
-
+                var foundIndexes = await hoot.Query(this.SearchText,1000);
+                
                 var displayTextBody = new StringBuilder();
-
                 var foundBitIndexes = foundIndexes.GetBitIndexes();
                 this.Found = 0;
                 progress(85, this.Found, false, false);
@@ -247,12 +244,12 @@ namespace CrossConnect.readers
                     if (counter <= 200)
                     {
                         counter++;
+                        var book = canon.GetBookFromAbsoluteChapter(chapterNum);
                         var verseNum = index % 1000;
-                        byte[] chapterBuffer = this.GetChapterBytes(chapterNum);
-                        var chapt = this.Chapters[chapterNum];
-                        VersePos verse = chapt.Verses[verseNum];
+                        byte[] chapterBuffer = await this.GetChapterBytes(chapterNum);
+                        VersePos verse = this.Chapters[chapterNum].Verses[verseNum];
                         // clean up the verse and make sure the text is still there.
-                        string textId = "CHAP_" + chapterNum + "_VERS_" + verseNum;
+                        string textId = book.ShortName1 + "_" + (chapterNum-book.VersesInChapterStartIndex) + "_" + verseNum;
                         string s = "<p><a name=\"" + textId
                                    + "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.notify('"
                                    + textId + "'); event.returnValue=false; return false;\" >"
@@ -293,7 +290,7 @@ namespace CrossConnect.readers
             }
         }
 
-        public void DoSlowSearch(DisplaySettings displaySettings,
+        public async void DoSlowSearch(DisplaySettings displaySettings,
             bool isIgnoreCase,
             List<int> chaptListToSearch,
             ShowProgress progress)
@@ -307,7 +304,7 @@ namespace CrossConnect.readers
                 double lastProcent = 0;
                 for (i = 0; i < chaptListToSearch.Count; i++)
                 {
-                    byte[] chapterBuffer = this.GetChapterBytes(chaptListToSearch[i]);
+                    byte[] chapterBuffer = await this.GetChapterBytes(chaptListToSearch[i]);
                     string chapter = Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
                     MatchCollection matches = regex.Matches(chapter);
                     if (matches.Count > 0)
@@ -317,9 +314,9 @@ namespace CrossConnect.readers
                         for (int j = 0; j < this.Chapters[chaptListToSearch[i]].Verses.Count; j++)
                         {
                             VersePos verse = this.Chapters[chaptListToSearch[i]].Verses[j];
-
+                            var book = canon.GetBookFromAbsoluteChapter(chaptListToSearch[i]);
                             // clean up the verse and make sure the text is still there.
-                            string textId = "CHAP_" + chaptListToSearch[i] + "_VERS_" + j;
+                            string textId = book.ShortName1 + "_" + (chaptListToSearch[i]-book.VersesInChapterStartIndex) + "_" + j;
                             string s = "<p><a name=\"" + textId
                                        + "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.notify('"
                                        + textId + "'); event.returnValue=false; return false;\" >"
@@ -394,11 +391,13 @@ namespace CrossConnect.readers
             }
         }
 
-        public override string GetChapterHtml(
+        public override async Task<string> GetChapterHtml(
             DisplaySettings displaySettings,
-            string htmlBackgroundColor,
-            string htmlForegroundColor,
-            string htmlPhoneAccentColor,
+            HtmlColorRgba htmlBackgroundColor,
+            HtmlColorRgba htmlForegroundColor,
+            HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
@@ -411,21 +410,20 @@ namespace CrossConnect.readers
                 htmlBackgroundColor,
                 htmlForegroundColor,
                 htmlPhoneAccentColor,
+                htmlWordsOfChristColor,
                 htmlFontSize,
                 fontFamily) + this.DisplayText + "</body></html>";
         }
 
         public override void GetInfo(
-            out int bookNum,
-            out int absouteChaptNum,
+            out string bookShortName,
             out int relChaptNum,
             out int verseNum,
             out string fullName,
             out string title)
         {
             verseNum = 0;
-            absouteChaptNum = 0;
-            bookNum = 0;
+            bookShortName = string.Empty;
             relChaptNum = 0;
             fullName = string.Empty;
             string extraText = string.Empty;
@@ -445,7 +443,7 @@ namespace CrossConnect.readers
                     break;
             }
 
-            title = Translations.Translate("Search") + "; " + this.SearchText + "; " + extraText + "; " + Translations.Translate("Found") + "(" + this.Found + ")";
+            title = Translations.Translate("Search") + "; " + this.SearchText + "; " + extraText + "; " + Translations.Translate("Found") + "(" + this.Found +")";
         }
 
         #endregion

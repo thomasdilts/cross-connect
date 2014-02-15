@@ -28,10 +28,10 @@ namespace CrossConnect
     using System.Net;
     using System.Windows;
     using System.Windows.Controls;
-
-    using AudioPlaybackAgent1;
-
+    using readers;
     using Microsoft.Phone.Shell;
+    using AudioPlaybackAgent1;
+    using Sword.versification;
 
     /// <summary>
     /// The select to play.
@@ -44,6 +44,7 @@ namespace CrossConnect
         /// The _title bar.
         /// </summary>
         private int _chapter;
+        private string _book;
 
         /// <summary>
         /// The _client.
@@ -133,9 +134,11 @@ namespace CrossConnect
             SelectList.Items.Clear();
 
             // do a download.
+            object BookToHear;
             object chapterToHear;
             object language;
             if (PhoneApplicationService.Current.State.TryGetValue("ChapterToHear", out chapterToHear)
+                && PhoneApplicationService.Current.State.TryGetValue("BookToHear", out BookToHear)
                 && PhoneApplicationService.Current.State.TryGetValue("ChapterToHearLanguage", out language))
             {
                 object titleBar;
@@ -145,31 +148,37 @@ namespace CrossConnect
                     titleBar = string.Empty;
                 }
 
+                _book = (string)BookToHear;
                 _chapter = (int)chapterToHear;
-                _language = (string)language;
-                _titleBar = (string)titleBar;
-                string url = string.Format(
-                    App.DisplaySettings.SoundLink, (int)chapterToHear, language);
-                try
+                var canon = CanonManager.GetCanon("KJV");
+                CanonBookDef book;
+                if(canon.BookByShortName.TryGetValue(_book,out book))
                 {
-                    var source = new Uri(url);
-
-                    _client = new WebClient();
-                    _client.DownloadProgressChanged += ClientDownloadProgressChanged;
-                    _client.OpenReadCompleted += ClientOpenReadCompleted;
-                    Logger.Debug("download start");
-                    _client.OpenReadAsync(source);
-                    Logger.Debug("DownloadStringAsync returned");
-                }
-                catch (Exception eee)
-                {
-                    Logger.Fail(eee.ToString());
-                    MessageBox.Show(
-                        Translations.Translate("An error occurred trying to connect to the network. Try again later.")
-                        + "; " + eee.Message);
-                    if (NavigationService.CanGoBack)
+                    _language = (string)language;
+                    _titleBar = (string)titleBar;
+                    string url = string.Format(
+                        App.DisplaySettings.SoundLink, book.VersesInChapterStartIndex + _chapter, language);
+                    try
                     {
-                        NavigationService.GoBack();
+                        var source = new Uri(url);
+
+                        _client = new WebClient();
+                        _client.DownloadProgressChanged += ClientDownloadProgressChanged;
+                        _client.OpenReadCompleted += ClientOpenReadCompleted;
+                        Logger.Debug("download start");
+                        _client.OpenReadAsync(source);
+                        Logger.Debug("DownloadStringAsync returned");
+                    }
+                    catch (Exception eee)
+                    {
+                        Logger.Fail(eee.ToString());
+                        MessageBox.Show(
+                            Translations.Translate("An error occurred trying to connect to the network. Try again later.")
+                            + "; " + eee.Message);
+                        if (NavigationService.CanGoBack)
+                        {
+                            NavigationService.GoBack();
+                        }
                     }
                 }
             }

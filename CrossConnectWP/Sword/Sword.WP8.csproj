@@ -110,13 +110,29 @@
     <Compile Include="reader\BibleNoteReader.cs" />
     <Compile Include="reader\BibleZtextReader.cs" />
     <Compile Include="reader\CommentZtextReader.cs" />
+    <Compile Include="reader\DisplaySettings.cs" />
     <Compile Include="reader\IBrowserTextSource.cs" />
     <Compile Include="reader\RawGenTextReader.cs" />
     <Compile Include="reader\sapphire.cs" />
     <Compile Include="SwordBookMetaData.cs" />
+    <Compile Include="versification\Canon.cs" />
+    <Compile Include="versification\CanonCatholic.cs" />
+    <Compile Include="versification\CanonCatholic2.cs" />
+    <Compile Include="versification\CanonGerman.cs" />
+    <Compile Include="versification\CanonKjva.cs" />
+    <Compile Include="versification\CanonLeningrad.cs" />
+    <Compile Include="versification\CanonLuther.cs" />
+    <Compile Include="versification\CanonLxx.cs" />
+    <Compile Include="versification\CanonManager.cs" />
+    <Compile Include="versification\CanonMt.cs" />
+    <Compile Include="versification\CanonNrsv.cs" />
+    <Compile Include="versification\CanonNrsva.cs" />
+    <Compile Include="versification\CanonOrthodox.cs" />
+    <Compile Include="versification\CanonSynodal.cs" />
+    <Compile Include="versification\CanonSynodalProt.cs" />
+    <Compile Include="versification\CanonVulg.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\BibleNames_ar_EG.xml" />
     <EmbeddedResource Include="Properties\iso639full.properties" />
   </ItemGroup>
   <ItemGroup>
@@ -174,21 +190,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\BibleNames_hu.xml" />
     <EmbeddedResource Include="Properties\BibleNames_id.xml" />
-    <EmbeddedResource Include="Properties\BibleNames_in.xml" />
     <EmbeddedResource Include="Properties\BibleNames_it.xml" />
-    <EmbeddedResource Include="Properties\BibleNames_iw.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\BibleNames_ko.xml" />
     <EmbeddedResource Include="Properties\BibleNames_la.xml" />
     <EmbeddedResource Include="Properties\BibleNames_lt.xml" />
     <EmbeddedResource Include="Properties\BibleNames_nb.xml" />
     <EmbeddedResource Include="Properties\BibleNames_nl.xml" />
-    <EmbeddedResource Include="Properties\BibleNames_nn.xml" />
     <EmbeddedResource Include="Properties\BibleNames_no.xml" />
     <EmbeddedResource Include="Properties\BibleNames_pl.xml" />
     <EmbeddedResource Include="Properties\BibleNames_pt.xml" />
-    <EmbeddedResource Include="Properties\BibleNames_pt_BR.xml" />
     <EmbeddedResource Include="Properties\BibleNames_ro.xml" />
     <EmbeddedResource Include="Properties\BibleNames_ru.xml" />
     <EmbeddedResource Include="Properties\BibleNames_sk.xml" />
@@ -201,11 +211,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\BibleNames_uk.xml" />
     <EmbeddedResource Include="Properties\BibleNames_vi.xml" />
-    <EmbeddedResource Include="Properties\BibleNames_zh.xml" />
     <EmbeddedResource Include="Properties\BibleNames_zh_CN.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\BibleNames_ar.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_zh_TW.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

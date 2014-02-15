@@ -337,51 +337,31 @@ namespace Sword.versification
             }
         }
 
-        protected Dictionary<string, int> BooksByNumber = null;
-
-        public int GetBibleNumber(string shortName)
-        {
-            CreateBooksByNumber();
-            int nameNum1;
-            if (!BooksByNumber.TryGetValue(shortName, out nameNum1))
-            {
-                nameNum1 = 0;
-            }
-
-            return nameNum1;
-        }
-
         public void SortNames(List<string> bookNames)
         {
-            CreateBooksByNumber();
             bookNames.Sort(SortByBibleName);
-        }
-
-        protected void CreateBooksByNumber()
-        {
-            if (BooksByNumber == null)
-            {
-                BooksByNumber = new Dictionary<string, int>();
-                var booksInOrder = BookByShortName.Keys.ToArray();
-
-                for (int i = 0; i < booksInOrder.Count(); i++)
-                {
-                    BooksByNumber[booksInOrder[i]] = i;
-                }
-            }
         }
 
         protected int SortByBibleName(string name1, string name2)
         {
+            CanonBookDef book;
             int nameNum1;
             int nameNum2;
-            if (!BooksByNumber.TryGetValue(name1, out nameNum1))
+            if (!BookByShortName.TryGetValue(name1, out book))
             {
                 nameNum1 = 999;
             }
-            if (!BooksByNumber.TryGetValue(name2, out nameNum2))
+            else
+            {
+                nameNum1 =  book.BookNum;
+            }
+            if (!BookByShortName.TryGetValue(name2, out book))
             {
                 nameNum2 = 999;
+            }
+            else
+            {
+                nameNum2 = book.BookNum;
             }
             return nameNum1.CompareTo(nameNum2);
         }

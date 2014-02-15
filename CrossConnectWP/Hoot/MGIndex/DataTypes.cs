@@ -1,6 +1,4 @@
-﻿#region Header
-
-// <copyright file="DataTypes.cs" company="Thomas Dilts">
+﻿// <copyright file="DataTypes.cs" company="Thomas Dilts">
 //
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
@@ -23,7 +21,6 @@
 // </summary>
 // <author>Thomas Dilts</author>
 
-#endregion Header
 using System;
 using System.Collections.Generic;
 using System.Linq;

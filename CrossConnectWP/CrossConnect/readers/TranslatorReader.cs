@@ -24,13 +24,13 @@
 namespace CrossConnect.readers
 {
     using System.Runtime.Serialization;
-
+    using System.Threading.Tasks;
 
     using Sword.reader;
 
     /// <summary>
-    /// Load from a file all the book and verse pointers to the bzz file so that
-    ///   we can later read the bzz file quickly and efficiently.
+    ///     Load from a file all the book and verse pointers to the bzz file so that
+    ///     we can later read the bzz file quickly and efficiently.
     /// </summary>
     [DataContract(Name = "TranslatorReader")]
     [KnownType(typeof(ChapterPos))]
@@ -47,25 +47,34 @@ namespace CrossConnect.readers
 
         private string[] _toTranslate;
 
-        #endregion Fields
+        #endregion
 
-        #region Constructors
+        #region Constructors and Destructors
 
-        public TranslatorReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath)
-            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath)
+        public TranslatorReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification)
+            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification)
         {
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Delegates
 
         public delegate void ShowProgress(double percent, int totalFound, bool isAbort, bool isFinished);
 
-        #endregion Delegates
+        #endregion
 
-        #region Properties
+        #region Public Properties
 
+
+        public override bool IsTTChearable
+        {
+            get
+            {
+                return false;
+            }
+        }
+        
         public override bool IsHearable
         {
             get
@@ -106,48 +115,17 @@ namespace CrossConnect.readers
             }
         }
 
-        #endregion Properties
+        #endregion
 
-        #region Methods
+        #region Public Methods and Operators
 
-        public override void GetInfo(
-            out int bookNum,
-            out int absouteChaptNum,
-            out int relChaptNum,
-            out int verseNum,
-            out string fullName,
-            out string title)
-        {
-            verseNum = 0;
-            absouteChaptNum = 0;
-            bookNum = 0;
-            relChaptNum = 0;
-            fullName = string.Empty;
-            title = Translations.Translate("Translation");
-        }
-
-        public void TranslateThis(string[] toTranslate, bool[] isTranslateable, string fromLanguage)
-        {
-            _toTranslate = toTranslate;
-            _isTranslateable = isTranslateable;
-            var ggl = new TranslateByGoogle();
-            for (int i = 0; i < isTranslateable.Length; i++)
-            {
-                if (!isTranslateable[i])
-                {
-                    continue;
-                }
-
-                ggl.GetGoogleTranslationAsync(toTranslate[i], fromLanguage, TextTranslatedByGoogle);
-                break;
-            }
-        }
-
-        public override string GetChapterHtml(
+        public override async Task<string> GetChapterHtml(
             DisplaySettings displaySettings,
-            string htmlBackgroundColor,
-            string htmlForegroundColor,
-            string htmlPhoneAccentColor,
+            HtmlColorRgba htmlBackgroundColor,
+            HtmlColorRgba htmlForegroundColor,
+            HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
@@ -160,35 +138,71 @@ namespace CrossConnect.readers
                 htmlBackgroundColor,
                 htmlForegroundColor,
                 htmlPhoneAccentColor,
+                htmlWordsOfChristColor,
                 htmlFontSize,
-                fontFamily) + DisplayText + "</body></html>";
+                fontFamily) + this.DisplayText + "</body></html>";
         }
+
+        public override void GetInfo(
+            out string bookShortName,
+            out int relChaptNum,
+            out int verseNum,
+            out string fullName,
+            out string title)
+        {
+            verseNum = 0;
+            bookShortName = string.Empty;
+            relChaptNum = 0;
+            fullName = string.Empty;
+            title = Translations.Translate("Translation");
+        }
+
+        public void TranslateThis(string[] toTranslate, bool[] isTranslateable, string fromLanguage)
+        {
+            this._toTranslate = toTranslate;
+            this._isTranslateable = isTranslateable;
+            var ggl = new TranslateByGoogle();
+            for (int i = 0; i < isTranslateable.Length; i++)
+            {
+                if (!isTranslateable[i])
+                {
+                    continue;
+                }
+
+                ggl.GetGoogleTranslationAsync(toTranslate[i], fromLanguage, this.TextTranslatedByGoogle);
+                break;
+            }
+        }
+
+        #endregion
+
+        #region Methods
 
         private void TextTranslatedByGoogle(string translation, bool isError)
         {
-            DisplayText = string.Empty;
+            this.DisplayText = string.Empty;
             if (isError)
             {
-                DisplayText = translation;
+                this.DisplayText = translation;
             }
             else
             {
-                for (int i = 0; i < _isTranslateable.Length; i++)
+                for (int i = 0; i < this._isTranslateable.Length; i++)
                 {
-                    if (_isTranslateable[i])
+                    if (this._isTranslateable[i])
                     {
-                        DisplayText += translation;
+                        this.DisplayText += translation;
                     }
                     else
                     {
-                        DisplayText += _toTranslate[i];
+                        this.DisplayText += this._toTranslate[i];
                     }
                 }
             }
 
-            RaiseSourceChangedEvent();
+            this.RaiseSourceChangedEvent();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

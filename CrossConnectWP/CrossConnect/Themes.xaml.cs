@@ -77,7 +77,7 @@ namespace CrossConnect
             // save the current selection
             var uniqId = (Guid)((TextBlock)SelectList.SelectedItem).Tag;
             App.Themes.CurrentTheme = uniqId;
-
+            App.SavePersistantThemes();
             // all the windows must be redrawn
             for (int i = App.OpenWindows.Count - 1; i >= 0; i--)
             {

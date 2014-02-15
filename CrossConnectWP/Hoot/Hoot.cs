@@ -1,6 +1,4 @@
-﻿#region Header
-
-// <copyright file="Hoot.cs" company="Thomas Dilts">
+﻿// <copyright file="Hoot.cs" company="Thomas Dilts">
 //
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
@@ -23,7 +21,6 @@
 // </summary>
 // <author>Thomas Dilts</author>
 
-#endregion Header
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -37,9 +34,9 @@ using RaptorDB;
 
 namespace hOOt
 {
+    using System.Threading.Tasks;
 
-
-    
+    using Windows.Storage;
 
     using global::Hoot;
     internal enum OPERATION
@@ -56,26 +53,26 @@ namespace hOOt
             '{', '}', '/', '\\', '\"', '¿', '*', '¡', '«', '»', '=', '@', '¤', '%'
             , '&', '+', '§', '|', '^', '¨', '~', '$','“','”','’','‘'
         };
-        public void Initialize(string IndexPath, string FileName)
+        public async Task Initialize(string IndexPath, string FileName)
         {
             _Path = IndexPath;
             _FileName = FileName;
             _docMode = false;
             if (_Path.EndsWith(PathHelper.DirectorySeparatorChar.ToString()) == false) _Path += PathHelper.DirectorySeparatorChar;
-            Directory.CreateDirectory(IndexPath);
+            await Directory.CreateDirectory(IndexPath);
             //LogManager.Configure(_Path + "log.txt", 200, false);
             //_log.Debug("\r\n\r\n");
             //_log.Debug("Starting hOOt....");
             //_log.Debug("Storage Folder = " + _Path);
 
             _bitmaps = new BitmapIndex();
-            _bitmaps.Initialize(_Path, _FileName + ".mgbmp");
+            await _bitmaps.Initialize(_Path, _FileName + ".mgbmp");
 
             // read words
-            LoadWords();
+            await LoadWords();
             // read deleted
             _deleted = new BoolIndex();
-            _deleted.Initialize(_Path, "_deleted.idx");
+            await _deleted.Initialize(_Path, "_deleted.idx");
         }
 
         private SafeDictionary<string, int> _words = new SafeDictionary<string, int>();
@@ -97,30 +94,30 @@ namespace hOOt
             get { return _lastDocNum - (int)_deleted.GetBits().CountOnes(); }
         }
 
-        public void Save()
+        public async Task Save()
         {
-            InternalSave();
+            await InternalSave();
         }
 
-        public void Index(int recordnumber, string text)
+        public async Task Index(int recordnumber, string text)
         {
-            AddtoIndex(recordnumber, text);
+            await AddtoIndex(recordnumber, text);
         }
 
-        public WAHBitArray Query(string filter, int maxsize)
+        public async Task<WAHBitArray> Query(string filter, int maxsize)
         {
-            return ExecutionPlan(filter, maxsize);
+            return await ExecutionPlan(filter, maxsize);
         }
 
-        public void OptimizeIndex()
+        public async Task OptimizeIndex()
         {
-            _bitmaps.Commit(false);
-            _bitmaps.Optimize();
+            await _bitmaps.Commit(false);
+            await _bitmaps.Optimize();
         }
 
         #region [  P R I V A T E   M E T H O D S  ]
 
-        private WAHBitArray ExecutionPlan(string filter, int maxsize)
+        private async Task<WAHBitArray> ExecutionPlan(string filter, int maxsize)
         {
             //_log.Debug("query : " + filter);
             DateTime dt = FastDateTime.Now;
@@ -164,7 +161,7 @@ namespace hOOt
                         if (reg.IsMatch(key))
                         {
                             _words.TryGetValue(key, out c);
-                            WAHBitArray ba = _bitmaps.GetBitmap(c);
+                            WAHBitArray ba = await _bitmaps.GetBitmap(c);
 
                             wildbits = DoBitOperation(wildbits, ba, OPERATION.OR, maxsize);
                         }
@@ -179,7 +176,7 @@ namespace hOOt
                 else if (_words.TryGetValue(word.ToLowerInvariant(), out c))
                 {
                     // bits logic
-                    WAHBitArray ba = _bitmaps.GetBitmap(c);
+                    WAHBitArray ba = await _bitmaps.GetBitmap(c);
                     bits = DoBitOperation(bits, ba, op, maxsize);
                 }
                 else
@@ -193,7 +190,7 @@ namespace hOOt
                 return new WAHBitArray();
 
             // remove deleted docs
-            WAHBitArray ret ;
+            WAHBitArray ret;
             if (_docMode)
                 ret = bits.AndNot(_deleted.GetBits());
             else
@@ -228,25 +225,25 @@ namespace hOOt
         }
 
         private object _lock = new object();
-        private void InternalSave()
+        private async Task InternalSave()
         {
             //lock (_lock)
             //{
                 //_log.Debug("saving index...");
                 DateTime dt = FastDateTime.Now;
                 // save deleted
-                _deleted.SaveIndex();
+                await _deleted.SaveIndex();
 
-                _bitmaps.Commit(false);
+                await _bitmaps.Commit(false);
 
                 MemoryStream ms = new MemoryStream();
                 BinaryWriter bw = new BinaryWriter(ms, Encoding.UTF8);
 
                 // save words and bitmaps
                 Stream words =
-                    
-                    File.OpenStreamForWriteAsync(
-                        _Path + _FileName + ".words", File.CreationCollisionOption.ReplaceExisting);
+                    await
+                    ApplicationData.Current.LocalFolder.OpenStreamForWriteAsync(
+                        _Path + _FileName + ".words", CreationCollisionOption.ReplaceExisting);
                
                     foreach (string key in _words.Keys())
                     {
@@ -256,18 +253,18 @@ namespace hOOt
                     byte[] b = ms.ToArray();
                     words.Write(b, 0, b.Length);
                     words.Flush();
-                    File.CloseStream(words);
+                    words.Dispose();
                
                 //_log.Debug("save time (ms) = " + FastDateTime.Now.Subtract(dt).TotalMilliseconds);
             //}
         }
 
-        private void LoadWords()
+        private async Task LoadWords()
         {
-            if (File.Exists(_Path + _FileName + ".words") == false)
+            if (await File.Exists(_Path + _FileName + ".words") == false)
                 return;
             // load words
-            byte[] b = File.ReadAllBytes(_Path + _FileName + ".words");
+            byte[] b = await File.ReadAllBytes(_Path + _FileName + ".words");
             MemoryStream ms = new MemoryStream(b);
             BinaryReader br = new BinaryReader(ms, Encoding.UTF8);
             string s = br.ReadString();
@@ -284,7 +281,7 @@ namespace hOOt
             //_log.Debug("Word Count = " + _words.Count);
         }
 
-        private void AddtoIndex(int recnum, string text)
+        private async Task AddtoIndex(int recnum, string text)
         {
             if (text == "" || text == null)
                 return;
@@ -311,12 +308,12 @@ namespace hOOt
                 int bmp;
                 if (_words.TryGetValue(keyLower, out bmp))
                 {
-                    (_bitmaps.GetBitmap(bmp)).Set(recnum, true);
+                    (await _bitmaps.GetBitmap(bmp)).Set(recnum, true);
                 }
                 else
                 {
                     bmp = _bitmaps.GetFreeRecordNumber();
-                    _bitmaps.SetDuplicate(bmp, recnum);
+                    await _bitmaps.SetDuplicate(bmp, recnum);
                     _words.Add(keyLower, bmp);
                 }
             }
@@ -415,10 +412,10 @@ namespace hOOt
         }
         #endregion
 
-        public void Shutdown()
+        public async Task Shutdown()
         {
-            Save();
-            _deleted.Shutdown();
+            await Save();
+            await _deleted.Shutdown();
         }
     }
 }

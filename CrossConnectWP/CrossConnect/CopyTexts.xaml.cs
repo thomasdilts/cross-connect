@@ -23,6 +23,7 @@
 
 namespace CrossConnect
 {
+    using Microsoft.Phone.Shell;
     using System.Windows;
 
     public partial class CopyTexts
@@ -38,15 +39,24 @@ namespace CrossConnect
 
         #region Methods
 
-        private void PhoneApplicationPageLoaded(object sender, RoutedEventArgs e)
+        private async void PhoneApplicationPageLoaded(object sender, RoutedEventArgs e)
         {
             PageTitle.Text = Translations.Translate("Copy");
             SelectAll.Content = Translations.Translate("Select all");
-            var obj = MainPageSplit.GetLast3SecondsChosenVerses();
-            string textsWithTitles = (string)obj[0];
-            string titlesOnly = (string)obj[1];
-            SelectText.Text = textsWithTitles;
-            SelectText.Focus();
+                        // load the verse
+            object openWindowIndex;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            {
+                openWindowIndex = 0;
+            }
+            if(App.OpenWindows[(int)openWindowIndex] is BrowserTitledWindow)
+            {
+                var obj = await ((BrowserTitledWindow)App.OpenWindows[(int)openWindowIndex]).GetLast3SecondsChosenVerses();
+                string textsWithTitles = (string)obj[0];
+                string titlesOnly = (string)obj[1];
+                SelectText.Text = textsWithTitles;
+                SelectText.Focus();
+            }
         }
 
         private void SelectAllClick(object sender, RoutedEventArgs e)

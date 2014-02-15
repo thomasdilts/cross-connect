@@ -1,6 +1,4 @@
-﻿#region Header
-
-// <copyright file="BitmapIndex.cs" company="Thomas Dilts">
+﻿// <copyright file="BitmapIndex.cs" company="Thomas Dilts">
 //
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
@@ -23,8 +21,6 @@
 // </summary>
 // <author>Thomas Dilts</author>
 
-#endregion Header
-
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -34,22 +30,22 @@ using System.Threading;
 
 namespace RaptorDB
 {
-
+    using System.Threading.Tasks;
 
     using Hoot;
 
-    
+    using Windows.Storage;
 
     internal class BitmapIndex
     {
-        public void Initialize(string path, string filename)
+        public async Task Initialize(string path, string filename)
         {
             _FileName = Path.GetFileNameWithoutExtension(filename);
             _Path = path;
             if (_Path.EndsWith(PathHelper.DirectorySeparatorChar.ToString()) == false)
                 _Path += PathHelper.DirectorySeparatorChar.ToString();
 
-            Initialize();
+            await Initialize();
         }
 
         private string _recExt = ".mgbmr";
@@ -73,13 +69,13 @@ namespace RaptorDB
         private bool _shutdownDone = false;
 
         #region [  P U B L I C  ]
-        public void Shutdown()
+        public async Task Shutdown()
         {
             //while (_optimizing) Thread.Sleep(_threadSleepTime);
 
             //log.Debug("Shutdown BitmapIndex");
 
-            InternalShutdown();
+            await InternalShutdown();
         }
 
         public int GetFreeRecordNumber()
@@ -92,14 +88,14 @@ namespace RaptorDB
             return i;
         }
 
-        public void Commit(bool freeMemory)
+        public async Task Commit(bool freeMemory)
         {
             //while (_optimizing) Thread.Sleep(_threadSleepTime);
 
             int[] keys = _cache.Keys();
             Array.Sort(keys);
-            var _bmpFileWrite = Hoot.File.OpenStreamForWriteAsync(_Path + _FileName + _bmpExt, File.CreationCollisionOption.OpenIfExists);
-            var _recFileWrite = Hoot.File.OpenStreamForWriteAsync(_Path + _FileName + _recExt, File.CreationCollisionOption.ReplaceExisting);
+            var _bmpFileWrite = await ApplicationData.Current.LocalFolder.OpenStreamForWriteAsync(_Path + _FileName + _bmpExt, CreationCollisionOption.OpenIfExists);
+            var _recFileWrite = await ApplicationData.Current.LocalFolder.OpenStreamForWriteAsync(_Path + _FileName + _recExt, CreationCollisionOption.ReplaceExisting);
             //_recFileWrite.Seek(0L, SeekOrigin.End);
             _bmpFileWrite.Seek(0L, SeekOrigin.End);
             foreach (int k in keys)
@@ -113,35 +109,35 @@ namespace RaptorDB
                 }
             }
             _recFileWrite.Flush();
-            File.CloseStream(_recFileWrite);
+            _recFileWrite.Dispose();
             _bmpFileWrite.Flush();
-            File.CloseStream(_bmpFileWrite);
+            _bmpFileWrite.Dispose();
             if (freeMemory)
             {
                 _cache = new SafeDictionary<int, WAHBitArray>();
             }
         }
 
-        public void SetDuplicate(int bitmaprecno, int record)
+        public async Task SetDuplicate(int bitmaprecno, int record)
         {
             //while (_optimizing) Thread.Sleep(_threadSleepTime);
 
             WAHBitArray ba = null;
 
-            ba = GetBitmap(bitmaprecno);
+            ba = await GetBitmap(bitmaprecno);
 
             ba.Set(record, true);
         }
 
-        public WAHBitArray GetBitmap(int recno)
+        public async Task<WAHBitArray> GetBitmap(int recno)
         {
             //while (_optimizing) Thread.Sleep(_threadSleepTime);
 
-            return internalGetBitmap(recno);
+            return await internalGetBitmap(recno);
         }
 
         private object _oplock = new object();
-        public void Optimize()
+        public async Task Optimize()
         {
             //lock (_oplock)
             //    lock (_readlock)
@@ -151,16 +147,16 @@ namespace RaptorDB
                         Flush();
 
                         //if (File.Exists(_Path + _FileName + "$" + _bmpExt))
-                            File.Delete(_Path + _FileName + "$" + _bmpExt);
+                            await File.Delete(_Path + _FileName + "$" + _bmpExt);
 
                         //if (File.Exists(_Path + _FileName + "$" + _recExt))
-                            File.Delete(_Path + _FileName + "$" + _recExt);
-                            Stream _newrec = Hoot.File.OpenStreamForWriteAsync(_Path + _FileName + "$" + _recExt, File.CreationCollisionOption.OpenIfExists);
-                            Stream _newbmp = Hoot.File.OpenStreamForWriteAsync(_Path + _FileName + "$" + _bmpExt, File.CreationCollisionOption.OpenIfExists);
+                            await File.Delete(_Path + _FileName + "$" + _recExt);
+                            Stream _newrec = await ApplicationData.Current.LocalFolder.OpenStreamForWriteAsync(_Path + _FileName + "$" + _recExt, CreationCollisionOption.OpenIfExists);
+                            Stream _newbmp = await ApplicationData.Current.LocalFolder.OpenStreamForWriteAsync(_Path + _FileName + "$" + _bmpExt, CreationCollisionOption.OpenIfExists);
 
                         long newoffset = 0;
-                        var readstream = Hoot.File.OpenStreamForReadAsync(_Path + _FileName + _recExt);
-                        var readbmpstream = Hoot.File.OpenStreamForReadAsync(_Path + _FileName + _bmpExt);
+                        var readstream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(_Path + _FileName + _recExt);
+                        var readbmpstream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(_Path + _FileName + _bmpExt);
                         int c = (int)(readstream.Length / 8);
                         for (int i = 0; i < c; i++)
                         {
@@ -178,22 +174,22 @@ namespace RaptorDB
                             _newbmp.Write(b, 0, b.Length);
 
                         }
+                        readstream.Dispose();
+                        readbmpstream.Dispose();
                         _newbmp.Flush();
-                        _newrec.Flush();;
-                        File.CloseStream(readstream);
-                        File.CloseStream(readbmpstream);
-                        File.CloseStream(_newbmp);
-                        File.CloseStream(_newrec);
+                        _newbmp.Dispose();
+                        _newrec.Flush();
+                        _newrec.Dispose();
 
-                        InternalShutdown();
+                        await InternalShutdown();
 
-                        File.Delete(_Path + _FileName + _bmpExt);
-                        File.Delete(_Path + _FileName + _recExt);
+                        await File.Delete(_Path + _FileName + _bmpExt);
+                        await File.Delete(_Path + _FileName + _recExt);
 
-                        File.Move(_Path + _FileName + "$" + _bmpExt, _Path , _FileName + _bmpExt);
-                        File.Move(_Path + _FileName + "$" + _recExt, _Path , _FileName + _recExt);
+                        await File.Move(_Path + _FileName + "$" + _bmpExt, _Path , _FileName + _bmpExt);
+                        await File.Move(_Path + _FileName + "$" + _recExt, _Path , _FileName + _recExt);
 
-                        Initialize();
+                        await Initialize();
                         //_optimizing = false;
                     //}
         }
@@ -228,58 +224,53 @@ namespace RaptorDB
             return Helper.ToInt64(b, 0);
         }
 
-        private void Initialize()
+        private async Task Initialize()
         {
             Stream _recordFileCreate;
-            if (File.Exists(_Path + _FileName + _recExt))
+            if (await File.Exists(_Path + _FileName + _recExt))
             {
                 _recordFileCreate =
-                    
-                    Hoot.File.OpenStreamForReadAsync(
+                    await
+                    ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(
                         _Path + _FileName + _recExt);
             }
             else
             {
                 _recordFileCreate =
-                    
-                    Hoot.File.OpenStreamForWriteAsync(
-                        _Path + _FileName + _recExt, File.CreationCollisionOption.OpenIfExists);
+                    await
+                    ApplicationData.Current.LocalFolder.OpenStreamForWriteAsync(
+                        _Path + _FileName + _recExt, CreationCollisionOption.OpenIfExists);
             }
 
             Stream _bitmapFileWriteOrg;
-            if (File.Exists(_Path + _FileName + _bmpExt))
+            if (await File.Exists(_Path + _FileName + _bmpExt))
             {
-                _bitmapFileWriteOrg = Hoot.File.OpenStreamForReadAsync(_Path + _FileName + _bmpExt);
+                _bitmapFileWriteOrg = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(_Path + _FileName + _bmpExt);
             }
             else
             {
-                _bitmapFileWriteOrg = Hoot.File.OpenStreamForWriteAsync(_Path + _FileName + _bmpExt, File.CreationCollisionOption.OpenIfExists);
+                _bitmapFileWriteOrg = await ApplicationData.Current.LocalFolder.OpenStreamForWriteAsync(_Path + _FileName + _bmpExt, CreationCollisionOption.OpenIfExists);
             }
 
-            try
-            {
-                _bitmapFileWriteOrg.Seek(0L, SeekOrigin.End);
-            }
-            catch (Exception)
-            {
-            }
+
+            _bitmapFileWriteOrg.Seek(0L, SeekOrigin.End);
             _lastBitmapOffset = _bitmapFileWriteOrg.Length;
 
-            File.CloseStream(_bitmapFileWriteOrg);
+            _bitmapFileWriteOrg.Dispose();
             _lastRecordNumber = (int)(_recordFileCreate.Length / 8);
-            File.CloseStream(_recordFileCreate);
+            _recordFileCreate.Dispose();
             _shutdownDone = false;
         }
 
-        private void InternalShutdown()
+        private async Task InternalShutdown()
         {
             bool d1 = false;
             bool d2 = false;
             Flush();
             if (_shutdownDone == false)
             {
-                var _recordFileWrite = Hoot.File.OpenStreamForWriteAsync(_Path + _FileName + _recExt, File.CreationCollisionOption.OpenIfExists);
-                var _bitmapFileWrite = Hoot.File.OpenStreamForWriteAsync(_Path + _FileName + _bmpExt, File.CreationCollisionOption.OpenIfExists);
+                var _recordFileWrite = await ApplicationData.Current.LocalFolder.OpenStreamForWriteAsync(_Path + _FileName + _recExt, CreationCollisionOption.OpenIfExists);
+                var _bitmapFileWrite = await ApplicationData.Current.LocalFolder.OpenStreamForWriteAsync(_Path + _FileName + _bmpExt, CreationCollisionOption.OpenIfExists);
                 _bitmapFileWrite.Seek(0L, SeekOrigin.End);
                 _recordFileWrite.Seek(0L, SeekOrigin.End);
                 if (_recordFileWrite.Length == 0) d1 = true;
@@ -287,9 +278,9 @@ namespace RaptorDB
                 _bitmapFileWrite.Dispose();
                 _recordFileWrite.Dispose();
                 if (d1)
-                    File.Delete(_Path + _FileName + _recExt);
+                    await File.Delete(_Path + _FileName + _recExt);
                 if (d2)
-                    File.Delete(_Path + _FileName + _bmpExt);
+                    await File.Delete(_Path + _FileName + _bmpExt);
                 _shutdownDone = true;
             }
         }
@@ -299,7 +290,7 @@ namespace RaptorDB
         }
 
         private object _readlock = new object();
-        private  WAHBitArray internalGetBitmap(int recno)
+        private async Task< WAHBitArray> internalGetBitmap(int recno)
         {
             //lock (_readlock)
             //{
@@ -316,12 +307,12 @@ namespace RaptorDB
                     long offset = 0;
                     if (_offsetCache.TryGetValue(recno, out offset) == false)
                     {
-                        var readstream = Hoot.File.OpenStreamForReadAsync(_Path + _FileName + _recExt);
+                        var readstream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(_Path + _FileName + _recExt);
                         offset = ReadRecordOffset(recno, readstream);
-                        File.CloseStream(readstream);
+                        readstream.Dispose();
                         _offsetCache.Add(recno, offset);
                     }
-                    ba = LoadBitmap(offset);
+                    ba = await LoadBitmap(offset);
 
                     _cache.Add(recno, ba);
 
@@ -386,7 +377,7 @@ namespace RaptorDB
             return off;
         }
 
-        private WAHBitArray LoadBitmap(long offset)
+        private async Task<WAHBitArray> LoadBitmap(long offset)
         {
             WAHBitArray bc = new WAHBitArray();
             if (offset == -1)
@@ -394,7 +385,7 @@ namespace RaptorDB
 
             List<uint> ar = new List<uint>();
             WAHBitArray.TYPE type = WAHBitArray.TYPE.WAH;
-            Stream bmp = Hoot.File.OpenStreamForReadAsync(_Path + _FileName + _bmpExt); 
+            Stream bmp = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(_Path + _FileName + _bmpExt); 
             {
                 bmp.Seek(offset, SeekOrigin.Begin);
 
@@ -413,7 +404,7 @@ namespace RaptorDB
                     }
                 }
             }
-            File.CloseStream(bmp);
+            bmp.Dispose();
             bc = new WAHBitArray(type, ar.ToArray());
 
             return bc;

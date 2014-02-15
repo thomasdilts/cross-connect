@@ -521,10 +521,10 @@ namespace CrossConnect
                     using (IInputStream inStream = await file.OpenSequentialReadAsync())
                     {
                         // debugging start
-                        byte[] buff = new byte[20000];
-                        var xx = inStream.AsStreamForRead().Read(buff, 0, buff.Length);
-                        string all = System.Text.UTF8Encoding.UTF8.GetString(buff, 0, xx);
-                        inStream.AsStreamForRead().Position = 0;
+                        //byte[] buff = new byte[20000];
+                        //var xx = inStream.AsStreamForRead().Read(buff, 0, buff.Length);
+                        //string all = System.Text.UTF8Encoding.UTF8.GetString(buff, 0, xx);
+                        //inStream.AsStreamForRead().Position = 0;
                         // debugging stop
 
                         // Deserialize the Session State

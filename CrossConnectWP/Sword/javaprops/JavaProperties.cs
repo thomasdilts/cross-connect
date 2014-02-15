@@ -64,8 +64,7 @@ namespace Sword.javaprops
         /// <param name="isLangDependentResource">True if there could be a language dependent file as well to be loaded</param>
         public JavaProperties(string resourceName, bool isLangDependentResource)
         {
-            var assem = Assembly.GetExecutingAssembly();
-            //Assembly assem = Assembly.Load(new AssemblyName("Sword"));
+            Assembly assem = Assembly.Load(new AssemblyName("Sword"));
             // this is java style folks.  We load the standard resource
             // file and then load the language specific file and then merge them
             // with the language taking priority.

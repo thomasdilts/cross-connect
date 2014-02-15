@@ -27,7 +27,12 @@
 
 namespace Sword.reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Runtime.Serialization;
+    using System.Text;
+    using System.Threading.Tasks;
 
     /// <summary>
     ///     Load from a file all the book and verse pointers to the bzz file so that
@@ -48,8 +53,8 @@ namespace Sword.reader
         /// <param name="path">The path to where the ot.bzs,ot.bzv and ot.bzz and nt files are</param>
         /// <param name="iso2DigitLangCode"></param>
         /// <param name="isIsoEncoding"></param>
-        public CommentZtextReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath)
-            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath)
+        public CommentZtextReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification)
+            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification)
         {
         }
 
@@ -74,5 +79,55 @@ namespace Sword.reader
         }
 
         #endregion
+
+        protected override string ParseOsisText(
+            DisplaySettings displaySettings,
+            string chapterNumber,
+            string restartText,
+            byte[] xmlbytes,
+            int startPos,
+            int length,
+            bool isIsoText,
+            bool isNotesOnly,
+            bool noTitles,
+            ref int noteIdentifier,
+            ref bool isInPoetry,
+            bool isRaw = false)
+        {
+            // Some indexes are bad. make sure the startpos and length are not bad
+            if (length == 0)
+            {
+                return string.Empty;
+            }
+
+            if (startPos >= xmlbytes.Length)
+            {
+                Debug.WriteLine("Bad startpos;" + xmlbytes.Length + ";" + startPos + ";" + length);
+                return "*** POSSIBLE ERROR IN BIBLE, TEXT MISSING HERE ***";
+            }
+
+            if (startPos + length > xmlbytes.Length)
+            {
+                // we can fix this
+                Debug.WriteLine("Fixed bad length;" + xmlbytes.Length + ";" + startPos + ";" + length);
+                length = xmlbytes.Length - startPos - 1;
+                if (length == 0)
+                {
+                    // this might be a problem or it might not. Put some stars here anyway.
+                    return "***";
+                }
+            }
+
+            try
+            {
+                return chapterNumber + System.Text.UTF8Encoding.UTF8.GetString(xmlbytes, 0, xmlbytes.Length) + "</a>";
+            }
+            catch (Exception ee)
+            {
+                Debug.WriteLine("crashed in a strange place. err=" + ee.StackTrace);
+            }
+            return string.Empty;
+        }
+
     }
 }

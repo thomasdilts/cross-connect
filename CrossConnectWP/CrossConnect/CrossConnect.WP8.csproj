@@ -138,8 +138,14 @@
     <Compile Include="ImageBrowse.xaml.cs">
       <DependentUpon>ImageBrowse.xaml</DependentUpon>
     </Compile>
-    <Compile Include="readers\MediaReader.cs" />
     <Compile Include="readers\RawGenSearchReader.cs" />
+    <Compile Include="SelectHighlight.xaml.cs">
+      <DependentUpon>SelectHighlight.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SelectTtsToPlay.xaml.cs">
+      <DependentUpon>SelectTtsToPlay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TranslateByGoogle.cs" />
     <Compile Include="WebFontSelect.xaml.cs">
       <DependentUpon>WebFontSelect.xaml</DependentUpon>
     </Compile>
@@ -166,7 +172,6 @@
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TranslateByGoogle.cs" />
     <Compile Include="Translations.cs" />
     <Compile Include="readers\BookMarkReader.cs" />
     <Compile Include="BrowserTitledWindow.xaml.cs">
@@ -224,6 +229,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ImageBrowse.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SelectHighlight.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SelectTtsToPlay.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -285,13 +298,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="CrossConnect.WP8_2013_06_27_12_44_17.sap" />
-    <None Include="CrossConnect.WP8_2013_06_27_12_47_16.sap" />
-    <None Include="CrossConnect.WP8_2013_06_28_17_21_21.sap" />
-    <None Include="CrossConnect.WP8_2013_06_28_17_24_35.sap" />
-    <None Include="CrossConnect.WP8_2013_06_28_17_34_18.sap" />
-    <None Include="CrossConnect.WP8_2013_06_28_17_54_50.sap" />
-    <None Include="CrossConnect.WP8_2013_06_28_21_41_11.sap" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml">
       <SubType>Designer</SubType>
@@ -438,7 +444,6 @@
     <Content Include="Images\light\window.smaller.pressed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Properties\WMAppManifest.WP8.xml" />
     <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
@@ -740,6 +745,7 @@
   -->
   <ProjectExtensions />
   <PropertyGroup>
-    <PreBuildEvent>copy "$(ProjectDir)properties\WMAppManifest.WP8.xml" "$(ProjectDir)properties\WMAppManifest.xml"</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>

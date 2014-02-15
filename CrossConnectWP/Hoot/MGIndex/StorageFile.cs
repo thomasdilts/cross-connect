@@ -1,5 +1,3 @@
-#region Header
-
 // <copyright file="StorageFile.cs" company="Thomas Dilts">
 //
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
@@ -23,7 +21,6 @@
 // </summary>
 // <author>Thomas Dilts</author>
 
-#endregion Header
 using System;
 using System.Diagnostics;
 using System.Collections;
@@ -35,11 +32,11 @@ using RaptorDB.Common;
 
 namespace RaptorDB
 {
-
+    using System.Threading.Tasks;
 
     using Hoot;
 
-    
+    using Windows.Storage;
 
     internal class StorageData
     {
@@ -90,19 +87,23 @@ namespace RaptorDB
         public bool SkipDateTime = false;
 
 
-        public bool Initialize(string filename, bool SkipChecking)
+        public async Task<bool> Initialize(string filename, bool SkipChecking)
         {
             _T = RDBDataType<T>.ByteHandler();
             _filename = filename;
-            _datawrite = 
-                Hoot.File.OpenStreamForWriteAsync(filename, File.CreationCollisionOption.OpenIfExists);
+            _datawrite = await
+                ApplicationData.Current.LocalFolder.OpenStreamForWriteAsync(filename, CreationCollisionOption.OpenIfExists);
+            _dataread = await
+                ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(filename);
 
             if (SkipChecking == false)
             {
                 // load rec pointers
                 _recfilename = filename.Substring(0, filename.LastIndexOf('.')) + ".mgrec";
-                _recfilewrite = 
-                    Hoot.File.OpenStreamForWriteAsync(_recfilename, File.CreationCollisionOption.OpenIfExists);
+                _recfilewrite = await
+                    ApplicationData.Current.LocalFolder.OpenStreamForWriteAsync(_recfilename, CreationCollisionOption.OpenIfExists);
+                _recfileread = await
+                    ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(_recfilename);
 
                 if (_datawrite.Length == 0)
                 {
@@ -117,9 +118,8 @@ namespace RaptorDB
                 }
                 _lastRecordNum = (int)(_recfilewrite.Length / 8);
                 _recfilewrite.Seek(0L, SeekOrigin.End);
-                File.CloseStream(_recfilewrite);
             }
-            File.CloseStream(_datawrite);
+
             return true;
         }
 
@@ -185,10 +185,10 @@ namespace RaptorDB
             _datawrite = null;
         }
 
-        public static StorageFile<int> ReadForward(string filename)
+        public static async Task<StorageFile<int>> ReadForward(string filename)
         {
             StorageFile<int> sf = new StorageFile<int>();
-            sf.Initialize(filename, true);
+            await sf.Initialize(filename, true);
             return sf;
         }
 

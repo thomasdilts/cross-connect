@@ -336,7 +336,7 @@ namespace CrossConnect
             }
         }
 
-        public void RemoveBible()
+        public async void RemoveBible()
         {
             try
             {
@@ -344,12 +344,12 @@ namespace CrossConnect
                                  + BibleZtextReader.ExtensionConf;
                 string bookPath = this.Sbmd.GetCetProperty(ConfigEntryType.ADataPath).ToString().Substring(2);
 
-                Hoot.File.Delete(modFile.Replace("/", "\\"));
+                await Hoot.File.Delete(modFile.Replace("/", "\\"));
 
-                var bookFiles = Hoot.File.GetFiles(bookPath.Replace("/", "\\") + "*.*");
+                var bookFiles = await Hoot.File.GetFiles(bookPath.Replace("/", "\\") + "*.*");
                 foreach (var file in bookFiles)
                 {
-                    Hoot.File.Delete(Path.Combine(bookPath.Replace("/", "\\"), file));
+                    await Hoot.File.Delete(Path.Combine(bookPath.Replace("/", "\\"), file));
                 }
 
                 if (this.Sbmd.GetCetProperty(ConfigEntryType.ModDrv).Equals("RawGenBook"))
@@ -357,10 +357,10 @@ namespace CrossConnect
                     // In a book, the main files are one searchway down.
                     var mainDir = Path.GetDirectoryName(bookPath.Replace("/", "\\") + ".idx");
 
-                    bookFiles = Hoot.File.GetFiles(mainDir.Replace("/", "\\") + "\\*.*");
+                    bookFiles = await Hoot.File.GetFiles(mainDir.Replace("/", "\\") + "\\*.*");
                     foreach (var file in bookFiles)
                     {
-                        Hoot.File.Delete(Path.Combine(bookPath.Replace("/", "\\"), file));
+                        await Hoot.File.Delete(Path.Combine(bookPath.Replace("/", "\\"), file));
                     }
                 }
             }

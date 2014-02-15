@@ -29,6 +29,7 @@ namespace CrossConnect
     using System.Windows;
 
     using Sword.reader;
+    using Windows.ApplicationModel.DataTransfer;
 
     /// <summary>
     /// The settings.
@@ -127,6 +128,22 @@ namespace CrossConnect
                 App.DisplaySettings.ShowAddedNotesByChapter = (bool)showAddedNotesByChapter.IsChecked;
             }
 
+            if (this.SyncVerses.IsChecked != null)
+            {
+                App.DisplaySettings.SyncMediaVerses = (bool)SyncVerses.IsChecked;
+            }
+
+            if (this.useHighlighting.IsChecked != null)
+            {
+                App.DisplaySettings.UseHighlights = (bool)useHighlighting.IsChecked;
+            }
+            App.DisplaySettings.HighlightName1 = this.highlightName1.Text;
+            App.DisplaySettings.HighlightName2 = this.highlightName2.Text;
+            App.DisplaySettings.HighlightName3 = this.highlightName3.Text;
+            App.DisplaySettings.HighlightName4 = this.highlightName4.Text;
+            App.DisplaySettings.HighlightName5 = this.highlightName5.Text;
+            App.DisplaySettings.HighlightName6 = this.highlightName6.Text;
+
             App.DisplaySettings.HebrewDictionaryLink = hebrewDictionaryLink.Text;
             App.DisplaySettings.GreekDictionaryLink = greekDictionaryLink.Text;
             App.DisplaySettings.CustomBibleDownloadLinks = customBibleDownloadLink.Text;
@@ -145,7 +162,7 @@ namespace CrossConnect
             {
                 App.OpenWindows[i].ForceReload = true;
             }
-
+            App.SavePersistantDisplaySettings();
             _isInThisWindow = false;
         }
 
@@ -188,6 +205,16 @@ namespace CrossConnect
             captionCustomBibleDownloadLink.Text = Translations.Translate("Custom bible download addresses");
             captionSoundLink.Text = Translations.Translate("Talking bible internet link");
             useInternetGreekHebrewDict.Header = Translations.Translate("Use internet dictionaries");
+            this.captionHightlight1.Text = Translations.Translate("Highlight name") + " 1";
+            this.captionHightlight2.Text = Translations.Translate("Highlight name") + " 2";
+            this.captionHightlight3.Text = Translations.Translate("Highlight name") + " 3";
+            this.captionHightlight4.Text = Translations.Translate("Highlight name") + " 4";
+            this.captionHightlight5.Text = Translations.Translate("Highlight name") + " 5";
+            this.captionHightlight6.Text = Translations.Translate("Highlight name") + " 6";
+            this.useHighlighting.Header = Translations.Translate("Use highlighting");
+            this.SyncVerses.Header = Translations.Translate("Synchronize to every verse");
+            butExportBookmarksHighlightsAndNotes.Content = Translations.Translate("Copy bookmarks, highlights and notes to the clipboard");
+            butImportBookmarksHighlightsAndNotes.Content = Translations.Translate("Import bookmarks, highlights and notes after you paste the clipboard into the box below");
 
             bool successfulInitialize = false;
             while (!successfulInitialize)
@@ -213,6 +240,14 @@ namespace CrossConnect
                     customBibleDownloadLink.Text = App.DisplaySettings.CustomBibleDownloadLinks;
                     soundLink.Text = App.DisplaySettings.SoundLink;
                     useInternetGreekHebrewDict.IsChecked = App.DisplaySettings.UseInternetGreekHebrewDict;
+                    this.highlightName1.Text = App.DisplaySettings.HighlightName1;
+                    this.highlightName2.Text = App.DisplaySettings.HighlightName2;
+                    this.highlightName3.Text = App.DisplaySettings.HighlightName3;
+                    this.highlightName4.Text = App.DisplaySettings.HighlightName4;
+                    this.highlightName5.Text = App.DisplaySettings.HighlightName5;
+                    this.highlightName6.Text = App.DisplaySettings.HighlightName6;
+                    this.useHighlighting.IsChecked = App.DisplaySettings.UseHighlights;
+                    this.SyncVerses.IsChecked = App.DisplaySettings.SyncMediaVerses;
 
                     successfulInitialize = true;
                 }
@@ -242,6 +277,51 @@ namespace CrossConnect
             AutoRotatePageLoaded(null, null);
         }
 
+        private void butImportBookmarksHighlightsAndNotes_Click(object sender, RoutedEventArgs e)
+        {
+            var text = this.ImportTextBox.Text;
+            if (!string.IsNullOrEmpty(text))
+            {
+                string message = Translations.Translate("Successful import");
+                try
+                {
+                    Highlighter.FromString(text, "note", true, null, App.DailyPlan.PersonalNotesVersified);
+                    Highlighter.FromString(text, "bookmark", false, App.PlaceMarkers.Bookmarks, null);
+                    App.DisplaySettings.highlighter.FromString(text);
+                }
+                catch (Exception ex)
+                {
+                    message = Translations.Translate("Unsuccessful import") + "\n" + ex.Message;
+                }
+                MessageBox.Show(message);
+            }
+            App.RaiseBookmarkChangeEvent();
+            App.RaisePersonalNotesChangeEvent();
+            App.SavePersistantMarkers();
+            App.SavePersistantHighlighting();
+            App.StartTimerForSavingWindows();
+
+        }
+
+        private void butExportBookmarksHighlightsAndNotes_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Set the DataPackage to clipboard. 
+                Clipboard.SetText("<crossconnectbookmarksnoteshighlights>\n" +
+                    App.DisplaySettings.highlighter.ToStringNoRoot() +
+                    Highlighter.ExportMarkersDictionary("note", App.DailyPlan.PersonalNotesVersified) +
+                    Highlighter.ExportMarkersList("bookmark", App.PlaceMarkers.Bookmarks) +
+                    "</crossconnectbookmarksnoteshighlights>");
+            }
+            catch (Exception ex)
+            {
+                // Copying data to Clipboard can potentially fail - for example, if another application is holding Clipboard open 
+            }
+        }
+
+
         #endregion Methods
+
     }
 }

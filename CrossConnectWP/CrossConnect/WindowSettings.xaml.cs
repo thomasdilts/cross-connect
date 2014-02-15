@@ -29,6 +29,7 @@ namespace CrossConnect
     using System.Text;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Linq;
 
     using CrossConnect.readers;
 
@@ -38,6 +39,7 @@ namespace CrossConnect
 
     using Sword;
     using Sword.reader;
+    using Windows.Phone.Speech.Synthesis;
 
     /// <summary>
     /// The window settings.
@@ -394,12 +396,14 @@ namespace CrossConnect
 
             bool isTranslateable = false;
             bool isListenable = false;
+            bool isTtsListenable = false;
             WindowType windowType = WindowType.WindowBible;
             if (App.OpenWindows.Count > 0 && App.OpenWindows[(int)openWindowIndex].State != null)
             {
                 SerializableWindowState state = App.OpenWindows[(int)openWindowIndex].State;
                 isTranslateable = state.Source.IsTranslateable && !state.Source.GetLanguage().Equals(Translations.IsoLanguageCode);
                 isListenable = state.Source.IsHearable;
+                isTtsListenable = state.Source.IsTTChearable && InstalledVoices.All.Any();
                 windowType = state.WindowType;
             }
 
@@ -409,6 +413,7 @@ namespace CrossConnect
                                         : Visibility.Collapsed;
             butTranslate.Visibility = isTranslateable ? visibility : Visibility.Collapsed;
             butListen.Visibility = isListenable ? visibility : Visibility.Collapsed;
+            butListenTts.Visibility = isTtsListenable ? visibility : Visibility.Collapsed;
 
             visibility = selectDocumentType.SelectedIndex == 4 ? Visibility.Visible : Visibility.Collapsed;
             DateSelectPanel.Visibility = visibility;
@@ -468,6 +473,7 @@ namespace CrossConnect
             selectDocument.Header = Translations.Translate("Select the bible");
             butTranslate.Content = Translations.Translate("Translate selected text");
             butListen.Content = Translations.Translate("Listen to this chapter");
+            butListenTts.Content = "(TTS) " + Translations.Translate("Listen to this chapter");
             planStartDateCaption.Text = Translations.Translate("Select the daily plan start date");
             selectPlanType.Header = Translations.Translate("Select the daily plan");
             EnterKeyTitle.Text = Translations.Translate("Enter key");
@@ -520,6 +526,7 @@ namespace CrossConnect
             }
 
             butListen.Visibility = visibility;
+            butListenTts.Visibility = visibility;
             butTranslate.Visibility = visibility;
 
             DateSelectPanel.Visibility = Visibility.Collapsed;
@@ -545,6 +552,7 @@ namespace CrossConnect
                         butEnterKeySave.Visibility = Visibility.Visible;
                         EnterKeyText.Focus();
 
+                        butListenTts.Visibility = Visibility.Collapsed;
                         butListen.Visibility = Visibility.Collapsed;
                         butTranslate.Visibility = Visibility.Collapsed;
                         DateSelectPanel.Visibility = Visibility.Collapsed;
@@ -560,17 +568,17 @@ namespace CrossConnect
                     }
                 }
 
-                int bookNum;
+                string bookNameShort;
                 int relChaptNum;
-                int absoluteChaptNum;
                 int verseNum;
                 string fullName;
                 string titleText;
                 state.Source.GetInfo(
-                    out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
+                    out bookNameShort, out relChaptNum, out verseNum, out fullName, out titleText);
 
                 butTranslate.Visibility = state.Source.IsTranslateable && !state.Source.GetLanguage().Equals(Translations.IsoLanguageCode) ? visibility : Visibility.Collapsed;
                 butListen.Visibility = state.Source.IsHearable ? visibility : Visibility.Collapsed;
+                butListenTts.Visibility = state.Source.IsTTChearable && InstalledVoices.All.Any() ? visibility : Visibility.Collapsed;
                 switch (state.WindowType)
                 {
                     case WindowType.WindowBible:
@@ -667,6 +675,7 @@ namespace CrossConnect
                             BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"),
                             BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
                             BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
+                            BrowserTitledWindow.GetBrowserColor("PhoneWordsOfChristColor"),
                             e.NewValue,
                             Theme.FontFamilies[App.Themes.FontFamily]) + "<a class=\"normalcolor\" href=\"#\">"
                         + Translations.Translate("Text size") + "</a>" + "</body></html>");
@@ -680,7 +689,7 @@ namespace CrossConnect
 
         #endregion Methods
 
-        private void ButTranslate_OnClick(object sender, RoutedEventArgs e)
+        private async void ButTranslate_OnClick(object sender, RoutedEventArgs e)
         {
             _isInThisWindow = false;
             SetBookChoosen();
@@ -691,12 +700,12 @@ namespace CrossConnect
             }
 
             SerializableWindowState state = App.OpenWindows[(int)openWindowIndex].State;
-            var obj = state.Source.GetTranslateableTexts(
+            var obj = await state.Source.GetTranslateableTexts(
                 App.DisplaySettings, state.BibleToLoad);
             var toTranslate = (string[])obj[0];
             var isTranslateable = (bool[])obj[1];
-
-            var transReader2 = new TranslatorReader(string.Empty, string.Empty, false, string.Empty, string.Empty);
+            var serial = ((BibleZtextReader)state.Source).Serial;
+            var transReader2 = new TranslatorReader(serial.Path, serial.Iso2DigitLangCode, serial.IsIsoEncoding, serial.CipherKey, serial.ConfigPath, serial.Versification);
             App.AddWindow(
                 state.BibleToLoad,
                 state.BibleDescription,
@@ -726,22 +735,23 @@ namespace CrossConnect
             }
 
             SerializableWindowState state = App.OpenWindows[(int)openWindowIndex].State;
-            int bookNum;
-            int absoluteChaptNum;
+            string bookNameShort;
             int relChaptNum;
             int verseNum;
             string fullName;
             string titleText;
             state.Source.GetInfo(
-                out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
-            PhoneApplicationService.Current.State["ChapterToHear"] = absoluteChaptNum;
+                out bookNameShort, out relChaptNum, out verseNum, out fullName, out titleText);
+            PhoneApplicationService.Current.State["BookToHear"] = bookNameShort;
+            PhoneApplicationService.Current.State["ChapterToHear"] = relChaptNum;
+            PhoneApplicationService.Current.State["VerseToHear"] = verseNum;
             PhoneApplicationService.Current.State["ChapterToHearLanguage"] = state.Source.GetLanguage();
             PhoneApplicationService.Current.State["titleBar"] = titleText;
             PhoneApplicationService.Current.State["skipWindowSettings"] = true;
             NavigationService.Navigate(new Uri("/SelectToPlay.xaml", UriKind.Relative));
         }
 
-        private void ButEnterKeySave_OnClick(object sender, RoutedEventArgs e)
+        private async void ButEnterKeySave_OnClick(object sender, RoutedEventArgs e)
         {
             object openWindowIndex;
             if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
@@ -750,13 +760,11 @@ namespace CrossConnect
             }
 
             SerializableWindowState state = App.OpenWindows[(int)openWindowIndex].State;
-            if (((BibleZtextReader)state.Source).IsCipherKeyGood(this.EnterKeyText.Text))
+            if (await ((BibleZtextReader)state.Source).IsCipherKeyGood(this.EnterKeyText.Text))
             {
                 ((BibleZtextReader)state.Source).Serial.CipherKey = this.EnterKeyText.Text;
                 string filenameComplete = ((BibleZtextReader)state.Source).Serial.Path + "CipherKey.txt";
-                var fs = Hoot.File.OpenStreamForWriteAsync(filenameComplete.Replace("/", "\\"), File.CreationCollisionOption.ReplaceExisting);
-                fs.Write(Encoding.UTF8.GetBytes(this.EnterKeyText.Text), 0, this.EnterKeyText.Text.Length);
-                fs.Flush();
+                await Hoot.File.WriteAllBytes(filenameComplete, Encoding.UTF8.GetBytes(this.EnterKeyText.Text));
                 App.OpenWindows[(int)openWindowIndex].ForceReload = true;
                 App.OpenWindows[(int)openWindowIndex].UpdateBrowser(false);
                 HasFoundGoodKey=true;
@@ -770,6 +778,33 @@ namespace CrossConnect
                 this.EnterKeyTitle.Text = Translations.Translate("Invalid key. Try again"); ;
 
             }
+        }
+
+        private void ButTtsListen_OnClick(object sender, RoutedEventArgs e)
+        {
+            _isInThisWindow = false;
+            SetBookChoosen();
+            object openWindowIndex;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            {
+                openWindowIndex = 0;
+            }
+
+            SerializableWindowState state = App.OpenWindows[(int)openWindowIndex].State;
+            string bookNameShort;
+            int relChaptNum;
+            int verseNum;
+            string fullName;
+            string titleText;
+            state.Source.GetInfo(
+                out bookNameShort, out relChaptNum, out verseNum, out fullName, out titleText);
+            PhoneApplicationService.Current.State["BookToHear"] = bookNameShort;
+            PhoneApplicationService.Current.State["ChapterToHear"] = relChaptNum;
+            PhoneApplicationService.Current.State["VerseToHear"] = verseNum;
+            PhoneApplicationService.Current.State["ChapterToHearLanguage"] = state.Source.GetLanguage();
+            PhoneApplicationService.Current.State["titleBar"] = titleText;
+            PhoneApplicationService.Current.State["skipWindowSettings"] = true;
+            NavigationService.Navigate(new Uri("/SelectTtsToPlay.xaml", UriKind.Relative));
         }
     }
 }

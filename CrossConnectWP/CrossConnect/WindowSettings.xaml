@@ -56,13 +56,14 @@
           <RowDefinition Height="Auto" />
           <RowDefinition Height="Auto" />
           <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <toolkit:ListPicker Name="selectDocumentType" Grid.Row="0" Header="Select the window type"
@@ -83,9 +84,11 @@
                 Click="ButEnterKeySave_OnClick" />
                 <Button Content="Listen to this chapter" Grid.Row="7" Name="butListen"
                 Click="ButListen_OnClick" />
-                <Button Content="Translate selected text" Grid.Row="8" Name="butTranslate" Click="ButTranslate_OnClick" />
-        <phone:WebBrowser Grid.Row="9" Margin="0 0 0 0" Name="webBrowser1" MinHeight="50" /> 
-        <Slider Grid.Row="10" Maximum="37.0" Minimum="5.0" ValueChanged="SliderTextSizeValueChanged"
+                <Button Content="(TTS) Listen to this chapter" Grid.Row="8" Name="butListenTts"
+                Click="ButTtsListen_OnClick" />
+                <Button Content="Translate selected text" Grid.Row="9" Name="butTranslate" Click="ButTranslate_OnClick" />
+        <phone:WebBrowser Grid.Row="10" Margin="0 0 0 0" Name="webBrowser1" MinHeight="50" /> 
+        <Slider Grid.Row="11" Maximum="37.0" Minimum="5.0" ValueChanged="SliderTextSizeValueChanged"
                 Name="sliderTextSize" />
       </Grid>
     </Grid>

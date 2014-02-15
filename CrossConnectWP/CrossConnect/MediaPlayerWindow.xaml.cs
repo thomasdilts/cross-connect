@@ -36,8 +36,6 @@ namespace CrossConnect
     using System.Windows.Media.Imaging;
     using System.Windows.Threading;
 
-    using AudioPlaybackAgent1;
-
     using Microsoft.Phone.BackgroundAudio;
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Tasks;
@@ -45,6 +43,8 @@ namespace CrossConnect
     using Sword.reader;
 
     using readers;
+    using AudioPlaybackAgent1;
+    using Windows.Phone.Speech.Synthesis;
 
     public partial class MediaPlayerWindow : ITiledWindow
     {
@@ -144,14 +144,104 @@ namespace CrossConnect
                 Debug.WriteLine(eee);
             }
         }
-
-        public void RestartToThisMedia(AudioPlayer.MediaInfo info)
+        private static SpeechSynthesizer _synth = null;
+        private SpeechSynthesizer GetSynthesizer(string voiceName)
         {
-            ((MediaReader)_state.Source).Info = info;
-            AudioPlayer.StartNewTrack(((MediaReader)_state.Source).Info);
-            title.Text = AudioPlayer.GetTitle(info);
-            SetButtonVisibility(false);
+            var currentVoice = _synth!=null?_synth.GetVoice():null;
+            if (_synth == null || currentVoice != null && !currentVoice.DisplayName.Equals(voiceName))
+            {
+                _synth = new SpeechSynthesizer();
+                VoiceInformation uniqueVoice = InstalledVoices.All.FirstOrDefault(v => v.DisplayName.Equals(voiceName));
+                _synth.SetVoice(uniqueVoice);
+            }
+
+            return _synth;
         }
+        public void RestartToThisMedia(AudioPlayer.MediaInfo Info)
+        {
+
+            if (Info == null || (string.IsNullOrEmpty(Info.VoiceName) && string.IsNullOrEmpty(Info.Src)))
+            {
+                return;
+            }
+            if (string.IsNullOrEmpty(Info.VoiceName))
+            {
+                AudioPlayer.StartNewTrack(Info);
+                title.Text = AudioPlayer.GetTitle(Info);
+                SetButtonVisibility(false);
+                App.StartTimerForSavingWindows();
+                return;
+            }
+            InfinateLoopTextToSpeech(Info, GetSynthesizer(Info.VoiceName));
+
+
+            App.StartTimerForSavingWindows();
+
+        }
+        private static bool _IsCancel = false;
+        private static bool _IsInLoop = false;
+        public async void InfinateLoopTextToSpeech(AudioPlayer.MediaInfo Info, SpeechSynthesizer synth)
+        {
+            if (_IsInLoop)
+            {
+                SetButtonVisibilityTTS(true);
+                return;
+            }
+            _IsInLoop = true;
+            while(true)
+            {
+                var chapterdata = string.Empty;
+                while (string.IsNullOrEmpty(chapterdata))
+                {
+                    chapterdata = await this._state.Source.GetTTCtext(App.DisplaySettings.SyncMediaVerses);
+                    if (!string.IsNullOrEmpty(chapterdata))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        this._state.Source.MoveNext(App.DisplaySettings.SyncMediaVerses);
+                    }
+                }
+
+
+                string bookShortName;
+                int relChaptNum;
+                int verseNum;
+                string fullName;
+                string title2;
+                this._state.Source.GetInfo(out bookShortName,
+                    out relChaptNum,
+                    out verseNum,
+                    out fullName,
+                    out title2);
+                if (this.title != null)
+                {
+                    this.title.Text = title2 + " - "
+                                + (string.IsNullOrEmpty(this._state.BibleDescription)
+                                        ? this._state.BibleToLoad
+                                        : this._state.BibleDescription);
+                }
+                App.SynchronizeAllWindows(bookShortName, relChaptNum, verseNum, -1, this._state.Source);
+                try
+                {
+                    SetButtonVisibilityTTS(true);
+                    await synth.SpeakTextAsync(chapterdata);
+                }
+                catch(Exception e)
+                {
+
+                }
+                if(_IsCancel)
+                {
+                    _IsCancel = false;
+                    break;
+                }
+                this._state.Source.MoveNext(App.DisplaySettings.SyncMediaVerses);
+            }
+            _IsInLoop = false;
+        }
+
 
         public void ShowSizeButtons(bool isShow = true)
         {
@@ -185,8 +275,19 @@ namespace CrossConnect
             CalculateTitleTextWidth();
         }
 
-        public void SynchronizeWindow(int chapterNum, int verseNum, IBrowserTextSource source)
+        public void SynchronizeWindow(string shortBookName, int chapterNum, int verseNum, IBrowserTextSource source)
         {
+        }
+
+        public void SetMediaInfo(SerializableWindowState theState, AudioPlayer.MediaInfo info)
+        {
+            this._state = theState;
+            theState.VoiceName = info.VoiceName;
+            theState.Src = info.Src;
+            theState.Pattern = info.Pattern;
+            theState.IsNtOnly = info.IsNtOnly;
+            theState.code = info.Code;
+            this.RestartToThisMedia(info);
         }
 
         public void UpdateBrowser(bool isOrientationChangeOnly)
@@ -278,7 +379,17 @@ namespace CrossConnect
 
         private void ButCloseClick(object sender, RoutedEventArgs e)
         {
-            BackgroundAudioPlayer.Instance.Close();
+            SetButtonVisibility(false);
+            if (string.IsNullOrEmpty(_state.VoiceName))
+            {
+                BackgroundAudioPlayer.Instance.Close();
+
+            }
+            else if (_synth!=null)
+            {
+                _IsCancel = true;
+                _synth.CancelAll();
+            }
             if (HitButtonClose != null)
             {
                 HitButtonClose(this, e);
@@ -295,36 +406,96 @@ namespace CrossConnect
             }
         }
 
-        private void ButNextClick(object sender, RoutedEventArgs e)
+        private async void ButNextClick(object sender, RoutedEventArgs e)
         {
-            BackgroundAudioPlayer.Instance.SkipNext();
-
             // Prevent the user from repeatedly pressing the button and causing
             // a backlong of button presses to be handled. This button is re-eneabled
             // in the TrackReady Playstate handler.
             SetButtonVisibility(false);
+            if (string.IsNullOrEmpty(_state.VoiceName))
+            {
+                BackgroundAudioPlayer.Instance.SkipNext();
+            }
+            else 
+            {
+                _IsCancel = true;
+                _synth.CancelAll();
+                _state.Source.MoveNext(App.DisplaySettings.SyncMediaVerses);
+                
+                System.Threading.ThreadPool.QueueUserWorkItem(obj =>
+                {
+                    System.Threading.Thread.Sleep(1000);
+
+                    Dispatcher.BeginInvoke(() =>
+                    {
+                        if (!_IsCancel)
+                        {
+                            InfinateLoopTextToSpeech(GetMediaInfo(), GetSynthesizer(_state.VoiceName));
+                        }
+                    });
+                });
+            }
         }
 
         private void ButPlayPauseClick(object sender, RoutedEventArgs e)
         {
-            if (PlayState.Playing == BackgroundAudioPlayer.Instance.PlayerState)
+
+            if (string.IsNullOrEmpty(_state.VoiceName))
             {
-                BackgroundAudioPlayer.Instance.Pause();
+                if (PlayState.Playing == BackgroundAudioPlayer.Instance.PlayerState)
+                {
+                    BackgroundAudioPlayer.Instance.Pause();
+                }
+                else
+                {
+                    BackgroundAudioPlayer.Instance.Play();
+                }
             }
             else
             {
-                BackgroundAudioPlayer.Instance.Play();
+                if (_isPlaying)
+                {
+                    _IsCancel = true;
+                    _synth.CancelAll();
+                    SetButtonVisibilityTTS(false);
+                }
+                else
+                {
+                    SetButtonVisibilityTTS(true);
+                    InfinateLoopTextToSpeech(GetMediaInfo(),GetSynthesizer(_state.VoiceName));
+                }
             }
         }
 
         private void ButPreviousClick(object sender, RoutedEventArgs e)
         {
-            BackgroundAudioPlayer.Instance.SkipPrevious();
-
+            
             // Prevent the user from repeatedly pressing the button and causing
             // a backlong of button presses to be handled. This button is re-eneabled
             // in the TrackReady Playstate handler.
             SetButtonVisibility(false);
+            if (string.IsNullOrEmpty(_state.VoiceName))
+            {
+                BackgroundAudioPlayer.Instance.SkipPrevious();
+            }
+            else
+            {
+                _IsCancel = true;
+                _synth.CancelAll();
+                _state.Source.MovePrevious(App.DisplaySettings.SyncMediaVerses);
+                System.Threading.ThreadPool.QueueUserWorkItem(obj =>
+                {
+                    System.Threading.Thread.Sleep(1000);
+
+                    Dispatcher.BeginInvoke(() =>
+                    {
+                        if (!_IsCancel)
+                        {
+                            InfinateLoopTextToSpeech(GetMediaInfo(), GetSynthesizer(_state.VoiceName));
+                        }
+                    });
+                });
+            }
         }
 
         private void ButSmallerClick(object sender, RoutedEventArgs e)
@@ -356,12 +527,11 @@ namespace CrossConnect
 
         private void ImageIconTap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            var info = ((MediaReader)_state.Source).Info;
-            if (info != null && !string.IsNullOrEmpty(info.IconLink))
+            if (!string.IsNullOrEmpty(_state.IconLink))
             {
                 try
                 {
-                    var webBrowserTask = new WebBrowserTask { Uri = new Uri(info.IconLink) };
+                    var webBrowserTask = new WebBrowserTask { Uri = new Uri(_state.IconLink) };
                     webBrowserTask.Show();
                 }
                 catch (Exception ee)
@@ -402,15 +572,58 @@ namespace CrossConnect
             }
         }
 
+        private void SetStateFromMediaInfo(AudioPlayer.MediaInfo info)
+        {
+            _state.IconLink = info.IconLink;
+            _state.Src = info.Src;
+            _state.Pattern = info.Pattern;
+            _state.IsNtOnly = info.IsNtOnly;
+            _state.code = info.Code;
+            _state.VoiceName = info.VoiceName;
+            _state.Name = info.Name;
+            _state.Language = info.Language;
+            _state.Icon = info.Icon;
+            _state.Source.MoveChapterVerse(info.Book, info.Chapter, info.Verse, false, _state.Source);
+        }
+        private AudioPlayer.MediaInfo GetMediaInfo()
+        {
+            string bookShortName;
+            int relChaptNum;
+            int verseNum;
+            string fullName;
+            string title;
+            _state.Source.GetInfo(out bookShortName,
+                out relChaptNum,
+                out verseNum,
+                out fullName,
+                out title);
+            return new AudioPlayer.MediaInfo
+            {
+                Verse = verseNum,
+                Chapter = relChaptNum,
+                Book = bookShortName,
+                VoiceName = _state.VoiceName,
+                Code = _state.code,
+                IsNtOnly = _state.IsNtOnly,
+                Pattern = _state.Pattern,
+                Src = _state.Src,
+                IconLink = _state.IconLink,
+                Name = _state.Name,
+                Language = _state.Language,
+                Icon = _state.Icon
+            };
+        }
+
         private void MediaPlayerWindowLoaded(object sender, RoutedEventArgs e)
         {
-            UpdateBrowser(false);
+            
             if (_isLoaded)
             {
                 return;
             }
 
             _isLoaded = true;
+            UpdateBrowser(false);
             string colorDir = App.Themes.IsButtonColorDark ? "light" : "dark";
             SetButtonVisibility(
                 butNext,
@@ -422,35 +635,41 @@ namespace CrossConnect
                  true,
                  "/Images/" + colorDir + "/appbar.transport.rew.rest.png",
                  "/Images/" + colorDir + "/appbar.transport.rew.pressed.png");
-
-            SetButtonVisibility(false);
-
-            switch (BackgroundAudioPlayer.Instance.PlayerState)
+            if (string.IsNullOrEmpty(_state.VoiceName))
             {
-                case PlayState.Playing:
-                case PlayState.Paused:
-                    if (BackgroundAudioPlayer.Instance.Track != null)
-                    {
-                        string msg;
-                        AudioPlayer.MediaInfo info = AudioPlayer.ReadMediaInfoFromXml(BackgroundAudioPlayer.Instance.Track.Tag, out msg);
-                        if (!string.IsNullOrEmpty(info.Src))
+                SetButtonVisibility(false); 
+                switch (BackgroundAudioPlayer.Instance.PlayerState)
+                {
+                    case PlayState.Playing:
+                    case PlayState.Paused:
+                        if (BackgroundAudioPlayer.Instance.Track != null)
                         {
-                            this.ShowTrack(info);
+                            string msg;
+                            AudioPlayer.MediaInfo info = AudioPlayer.ReadMediaInfoFromXml(BackgroundAudioPlayer.Instance.Track.Tag, out msg);
+                            if (!string.IsNullOrEmpty(info.Src))
+                            {
+                                this.ShowTrack(info);
+                            }
+                            else
+                            {
+                                // do a restart
+                                AudioPlayer.StartNewTrack(GetMediaInfo());
+                                title.Text = AudioPlayer.GetTitle(GetMediaInfo());
+                            }
                         }
-                        else
-                        {
-                            // do a restart
-                            AudioPlayer.StartNewTrack(((MediaReader)_state.Source).Info);
-                            title.Text = AudioPlayer.GetTitle(((MediaReader)_state.Source).Info);
-                        }
-                    }
 
-                    break;
-                default:
-                    // lets start it again.
-                    AudioPlayer.StartNewTrack(((MediaReader)_state.Source).Info);
-                    title.Text = AudioPlayer.GetTitle(((MediaReader)_state.Source).Info);
-                    break;
+                        break;
+                    default:
+                        // lets start it again.
+                        AudioPlayer.StartNewTrack(GetMediaInfo());
+                        title.Text = AudioPlayer.GetTitle(GetMediaInfo());
+                        break;
+                }
+            }
+            else
+            {
+                // todo start the other player?
+                SetButtonVisibilityTTS(_isPlaying);
             }
         }
 
@@ -468,6 +687,35 @@ namespace CrossConnect
             }
         }
 
+        private void SetButtonVisibilityTTS(bool isPlaying)
+        {
+            butPlayPause.Visibility = true ? Visibility.Visible : Visibility.Collapsed;
+            butNext.Visibility = isPlaying ? Visibility.Visible : Visibility.Collapsed;
+            butPrevious.Visibility = isPlaying ? Visibility.Visible : Visibility.Collapsed;
+            stackContent.Visibility = true ? Visibility.Visible : Visibility.Collapsed;
+            stackProgress.Visibility = false ? Visibility.Visible : Visibility.Collapsed;
+            WaitingForDownload.Visibility = false ? Visibility.Visible : Visibility.Collapsed;
+
+            SetPlayPauseButtonTTS(isPlaying);
+
+        }
+
+        bool _isPlaying = false;
+        private void SetPlayPauseButtonTTS(bool isPlaying)
+        {
+            string colorDir = App.Themes.IsButtonColorDark ? "light" : "dark";
+            butPlayPause.Image =
+                GetImage(
+                    !isPlaying
+                        ? "/Images/" + colorDir + "/appbar.transport.play.rest.png"
+                        : "/Images/" + colorDir + "/appbar.transport.pause.rest.png");
+            butPlayPause.PressedImage =
+                GetImage(
+                    !isPlaying
+                        ? "/Images/" + colorDir + "/appbar.transport.play.rest.pressed.png"
+                        : "/Images/" + colorDir + "/appbar.transport.pause.rest.pressed.png");
+            _isPlaying = isPlaying;
+        }
         private void SetPlayPauseButton(bool isPlaying)
         {
             SetButtonVisibility(true);
@@ -484,10 +732,9 @@ namespace CrossConnect
                         ? "/Images/" + colorDir + "/appbar.transport.play.rest.pressed.png"
                         : "/Images/" + colorDir + "/appbar.transport.pause.rest.pressed.png");
         }
-
         private void ShowTrack(AudioPlayer.MediaInfo info)
         {
-            ((MediaReader)_state.Source).Info = info;
+            SetStateFromMediaInfo(info);
             if (BackgroundAudioPlayer.Instance.PlayerState == PlayState.Playing)
             {
                 // start timer

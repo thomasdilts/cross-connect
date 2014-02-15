@@ -47,10 +47,10 @@ namespace CrossConnect
 
         #region Methods
 
-        private void LoadList()
+        private async void LoadList()
         {
             SelectList.Items.Clear();
-            List<string> allBookmarks = App.OpenWindows[0].State.Source.MakeListDisplayText(
+            List<string> allBookmarks = await App.OpenWindows[0].State.Source.MakeListDisplayText(
                 App.DisplaySettings, App.PlaceMarkers.Bookmarks);
 
             // the list is a reversed list from the original list. So we must mark it with the correct reversed index.

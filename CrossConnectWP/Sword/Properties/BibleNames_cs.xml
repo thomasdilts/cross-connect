@@ -1,69 +1,69 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<biblenames isolang="cs" isolocale="" version="1.0" >
-<book keynumber="0" short="1Moj" full="Genesis" />
-<book keynumber="1" short="2Moj" full="Exodus" />
-<book keynumber="2" short="3Moj" full="Leviticus" />
-<book keynumber="3" short="4Moj" full="Numeri" />
-<book keynumber="4" short="5Moj" full="Deuteronomium" />
-<book keynumber="5" short="Jozue" full="Jozue" />
-<book keynumber="6" short="Soud" full="Soudců" />
-<book keynumber="7" short="Rut" full="Rut" />
-<book keynumber="8" short="1Sam" full="1. Samuelova" />
-<book keynumber="9" short="2Sam" full="2. Samuelova" />
-<book keynumber="10" short="1Kr" full="1. Královská" />
-<book keynumber="11" short="2Kr" full="2. Královská" />
-<book keynumber="12" short="1Par" full="1. Paralipomenon" />
-<book keynumber="13" short="2Par" full="2. Paralipomenon" />
-<book keynumber="14" short="Ezd" full="Ezdráš" />
-<book keynumber="15" short="Neh" full="Nehemiáš" />
-<book keynumber="16" short="Est" full="Ester" />
-<book keynumber="17" short="Job" full="Job" />
-<book keynumber="18" short="Žalm" full="Žalmy" />
-<book keynumber="19" short="Přísl" full="Přísloví" />
-<book keynumber="20" short="Kaz" full="Kazatel" />
-<book keynumber="21" short="Píseň" full="Píseň Šalomounova" />
-<book keynumber="22" short="Iz" full="Izaiáš" />
-<book keynumber="23" short="Jer" full="Jeremiáš" />
-<book keynumber="24" short="Pláč" full="Pláč Jeremiášův" />
-<book keynumber="25" short="Ezech" full="Ezechiel" />
-<book keynumber="26" short="Dan" full="Daniel" />
-<book keynumber="27" short="Oz" full="Ozeáš" />
-<book keynumber="28" short="Joél" full="Joel" />
-<book keynumber="29" short="Amos" full="Amos" />
-<book keynumber="30" short="Abd" full="Abdiáš" />
-<book keynumber="31" short="Jon" full="Jonáš" />
-<book keynumber="32" short="Mich" full="Micheáš" />
-<book keynumber="33" short="Nah" full="Nahum" />
-<book keynumber="34" short="Abak" full="Abakuk" />
-<book keynumber="35" short="Sof" full="Sofoniáš" />
-<book keynumber="36" short="Ag" full="Aggeus" />
-<book keynumber="37" short="Zach" full="Zachariáš" />
-<book keynumber="38" short="Mal" full="Malachiáš" />
-<book keynumber="39" short="Mat" full="Matouš" />
-<book keynumber="40" short="Mar" full="Marek" />
-<book keynumber="41" short="Luk" full="Lukáš" />
-<book keynumber="42" short="Jan" full="Jan" />
-<book keynumber="43" short="Skut" full="Skutky" />
-<book keynumber="44" short="Řím" full="Římanům" />
-<book keynumber="45" short="1Kor" full="1. Korintským" />
-<book keynumber="46" short="2Kor" full="2. Korintským" />
-<book keynumber="47" short="Gal" full="Galatským" />
-<book keynumber="48" short="Efez" full="Efezským" />
-<book keynumber="49" short="Filip" full="Filipenským" />
-<book keynumber="50" short="Kolos" full="Kolossenským" />
-<book keynumber="51" short="1Tes" full="1. Tessalonicenským" />
-<book keynumber="52" short="2Tes" full="2. Tessalonicenským" />
-<book keynumber="53" short="1Tim" full="1. Timoteovi" />
-<book keynumber="54" short="2Tim" full="2. Timoteovi" />
-<book keynumber="55" short="Tit" full="Titovi" />
-<book keynumber="56" short="Filem" full="Filemonovi" />
-<book keynumber="57" short="Žid" full="Židům" />
-<book keynumber="58" short="Jakub" full="Jakub" />
-<book keynumber="59" short="1Petr" full="1. Petrova" />
-<book keynumber="60" short="2Petr" full="2. Petrova" />
-<book keynumber="61" short="1Jan" full="1. Janova" />
-<book keynumber="62" short="2Jan" full="2. Janova" />
-<book keynumber="63" short="3Jan" full="3. Janova" />
-<book keynumber="64" short="Juda" full="Juda" />
-<book keynumber="65" short="Zjev" full="Zjevení" />
+<?xml version="1.0" encoding="UTF-8"?>
+<biblenames isolang="cs" isolocale="" version="1.0">
+<book key="Gen" short="GENESIS" full="GENESIS" />
+<book key="Exod" short="EXODUS" full="EXODUS" />
+<book key="Lev" short="LEVITICUS" full="LEVITICUS" />
+<book key="Num" short="NUMERI" full="NUMERI" />
+<book key="Deut" short="DEUTERONOMIUM" full="DEUTERONOMIUM" />
+<book key="Josh" short="JOZUE" full="JOZUE" />
+<book key="Judg" short="SOUDCŮ" full="SOUDCŮ" />
+<book key="Ruth" short="RUT" full="RUT" />
+<book key="1Sam" short="1. SAMUELOVA" full="1. SAMUELOVA" />
+<book key="2Sam" short="2. SAMUELOVA" full="2. SAMUELOVA" />
+<book key="1Kgs" short="1. KRÁLOVSKÁ" full="1. KRÁLOVSKÁ" />
+<book key="2Kgs" short="2. KRÁLOVSKÁ" full="2. KRÁLOVSKÁ" />
+<book key="1Chr" short="1. PARALIPOMENON" full="1. PARALIPOMENON" />
+<book key="2Chr" short="2. PARALIPOMENON" full="2. PARALIPOMENON" />
+<book key="Ezra" short="EZDRÁŠ" full="EZDRÁŠ" />
+<book key="Neh" short="NEHEMIÁŠ" full="NEHEMIÁŠ" />
+<book key="Esth" short="ESTER" full="ESTER" />
+<book key="Job" short="JOB" full="JOB" />
+<book key="Ps" short="ŽALMY" full="ŽALMY" />
+<book key="Prov" short="PŘÍSLOVÍ" full="PŘÍSLOVÍ" />
+<book key="Eccl" short="KAZATEL" full="KAZATEL" />
+<book key="Song" short="PÍSEŇ ŠALAMOUNOVA" full="PÍSEŇ ŠALAMOUNOVA" />
+<book key="Isa" short="IZAIÁŠ" full="IZAIÁŠ" />
+<book key="Jer" short="JEREMIÁŠ" full="JEREMIÁŠ" />
+<book key="Lam" short="PLÁČ JEREMIÁŠŮV" full="PLÁČ JEREMIÁŠŮV" />
+<book key="Ezek" short="EZECHIEL" full="EZECHIEL" />
+<book key="Dan" short="DANIEL" full="DANIEL" />
+<book key="Hos" short="OZEÁŠ" full="OZEÁŠ" />
+<book key="Joel" short="JOEL" full="JOEL" />
+<book key="Amos" short="AMOS" full="AMOS" />
+<book key="Obad" short="ABDIÁŠ" full="ABDIÁŠ" />
+<book key="Jonah" short="JONÁŠ" full="JONÁŠ" />
+<book key="Mic" short="MICHEÁŠ" full="MICHEÁŠ" />
+<book key="Nah" short="NAHUM" full="NAHUM" />
+<book key="Hab" short="ABAKUK" full="ABAKUK" />
+<book key="Zeph" short="SOFONIÁŠ" full="SOFONIÁŠ" />
+<book key="Hag" short="AGGEUS" full="AGGEUS" />
+<book key="Zech" short="ZACHARIÁŠ" full="ZACHARIÁŠ" />
+<book key="Mal" short="MALACHIÁŠ" full="MALACHIÁŠ" />
+<book key="Matt" short="MATOUŠ" full="MATOUŠ" />
+<book key="Mark" short="MAREK" full="MAREK" />
+<book key="Luke" short="LUKÁŠ" full="LUKÁŠ" />
+<book key="John" short="JAN" full="JAN" />
+<book key="Acts" short="SKUTKY" full="SKUTKY" />
+<book key="Rom" short="ŘÍMANŮM" full="ŘÍMANŮM" />
+<book key="1Cor" short="1. KORINTSKÝM" full="1. KORINTSKÝM" />
+<book key="2Cor" short="2. KORINTSKÝM" full="2. KORINTSKÝM" />
+<book key="Gal" short="GALATSKÝM" full="GALATSKÝM" />
+<book key="Eph" short="EFEZSKÝM" full="EFEZSKÝM" />
+<book key="Phil" short="FILIPENSKÝM" full="FILIPENSKÝM" />
+<book key="Col" short="KOLOSSENSKÝM" full="KOLOSSENSKÝM" />
+<book key="1Thess" short="1. TESSALONICENSKÝM" full="1. TESSALONICENSKÝM" />
+<book key="2Thess" short="2. TESSALONICENSKÝM" full="2. TESSALONICENSKÝM" />
+<book key="1Tim" short="1. TIMOTEOVI" full="1. TIMOTEOVI" />
+<book key="2Tim" short="2. TIMOTEOVI" full="2. TIMOTEOVI" />
+<book key="Titus" short="TITOVI" full="TITOVI" />
+<book key="Phlm" short="FILEMONOVI" full="FILEMONOVI" />
+<book key="Heb" short="ŽIDŮM" full="ŽIDŮM" />
+<book key="Jas" short="JAKUB" full="JAKUB" />
+<book key="1Pet" short="1. PETROVA" full="1. PETROVA" />
+<book key="2Pet" short="2. PETROVA" full="2. PETROVA" />
+<book key="1John" short="1. JANOVA" full="1. JANOVA" />
+<book key="2John" short="2. JANOVA" full="2. JANOVA" />
+<book key="3John" short="3. JANOVA" full="3. JANOVA" />
+<book key="Jude" short="JUDA" full="JUDA" />
+<book key="Rev" short="ZJEVENÍ" full="ZJEVENÍ" />
 </biblenames>

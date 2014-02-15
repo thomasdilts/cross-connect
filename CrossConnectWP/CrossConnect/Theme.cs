@@ -27,202 +27,248 @@ namespace CrossConnect
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Text;
     using System.Windows;
     using System.Windows.Media;
     using System.Xml;
 
-    /// <summary>
-    /// The theme.
-    /// </summary>
     public class Theme
     {
+        #region Static Fields
+
+        public static readonly Dictionary<string, string> FontFamilies = new Dictionary<string, string>
+                                                                             {
+                                                                                 {
+                                                                                     "Andale Mono"
+                                                                                     ,
+                                                                                     "font-family: 'andale mono','monotype.com',monaco,'courier new',courier,monospace;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Arial Black"
+                                                                                     ,
+                                                                                     "font-family: 'Arial Black',helvetica,sans-serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Arial",
+                                                                                     "font-family: arial,helvetica,sans-serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Avant Garde Gothic"
+                                                                                     ,
+                                                                                     "font-family: 'Century Gothic','Avant Garde Gothic','Avant Garde','URW Gothic L',helvetica,sans-serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Bookman Old Style"
+                                                                                     ,
+                                                                                     "font-family: 'Bookman Old Style','URW Bookman L','itc bookman',times,serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Century Schoolbook"
+                                                                                     ,
+                                                                                     "font-family: 'Century Schoolbook',Century,'new century schoolbook','Century Schoolbook L',times,serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Comic Sans MS"
+                                                                                     ,
+                                                                                     "font-family: 'Comic Sans MS',arial,helvetica,sans-serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Courier New"
+                                                                                     ,
+                                                                                     "font-family: 'courier new',courier,monospace;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Courier",
+                                                                                     "font-family: courier,monospace;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Garamond"
+                                                                                     ,
+                                                                                     "font-family: Garamond,Garamond,'Garamond Antiqua',times,serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Georgia",
+                                                                                     "font-family: georgia,times,serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Helvetica"
+                                                                                     ,
+                                                                                     "font-family: helvetica,sans-serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Impact",
+                                                                                     "font-family: impact,helvetica,sans-serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Palatino Linotype"
+                                                                                     ,
+                                                                                     "font-family: 'Palatino Linotype','URW Palladio L','palladio l',palatino,'book antiqua',times,serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Segoe WP"
+                                                                                     ,
+                                                                                     "font-family: Segoe WP;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Segoe UI"
+                                                                                     ,
+                                                                                     "font-family: Segoe UI;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Tahoma",
+                                                                                     "font-family: tahoma,arial,helvetica,sans-serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Times New Roman"
+                                                                                     ,
+                                                                                     "font-family: 'Times New Roman','Times Roman',TimesNR,times,serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Times Roman"
+                                                                                     ,
+                                                                                     "font-family: 'Times Roman',times,serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Trebuchet MS"
+                                                                                     ,
+                                                                                     "font-family: 'Trebuchet MS',arial,helvetica,sans-serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Verdana",
+                                                                                     "font-family: verdana,arial,helvetica,sans-serif;"
+                                                                                 }
+                                                                             };
+
+        #endregion
+
         #region Fields
 
-        /// <summary>
-        /// The font families.
-        /// </summary>
-        public static readonly Dictionary<string, string> FontFamilies = new Dictionary<string, string> {
-                { "Andale Mono", "font-family: 'andale mono','monotype.com',monaco,'courier new',courier,monospace;" },
-                { "Arial Black", "font-family: 'Arial Black',helvetica,sans-serif;" },
-                { "Arial", "font-family: arial,helvetica,sans-serif;" },
-                {
-                    "Avant Garde Gothic",
-                    "font-family: 'Century Gothic','Avant Garde Gothic','Avant Garde','URW Gothic L',helvetica,sans-serif;"
-                    },
-                { "Bookman Old Style", "font-family: 'Bookman Old Style','URW Bookman L','itc bookman',times,serif;" },
-                {
-                    "Century Schoolbook",
-                    "font-family: 'Century Schoolbook',Century,'new century schoolbook','Century Schoolbook L',times,serif;"
-                    },
-                { "Comic Sans MS", "font-family: 'Comic Sans MS',arial,helvetica,sans-serif;" },
-                { "Courier New", "font-family: 'courier new',courier,monospace;" },
-                { "Courier", "font-family: courier,monospace;" },
-                { "Garamond", "font-family: Garamond,Garamond,'Garamond Antiqua',times,serif;" },
-                { "Georgia", "font-family: georgia,times,serif;" },
-                { "Helvetica", "font-family: helvetica,sans-serif;" },
-                { "Impact", "font-family: impact,helvetica,sans-serif;" },
-                {
-                    "Palatino Linotype",
-                    "font-family: 'Palatino Linotype','URW Palladio L','palladio l',palatino,'book antiqua',times,serif;"
-                    },
-                { "Segoe WP", "font-family: Segoe WP;" },
-                { "Tahoma", "font-family: tahoma,arial,helvetica,sans-serif;" },
-                { "Times New Roman", "font-family: 'Times New Roman','Times Roman',TimesNR,times,serif;" },
-                { "Times Roman", "font-family: 'Times Roman',times,serif;" },
-                { "Trebuchet MS", "font-family: 'Trebuchet MS',arial,helvetica,sans-serif;" },
-                { "Verdana", "font-family: verdana,arial,helvetica,sans-serif;" }
-            };
-
-        /// <summary>
-        /// The themes.
-        /// </summary>
         public readonly Dictionary<Guid, Theme> Themes = new Dictionary<Guid, Theme>();
 
-        /// <summary>
-        /// The accent color.
-        /// </summary>
         public Color AccentColor;
 
-        /// <summary>
-        /// The border color.
-        /// </summary>
         public Color BorderColor;
 
-        /// <summary>
-        /// The font family.
-        /// </summary>
         public string FontFamily = "Segoe WP";
 
-        /// <summary>
-        /// The is button color dark.
-        /// </summary>
+        public Color FrameColor;
+
         public bool IsButtonColorDark;
 
-        /// <summary>
-        /// The is main back image.
-        /// </summary>
         public bool IsMainBackImage;
 
-        /// <summary>
-        /// The main back color.
-        /// </summary>
         public Color MainBackColor;
 
-        /// <summary>
-        /// The main back image.
-        /// </summary>
         public string MainBackImage = string.Empty;
 
-        /// <summary>
-        /// The main font color.
-        /// </summary>
         public Color MainFontColor;
 
-        /// <summary>
-        /// The name.
-        /// </summary>
         public string Name = string.Empty;
 
-        /// <summary>
-        /// The title back color.
-        /// </summary>
         public Color TitleBackColor;
 
-        /// <summary>
-        /// The title font color.
-        /// </summary>
         public Color TitleFontColor;
 
-        /// <summary>
-        /// The uniq id.
-        /// </summary>
+        public Color WordsOfChristRed;
+
+        public Color[] ColorHighligt = new Color[6];
+
         public Guid UniqId;
 
-        /// <summary>
-        /// The _current theme.
-        /// </summary>
         private Guid _currentTheme = Guid.NewGuid();
 
-        #endregion Fields
+        #endregion
 
-        #region Properties
+        #region Public Properties
 
-        /// <summary>
-        /// Gets or sets CurrentTheme.
-        /// </summary>
         public Guid CurrentTheme
         {
             get
             {
-                return _currentTheme;
+                return this._currentTheme;
             }
 
             set
             {
-                _currentTheme = value;
-                if (Themes.ContainsKey(_currentTheme))
+                this._currentTheme = value;
+                if (this.Themes.ContainsKey(this._currentTheme))
                 {
-                    Clone(Themes[_currentTheme]);
+                    this.Clone(this.Themes[this._currentTheme]);
                 }
                 else
                 {
-                    // set the default values.
                     FontFamily = Application.Current.Resources["PhoneFontFamilyNormal"].ToString();
                     AccentColor = (Color)Application.Current.Resources["PhoneAccentColor"];
                     BorderColor = (Color)Application.Current.Resources["PhoneForegroundColor"];
-                    MainFontColor = BorderColor;
-                    TitleFontColor = BorderColor;
                     MainBackColor = (Color)Application.Current.Resources["PhoneBackgroundColor"];
-                    TitleBackColor = MainBackColor;
                     IsButtonColorDark = (Visibility)Application.Current.Resources["PhoneDarkThemeVisibility"]
                                              == Visibility.Collapsed;
-                    IsMainBackImage = false;
-                    MainBackImage = string.Empty;
+
+                    // set the default values.
+                    this.MainFontColor = this.BorderColor;
+                    this.TitleFontColor = this.BorderColor;
+                    this.TitleBackColor = this.MainBackColor;
+                    this.IsMainBackImage = false;
+                    this.MainBackImage = string.Empty;
+                    this.WordsOfChristRed = StringToColor("FFFF1439");
+                    this.ColorHighligt[0] = StringToColor("88E6E600");
+                    this.ColorHighligt[1] = StringToColor("88E86C19");
+                    this.ColorHighligt[2] = StringToColor("8819D119");
+                    this.ColorHighligt[3] = StringToColor("8825B8B8");
+                    this.ColorHighligt[4] = StringToColor("88FF66FF");
+                    this.ColorHighligt[5] = StringToColor("88AD5C33");
                 }
             }
         }
 
-        #endregion Properties
+        #endregion
 
-        #region Methods
+        #region Public Methods and Operators
 
-        /// <summary>
-        /// The clone.
-        /// </summary>
-        /// <param name="from">
-        /// The from.
-        /// </param>
-        public void Clone(Theme from)
+        public static string OneThemeToString(Theme theme)
         {
-            BorderColor = from.BorderColor;
-            FontFamily = from.FontFamily;
-            AccentColor = from.AccentColor;
-            IsButtonColorDark = from.IsButtonColorDark;
-            IsMainBackImage = from.IsMainBackImage;
-            MainBackColor = from.MainBackColor;
-            MainBackImage = from.MainBackImage;
-            MainFontColor = from.MainFontColor;
-            TitleBackColor = from.TitleBackColor;
-            TitleFontColor = from.TitleFontColor;
-            Name = from.Name;
-            UniqId = from.UniqId;
+            return "<theme bordercolor=\"" + ColorToString(theme.BorderColor) + "\" " + "titlebackcolor=\""
+                   + ColorToString(theme.TitleBackColor) + "\" " + "accentcolor=\"" + ColorToString(theme.AccentColor)
+                   + "\" " + "titlefontcolor=\"" + ColorToString(theme.TitleFontColor) + "\" " + "font=\""
+                   + theme.FontFamily + "\" " + "ismainbackimage=\"" + theme.IsMainBackImage + "\" "
+                   + "mainbackcolor=\"" + ColorToString(theme.MainBackColor) + "\" " + "mainbackimage=\""
+                   + theme.MainBackImage + "\" " + "mainfontcolor=\"" + ColorToString(theme.MainFontColor) + "\" "
+                   + "framecolor=\"" + ColorToString(theme.FrameColor) + "\" " + "wordsofchrist=\"" + ColorToString(theme.WordsOfChristRed) + "\" " + "isbuttoncolordark=\""
+                   + theme.IsButtonColorDark + "\" " + "uniqid=\"" + theme.UniqId + "\" " + "highlight1=\"" + ColorToString(theme.ColorHighligt[0]) + "\" "
+                   + "highlight2=\"" + ColorToString(theme.ColorHighligt[1]) + "\" " + "highlight3=\"" + ColorToString(theme.ColorHighligt[2]) + "\" "
+                   + "highlight4=\"" + ColorToString(theme.ColorHighligt[3]) + "\" " + "highlight5=\"" + ColorToString(theme.ColorHighligt[4]) + "\" "
+                   + "highlight6=\"" + ColorToString(theme.ColorHighligt[5]) + "\" " + ">" + theme.Name
+                   + "</theme>\n";
         }
 
-        /// <summary>
-        /// The from stream.
-        /// </summary>
-        /// <param name="stream">
-        /// The stream.
-        /// </param>
-        /// <param name="isTranslateNames">
-        /// The is translate names.
-        /// </param>
+        public void Clone(Theme from)
+        {
+            this.BorderColor = from.BorderColor;
+            this.FontFamily = from.FontFamily;
+            this.AccentColor = from.AccentColor;
+            this.IsButtonColorDark = from.IsButtonColorDark;
+            this.IsMainBackImage = from.IsMainBackImage;
+            this.MainBackColor = from.MainBackColor;
+            this.MainBackImage = from.MainBackImage;
+            this.MainFontColor = from.MainFontColor;
+            this.TitleBackColor = from.TitleBackColor;
+            this.TitleFontColor = from.TitleFontColor;
+            this.FrameColor = from.FrameColor;
+            this.WordsOfChristRed = from.WordsOfChristRed;
+            this.Name = from.Name;
+            this.UniqId = from.UniqId;
+            for (int i = 0; i < from.ColorHighligt.Length; i++)
+            {
+                this.ColorHighligt[i] = from.ColorHighligt[i];
+            }
+        }
+
         public void FromStream(Stream stream, bool isTranslateNames = false)
         {
             Guid currentTheme = Guid.NewGuid();
-
+            Guid bogustheme = currentTheme;
             using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings { IgnoreWhitespace = true }))
             {
                 Theme foundTheme = null;
@@ -250,7 +296,13 @@ namespace CrossConnect
                             else if (reader.Name.ToLower().Equals("theme") && reader.HasAttributes)
                             {
                                 foundTheme = new Theme();
-
+                                foundTheme.WordsOfChristRed = StringToColor("FFFF1439");
+                                foundTheme.ColorHighligt[0] = StringToColor("88E6E600");
+                                foundTheme.ColorHighligt[1] = StringToColor("88E86C19");
+                                foundTheme.ColorHighligt[2] = StringToColor("8819D119");
+                                foundTheme.ColorHighligt[3] = StringToColor("8825B8B8");
+                                foundTheme.ColorHighligt[4] = StringToColor("88FF66FF");
+                                foundTheme.ColorHighligt[5] = StringToColor("88AD5C33");
                                 reader.MoveToFirstAttribute();
                                 do
                                 {
@@ -283,17 +335,41 @@ namespace CrossConnect
                                         case "mainfontcolor":
                                             foundTheme.MainFontColor = StringToColor(reader.Value);
                                             break;
+                                        case "framecolor":
+                                            foundTheme.FrameColor = StringToColor(reader.Value);
+                                            break;
+                                        case "wordsofchrist":
+                                            foundTheme.WordsOfChristRed = StringToColor(reader.Value);
+                                            break;
                                         case "isbuttoncolordark":
                                             foundTheme.IsButtonColorDark = reader.Value.ToLower().Equals("true");
                                             break;
                                         case "uniqid":
                                             Guid.TryParse(reader.Value, out foundTheme.UniqId);
                                             break;
+                                        case "highlight1":
+                                            foundTheme.ColorHighligt[0] = StringToColor(reader.Value);
+                                            break;
+                                        case "highlight2":
+                                            foundTheme.ColorHighligt[1] = StringToColor(reader.Value);
+                                            break;
+                                        case "highlight3":
+                                            foundTheme.ColorHighligt[2] = StringToColor(reader.Value);
+                                            break;
+                                        case "highlight4":
+                                            foundTheme.ColorHighligt[3] = StringToColor(reader.Value);
+                                            break;
+                                        case "highlight5":
+                                            foundTheme.ColorHighligt[4] = StringToColor(reader.Value);
+                                            break;
+                                        case "highlight6":
+                                            foundTheme.ColorHighligt[5] = StringToColor(reader.Value);
+                                            break;
                                     }
                                 }
                                 while (reader.MoveToNextAttribute());
 
-                                Themes[foundTheme.UniqId] = foundTheme;
+                                this.Themes[foundTheme.UniqId] = foundTheme;
                             }
 
                             break;
@@ -304,7 +380,7 @@ namespace CrossConnect
                                 {
                                     if (foundTheme != null)
                                     {
-                                        foundTheme.Name = Translations.Translate(foundTheme.Name);
+                                        //foundTheme.Name = Translations.Translate(foundTheme.Name);
                                     }
                                 }
 
@@ -323,29 +399,22 @@ namespace CrossConnect
                 }
             }
 
-            CurrentTheme = currentTheme;
+            this.CurrentTheme = currentTheme;
+            if ((bogustheme.Equals(currentTheme) && this.Themes.Any()) || !this.Themes.ContainsKey(currentTheme))
+            {
+                this.CurrentTheme = this.Themes.First().Value.UniqId;
+            }
         }
 
-        /// <summary>
-        /// The from string.
-        /// </summary>
-        /// <param name="buffer">
-        /// The buffer.
-        /// </param>
         public void FromString(string buffer)
         {
-            FromByteArray(Encoding.UTF8.GetBytes(buffer));
+            this.FromByteArray(Encoding.UTF8.GetBytes(buffer));
         }
 
-        /// <summary>
-        /// The get unique guid key.
-        /// </summary>
-        /// <returns>
-        /// </returns>
         public Guid GetUniqueGuidKey()
         {
             Guid key = Guid.NewGuid();
-            if (Themes == null)
+            if (this.Themes == null)
             {
                 return key;
             }
@@ -353,88 +422,52 @@ namespace CrossConnect
             {
                 key = Guid.NewGuid();
             }
-            while (Themes.ContainsKey(key));
+            while (this.Themes.ContainsKey(key));
             return key;
         }
 
-        /// <summary>
-        /// The initialize from resources.
-        /// </summary>
         public void InitializeFromResources()
         {
-            Assembly assem = Assembly.GetExecutingAssembly();
+            Assembly assem = Assembly.Load(new AssemblyName("CrossConnect"));
             Stream stream = assem.GetManifestResourceStream("CrossConnect.Properties.themes.xml");
 
             if (stream != null)
             {
-                FromStream(stream, true);
-                stream.Close();
+                this.FromStream(stream, true);
+                stream.Dispose();
             }
         }
 
-        /// <summary>
-        /// The merge.
-        /// </summary>
-        /// <param name="themes">
-        /// The themes.
-        /// </param>
         public void Merge(Theme themes)
         {
             // try to integrate this into the already existing themes.
             foreach (var tema in themes.Themes)
             {
-                if (Themes.ContainsKey(tema.Value.UniqId))
+                if (this.Themes.ContainsKey(tema.Value.UniqId))
                 {
-                    if (tema.Value.Equals(Themes[tema.Value.UniqId]))
+                    if (tema.Value.Equals(this.Themes[tema.Value.UniqId]))
                     {
                         continue;
                     }
 
                     Guid oldKey = tema.Value.UniqId;
-                    tema.Value.UniqId = GetUniqueGuidKey();
-                    if (oldKey.Equals(_currentTheme))
+                    tema.Value.UniqId = this.GetUniqueGuidKey();
+                    if (oldKey.Equals(this._currentTheme))
                     {
-                        _currentTheme = tema.Value.UniqId;
+                        this._currentTheme = tema.Value.UniqId;
                     }
                 }
 
-                Themes[tema.Value.UniqId] = tema.Value;
+                this.Themes[tema.Value.UniqId] = tema.Value;
             }
         }
 
-        /// <summary>
-        /// The one theme to string.
-        /// </summary>
-        /// <param name="theme">
-        /// The theme.
-        /// </param>
-        /// <returns>
-        /// The one theme to string.
-        /// </returns>
-        public string OneThemeToString(Theme theme)
-        {
-            return "<theme bordercolor=\"" + ColorToString(theme.BorderColor) + "\" " + "titlebackcolor=\""
-                   + ColorToString(theme.TitleBackColor) + "\" " + "accentcolor=\"" + ColorToString(theme.AccentColor)
-                   + "\" " + "titlefontcolor=\"" + ColorToString(theme.TitleFontColor) + "\" " + "font=\""
-                   + theme.FontFamily + "\" " + "ismainbackimage=\"" + theme.IsMainBackImage + "\" "
-                   + "mainbackcolor=\"" + ColorToString(theme.MainBackColor) + "\" " + "mainbackimage=\""
-                   + theme.MainBackImage + "\" " + "mainfontcolor=\"" + ColorToString(theme.MainFontColor) + "\" "
-                   + "isbuttoncolordark=\"" + theme.IsButtonColorDark + "\" " + "uniqid=\"" + theme.UniqId + "\" " + ">"
-                   + theme.Name + "</theme>\n";
-        }
-
-        /// <summary>
-        /// The to string.
-        /// </summary>
-        /// <returns>
-        /// The to string.
-        /// </returns>
         public new string ToString()
         {
             var sb = new StringBuilder();
             sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-            sb.Append("<ccthemes version=\"1.0\" currenttheme=\"" + _currentTheme + "\">\n");
-            foreach (var theme in Themes)
+            sb.Append("<ccthemes version=\"1.0\" currenttheme=\"" + this._currentTheme + "\">\n");
+            foreach (var theme in this.Themes)
             {
                 sb.Append(OneThemeToString(theme.Value));
             }
@@ -443,28 +476,15 @@ namespace CrossConnect
             return sb.ToString();
         }
 
-        /// <summary>
-        /// The color to string.
-        /// </summary>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        /// <returns>
-        /// The color to string.
-        /// </returns>
+        #endregion
+
+        #region Methods
+
         private static string ColorToString(Color color)
         {
             return color.A.ToString("X2") + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
         }
 
-        /// <summary>
-        /// The string to color.
-        /// </summary>
-        /// <param name="color">
-        /// The color.
-        /// </param>
-        /// <returns>
-        /// </returns>
         private static Color StringToColor(string color)
         {
             var returnColor = new Color();
@@ -488,38 +508,24 @@ namespace CrossConnect
             return returnColor;
         }
 
-        /// <summary>
-        /// The equals.
-        /// </summary>
-        /// <param name="from">
-        /// The from.
-        /// </param>
-        /// <returns>
-        /// The equals.
-        /// </returns>
         private bool Equals(Theme from)
         {
-            return BorderColor.Equals(from.BorderColor) && FontFamily.Equals(from.FontFamily)
-                   && AccentColor.Equals(from.AccentColor) && IsButtonColorDark.Equals(from.IsButtonColorDark)
-                   && IsMainBackImage.Equals(from.IsMainBackImage) && MainBackColor.Equals(from.MainBackColor)
-                   && MainBackImage.Equals(from.MainBackImage) && MainFontColor.Equals(from.MainFontColor)
-                   && TitleBackColor.Equals(from.TitleBackColor) && TitleFontColor.Equals(from.TitleFontColor)
-                   && Name.Equals(from.Name) && UniqId.Equals(from.UniqId);
+            return this.BorderColor.Equals(from.BorderColor) && this.FontFamily.Equals(from.FontFamily)
+                   && this.AccentColor.Equals(from.AccentColor) && this.IsButtonColorDark.Equals(from.IsButtonColorDark)
+                   && this.IsMainBackImage.Equals(from.IsMainBackImage) && this.MainBackColor.Equals(from.MainBackColor)
+                   && this.MainBackImage.Equals(from.MainBackImage) && this.MainFontColor.Equals(from.MainFontColor)
+                   && this.TitleBackColor.Equals(from.TitleBackColor) && this.TitleFontColor.Equals(from.TitleFontColor)
+                   && this.FrameColor.Equals(from.FrameColor) && this.WordsOfChristRed.Equals(from.WordsOfChristRed) && this.Name.Equals(from.Name)
+                   && this.UniqId.Equals(from.UniqId);
         }
 
-        /// <summary>
-        /// The from byte array.
-        /// </summary>
-        /// <param name="buffer">
-        /// The buffer.
-        /// </param>
         private void FromByteArray(byte[] buffer)
         {
             var stream = new MemoryStream(buffer);
-            FromStream(stream);
-            stream.Close();
+            this.FromStream(stream);
+            stream.Dispose();
         }
 
-        #endregion Methods
+        #endregion
     }
 }

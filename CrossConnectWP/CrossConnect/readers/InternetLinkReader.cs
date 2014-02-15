@@ -28,8 +28,8 @@ namespace CrossConnect.readers
     using Sword.reader;
 
     /// <summary>
-    /// Load from a file all the book and verse pointers to the bzz file so that
-    ///   we can later read the bzz file quickly and efficiently.
+    ///     Load from a file all the book and verse pointers to the bzz file so that
+    ///     we can later read the bzz file quickly and efficiently.
     /// </summary>
     [DataContract(Name = "InternetLinkReader")]
     [KnownType(typeof(ChapterPos))]
@@ -45,18 +45,18 @@ namespace CrossConnect.readers
         [DataMember]
         public string TitleBar = string.Empty;
 
-        #endregion Fields
+        #endregion
 
-        #region Constructors
+        #region Constructors and Destructors
 
         public InternetLinkReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
-            : base(path, iso2DigitLangCode, isIsoEncoding,string.Empty,string.Empty)
+            : base(path, iso2DigitLangCode, isIsoEncoding, string.Empty, string.Empty, string.Empty)
         {
         }
 
-        #endregion Constructors
+        #endregion
 
-        #region Properties
+        #region Public Properties
 
         public override bool IsExternalLink
         {
@@ -74,6 +74,13 @@ namespace CrossConnect.readers
             }
         }
 
+        public override bool IsTTChearable
+        {
+            get
+            {
+                return false;
+            }
+        }
         public override bool IsPageable
         {
             get
@@ -106,54 +113,52 @@ namespace CrossConnect.readers
             }
         }
 
-        #endregion Properties
+        #endregion
 
-        #region Methods
+        #region Public Methods and Operators
 
         public override string GetExternalLink(DisplaySettings displaySettings)
         {
             int number;
             string strongNumber = string.Empty;
-            if (int.TryParse(Link.Substring(1), out number))
+            if (int.TryParse(this.Link.Substring(1), out number))
             {
                 strongNumber = number.ToString();
             }
 
-            if (Link.StartsWith("G"))
+            if (this.Link.StartsWith("G"))
             {
                 return string.Format(displaySettings.GreekDictionaryLink, strongNumber);
             }
 
-            if (Link.StartsWith("H"))
+            if (this.Link.StartsWith("H"))
             {
                 return string.Format(displaySettings.HebrewDictionaryLink, strongNumber);
             }
 
-            return Link;
+            return this.Link;
         }
 
         public override void GetInfo(
-            out int bookNum,
-            out int absouteChaptNum,
+            out string bookShortName,
             out int relChaptNum,
             out int verseNum,
             out string fullName,
             out string title)
         {
             verseNum = 0;
-            absouteChaptNum = 0;
-            bookNum = 0;
+            bookShortName = string.Empty;
             relChaptNum = 0;
             fullName = string.Empty;
-            title = TitleBar;
+            title = this.TitleBar;
         }
 
         public void ShowLink(string link, string titleBar)
         {
-            Link = link;
-            TitleBar = titleBar;
+            this.Link = link;
+            this.TitleBar = titleBar;
         }
 
-        #endregion Methods
+        #endregion
     }
 }

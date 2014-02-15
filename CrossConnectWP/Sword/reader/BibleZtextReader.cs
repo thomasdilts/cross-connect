@@ -31,17 +31,21 @@ namespace Sword.reader
     using System.Runtime.CompilerServices;
     using System.Runtime.Serialization;
     using System.Text;
-
+    using System.Threading.Tasks;
     using System.Xml;
 
     using ComponentAce.Compression.Libs.zlib;
 
-    using File = Hoot.File;
+    using Windows.Storage;
+    using Sword.versification;
 
     [DataContract]
     public class BiblePlaceMarker
     {
         #region Fields
+
+        [DataMember(Name = "BookShortName")]
+        public string BookShortName = string.Empty;
 
         [DataMember(Name = "chapterNum")]
         public int ChapterNum = 1;
@@ -59,8 +63,9 @@ namespace Sword.reader
 
         #region Constructors and Destructors
 
-        public BiblePlaceMarker(int chapterNum, int verseNum, DateTime when)
+        public BiblePlaceMarker(string bookShortName, int chapterNum, int verseNum, DateTime when)
         {
+            this.BookShortName = bookShortName;
             this.ChapterNum = chapterNum;
             this.VerseNum = verseNum;
             this.When = when;
@@ -77,7 +82,7 @@ namespace Sword.reader
 
         public static BiblePlaceMarker Clone(BiblePlaceMarker toClone)
         {
-            var newMarker = new BiblePlaceMarker(toClone.ChapterNum, toClone.VerseNum, toClone.When)
+            var newMarker = new BiblePlaceMarker(toClone.BookShortName, toClone.ChapterNum, toClone.VerseNum, toClone.When)
                                 {
                                     Note =
                                         toClone
@@ -101,26 +106,26 @@ namespace Sword.reader
         /// <summary>
         ///     Constant for the number of books in the Bible
         /// </summary>
-        public const int BooksInBible = 66;
+        //public const int BooksInBible = 66;
 
-        public const int BooksInNt = 27;
+        //public const int BooksInNt = 27;
 
-        public const int BooksInOt = 39;
+        //public const int BooksInOt = 39;
 
         /// <summary>
         ///     Constant for the number of chapters in the Bible
         /// </summary>
-        public const int ChaptersInBible = 1189;
+        //public const int ChaptersInBible = 1189;
 
         /// <summary>
         ///     Constant for the number of chapters in the NT
         /// </summary>
-        public const int ChaptersInNt = 260;
+        //public const int ChaptersInNt = 260;
 
         /// <summary>
         ///     Constant for the number of chapters in the OT
         /// </summary>
-        public const int ChaptersInOt = 929;
+        //public const int ChaptersInOt = 929;
 
         /// <summary>
         ///     * The configuration directory
@@ -165,7 +170,7 @@ namespace Sword.reader
         /// <summary>
         ///     Constant for the number of verses in the Bible
         /// </summary>
-        internal const short VersesInBible = 31102;
+        //internal const short VersesInBible = 31102;
 
         protected const long SkipBookFlag = 68;
 
@@ -174,617 +179,100 @@ namespace Sword.reader
         #region Static Fields
 
         /// <summary>
-        ///     Constant for the number of chapters in each book
-        /// </summary>
-        public static readonly short[] ChaptersInBook =
-            {
-                50, 40, 27, 36, 34, 24, 21, 4, 31, 24, 22, 25, 29, 36, 10, 13,
-                10, 42, 150, 31, 12, 8, 66, 52, 5, 48, 12, 14, 3, 9, 1, 4, 7,
-                3, 3, 3, 2, 14, 4, 28, 16, 24, 21, 28, 16, 16, 13, 6, 6, 4, 4,
-                5, 3, 6, 4, 3, 1, 13, 5, 5, 3, 5, 1, 1, 1, 22
-            };
-
-        public static readonly short[] FirstChapternumInBook =
-            {
-                0, 50, 90, 117, 153, 187, 211, 232, 236, 267, 291, 313,
-                338, 367, 403, 413, 426, 436, 478, 628, 659, 671, 679,
-                745, 797, 802, 850, 862, 876, 879, 888, 889, 893, 900,
-                903, 906, 909, 911, 925, 929, 957, 973, 997, 1018, 1046
-                , 1062, 1078, 1091, 1097, 1103, 1107, 1111, 1116, 1119,
-                1125, 1129, 1132, 1133, 1146, 1151, 1156, 1159, 1164,
-                1165, 1166, 1167
-            };
-
-        public static readonly Dictionary<string, int> OsisBibeNamesToAbsoluteChapterNum = new Dictionary<string, int>
-                                                                                               {
-                                                                                                   {
-                                                                                                       "gen"
-                                                                                                       ,
-                                                                                                       0
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "exod"
-                                                                                                       ,
-                                                                                                       50
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "lev"
-                                                                                                       ,
-                                                                                                       90
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "num"
-                                                                                                       ,
-                                                                                                       117
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "deut"
-                                                                                                       ,
-                                                                                                       153
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "josh"
-                                                                                                       ,
-                                                                                                       187
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "judg"
-                                                                                                       ,
-                                                                                                       211
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "ruth"
-                                                                                                       ,
-                                                                                                       232
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "1sam"
-                                                                                                       ,
-                                                                                                       236
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "2sam"
-                                                                                                       ,
-                                                                                                       267
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "1kgs"
-                                                                                                       ,
-                                                                                                       291
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "2kgs"
-                                                                                                       ,
-                                                                                                       313
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "1chr"
-                                                                                                       ,
-                                                                                                       338
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "2chr"
-                                                                                                       ,
-                                                                                                       367
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "ezra"
-                                                                                                       ,
-                                                                                                       403
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "neh"
-                                                                                                       ,
-                                                                                                       413
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "esth"
-                                                                                                       ,
-                                                                                                       426
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "job"
-                                                                                                       ,
-                                                                                                       436
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "ps"
-                                                                                                       ,
-                                                                                                       478
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "prov"
-                                                                                                       ,
-                                                                                                       628
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "eccl"
-                                                                                                       ,
-                                                                                                       659
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "song"
-                                                                                                       ,
-                                                                                                       671
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "isa"
-                                                                                                       ,
-                                                                                                       679
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "jer"
-                                                                                                       ,
-                                                                                                       745
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "lam"
-                                                                                                       ,
-                                                                                                       797
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "ezek"
-                                                                                                       ,
-                                                                                                       802
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "dan"
-                                                                                                       ,
-                                                                                                       850
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "hos"
-                                                                                                       ,
-                                                                                                       862
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "joel"
-                                                                                                       ,
-                                                                                                       876
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "amos"
-                                                                                                       ,
-                                                                                                       879
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "obad"
-                                                                                                       ,
-                                                                                                       888
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "jonah"
-                                                                                                       ,
-                                                                                                       889
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "mic"
-                                                                                                       ,
-                                                                                                       893
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "nah"
-                                                                                                       ,
-                                                                                                       900
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "hab"
-                                                                                                       ,
-                                                                                                       903
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "zeph"
-                                                                                                       ,
-                                                                                                       906
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "hag"
-                                                                                                       ,
-                                                                                                       909
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "zech"
-                                                                                                       ,
-                                                                                                       911
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "mal"
-                                                                                                       ,
-                                                                                                       925
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "matt"
-                                                                                                       ,
-                                                                                                       929
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "mark"
-                                                                                                       ,
-                                                                                                       957
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "luke"
-                                                                                                       ,
-                                                                                                       973
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "john"
-                                                                                                       ,
-                                                                                                       997
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "acts"
-                                                                                                       ,
-                                                                                                       1018
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "rom"
-                                                                                                       ,
-                                                                                                       1046
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "1cor"
-                                                                                                       ,
-                                                                                                       1062
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "2cor"
-                                                                                                       ,
-                                                                                                       1078
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "gal"
-                                                                                                       ,
-                                                                                                       1091
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "eph"
-                                                                                                       ,
-                                                                                                       1097
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "phil"
-                                                                                                       ,
-                                                                                                       1103
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "col"
-                                                                                                       ,
-                                                                                                       1107
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "1thess"
-                                                                                                       ,
-                                                                                                       1111
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "2thess"
-                                                                                                       ,
-                                                                                                       1116
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "1tim"
-                                                                                                       ,
-                                                                                                       1119
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "2tim"
-                                                                                                       ,
-                                                                                                       1125
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "titus"
-                                                                                                       ,
-                                                                                                       1129
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "phlm"
-                                                                                                       ,
-                                                                                                       1132
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "heb"
-                                                                                                       ,
-                                                                                                       1133
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "jas"
-                                                                                                       ,
-                                                                                                       1146
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "1pet"
-                                                                                                       ,
-                                                                                                       1151
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "2pet"
-                                                                                                       ,
-                                                                                                       1156
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "1john"
-                                                                                                       ,
-                                                                                                       1159
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "2john"
-                                                                                                       ,
-                                                                                                       1164
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "3john"
-                                                                                                       ,
-                                                                                                       1165
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "jude"
-                                                                                                       ,
-                                                                                                       1166
-                                                                                                   },
-                                                                                                   {
-                                                                                                       "rev"
-                                                                                                       ,
-                                                                                                       1167
-                                                                                                   },
-                                                                                               };
-
-        // [DataMember] Tried it but it took 10 times longer then re-reading the mod-file
-        /// <summary>
-        ///     Constant for the number of verses in each book
-        /// </summary>
-        internal static readonly short[] VersesInBook =
-            {
-                1533, 1213, 859, 1288, 959, 658, 618, 85, 810, 695, 816, 719,
-                942, 822, 280, 406, 167, 1070, 2461, 915, 222, 117, 1292, 1364
-                , 154, 1273, 357, 197, 73, 146, 21, 48, 105, 47, 56, 53, 38,
-                211, 55, 1071, 678, 1151, 879, 1007, 433, 437, 257, 149, 155,
-                104, 95, 89, 47, 113, 83, 46, 25, 303, 108, 105, 61, 105, 13,
-                14, 25, 404
-            };
-
-        /// <summary>
-        ///     Constant for the number of verses in each chapter
-        /// </summary>
-        internal static readonly short[][] VersesInChapter =
-            {
-                new short[]
-                    {
-                        31, 25, 24, 26, 32, 22, 24, 22, 29, 32, 32, 20,
-                        18, 24, 21, 16, 27, 33, 38, 18, 34, 24, 20, 67,
-                        34, 35, 46, 22, 35, 43, 55, 32, 20, 31, 29, 43,
-                        36, 30, 23, 23, 57, 38, 34, 34, 28, 34, 31, 22,
-                        33, 26
-                    },
-                new short[]
-                    {
-                        22, 25, 22, 31, 23, 30, 25, 32, 35, 29, 10, 51,
-                        22, 31, 27, 36, 16, 27, 25, 26, 36, 31, 33, 18,
-                        40, 37, 21, 43, 46, 38, 18, 35, 23, 35, 35, 38,
-                        29, 31, 43, 38
-                    },
-                new short[]
-                    {
-                        17, 16, 17, 35, 19, 30, 38, 36, 24, 20, 47, 8, 59
-                        , 57, 33, 34, 16, 30, 37, 27, 24, 33, 44, 23, 55,
-                        46, 34
-                    },
-                new short[]
-                    {
-                        54, 34, 51, 49, 31, 27, 89, 26, 23, 36, 35, 16,
-                        33, 45, 41, 50, 13, 32, 22, 29, 35, 41, 30, 25,
-                        18, 65, 23, 31, 40, 16, 54, 42, 56, 29, 34, 13
-                    },
-                new short[]
-                    {
-                        46, 37, 29, 49, 33, 25, 26, 20, 29, 22, 32, 32,
-                        18, 29, 23, 22, 20, 22, 21, 20, 23, 30, 25, 22,
-                        19, 19, 26, 68, 29, 20, 30, 52, 29, 12
-                    },
-                new short[]
-                    {
-                        18, 24, 17, 24, 15, 27, 26, 35, 27, 43, 23, 24,
-                        33, 15, 63, 10, 18, 28, 51, 9, 45, 34, 16, 33
-                    },
-                new short[]
-                    {
-                        36, 23, 31, 24, 31, 40, 25, 35, 57, 18, 40, 15,
-                        25, 20, 20, 31, 13, 31, 30, 48, 25
-                    },
-                new short[] { 22, 23, 18, 22 },
-                new short[]
-                    {
-                        28, 36, 21, 22, 12, 21, 17, 22, 27, 27, 15, 25,
-                        23, 52, 35, 23, 58, 30, 24, 42, 15, 23, 29, 22,
-                        44, 25, 12, 25, 11, 31, 13
-                    },
-                new short[]
-                    {
-                        27, 32, 39, 12, 25, 23, 29, 18, 13, 19, 27, 31,
-                        39, 33, 37, 23, 29, 33, 43, 26, 22, 51, 39, 25
-                    },
-                new short[]
-                    {
-                        53, 46, 28, 34, 18, 38, 51, 66, 28, 29, 43, 33,
-                        34, 31, 34, 34, 24, 46, 21, 43, 29, 53
-                    },
-                new short[]
-                    {
-                        18, 25, 27, 44, 27, 33, 20, 29, 37, 36, 21, 21,
-                        25, 29, 38, 20, 41, 37, 37, 21, 26, 20, 37, 20,
-                        30
-                    },
-                new short[]
-                    {
-                        54, 55, 24, 43, 26, 81, 40, 40, 44, 14, 47, 40,
-                        14, 17, 29, 43, 27, 17, 19, 8, 30, 19, 32, 31, 31
-                        , 32, 34, 21, 30
-                    },
-                new short[]
-                    {
-                        17, 18, 17, 22, 14, 42, 22, 18, 31, 19, 23, 16,
-                        22, 15, 19, 14, 19, 34, 11, 37, 20, 12, 21, 27,
-                        28, 23, 9, 27, 36, 27, 21, 33, 25, 33, 27, 23
-                    },
-                new short[] { 11, 70, 13, 24, 17, 22, 28, 36, 15, 44 },
-                new short[]
-                    {
-                        11, 20, 32, 23, 19, 19, 73, 18, 38, 39, 36, 47,
-                        31
-                    },
-                new short[] { 22, 23, 15, 17, 14, 14, 10, 17, 32, 3 },
-                new short[]
-                    {
-                        22, 13, 26, 21, 27, 30, 21, 22, 35, 22, 20, 25,
-                        28, 22, 35, 22, 16, 21, 29, 29, 34, 30, 17, 25, 6
-                        , 14, 23, 28, 25, 31, 40, 22, 33, 37, 16, 33, 24,
-                        41, 30, 24, 34, 17
-                    },
-                new short[]
-                    {
-                        6, 12, 8, 8, 12, 10, 17, 9, 20, 18, 7, 8, 6, 7, 5
-                        , 11, 15, 50, 14, 9, 13, 31, 6, 10, 22, 12, 14, 9
-                        , 11, 12, 24, 11, 22, 22, 28, 12, 40, 22, 13, 17,
-                        13, 11, 5, 26, 17, 11, 9, 14, 20, 23, 19, 9, 6, 7
-                        , 23, 13, 11, 11, 17, 12, 8, 12, 11, 10, 13, 20,
-                        7, 35, 36, 5, 24, 20, 28, 23, 10, 12, 20, 72, 13,
-                        19, 16, 8, 18, 12, 13, 17, 7, 18, 52, 17, 16, 15,
-                        5, 23, 11, 13, 12, 9, 9, 5, 8, 28, 22, 35, 45, 48
-                        , 43, 13, 31, 7, 10, 10, 9, 8, 18, 19, 2, 29, 176
-                        , 7, 8, 9, 4, 8, 5, 6, 5, 6, 8, 8, 3, 18, 3, 3,
-                        21, 26, 9, 8, 24, 13, 10, 7, 12, 15, 21, 10, 20,
-                        14, 9, 6
-                    },
-                new short[]
-                    {
-                        33, 22, 35, 27, 23, 35, 27, 36, 18, 32, 31, 28,
-                        25, 35, 33, 33, 28, 24, 29, 30, 31, 29, 35, 34,
-                        28, 28, 27, 28, 27, 33, 31
-                    },
-                new short[]
-                    { 18, 26, 22, 16, 20, 12, 29, 17, 18, 20, 10, 14 },
-                new short[] { 17, 17, 11, 16, 16, 13, 13, 14 },
-                new short[]
-                    {
-                        31, 22, 26, 6, 30, 13, 25, 22, 21, 34, 16, 6, 22,
-                        32, 9, 14, 14, 7, 25, 6, 17, 25, 18, 23, 12, 21,
-                        13, 29, 24, 33, 9, 20, 24, 17, 10, 22, 38, 22, 8,
-                        31, 29, 25, 28, 28, 25, 13, 15, 22, 26, 11, 23,
-                        15, 12, 17, 13, 12, 21, 14, 21, 22, 11, 12, 19,
-                        12, 25, 24
-                    },
-                new short[]
-                    {
-                        19, 37, 25, 31, 31, 30, 34, 22, 26, 25, 23, 17,
-                        27, 22, 21, 21, 27, 23, 15, 18, 14, 30, 40, 10,
-                        38, 24, 22, 17, 32, 24, 40, 44, 26, 22, 19, 32,
-                        21, 28, 18, 16, 18, 22, 13, 30, 5, 28, 7, 47, 39,
-                        46, 64, 34
-                    },
-                new short[] { 22, 22, 66, 22, 22 },
-                new short[]
-                    {
-                        28, 10, 27, 17, 17, 14, 27, 18, 11, 22, 25, 28,
-                        23, 23, 8, 63, 24, 32, 14, 49, 32, 31, 49, 27, 17
-                        , 21, 36, 26, 21, 26, 18, 32, 33, 31, 15, 38, 28,
-                        23, 29, 49, 26, 20, 27, 31, 25, 24, 23, 35
-                    },
-                new short[]
-                    { 21, 49, 30, 37, 31, 28, 28, 27, 27, 21, 45, 13 },
-                new short[]
-                    {
-                        11, 23, 5, 19, 15, 11, 16, 14, 17, 15, 12, 14, 16
-                        , 9
-                    },
-                new short[] { 20, 32, 21 },
-                new short[] { 15, 16, 15, 13, 27, 14, 17, 14, 15 },
-                new short[] { 21 }, new short[] { 17, 10, 10, 11 },
-                new short[] { 16, 13, 12, 13, 15, 16, 20 },
-                new short[] { 15, 13, 19 }, new short[] { 17, 20, 19 },
-                new short[] { 18, 15, 20 }, new short[] { 15, 23 },
-                new short[]
-                    {
-                        21, 13, 10, 14, 11, 15, 14, 23, 17, 12, 17, 14, 9
-                        , 21
-                    },
-                new short[] { 14, 17, 18, 6 },
-                new short[]
-                    {
-                        25, 23, 17, 25, 48, 34, 29, 34, 38, 42, 30, 50,
-                        58, 36, 39, 28, 27, 35, 30, 34, 46, 46, 39, 51,
-                        46, 75, 66, 20
-                    },
-                new short[]
-                    {
-                        45, 28, 35, 41, 43, 56, 37, 38, 50, 52, 33, 44,
-                        37, 72, 47, 20
-                    },
-                new short[]
-                    {
-                        80, 52, 38, 44, 39, 49, 50, 56, 62, 42, 54, 59,
-                        35, 35, 32, 31, 37, 43, 48, 47, 38, 71, 56, 53
-                    },
-                new short[]
-                    {
-                        51, 25, 36, 54, 47, 71, 53, 59, 41, 42, 57, 50,
-                        38, 31, 27, 33, 26, 40, 42, 31, 25
-                    },
-                new short[]
-                    {
-                        26, 47, 26, 37, 42, 15, 60, 40, 43, 48, 30, 25,
-                        52, 28, 41, 40, 34, 28, 41, 38, 40, 30, 35, 27,
-                        27, 32, 44, 31
-                    },
-                new short[]
-                    {
-                        32, 29, 31, 25, 21, 23, 25, 39, 33, 21, 36, 21,
-                        14, 23, 33, 27
-                    },
-                new short[]
-                    {
-                        31, 16, 23, 21, 13, 20, 40, 13, 27, 33, 34, 31,
-                        13, 40, 58, 24
-                    },
-                new short[]
-                    {
-                        24, 17, 18, 18, 21, 18, 16, 24, 15, 18, 33, 21,
-                        14
-                    },
-                new short[] { 24, 21, 29, 31, 26, 18 },
-                new short[] { 23, 22, 21, 32, 33, 24 },
-                new short[] { 30, 30, 21, 23 },
-                new short[] { 29, 23, 25, 18 },
-                new short[] { 10, 20, 13, 18, 28 },
-                new short[] { 12, 17, 18 },
-                new short[] { 20, 15, 16, 16, 25, 21 },
-                new short[] { 18, 26, 17, 22 },
-                new short[] { 16, 15, 15 }, new short[] { 25 },
-                new short[]
-                    {
-                        14, 18, 19, 16, 14, 20, 28, 13, 28, 39, 40, 29,
-                        25
-                    },
-                new short[] { 27, 26, 18, 17, 20 },
-                new short[] { 25, 25, 22, 19, 14 },
-                new short[] { 21, 22, 18 },
-                new short[] { 10, 29, 24, 21, 21 }, new short[] { 13 },
-                new short[] { 14 }, new short[] { 25 },
-                new short[]
-                    {
-                        20, 29, 22, 11, 14, 17, 17, 13, 21, 11, 19, 17,
-                        18, 20, 8, 21, 18, 24, 21, 15, 27, 21
-                    }
-            };
-
-        /// <summary>
         ///     Chapters divided into categories
         /// </summary>
-        protected static readonly int[] ChapterCategories =
-            {
-                1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3
-                , 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-                6, 6, 6, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9
-                , 9, 9, 9, 9, 9, 9, 10
+        public static readonly Dictionary<string, int> ChapterCategories = new Dictionary<string, int> 
+        {
+            {"Gen",1},
+            {"Exod",1},
+            {"Lev",1},
+            {"Num",1},
+            {"Deut",1},
+            {"Josh",2},
+            {"Judg",2},
+            {"Ruth",2},
+            {"1Sam",2},
+            {"2Sam",2},
+            {"1Kgs",2},
+            {"2Kgs",2},
+            {"1Chr",2},
+            {"2Chr",2},
+            {"Ezra",2},
+            {"Neh",2},
+            {"Esth",2},
+            {"Job",3},
+            {"Ps",3},
+            {"Prov",3},
+            {"Eccl",3},
+            {"Song",3},
+            {"Isa",4},
+            {"Jer",4},
+            {"Lam",4},
+            {"Ezek",4},
+            {"Dan",4},
+            {"Hos",5},
+            {"Joel",5},
+            {"Amos",5},
+            {"Obad",5},
+            {"Jonah",5},
+            {"Mic",5},
+            {"Nah",5},
+            {"Hab",5},
+            {"Zeph",5},
+            {"Hag",5},
+            {"Zech",5},
+            {"Mal",5},
+            {"1Esd",4},
+            {"2Esd",4},
+            {"Tob",4},
+            {"Jdt",4},
+            {"AddEsth",4},
+            {"Wis",4},
+            {"Sir",4},
+            {"Bar",4},
+            {"PrAzar",4},
+            {"Sus",4},
+            {"Bel",4},
+            {"PrMan",4},
+            {"1Macc",4},
+            {"2Macc",4},
+            {"EsthGr",4},
+            {"AddPs",4},
+            {"3Macc",4},
+            {"4Macc",4},
+            {"EpJer",4},
+            {"AddDan",4},
+            {"PssSol",4},
+            {"1En",4},
+            {"Odes",4},
+            {"Matt",6},
+            {"Mark",6},
+            {"Luke",6},
+            {"John",6},
+            {"Acts",7},
+            {"Rom",8},
+            {"1Cor",8},
+            {"2Cor",8},
+            {"Gal",8},
+            {"Eph",8},
+            {"Phil",8},
+            {"Col",8},
+            {"1Thess",8},
+            {"2Thess",8},
+            {"1Tim",8},
+            {"2Tim",8},
+            {"Titus",8},
+            {"Phlm",8},
+            {"Heb",8},
+            {"Jas",9},
+            {"1Pet",9},
+            {"2Pet",9},
+            {"1John",9},
+            {"2John",9},
+            {"3John",9},
+            {"Jude",9},
+            {"Rev",10},
+            {"EpLao",4}
             };
 
         protected static byte[] Prefix = Encoding.UTF8.GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<versee>");
@@ -793,9 +281,6 @@ namespace Sword.reader
             Encoding.UTF8.GetBytes("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<versee>");
 
         protected static byte[] Suffix = Encoding.UTF8.GetBytes("\n</versee>");
-
-        private static readonly string ColorWordsOfChrist = "ff1439";
-                                              // deep pink
 
         #endregion
 
@@ -813,6 +298,8 @@ namespace Sword.reader
 
         private int _lastShownChapterNumber = -1;
 
+        public Canon canon;
+
         #endregion
 
         #region Constructors and Destructors
@@ -824,19 +311,31 @@ namespace Sword.reader
         /// <param name="path">The path to where the ot.bzs,ot.bzv and ot.bzz and nt files are</param>
         /// <param name="iso2DigitLangCode"></param>
         /// <param name="isIsoEncoding"></param>
-        public BibleZtextReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath)
+        public BibleZtextReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification)
         {
             this.Serial.Iso2DigitLangCode = iso2DigitLangCode;
             this.Serial.Path = path;
             this.Serial.IsIsoEncoding = isIsoEncoding;
             this.Serial.CipherKey = cipherKey;
             this.Serial.ConfigPath = configPath;
+            this.Serial.Versification = versification;
+            canon = CanonManager.GetCanon(this.Serial.Versification);
         }
-        public void Initialize()
+
+        public async Task Initialize()
         {
-            this.ReloadSettingsFile();
+            await this.ReloadSettingsFile();
             this.SetToFirstChapter();
         }
+
+        public virtual async Task<IBrowserTextSource> Clone()
+        {
+            var cloned = new BibleZtextReader(this.Serial.Path, this.Serial.Iso2DigitLangCode, this.Serial.IsIsoEncoding, this.Serial.CipherKey, this.Serial.ConfigPath, this.Serial.Versification);
+            await cloned.Resume();
+            cloned.MoveChapterVerse(this.Serial.PosBookShortName, this.Serial.PosChaptNum, this.Serial.PosVerseNum, false, cloned);
+            return cloned;
+        }
+
 
         #endregion
 
@@ -888,6 +387,14 @@ namespace Sword.reader
             }
         }
 
+        public virtual bool IsTTChearable
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public virtual bool IsLocalChangeDuringLink
         {
             get
@@ -928,14 +435,23 @@ namespace Sword.reader
             }
         }
 
+        public virtual bool IsLocked
+        {
+            get
+            {
+                return this.Serial.CipherKey != null && this.Serial.CipherKey.Length==0;
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
 
-        public static bool ConvertOsisRefToAbsoluteChaptVerse(string osisRef, out int chaptNumLoc, out int verseNumLoc)
+        public bool ConvertOsisRefToAbsoluteChaptVerse(string osisRef, out string bookShortName, out int chaptNumLoc, out int verseNumLoc)
         {
             chaptNumLoc = 0;
             verseNumLoc = 0;
+            bookShortName = string.Empty;
             if (osisRef.Contains(":"))
             {
                 // remove everythign before :
@@ -957,9 +473,23 @@ namespace Sword.reader
             string[] osis = osisRef.Split(".".ToCharArray());
             if (osis.Length > 0)
             {
-                if (OsisBibeNamesToAbsoluteChapterNum.ContainsKey(osis[0].ToLower()))
+                CanonBookDef book = null;
+                if (!canon.BookByShortName.TryGetValue(osis[0], out book))
                 {
-                    chaptNumLoc = OsisBibeNamesToAbsoluteChapterNum[osis[0].ToLower()];
+                    // try with tolower conversion
+                    var osislower = osis[0].ToLower();
+                    var key = canon.BookByShortName.Keys.FirstOrDefault(p => p.ToLower().Equals(osislower));
+                    if (!string.IsNullOrEmpty(key))
+                    {
+                        book = canon.BookByShortName[key];
+                    }
+                }
+
+
+
+                if (book != null)
+                {
+                    bookShortName = book.ShortName1;
                     if (osis.Length > 1)
                     {
                         int chapterRelative;
@@ -969,8 +499,7 @@ namespace Sword.reader
                         {
                             chapterRelative = 0;
                         }
-
-                        chaptNumLoc += chapterRelative;
+                        chaptNumLoc = chapterRelative;
                     }
 
                     if (osis.Length > 2)
@@ -992,11 +521,12 @@ namespace Sword.reader
             return false;
         }
 
-        public static bool FileExists(string filePath)
+        public static async Task<bool> FileExists(StorageFolder folder, string filePath)
         {
             try
             {
-                return Hoot.File.Exists(filePath.Replace("/", "\\"));
+                StorageFile file = await folder.GetFileAsync(filePath.Replace("/", "\\"));
+                return true;
             }
             catch (Exception)
             {
@@ -1006,23 +536,24 @@ namespace Sword.reader
 
         public static string HtmlHeader(
             DisplaySettings displaySettings,
-            string htmlBackgroundColor,
-            string htmlForegroundColor,
-            string htmlPhoneAccentColor,
+            HtmlColorRgba htmlBackgroundColor,
+            HtmlColorRgba htmlForegroundColor,
+            HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
             double htmlFontSize,
             string fontFamily)
         {
             var head = new StringBuilder();
             head.Append(
-                "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />");
+                "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\" />");
 
             head.Append("<style>");
 
             head.Append(
                 string.Format(
-                    "body {{background:{0};color:{1};font-size:{2}pt;margin:10;padding:0;{3} }}",
-                    htmlBackgroundColor,
-                    htmlForegroundColor,
+                    "body {{background:{0};color:{1};font-size:{2}pt;margin:6;padding:0;{3} }}",
+                    htmlBackgroundColor.GetHtmlRgb(),
+                    htmlForegroundColor.GetHtmlRgb(),
                     (int)(htmlFontSize + 0.5),
                     fontFamily)); // old fashioned way to round an integer
 
@@ -1030,26 +561,25 @@ namespace Sword.reader
                 string.Format(
                     "sup,sub {{color:{0};font-size: .83em;}} "
                     + "a.strongsmorph,a.strongsmorph:link,span.strongsmorph{{color:{1};text-decoration:none;}} "
-                    + "a.normalcolor,a.normalcolor:link {{color:{2};text-decoration:none;}}"
-                    + "a.highlightcolor,a.highlightcolor:link {{color:{3};text-decoration:none;}}",
+                    + "a.normalcolor,a.normalcolor:link {{color:{2};text-decoration:none;}}",
                     displaySettings.HighlightMarkings
-                        ? htmlPhoneAccentColor
-                        : htmlForegroundColor,
+                        ? htmlPhoneAccentColor.GetHtmlRgb()
+                        : htmlForegroundColor.GetHtmlRgb(),
                     displaySettings.HighlightMarkings
-                        ? htmlPhoneAccentColor
-                        : htmlForegroundColor,
-                    htmlForegroundColor,
-                    htmlPhoneAccentColor));
+                        ? htmlPhoneAccentColor.GetHtmlRgb()
+                        : htmlForegroundColor.GetHtmlRgb(),
+                    htmlForegroundColor.GetHtmlRgb()));
 
             head.Append(
                 string.Format(
-                    " a.normalcolor:link span.christ {{ color: {0}; }}  a.normalcolor span.christ:visited {{ color: {1}; }} ",
-                    ColorWordsOfChrist,
-                    htmlPhoneAccentColor));
+                    " a.normalcolor:link span.christ {{ color: {1}; }}  a.normalcolor span.christ:visited {{ color: {3}; }}  a.normalcolor span.christ:hover {{ color: {2}; }} a.normalcolor:hover {{ color: {0}; }} ",
+                    htmlPhoneAccentColor.GetHtmlRgb(),
+                    htmlWordsOfChristColor.GetHtmlRgb(),
+                    htmlPhoneAccentColor.GetHtmlRgb(),
+                    htmlPhoneAccentColor.GetHtmlRgb()));
 
             head.Append("</style>");
-            head.Append(
-                @"<script type=""text/javascript"">
+            head.Append(@"<script type=""text/javascript"">
 
 function getVerticalScrollPosition() {
     return document.body.scrollTop.toString();
@@ -1057,34 +587,37 @@ function getVerticalScrollPosition() {
 function setVerticalScrollPosition(position) {
     document.body.scrollTop = position;
 }
-function ScrollToAnchor(anchor) {
+function ShowNode (elemntId) {
+    var element = document.getElementById(""ID_"" + elemntId);
+    document.body.scrollTop = element.offsetTop;
+}
+function ScrollToAnchor(anchor, colorRgba) {
     window.location.hash=anchor;
+    SetFontColorForElement(anchor, colorRgba);
 }
 function SetFontColorForElement(elemntId, colorRgba){
-    var element = document.getElementById(""ID"" + elemntId);
+    var element = document.getElementById(""ID_"" + elemntId);
     if(element!=null){
         element.style.color = colorRgba;
     }
 }
 
-function HighlightTheElement(elemntId,lastHighlighedElement){
-    var element = document.getElementById(""ID"" + elemntId);
-    if(element!=null){
-        element.className=""highlightcolor"";
-        element.style.visibility='hidden';
-        element.style.visibility='visible';
-    }
-    element = document.getElementById(""ID"" + lastHighlighedElement);
-    if(element!=null && lastHighlighedElement!=elemntId){
-        element.className=""normalcolor"";
-        element.style.visibility='hidden';
-        element.style.visibility='visible';
-    }
-}
 </script>");
-            //head.Append(string.Format("foregroundcolor = '{0}'; highlightcolor = '{1}';</script>", htmlForegroundColor, htmlForegroundColor));
             head.Append("</head><body>");
             return head.ToString();
+        }
+
+        private bool ExistsBook(CanonBookDef book)
+        {
+            for (int i = 0; i < book.NumberOfChapters; i++)
+			{
+                if (this.Chapters[book.VersesInChapterStartIndex + i].Length != 0)
+                {
+                    return true;
+                }
+			}
+
+            return false;
         }
 
         public virtual ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton)
@@ -1102,26 +635,38 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                             this.BookNames = new BibleNames(this.Serial.Iso2DigitLangCode);
                         }
 
-                        string[] buttonNamesStart = this.BookNames.GetAllShortNames();
-                        if (!this.BookNames.ExistsShortNames)
-                        {
-                            buttonNamesStart = this.BookNames.GetAllFullNames();
-                        }
+                        //string[] buttonNamesStart = this.BookNames.GetAllShortNames();
+                        //if (!this.BookNames.ExistsShortNames)
+                        //{
+                        //    buttonNamesStart = this.BookNames.GetAllFullNames();
+                        //}
 
                         // assumption. if the first chapter in the book does not exist then the book does not exist
-                        for (int i = 0; i < BooksInBible; i++)
+                        int bookCounter = 0;
+                        foreach (var book in canon.OldTestBooks)
                         {
-                            if (this.Chapters[FirstChapternumInBook[i]].Length != 0)
+                            if (ExistsBook(book))
                             {
-                                colors.Add(ChapterCategories[i]);
-                                values.Add(FirstChapternumInBook[i]);
-                                buttonNames.Add(buttonNamesStart[i]);
+                                colors.Add(ChapterCategories[book.ShortName1]);
+                                values.Add(bookCounter);
+                                buttonNames.Add(this.BookNames.GetShortName(book.ShortName1));
+                            }
+                            bookCounter++;
+                        }
+                        foreach (var book in canon.NewTestBooks)
+                        {
+                            if (this.Chapters[book.VersesInChapterStartIndex].Length != 0)
+                            {
+                                colors.Add(ChapterCategories[book.ShortName1]);
+                                values.Add(bookCounter);
+                                buttonNames.Add(this.BookNames.GetShortName(book.ShortName1));
+                                bookCounter++;
                             }
                         }
 
                         return new ButtonWindowSpecs(
                             stage,
-                            "Select book",
+                            "Select a book to view",
                             colors.Count,
                             colors.ToArray(),
                             buttonNames.ToArray(),
@@ -1130,26 +675,17 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                     }
                 case 1:
                     {
+                        CanonBookDef book = canon.GetBookFromBookNumber(lastSelectedButton);
                         //Chapters 
-                        int booknum = 0;
-                        for (int i = 0; i < BooksInBible; i++)
-                        {
-                            if (lastSelectedButton == FirstChapternumInBook[i])
-                            {
-                                booknum = i;
-                                break;
-                            }
-                        }
 
                         // set up the array for the chapter selection
-                        int numOfChapters = ChaptersInBook[booknum];
+                        int numOfChapters = book.NumberOfChapters;
 
                         if (numOfChapters <= 1)
                         {
                             return null;
                         }
 
-                        // Color butColor = (Color)Application.Current.Resources["PhoneForegroundColor"];
                         var butColors = new int[numOfChapters];
                         var values = new int[numOfChapters];
                         var butText = new string[numOfChapters];
@@ -1157,13 +693,13 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                         {
                             butColors[i] = 0;
                             butText[i] = (i + 1).ToString();
-                            values[i] = FirstChapternumInBook[booknum] + i;
+                            values[i] = book.VersesInChapterStartIndex + i;
                         }
 
                         // do a nice transition
                         return new ButtonWindowSpecs(
                             stage,
-                            "Select a chapter",
+                            "Select a chapter to view",
                             numOfChapters,
                             butColors,
                             butText,
@@ -1173,24 +709,7 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                 case 2:
                     {
                         // verses
-                        int booknum = 0;
-                        int i;
-                        for (i = 0; i < BooksInBible; i++)
-                        {
-                            if (lastSelectedButton < FirstChapternumInBook[i])
-                            {
-                                booknum = i - 1;
-                                break;
-                            }
-                        }
-                        if (i == BooksInBible)
-                        {
-                            booknum = BooksInBible - 1;
-                        }
-
-                        // set up the array for the verse selection
-
-                        int numOfVerses = VersesInChapter[booknum][lastSelectedButton - FirstChapternumInBook[booknum]];
+                        int numOfVerses = canon.VersesInChapter[lastSelectedButton]; 
 
                         if (numOfVerses <= 1)
                         {
@@ -1201,7 +720,7 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                         var butColors = new int[numOfVerses];
                         var values = new int[numOfVerses];
                         var butText = new string[numOfVerses];
-                        for (i = 0; i < numOfVerses; i++)
+                        for (int i = 0; i < numOfVerses; i++)
                         {
                             butColors[i] = 0;
                             butText[i] = (i + 1).ToString();
@@ -1210,32 +729,19 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
 
                         // do a nice transition
                         return new ButtonWindowSpecs(
-                            stage, "Select a verse", numOfVerses, butColors, butText, values, ButtonSize.Small);
+                            stage, "Select a verse to view", numOfVerses, butColors, butText, values, ButtonSize.Small);
                     }
             }
             return null;
         }
-        public virtual bool IsLocked
-        {
-            get
-            {
-                return this.Serial.CipherKey != null && this.Serial.CipherKey.Length == 0;
-            }
-        }
-        public bool IsCipherKeyGood(string testKey)
-        {
-            var oldCipher = this.Serial.CipherKey;
-            this.Serial.CipherKey = testKey;
-            byte[] chapterBuffer = this.GetChapterBytes(this.Serial.PosChaptNum);
-            this.Serial.CipherKey = oldCipher;
-            return chapterBuffer.Any(p => p != 0);
-        }
 
-        public virtual string GetChapterHtml(
+        public virtual async Task<string> GetChapterHtml(
             DisplaySettings displaySettings,
-            string htmlBackgroundColor,
-            string htmlForegroundColor,
-            string htmlPhoneAccentColor,
+            HtmlColorRgba htmlBackgroundColor,
+            HtmlColorRgba htmlForegroundColor,
+            HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightingColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
@@ -1243,13 +749,16 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             bool forceReload)
         {
             return
-                
+                await
                 this.GetChapterHtml(
                     displaySettings,
+                    this.Serial.PosBookShortName,
                     this.Serial.PosChaptNum,
                     htmlBackgroundColor,
                     htmlForegroundColor,
                     htmlPhoneAccentColor,
+                    htmlWordsOfChristColor,
+                    htmlHighlightingColor,
                     htmlFontSize,
                     fontFamily,
                     isNotesOnly,
@@ -1262,9 +771,9 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
         /// </summary>
         /// <param name="chapterNumber">Chaptern number beginning with zero for the first chapter and 1188 for the last chapter in the bible.</param>
         /// <returns>Entire Chapter</returns>
-        public string GetChapterRaw(int chapterNumber)
+        public async Task<string> GetChapterRaw(int chapterNumber)
         {
-            byte[] chapterBuffer = this.GetChapterBytes(chapterNumber);
+            byte[] chapterBuffer = await this.GetChapterBytes(chapterNumber);
             string retValue = Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
             return retValue;
         }
@@ -1274,6 +783,16 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             return string.Empty;
         }
 
+        public string GetFullName(string bookShortName)
+        {
+            if (this.BookNames == null)
+            {
+                this.BookNames = new BibleNames(this.Serial.Iso2DigitLangCode);
+            }
+            var book = canon.BookByShortName[bookShortName];
+            return this.BookNames.GetFullName(book.ShortName1, book.FullName);
+        }
+            
         public string GetFullName(int bookNum)
         {
             if (this.BookNames == null)
@@ -1281,28 +800,27 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                 this.BookNames = new BibleNames(this.Serial.Iso2DigitLangCode);
             }
 
-            return this.BookNames.GetFullName(bookNum);
+            CanonBookDef book = canon.GetBookFromBookNumber(bookNum);
+            return this.BookNames.GetFullName(book.ShortName1, book.FullName);
         }
 
         public virtual void GetInfo(
-            out int bookNum,
-            out int absoluteChaptNum,
+            out string bookShortName,
             out int relChaptNum,
             out int verseNum,
             out string fullName,
             out string title)
         {
+            bookShortName = this.Serial.PosBookShortName;
+            relChaptNum = this.Serial.PosChaptNum;
             verseNum = this.Serial.PosVerseNum;
-            absoluteChaptNum = this.Serial.PosChaptNum;
-            this.GetInfo(
-                this.Serial.PosChaptNum, this.Serial.PosVerseNum, out bookNum, out relChaptNum, out fullName, out title);
+            this.GetInfo(bookShortName,
+                this.Serial.PosChaptNum, this.Serial.PosVerseNum, out fullName, out title);
         }
 
-        public void GetInfo(
-            int chapterNum, int verseNum, out int bookNum, out int relChaptNum, out string fullName, out string title)
+        public void GetInfo(string bookShortName,
+            int chapterNum, int verseNum, out string fullName, out string title)
         {
-            bookNum = 0;
-            relChaptNum = 0;
             fullName = string.Empty;
             title = string.Empty;
             if (this.Chapters.Count == 0)
@@ -1311,13 +829,9 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             }
             try
             {
-                ChapterPos chaptPos = this.Chapters[chapterNum];
-                bookNum = chaptPos.Booknum;
-                relChaptNum = chaptPos.BookRelativeChapterNum;
-                bookNum = chaptPos.Booknum;
-                relChaptNum = chaptPos.BookRelativeChapterNum;
-                fullName = this.GetFullName(bookNum);
-                title = fullName + " " + (relChaptNum + 1) + ":" + (verseNum + 1);
+
+                fullName = GetFullName(bookShortName);
+                title = fullName + " " + (chapterNum + 1) + ":" + (verseNum + 1);
             }
             catch (Exception ee)
             {
@@ -1337,23 +851,32 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                 this.BookNames = new BibleNames(this.Serial.Iso2DigitLangCode);
             }
 
-            return this.BookNames.GetShortName(bookNum);
+            CanonBookDef book = null;
+            if (bookNum >= canon.OldTestBooks.Count())
+            {
+                book = canon.NewTestBooks[bookNum - canon.OldTestBooks.Count()];
+            }
+            else
+            {
+                book = canon.OldTestBooks[bookNum];
+            }
+
+            return this.BookNames.GetShortName(book.ShortName1);
         }
 
-        public virtual object[] GetTranslateableTexts(DisplaySettings displaySettings, string bibleToLoad)
+        public virtual async Task<object[]> GetTranslateableTexts(DisplaySettings displaySettings, string bibleToLoad)
         {
             var toTranslate = new string[2];
             var isTranslateable = new bool[2];
 
-            int bookNum;
+            string bookShortName;
             int relChaptNum;
             string fullName;
             string titleText;
             int verseNum;
-            int absoluteChaptNum;
 
-            this.GetInfo(out bookNum, out absoluteChaptNum, out relChaptNum, out verseNum, out fullName, out titleText);
-            string verseText = this.GetVerseTextOnly(displaySettings, absoluteChaptNum, verseNum);
+            this.GetInfo(out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
+            string verseText = await this.GetVerseTextOnly(displaySettings, bookShortName, relChaptNum, verseNum);
 
             toTranslate[0] = "<p>" + fullName + " " + (relChaptNum + 1) + ":" + (verseNum + 1) + " - " + bibleToLoad
                              + "</p>";
@@ -1374,14 +897,20 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
         /// <param name="chapterNumber">Chaptern number beginning with zero for the first chapter and 1188 for the last chapter in the bible.</param>
         /// <param name="verseNumber">Verse number beginning with zero for the first verse</param>
         /// <returns>Verse raw</returns>
-        public virtual string GetVerseTextOnly(
-            DisplaySettings displaySettings, int chapterNumber, int verseNumber)
+        public virtual async Task<string> GetVerseTextOnly(
+            DisplaySettings displaySettings, string shortBookName, int chapterNumber, int verseNumber)
         {
-            byte[] chapterBuffer = this.GetChapterBytes(chapterNumber);
+            CanonBookDef book;
+            if (!canon.BookByShortName.TryGetValue(shortBookName, out book) || chapterNumber >= book.NumberOfChapters || verseNumber >= canon.VersesInChapter[chapterNumber + book.VersesInChapterStartIndex])
+            {
+                return string.Empty;
+            }
+
+            byte[] chapterBuffer = await this.GetChapterBytes(chapterNumber + book.VersesInChapterStartIndex);
 
             // debug only
             // string all = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
-            VersePos verse = this.Chapters[chapterNumber].Verses[verseNumber];
+            VersePos verse = this.Chapters[book.VersesInChapterStartIndex + chapterNumber].Verses[verseNumber];
             int noteMarker = 'a';
             bool isInPoetry = false;
             return this.ParseOsisText(
@@ -1399,7 +928,78 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                 true);
         }
 
-        public List<string> MakeListDisplayText(
+        public virtual async Task<string> GetTTCtext(bool isVerseOnly)
+        {
+            CanonBookDef book;
+            if (!canon.BookByShortName.TryGetValue(this.Serial.PosBookShortName, out book))
+            {
+                return string.Empty;
+            }
+
+            var chapterBuffer = await this.GetChapterBytes(this.Serial.PosChaptNum + book.VersesInChapterStartIndex);
+
+            if (isVerseOnly)
+            {
+                VersePos verse = this.Chapters[book.VersesInChapterStartIndex + this.Serial.PosChaptNum].Verses[this.Serial.PosVerseNum];
+                if (verse.Length == 0)
+                {
+                    return string.Empty;
+                }
+
+                if (verse.StartPos >= chapterBuffer.Length || (verse.StartPos + verse.Length) > chapterBuffer.Length)
+                {
+                    return " POSSIBLE ERROR IN BIBLE, TEXT MISSING HERE ";
+                }
+                return RawGenTextReader.CleanXml(Encoding.UTF8.GetString(chapterBuffer, (int)verse.StartPos, (int)verse.Length), true).Replace(".", ". ");
+            }
+            else
+            {
+                return RawGenTextReader.CleanXml(Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length), true).Replace(".",". ");
+            }
+        }
+
+
+        public virtual async Task<string> GetVerseTextOnly(DisplaySettings displaySettings, string bookShortName, int chapterNumber)
+        {
+            CanonBookDef book;
+            if (!canon.BookByShortName.TryGetValue(bookShortName, out book) || chapterNumber >= book.NumberOfChapters)
+            {
+                return string.Empty;
+            }
+
+            //give them the notes if you can.
+
+            var  chapterBuffer = await this.GetChapterBytes(chapterNumber + book.VersesInChapterStartIndex);
+            return RawGenTextReader.CleanXml(Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length), true);
+
+            /*
+
+
+
+
+            var verses = this.Chapters[chapterNumber].Verses;
+            int noteMarker = 'a';
+            bool isInPoetry = false;
+            var returnText = new StringBuilder();
+            foreach (var verse in verses)
+            {
+                returnText.Append(this.ParseOsisText(
+                displaySettings,
+                string.Empty,
+                string.Empty,
+                chapterBuffer,
+                (int)verse.StartPos,
+                verse.Length,
+                this.Serial.IsIsoEncoding,
+                false,
+                true,
+                ref noteMarker,
+                ref isInPoetry,
+                true));
+            }
+            return returnText.ToString();*/
+        }
+        public async Task<List<string>> MakeListDisplayText(
             DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay)
         {
             var returnList = new List<string>();
@@ -1407,10 +1007,11 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             for (int j = listToDisplay.Count - 1; j >= 0; j--)
             {
                 BiblePlaceMarker place = listToDisplay[j];
-                ChapterPos chaptPos = this.Chapters[place.ChapterNum];
-                byte[] chapterBuffer = this.GetChapterBytes(place.ChapterNum);
+                var book = canon.BookByShortName[place.BookShortName];
+                ChapterPos chaptPos = this.Chapters[place.ChapterNum + book.VersesInChapterStartIndex];
+                byte[] chapterBuffer = await this.GetChapterBytes(place.ChapterNum + book.VersesInChapterStartIndex);
 
-                ChapterPos versesForChapterPositions = this.Chapters[place.ChapterNum];
+                ChapterPos versesForChapterPositions = this.Chapters[place.ChapterNum + book.VersesInChapterStartIndex];
 
                 VersePos verse = versesForChapterPositions.Verses[place.VerseNum];
                 int noteMarker = 'a';
@@ -1434,7 +1035,7 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             return returnList;
         }
 
-        public virtual void MoveChapterVerse(int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
+        public virtual void MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
         {
             if (!(source is BibleZtextReader))
             {
@@ -1444,10 +1045,13 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             try
             {
                 // see if the chapter exists, if not, then don't do anything.
-                if (this.Chapters != null && chapter < this.Chapters.Count && this.Chapters[chapter].Length > 0)
+                CanonBookDef book;
+                if (canon.BookByShortName.TryGetValue(bookShortName, out book) && this.Chapters != null && chapter < book.NumberOfChapters)
                 {
+                    this.Serial.PosBookShortName = bookShortName;
                     this.Serial.PosChaptNum = chapter;
-                    this.Serial.PosVerseNum = verse;
+                    this.Serial.PosVerseNum = canon.VersesInChapter[book.VersesInChapterStartIndex + chapter] > verse 
+                        ? verse : (canon.VersesInChapter[book.VersesInChapterStartIndex + chapter]-1);
                 }
             }
             catch (Exception e)
@@ -1456,17 +1060,64 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             }
         }
 
-        public virtual void MoveNext()
+        public virtual void MoveNext(bool isVerseMove)
         {
+
+            if (this.Serial == null || canon == null || string.IsNullOrEmpty(this.Serial.PosBookShortName))
+            {
+                return;
+            }
+
+            var book = canon.BookByShortName[this.Serial.PosBookShortName];
+            if (isVerseMove)
+            {
+                int nextVerse = this.Serial.PosVerseNum + 1;
+                if (nextVerse >= canon.VersesInChapter[book.VersesInChapterStartIndex + this.Serial.PosChaptNum])
+                {
+                    this.MoveNext(false);
+                }
+                else
+                {
+                    this.MoveChapterVerse(this.Serial.PosBookShortName, this.Serial.PosChaptNum, nextVerse, false, this);
+                }
+
+                return;
+            }
+
+            int nextChapter = this.Serial.PosChaptNum + 1;
+            if (nextChapter >= book.NumberOfChapters)
+            {
+                // must go to the next book.
+                if ((book.NumberOfChapters + book.VersesInChapterStartIndex + 1) > canon.GetNumChaptersInBible())
+                {
+                    // no more books left. Go to the first one.
+                    var nextBook = canon.GetBookFromAbsoluteChapter(0);
+                    this.MoveChapterVerse(nextBook.ShortName1, 0, 0, false, this);
+                }
+                else
+                {
+                    var nextBook = canon.GetBookFromAbsoluteChapter(book.NumberOfChapters + book.VersesInChapterStartIndex + 1);
+                    this.MoveChapterVerse(nextBook.ShortName1, 0, 0, false, this);
+                }
+            }
+            else
+            {
+                this.MoveChapterVerse(this.Serial.PosBookShortName, nextChapter, 0, false, this);
+            }
+
+/*
+
+
             this.Serial.PosChaptNum++;
             this.Serial.PosVerseNum = 0;
             if (this.Serial.PosChaptNum >= this.Chapters.Count)
             {
                 this.Serial.PosChaptNum = 0;
             }
+            var book = canon.BookByShortName[this.Serial.PosBookShortName];
 
             for (;
-                this.Serial.PosChaptNum < this.Chapters.Count && this.Chapters[this.Serial.PosChaptNum].Length == 0;
+                this.Serial.PosChaptNum < this.Chapters.Count && this.Chapters[this.Serial.PosChaptNum + book.VersesInChapterStartIndex].Length == 0;
                 this.Serial.PosChaptNum++)
             {
             }
@@ -1481,23 +1132,64 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             }
 
             for (;
-                this.Serial.PosChaptNum < this.Chapters.Count && this.Chapters[this.Serial.PosChaptNum].Length == 0;
+                this.Serial.PosChaptNum < this.Chapters.Count && this.Chapters[this.Serial.PosChaptNum + book.VersesInChapterStartIndex].Length == 0;
                 this.Serial.PosChaptNum++)
             {
             }
+ */
         }
 
-        public virtual void MovePrevious()
+        public virtual void MovePrevious(bool isVerseMove)
         {
+            var book = canon.BookByShortName[this.Serial.PosBookShortName];
+            if (isVerseMove)
+            {
+                int nextVerse = this.Serial.PosVerseNum - 1;
+                if (nextVerse < 0)
+                {
+                    this.MovePrevious(false);
+                }
+                else
+                {
+                    this.MoveChapterVerse(this.Serial.PosBookShortName, this.Serial.PosChaptNum, nextVerse, false, this);
+                }
+
+                return;
+            }
+
+            int prevChapter = this.Serial.PosChaptNum - 1;
+            if (prevChapter < 0)
+            {
+                // must go to the previous book.
+                if (book.VersesInChapterStartIndex == 0)
+                {
+                    // no more previous books left. Go to the last one.
+                    var lastBook = canon.NewTestBooks.Any() ? canon.NewTestBooks[canon.NewTestBooks.Count() - 1] : canon.OldTestBooks[canon.OldTestBooks.Count() - 1];
+                    this.MoveChapterVerse(lastBook.ShortName1, lastBook.NumberOfChapters-1, 0, false, this);
+                }
+                else
+                {
+                    var previousBook = canon.GetBookFromAbsoluteChapter(book.VersesInChapterStartIndex - 1);
+                    this.MoveChapterVerse(previousBook.ShortName1, previousBook.NumberOfChapters - 1, 0, false, this);
+                }
+            }
+            else
+            {
+                this.MoveChapterVerse(this.Serial.PosBookShortName, prevChapter, 0, false, this);
+            }
+
+
+
+            /*
             this.Serial.PosChaptNum--;
             this.Serial.PosVerseNum = 0;
             if (this.Serial.PosChaptNum < 0)
             {
                 this.Serial.PosChaptNum = this.Chapters.Count - 1;
             }
-
+            var book = canon.BookByShortName[this.Serial.PosBookShortName];
             for (;
-                this.Serial.PosChaptNum >= 0 && this.Chapters[this.Serial.PosChaptNum].Length == 0;
+                this.Serial.PosChaptNum >= 0 && this.Chapters[this.Serial.PosChaptNum + book.VersesInChapterStartIndex].Length == 0;
                 this.Serial.PosChaptNum--)
             {
             }
@@ -1512,17 +1204,19 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             }
 
             for (;
-                this.Serial.PosChaptNum >= 0 && this.Chapters[this.Serial.PosChaptNum].Length == 0;
+                this.Serial.PosChaptNum >= 0 && this.Chapters[this.Serial.PosChaptNum + book.VersesInChapterStartIndex].Length == 0;
                 this.Serial.PosChaptNum--)
             {
-            }
+            }*/
         }
 
-        public string PutHtmlTofile(
+        public async Task<string> PutHtmlTofile(
             DisplaySettings displaySettings,
-            string htmlBackgroundColor,
-            string htmlForegroundColor,
-            string htmlPhoneAccentColor,
+            HtmlColorRgba htmlBackgroundColor,
+            HtmlColorRgba htmlForegroundColor,
+            HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightingColor,
             double htmlFontSize,
             string fontFamily,
             string fileErase,
@@ -1530,23 +1224,39 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             bool forceReload)
         {
             Debug.WriteLine("putHtmlTofile start");
+
+            ApplicationData appData = ApplicationData.Current;
+            StorageFolder folder = await appData.LocalFolder.GetFolderAsync(filePath.Replace("/", "\\"));
+
             // Find a new file name.
             // Must change the file name, otherwise the browser may or may not update.
             string fileCreate = "web" + (int)(new Random().NextDouble() * 10000) + ".html";
-            while (Hoot.File.Exists(Path.Combine(filePath.Replace("/", "\\"), fileCreate)))
+            IReadOnlyList<StorageFile> files = null;
+            try
             {
-                fileCreate = "web" + (int)(new Random().NextDouble() * 10000) + ".html";
+                files = await folder.CreateFileQuery().GetFilesAsync();
+
+                // the name must be unique of course
+                while (files.Any(p => p.Name.Equals(fileCreate)))
+                {
+                    fileCreate = "web" + (int)(new Random().NextDouble() * 10000) + ".html";
+                }
+            }
+            catch (Exception)
+            {
             }
 
             // delete the old file
-            if (Hoot.File.Exists(fileErase))
+            string fileToErase = Path.GetFileName(fileErase);
+            if (files != null && files.Any(p => p.Name.Equals(fileToErase)))
             {
-                if (Serial.PosChaptNum == _lastShownChapterNumber && !forceReload)
+                if (this.Serial.PosChaptNum == this._lastShownChapterNumber && !forceReload)
                 {
                     // we dont need to rewrite everything. Just rename the file.
                     try
                     {
-                        Hoot.File.Move(fileErase, filePath, fileCreate);
+                        StorageFile fileRenaming = await folder.GetFileAsync(fileToErase);
+                        await fileRenaming.RenameAsync(fileCreate);
                         return fileCreate;
                     }
                     catch (Exception ee)
@@ -1561,7 +1271,8 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                 {
                     try
                     {
-                        Hoot.File.Delete(fileErase);
+                        StorageFile fileErasing = await folder.GetFileAsync(fileToErase);
+                        await fileErasing.DeleteAsync();
                     }
                     catch (Exception ee)
                     {
@@ -1573,15 +1284,18 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
 
             this._lastShownChapterNumber = this.Serial.PosChaptNum;
 
-            Stream fs = Hoot.File.OpenStreamForWriteAsync(Path.Combine(filePath.Replace("/", "\\"), fileCreate), File.CreationCollisionOption.ReplaceExisting);
+            StorageFile file = await folder.CreateFileAsync(fileCreate);
+            Stream fs = await file.OpenStreamForWriteAsync();
             var tw = new StreamWriter(fs);
             string fileContent =
-                
+                await
                 this.GetChapterHtml(
                     displaySettings,
                     htmlBackgroundColor,
                     htmlForegroundColor,
                     htmlPhoneAccentColor,
+                    htmlWordsOfChristColor,
+                    htmlHighlightingColor,
                     htmlFontSize,
                     fontFamily,
                     false,
@@ -1590,12 +1304,11 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             tw.Write(fileContent);
             tw.Flush();
             tw.Dispose();
-            File.CloseStream(fs);
+            fs.Dispose();
 
             Debug.WriteLine("putHtmlTofile end");
             return fileCreate;
         }
-
 
         public void RegisterUpdateEvent(WindowSourceChanged sourceChangedMethod, bool isRegister = true)
         {
@@ -1609,9 +1322,9 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             }
         }
 
-        public virtual void Resume()
+        public virtual async Task Resume()
         {
-            this.ReloadSettingsFile();
+            await this.ReloadSettingsFile();
         }
 
         public virtual void SerialSave()
@@ -1651,9 +1364,9 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             return buf[0];
         }
 
-        protected byte[] GetChapterBytes(int chapterNumber)
+        protected async Task<byte[]> GetChapterBytes(int chapterNumber)
         {
-            Debug.WriteLine("getChapterBytes start");
+            //Debug.WriteLine("getChapterBytes start");
             int numberOfChapters = this.Chapters.Count;
             if (numberOfChapters == 0)
             {
@@ -1674,15 +1387,17 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             long blockStartPos = versesForChapterPositions.StartPos;
             long blockLen = versesForChapterPositions.Length;
             Stream fs;
-            string fileName = (chapterNumber < ChaptersInOt) ? "ot." : "nt.";
+            var book = canon.OldTestBooks[canon.OldTestBooks.Count()-1];
+            string fileName = (chapterNumber < (book.VersesInChapterStartIndex + book.NumberOfChapters)) ? "ot." : "nt.";
             try
             {
                 //Windows.Storage.ApplicationData appData = Windows.Storage.ApplicationData.Current;
-                //var folder = appData.LocalFolder.GetFolderAsync(Serial.Path.Replace("/", "\\"));
+                //var folder = await appData.LocalFolder.GetFolderAsync(Serial.Path.Replace("/", "\\"));
                 string filenameComplete = this.Serial.Path + fileName + ((char)this.BlockType) + "zz";
                 fs =
-                    Hoot.File.OpenStreamForReadAsync(filenameComplete.Replace("/", "\\"));
-                //fs = file.OpenStreamForReadAsync(); 
+                    await
+                    ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(filenameComplete.Replace("/", "\\"));
+                //fs = await file.OpenStreamForReadAsync(); 
             }
             catch (Exception ee)
             {
@@ -1693,9 +1408,8 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             // adjust the start postion of the stream to where this book begins.
             // we must read the entire book up to the chapter we want even though we just want one chapter.
             fs.Position = bookStartPos;
-
-            //var zipStream = new ZInputStream(fs);
-            var zipStream = string.IsNullOrEmpty(this.Serial.CipherKey) ? new ZInputStream(fs) : new ZInputStream(new SapphireStream(fs, this.Serial.CipherKey));
+            ZInputStream zipStream;
+            zipStream = string.IsNullOrEmpty(this.Serial.CipherKey) ? new ZInputStream(fs) : new ZInputStream(new SapphireStream(fs,this.Serial.CipherKey));
 
             var chapterBuffer = new byte[blockLen];
             int totalBytesRead = 0;
@@ -1753,9 +1467,19 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                 Debug.WriteLine("BibleZtextReader.getChapterBytes crash; " + ee.Message);
             }
 
-            File.CloseStream(fs);
+            fs.Dispose();
             zipStream.Dispose();
             return chapterBuffer;
+        }
+
+        public async Task<bool> IsCipherKeyGood(string testKey)
+        {
+            var oldCipher = this.Serial.CipherKey;
+            this.Serial.CipherKey = testKey;
+            var book = canon.BookByShortName[this.Serial.PosBookShortName];
+            byte[] chapterBuffer = await this.GetChapterBytes(this.Serial.PosChaptNum + book.VersesInChapterStartIndex);
+            this.Serial.CipherKey = oldCipher;
+            return chapterBuffer.Any(p => p != 0);
         }
 
         /// <summary>
@@ -1772,12 +1496,15 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
         /// <param name="addStartFinishHtml"></param>
         /// <param name="forceReload"></param>
         /// <returns>Entire Chapter without notes and with lots of html markup for each verse</returns>
-        protected string GetChapterHtml(
+        protected async Task<string> GetChapterHtml(
             DisplaySettings displaySettings,
+            string bookShortName,
             int chapterNumber,
-            string htmlBackgroundColor,
-            string htmlForegroundColor,
-            string htmlPhoneAccentColor,
+            HtmlColorRgba htmlBackgroundColor,
+            HtmlColorRgba htmlForegroundColor,
+            HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightingColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
@@ -1790,8 +1517,9 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             }
 
             Debug.WriteLine("GetChapterHtml start");
+            var book = canon.BookByShortName[bookShortName];
             var htmlChapter = new StringBuilder();
-            ChapterPos versesForChapterPositions = this.Chapters[chapterNumber];
+            ChapterPos versesForChapterPositions = this.Chapters[chapterNumber + book.VersesInChapterStartIndex];
             string chapterStartHtml = string.Empty;
             string chapterEndHtml = string.Empty;
             if (addStartFinishHtml)
@@ -1801,51 +1529,11 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                     htmlBackgroundColor,
                     htmlForegroundColor,
                     htmlPhoneAccentColor,
+                    htmlWordsOfChristColor,
                     htmlFontSize,
                     fontFamily);
                 chapterEndHtml = "</body></html>";
             }
-            // if the bible is locked and there is no key. Look for a key.
-            if (this.Serial.CipherKey != null && this.Serial.CipherKey.Length == 0)
-            {
-                try
-                {
-                    string filenameComplete = this.Serial.Path + "CipherKey.txt";
-                    var fs = Hoot.File.OpenStreamForReadAsync(filenameComplete.Replace("/", "\\"));
-                    // get the key from the file.
-                    var buf = new byte[1000];
-                    var len = fs.Read(buf, 0, 1000);
-                    this.Serial.CipherKey = Encoding.UTF8.GetString(buf, 0, len);
-                }
-                catch (Exception ee)
-                {
-                }
-                if (this.Serial.CipherKey.Length == 0)
-                {
-                    try
-                    {
-                        string filenameComplete = this.Serial.ConfigPath;
-                        var fs = Hoot.File.OpenStreamForReadAsync(
-                                this.Serial.ConfigPath.Replace("/", "\\"));
-                        // show the about information instead
-                        var config = new SwordBookMetaData(fs, "xx");
-                        fs.Dispose();
-                        return chapterStartHtml + "This bible is locked. Go to the menu to enter the key.<br /><br />"
-                               + ((string)config.GetCetProperty(ConfigEntryType.About)).Replace("\\par", "<br />")
-                                                                                       .Replace("\\qc", "")
-                               + chapterEndHtml;
-                    }
-                    catch (Exception e)
-                    {
-                        // does not exist
-                    }
-                }
-            }
-            byte[] chapterBuffer = this.GetChapterBytes(chapterNumber);
-
-            // for debug
-            //string xxxxxx = Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
-            //Debug.WriteLine("RawChapter: " + xxxxxx);
 
             string bookName = string.Empty;
             if (displaySettings.ShowBookName)
@@ -1866,6 +1554,53 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             // in some commentaries, the verses repeat. Stop these repeats from comming in!
             var verseRepeatCheck = new Dictionary<long, int>();
             bool isInPoetry = false;
+
+            // if the bible is locked and there is no key. Look for a key.
+            if (this.Serial.CipherKey != null && this.Serial.CipherKey.Length == 0)
+            {
+                try
+                {
+                    string filenameComplete = this.Serial.Path + "CipherKey.txt";
+                    var fs =
+                        await
+                        ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(filenameComplete.Replace("/", "\\"));
+                    // get the key from the file.
+                    var buf = new byte[1000];
+                    var len = await fs.ReadAsync(buf, 0, 1000);
+                    this.Serial.CipherKey = Encoding.UTF8.GetString(buf,0,len);
+                }
+                catch (Exception ee)
+                {
+                }
+                if (this.Serial.CipherKey.Length == 0)
+                {
+                    try
+                    {
+                        string filenameComplete = this.Serial.ConfigPath;
+                        var fs =
+                            await
+                            ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(
+                                this.Serial.ConfigPath.Replace("/", "\\"));
+                        // show the about information instead
+                        var config = new SwordBookMetaData(fs, "xx");
+                        fs.Dispose();
+                        return chapterStartHtml + "This bible is locked. Go to the menu to enter the key.<br /><br />"
+                               + ((string)config.GetCetProperty(ConfigEntryType.About)).Replace("\\par", "<br />")
+                                                                                       .Replace("\\qc", "")
+                               + chapterEndHtml;
+                    }
+                    catch (Exception e)
+                    {
+                        // does not exist
+                    }
+                }
+            }
+            byte[] chapterBuffer = await this.GetChapterBytes(chapterNumber + book.VersesInChapterStartIndex);
+
+            // for debug
+            //string xxxxxx = Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
+            //Debug.WriteLine("RawChapter: " + xxxxxx);
+
             for (int i = 0; i < versesForChapterPositions.Verses.Count; i++)
             {
                 VersePos verse = versesForChapterPositions.Verses[i];
@@ -1877,8 +1612,8 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                                          + (displaySettings.ShowVerseNumber ? (i + 1).ToString() : string.Empty)
                                          + stopVerseMarking;
                 string verseTxt;
-                string id = "CHAP_" + chapterNumber + "_VERS_" + i;
-                string restartText = "<a name=\"" + id + "\"></a><a class=\"normalcolor\" id=\"ID" + id
+                string id = bookShortName + "_" + chapterNumber + "_" + i;
+                string restartText = "<a name=\"" + id + "\"></a><a " + GetHighlightStyle(displaySettings, htmlHighlightingColor, bookShortName, chapterNumber, i) + " class=\"normalcolor\" id=\"ID_" + id
                                      + "\" href=\"#\" onclick=\"window.external.notify('" + id
                                      + "'); event.returnValue=false; return false;\" > ";
                 string startText = htmlChapterText + restartText;
@@ -1966,12 +1701,56 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             return buf[3] * 0x100000 + buf[2] * 0x10000 + buf[1] * 0x100 + buf[0];
         }
 
-        protected string MakeListDisplayText(
+        private string GetHighlightStyle(DisplaySettings displaySettings, HtmlColorRgba[] htmlHighlightingColor, string book, int chapter, int verse)
+        {
+            var style = string.Empty;
+            var highlight = displaySettings.highlighter.GetHighlightForVerse(book, chapter, verse);
+            if(highlight == Highlighter.Highlight.COLOR_NONE)
+            {
+                return string.Empty;
+            }
+            return "style=\"background-color:" + htmlHighlightingColor[(int)highlight].GetHtmlRgb() + ";\"";
+        }
+
+        protected async Task<string> MakeListTtcHearingText(
+            List<BiblePlaceMarker> listToDisplay)
+        {
+
+            var listText = new StringBuilder();
+            for (int j = listToDisplay.Count - 1; j >= 0; j--)
+            {
+                BiblePlaceMarker place = listToDisplay[j];
+                CanonBookDef book;
+                if (!canon.BookByShortName.TryGetValue(place.BookShortName, out book) || place.ChapterNum >= book.NumberOfChapters || place.VerseNum >= canon.VersesInChapter[place.ChapterNum + book.VersesInChapterStartIndex])
+                {
+                    continue;
+                }
+                ChapterPos chaptPos = this.Chapters[place.ChapterNum + book.VersesInChapterStartIndex];
+                byte[] chapterBuffer = await this.GetChapterBytes(place.ChapterNum + book.VersesInChapterStartIndex);
+                VersePos verse = chaptPos.Verses[place.VerseNum];
+                if (verse.Length == 0)
+                {
+                    return string.Empty;
+                }
+
+                if (verse.StartPos >= chapterBuffer.Length || (verse.StartPos + verse.Length) > chapterBuffer.Length)
+                {
+                    return " POSSIBLE ERROR IN BIBLE, TEXT MISSING HERE ";
+                }
+                listText.Append(this.GetFullName(chaptPos.Booknum) + " "
+                    + (chaptPos.BookRelativeChapterNum + 1) + ":" + (place.VerseNum + 1) + " . " + 
+                    RawGenTextReader.CleanXml(Encoding.UTF8.GetString(chapterBuffer, (int)verse.StartPos, (int)verse.Length), true).Replace(".", ". "));
+            }
+
+            return listText.ToString();
+        }
+        protected async Task<string> MakeListDisplayText(
             DisplaySettings displaySettings,
             List<BiblePlaceMarker> listToDisplay,
-            string htmlBackgroundColor,
-            string htmlForegroundColor,
-            string htmlPhoneAccentColor,
+            HtmlColorRgba htmlBackgroundColor,
+            HtmlColorRgba htmlForegroundColor,
+            HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
             double htmlFontSize,
             string fontFamily,
             bool showBookTitles,
@@ -1988,6 +1767,7 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                 htmlBackgroundColor,
                 htmlForegroundColor,
                 htmlPhoneAccentColor,
+                htmlWordsOfChristColor,
                 htmlFontSize,
                 fontFamily);
             const string chapterEndHtml = "</body></html>";
@@ -2005,12 +1785,19 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             for (int j = listToDisplay.Count - 1; j >= 0; j--)
             {
                 BiblePlaceMarker place = listToDisplay[j];
-                ChapterPos chaptPos = this.Chapters[place.ChapterNum];
-                byte[] chapterBuffer = this.GetChapterBytes(place.ChapterNum);
+
+                CanonBookDef book;
+                if (!canon.BookByShortName.TryGetValue(place.BookShortName, out book) || place.ChapterNum >= book.NumberOfChapters || place.VerseNum >= canon.VersesInChapter[place.ChapterNum + book.VersesInChapterStartIndex])
+                {
+                    continue;
+                }
+                ChapterPos chaptPos = this.Chapters[place.ChapterNum + book.VersesInChapterStartIndex];
+                byte[] chapterBuffer = await this.GetChapterBytes(place.ChapterNum + book.VersesInChapterStartIndex);
+                ChapterPos versesForChapterPositions = this.Chapters[place.ChapterNum + book.VersesInChapterStartIndex];
+                VersePos verse = versesForChapterPositions.Verses[place.VerseNum];
 
                 // for debug
                 // string all = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
-                ChapterPos versesForChapterPositions = this.Chapters[place.ChapterNum];
 
                 if (showBookTitles && lastBookNum != chaptPos.Booknum)
                 {
@@ -2023,12 +1810,11 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                                          + place.When.ToString("yyyy-MM-dd") + " " + place.When.ToString("hh.mm.ss")
                                          + stopVerseMarking;
 
-                string textId = "CHAP_" + place.ChapterNum + "_VERS_" + place.VerseNum;
-                VersePos verse = versesForChapterPositions.Verses[place.VerseNum];
+                string textId = place.BookShortName + "_" + place.ChapterNum + "_" + place.VerseNum;
                 int noteMarker = 'a';
                 string verseTxt = this.ParseOsisText(
                     displaySettings,
-                    "<p><a name=\"" + textId + "\"></a><a class=\"normalcolor\" id=\"ID" + textId
+                    "<p><a name=\"" + textId + "\"></a><a class=\"normalcolor\" id=\"ID_" + textId
                     + "\"  href=\"#\" onclick=\"window.external.notify('" + textId
                     + "'); event.returnValue=false; return false;\" >" + htmlChapterText,
                     string.Empty,
@@ -2050,7 +1836,7 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                 {
                     htmlListText.Append(
                         verseTxt + "</p><p>" + (displaySettings.SmallVerseNumbers ? "<sup>" : "(") + notesTitle
-                        + (displaySettings.SmallVerseNumbers ? "</sup>" : ") ") + place.Note + "</a></p><hr />");
+                        + (displaySettings.SmallVerseNumbers ? "</sup>" : ") ") + "<br />" + place.Note.Replace("\n","<br />") + "</a></p><hr />");
                 }
             }
 
@@ -2058,7 +1844,7 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             return htmlListText.ToString();
         }
 
-        protected string ParseOsisText(
+        protected virtual string ParseOsisText(
             DisplaySettings displaySettings,
             string chapterNumber,
             string restartText,
@@ -2113,10 +1899,10 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                 ms.Position = 0;
 
                 // debug
-                // byte[] buf = new byte[ms.Length]; ms.Read(buf, 0, (int)ms.Length);
-                // string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, buf.Length);
-                // System.Diagnostics.Debug.WriteLine("osisbuf: " + xxxxxx);
-                // ms.Position = 0;
+                //byte[] buf = new byte[ms.Length]; ms.Read(buf, 0, (int)ms.Length);
+                //string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, buf.Length);
+                //System.Diagnostics.Debug.WriteLine("osisbuf: " + xxxxxx);
+                ms.Position = 0;
             }
             catch (Exception ee)
             {
@@ -2156,418 +1942,408 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                             }
                         }
 
-                        if (reader.NodeType.Equals(XmlNodeType.Element))
+                        switch (reader.NodeType)
                         {
-
-                            if (reader.Name.Equals("CM"))
-                            {
-
-                                if (!isRaw && !displaySettings.EachVerseNewLine && isLastElementLineBreak == 0)
+                            case XmlNodeType.Element:
+                                switch (reader.Name)
                                 {
-                                    AppendText("<br />", plainText, noteText, isInElement);
-                                    isLastElementLineBreak = 1;
-                                }
-                            }
-                            else if (reader.Name.Equals("lb"))
-                            {
-
-                                if (!isRaw && !displaySettings.EachVerseNewLine)
-                                {
-                                    string paragraphXml = isLastElementLineBreak == 0 ? "<br />" : " ";
-                                    if (reader.HasAttributes)
-                                    {
-                                        reader.MoveToFirstAttribute();
-                                        if (reader.Name.Equals("type"))
+                                    case "CM":
+                                        if (!isRaw && !displaySettings.EachVerseNewLine && isLastElementLineBreak == 0)
                                         {
-                                            {
-                                                paragraphXml = reader.Value.Equals("x-end-paragraph")
-                                                                   ? "</p>"
-                                                                   : (reader.Value.Equals("x-begin-paragraph")
-                                                                          ? "<p>"
-                                                                          : "<br />");
-                                            }
+                                            AppendText("<br />", plainText, noteText, isInElement);
+                                            isLastElementLineBreak = 1;
                                         }
-                                    }
 
-                                    AppendText(paragraphXml, plainText, noteText, isInElement);
-                                    isLastElementLineBreak = 1;
-                                }
-                            }
-                            else if (reader.Name.Equals("title"))
-                            {
-
-                                isInTitle = true;
-                                if (!(noTitles || !displaySettings.ShowHeadings) && !isRaw)
-                                {
-                                    AppendText("<h3>", plainText, noteText, isInElement);
-                                }
-                            }
-                            else if (reader.Name.Equals("reference"))
-                            {
-                                if (reader.HasAttributes)
-                                {
-                                    reader.MoveToFirstAttribute();
-                                    if (reader.Name.Equals("osisRef"))
-                                    {
-                                        int chaptNumLoc;
-                                        int verseNumLoc;
-                                        if (ConvertOsisRefToAbsoluteChaptVerse(
-                                            reader.Value, out chaptNumLoc, out verseNumLoc))
+                                        break;
+                                    case "lb":
+                                        if (!isRaw && !displaySettings.EachVerseNewLine)
                                         {
-                                            isReferenceLinked = true;
-                                            string textId = "CHAP_" + chaptNumLoc + "_VERS_" + verseNumLoc;
-                                            noteText.Append(
-                                                "</a><a class=\"normalcolor\" id=\"ID" + textId
-                                                + "\"  href=\"#\" onclick=\"window.external.notify('" + textId
-                                                + "'); event.returnValue=false; return false;\" >");
-                                        }
-                                    }
-                                }
-
-                                noteText.Append("  [");
-                            }
-                            else if (reader.Name.Equals("lg"))
-                            {
-                                if (!isRaw && !displaySettings.EachVerseNewLine)
-                                {
-                                    if (isInPoetry)
-                                    {
-                                        isInPoetry = false;
-                                        AppendText("</blockquote>", plainText, noteText, isInElement);
-                                    }
-                                    else
-                                    {
-                                        isInPoetry = true;
-                                        AppendText(
-                                            "<blockquote style=\"margin: 0 0 0 1.5em;padding 0 0 0 0;\">",
-                                            plainText,
-                                            noteText,
-                                            isInElement);
-                                    }
-
-                                    isLastElementLineBreak = 1;
-                                }
-
-                            }
-                            else if (reader.Name.Equals("l"))
-                            {
-
-                                if (!isRaw && !displaySettings.EachVerseNewLine && isLastElementLineBreak == 0)
-                                {
-                                    AppendText(isInPoetry ? "<br />" : " ", plainText, noteText, isInElement);
-                                    isLastElementLineBreak = 1;
-                                }
-                            }
-                            else if (reader.Name.Equals("FI"))
-                            {
-
-                                if (!isRaw && !isNotesOnly && displaySettings.ShowNotePositions)
-                                {
-                                    plainText.Append(
-                                        (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
-                                        + this.convertNoteNumToId(noteIdentifier)
-                                        + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
-                                    noteIdentifier++;
-                                }
-
-                                if (!isChaptNumGivenNotes && !isRaw)
-                                {
-                                    noteText.Append("<p>" + chapterNumber);
-                                    isChaptNumGivenNotes = true;
-                                }
-
-                                noteText.Append("(");
-                                isInInjectionElement = true;
-                            }
-                            else if (reader.Name.Equals("RF") || reader.Name.Equals("note"))
-                            {
-
-                                if (!isRaw && !isNotesOnly && displaySettings.ShowNotePositions)
-                                {
-                                    plainText.Append(
-                                        (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
-                                        + this.convertNoteNumToId(noteIdentifier)
-                                        + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
-                                    noteIdentifier++;
-                                }
-
-                                if (!isChaptNumGivenNotes && !isRaw)
-                                {
-                                    noteText.Append("<p>" + chapterNumber);
-                                    isChaptNumGivenNotes = true;
-                                }
-
-                                isInElement = true;
-                            }
-                            else if (reader.Name.Equals("hi"))
-                            {
-                                if (!isRaw)
-                                {
-                                    AppendText("<i>", plainText, noteText, isInElement);
-                                }
-                            }
-                            else if (reader.Name.Equals("Rf"))
-                            {
-
-                                isInElement = false;
-                            }
-                            else if (reader.Name.Equals("Fi"))
-                            {
-
-                                noteText.Append(") ");
-                                isInInjectionElement = false;
-                            }
-                            else if (reader.Name.Equals("q"))
-                            {
-
-                                if (!isRaw && !isNotesOnly)
-                                {
-                                    if (reader.HasAttributes)
-                                    {
-                                        reader.MoveToFirstAttribute();
-                                        do
-                                        {
-                                            if (displaySettings.WordsOfChristRed && reader.Name.Equals("who"))
+                                            string paragraphXml = isLastElementLineBreak == 0 ? "<br />" : " ";
+                                            if (reader.HasAttributes)
                                             {
-                                                if (reader.Value.ToLower().Equals("jesus"))
+                                                reader.MoveToFirstAttribute();
+                                                if (reader.Name.Equals("type"))
                                                 {
-                                                    AppendText(
-                                                        "<span class=\"christ\">", plainText, noteText, isInElement);
-                                                    isInQuote = true;
-                                                }
-                                            }
-
-                                            if (reader.Name.Equals("marker"))
-                                            {
-                                                AppendText(reader.Value, plainText, noteText, isInElement);
-                                            }
-                                        }
-                                        while (reader.MoveToNextAttribute());
-                                    }
-                                }
-                            }
-                            else if (reader.Name.Equals("w"))
-                            {
-
-                                // <w lemma="strong:G1078" morph="robinson:N-GSF">γενεσεως</w>
-                                if ((displaySettings.ShowStrongsNumbers || displaySettings.ShowMorphology) && !isRaw
-                                    && !isNotesOnly)
-                                {
-                                    lemmaText = string.Empty;
-                                    morphText = string.Empty;
-                                    if (reader.HasAttributes)
-                                    {
-                                        reader.MoveToFirstAttribute();
-
-                                        do
-                                        {
-                                            if (displaySettings.ShowStrongsNumbers && reader.Name.Equals("lemma"))
-                                            {
-                                                string[] lemmas = reader.Value.Split(' ');
-                                                foreach (string lemma in lemmas)
-                                                {
-                                                    if (lemma.StartsWith("strong:"))
                                                     {
-                                                        if (!string.IsNullOrEmpty(lemmaText))
-                                                        {
-                                                            lemmaText += ",";
-                                                        }
-
-                                                        lemmaText +=
-                                                            "<a class=\"strongsmorph\" href=\"#\" onclick=\"window.external.notify('STRONG_"
-                                                            + lemma.Substring(7)
-                                                            + "'); event.returnValue=false; return false;\" >"
-                                                            + lemma.Substring(8) + "</a>";
+                                                        paragraphXml = reader.Value.Equals("x-end-paragraph")
+                                                                           ? "</p>"
+                                                                           : (reader.Value.Equals("x-begin-paragraph")
+                                                                                  ? "<p>"
+                                                                                  : "<br />");
                                                     }
                                                 }
                                             }
-                                            else if (displaySettings.ShowMorphology && reader.Name.Equals("morph"))
-                                            {
-                                                string[] morphs = reader.Value.Split(' ');
-                                                foreach (string morph in morphs)
-                                                {
-                                                    if (morph.StartsWith("robinson:"))
-                                                    {
-                                                        string subMorph = morph.Substring(9);
-                                                        if (!string.IsNullOrEmpty(morphText))
-                                                        {
-                                                            morphText += ",";
-                                                        }
 
-                                                        morphText +=
-                                                            "<a class=\"strongsmorph\" href=\"#\" onclick=\"window.external.notify('MORPH_"
-                                                            + subMorph
-                                                            + "'); event.returnValue=false; return false;\" >"
-                                                            + subMorph + "</a>";
-                                                    }
+                                            AppendText(paragraphXml, plainText, noteText, isInElement);
+                                            isLastElementLineBreak = 1;
+                                        }
+
+                                        break;
+                                    case "title":
+                                        isInTitle = true;
+                                        if (!(noTitles || !displaySettings.ShowHeadings) && !isRaw)
+                                        {
+                                            AppendText("<h3>", plainText, noteText, isInElement);
+                                        }
+
+                                        break;
+                                    case "reference":
+                                        if (reader.HasAttributes)
+                                        {
+                                            reader.MoveToFirstAttribute();
+                                            if (reader.Name.Equals("osisRef"))
+                                            {
+                                                int chaptNumLoc;
+                                                int verseNumLoc;
+                                                string bookShortName;
+                                                if (ConvertOsisRefToAbsoluteChaptVerse(
+                                                    reader.Value, out bookShortName, out chaptNumLoc, out verseNumLoc))
+                                                {
+                                                    isReferenceLinked = true;
+                                                    string textId = bookShortName + "_" + chaptNumLoc + "_" + verseNumLoc;
+                                                    noteText.Append(
+                                                        "</a><a class=\"normalcolor\" id=\"ID_" + textId
+                                                        + "\"  href=\"#\" onclick=\"window.external.notify('" + textId
+                                                        + "'); event.returnValue=false; return false;\" >");
                                                 }
                                             }
                                         }
-                                        while (reader.MoveToNextAttribute());
+
+                                        noteText.Append("  [");
+                                        break;
+                                    case "lg":
+                                        if (!isRaw && !displaySettings.EachVerseNewLine)
+                                        {
+                                            if (isInPoetry)
+                                            {
+                                                isInPoetry = false;
+                                                AppendText("</blockquote>", plainText, noteText, isInElement);
+                                            }
+                                            else
+                                            {
+                                                isInPoetry = true;
+                                                AppendText(
+                                                    "<blockquote style=\"margin: 0 0 0 1.5em;padding 0 0 0 0;\">",
+                                                    plainText,
+                                                    noteText,
+                                                    isInElement);
+                                            }
+
+                                            isLastElementLineBreak = 1;
+                                        }
+
+                                        break;
+                                    case "l":
+                                        if (!isRaw && !displaySettings.EachVerseNewLine && isLastElementLineBreak == 0)
+                                        {
+                                            AppendText(isInPoetry ? "<br />" : " ", plainText, noteText, isInElement);
+                                            isLastElementLineBreak = 1;
+                                        }
+
+                                        break;
+                                    case "FI":
+                                        if (!isRaw && !isNotesOnly && displaySettings.ShowNotePositions)
+                                        {
+                                            plainText.Append(
+                                                (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
+                                                + this.convertNoteNumToId(noteIdentifier)
+                                                + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
+                                            noteIdentifier++;
+                                        }
+
+                                        if (!isChaptNumGivenNotes && !isRaw)
+                                        {
+                                            noteText.Append("<p>" + chapterNumber);
+                                            isChaptNumGivenNotes = true;
+                                        }
+
+                                        noteText.Append("(");
+                                        isInInjectionElement = true;
+                                        break;
+                                    case "RF":
+                                    case "note":
+                                        if (!isRaw && !isNotesOnly && displaySettings.ShowNotePositions)
+                                        {
+                                            plainText.Append(
+                                                (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
+                                                + this.convertNoteNumToId(noteIdentifier)
+                                                + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
+                                            noteIdentifier++;
+                                        }
+
+                                        if (!isChaptNumGivenNotes && !isRaw)
+                                        {
+                                            noteText.Append("<p>" + chapterNumber);
+                                            isChaptNumGivenNotes = true;
+                                        }
+
+                                        isInElement = true;
+                                        break;
+                                    case "hi":
+                                        if (!isRaw)
+                                        {
+                                            AppendText("<i>", plainText, noteText, isInElement);
+                                        }
+
+                                        break;
+                                    case "Rf":
+                                        isInElement = false;
+                                        break;
+                                    case "Fi":
+                                        noteText.Append(") ");
+                                        isInInjectionElement = false;
+                                        break;
+                                    case "q":
+                                        if (!isRaw && !isNotesOnly)
+                                        {
+                                            if (reader.HasAttributes)
+                                            {
+                                                reader.MoveToFirstAttribute();
+                                                do
+                                                {
+                                                    if (displaySettings.WordsOfChristRed && reader.Name.Equals("who"))
+                                                    {
+                                                        if (reader.Value.ToLower().Equals("jesus"))
+                                                        {
+                                                            AppendText(
+                                                                "<span class=\"christ\">",
+                                                                plainText,
+                                                                noteText,
+                                                                isInElement);
+                                                            isInQuote = true;
+                                                        }
+                                                    }
+
+                                                    if (reader.Name.Equals("marker"))
+                                                    {
+                                                        AppendText(reader.Value, plainText, noteText, isInElement);
+                                                    }
+                                                }
+                                                while (reader.MoveToNextAttribute());
+                                            }
+                                        }
+
+                                        break;
+                                    case "w":
+
+                                        // <w lemma="strong:G1078" morph="robinson:N-GSF">γενεσεως</w>
+                                        if ((displaySettings.ShowStrongsNumbers || displaySettings.ShowMorphology)
+                                            && !isRaw && !isNotesOnly)
+                                        {
+                                            lemmaText = string.Empty;
+                                            morphText = string.Empty;
+                                            if (reader.HasAttributes)
+                                            {
+                                                reader.MoveToFirstAttribute();
+
+                                                do
+                                                {
+                                                    if (displaySettings.ShowStrongsNumbers
+                                                        && reader.Name.Equals("lemma"))
+                                                    {
+                                                        string[] lemmas = reader.Value.Split(' ');
+                                                        foreach (string lemma in lemmas)
+                                                        {
+                                                            if (lemma.StartsWith("strong:"))
+                                                            {
+                                                                if (!string.IsNullOrEmpty(lemmaText))
+                                                                {
+                                                                    lemmaText += ",";
+                                                                }
+
+                                                                lemmaText +=
+                                                                    "<a class=\"strongsmorph\" href=\"#\" onclick=\"window.external.notify('STRONG_"
+                                                                    + lemma.Substring(7)
+                                                                    + "'); event.returnValue=false; return false;\" >"
+                                                                    + lemma.Substring(8) + "</a>";
+                                                            }
+                                                        }
+                                                    }
+                                                    else if (displaySettings.ShowMorphology
+                                                             && reader.Name.Equals("morph"))
+                                                    {
+                                                        string[] morphs = reader.Value.Split(' ');
+                                                        foreach (string morph in morphs)
+                                                        {
+                                                            if (morph.StartsWith("robinson:"))
+                                                            {
+                                                                string subMorph = morph.Substring(9);
+                                                                if (!string.IsNullOrEmpty(morphText))
+                                                                {
+                                                                    morphText += ",";
+                                                                }
+
+                                                                morphText +=
+                                                                    "<a class=\"strongsmorph\" href=\"#\" onclick=\"window.external.notify('MORPH_"
+                                                                    + subMorph
+                                                                    + "'); event.returnValue=false; return false;\" >"
+                                                                    + subMorph + "</a>";
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                while (reader.MoveToNextAttribute());
+                                            }
+                                        }
+
+                                        break;
+
+                                    case "versee":
+                                        AppendText(" ", plainText, noteText, isInElement);
+                                        break;
+                                    default:
+                                        AppendText(" ", plainText, noteText, isInElement);
+                                        Debug.WriteLine("Element untreated: " + reader.Name);
+                                        break;
+                                }
+
+                                break;
+                            case XmlNodeType.Text:
+                                if (!isInElement && !isInInjectionElement && chapterNumber.Length > 0 && !isInTitle
+                                    && !isChaptNumGiven)
+                                {
+                                    if (isInQuote)
+                                    {
+                                        AppendText("</span>", plainText, noteText, isInElement);
                                     }
-                                }
-                            }
-                            else if (reader.Name.Equals("versee"))
-                            {
 
-                                AppendText(" ", plainText, noteText, isInElement);
-                            }
-                            else
-                            {
-                                AppendText(" ", plainText, noteText, isInElement);
-                                Debug.WriteLine("Element untreated: " + reader.Name);
-                            }
-                        }
-                        else if (reader.NodeType.Equals(XmlNodeType.Text))
-                        {
+                                    plainText.Append(chapterNumber);
+                                    if (isInQuote)
+                                    {
+                                        AppendText("<span class=\"christ\">", plainText, noteText, isInElement);
+                                    }
 
-                            if (!isInElement && !isInInjectionElement && chapterNumber.Length > 0 && !isInTitle
-                                && !isChaptNumGiven)
-                            {
-                                if (isInQuote)
-                                {
-                                    AppendText("</span>", plainText, noteText, isInElement);
+                                    isChaptNumGiven = true;
                                 }
 
-                                plainText.Append(chapterNumber);
-                                if (isInQuote)
-                                {
-                                    AppendText("<span class=\"christ\">", plainText, noteText, isInElement);
-                                }
-
-                                isChaptNumGiven = true;
-                            }
-
-                            string text;
-                            try
-                            {
-                                text = reader.Value;
-                            }
-                            catch (Exception e1)
-                            {
-                                Debug.WriteLine("error in text: " + e1.Message);
+                                string text;
                                 try
                                 {
                                     text = reader.Value;
                                 }
-                                catch (Exception e2)
+                                catch (Exception e1)
                                 {
-                                    Debug.WriteLine("second error in text: " + e2.Message);
-                                    text = "*error*";
-                                }
-                            }
-
-                            if ((!(noTitles || !displaySettings.ShowHeadings) || !isInTitle) && text.Length > 0)
-                            {
-                                char firstChar = text[0];
-                                AppendText(
-                                    ((!firstChar.Equals(',') && !firstChar.Equals('.') && !firstChar.Equals(':')
-                                      && !firstChar.Equals(';') && !firstChar.Equals('?'))
-                                         ? " "
-                                         : string.Empty) + text,
-                                    plainText,
-                                    noteText,
-                                    isInElement || isInInjectionElement);
-                            }
-
-                        }
-                        else if (reader.NodeType.Equals(XmlNodeType.EndElement))
-                        {
-                            if (reader.Name.Equals("title"))
-                            {
-                                if (!(noTitles || !displaySettings.ShowHeadings) && !isRaw)
-                                {
-                                    AppendText("</h3>", plainText, noteText, isInElement);
+                                    Debug.WriteLine("error in text: " + e1.Message);
+                                    try
+                                    {
+                                        text = reader.Value;
+                                    }
+                                    catch (Exception e2)
+                                    {
+                                        Debug.WriteLine("second error in text: " + e2.Message);
+                                        text = "*error*";
+                                    }
                                 }
 
-                                isInTitle = false;
-                            }
-                            else if (reader.Name.Equals("reference"))
-                            {
-                                    noteText.Append("] ");
-                                    if (isReferenceLinked)
-                                    {
-                                        noteText.Append("</a>" + restartText);
-                                    }
+                                if ((!(noTitles || !displaySettings.ShowHeadings) || !isInTitle) && text.Length > 0)
+                                {
+                                    char firstChar = text[0];
+                                    AppendText(
+                                        ((!firstChar.Equals(',') && !firstChar.Equals('.') && !firstChar.Equals(':')
+                                          && !firstChar.Equals(';') && !firstChar.Equals('?'))
+                                             ? " "
+                                             : string.Empty) + text,
+                                        plainText,
+                                        noteText,
+                                        isInElement || isInInjectionElement);
+                                }
 
-                                    isReferenceLinked = false;
-                            }
-                            else if (reader.Name.Equals("note"))
-                            {
-                                    isInElement = false;
-                            }
-                            else if (reader.Name.Equals("hi"))
-                            {
-
-                                    if (!isRaw)
-                                    {
-                                        AppendText("</i>", plainText, noteText, isInElement);
-                                    }
-                            }
-                            else if (reader.Name.Equals("q"))
-                            {
-                                    if (isInQuote)
-                                    {
-                                        AppendText("</span>", plainText, noteText, isInElement);
-                                        isInQuote = false;
-                                    }
-                            }
-                            else if (reader.Name.Equals("w"))
-                            {
-
-                                    // <w lemma="strong:G1078" morph="robinson:N-GSF">γενεσεως</w>
-                                    if ((displaySettings.ShowStrongsNumbers || displaySettings.ShowMorphology) && !isRaw
-                                        && !isNotesOnly
-                                        && (!string.IsNullOrEmpty(lemmaText) || !string.IsNullOrEmpty(morphText)))
-                                    {
-                                        plainText.Append(
-                                            "</a>"
-                                            + (displaySettings.SmallVerseNumbers
-                                                   ? "<sub>"
-                                                   : "<span class=\"strongsmorph\">(</span>"));
-                                        if (!string.IsNullOrEmpty(lemmaText))
+                                break;
+                            case XmlNodeType.EndElement:
+                                switch (reader.Name)
+                                {
+                                    case "title":
+                                        if (!(noTitles || !displaySettings.ShowHeadings) && !isRaw)
                                         {
-                                            plainText.Append(lemmaText);
+                                            AppendText("</h3>", plainText, noteText, isInElement);
                                         }
 
-                                        if (!string.IsNullOrEmpty(morphText))
+                                        isInTitle = false;
+                                        break;
+                                    case "reference":
+                                        noteText.Append("] ");
+                                        if (isReferenceLinked)
+                                        {
+                                            noteText.Append("</a>" + restartText);
+                                        }
+
+                                        isReferenceLinked = false;
+                                        break;
+                                    case "note":
+                                        isInElement = false;
+                                        break;
+                                    case "hi":
+                                        if (!isRaw)
+                                        {
+                                            AppendText("</i>", plainText, noteText, isInElement);
+                                        }
+
+                                        break;
+                                    case "q":
+                                        if (isInQuote)
+                                        {
+                                            AppendText("</span>", plainText, noteText, isInElement);
+                                            isInQuote = false;
+                                        }
+
+                                        break;
+                                    case "w":
+
+                                        // <w lemma="strong:G1078" morph="robinson:N-GSF">γενεσεως</w>
+                                        if ((displaySettings.ShowStrongsNumbers || displaySettings.ShowMorphology)
+                                            && !isRaw && !isNotesOnly
+                                            && (!string.IsNullOrEmpty(lemmaText) || !string.IsNullOrEmpty(morphText)))
                                         {
                                             plainText.Append(
-                                                (string.IsNullOrEmpty(lemmaText) ? string.Empty : ",") + morphText);
+                                                "</a>"
+                                                + (displaySettings.SmallVerseNumbers
+                                                       ? "<sub>"
+                                                       : "<span class=\"strongsmorph\">(</span>"));
+                                            if (!string.IsNullOrEmpty(lemmaText))
+                                            {
+                                                plainText.Append(lemmaText);
+                                            }
+
+                                            if (!string.IsNullOrEmpty(morphText))
+                                            {
+                                                plainText.Append(
+                                                    (string.IsNullOrEmpty(lemmaText) ? string.Empty : ",") + morphText);
+                                            }
+
+                                            plainText.Append(
+                                                (displaySettings.SmallVerseNumbers
+                                                     ? "</sub>"
+                                                     : "<span class=\"strongsmorph\">)</span>") + restartText);
+                                            lemmaText = string.Empty;
+                                            morphText = string.Empty;
                                         }
 
-                                        plainText.Append(
-                                            (displaySettings.SmallVerseNumbers
-                                                 ? "</sub>"
-                                                 : "<span class=\"strongsmorph\">)</span>") + restartText);
-                                        lemmaText = string.Empty;
-                                        morphText = string.Empty;
-                                    }
-                            }
-                            else if (reader.Name.Equals("lg"))
-                            {
-                                    if (!isRaw && !displaySettings.EachVerseNewLine)
-                                    {
-                                        isInPoetry = false;
-                                        AppendText("</blockquote>", plainText, noteText, isInElement);
-                                    }
-                            }
-                            else if (reader.Name.Equals("l"))
-                            {
-                                    if (!isRaw && !displaySettings.EachVerseNewLine)
-                                    {
+                                        break;
+                                    case "lg":
+                                        if (!isRaw && !displaySettings.EachVerseNewLine)
+                                        {
+                                            isInPoetry = false;
+                                            AppendText("</blockquote>", plainText, noteText, isInElement);
+                                        }
+
+                                        break;
+                                    case "l":
+                                        if (!isRaw && !displaySettings.EachVerseNewLine)
+                                        {
+                                            AppendText(" ", plainText, noteText, isInElement);
+                                        }
+
+                                        break;
+                                    case "versee":
                                         AppendText(" ", plainText, noteText, isInElement);
-                                    }
-                            }
-                            else if (reader.Name.Equals("versee"))
-                            {
-                                    AppendText(" ", plainText, noteText, isInElement);
-                            }
-                            else
-                            {
-                                    AppendText(" ", plainText, noteText, isInElement);
-                                    Debug.WriteLine("EndElement untreated: " + reader.Name);
-                            }
+                                        break;
+                                    default:
+                                        AppendText(" ", plainText, noteText, isInElement);
+                                        Debug.WriteLine("EndElement untreated: " + reader.Name);
+                                        break;
+                                }
+
+                                break;
                         }
                     }
                 }
@@ -2599,7 +2375,7 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             }
         }
 
-        private bool ReloadOneIndex(string filename, int startBook, int endBook)
+        private async Task<bool> ReloadOneIndex(string filename, int startBook, int endBook, CanonBookDef[] booksInTestement)
         {
             if (string.IsNullOrEmpty(this.Serial.Path))
             {
@@ -2610,11 +2386,12 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                 var bookPositions = new List<BookPos>();
                 //Windows.Storage.ApplicationData appData = Windows.Storage.ApplicationData.Current;
                 Stream fs =
-                    Hoot.File.OpenStreamForReadAsync(
+                    await
+                    ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(
                         this.Serial.Path.Replace("/", "\\") + filename + ((char)this.BlockType) + "zs");
-                //var folder = appData.LocalFolder.GetFolderAsync(Serial.Path.Replace("/", "\\"));
-                //var file = folder.CreateFileAsync(filename + ((char)BlockType) + "zs");
-                //var fs = file.OpenStreamForReadAsync(); 
+                //var folder = await appData.LocalFolder.GetFolderAsync(Serial.Path.Replace("/", "\\"));
+                //var file = await folder.CreateFileAsync(filename + ((char)BlockType) + "zs");
+                //var fs = await file.OpenStreamForReadAsync(); 
                 bool isEnd;
 
                 // read book position index
@@ -2641,12 +2418,13 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                     bookPositions.Add(new BookPos(startPos, length, unused));
                 }
 
-                File.CloseStream(fs);
+                fs.Dispose();
 
                 // read the verse holder for versification bzv file
-                //file = folder.CreateFileAsync(filename + ((char)BlockType) + "zv");
+                //file = await folder.CreateFileAsync(filename + ((char)BlockType) + "zv");
                 fs =
-                    Hoot.File.OpenStreamForReadAsync(
+                    await
+                    ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(
                         this.Serial.Path.Replace("/", "\\") + filename + ((char)this.BlockType) + "zv");
 
                 // dump the first 4 posts
@@ -2660,14 +2438,16 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                 // now start getting each chapter in each book
                 for (int i = startBook; i < endBook; i++)
                 {
-                    for (int j = 0; j < ChaptersInBook[i]; j++)
+                    var bookDef = booksInTestement[i - startBook];
+                    for (int j = 0; j < bookDef.NumberOfChapters; j++)
                     {
                         long chapterStartPos = 0;
                         ChapterPos chapt = null;
                         long lastNonZeroStartPos = 0;
                         long lastNonZeroLength = 0;
                         int length = 0;
-                        for (int k = 0; k < VersesInChapter[i][j]; k++)
+
+                        for (int k = 0; k < canon.VersesInChapter[bookDef.VersesInChapterStartIndex + j]; k++)
                         {
                             int booknum = this.GetShortIntFromStream(fs, out isEnd);
                             long startPos = this.GetInt48FromStream(fs, out isEnd);
@@ -2734,7 +2514,7 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                     this.GetShortIntFromStream(fs, out isEnd);
                 }
 
-                File.CloseStream(fs);
+                fs.Dispose();
             }
             catch (Exception)
             {
@@ -2742,10 +2522,11 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
                 // fill with fake data
                 for (int i = startBook; i < endBook; i++)
                 {
-                    for (int j = 0; j < ChaptersInBook[i]; j++)
+                    var bookDef = booksInTestement[i - startBook];
+                    for (int j = 0; j < bookDef.NumberOfChapters; j++)
                     {
                         var chapt = new ChapterPos(0, i, j, 0);
-                        for (int k = 0; k < VersesInChapter[i][j]; k++)
+                        for (int k = 0; k < canon.VersesInChapter[bookDef.VersesInChapterStartIndex + j]; k++)
                         {
                             chapt.Verses.Add(new VersePos(0, 0, i));
                         }
@@ -2759,32 +2540,37 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
             return true;
         }
 
-        private bool ReloadSettingsFile()
+        private async Task<bool> ReloadSettingsFile()
         {
+            if(canon==null)
+            {
+                canon = CanonManager.GetCanon(this.Serial.Versification);
+            }
             this.Chapters = new List<ChapterPos>();
             this.BlockType = IndexingBlockType.Book;
             // the name must be unique of course
-            if (FileExists(this.Serial.Path + "ot.czs") || FileExists(this.Serial.Path + "nt.czs"))
+            if (await FileExists(ApplicationData.Current.LocalFolder, this.Serial.Path + "ot.czs") || await FileExists(ApplicationData.Current.LocalFolder, this.Serial.Path + "nt.czs"))
             {
                 this.BlockType = IndexingBlockType.Chapter;
             }
 
-            this.ReloadOneIndex("ot.", 0, BooksInOt);
-            this.ReloadOneIndex("nt.", BooksInOt, BooksInOt + BooksInNt);
+            await this.ReloadOneIndex("ot.", 0, canon.OldTestBooks.Count(), canon.OldTestBooks);
+            await this.ReloadOneIndex("nt.", canon.OldTestBooks.Count(), canon.OldTestBooks.Count() + canon.NewTestBooks.Count(), canon.NewTestBooks);
             return true;
         }
 
         public virtual void SetToFirstChapter()
         {
+            this.Serial.PosBookShortName = canon.BookByShortName.First().Value.ShortName1;
             // find the first available chapter.
             this.Serial.PosChaptNum = 0;
-            this.MoveNext();
+            this.MoveNext(false);
             if (this.Serial.PosChaptNum == 1)
             {
-                this.MovePrevious();
+                this.MovePrevious(false);
                 if (this.Serial.PosChaptNum != 0)
                 {
-                    this.MoveNext();
+                    this.MoveNext(false);
                 }
             }
         }
@@ -2934,11 +2720,17 @@ function HighlightTheElement(elemntId,lastHighlighedElement){
         [DataMember(Name = "posVerseNum")]
         public int PosVerseNum;
 
+        [DataMember(Name = "posBookShortName")]
+        public string PosBookShortName;
+
         [DataMember(Name = "CipherKey")]
         public string CipherKey;
 
         [DataMember(Name = "ConfigPath")]
         public string ConfigPath;
+
+        [DataMember(Name = "Versification")]
+        public string Versification;
 
         #endregion
 

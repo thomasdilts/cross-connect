@@ -1,6 +1,4 @@
-﻿#region Header
-
-// <copyright file="File.cs" company="Thomas Dilts">
+﻿// <copyright file="File.cs" company="Thomas Dilts">
 //
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
@@ -23,116 +21,53 @@
 // </summary>
 // <author>Thomas Dilts</author>
 
-#endregion Header
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
 
 namespace Hoot
 {
     using System.IO;
-    using System.IO.IsolatedStorage;
+
+    using Windows.Storage;
 
     public class File
     {
-        public static bool Exists(string path)
+        public static async Task<bool> Exists(string path)
         {
-            IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
             try
             {
-                return root.FileExists(path);
-                //StorageFile file = ApplicationData.Current.LocalFolder.GetFileAsync(path);
+                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(path);
                 return true;
             }
             catch (Exception)
             {
                 return false;
-            }          
-        }
-
-        public static void Move(string fromFullFileName, string toDir, string toName)
-        {
-            System.IO.File.Move(fromFullFileName,Path.Combine(toDir,toName));
-            //var mover = ApplicationData.Current.LocalFolder.GetFileAsync(fromFullFileName);
-            //var newDir = ApplicationData.Current.LocalFolder.GetFolderAsync(toDir);
-            //mover.MoveAsync(newDir, toName);
-        }
-
-        public static byte[] ReadAllBytes(string path)
-        {
-            var stream = Hoot.File.OpenStreamForReadAsync(path);
-            var mstream = new MemoryStream();
-            var buf = new byte[10000];
-            int i;
-            while ((i = stream.Read(buf, 0, 10000)) > 0)
-            {
-                mstream.Write(buf,0,i);
-                if (i < 10000) break;
             }
-            stream.Close();
-            stream.Dispose();
-            return mstream.ToArray();
         }
 
-        public enum CreationCollisionOption
+        public static async Task Move(string fromFullFileName, string toDir, string toName)
         {
-            ReplaceExisting,
-            OpenIfExists
-
+            var mover = await ApplicationData.Current.LocalFolder.GetFileAsync(fromFullFileName);
+            var newDir = await ApplicationData.Current.LocalFolder.GetFolderAsync(toDir);
+            await mover.MoveAsync(newDir, toName);
         }
 
-        public static Stream OpenStreamForWriteAsync(string path, CreationCollisionOption option)
+        public static async Task<string[]> GetFiles(string folderPath)
         {
-            IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
-            if (option == CreationCollisionOption.ReplaceExisting)
-            {
-                try
-                {
-                    var stream =root.OpenFile(
-                        path,
-                        FileMode.CreateNew, 
-                        FileAccess.Write);
-                    return stream;
-                }
-                catch (Exception)
-                {
-
-                    var stream = root.OpenFile(path, FileMode.OpenOrCreate, FileAccess.Write);
-                    stream.Seek(0, SeekOrigin.Begin);
-                    stream.SetLength(0);
-                    return stream;
-                }
-            }
-
-            var stream2= root.OpenFile(path, FileMode.OpenOrCreate, FileAccess.Write);
-            stream2.Seek(0, SeekOrigin.Begin);
-            stream2.SetLength(0);
-            return stream2;
-        }
-
-        public static void CloseStream(Stream stream)
-        {
-            stream.Close();
-            stream.Dispose();
-        }
-
-        public static Stream OpenStreamForReadAsync(string path)
-        {
-            IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
-            return root.OpenFile(
-                    path,
-                    FileMode.Open,
-                    FileAccess.Read);
-        }
-
-        public static string[] GetFiles(string folderPath)
-        {
-            IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
+            //IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
             try
             {
-                return root.GetFileNames(folderPath);
+                var newDir = await ApplicationData.Current.LocalFolder.GetFolderAsync(folderPath);
+                var storageFiles = await newDir.GetFilesAsync();
+                var files = new string[storageFiles.Count()];
+                for (int i = 0; i < storageFiles.Count(); i++)
+                {
+                    files[i] = storageFiles[i].Name;
+                }
+                return files;
             }
             catch (Exception e)
             {
@@ -140,26 +75,36 @@ namespace Hoot
             }
         }
 
-        public static void WriteAllBytes(string path, byte[] buf)
+        public static async Task<byte[]> ReadAllBytes(string path)
         {
-            Stream stream = Hoot.File.OpenStreamForWriteAsync(path, CreationCollisionOption.ReplaceExisting);
+            var stream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(path);
+            var mstream = new MemoryStream();
+            var buf = new byte[10000];
+            int i;
+            while ((i = await stream.ReadAsync(buf, 0, 10000)) > 0)
+            {
+                mstream.Write(buf, 0, i);
+                if (i < 10000) break;
+            }
 
-            stream.Write(buf, 0, buf.Length);
-            stream.Flush();
-            stream.Close();
             stream.Dispose();
-
+            return mstream.ToArray();
         }
 
-        public static bool Delete(string filePath)
+        public static async Task WriteAllBytes(string path, byte[] buf)
         {
-            IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
+            var stream = await ApplicationData.Current.LocalFolder.OpenStreamForWriteAsync(path, CreationCollisionOption.ReplaceExisting);
+            await stream.WriteAsync(buf, 0, buf.Length);
+            await stream.FlushAsync();
+            stream.Dispose();
+        }
+
+        public static async Task<bool> Delete(string filePath)
+        {
             try
             {
-                root.DeleteFile(filePath);
-                //System.IO.File.Delete(filePath);
-                //StorageFile file = ApplicationData.Current.LocalFolder.GetFileAsync(filePath);
-                //file.DeleteAsync();
+                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(filePath);
+                await file.DeleteAsync();
                 return true;
             }
             catch (Exception)
@@ -183,17 +128,16 @@ namespace Hoot
     public class Directory
     {
         public string FullName;
-        public static Directory CreateDirectory(string path)
+        public static async Task<Directory> CreateDirectory(string path)
         {
-            IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
             try
             {
-                root.CreateDirectory(path);
+                await ApplicationData.Current.LocalFolder.CreateFolderAsync(path);
             }
             catch (Exception)
             {
-            }      
-            
+            }
+
             return new Directory { FullName = path };
         }
     }

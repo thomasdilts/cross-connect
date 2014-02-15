@@ -27,16 +27,16 @@ namespace CrossConnect.readers
     using System.IO;
     using System.Reflection;
     using System.Runtime.Serialization;
-
+    using System.Threading.Tasks;
     using System.Xml;
 
-    using ICSharpCode.SharpZipLib.GZip;
-
     using Sword.reader;
+    using ICSharpCode.SharpZipLib.GZip;
+        //using ICSharpCode.SharpZipLib.GZip;
 
     /// <summary>
-    /// Load from a file all the book and verse pointers to the bzz file so that
-    ///   we can later read the bzz file quickly and efficiently.
+    ///     Load from a file all the book and verse pointers to the bzz file so that
+    ///     we can later read the bzz file quickly and efficiently.
     /// </summary>
     [DataContract(Name = "GreekHebrewDictReader")]
     [KnownType(typeof(ChapterPos))]
@@ -44,27 +44,31 @@ namespace CrossConnect.readers
     [KnownType(typeof(VersePos))]
     public class GreekHebrewDictReader : BibleZtextReader
     {
-        #region Fields
-
-        [DataMember]
-        public string Link = string.Empty;
+        #region Static Fields
 
         private static readonly LexiconFromXmlFile GreekDict = new LexiconFromXmlFile("strongsgreek.xml.gz");
 
         private static readonly LexiconFromXmlFile HebrewDict = new LexiconFromXmlFile("strongshebrew.xml.gz");
 
-        #endregion Fields
+        #endregion
 
-        #region Constructors
+        #region Fields
+
+        [DataMember]
+        public string Link = string.Empty;
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public GreekHebrewDictReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
-            : base(path, iso2DigitLangCode, isIsoEncoding, string.Empty,string.Empty)
+            : base(path, iso2DigitLangCode, isIsoEncoding, string.Empty, string.Empty, string.Empty)
         {
         }
 
-        #endregion Constructors
+        #endregion
 
-        #region Properties
+        #region Public Properties
 
         public override bool IsExternalLink
         {
@@ -75,6 +79,14 @@ namespace CrossConnect.readers
         }
 
         public override bool IsHearable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public override bool IsTTChearable
         {
             get
             {
@@ -114,75 +126,17 @@ namespace CrossConnect.readers
             }
         }
 
-        #endregion Properties
+        #endregion
 
-        #region Methods
+        #region Public Methods and Operators
 
-        public override void GetInfo(
-            out int bookNum,
-            out int absouteChaptNum,
-            out int relChaptNum,
-            out int verseNum,
-            out string fullName,
-            out string title)
-        {
-            verseNum = 0;
-            absouteChaptNum = 0;
-            bookNum = 0;
-            relChaptNum = 0;
-            fullName = Link;
-
-            // <string key="Greek dictionary internet link">Greek dictionary internet link</string>
-            // <string key="Hebrew dictionary internet link">Hebrew dictionary internet link</string>
-            title = "Dictionary - " + (Link.StartsWith("G") ? "Greek " : "Hebrew ") + Link.Substring(1);
-        }
-
-        public override string GetLanguage()
-        {
-            return "en";
-        }
-
-        public override object[] GetTranslateableTexts(
-            DisplaySettings displaySettings, string bibleToLoad)
-        {
-            var toTranslate = new string[2];
-            var isTranslateable = new bool[2];
-
-            int number;
-            if (int.TryParse(Link.Substring(1), out number))
-            {
-            }
-
-            LexiconEntry lexiconEntry = null;
-            if (Link.StartsWith("G") && GreekDict.Dict.TryGetValue(number, out lexiconEntry))
-            {
-            }
-            else if (Link.StartsWith("H") && HebrewDict.Dict.TryGetValue(number, out lexiconEntry))
-            {
-            }
-
-            if (lexiconEntry != null)
-            {
-                toTranslate[0] = "<p>" + lexiconEntry.Untranslateable + "</p>";
-                isTranslateable[0] = false;
-                toTranslate[1] = lexiconEntry.Value;
-                toTranslate[1] = ShowReferences(toTranslate[1], lexiconEntry, true);
-                isTranslateable[1] = true;
-            }
-
-            return new object[] { toTranslate, isTranslateable };
-        }
-
-        public void ShowLink(string link)
-        {
-            Link = link;
-        }
-
-        public override string GetChapterHtml(
+        public override async Task<string> GetChapterHtml(
             DisplaySettings displaySettings,
-            string htmlBackgroundColor,
-            string htmlForegroundColor,
-            string htmlPhoneAccentColor,
+            HtmlColorRgba htmlBackgroundColor,
+            HtmlColorRgba htmlForegroundColor,
+            HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
@@ -191,15 +145,15 @@ namespace CrossConnect.readers
         {
             string displayText = string.Empty;
             int number;
-            if (int.TryParse(Link.Substring(1), out number))
+            if (int.TryParse(this.Link.Substring(1), out number))
             {
             }
 
             LexiconEntry lexiconEntry = null;
-            if (Link.StartsWith("G") && GreekDict.Dict.TryGetValue(number, out lexiconEntry))
+            if (this.Link.StartsWith("G") && GreekDict.Dict.TryGetValue(number, out lexiconEntry))
             {
             }
-            else if (Link.StartsWith("H") && HebrewDict.Dict.TryGetValue(number, out lexiconEntry))
+            else if (this.Link.StartsWith("H") && HebrewDict.Dict.TryGetValue(number, out lexiconEntry))
             {
             }
 
@@ -207,7 +161,7 @@ namespace CrossConnect.readers
             {
                 displayText = "<p>" + lexiconEntry.Untranslateable + "</p>";
                 displayText += lexiconEntry.Value;
-                displayText = ShowReferences(displayText, lexiconEntry, true);
+                displayText = this.ShowReferences(displayText, lexiconEntry, true);
             }
 
             // Debug.WriteLine("SearchReader GetChapterHtml.text=" + displayText);
@@ -216,9 +170,70 @@ namespace CrossConnect.readers
                 htmlBackgroundColor,
                 htmlForegroundColor,
                 htmlPhoneAccentColor,
+                htmlWordsOfChristColor,
                 htmlFontSize,
                 fontFamily) + displayText + "</body></html>";
         }
+
+        public override void GetInfo(
+            out string bookShortName,
+            out int relChaptNum,
+            out int verseNum,
+            out string fullName,
+            out string title)
+        {
+            verseNum = 0;
+            bookShortName = string.Empty;
+            relChaptNum = 0;
+            fullName = this.Link;
+
+            // <string key="Greek dictionary internet link">Greek dictionary internet link</string>
+            // <string key="Hebrew dictionary internet link">Hebrew dictionary internet link</string>
+            title = "Dictionary - " + (this.Link.StartsWith("G") ? "Greek " : "Hebrew ") + this.Link.Substring(1);
+        }
+
+        public override string GetLanguage()
+        {
+            return "en";
+        }
+
+        public override async Task<object[]> GetTranslateableTexts(DisplaySettings displaySettings, string bibleToLoad)
+        {
+            var toTranslate = new string[2];
+            var isTranslateable = new bool[2];
+
+            int number;
+            if (int.TryParse(this.Link.Substring(1), out number))
+            {
+            }
+
+            LexiconEntry lexiconEntry = null;
+            if (this.Link.StartsWith("G") && GreekDict.Dict.TryGetValue(number, out lexiconEntry))
+            {
+            }
+            else if (this.Link.StartsWith("H") && HebrewDict.Dict.TryGetValue(number, out lexiconEntry))
+            {
+            }
+
+            if (lexiconEntry != null)
+            {
+                toTranslate[0] = "<p>" + lexiconEntry.Untranslateable + "</p>";
+                isTranslateable[0] = false;
+                toTranslate[1] = lexiconEntry.Value;
+                toTranslate[1] = this.ShowReferences(toTranslate[1], lexiconEntry, true);
+                isTranslateable[1] = true;
+            }
+            return new object[] { toTranslate, isTranslateable };
+        }
+
+        public void ShowLink(string link)
+        {
+            this.Link = link;
+        }
+
+        #endregion
+
+        #region Methods
 
         private string ShowReferences(string displayText, LexiconEntry lexiconEntry, bool showRecursively)
         {
@@ -232,7 +247,7 @@ namespace CrossConnect.readers
                     displayText += "<hr /><p>See also Greek " + foundEntry.Untranslateable + "</p>" + foundEntry.Value;
                     if (showRecursively)
                     {
-                        displayText = ShowReferences(displayText, foundEntry, false);
+                        displayText = this.ShowReferences(displayText, foundEntry, false);
                     }
                 }
             }
@@ -244,7 +259,7 @@ namespace CrossConnect.readers
                     displayText += "<hr /><p>See also Hebrew " + foundEntry.Untranslateable + "</p>" + foundEntry.Value;
                     if (showRecursively)
                     {
-                        displayText = ShowReferences(displayText, foundEntry, false);
+                        displayText = this.ShowReferences(displayText, foundEntry, false);
                     }
                 }
             }
@@ -252,9 +267,7 @@ namespace CrossConnect.readers
             return displayText;
         }
 
-        #endregion Methods
-
-        #region Nested Types
+        #endregion
 
         public class LexiconEntry
         {
@@ -270,20 +283,20 @@ namespace CrossConnect.readers
 
             public string Value;
 
-            #endregion Fields
+            #endregion
 
-            #region Constructors
+            #region Constructors and Destructors
 
             public LexiconEntry(int key)
             {
-                Key = key;
+                this.Key = key;
             }
 
             public LexiconEntry()
             {
             }
 
-            #endregion Constructors
+            #endregion
         }
 
         public class LexiconFromXmlFile
@@ -292,13 +305,13 @@ namespace CrossConnect.readers
 
             public Dictionary<int, LexiconEntry> Dict = new Dictionary<int, LexiconEntry>();
 
-            #endregion Fields
+            #endregion
 
-            #region Constructors
+            #region Constructors and Destructors
 
             public LexiconFromXmlFile(string filepath)
             {
-                Assembly assem = Assembly.GetExecutingAssembly();
+                Assembly assem = Assembly.Load(new AssemblyName("CrossConnect"));
                 Stream stream = assem.GetManifestResourceStream("CrossConnect.Properties." + filepath);
                 var gzip = new GZipInputStream(stream);
 
@@ -330,7 +343,7 @@ namespace CrossConnect.readers
                                             }
                                         }
                                         while (reader.MoveToNextAttribute());
-                                        Dict[lexEntry.Key] = lexEntry;
+                                        this.Dict[lexEntry.Key] = lexEntry;
                                         break;
                                     case "h":
                                         reader.MoveToFirstAttribute();
@@ -373,12 +386,8 @@ namespace CrossConnect.readers
                 }
             }
 
-            #endregion Constructors
+            #endregion
         }
-
-        #endregion Nested Types
-
-        #region Other
 
         /*
         void readFromDatFile()
@@ -458,7 +467,5 @@ namespace CrossConnect.readers
             xmlw.Close();
 
         }*/
-
-        #endregion Other
     }
 }

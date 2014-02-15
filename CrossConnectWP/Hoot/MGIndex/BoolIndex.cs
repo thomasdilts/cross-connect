@@ -1,6 +1,4 @@
-﻿#region Header
-
-// <copyright file="BoolIndex.cs" company="Thomas Dilts">
+﻿// <copyright file="BoolIndex.cs" company="Thomas Dilts">
 //
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
@@ -23,7 +21,6 @@
 // </summary>
 // <author>Thomas Dilts</author>
 
-#endregion Header
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,14 +30,14 @@ using RaptorDB.Common;
 
 namespace RaptorDB
 {
-
+    using System.Threading.Tasks;
 
     using Hoot;
 
     internal class BoolIndex
     {
 
-        public void Initialize(string path, string filename)
+        public async Task Initialize(string path, string filename)
         {
             // create file
             _filename = filename;
@@ -49,8 +46,8 @@ namespace RaptorDB
             if (_path.EndsWith(PathHelper.DirectorySeparatorChar.ToString()) == false)
                 _path += PathHelper.DirectorySeparatorChar.ToString();
 
-            if (File.Exists(_path + _filename))
-                ReadFile();
+            if (await File.Exists(_path + _filename))
+                await ReadFile();
         }
 
         private WAHBitArray _bits = new WAHBitArray();
@@ -75,17 +72,17 @@ namespace RaptorDB
             _bits.FreeMemory();
         }
 
-        public void Shutdown()
+        public async Task Shutdown()
         {
             // shutdown
             if (_inMemory == false)
-                WriteFile();
+                await WriteFile();
         }
 
-        public void SaveIndex()
+        public async Task SaveIndex()
         {
             if (_inMemory == false)
-                WriteFile();
+                await WriteFile();
         }
 
         public void InPlaceOR(WAHBitArray left)
@@ -93,7 +90,7 @@ namespace RaptorDB
             _bits = _bits.Or(left);
         }
 
-        private void WriteFile()
+        private async Task WriteFile()
         {
             WAHBitArray.TYPE t;
             uint[] ints = _bits.GetCompressed(out t);
@@ -104,12 +101,12 @@ namespace RaptorDB
             {
                 bw.Write(i);
             }
-            File.WriteAllBytes(_path + _filename, ms.ToArray());
+            await File.WriteAllBytes(_path + _filename, ms.ToArray());
         }
 
-        private void ReadFile()
+        private async Task ReadFile()
         {
-            byte[] b = File.ReadAllBytes(_path + _filename);
+            byte[] b = await File.ReadAllBytes(_path + _filename);
             WAHBitArray.TYPE t = WAHBitArray.TYPE.WAH;
             int j = 0;
             if (b.Length % 4 > 0) // new format with the data type byte
