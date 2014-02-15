@@ -1,6 +1,4 @@
-﻿#region Header
-
-// <copyright file="Global.cs" company="Thomas Dilts">
+﻿// <copyright file="Global.cs" company="Thomas Dilts">
 //
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
@@ -23,7 +21,7 @@
 // </summary>
 // <author>Thomas Dilts</author>
 
-#endregion Header
+
 using System;
 using System.Collections.Generic;
 using System.Text;

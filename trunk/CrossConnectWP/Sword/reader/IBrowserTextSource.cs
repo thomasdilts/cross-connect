@@ -30,7 +30,7 @@ namespace Sword.reader
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-
+    using System.Threading.Tasks;
 
     #region Enumerations
 
@@ -61,6 +61,8 @@ namespace Sword.reader
 
         bool IsHearable { get; }
 
+        bool IsTTChearable { get; }
+
         bool IsLocalChangeDuringLink { get; }
 
         bool IsPageable { get; }
@@ -71,17 +73,21 @@ namespace Sword.reader
 
         bool IsTranslateable { get; }
 
+        bool IsLocked { get; }
+
         #endregion
 
         #region Public Methods and Operators
 
         ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton);
 
-        string GetChapterHtml(
+        Task<string> GetChapterHtml(
             DisplaySettings displaySettings,
-            string htmlBackgroundColor,
-            string htmlForegroundColor,
-            string htmlPhoneAccentColor,
+            HtmlColorRgba htmlBackgroundColor,
+            HtmlColorRgba htmlForegroundColor,
+            HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
@@ -91,8 +97,7 @@ namespace Sword.reader
         string GetExternalLink(DisplaySettings displaySettings);
 
         void GetInfo(
-            out int bookNum,
-            out int absoluteChaptNum,
+            out string bookShortName,
             out int relChaptNum,
             out int verseNum,
             out string fullName,
@@ -100,32 +105,25 @@ namespace Sword.reader
 
         string GetLanguage();
 
-        object[] GetTranslateableTexts(DisplaySettings displaySettings, string bibleToLoad);
+        Task<IBrowserTextSource> Clone();
 
-        string GetVerseTextOnly(DisplaySettings displaySettings, int chapterNumber, int verseNum);
+        Task<object[]> GetTranslateableTexts(DisplaySettings displaySettings, string bibleToLoad);
 
-        List<string> MakeListDisplayText(DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay);
+        Task<string> GetVerseTextOnly(DisplaySettings displaySettings, string bookName, int chapterNumber, int verseNum);
 
-        void MoveChapterVerse(int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source);
+        Task<string> GetTTCtext(bool isVerseOnly);
 
-        void MoveNext();
+        Task<List<string>> MakeListDisplayText(DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay);
 
-        void MovePrevious();
+        void MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source);
 
-        string PutHtmlTofile(
-            DisplaySettings displaySettings,
-            string htmlBackgroundColor,
-            string htmlForegroundColor,
-            string htmlPhoneAccentColor,
-            double htmlFontSize,
-            string fontFamily,
-            string fileErase,
-            string filePath,
-            bool forceReload);
+        void MoveNext(bool isVerse);
+
+        void MovePrevious(bool isVerse);
 
         void RegisterUpdateEvent(WindowSourceChanged sourceChangedMethod, bool isRegister = true);
 
-        void Resume();
+        Task Resume();
 
         void SerialSave();
 
@@ -166,6 +164,48 @@ namespace Sword.reader
             this.ButSize = butSize;
         }
 
+        #endregion
+    }
+    public class HtmlColorRgba
+    {
+        #region Fields
+
+        public byte B;
+
+        public byte G;
+
+        public byte R;
+
+        public double alpha;
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public static HtmlColorRgba CreateWithHtmlRgb(string rgb)
+        {
+            if (string.IsNullOrEmpty(rgb) || rgb.Length < 6)
+            {
+                return new HtmlColorRgba();
+            }
+            return new HtmlColorRgba
+            {
+                alpha = 1,
+                R = byte.Parse(rgb.Substring(0, 2), NumberStyles.HexNumber),
+                G = byte.Parse(rgb.Substring(2, 2), NumberStyles.HexNumber),
+                B = byte.Parse(rgb.Substring(4, 2), NumberStyles.HexNumber)
+            };
+        }
+
+        public string GetHtmlRgba()
+        {
+            return "rgba(" + this.R + "," + this.G + "," + this.B + ","
+                   + Math.Round(this.alpha, 4).ToString(CultureInfo.InvariantCulture) + ")";
+        }
+        public string GetHtmlRgb()
+        {
+            return string.Format("#{0:x2}{1:x2}{2:x2}", this.R, this.G, this.B);
+        }
         #endregion
     }
 

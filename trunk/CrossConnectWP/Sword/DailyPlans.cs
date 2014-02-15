@@ -198,8 +198,8 @@ namespace Sword
         }
         private class ChapterRandom180 : DailyPlanSchedule
         {
-            public override int[][] Schedule 
-            { 
+            public override int[][] Schedule
+            {
                 get
                 {
                     return new[]
@@ -324,7 +324,7 @@ namespace Sword
                                    new[] { 287, 346, 1178, 885, 272, 1168, 732 },
                                    new[] { 760, 1034, 177, 830, 317, 278, 265 }, new[] { 323, 668, 1150, 997, 105, 1176 }
                                };
-                } 
+                }
             }
         }
 
@@ -2866,867 +2866,867 @@ namespace Sword
                 new[] { "The New Testement, chronological", "60", "15" },
                 new[] { "The New Testement, chronological", "30", "30" }
             };
-/*
-        /// <summary>
-        ///     Constant for the number of chapters in each book
-        /// </summary>
-        private static readonly short[] ChaptersInBook =
-            {
-                50, 40, 27, 36, 34, 24, 21, 4, 31, 24, 22, 25, 29, 36, 10, 13
-                , 10, 42, 150, 31, 12, 8, 66, 52, 5, 48, 12, 14, 3, 9, 1, 4,
-                7, 3, 3, 3, 2, 14, 4, 28, 16, 24, 21, 28, 16, 16, 13, 6, 6, 4
-                , 4, 5, 3, 6, 4, 3, 1, 13, 5, 5, 3, 5, 1, 1, 1, 22
-            };
+        /*
+                /// <summary>
+                ///     Constant for the number of chapters in each book
+                /// </summary>
+                private static readonly short[] ChaptersInBook =
+                    {
+                        50, 40, 27, 36, 34, 24, 21, 4, 31, 24, 22, 25, 29, 36, 10, 13
+                        , 10, 42, 150, 31, 12, 8, 66, 52, 5, 48, 12, 14, 3, 9, 1, 4,
+                        7, 3, 3, 3, 2, 14, 4, 28, 16, 24, 21, 28, 16, 16, 13, 6, 6, 4
+                        , 4, 5, 3, 6, 4, 3, 1, 13, 5, 5, 3, 5, 1, 1, 1, 22
+                    };
 
-        /// <summary>
-        ///     Constant for the number of verses in each chapter
-        /// </summary>
-        private static readonly short[][] VersesInChapter =
-            {
-                new short[]
+                /// <summary>
+                ///     Constant for the number of verses in each chapter
+                /// </summary>
+                private static readonly short[][] VersesInChapter =
                     {
-                        31, 25, 24, 26, 32, 22, 24, 22, 29, 32, 32, 20, 18
-                        , 24, 21, 16, 27, 33, 38, 18, 34, 24, 20, 67, 34,
-                        35, 46, 22, 35, 43, 55, 32, 20, 31, 29, 43, 36, 30
-                        , 23, 23, 57, 38, 34, 34, 28, 34, 31, 22, 33, 26
-                    }
-                ,
-                new short[]
-                    {
-                        22, 25, 22, 31, 23, 30, 25, 32, 35, 29, 10, 51, 22
-                        , 31, 27, 36, 16, 27, 25, 26, 36, 31, 33, 18, 40,
-                        37, 21, 43, 46, 38, 18, 35, 23, 35, 35, 38, 29, 31
-                        , 43, 38
-                    },
-                new short[]
-                    {
-                        17, 16, 17, 35, 19, 30, 38, 36, 24, 20, 47, 8, 59,
-                        57, 33, 34, 16, 30, 37, 27, 24, 33, 44, 23, 55, 46
-                        , 34
-                    },
-                new short[]
-                    {
-                        54, 34, 51, 49, 31, 27, 89, 26, 23, 36, 35, 16, 33
-                        , 45, 41, 50, 13, 32, 22, 29, 35, 41, 30, 25, 18,
-                        65, 23, 31, 40, 16, 54, 42, 56, 29, 34, 13
-                    },
-                new short[]
-                    {
-                        46, 37, 29, 49, 33, 25, 26, 20, 29, 22, 32, 32, 18
-                        , 29, 23, 22, 20, 22, 21, 20, 23, 30, 25, 22, 19,
-                        19, 26, 68, 29, 20, 30, 52, 29, 12
-                    },
-                new short[]
-                    {
-                        18, 24, 17, 24, 15, 27, 26, 35, 27, 43, 23, 24, 33
-                        , 15, 63, 10, 18, 28, 51, 9, 45, 34, 16, 33
-                    },
-                new short[]
-                    {
-                        36, 23, 31, 24, 31, 40, 25, 35, 57, 18, 40, 15, 25
-                        , 20, 20, 31, 13, 31, 30, 48, 25
-                    },
-                new short[] { 22, 23, 18, 22 },
-                new short[]
-                    {
-                        28, 36, 21, 22, 12, 21, 17, 22, 27, 27, 15, 25, 23
-                        , 52, 35, 23, 58, 30, 24, 42, 15, 23, 29, 22, 44,
-                        25, 12, 25, 11, 31, 13
-                    },
-                new short[]
-                    {
-                        27, 32, 39, 12, 25, 23, 29, 18, 13, 19, 27, 31, 39
-                        , 33, 37, 23, 29, 33, 43, 26, 22, 51, 39, 25
-                    },
-                new short[]
-                    {
-                        53, 46, 28, 34, 18, 38, 51, 66, 28, 29, 43, 33, 34
-                        , 31, 34, 34, 24, 46, 21, 43, 29, 53
-                    },
-                new short[]
-                    {
-                        18, 25, 27, 44, 27, 33, 20, 29, 37, 36, 21, 21, 25
-                        , 29, 38, 20, 41, 37, 37, 21, 26, 20, 37, 20, 30
-                    }
-                ,
-                new short[]
-                    {
-                        54, 55, 24, 43, 26, 81, 40, 40, 44, 14, 47, 40, 14
-                        , 17, 29, 43, 27, 17, 19, 8, 30, 19, 32, 31, 31,
-                        32, 34, 21, 30
-                    },
-                new short[]
-                    {
-                        17, 18, 17, 22, 14, 42, 22, 18, 31, 19, 23, 16, 22
-                        , 15, 19, 14, 19, 34, 11, 37, 20, 12, 21, 27, 28,
-                        23, 9, 27, 36, 27, 21, 33, 25, 33, 27, 23
-                    },
-                new short[] { 11, 70, 13, 24, 17, 22, 28, 36, 15, 44 },
-                new short[]
-                    {
-                        11, 20, 32, 23, 19, 19, 73, 18, 38, 39, 36, 47, 31
-                    },
-                new short[] { 22, 23, 15, 17, 14, 14, 10, 17, 32, 3 },
-                new short[]
-                    {
-                        22, 13, 26, 21, 27, 30, 21, 22, 35, 22, 20, 25, 28
-                        , 22, 35, 22, 16, 21, 29, 29, 34, 30, 17, 25, 6,
-                        14, 23, 28, 25, 31, 40, 22, 33, 37, 16, 33, 24, 41
-                        , 30, 24, 34, 17
-                    },
-                new short[]
-                    {
-                        6, 12, 8, 8, 12, 10, 17, 9, 20, 18, 7, 8, 6, 7, 5,
-                        11, 15, 50, 14, 9, 13, 31, 6, 10, 22, 12, 14, 9,
-                        11, 12, 24, 11, 22, 22, 28, 12, 40, 22, 13, 17, 13
-                        , 11, 5, 26, 17, 11, 9, 14, 20, 23, 19, 9, 6, 7,
-                        23, 13, 11, 11, 17, 12, 8, 12, 11, 10, 13, 20, 7,
-                        35, 36, 5, 24, 20, 28, 23, 10, 12, 20, 72, 13, 19,
-                        16, 8, 18, 12, 13, 17, 7, 18, 52, 17, 16, 15, 5,
-                        23, 11, 13, 12, 9, 9, 5, 8, 28, 22, 35, 45, 48, 43
-                        , 13, 31, 7, 10, 10, 9, 8, 18, 19, 2, 29, 176, 7,
-                        8, 9, 4, 8, 5, 6, 5, 6, 8, 8, 3, 18, 3, 3, 21, 26,
-                        9, 8, 24, 13, 10, 7, 12, 15, 21, 10, 20, 14, 9, 6
-                    },
-                new short[]
-                    {
-                        33, 22, 35, 27, 23, 35, 27, 36, 18, 32, 31, 28, 25
-                        , 35, 33, 33, 28, 24, 29, 30, 31, 29, 35, 34, 28,
-                        28, 27, 28, 27, 33, 31
-                    },
-                new short[]
-                    { 18, 26, 22, 16, 20, 12, 29, 17, 18, 20, 10, 14 },
-                new short[] { 17, 17, 11, 16, 16, 13, 13, 14 },
-                new short[]
-                    {
-                        31, 22, 26, 6, 30, 13, 25, 22, 21, 34, 16, 6, 22,
-                        32, 9, 14, 14, 7, 25, 6, 17, 25, 18, 23, 12, 21,
-                        13, 29, 24, 33, 9, 20, 24, 17, 10, 22, 38, 22, 8,
-                        31, 29, 25, 28, 28, 25, 13, 15, 22, 26, 11, 23, 15
-                        , 12, 17, 13, 12, 21, 14, 21, 22, 11, 12, 19, 12,
-                        25, 24
-                    },
-                new short[]
-                    {
-                        19, 37, 25, 31, 31, 30, 34, 22, 26, 25, 23, 17, 27
-                        , 22, 21, 21, 27, 23, 15, 18, 14, 30, 40, 10, 38,
-                        24, 22, 17, 32, 24, 40, 44, 26, 22, 19, 32, 21, 28
-                        , 18, 16, 18, 22, 13, 30, 5, 28, 7, 47, 39, 46, 64
-                        , 34
-                    },
-                new short[] { 22, 22, 66, 22, 22 },
-                new short[]
-                    {
-                        28, 10, 27, 17, 17, 14, 27, 18, 11, 22, 25, 28, 23
-                        , 23, 8, 63, 24, 32, 14, 49, 32, 31, 49, 27, 17,
-                        21, 36, 26, 21, 26, 18, 32, 33, 31, 15, 38, 28, 23
-                        , 29, 49, 26, 20, 27, 31, 25, 24, 23, 35
-                    },
-                new short[]
-                    { 21, 49, 30, 37, 31, 28, 28, 27, 27, 21, 45, 13 },
-                new short[]
-                    {
-                        11, 23, 5, 19, 15, 11, 16, 14, 17, 15, 12, 14, 16,
-                        9
-                    },
-                new short[] { 20, 32, 21 },
-                new short[] { 15, 16, 15, 13, 27, 14, 17, 14, 15 },
-                new short[] { 21 }, new short[] { 17, 10, 10, 11 },
-                new short[] { 16, 13, 12, 13, 15, 16, 20 },
-                new short[] { 15, 13, 19 }, new short[] { 17, 20, 19 },
-                new short[] { 18, 15, 20 }, new short[] { 15, 23 },
-                new short[]
-                    {
-                        21, 13, 10, 14, 11, 15, 14, 23, 17, 12, 17, 14, 9,
-                        21
-                    },
-                new short[] { 14, 17, 18, 6 },
-                new short[]
-                    {
-                        25, 23, 17, 25, 48, 34, 29, 34, 38, 42, 30, 50, 58
-                        , 36, 39, 28, 27, 35, 30, 34, 46, 46, 39, 51, 46,
-                        75, 66, 20
-                    },
-                new short[]
-                    {
-                        45, 28, 35, 41, 43, 56, 37, 38, 50, 52, 33, 44, 37
-                        , 72, 47, 20
-                    },
-                new short[]
-                    {
-                        80, 52, 38, 44, 39, 49, 50, 56, 62, 42, 54, 59, 35
-                        , 35, 32, 31, 37, 43, 48, 47, 38, 71, 56, 53
-                    },
-                new short[]
-                    {
-                        51, 25, 36, 54, 47, 71, 53, 59, 41, 42, 57, 50, 38
-                        , 31, 27, 33, 26, 40, 42, 31, 25
-                    },
-                new short[]
-                    {
-                        26, 47, 26, 37, 42, 15, 60, 40, 43, 48, 30, 25, 52
-                        , 28, 41, 40, 34, 28, 41, 38, 40, 30, 35, 27, 27,
-                        32, 44, 31
-                    },
-                new short[]
-                    {
-                        32, 29, 31, 25, 21, 23, 25, 39, 33, 21, 36, 21, 14
-                        , 23, 33, 27
-                    },
-                new short[]
-                    {
-                        31, 16, 23, 21, 13, 20, 40, 13, 27, 33, 34, 31, 13
-                        , 40, 58, 24
-                    },
-                new short[]
-                    {
-                        24, 17, 18, 18, 21, 18, 16, 24, 15, 18, 33, 21, 14
-                    },
-                new short[] { 24, 21, 29, 31, 26, 18 },
-                new short[] { 23, 22, 21, 32, 33, 24 },
-                new short[] { 30, 30, 21, 23 },
-                new short[] { 29, 23, 25, 18 },
-                new short[] { 10, 20, 13, 18, 28 },
-                new short[] { 12, 17, 18 },
-                new short[] { 20, 15, 16, 16, 25, 21 },
-                new short[] { 18, 26, 17, 22 },
-                new short[] { 16, 15, 15 }, new short[] { 25 },
-                new short[]
-                    {
-                        14, 18, 19, 16, 14, 20, 28, 13, 28, 39, 40, 29, 25
-                    },
-                new short[] { 27, 26, 18, 17, 20 },
-                new short[] { 25, 25, 22, 19, 14 },
-                new short[] { 21, 22, 18 },
-                new short[] { 10, 29, 24, 21, 21 }, new short[] { 13 },
-                new short[] { 14 }, new short[] { 25 },
-                new short[]
-                    {
-                        20, 29, 22, 11, 14, 17, 17, 13, 21, 11, 19, 17, 18
-                        , 20, 8, 21, 18, 24, 21, 15, 27, 21
-                    }
-            };
-
-        #endregion
-
-        #region Public Methods and Operators
-
-        public static void CalculateAllPlans()
-        {
-            /////////////////////////////////// Easy NT and Prov and Ps /////////////////////////////////
-            const double goalVerseNumNtPvPs = (VersesInNt + (ProverbsVerseEnd - PsalmsVerseStart)) / (double)365;
-            var versePerDayNtPvPs = new List<int>[365];
-            for (int i = 0; i <= versePerDayNtPvPs.GetUpperBound(0); i++)
-            {
-                versePerDayNtPvPs[i] = new List<int>();
-            }
-            int daycount = 0;
-            int verseCount = 0;
-            int chapterCount = ChaptersInOt;
-            for (int i = BooksInOt; i < BooksInBible; i++)
-            {
-                for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
-                {
-                    //look ahead. make sure not putting way too much on one day
-                    if (versePerDayNtPvPs[daycount].Count() > 0
-                        && (j <= (VersesInChapter[i].GetUpperBound(0) - 4) || i < (BooksInNt - 1)))
-                    {
-                        if (VersesInChapter[i][j] > 10
-                            && ((goalVerseNumNtPvPs * (daycount + 1)) - verseCount) * 3 < VersesInChapter[i][j])
-                        {
-                            daycount++;
-                        }
-                    }
-
-                    verseCount += VersesInChapter[i][j];
-
-                    versePerDayNtPvPs[daycount].Add(chapterCount);
-
-                    while ((verseCount) > (goalVerseNumNtPvPs * (daycount + 1))
-                           && versePerDayNtPvPs[daycount].Count() > 0)
-                    {
-                        daycount++;
-                    }
-                    chapterCount++;
-                }
-            }
-            chapterCount = 478; //psalm first chapter
-            for (int i = PsalmsBookNum - 1; i < ProverbsBookNum; i++)
-            {
-                for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
-                {
-                    //look ahead. make sure not putting way too much on one day
-                    if (versePerDayNtPvPs[daycount].Count() > 0
-                        && (j <= (VersesInChapter[i].GetUpperBound(0) - 4) || i < (ProverbsBookNum - 1)))
-                    {
-                        if (VersesInChapter[i][j] > 10
-                            && ((goalVerseNumNtPvPs * (daycount + 1)) - verseCount) * 3 < VersesInChapter[i][j])
-                        {
-                            daycount++;
-                        }
-                    }
-
-                    verseCount += VersesInChapter[i][j];
-
-                    versePerDayNtPvPs[daycount].Add(chapterCount);
-
-                    while ((verseCount) > (goalVerseNumNtPvPs * (daycount + 1))
-                           && versePerDayNtPvPs[daycount].Count() > 0)
-                    {
-                        daycount++;
-                    }
-                    chapterCount++;
-                }
-            }
-
-            List<int>[] versePerDay;
-            List<int>[] versePerDayOt;
-            List<int>[] versePerDayNt;
-            List<int>[] versePerDayTopic;
-            List<int>[] chapterRandom;
-
-            DoPlansInSpecificDays(
-                365, out versePerDay, out versePerDayOt, out versePerDayNt, out versePerDayTopic, out chapterRandom);
-
-            //print them out
-            printoutPlan(versePerDay, "versePerDay365");
-            printoutPlan(versePerDayOt, "versePerDayOT365");
-            printoutPlan(versePerDayTopic, "versePerDayTopic365");
-            printoutPlan(chapterRandom, "chapterRandom365");
-            DoPlansInSpecificDays(
-                180, out versePerDay, out versePerDayOt, out versePerDayNt, out versePerDayTopic, out chapterRandom);
-
-            //print them out
-            printoutPlan(versePerDay, "versePerDay180");
-            printoutPlan(versePerDayOt, "versePerDayOT180");
-            printoutPlan(versePerDayTopic, "versePerDayTopic180");
-            printoutPlan(chapterRandom, "chapterRandom180");
-            DoPlansInSpecificDays(
-                90, out versePerDay, out versePerDayOt, out versePerDayNt, out versePerDayTopic, out chapterRandom);
-
-            //print them out
-            printoutPlan(versePerDay, "versePerDay90");
-            printoutPlan(versePerDayOt, "versePerDayOT90");
-            printoutPlan(versePerDayTopic, "versePerDayTopic90");
-            printoutPlan(chapterRandom, "chapterRandom90");
-
-            List<int>[] fast30DayNt;
-            doNTplans(30, out fast30DayNt);
-            printoutPlan(fast30DayNt, "fast30dayNT");
-            doNTplans(60, out fast30DayNt);
-            printoutPlan(fast30DayNt, "fast60dayNT");
-            doNTplans(90, out fast30DayNt);
-            printoutPlan(fast30DayNt, "fast90dayNT");
-
-            doChronologicNTplans(30, out fast30DayNt);
-            printoutPlan(fast30DayNt, "ChronologicallyNt30");
-            doChronologicNTplans(60, out fast30DayNt);
-            printoutPlan(fast30DayNt, "ChronologicallyNt60");
-            doChronologicNTplans(90, out fast30DayNt);
-            printoutPlan(fast30DayNt, "ChronologicallyNt90");
-
-            doChronologicPlans(90, out fast30DayNt);
-            printoutPlan(fast30DayNt, "Chronologically90");
-            doChronologicPlans(180, out fast30DayNt);
-            printoutPlan(fast30DayNt, "Chronologically180");
-            doChronologicPlans(365, out fast30DayNt);
-            printoutPlan(fast30DayNt, "Chronologically365");
-
-            printoutPlan(versePerDayNtPvPs, "versePerDayNTPvPs");
-        }
-
-        public static void PrintOutDailyPlansInHtml()
-        {
-            var bn = new BibleNames("en");
-            for (int i = 0; i <= ZzAllPlansNames.GetUpperBound(0); i++)
-            {
-                Debug.WriteLine(
-                    "<a name=\"" + ZzAllPlansNames[i][0].Replace(" ", "").Replace(",", "").ToLower()
-                    + ZzAllPlansNames[i][1] + "\"></a><h2>" + ZzAllPlansNames[i][0] + "; in " + ZzAllPlansNames[i][1]
-                    + " days; " + ZzAllPlansNames[i][2] + " minutes every day</h2>");
-                Debug.WriteLine("<table><thead><tr><th>Day</th><th>Chapters</th></tr></thead><tbody>");
-                for (int j = 0; j <= ZAllPlans[i].GetUpperBound(0); j++)
-                {
-                    string row = "";
-                    string lastBook = "";
-                    int lastChapter = 0;
-                    string savedBook = "";
-                    int savedChapt = 0;
-                    for (int k = 0; k <= ZAllPlans[i][j].GetUpperBound(0); k++)
-                    {
-                        string bookName;
-                        int relChapter;
-                        getBookAndRelChaptFromChapter(
-                            ZAllPlans[i][j][k], out bookName, out relChapter, bn.GetAllFullNames());
-                        if (lastBook.Equals(bookName) && (lastChapter + 1) == relChapter)
-                        {
-                            savedBook = bookName;
-                            if (savedChapt == 0)
+                        new short[]
                             {
-                                savedChapt = lastChapter;
+                                31, 25, 24, 26, 32, 22, 24, 22, 29, 32, 32, 20, 18
+                                , 24, 21, 16, 27, 33, 38, 18, 34, 24, 20, 67, 34,
+                                35, 46, 22, 35, 43, 55, 32, 20, 31, 29, 43, 36, 30
+                                , 23, 23, 57, 38, 34, 34, 28, 34, 31, 22, 33, 26
                             }
-                        }
-                        else if (!string.IsNullOrEmpty(savedBook))
-                        {
-                            if (!string.IsNullOrEmpty(row))
+                        ,
+                        new short[]
                             {
-                                row += ", ";
+                                22, 25, 22, 31, 23, 30, 25, 32, 35, 29, 10, 51, 22
+                                , 31, 27, 36, 16, 27, 25, 26, 36, 31, 33, 18, 40,
+                                37, 21, 43, 46, 38, 18, 35, 23, 35, 35, 38, 29, 31
+                                , 43, 38
+                            },
+                        new short[]
+                            {
+                                17, 16, 17, 35, 19, 30, 38, 36, 24, 20, 47, 8, 59,
+                                57, 33, 34, 16, 30, 37, 27, 24, 33, 44, 23, 55, 46
+                                , 34
+                            },
+                        new short[]
+                            {
+                                54, 34, 51, 49, 31, 27, 89, 26, 23, 36, 35, 16, 33
+                                , 45, 41, 50, 13, 32, 22, 29, 35, 41, 30, 25, 18,
+                                65, 23, 31, 40, 16, 54, 42, 56, 29, 34, 13
+                            },
+                        new short[]
+                            {
+                                46, 37, 29, 49, 33, 25, 26, 20, 29, 22, 32, 32, 18
+                                , 29, 23, 22, 20, 22, 21, 20, 23, 30, 25, 22, 19,
+                                19, 26, 68, 29, 20, 30, 52, 29, 12
+                            },
+                        new short[]
+                            {
+                                18, 24, 17, 24, 15, 27, 26, 35, 27, 43, 23, 24, 33
+                                , 15, 63, 10, 18, 28, 51, 9, 45, 34, 16, 33
+                            },
+                        new short[]
+                            {
+                                36, 23, 31, 24, 31, 40, 25, 35, 57, 18, 40, 15, 25
+                                , 20, 20, 31, 13, 31, 30, 48, 25
+                            },
+                        new short[] { 22, 23, 18, 22 },
+                        new short[]
+                            {
+                                28, 36, 21, 22, 12, 21, 17, 22, 27, 27, 15, 25, 23
+                                , 52, 35, 23, 58, 30, 24, 42, 15, 23, 29, 22, 44,
+                                25, 12, 25, 11, 31, 13
+                            },
+                        new short[]
+                            {
+                                27, 32, 39, 12, 25, 23, 29, 18, 13, 19, 27, 31, 39
+                                , 33, 37, 23, 29, 33, 43, 26, 22, 51, 39, 25
+                            },
+                        new short[]
+                            {
+                                53, 46, 28, 34, 18, 38, 51, 66, 28, 29, 43, 33, 34
+                                , 31, 34, 34, 24, 46, 21, 43, 29, 53
+                            },
+                        new short[]
+                            {
+                                18, 25, 27, 44, 27, 33, 20, 29, 37, 36, 21, 21, 25
+                                , 29, 38, 20, 41, 37, 37, 21, 26, 20, 37, 20, 30
                             }
-                            row += savedBook + " " + savedChapt + "-" + lastChapter;
-                            savedBook = "";
-                            savedChapt = 0;
-                        }
-                        else if (!string.IsNullOrEmpty(lastBook))
-                        {
-                            if (!string.IsNullOrEmpty(row))
+                        ,
+                        new short[]
                             {
-                                row += ", ";
+                                54, 55, 24, 43, 26, 81, 40, 40, 44, 14, 47, 40, 14
+                                , 17, 29, 43, 27, 17, 19, 8, 30, 19, 32, 31, 31,
+                                32, 34, 21, 30
+                            },
+                        new short[]
+                            {
+                                17, 18, 17, 22, 14, 42, 22, 18, 31, 19, 23, 16, 22
+                                , 15, 19, 14, 19, 34, 11, 37, 20, 12, 21, 27, 28,
+                                23, 9, 27, 36, 27, 21, 33, 25, 33, 27, 23
+                            },
+                        new short[] { 11, 70, 13, 24, 17, 22, 28, 36, 15, 44 },
+                        new short[]
+                            {
+                                11, 20, 32, 23, 19, 19, 73, 18, 38, 39, 36, 47, 31
+                            },
+                        new short[] { 22, 23, 15, 17, 14, 14, 10, 17, 32, 3 },
+                        new short[]
+                            {
+                                22, 13, 26, 21, 27, 30, 21, 22, 35, 22, 20, 25, 28
+                                , 22, 35, 22, 16, 21, 29, 29, 34, 30, 17, 25, 6,
+                                14, 23, 28, 25, 31, 40, 22, 33, 37, 16, 33, 24, 41
+                                , 30, 24, 34, 17
+                            },
+                        new short[]
+                            {
+                                6, 12, 8, 8, 12, 10, 17, 9, 20, 18, 7, 8, 6, 7, 5,
+                                11, 15, 50, 14, 9, 13, 31, 6, 10, 22, 12, 14, 9,
+                                11, 12, 24, 11, 22, 22, 28, 12, 40, 22, 13, 17, 13
+                                , 11, 5, 26, 17, 11, 9, 14, 20, 23, 19, 9, 6, 7,
+                                23, 13, 11, 11, 17, 12, 8, 12, 11, 10, 13, 20, 7,
+                                35, 36, 5, 24, 20, 28, 23, 10, 12, 20, 72, 13, 19,
+                                16, 8, 18, 12, 13, 17, 7, 18, 52, 17, 16, 15, 5,
+                                23, 11, 13, 12, 9, 9, 5, 8, 28, 22, 35, 45, 48, 43
+                                , 13, 31, 7, 10, 10, 9, 8, 18, 19, 2, 29, 176, 7,
+                                8, 9, 4, 8, 5, 6, 5, 6, 8, 8, 3, 18, 3, 3, 21, 26,
+                                9, 8, 24, 13, 10, 7, 12, 15, 21, 10, 20, 14, 9, 6
+                            },
+                        new short[]
+                            {
+                                33, 22, 35, 27, 23, 35, 27, 36, 18, 32, 31, 28, 25
+                                , 35, 33, 33, 28, 24, 29, 30, 31, 29, 35, 34, 28,
+                                28, 27, 28, 27, 33, 31
+                            },
+                        new short[]
+                            { 18, 26, 22, 16, 20, 12, 29, 17, 18, 20, 10, 14 },
+                        new short[] { 17, 17, 11, 16, 16, 13, 13, 14 },
+                        new short[]
+                            {
+                                31, 22, 26, 6, 30, 13, 25, 22, 21, 34, 16, 6, 22,
+                                32, 9, 14, 14, 7, 25, 6, 17, 25, 18, 23, 12, 21,
+                                13, 29, 24, 33, 9, 20, 24, 17, 10, 22, 38, 22, 8,
+                                31, 29, 25, 28, 28, 25, 13, 15, 22, 26, 11, 23, 15
+                                , 12, 17, 13, 12, 21, 14, 21, 22, 11, 12, 19, 12,
+                                25, 24
+                            },
+                        new short[]
+                            {
+                                19, 37, 25, 31, 31, 30, 34, 22, 26, 25, 23, 17, 27
+                                , 22, 21, 21, 27, 23, 15, 18, 14, 30, 40, 10, 38,
+                                24, 22, 17, 32, 24, 40, 44, 26, 22, 19, 32, 21, 28
+                                , 18, 16, 18, 22, 13, 30, 5, 28, 7, 47, 39, 46, 64
+                                , 34
+                            },
+                        new short[] { 22, 22, 66, 22, 22 },
+                        new short[]
+                            {
+                                28, 10, 27, 17, 17, 14, 27, 18, 11, 22, 25, 28, 23
+                                , 23, 8, 63, 24, 32, 14, 49, 32, 31, 49, 27, 17,
+                                21, 36, 26, 21, 26, 18, 32, 33, 31, 15, 38, 28, 23
+                                , 29, 49, 26, 20, 27, 31, 25, 24, 23, 35
+                            },
+                        new short[]
+                            { 21, 49, 30, 37, 31, 28, 28, 27, 27, 21, 45, 13 },
+                        new short[]
+                            {
+                                11, 23, 5, 19, 15, 11, 16, 14, 17, 15, 12, 14, 16,
+                                9
+                            },
+                        new short[] { 20, 32, 21 },
+                        new short[] { 15, 16, 15, 13, 27, 14, 17, 14, 15 },
+                        new short[] { 21 }, new short[] { 17, 10, 10, 11 },
+                        new short[] { 16, 13, 12, 13, 15, 16, 20 },
+                        new short[] { 15, 13, 19 }, new short[] { 17, 20, 19 },
+                        new short[] { 18, 15, 20 }, new short[] { 15, 23 },
+                        new short[]
+                            {
+                                21, 13, 10, 14, 11, 15, 14, 23, 17, 12, 17, 14, 9,
+                                21
+                            },
+                        new short[] { 14, 17, 18, 6 },
+                        new short[]
+                            {
+                                25, 23, 17, 25, 48, 34, 29, 34, 38, 42, 30, 50, 58
+                                , 36, 39, 28, 27, 35, 30, 34, 46, 46, 39, 51, 46,
+                                75, 66, 20
+                            },
+                        new short[]
+                            {
+                                45, 28, 35, 41, 43, 56, 37, 38, 50, 52, 33, 44, 37
+                                , 72, 47, 20
+                            },
+                        new short[]
+                            {
+                                80, 52, 38, 44, 39, 49, 50, 56, 62, 42, 54, 59, 35
+                                , 35, 32, 31, 37, 43, 48, 47, 38, 71, 56, 53
+                            },
+                        new short[]
+                            {
+                                51, 25, 36, 54, 47, 71, 53, 59, 41, 42, 57, 50, 38
+                                , 31, 27, 33, 26, 40, 42, 31, 25
+                            },
+                        new short[]
+                            {
+                                26, 47, 26, 37, 42, 15, 60, 40, 43, 48, 30, 25, 52
+                                , 28, 41, 40, 34, 28, 41, 38, 40, 30, 35, 27, 27,
+                                32, 44, 31
+                            },
+                        new short[]
+                            {
+                                32, 29, 31, 25, 21, 23, 25, 39, 33, 21, 36, 21, 14
+                                , 23, 33, 27
+                            },
+                        new short[]
+                            {
+                                31, 16, 23, 21, 13, 20, 40, 13, 27, 33, 34, 31, 13
+                                , 40, 58, 24
+                            },
+                        new short[]
+                            {
+                                24, 17, 18, 18, 21, 18, 16, 24, 15, 18, 33, 21, 14
+                            },
+                        new short[] { 24, 21, 29, 31, 26, 18 },
+                        new short[] { 23, 22, 21, 32, 33, 24 },
+                        new short[] { 30, 30, 21, 23 },
+                        new short[] { 29, 23, 25, 18 },
+                        new short[] { 10, 20, 13, 18, 28 },
+                        new short[] { 12, 17, 18 },
+                        new short[] { 20, 15, 16, 16, 25, 21 },
+                        new short[] { 18, 26, 17, 22 },
+                        new short[] { 16, 15, 15 }, new short[] { 25 },
+                        new short[]
+                            {
+                                14, 18, 19, 16, 14, 20, 28, 13, 28, 39, 40, 29, 25
+                            },
+                        new short[] { 27, 26, 18, 17, 20 },
+                        new short[] { 25, 25, 22, 19, 14 },
+                        new short[] { 21, 22, 18 },
+                        new short[] { 10, 29, 24, 21, 21 }, new short[] { 13 },
+                        new short[] { 14 }, new short[] { 25 },
+                        new short[]
+                            {
+                                20, 29, 22, 11, 14, 17, 17, 13, 21, 11, 19, 17, 18
+                                , 20, 8, 21, 18, 24, 21, 15, 27, 21
                             }
-                            row += lastBook + " " + lastChapter;
-                        }
+                    };
 
-                        lastBook = bookName;
-                        lastChapter = relChapter;
+                #endregion
 
-                        if (k == ZAllPlans[i][j].GetUpperBound(0))
+                #region Public Methods and Operators
+
+                public static void CalculateAllPlans()
+                {
+                    /////////////////////////////////// Easy NT and Prov and Ps /////////////////////////////////
+                    const double goalVerseNumNtPvPs = (VersesInNt + (ProverbsVerseEnd - PsalmsVerseStart)) / (double)365;
+                    var versePerDayNtPvPs = new List<int>[365];
+                    for (int i = 0; i <= versePerDayNtPvPs.GetUpperBound(0); i++)
+                    {
+                        versePerDayNtPvPs[i] = new List<int>();
+                    }
+                    int daycount = 0;
+                    int verseCount = 0;
+                    int chapterCount = ChaptersInOt;
+                    for (int i = BooksInOt; i < BooksInBible; i++)
+                    {
+                        for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
                         {
-                            //must write out the remaining
-                            if (!string.IsNullOrEmpty(savedBook))
+                            //look ahead. make sure not putting way too much on one day
+                            if (versePerDayNtPvPs[daycount].Count() > 0
+                                && (j <= (VersesInChapter[i].GetUpperBound(0) - 4) || i < (BooksInNt - 1)))
                             {
-                                if (!string.IsNullOrEmpty(row))
+                                if (VersesInChapter[i][j] > 10
+                                    && ((goalVerseNumNtPvPs * (daycount + 1)) - verseCount) * 3 < VersesInChapter[i][j])
                                 {
-                                    row += ", ";
+                                    daycount++;
                                 }
-                                row += savedBook + " " + savedChapt + "-" + lastChapter;
                             }
-                            else
+
+                            verseCount += VersesInChapter[i][j];
+
+                            versePerDayNtPvPs[daycount].Add(chapterCount);
+
+                            while ((verseCount) > (goalVerseNumNtPvPs * (daycount + 1))
+                                   && versePerDayNtPvPs[daycount].Count() > 0)
                             {
-                                if (!string.IsNullOrEmpty(row))
+                                daycount++;
+                            }
+                            chapterCount++;
+                        }
+                    }
+                    chapterCount = 478; //psalm first chapter
+                    for (int i = PsalmsBookNum - 1; i < ProverbsBookNum; i++)
+                    {
+                        for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
+                        {
+                            //look ahead. make sure not putting way too much on one day
+                            if (versePerDayNtPvPs[daycount].Count() > 0
+                                && (j <= (VersesInChapter[i].GetUpperBound(0) - 4) || i < (ProverbsBookNum - 1)))
+                            {
+                                if (VersesInChapter[i][j] > 10
+                                    && ((goalVerseNumNtPvPs * (daycount + 1)) - verseCount) * 3 < VersesInChapter[i][j])
                                 {
-                                    row += ", ";
+                                    daycount++;
                                 }
-                                row += lastBook + " " + lastChapter;
+                            }
+
+                            verseCount += VersesInChapter[i][j];
+
+                            versePerDayNtPvPs[daycount].Add(chapterCount);
+
+                            while ((verseCount) > (goalVerseNumNtPvPs * (daycount + 1))
+                                   && versePerDayNtPvPs[daycount].Count() > 0)
+                            {
+                                daycount++;
+                            }
+                            chapterCount++;
+                        }
+                    }
+
+                    List<int>[] versePerDay;
+                    List<int>[] versePerDayOt;
+                    List<int>[] versePerDayNt;
+                    List<int>[] versePerDayTopic;
+                    List<int>[] chapterRandom;
+
+                    DoPlansInSpecificDays(
+                        365, out versePerDay, out versePerDayOt, out versePerDayNt, out versePerDayTopic, out chapterRandom);
+
+                    //print them out
+                    printoutPlan(versePerDay, "versePerDay365");
+                    printoutPlan(versePerDayOt, "versePerDayOT365");
+                    printoutPlan(versePerDayTopic, "versePerDayTopic365");
+                    printoutPlan(chapterRandom, "chapterRandom365");
+                    DoPlansInSpecificDays(
+                        180, out versePerDay, out versePerDayOt, out versePerDayNt, out versePerDayTopic, out chapterRandom);
+
+                    //print them out
+                    printoutPlan(versePerDay, "versePerDay180");
+                    printoutPlan(versePerDayOt, "versePerDayOT180");
+                    printoutPlan(versePerDayTopic, "versePerDayTopic180");
+                    printoutPlan(chapterRandom, "chapterRandom180");
+                    DoPlansInSpecificDays(
+                        90, out versePerDay, out versePerDayOt, out versePerDayNt, out versePerDayTopic, out chapterRandom);
+
+                    //print them out
+                    printoutPlan(versePerDay, "versePerDay90");
+                    printoutPlan(versePerDayOt, "versePerDayOT90");
+                    printoutPlan(versePerDayTopic, "versePerDayTopic90");
+                    printoutPlan(chapterRandom, "chapterRandom90");
+
+                    List<int>[] fast30DayNt;
+                    doNTplans(30, out fast30DayNt);
+                    printoutPlan(fast30DayNt, "fast30dayNT");
+                    doNTplans(60, out fast30DayNt);
+                    printoutPlan(fast30DayNt, "fast60dayNT");
+                    doNTplans(90, out fast30DayNt);
+                    printoutPlan(fast30DayNt, "fast90dayNT");
+
+                    doChronologicNTplans(30, out fast30DayNt);
+                    printoutPlan(fast30DayNt, "ChronologicallyNt30");
+                    doChronologicNTplans(60, out fast30DayNt);
+                    printoutPlan(fast30DayNt, "ChronologicallyNt60");
+                    doChronologicNTplans(90, out fast30DayNt);
+                    printoutPlan(fast30DayNt, "ChronologicallyNt90");
+
+                    doChronologicPlans(90, out fast30DayNt);
+                    printoutPlan(fast30DayNt, "Chronologically90");
+                    doChronologicPlans(180, out fast30DayNt);
+                    printoutPlan(fast30DayNt, "Chronologically180");
+                    doChronologicPlans(365, out fast30DayNt);
+                    printoutPlan(fast30DayNt, "Chronologically365");
+
+                    printoutPlan(versePerDayNtPvPs, "versePerDayNTPvPs");
+                }
+
+                public static void PrintOutDailyPlansInHtml()
+                {
+                    var bn = new BibleNames("en");
+                    for (int i = 0; i <= ZzAllPlansNames.GetUpperBound(0); i++)
+                    {
+                        Debug.WriteLine(
+                            "<a name=\"" + ZzAllPlansNames[i][0].Replace(" ", "").Replace(",", "").ToLower()
+                            + ZzAllPlansNames[i][1] + "\"></a><h2>" + ZzAllPlansNames[i][0] + "; in " + ZzAllPlansNames[i][1]
+                            + " days; " + ZzAllPlansNames[i][2] + " minutes every day</h2>");
+                        Debug.WriteLine("<table><thead><tr><th>Day</th><th>Chapters</th></tr></thead><tbody>");
+                        for (int j = 0; j <= ZAllPlans[i].GetUpperBound(0); j++)
+                        {
+                            string row = "";
+                            string lastBook = "";
+                            int lastChapter = 0;
+                            string savedBook = "";
+                            int savedChapt = 0;
+                            for (int k = 0; k <= ZAllPlans[i][j].GetUpperBound(0); k++)
+                            {
+                                string bookName;
+                                int relChapter;
+                                getBookAndRelChaptFromChapter(
+                                    ZAllPlans[i][j][k], out bookName, out relChapter, bn.GetAllFullNames());
+                                if (lastBook.Equals(bookName) && (lastChapter + 1) == relChapter)
+                                {
+                                    savedBook = bookName;
+                                    if (savedChapt == 0)
+                                    {
+                                        savedChapt = lastChapter;
+                                    }
+                                }
+                                else if (!string.IsNullOrEmpty(savedBook))
+                                {
+                                    if (!string.IsNullOrEmpty(row))
+                                    {
+                                        row += ", ";
+                                    }
+                                    row += savedBook + " " + savedChapt + "-" + lastChapter;
+                                    savedBook = "";
+                                    savedChapt = 0;
+                                }
+                                else if (!string.IsNullOrEmpty(lastBook))
+                                {
+                                    if (!string.IsNullOrEmpty(row))
+                                    {
+                                        row += ", ";
+                                    }
+                                    row += lastBook + " " + lastChapter;
+                                }
+
+                                lastBook = bookName;
+                                lastChapter = relChapter;
+
+                                if (k == ZAllPlans[i][j].GetUpperBound(0))
+                                {
+                                    //must write out the remaining
+                                    if (!string.IsNullOrEmpty(savedBook))
+                                    {
+                                        if (!string.IsNullOrEmpty(row))
+                                        {
+                                            row += ", ";
+                                        }
+                                        row += savedBook + " " + savedChapt + "-" + lastChapter;
+                                    }
+                                    else
+                                    {
+                                        if (!string.IsNullOrEmpty(row))
+                                        {
+                                            row += ", ";
+                                        }
+                                        row += lastBook + " " + lastChapter;
+                                    }
+                                }
+                            }
+                            Debug.WriteLine("<tr><td>" + (j + 1).ToString() + "</td><td>" + row + "</td></tr>");
+                        }
+                        Debug.WriteLine("</tbody></table>");
+                    }
+                }
+
+                #endregion
+
+                #region Methods
+
+                private static int BookNumToChapterNum(int bookNum)
+                {
+                    int returnChapterNum = 0;
+                    for (int i = 0; i < bookNum; i++)
+                    {
+                        returnChapterNum += ChaptersInBook[i];
+                    }
+                    return returnChapterNum;
+                }
+
+                private static void DoPlansInSpecificDays(
+                    int days,
+                    out List<int>[] versePerDay,
+                    out List<int>[] versePerDayOt,
+                    out List<int>[] versePerDayNt,
+                    out List<int>[] versePerDayTopic,
+                    out List<int>[] chapterRandom)
+                {
+                    //////////////////////////////  straight      ////////////////////////////////////////////
+                    double goalVerseNum = VersesInBible / (double)days;
+                    int verseCount = 0;
+                    int chapterCount = 0;
+                    versePerDay = new List<int>[days];
+                    for (int i = 0; i <= versePerDay.GetUpperBound(0); i++)
+                    {
+                        versePerDay[i] = new List<int>();
+                    }
+                    int daycount = 0;
+                    for (int i = 0; i < BooksInBible; i++)
+                    {
+                        for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
+                        {
+                            //look ahead. make sure not putting way too much on one day
+                            if (versePerDay[daycount].Count() > 0
+                                && (j <= (VersesInChapter[i].GetUpperBound(0) - 4) || i < (BooksInBible - 1)))
+                            {
+                                if (VersesInChapter[i][j] > 10
+                                    && ((goalVerseNum * (daycount + 1)) - verseCount) * 3 < VersesInChapter[i][j])
+                                {
+                                    daycount++;
+                                }
+                            }
+
+                            verseCount += VersesInChapter[i][j];
+
+                            versePerDay[daycount].Add(chapterCount);
+
+                            if (verseCount >= (goalVerseNum * (daycount + 1)))
+                            {
+                                daycount++;
+                            }
+                            chapterCount++;
+                        }
+                    }
+                    ///////////////////////////////////  old and new testament ////////////////////////////////////////////
+                    double goalVerseNumOt = VersesInOt / (double)days;
+                    verseCount = 0;
+                    chapterCount = 0;
+                    versePerDayOt = new List<int>[days];
+                    for (int i = 0; i <= versePerDayOt.GetUpperBound(0); i++)
+                    {
+                        versePerDayOt[i] = new List<int>();
+                    }
+                    daycount = 0;
+                    for (int i = 0; i < BooksInOt; i++)
+                    {
+                        for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
+                        {
+                            //look ahead. make sure not putting way too much on one day
+                            if (versePerDayOt[daycount].Count() > 0
+                                && (j <= (VersesInChapter[i].GetUpperBound(0) - 4) || i < (BooksInBible - 1)))
+                            {
+                                if (VersesInChapter[i][j] > 10
+                                    && ((goalVerseNumOt * (daycount + 1)) - verseCount) * 3 < VersesInChapter[i][j])
+                                {
+                                    daycount++;
+                                }
+                            }
+                            verseCount += VersesInChapter[i][j];
+
+                            versePerDayOt[daycount].Add(chapterCount);
+
+                            if (verseCount >= (goalVerseNumOt * (daycount + 1)))
+                            {
+                                daycount++;
+                            }
+                            chapterCount++;
+                        }
+                    }
+                    versePerDayNt = new List<int>[days];
+                    for (int i = 0; i <= versePerDayNt.GetUpperBound(0); i++)
+                    {
+                        versePerDayNt[i] = new List<int>();
+                    }
+                    double goalVerseNumNt = VersesInNt / (double)days;
+                    daycount = 0;
+                    for (int i = BooksInOt; i < BooksInBible; i++)
+                    {
+                        for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
+                        {
+                            //look ahead. make sure not putting way too much on one day
+                            if (versePerDayNt[daycount].Count() > 0
+                                && (j <= (VersesInChapter[i].GetUpperBound(0) - 4) || i < (BooksInNt - 1)))
+                            {
+                                if (VersesInChapter[i][j] > 10
+                                    && ((goalVerseNumNt * (daycount + 1)) - (verseCount - VersesInOt)) * 3
+                                    < VersesInChapter[i][j])
+                                {
+                                    daycount++;
+                                }
+                            }
+
+                            verseCount += VersesInChapter[i][j];
+
+                            versePerDayNt[daycount].Add(chapterCount);
+
+                            while ((verseCount - VersesInOt) > (goalVerseNumNt * (daycount + 1)))
+                            {
+                                daycount++;
+                            }
+                            chapterCount++;
+                        }
+                    }
+                    //combine old and new testament
+                    for (int i = 0; i < days; i++)
+                    {
+                        for (int j = 0; j < versePerDayNt[i].Count(); j++)
+                        {
+                            versePerDayOt[i].Add(versePerDayNt[i][j]);
+                        }
+                    }
+
+                    ///////////////////////////////////  By weekday topic ////////////////////////////////////////////
+                    versePerDayTopic = new List<int>[days / 7 * 7];
+                    for (int i = 0; i <= versePerDayTopic.GetUpperBound(0); i++)
+                    {
+                        versePerDayTopic[i] = new List<int>();
+                    }
+                    int[][] booksInTopic =
+                        {
+                            new[]
+                                {
+                                    44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62,
+                                    63, 64
+                                },
+                            //epistles
+                            new[] { 0, 1, 2, 3, 4 }, //penteauth law
+                            new[] { 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 }, // history
+                            new[] { 18 }, //psalms
+                            new[] { 17, 19, 20, 21 }, //poetry
+                            new[] { 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 65 },
+                            //prophecy
+                            new[] { 39, 40, 41, 42, 43 } //gospels
+                        };
+                    var goalVerseNums = new double[7];
+                    var versesPerDay = new int[7];
+                    var lastUsedChapter = new int[7];
+                    var lastUsedBook = new int[7];
+                    // calculate the verse daily goal count
+                    for (int i = 0; i < 7; i++)
+                    {
+                        int verseCountBooks = 0;
+                        for (int j = 0; j <= booksInTopic[i].GetUpperBound(0); j++)
+                        {
+                            for (int k = 0; k <= VersesInChapter[booksInTopic[i][j]].GetUpperBound(0); k++)
+                            {
+                                verseCountBooks += VersesInChapter[booksInTopic[i][j]][k];
+                            }
+                        }
+                        goalVerseNums[i] = verseCountBooks / (days / 7.0);
+                        versesPerDay[i] = 0;
+                        lastUsedChapter[i] = 0;
+                        lastUsedBook[i] = 0;
+                    }
+                    //lets do it.
+                    for (int day = 0; day < (days / 7 * 7); day++)
+                    {
+                        int dayofweek = day % 7;
+                        int week = day / 7;
+                        int i;
+                        for (i = lastUsedBook[dayofweek]; i <= booksInTopic[dayofweek].GetUpperBound(0); i++)
+                        {
+                            int j;
+                            for (j = lastUsedChapter[dayofweek];
+                                 j <= VersesInChapter[booksInTopic[dayofweek][i]].GetUpperBound(0);
+                                 j++)
+                            {
+                                versesPerDay[dayofweek] += VersesInChapter[booksInTopic[dayofweek][i]][j];
+
+                                versePerDayTopic[day].Add(BookNumToChapterNum(booksInTopic[dayofweek][i]) + j);
+
+                                if ((versesPerDay[dayofweek]) > (goalVerseNums[dayofweek] * (week + 1)))
+                                {
+                                    //we need to break out to the next day!
+                                    break;
+                                }
+                            }
+                            lastUsedChapter[dayofweek] = j + 1;
+                            if (j > VersesInChapter[booksInTopic[dayofweek][i]].GetUpperBound(0)
+                                || lastUsedChapter[dayofweek] > VersesInChapter[booksInTopic[dayofweek][i]].GetUpperBound(0))
+                            {
+                                lastUsedBook[dayofweek]++;
+                                lastUsedChapter[dayofweek] = 0;
+                            }
+                            if ((versesPerDay[dayofweek]) > (goalVerseNums[dayofweek] * (week + 1)))
+                            {
+                                //we need to break out to the next day!
+                                break;
                             }
                         }
                     }
-                    Debug.WriteLine("<tr><td>" + (j + 1).ToString() + "</td><td>" + row + "</td></tr>");
-                }
-                Debug.WriteLine("</tbody></table>");
-            }
-        }
-
-        #endregion
-
-        #region Methods
-
-        private static int BookNumToChapterNum(int bookNum)
-        {
-            int returnChapterNum = 0;
-            for (int i = 0; i < bookNum; i++)
-            {
-                returnChapterNum += ChaptersInBook[i];
-            }
-            return returnChapterNum;
-        }
-
-        private static void DoPlansInSpecificDays(
-            int days,
-            out List<int>[] versePerDay,
-            out List<int>[] versePerDayOt,
-            out List<int>[] versePerDayNt,
-            out List<int>[] versePerDayTopic,
-            out List<int>[] chapterRandom)
-        {
-            //////////////////////////////  straight      ////////////////////////////////////////////
-            double goalVerseNum = VersesInBible / (double)days;
-            int verseCount = 0;
-            int chapterCount = 0;
-            versePerDay = new List<int>[days];
-            for (int i = 0; i <= versePerDay.GetUpperBound(0); i++)
-            {
-                versePerDay[i] = new List<int>();
-            }
-            int daycount = 0;
-            for (int i = 0; i < BooksInBible; i++)
-            {
-                for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
-                {
-                    //look ahead. make sure not putting way too much on one day
-                    if (versePerDay[daycount].Count() > 0
-                        && (j <= (VersesInChapter[i].GetUpperBound(0) - 4) || i < (BooksInBible - 1)))
+                    ///////////////////////////////////  Random chapter  maximal variation, maximal evenness, no continuity ////////////////////////////////////////////
+                    chapterRandom = new List<int>[days];
+                    for (int i = 0; i <= chapterRandom.GetUpperBound(0); i++)
                     {
-                        if (VersesInChapter[i][j] > 10
-                            && ((goalVerseNum * (daycount + 1)) - verseCount) * 3 < VersesInChapter[i][j])
+                        chapterRandom[i] = new List<int>();
+                    }
+                    int[] chaptersRandomized = Enumerable.Range(0, ChaptersInBible).ToArray();
+                    var random = new Random();
+                    for (int i = chaptersRandomized.Length - 1; i > 0; i--)
+                    {
+                        int j = random.Next(i + 1);
+                        int tmp = chaptersRandomized[i];
+                        chaptersRandomized[i] = chaptersRandomized[j];
+                        chaptersRandomized[j] = tmp;
+                    }
+                    verseCount = 0;
+                    daycount = 0;
+                    for (int i = 0; i < ChaptersInBible; i++)
+                    {
+                        int versesThisChapter = GetVersesInChapterNum(chaptersRandomized[i]);
+                        //look ahead. make sure not putting way too much on one day
+                        if (chapterRandom[daycount].Count() > 0 && (i < (ChaptersInBible - 3)))
+                        {
+                            if (versesThisChapter > 10 && ((goalVerseNum * (daycount + 1)) - verseCount) * 3 < versesThisChapter)
+                            {
+                                daycount++;
+                            }
+                        }
+
+                        verseCount += versesThisChapter;
+                        chapterRandom[daycount].Add(chaptersRandomized[i]);
+                        if ((verseCount) > (goalVerseNum * (daycount + 1)))
                         {
                             daycount++;
                         }
                     }
-
-                    verseCount += VersesInChapter[i][j];
-
-                    versePerDay[daycount].Add(chapterCount);
-
-                    if (verseCount >= (goalVerseNum * (daycount + 1)))
-                    {
-                        daycount++;
-                    }
-                    chapterCount++;
                 }
-            }
-            ///////////////////////////////////  old and new testament ////////////////////////////////////////////
-            double goalVerseNumOt = VersesInOt / (double)days;
-            verseCount = 0;
-            chapterCount = 0;
-            versePerDayOt = new List<int>[days];
-            for (int i = 0; i <= versePerDayOt.GetUpperBound(0); i++)
-            {
-                versePerDayOt[i] = new List<int>();
-            }
-            daycount = 0;
-            for (int i = 0; i < BooksInOt; i++)
-            {
-                for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
+
+                private static int GetVersesInChapterNum(int chapt)
                 {
-                    //look ahead. make sure not putting way too much on one day
-                    if (versePerDayOt[daycount].Count() > 0
-                        && (j <= (VersesInChapter[i].GetUpperBound(0) - 4) || i < (BooksInBible - 1)))
+                    int countedChapters = 0;
+                    for (int i = 0; i < BooksInBible; i++)
                     {
-                        if (VersesInChapter[i][j] > 10
-                            && ((goalVerseNumOt * (daycount + 1)) - verseCount) * 3 < VersesInChapter[i][j])
+                        for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
+                        {
+                            if (chapt == countedChapters)
+                            {
+                                return VersesInChapter[i][j];
+                            }
+                            countedChapters++;
+                        }
+                    }
+
+                    return 0;
+                }
+
+                private static void doChronologicNTplans(int days, out List<int>[] fast30DayNt)
+                {
+                    const int ChaptersInNt = 260;
+                    const int ChaptersInOt = 929;
+                    /////////////////////////////////// chronologic fast30dayNT new testament ////////////////////////////////////////////
+                    int verseCount = 0;
+                    int chapterCount = ChaptersInOt;
+                    fast30DayNt = new List<int>[days];
+                    for (int i = 0; i <= fast30DayNt.GetUpperBound(0); i++)
+                    {
+                        fast30DayNt[i] = new List<int>();
+                    }
+
+                    double goalVerseNum = VersesInNt / (double)days;
+                    int daycount = 0;
+                    for (int i = ChaptersInOt; i < ChaptersInOt + ChaptersInNt; i++)
+                    {
+                        int versesThisChapter = GetVersesInChapterNum(BibleChaptersInChronologicalOrder[i]);
+                        //look ahead. make sure not putting way too much on one day
+                        if (fast30DayNt[daycount].Count() > 0 && (i < (ChaptersInBible - 3)))
+                        {
+                            if (versesThisChapter > 10 && ((goalVerseNum * (daycount + 1)) - verseCount) * 3 < versesThisChapter)
+                            {
+                                daycount++;
+                            }
+                        }
+
+                        verseCount += versesThisChapter;
+                        fast30DayNt[daycount].Add(BibleChaptersInChronologicalOrder[i]);
+                        if ((verseCount) > (goalVerseNum * (daycount + 1)))
                         {
                             daycount++;
                         }
                     }
-                    verseCount += VersesInChapter[i][j];
-
-                    versePerDayOt[daycount].Add(chapterCount);
-
-                    if (verseCount >= (goalVerseNumOt * (daycount + 1)))
-                    {
-                        daycount++;
-                    }
-                    chapterCount++;
                 }
-            }
-            versePerDayNt = new List<int>[days];
-            for (int i = 0; i <= versePerDayNt.GetUpperBound(0); i++)
-            {
-                versePerDayNt[i] = new List<int>();
-            }
-            double goalVerseNumNt = VersesInNt / (double)days;
-            daycount = 0;
-            for (int i = BooksInOt; i < BooksInBible; i++)
-            {
-                for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
+
+                private static void doChronologicPlans(int days, out List<int>[] fast30Day)
                 {
-                    //look ahead. make sure not putting way too much on one day
-                    if (versePerDayNt[daycount].Count() > 0
-                        && (j <= (VersesInChapter[i].GetUpperBound(0) - 4) || i < (BooksInNt - 1)))
+                    /////////////////////////////////// chronologic fast30dayNT new testament ////////////////////////////////////////////
+                    int verseCount = 0;
+                    fast30Day = new List<int>[days];
+                    for (int i = 0; i <= fast30Day.GetUpperBound(0); i++)
                     {
-                        if (VersesInChapter[i][j] > 10
-                            && ((goalVerseNumNt * (daycount + 1)) - (verseCount - VersesInOt)) * 3
-                            < VersesInChapter[i][j])
+                        fast30Day[i] = new List<int>();
+                    }
+
+                    double goalVerseNum = VersesInBible / (double)days;
+                    int daycount = 0;
+                    for (int i = 0; i < ChaptersInBible; i++)
+                    {
+                        int versesThisChapter = GetVersesInChapterNum(BibleChaptersInChronologicalOrder[i]);
+                        //look ahead. make sure not putting way too much on one day
+                        if (fast30Day[daycount].Count() > 0 && (i < (ChaptersInBible - 3)))
+                        {
+                            if (versesThisChapter > 10 && ((goalVerseNum * (daycount + 1)) - verseCount) * 3 < versesThisChapter)
+                            {
+                                daycount++;
+                            }
+                        }
+
+                        verseCount += versesThisChapter;
+                        fast30Day[daycount].Add(BibleChaptersInChronologicalOrder[i]);
+                        if ((verseCount) > (goalVerseNum * (daycount + 1)))
                         {
                             daycount++;
                         }
                     }
+                }
 
-                    verseCount += VersesInChapter[i][j];
-
-                    versePerDayNt[daycount].Add(chapterCount);
-
-                    while ((verseCount - VersesInOt) > (goalVerseNumNt * (daycount + 1)))
+                private static void doNTplans(int days, out List<int>[] fast30DayNt)
+                {
+                    ///////////////////////////////////  fast30dayNT new testament ////////////////////////////////////////////
+                    int verseCount = 0;
+                    int chapterCount = ChaptersInOt;
+                    fast30DayNt = new List<int>[days];
+                    for (int i = 0; i <= fast30DayNt.GetUpperBound(0); i++)
                     {
-                        daycount++;
+                        fast30DayNt[i] = new List<int>();
                     }
-                    chapterCount++;
-                }
-            }
-            //combine old and new testament
-            for (int i = 0; i < days; i++)
-            {
-                for (int j = 0; j < versePerDayNt[i].Count(); j++)
-                {
-                    versePerDayOt[i].Add(versePerDayNt[i][j]);
-                }
-            }
 
-            ///////////////////////////////////  By weekday topic ////////////////////////////////////////////
-            versePerDayTopic = new List<int>[days / 7 * 7];
-            for (int i = 0; i <= versePerDayTopic.GetUpperBound(0); i++)
-            {
-                versePerDayTopic[i] = new List<int>();
-            }
-            int[][] booksInTopic =
-                {
-                    new[]
-                        {
-                            44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62,
-                            63, 64
-                        },
-                    //epistles
-                    new[] { 0, 1, 2, 3, 4 }, //penteauth law
-                    new[] { 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 }, // history
-                    new[] { 18 }, //psalms
-                    new[] { 17, 19, 20, 21 }, //poetry
-                    new[] { 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 65 },
-                    //prophecy
-                    new[] { 39, 40, 41, 42, 43 } //gospels
-                };
-            var goalVerseNums = new double[7];
-            var versesPerDay = new int[7];
-            var lastUsedChapter = new int[7];
-            var lastUsedBook = new int[7];
-            // calculate the verse daily goal count
-            for (int i = 0; i < 7; i++)
-            {
-                int verseCountBooks = 0;
-                for (int j = 0; j <= booksInTopic[i].GetUpperBound(0); j++)
-                {
-                    for (int k = 0; k <= VersesInChapter[booksInTopic[i][j]].GetUpperBound(0); k++)
+                    double goalVerseNumNt = VersesInNt / (double)days;
+                    int daycount = 0;
+                    for (int i = BooksInOt; i < BooksInBible; i++)
                     {
-                        verseCountBooks += VersesInChapter[booksInTopic[i][j]][k];
+                        for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
+                        {
+                            //look ahead. make sure not putting way too much on one day
+                            if (fast30DayNt[daycount].Count() > 0
+                                && (j <= (VersesInChapter[i].GetUpperBound(0) - 4) || i < (BooksInBible - 1)))
+                            {
+                                if (VersesInChapter[i][j] > 10
+                                    && ((goalVerseNumNt * (daycount + 1)) - verseCount) * 3 < VersesInChapter[i][j])
+                                {
+                                    daycount++;
+                                }
+                            }
+
+                            verseCount += VersesInChapter[i][j];
+
+                            fast30DayNt[daycount].Add(chapterCount);
+
+                            while ((verseCount) > (goalVerseNumNt * (daycount + 1)))
+                            {
+                                daycount++;
+                            }
+                            chapterCount++;
+                        }
                     }
                 }
-                goalVerseNums[i] = verseCountBooks / (days / 7.0);
-                versesPerDay[i] = 0;
-                lastUsedChapter[i] = 0;
-                lastUsedBook[i] = 0;
-            }
-            //lets do it.
-            for (int day = 0; day < (days / 7 * 7); day++)
-            {
-                int dayofweek = day % 7;
-                int week = day / 7;
-                int i;
-                for (i = lastUsedBook[dayofweek]; i <= booksInTopic[dayofweek].GetUpperBound(0); i++)
+
+                private static void getBookAndRelChaptFromChapter(
+                    int chapterNum, out string bookName, out int chapterNumRel, string[] bookNames)
                 {
-                    int j;
-                    for (j = lastUsedChapter[dayofweek];
-                         j <= VersesInChapter[booksInTopic[dayofweek][i]].GetUpperBound(0);
-                         j++)
+                    bookName = "";
+                    chapterNumRel = 0;
+                    int sumChapters = 0;
+                    for (int i = 0; i < ChaptersInBook.Length; i++)
                     {
-                        versesPerDay[dayofweek] += VersesInChapter[booksInTopic[dayofweek][i]][j];
-
-                        versePerDayTopic[day].Add(BookNumToChapterNum(booksInTopic[dayofweek][i]) + j);
-
-                        if ((versesPerDay[dayofweek]) > (goalVerseNums[dayofweek] * (week + 1)))
+                        sumChapters += ChaptersInBook[i];
+                        if (sumChapters > chapterNum)
                         {
-                            //we need to break out to the next day!
+                            bookName = bookNames[i];
+                            chapterNumRel = chapterNum - (sumChapters - ChaptersInBook[i]) + 1;
                             break;
                         }
                     }
-                    lastUsedChapter[dayofweek] = j + 1;
-                    if (j > VersesInChapter[booksInTopic[dayofweek][i]].GetUpperBound(0)
-                        || lastUsedChapter[dayofweek] > VersesInChapter[booksInTopic[dayofweek][i]].GetUpperBound(0))
+                }
+
+                private static void printoutPlan(IEnumerable<List<int>> plan, string name)
+                {
+                    Debug.WriteLine("int[][] " + name + "={");
+                    foreach (var t in plan)
                     {
-                        lastUsedBook[dayofweek]++;
-                        lastUsedChapter[dayofweek] = 0;
+                        string text = "";
+                        text += "new int[] {";
+                        text = t.Aggregate(text, (current, chapt) => current + (chapt.ToString() + ","));
+                        Debug.WriteLine(text + "},");
                     }
-                    if ((versesPerDay[dayofweek]) > (goalVerseNums[dayofweek] * (week + 1)))
-                    {
-                        //we need to break out to the next day!
-                        break;
-                    }
+                    Debug.WriteLine("};");
                 }
-            }
-            ///////////////////////////////////  Random chapter  maximal variation, maximal evenness, no continuity ////////////////////////////////////////////
-            chapterRandom = new List<int>[days];
-            for (int i = 0; i <= chapterRandom.GetUpperBound(0); i++)
-            {
-                chapterRandom[i] = new List<int>();
-            }
-            int[] chaptersRandomized = Enumerable.Range(0, ChaptersInBible).ToArray();
-            var random = new Random();
-            for (int i = chaptersRandomized.Length - 1; i > 0; i--)
-            {
-                int j = random.Next(i + 1);
-                int tmp = chaptersRandomized[i];
-                chaptersRandomized[i] = chaptersRandomized[j];
-                chaptersRandomized[j] = tmp;
-            }
-            verseCount = 0;
-            daycount = 0;
-            for (int i = 0; i < ChaptersInBible; i++)
-            {
-                int versesThisChapter = GetVersesInChapterNum(chaptersRandomized[i]);
-                //look ahead. make sure not putting way too much on one day
-                if (chapterRandom[daycount].Count() > 0 && (i < (ChaptersInBible - 3)))
-                {
-                    if (versesThisChapter > 10 && ((goalVerseNum * (daycount + 1)) - verseCount) * 3 < versesThisChapter)
-                    {
-                        daycount++;
-                    }
-                }
-
-                verseCount += versesThisChapter;
-                chapterRandom[daycount].Add(chaptersRandomized[i]);
-                if ((verseCount) > (goalVerseNum * (daycount + 1)))
-                {
-                    daycount++;
-                }
-            }
-        }
-
-        private static int GetVersesInChapterNum(int chapt)
-        {
-            int countedChapters = 0;
-            for (int i = 0; i < BooksInBible; i++)
-            {
-                for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
-                {
-                    if (chapt == countedChapters)
-                    {
-                        return VersesInChapter[i][j];
-                    }
-                    countedChapters++;
-                }
-            }
-
-            return 0;
-        }
-
-        private static void doChronologicNTplans(int days, out List<int>[] fast30DayNt)
-        {
-            const int ChaptersInNt = 260;
-            const int ChaptersInOt = 929;
-            /////////////////////////////////// chronologic fast30dayNT new testament ////////////////////////////////////////////
-            int verseCount = 0;
-            int chapterCount = ChaptersInOt;
-            fast30DayNt = new List<int>[days];
-            for (int i = 0; i <= fast30DayNt.GetUpperBound(0); i++)
-            {
-                fast30DayNt[i] = new List<int>();
-            }
-
-            double goalVerseNum = VersesInNt / (double)days;
-            int daycount = 0;
-            for (int i = ChaptersInOt; i < ChaptersInOt + ChaptersInNt; i++)
-            {
-                int versesThisChapter = GetVersesInChapterNum(BibleChaptersInChronologicalOrder[i]);
-                //look ahead. make sure not putting way too much on one day
-                if (fast30DayNt[daycount].Count() > 0 && (i < (ChaptersInBible - 3)))
-                {
-                    if (versesThisChapter > 10 && ((goalVerseNum * (daycount + 1)) - verseCount) * 3 < versesThisChapter)
-                    {
-                        daycount++;
-                    }
-                }
-
-                verseCount += versesThisChapter;
-                fast30DayNt[daycount].Add(BibleChaptersInChronologicalOrder[i]);
-                if ((verseCount) > (goalVerseNum * (daycount + 1)))
-                {
-                    daycount++;
-                }
-            }
-        }
-
-        private static void doChronologicPlans(int days, out List<int>[] fast30Day)
-        {
-            /////////////////////////////////// chronologic fast30dayNT new testament ////////////////////////////////////////////
-            int verseCount = 0;
-            fast30Day = new List<int>[days];
-            for (int i = 0; i <= fast30Day.GetUpperBound(0); i++)
-            {
-                fast30Day[i] = new List<int>();
-            }
-
-            double goalVerseNum = VersesInBible / (double)days;
-            int daycount = 0;
-            for (int i = 0; i < ChaptersInBible; i++)
-            {
-                int versesThisChapter = GetVersesInChapterNum(BibleChaptersInChronologicalOrder[i]);
-                //look ahead. make sure not putting way too much on one day
-                if (fast30Day[daycount].Count() > 0 && (i < (ChaptersInBible - 3)))
-                {
-                    if (versesThisChapter > 10 && ((goalVerseNum * (daycount + 1)) - verseCount) * 3 < versesThisChapter)
-                    {
-                        daycount++;
-                    }
-                }
-
-                verseCount += versesThisChapter;
-                fast30Day[daycount].Add(BibleChaptersInChronologicalOrder[i]);
-                if ((verseCount) > (goalVerseNum * (daycount + 1)))
-                {
-                    daycount++;
-                }
-            }
-        }
-
-        private static void doNTplans(int days, out List<int>[] fast30DayNt)
-        {
-            ///////////////////////////////////  fast30dayNT new testament ////////////////////////////////////////////
-            int verseCount = 0;
-            int chapterCount = ChaptersInOt;
-            fast30DayNt = new List<int>[days];
-            for (int i = 0; i <= fast30DayNt.GetUpperBound(0); i++)
-            {
-                fast30DayNt[i] = new List<int>();
-            }
-
-            double goalVerseNumNt = VersesInNt / (double)days;
-            int daycount = 0;
-            for (int i = BooksInOt; i < BooksInBible; i++)
-            {
-                for (int j = 0; j <= VersesInChapter[i].GetUpperBound(0); j++)
-                {
-                    //look ahead. make sure not putting way too much on one day
-                    if (fast30DayNt[daycount].Count() > 0
-                        && (j <= (VersesInChapter[i].GetUpperBound(0) - 4) || i < (BooksInBible - 1)))
-                    {
-                        if (VersesInChapter[i][j] > 10
-                            && ((goalVerseNumNt * (daycount + 1)) - verseCount) * 3 < VersesInChapter[i][j])
-                        {
-                            daycount++;
-                        }
-                    }
-
-                    verseCount += VersesInChapter[i][j];
-
-                    fast30DayNt[daycount].Add(chapterCount);
-
-                    while ((verseCount) > (goalVerseNumNt * (daycount + 1)))
-                    {
-                        daycount++;
-                    }
-                    chapterCount++;
-                }
-            }
-        }
-
-        private static void getBookAndRelChaptFromChapter(
-            int chapterNum, out string bookName, out int chapterNumRel, string[] bookNames)
-        {
-            bookName = "";
-            chapterNumRel = 0;
-            int sumChapters = 0;
-            for (int i = 0; i < ChaptersInBook.Length; i++)
-            {
-                sumChapters += ChaptersInBook[i];
-                if (sumChapters > chapterNum)
-                {
-                    bookName = bookNames[i];
-                    chapterNumRel = chapterNum - (sumChapters - ChaptersInBook[i]) + 1;
-                    break;
-                }
-            }
-        }
-
-        private static void printoutPlan(IEnumerable<List<int>> plan, string name)
-        {
-            Debug.WriteLine("int[][] " + name + "={");
-            foreach (var t in plan)
-            {
-                string text = "";
-                text += "new int[] {";
-                text = t.Aggregate(text, (current, chapt) => current + (chapt.ToString() + ","));
-                Debug.WriteLine(text + "},");
-            }
-            Debug.WriteLine("};");
-        }
-        #endregion
-*/
+                #endregion
+        */
     }
 }

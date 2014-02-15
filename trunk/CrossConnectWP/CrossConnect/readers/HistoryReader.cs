@@ -24,15 +24,14 @@
 namespace CrossConnect.readers
 {
     using System;
-    using System.Collections.Generic;
     using System.Runtime.Serialization;
-
+    using System.Threading.Tasks;
 
     using Sword.reader;
 
     /// <summary>
-    /// Load from a file all the book and verse pointers to the bzz file so that
-    ///   we can later read the bzz file quickly and efficiently.
+    ///     Load from a file all the book and verse pointers to the bzz file so that
+    ///     we can later read the bzz file quickly and efficiently.
     /// </summary>
     [DataContract(Name = "HistoryReader")]
     [KnownType(typeof(ChapterPos))]
@@ -43,40 +42,43 @@ namespace CrossConnect.readers
         #region Fields
 
         [DataMember(Name = "serial2")]
-        public BibleZtextReaderSerialData Serial2 = new BibleZtextReaderSerialData(false, string.Empty, string.Empty, 0, 0, string.Empty, string.Empty);
+        public BibleZtextReaderSerialData Serial2 = new BibleZtextReaderSerialData(
+            false, string.Empty, string.Empty, 0, 0, string.Empty, string.Empty);
 
         private string _displayText = string.Empty;
 
         private string _fontFamily = string.Empty;
 
-        private string _htmlBackgroundColor = string.Empty;
+        private HtmlColorRgba _htmlBackgroundColor;
 
         private double _htmlFontSize;
 
-        private string _htmlForegroundColor = string.Empty;
+        private HtmlColorRgba _htmlForegroundColor;
 
-        private string _htmlPhoneAccentColor = string.Empty;
+        private HtmlColorRgba _htmlPhoneAccentColor;
 
-        #endregion Fields
+        private HtmlColorRgba _htmlWordsOfChristColor;
 
-        #region Constructors
+        #endregion
 
-        public HistoryReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath)
-            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath)
+        #region Constructors and Destructors
+
+        public HistoryReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification)
+            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification)
         {
-            Serial2.CloneFrom(Serial);
-            App.HistoryChanged += AppHistoryChanged;
+            this.Serial2.CloneFrom(this.Serial);
+            App.HistoryChanged += this.AppHistoryChanged;
         }
 
         // destructor
         ~HistoryReader()
         {
-            App.HistoryChanged -= AppHistoryChanged;
+            App.HistoryChanged -= this.AppHistoryChanged;
         }
 
-        #endregion Constructors
+        #endregion
 
-        #region Properties
+        #region Public Properties
 
         public override bool IsHearable
         {
@@ -118,95 +120,125 @@ namespace CrossConnect.readers
             }
         }
 
-        #endregion Properties
+        #endregion
 
-        #region Methods
+        #region Public Methods and Operators
 
-        public void AppHistoryChanged()
+        public async void AppHistoryChanged()
         {
-            _displayText = MakeListDisplayText(
-                App.DisplaySettings,
-                App.PlaceMarkers.History,
-                _htmlBackgroundColor,
-                _htmlForegroundColor,
-                _htmlPhoneAccentColor,
-                _htmlFontSize,
-                _fontFamily,
-                false,
-                string.Empty);
-            RaiseSourceChangedEvent();
+            this._displayText =
+                await
+                this.MakeListDisplayText(
+                    App.DisplaySettings,
+                    App.PlaceMarkers.History,
+                    this._htmlBackgroundColor,
+                    this._htmlForegroundColor,
+                    this._htmlPhoneAccentColor,
+                    this._htmlWordsOfChristColor,
+                    this._htmlFontSize,
+                    this._fontFamily,
+                    false,
+                    string.Empty);
+            this.RaiseSourceChangedEvent();
         }
 
-        public override void GetInfo(
-            out int bookNum,
-            out int absoluteChaptNum,
-            out int relChaptNum,
-            out int verseNum,
-            out string fullName,
-            out string title)
+        public override async Task<string> GetTTCtext(bool isVerseOnly)
         {
-            verseNum = 0;
-            bookNum = 0;
-            absoluteChaptNum = 0;
-            relChaptNum = 0;
-            fullName = string.Empty;
-            if (App.PlaceMarkers.History.Count > 0)
-            {
-                BiblePlaceMarker place = App.PlaceMarkers.History[App.PlaceMarkers.History.Count - 1];
-                absoluteChaptNum = place.ChapterNum;
-                verseNum = place.VerseNum;
-            }
-
-            title = Translations.Translate("History");
+            var text = await MakeListTtcHearingText(App.PlaceMarkers.History);
+            return string.IsNullOrEmpty(text) ? "empty" : text;
         }
 
-        public override void Resume()
+        public override void MoveNext(bool isVerseMove)
         {
-            Serial.CloneFrom(Serial2);
-            App.HistoryChanged += AppHistoryChanged;
-            base.Resume();
+
+        }
+        public override void MovePrevious(bool isVerseMove)
+        {
+
         }
 
-        public override void SerialSave()
-        {
-            Serial2.CloneFrom(Serial);
-        }
 
-        public override string GetChapterHtml(
+        public override async Task<string> GetChapterHtml(
             DisplaySettings displaySettings,
-            string htmlBackgroundColor,
-            string htmlForegroundColor,
-            string htmlPhoneAccentColor,
+            HtmlColorRgba htmlBackgroundColor,
+            HtmlColorRgba htmlForegroundColor,
+            HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
             bool forceReload)
         {
-            bool mustUpdate = string.IsNullOrEmpty(_htmlBackgroundColor);
-            _htmlBackgroundColor = htmlBackgroundColor;
-            _htmlForegroundColor = htmlForegroundColor;
-            _htmlPhoneAccentColor = htmlPhoneAccentColor;
-            _fontFamily = fontFamily;
+            bool mustUpdate = this._htmlBackgroundColor == null;
+            this._htmlBackgroundColor = htmlBackgroundColor;
+            this._htmlForegroundColor = htmlForegroundColor;
+            this._htmlPhoneAccentColor = htmlPhoneAccentColor;
+            this._htmlWordsOfChristColor = htmlWordsOfChristColor;
+            this._fontFamily = fontFamily;
             const double epsilon = 0.00000001;
-            if (forceReload || mustUpdate || Math.Abs(_htmlFontSize - htmlFontSize) > epsilon)
+            if (forceReload || mustUpdate || Math.Abs(this._htmlFontSize - htmlFontSize) > epsilon)
             {
-                _displayText = MakeListDisplayText(
-                    displaySettings,
-                    App.PlaceMarkers.History,
-                    htmlBackgroundColor,
-                    htmlForegroundColor,
-                    htmlPhoneAccentColor,
-                    htmlFontSize,
-                    fontFamily,
-                    false,
-                    string.Empty);
+                this._displayText =
+                    await
+                    this.MakeListDisplayText(
+                        displaySettings,
+                        App.PlaceMarkers.History,
+                        htmlBackgroundColor,
+                        htmlForegroundColor,
+                        htmlPhoneAccentColor,
+                        htmlWordsOfChristColor,
+                        htmlFontSize,
+                        fontFamily,
+                        false,
+                        string.Empty);
             }
 
-            _htmlFontSize = htmlFontSize;
-            return _displayText;
+            this._htmlFontSize = htmlFontSize;
+            return this._displayText;
         }
 
-        #endregion Methods
+        public override void GetInfo(
+            out string bookShortName,
+            out int relChaptNum,
+            out int verseNum,
+            out string fullName,
+            out string title)
+        {
+            verseNum = 0;
+            bookShortName = string.Empty;
+            relChaptNum = 0;
+            fullName = string.Empty;
+            if (App.PlaceMarkers.History.Count > 0)
+            {
+                BiblePlaceMarker place = App.PlaceMarkers.History[App.PlaceMarkers.History.Count - 1];
+                bookShortName = place.BookShortName;
+                relChaptNum = place.ChapterNum;
+                verseNum = place.VerseNum;
+            }
+
+            title = Translations.Translate("History");
+        }
+
+        public override async Task Resume()
+        {
+            this.Serial.CloneFrom(this.Serial2);
+            App.HistoryChanged += this.AppHistoryChanged;
+            await base.Resume();
+        }
+
+        public override async Task<IBrowserTextSource> Clone()
+        {
+            var cloned = new HistoryReader(this.Serial.Path, this.Serial.Iso2DigitLangCode, this.Serial.IsIsoEncoding, this.Serial.CipherKey, this.Serial.ConfigPath, this.Serial.Versification);
+            await cloned.Resume();
+            return cloned;
+        }
+        public override void SerialSave()
+        {
+            this.Serial2.CloneFrom(this.Serial);
+        }
+
+        #endregion
     }
 }

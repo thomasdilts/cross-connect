@@ -31,18 +31,19 @@ namespace Sword
     using System.IO;
     using System.Reflection;
     using System.Xml;
-
     using Sword.reader;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class BibleNames
     {
         #region Fields
 
-        private readonly string[] _fullNames = new string[BibleZtextReader.BooksInBible];
+        private readonly Dictionary<string,string> _fullNames = new Dictionary<string,string>();
 
         private readonly bool _isShortNamesExisting = true;
 
-        private readonly string[] _shortNames = new string[BibleZtextReader.BooksInBible];
+        private readonly Dictionary<string, string> _shortNames = new Dictionary<string, string>();
 
         #endregion
 
@@ -50,8 +51,7 @@ namespace Sword
 
         public BibleNames(string isoLang2DigitCode)
         {
-            var assem = Assembly.GetExecutingAssembly();
-            //Assembly assem = Assembly.Load(new AssemblyName("Sword"));
+            Assembly assem = Assembly.Load(new AssemblyName("Sword"));
             string isocode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLower();
             string name = CultureInfo.CurrentCulture.Name.Replace('-', '_');
             Stream stream = null;
@@ -90,14 +90,14 @@ namespace Sword
                             {
                                 string shortName = "";
                                 string fullName = "";
-                                int keyNumber = 0;
+                                string key = "";
                                 reader.MoveToFirstAttribute();
                                 do
                                 {
                                     switch (reader.Name.ToLower())
                                     {
-                                        case "keynumber":
-                                            keyNumber = int.Parse(reader.Value);
+                                        case "key":
+                                            key = reader.Value;
                                             break;
                                         case "short":
                                             shortName = isRtl ? this.Reverse(reader.Value) : reader.Value;
@@ -112,8 +112,8 @@ namespace Sword
                                 {
                                     numberBadShortNames++;
                                 }
-                                this._shortNames[keyNumber] = shortName;
-                                this._fullNames[keyNumber] = fullName;
+                                this._shortNames[key] = shortName;
+                                this._fullNames[key] = fullName;
                             }
                         }
                     }
@@ -141,22 +141,34 @@ namespace Sword
 
         public string[] GetAllFullNames()
         {
-            return this._fullNames;
+            return this._fullNames.Values.ToArray();
         }
 
         public string[] GetAllShortNames()
         {
-            return this._shortNames;
+            return this._shortNames.Values.ToArray();
         }
 
-        public string GetFullName(int bookNum)
+        public string GetFullName(string bookShortName, string defaultFullName)
         {
-            return this._fullNames[bookNum];
+            string fullname;
+            if (this._fullNames.TryGetValue(bookShortName, out fullname))
+            {
+                return fullname;
+            }
+
+            return defaultFullName;
         }
 
-        public string GetShortName(int bookNum)
+        public string GetShortName(string bookShortName)
         {
-            return this._shortNames[bookNum];
+            string fullname;
+            if (this._shortNames.TryGetValue(bookShortName, out fullname))
+            {
+                return fullname;
+            }
+
+            return bookShortName; 
         }
 
         public string Reverse(string str)

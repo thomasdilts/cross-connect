@@ -34,6 +34,7 @@ namespace CrossConnect
     using CrossConnect.readers;
 
     using Sword.reader;
+    using System.Threading.Tasks;
 
     public interface ITiledWindow
     {
@@ -67,7 +68,7 @@ namespace CrossConnect
 
         void ShowSizeButtons(bool isShow = true);
 
-        void SynchronizeWindow(int chapterNum, int verseNum, IBrowserTextSource source);
+        void SynchronizeWindow(string bookNameShort, int chapterNum, int verseNum, IBrowserTextSource source);
 
         void UpdateBrowser(bool isOrientationChangeOnly);
 
@@ -87,7 +88,6 @@ namespace CrossConnect
     [KnownType(typeof(SearchReader))]
     [KnownType(typeof(BibleNoteReader))]
     [KnownType(typeof(BibleZtextReader))]
-    [KnownType(typeof(MediaReader))]
     public class SerializableWindowState
     {
         #region Fields
@@ -113,7 +113,55 @@ namespace CrossConnect
         public WindowType WindowType = WindowType.WindowBible;
         [DataMember]
         public int VSchrollPosition = 0;
+        [DataMember]
+        public string VoiceName = string.Empty;
+
+        [DataMember]
+        public bool IsNtOnly = false;
+
+        [DataMember]
+        public string Pattern = string.Empty;
+
+        [DataMember]
+        public string Src = string.Empty;
+
+        [DataMember]
+        public string code = string.Empty;
+        [DataMember]
+        public string IconLink = string.Empty;
+        [DataMember]
+        public string Name = string.Empty;
+        [DataMember]
+        public string Language = string.Empty;
+        [DataMember]
+        public string Icon = string.Empty;
 
         #endregion Fields
+        public async Task<SerializableWindowState> Clone()
+        {
+            return new SerializableWindowState
+            {
+                code = this.code,
+                Src = this.Src,
+                Pattern = this.Pattern,
+                IsNtOnly = this.IsNtOnly,
+                VoiceName = this.VoiceName,
+                BibleDescription = this.BibleDescription,
+                BibleToLoad = this.BibleToLoad,
+                CurIndex = this.CurIndex,
+                HtmlFontSize = this.HtmlFontSize,
+                IsResume = this.IsResume,
+                IsSynchronized = this.IsSynchronized,
+                NumRowsIown = this.NumRowsIown,
+                Source = await this.Source.Clone(),
+                VSchrollPosition = this.VSchrollPosition,
+                Window = this.Window,
+                WindowType = this.WindowType,
+                IconLink = this.IconLink,
+                Language = this.Language,
+                Name = this.Name,
+                Icon = this.Icon
+            };
+        }
     }
 }

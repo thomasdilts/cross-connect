@@ -1,69 +1,69 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<biblenames isolang="uk" isolocale="" version="1.0" >
-<book keynumber="0" short="Бутт" full="Буття" />
-<book keynumber="1" short="Вихі" full="Вихід" />
-<book keynumber="2" short="Леви" full="Левит" />
-<book keynumber="3" short="Числ" full="Числа" />
-<book keynumber="4" short="Повт" full="Повторення Закону" />
-<book keynumber="5" short="Ісус" full="Ісус Навин" />
-<book keynumber="6" short="Судд" full="Суддів" />
-<book keynumber="7" short="Рут" full="Рут" />
-<book keynumber="8" short="1Сам" full="1. Самуїла" />
-<book keynumber="9" short="2Сам" full="2. Самуїла" />
-<book keynumber="10" short="1Цар" full="1. Царів" />
-<book keynumber="11" short="2Цар" full="2. Царів" />
-<book keynumber="12" short="1Хро" full="1. Хроніки" />
-<book keynumber="13" short="2Хро" full="2. Хроніки" />
-<book keynumber="14" short="Ездр" full="Ездри" />
-<book keynumber="15" short="Неем" full="Неемії" />
-<book keynumber="16" short="Eсте" full="Eстер" />
-<book keynumber="17" short="Йова" full="Йова" />
-<book keynumber="18" short="Псал" full="Псалмів" />
-<book keynumber="19" short="Прип" full="Приповістей" />
-<book keynumber="20" short="Еккл" full="Екклезіяст" />
-<book keynumber="21" short="Пісн" full="Пісня над піснями" />
-<book keynumber="22" short="Ісаї" full="Ісаї" />
-<book keynumber="23" short="Єрем" full="Єремії" />
-<book keynumber="24" short="Плач" full="Плач Єремії" />
-<book keynumber="25" short="Єзек" full="Єзекіїля" />
-<book keynumber="26" short="Дани" full="Даниїла" />
-<book keynumber="27" short="Осії" full="Осії" />
-<book keynumber="28" short="Йоіл" full="Йоіла" />
-<book keynumber="29" short="Aмос" full="Aмоса" />
-<book keynumber="30" short="Овді" full="Овдія" />
-<book keynumber="31" short="Йони" full="Йони" />
-<book keynumber="32" short="Mихе" full="Mихея" />
-<book keynumber="33" short="Наум" full="Наума" />
-<book keynumber="34" short="Авак" full="Авакума" />
-<book keynumber="35" short="Софо" full="Софонії" />
-<book keynumber="36" short="Огія" full="Огія" />
-<book keynumber="37" short="Заха" full="Захарія" />
-<book keynumber="38" short="Мала" full="Малахії" />
-<book keynumber="39" short="Матв" full="Матвія" />
-<book keynumber="40" short="Марк" full="Марка" />
-<book keynumber="41" short="Луки" full="Луки" />
-<book keynumber="42" short="Іван" full="Івана" />
-<book keynumber="43" short="Дії" full="Дії" />
-<book keynumber="44" short="Римл" full="Римлян" />
-<book keynumber="45" short="1Кор" full="1. Коринтян" />
-<book keynumber="46" short="2Кор" full="2. Коринтян" />
-<book keynumber="47" short="Гала" full="Галатів" />
-<book keynumber="48" short="Ефес" full="Ефесян" />
-<book keynumber="49" short="Фили" full="Филип'ян" />
-<book keynumber="50" short="Коло" full="Колосян" />
-<book keynumber="51" short="1Сол" full="1. Солунян" />
-<book keynumber="52" short="2Сол" full="2. Солунян" />
-<book keynumber="53" short="1Тим" full="1. Тимофія" />
-<book keynumber="54" short="2Тим" full="2. Тимофія" />
-<book keynumber="55" short="Тита" full="Тита" />
-<book keynumber="56" short="Фили" full="Филимона" />
-<book keynumber="57" short="Євре" full="Євреїв" />
-<book keynumber="58" short="Яков" full="Якова" />
-<book keynumber="59" short="1Пет" full="1. Петра" />
-<book keynumber="60" short="2Пет" full="2. Петра" />
-<book keynumber="61" short="1Іва" full="1. Івана" />
-<book keynumber="62" short="2Іва" full="2. Івана" />
-<book keynumber="63" short="3Іва" full="3. Івана" />
-<book keynumber="64" short="Юди" full="Юди" />
-<book keynumber="65" short="Об'я" full="Об'явлення" />
+<?xml version="1.0" encoding="UTF-8"?>
+<biblenames isolang="uk" isolocale="" version="1.0">
+<book key="Gen" short="Буття" full="Буття" />
+<book key="Exod" short="Вихід" full="Вихід" />
+<book key="Lev" short="Левит" full="Левит" />
+<book key="Num" short="Числа" full="Числа" />
+<book key="Deut" short="Повторення Закону" full="Повторення Закону" />
+<book key="Josh" short="ісус навин" full="ісус навин" />
+<book key="Judg" short="Суддів" full="Суддів" />
+<book key="Ruth" short="Рут" full="Рут" />
+<book key="1Sam" short="1. Самуїла" full="1. Самуїла" />
+<book key="2Sam" short="2. Самуїла" full="2. Самуїла" />
+<book key="1Kgs" short="1. Царів" full="1. Царів" />
+<book key="2Kgs" short="2. Царів" full="2. Царів" />
+<book key="1Chr" short="1. Хроніки" full="1. Хроніки" />
+<book key="2Chr" short="2. Хроніки" full="2. Хроніки" />
+<book key="Ezra" short="Ездри" full="Ездри" />
+<book key="Neh" short="Неемії" full="Неемії" />
+<book key="Esth" short="Eстер" full="Eстер" />
+<book key="Job" short="Йова" full="Йова" />
+<book key="Ps" short="Псалмів" full="Псалмів" />
+<book key="Prov" short="Приповістей" full="Приповістей" />
+<book key="Eccl" short="Екклезіяст" full="Екклезіяст" />
+<book key="Song" short="Пісня над піснями" full="Пісня над піснями" />
+<book key="Isa" short="Ісаї" full="Ісаї" />
+<book key="Jer" short="Єремії" full="Єремії" />
+<book key="Lam" short="Плач Єремії" full="Плач Єремії" />
+<book key="Ezek" short="Єзекіїля" full="Єзекіїля" />
+<book key="Dan" short="Даниїла" full="Даниїла" />
+<book key="Hos" short="Осії" full="Осії" />
+<book key="Joel" short="Йоіла" full="Йоіла" />
+<book key="Amos" short="Aмоса" full="Aмоса" />
+<book key="Obad" short="Овдія" full="Овдія" />
+<book key="Jonah" short="Йона" full="Йона" />
+<book key="Mic" short="Mихея" full="Mихея" />
+<book key="Nah" short="Наума" full="Наума" />
+<book key="Hab" short="Авакума" full="Авакума" />
+<book key="Zeph" short="Софонії" full="Софонії" />
+<book key="Hag" short="Огія" full="Огія" />
+<book key="Zech" short="Захарія" full="Захарія" />
+<book key="Mal" short="Малахії" full="Малахії" />
+<book key="Matt" short="Матвія" full="Матвія" />
+<book key="Mark" short="Марка" full="Марка" />
+<book key="Luke" short="Луки" full="Луки" />
+<book key="John" short="Івана" full="Івана" />
+<book key="Acts" short="Дії" full="Дії" />
+<book key="Rom" short="Римлян" full="Римлян" />
+<book key="1Cor" short="1. Коринтян" full="1. Коринтян" />
+<book key="2Cor" short="2. Коринтян" full="2. Коринтян" />
+<book key="Gal" short="Галатів" full="Галатів" />
+<book key="Eph" short="Ефесян" full="Ефесян" />
+<book key="Phil" short="Филип'ян" full="Филип'ян" />
+<book key="Col" short="Колосян" full="Колосян" />
+<book key="1Thess" short="1. Солунян" full="1. Солунян" />
+<book key="2Thess" short="2. Солунян" full="2. Солунян" />
+<book key="1Tim" short="1. Тимофія" full="1. Тимофія" />
+<book key="2Tim" short="2. Тимофія" full="2. Тимофія" />
+<book key="Titus" short="Тит." full="Тит." />
+<book key="Phlm" short="Филимона" full="Филимона" />
+<book key="Heb" short="Євреїв" full="Євреїв" />
+<book key="Jas" short="Якова" full="Якова" />
+<book key="1Pet" short="1. Петра" full="1. Петра" />
+<book key="2Pet" short="2. Петра" full="2. Петра" />
+<book key="1John" short="1. Івана" full="1. Івана" />
+<book key="2John" short="2. Івана" full="2. Івана" />
+<book key="3John" short="3. Івана" full="3. Івана" />
+<book key="Jude" short="Юд." full="Юд." />
+<book key="Rev" short="Об'явлення" full="Об'явлення" />
 </biblenames>

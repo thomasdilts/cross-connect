@@ -27,6 +27,7 @@ namespace CrossConnect
     using System.ComponentModel;
     using System.Windows;
     using System.Windows.Input;
+    using System.Linq;
 
     using Microsoft.Phone.Shell;
 
@@ -47,37 +48,15 @@ namespace CrossConnect
 
         private void AutoRotatePageBackKeyPress(object sender, CancelEventArgs e)
         {
-            // save if there is something there. otherwise erase an old version if there is one
-            BiblePlaceMarker place = App.PlaceMarkers.History[App.PlaceMarkers.History.Count - 1];
-
-            // erase the old first
-            if (App.DailyPlan.PersonalNotes.ContainsKey(place.ChapterNum)
-                && App.DailyPlan.PersonalNotes[place.ChapterNum].ContainsKey(place.VerseNum))
+            if (App.PlaceMarkers.History.Any())
             {
-                App.DailyPlan.PersonalNotes[place.ChapterNum].Remove(place.VerseNum);
-                if (App.DailyPlan.PersonalNotes[place.ChapterNum].Count == 0)
-                {
-                    App.DailyPlan.PersonalNotes.Remove(place.ChapterNum);
-                }
+                BiblePlaceMarker place = App.PlaceMarkers.History[App.PlaceMarkers.History.Count - 1];
+                Highlighter.AddBiblePlaceMarker(place.BookShortName, place.ChapterNum, place.VerseNum, this.TextToAdd.Text.Replace("\r\n","\n").Replace("\r","\n"), App.DailyPlan.PersonalNotesVersified);
+                App.RaisePersonalNotesChangeEvent();
             }
-
-            // add the new
-            if (TextToAdd.Text.Length > 0)
-            {
-                BiblePlaceMarker note = BiblePlaceMarker.Clone(place);
-                if (!App.DailyPlan.PersonalNotes.ContainsKey(place.ChapterNum))
-                {
-                    App.DailyPlan.PersonalNotes.Add(place.ChapterNum, new Dictionary<int, BiblePlaceMarker>());
-                }
-
-                App.DailyPlan.PersonalNotes[place.ChapterNum][place.VerseNum] = note;
-                note.Note = TextToAdd.Text;
-            }
-
-            App.RaisePersonalNotesChangeEvent();
         }
 
-        private void AutoRotatePageLoaded(object sender, RoutedEventArgs e)
+        private async void AutoRotatePageLoaded(object sender, RoutedEventArgs e)
         {
             PageTitle.Text = Translations.Translate("Add a note");
 
@@ -92,29 +71,23 @@ namespace CrossConnect
 
             // they are in reverse order again,
             BiblePlaceMarker place = App.PlaceMarkers.History[App.PlaceMarkers.History.Count - 1];
-            int bookNum;
-            int relChaptNum;
             string fullName;
             string titleText;
-            ((BibleZtextReader)state.Source).GetInfo(
-                place.ChapterNum, place.VerseNum, out bookNum, out relChaptNum, out fullName, out titleText);
-            string title = fullName + " " + (relChaptNum + 1) + ":" + (place.VerseNum + 1) + " - " + state.BibleToLoad;
-            string verseText = state.Source.GetVerseTextOnly(App.DisplaySettings, place.ChapterNum, place.VerseNum);
+            ((BibleZtextReader)state.Source).GetInfo(place.BookShortName,
+                place.ChapterNum, place.VerseNum, out fullName, out titleText);
+            string title = fullName + " " + (place.ChapterNum + 1) + ":" + (place.VerseNum + 1) + " - " + state.BibleToLoad;
+            string verseText = await state.Source.GetVerseTextOnly(App.DisplaySettings, place.BookShortName, place.ChapterNum, place.VerseNum);
 
             verse.Text =
                 verseText.Replace("<p>", string.Empty).Replace("</p>", string.Empty).Replace("<br />", string.Empty).
                     Replace("\n", " ") + "\n-" + title;
 
             TextToAdd.Text = string.Empty;
-            object noteToAddSaved;
-            if (PhoneApplicationService.Current.State.TryGetValue("NoteToAddSaved", out noteToAddSaved))
+            if (App.DailyPlan.PersonalNotesVersified.ContainsKey(place.BookShortName)
+                && App.DailyPlan.PersonalNotesVersified[place.BookShortName].ContainsKey(place.ChapterNum)
+                && App.DailyPlan.PersonalNotesVersified[place.BookShortName][place.ChapterNum].ContainsKey(place.VerseNum))
             {
-                TextToAdd.Text = (string)noteToAddSaved;
-            }
-            else if (App.DailyPlan.PersonalNotes.ContainsKey(place.ChapterNum)
-                     && App.DailyPlan.PersonalNotes[place.ChapterNum].ContainsKey(place.VerseNum))
-            {
-                TextToAdd.Text = App.DailyPlan.PersonalNotes[place.ChapterNum][place.VerseNum].Note;
+                TextToAdd.Text = App.DailyPlan.PersonalNotesVersified[place.BookShortName][place.ChapterNum][place.VerseNum].Note;
             }
         }
 

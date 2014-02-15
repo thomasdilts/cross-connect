@@ -43,6 +43,7 @@ namespace AudioPlaybackAgent1
 
     using Sword;
     using Sword.reader;
+    using Sword.versification;
 
     public class AudioPlayer : AudioPlayerAgent
     {
@@ -153,6 +154,9 @@ namespace AudioPlaybackAgent1
                                         case "iconlink":
                                             foundMedia.IconLink = reader.Value;
                                             break;
+                                        case "voicename":
+                                            foundMedia.VoiceName = reader.Value;
+                                            break;
                                         case "viewer":
                                             break;
                                         case "player":
@@ -173,7 +177,7 @@ namespace AudioPlaybackAgent1
                             break;
                         case XmlNodeType.EndElement:
                             if (reader.Name.ToLower().Equals("source") && foundMedia != null
-                                && !string.IsNullOrEmpty(foundMedia.Src) && !string.IsNullOrEmpty(name))
+                                && ((!string.IsNullOrEmpty(foundMedia.Src) && !string.IsNullOrEmpty(name)) || !string.IsNullOrEmpty(foundMedia.VoiceName)))
                             {
                                 foundMedia.Name = name;
                                 mediaList.Add(foundMedia);
@@ -383,50 +387,39 @@ namespace AudioPlaybackAgent1
         private static int AddChapter(MediaInfo info, int valToAdd)
         {
             int adjustedChapter = info.Chapter + valToAdd;
-            if (adjustedChapter >= BibleZtextReader.ChaptersInBible)
+            var canonKjv = CanonManager.GetCanon("KJV");
+            var lastBook = canonKjv.NewTestBooks[canonKjv.NewTestBooks.Count() - 1];
+            var lastOtBook = canonKjv.OldTestBooks[canonKjv.OldTestBooks.Count() - 1];
+            var chaptersInBible = lastBook.NumberOfChapters + lastBook.VersesInChapterStartIndex;
+            var chaptersInOldTestement = lastOtBook.NumberOfChapters + lastOtBook.VersesInChapterStartIndex;
+            if (adjustedChapter >= chaptersInBible)
             {
-                adjustedChapter = info.IsNtOnly ? BibleZtextReader.ChaptersInOt : 0;
+                adjustedChapter = info.IsNtOnly ? chaptersInOldTestement : 0;
             }
-            else if (adjustedChapter < 0 || (info.IsNtOnly && adjustedChapter < BibleZtextReader.ChaptersInOt))
+            else if (adjustedChapter < 0 || (info.IsNtOnly && adjustedChapter < chaptersInOldTestement))
             {
-                adjustedChapter = BibleZtextReader.ChaptersInBible - 1;
+                adjustedChapter = chaptersInBible - 1;
             }
 
             return adjustedChapter;
         }
 
-        private static void GetBookAndChapterFromAbsoluteChapter(int absolutChapter, string pattern, string code, out int bookNum, out int relChapter, out string source)
+        private static void GetBookAndChapterFromAbsoluteChapter(int absolutChapter, string pattern, string code, out string bookNameshort, out string bookFullName, out int relChapter, out string source)
         {
-            const int BooksInBible = 66;
+            var canon = CanonManager.GetCanon("KJV");
             source = string.Empty;
-            var booksStartAbsoluteChapter = new[]
-                {
-                    0, 50, 90, 117, 153, 187, 211, 232, 236, 267, 291, 313, 338, 367, 403, 413, 426, 436, 478, 628, 659,
-                    671, 679, 745, 797, 802, 850, 862, 876, 879, 888, 889, 893, 900, 903, 906, 909, 911, 925, 929, 957,
-                    973, 997, 1018, 1046, 1062, 1078, 1091, 1097, 1103, 1107, 1111, 1116, 1119, 1125, 1129, 1132, 1133,
-                    1146, 1151, 1156, 1159, 1164, 1165, 1166, 1167, 1189
-                };
-            bookNum = 1;
-            relChapter = absolutChapter + 1;
-            for (int i = 1; i <= BooksInBible; i++)
-            {
-                if (absolutChapter < booksStartAbsoluteChapter[i])
-                {
-                    bookNum = i;
-                    relChapter = absolutChapter - booksStartAbsoluteChapter[i - 1] + 1;
-                    break;
-                }
-            }
-
+            var book = canon.GetBookFromAbsoluteChapter(absolutChapter);
+            relChapter = absolutChapter - book.VersesInChapterStartIndex;
+            bookNameshort = book.ShortName1;
+            bookFullName = book.FullName;
             if (!string.IsNullOrEmpty(pattern) && !string.IsNullOrEmpty(code))
             {
                 // http://www.cross-connect.se/bibles/talking/{key}/Bible_{key}_{booknum2d}_{chapternum3d}.mp3
-                source = pattern.Replace("{key}", code).Replace("{booknum2d}", bookNum.ToString("D2")).Replace("{chapternum3d}", relChapter.ToString("D3"));
+                source =
+                    pattern.Replace("{key}", code)
+                           .Replace("{booknum2d}", (book.BookNum + 1).ToString("D2"))
+                           .Replace("{chapternum3d}", (relChapter + 1).ToString("D3"));
             }
-
-            // convert all to zero based
-            bookNum--;
-            relChapter--;
         }
 
         /// <summary>
@@ -453,11 +446,12 @@ namespace AudioPlaybackAgent1
             {
                 // update the _currentInfo
                 _currentInfo.Chapter = AddChapter(_currentInfo, relativePostion);
-                int bookNum;
+                string bookName;
+                string bookFullName;
                 int relChapterNum;
                 string source;
                 GetBookAndChapterFromAbsoluteChapter(
-                    _currentInfo.Chapter, _currentInfo.Pattern, _currentInfo.Code, out bookNum, out relChapterNum, out source);
+                    _currentInfo.Chapter, _currentInfo.Pattern, _currentInfo.Code, out bookName, out bookFullName, out relChapterNum, out source);
                 _currentInfo.Src = source;
                 Debug.WriteLine("starting new track = " + _currentInfo.Src);
 
@@ -474,17 +468,40 @@ namespace AudioPlaybackAgent1
 
             return track;
         }
-
+        public static void SetRelativeChapter(int relativePostion, MediaInfo currentInfo, IBrowserTextSource bibleSource)
+        {
+            if (currentInfo != null)
+            {
+                // update the _currentInfo
+                currentInfo.Chapter = AddChapter(currentInfo, relativePostion);
+                string bookName;
+                string bookFullName;
+                int relChapterNum;
+                string source;
+                GetBookAndChapterFromAbsoluteChapter(
+                    currentInfo.Chapter,
+                    currentInfo.Pattern,
+                    currentInfo.Code,
+                    out bookName,
+                    out bookFullName,
+                    out relChapterNum,
+                    out source);
+                currentInfo.Src = source;
+                Debug.WriteLine("starting new track = " + currentInfo.Src);
+                bibleSource.MoveChapterVerse(bookName, relChapterNum, 0, false, bibleSource);
+            }
+        }
         public static string GetTitle(MediaInfo info)
         {
-            int bookNum;
+            string bookShortName;
+            string bookFullName;
             int relChapterNum;
             string source;
             GetBookAndChapterFromAbsoluteChapter(
-                info.Chapter, string.Empty, string.Empty, out bookNum, out relChapterNum, out source);
+                info.Chapter, string.Empty, string.Empty, out bookShortName, out bookFullName, out relChapterNum, out source);
 
             var bookNames = new BibleNames(info.Language);
-            return bookNames.GetFullName(bookNum) + " : " + (relChapterNum + 1).ToString(CultureInfo.InvariantCulture);
+            return bookNames.GetFullName(bookShortName, bookFullName) + " : " + (relChapterNum + 1).ToString(CultureInfo.InvariantCulture);
         }
 
         private static string ReadableToXmlClean(string toBeCleaned)
@@ -501,9 +518,9 @@ namespace AudioPlaybackAgent1
 
         private static string WriteMediaInfoToXml(MediaInfo info, string sourceLink)
         {
-            const string FileContentCoded = @"<?xml version=""1.0"" encoding=""UTF-8""?><cross.connect.talking.bible version=""1.0"" book=""1""><message>{0}</message><source language=""{1}"" abschapter=""{2}"" onlynt=""{3}"" code=""{4}"" src=""{5}"" icon=""{6}"" iconlink=""{7}"">{8}</source><biblepattern>{9}</biblepattern></cross.connect.talking.bible>";
+            const string FileContentCoded = @"<?xml version=""1.0"" encoding=""UTF-8""?><cross.connect.talking.bible version=""1.0"" book=""1""><message>{0}</message><source language=""{1}"" abschapter=""{2}"" onlynt=""{3}"" code=""{4}"" src=""{5}"" icon=""{6}"" iconlink=""{7}"" voicename=""{8}"">{9}</source><biblepattern>{10}</biblepattern></cross.connect.talking.bible>";
             return string.Format(
-                FileContentCoded, ReadableToXmlClean(sourceLink), info.Language, info.Chapter, info.IsNtOnly.ToString(CultureInfo.InvariantCulture), info.Code, info.Src, info.Icon, info.IconLink, info.Name, info.Pattern);
+                FileContentCoded, ReadableToXmlClean(sourceLink), info.Language, info.Chapter, info.IsNtOnly.ToString(CultureInfo.InvariantCulture), info.Code, info.Src, info.Icon, info.IconLink, info.VoiceName, info.Name, info.Pattern);
         }
 
         /// Code to execute on Unhandled Exceptions
@@ -527,6 +544,12 @@ namespace AudioPlaybackAgent1
 
             [DataMember]
             public int Chapter;
+            [DataMember]
+            public string Book;
+            [DataMember]
+            public string VoiceName;
+            [DataMember]
+            public int Verse;
             [DataMember]
             public string Code = string.Empty;
             [DataMember]

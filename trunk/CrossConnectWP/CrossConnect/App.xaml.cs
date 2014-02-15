@@ -35,14 +35,17 @@ namespace CrossConnect
     using System.Windows.Navigation;
     using System.Xml;
 
-    using AudioPlaybackAgent1;
-
     using CrossConnect.readers;
 
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Shell;
 
     using Sword.reader;
+    using System.Windows.Threading;
+    using System.Threading.Tasks;
+    using AudioPlaybackAgent1;
+    using Windows.Storage;
+    using Sword.versification;
 
     #region Enumerations
 
@@ -71,6 +74,12 @@ namespace CrossConnect
 
         public const string Version = "2.0.8.7";
         public const string WebDirIsolated = "webtemporary";
+        // the newer file names divided into sections.
+        private const string PersistantObjectsWindowsFileName = "_Windows.xml";
+        private const string PersistantObjectsThemesFileName = "_Themes.xml";
+        private const string PersistantObjectsDisplaySettingsFileName = "_DisplaySettings.xml";
+        private const string PersistantObjectsMarkersFileName = "_Markers.xml";
+        private const string PersistantObjectsHighlightFileName = "_Highlights.xml";
 
         public static SerializableDailyPlan DailyPlan = new SerializableDailyPlan();
         public static DisplaySettings DisplaySettings = new DisplaySettings();
@@ -154,13 +163,13 @@ namespace CrossConnect
                 if (PlaceMarkers.Bookmarks.Count > 0)
                 {
                     BiblePlaceMarker lastBookmark = PlaceMarkers.Bookmarks[PlaceMarkers.Bookmarks.Count - 1];
-                    if (last.ChapterNum == lastBookmark.ChapterNum && last.VerseNum == lastBookmark.VerseNum)
+                    if (last.BookShortName.Equals(lastBookmark.BookShortName) && last.ChapterNum == lastBookmark.ChapterNum && last.VerseNum == lastBookmark.VerseNum)
                     {
                         PlaceMarkers.Bookmarks.RemoveAt(PlaceMarkers.Bookmarks.Count - 1);
                     }
                 }
 
-                PlaceMarkers.Bookmarks.Add(new BiblePlaceMarker(last.ChapterNum, last.VerseNum, DateTime.Now));
+                PlaceMarkers.Bookmarks.Add(new BiblePlaceMarker(last.BookShortName, last.ChapterNum, last.VerseNum, DateTime.Now));
 
                 // don't let this get more then a 100
                 if (PlaceMarkers.Bookmarks.Count > 100)
@@ -173,21 +182,23 @@ namespace CrossConnect
 
                 RaiseBookmarkChangeEvent();
             }
+
+            SavePersistantMarkers();
         }
 
-        public static void AddHistory(int chapterNum, int verseNum)
+        public static void AddHistory(string bookShortName, int chapterNum, int verseNum)
         {
             // stop repeats
             if (PlaceMarkers.History.Count > 0)
             {
                 BiblePlaceMarker last = PlaceMarkers.History[PlaceMarkers.History.Count - 1];
-                if (last.ChapterNum == chapterNum && last.VerseNum == verseNum)
+                if (last.BookShortName.Equals(bookShortName) && last.ChapterNum == chapterNum && last.VerseNum == verseNum)
                 {
                     PlaceMarkers.History.RemoveAt(PlaceMarkers.History.Count - 1);
                 }
             }
 
-            PlaceMarkers.History.Add(new BiblePlaceMarker(chapterNum, verseNum, DateTime.Now));
+            PlaceMarkers.History.Add(new BiblePlaceMarker(bookShortName, chapterNum, verseNum, DateTime.Now));
 
             // don't let this get more then a 100
             if (PlaceMarkers.History.Count > 100)
@@ -199,30 +210,45 @@ namespace CrossConnect
             }
 
             RaiseHistoryChangeEvent();
+            SavePersistantMarkers();
         }
 
-        public static void AddMediaWindow(AudioPlayer.MediaInfo info)
+        public static async void AddMediaWindow(AudioPlayer.MediaInfo info)
         {
+            object openWindowIndex;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            {
+                openWindowIndex = 0;
+            }
+            SerializableWindowState state = await OpenWindows[(int)openWindowIndex].State.Clone();
+            state.WindowType = WindowType.WindowMediaPlayer;
+            state.IconLink = info.IconLink;
+            state.Src = info.Src;
+            state.Pattern = info.Pattern;
+            state.IsNtOnly = info.IsNtOnly;
+            state.code = info.Code;
+            state.VoiceName = info.VoiceName;
+            state.Language = info.Language;
+            state.Name = info.Name;
+            state.Icon = info.Icon;
+            state.Source.MoveChapterVerse(info.Book, info.Chapter, info.Verse, false, state.Source);
+
             // only one media window allowed
             for (int i = 0; i < OpenWindows.Count(); i++)
             {
                 if (OpenWindows[i].State.WindowType == WindowType.WindowMediaPlayer)
                 {
                     // change the windows view to this one
-                    ((MediaPlayerWindow)OpenWindows[i]).RestartToThisMedia(info);
+                    ((MediaPlayerWindow)OpenWindows[i]).SetMediaInfo(state,info);
                     MainWindow.OverRideCurrentlyShowingScreen(OpenWindows[i].State.Window);
                     return;
                 }
             }
 
-            var state = new SerializableWindowState
-                {
-                    WindowType = WindowType.WindowMediaPlayer,
-                    Source = new MediaReader(info)
-                };
             var nextWindow = new MediaPlayerWindow { State = state };
             nextWindow.State.CurIndex = OpenWindows.Count();
             nextWindow.State.HtmlFontSize = 10;
+            nextWindow.SetMediaInfo(state, info);
             OpenWindows.Add(nextWindow);
             object objCurrrentScreen;
             nextWindow.State.Window = 0;
@@ -237,7 +263,7 @@ namespace CrossConnect
             }
         }
 
-        public static void AddWindow(
+        public static async void AddWindow(
             string bibleToLoad,
             string bibleDescription,
             WindowType typeOfWindow,
@@ -245,7 +271,7 @@ namespace CrossConnect
             IBrowserTextSource source = null)
         {
             var nextWindow = new BrowserTitledWindow { State = { HtmlFontSize = textSize } };
-            nextWindow.Initialize(bibleToLoad, bibleDescription, typeOfWindow, source);
+            await nextWindow.Initialize(bibleToLoad, bibleDescription, typeOfWindow, source);
             nextWindow.State.CurIndex = OpenWindows.Count();
             OpenWindows.Add(nextWindow);
             object objCurrrentScreen;
@@ -259,6 +285,7 @@ namespace CrossConnect
             {
                 MainWindow.ReDrawWindows();
             }
+
         }
 
         public static void RaiseBookmarkChangeEvent()
@@ -267,6 +294,7 @@ namespace CrossConnect
             {
                 BookMarksChanged();
             }
+            SavePersistantMarkers();
         }
 
         public static void RaiseHistoryChangeEvent()
@@ -275,6 +303,7 @@ namespace CrossConnect
             {
                 HistoryChanged();
             }
+            SavePersistantMarkers();
         }
 
         public static void RaisePersonalNotesChangeEvent()
@@ -283,15 +312,16 @@ namespace CrossConnect
             {
                 PersonalNotesChanged();
             }
+            SavePersistantMarkers();
         }
 
-        public static void SynchronizeAllWindows(int chapterNum, int verseNum, int curIndex, IBrowserTextSource source)
+        public static void SynchronizeAllWindows(string bookShortName, int chapterNum, int verseNum, int curIndex, IBrowserTextSource source)
         {
             for (int i = 0; i < OpenWindows.Count(); i++)
             {
                 if (i != curIndex)
                 {
-                    OpenWindows[i].SynchronizeWindow(chapterNum, verseNum, source);
+                    OpenWindows[i].SynchronizeWindow(bookShortName, chapterNum, verseNum, source);
                 }
             }
         }
@@ -306,14 +336,14 @@ namespace CrossConnect
         // This code will not execute when the application is deactivated
         private void ApplicationClosing(object sender, ClosingEventArgs e)
         {
-            SavePersistantObjects();
+            //SavePersistantObjects();
         }
 
         // Code to execute when the application is deactivated (sent to background)
         // This code will not execute when the application is closing
         private void ApplicationDeactivated(object sender, DeactivatedEventArgs e)
         {
-            SavePersistantObjects();
+            //SavePersistantObjects();
         }
 
         // Code to execute when the application is launching (eg, from Start)
@@ -375,8 +405,335 @@ namespace CrossConnect
             _phoneApplicationInitialized = true;
         }
 
-        private void LoadPersistantObjects()
+        private async Task LoadPersistantWindows(Dictionary<String, Object> objectsToLoad)
         {
+            OpenWindows.Clear();
+            DailyPlan = new SerializableDailyPlan();
+
+            // get the daily plan first
+            object dailyPlanXmlData;
+            if (objectsToLoad.TryGetValue("DailyPlan", out dailyPlanXmlData))
+            {
+                using (var sr = new StringReader((string)dailyPlanXmlData))
+                {
+                    var settings = new XmlReaderSettings();
+                    using (XmlReader reader = XmlReader.Create(sr, settings))
+                    {
+                        var types = new[] { typeof(SerializableDailyPlan) };
+                        var ser = new DataContractSerializer(typeof(SerializableDailyPlan), types);
+                        DailyPlan = (SerializableDailyPlan)ser.ReadObject(reader);
+                    }
+                }
+            }
+
+            if (DailyPlan == null)
+            {
+                DailyPlan = new SerializableDailyPlan();
+            }
+            else
+            {
+                if (DailyPlan.PersonalNotes.Any())
+                {
+                    //convert to the new note system
+                    var canon = CanonManager.GetCanon("KJV");
+                    foreach (var chapter in DailyPlan.PersonalNotes)
+                    {
+                        var book = canon.GetBookFromAbsoluteChapter(chapter.Key);
+                        foreach (var verse in chapter.Value)
+                        {
+                            BiblePlaceMarker note = BiblePlaceMarker.Clone(verse.Value);
+                            note.BookShortName = book.ShortName1;
+                            note.VerseNum = note.VerseNum - book.VersesInChapterStartIndex;
+                            if (!App.DailyPlan.PersonalNotesVersified.ContainsKey(note.BookShortName))
+                            {
+                                App.DailyPlan.PersonalNotesVersified.Add(note.BookShortName, new Dictionary<int, Dictionary<int, BiblePlaceMarker>>());
+                            }
+
+                            if (!App.DailyPlan.PersonalNotesVersified[note.BookShortName].ContainsKey(note.ChapterNum))
+                            {
+                                App.DailyPlan.PersonalNotesVersified[note.BookShortName].Add(note.ChapterNum, new Dictionary<int, BiblePlaceMarker>());
+                            }
+
+                            App.DailyPlan.PersonalNotesVersified[note.BookShortName][note.ChapterNum][note.VerseNum] = note;
+                        }
+                    }
+
+                }
+
+                DailyPlan.PersonalNotes = new Dictionary<int, Dictionary<int, BiblePlaceMarker>>();
+            }
+
+            if (DailyPlan.PlanBible == null)
+            {
+                DailyPlan.PlanBible = string.Empty;
+                DailyPlan.PlanBibleDescription = string.Empty;
+                DailyPlan.PlanTextSize = 15;
+            }
+
+            OpenWindows.Clear();
+
+            // get all windows
+            for (int i = 0; i < MaxNumWindows; i++)
+            {
+                object windowsXmlData;
+                if (objectsToLoad.TryGetValue("Windows" + i, out windowsXmlData))
+                {
+                    using (var sr = new StringReader((string)windowsXmlData))
+                    {
+                        var settings = new XmlReaderSettings();
+                        using (XmlReader reader = XmlReader.Create(sr, settings))
+                        {
+                            var types = new[]
+                                                {
+                                                    typeof(SerializableWindowState), typeof(BibleZtextReader.VersePos),
+                                                    typeof(BibleZtextReader.ChapterPos), typeof(BibleZtextReader.BookPos),
+                                                    typeof(BibleZtextReader), typeof(BibleNoteReader),
+                                                    typeof(BibleZtextReaderSerialData), typeof(CommentZtextReader),
+                                                    typeof(TranslatorReader), typeof(BookMarkReader),
+                                                    typeof(HistoryReader), typeof(SearchReader), typeof(DailyPlanReader),
+                                                    typeof(PersonalNotesReader), typeof(InternetLinkReader),
+                                                    typeof(GreekHebrewDictReader), typeof(RawGenSearchReader),
+                                                    typeof(AudioPlayer.MediaInfo), typeof(RawGenTextReader), typeof(RawGenTextPlaceMarker)
+                                                };
+                            var ser = new DataContractSerializer(typeof(SerializableWindowState), types);
+                            var state = (SerializableWindowState)ser.ReadObject(reader);
+                            ITiledWindow nextWindow;
+                            if (state.WindowType.Equals(WindowType.WindowMediaPlayer))
+                            {
+                                nextWindow = new MediaPlayerWindow { State = state };
+                                await nextWindow.State.Source.Resume();
+                                nextWindow.State.IsResume = true;
+                                string bookShortName;
+                                int relChaptNum;
+                                int verseNum;
+                                string fullName;
+                                string title;
+                                nextWindow.State.Source.GetInfo(out bookShortName,
+                                    out relChaptNum,
+                                    out verseNum,
+                                    out fullName,
+                                    out title);
+                                var canon = CanonManager.GetCanon("KJV");
+                                var book = canon.BookByShortName[bookShortName];
+                                var info = new AudioPlayer.MediaInfo() { Book = bookShortName, Chapter = book.VersesInChapterStartIndex + relChaptNum, Verse = verseNum, VoiceName = nextWindow.State.VoiceName, IsNtOnly = nextWindow.State.IsNtOnly, Pattern = nextWindow.State.Pattern, Src = nextWindow.State.Src, Code = nextWindow.State.code };
+                                ((MediaPlayerWindow)nextWindow).SetMediaInfo(nextWindow.State, info);
+                            }
+                            else
+                            {
+                                nextWindow = new BrowserTitledWindow { State = state };
+                                ((BrowserTitledWindow)nextWindow).SetVScroll(state.VSchrollPosition);
+                                await nextWindow.State.Source.Resume();
+                                nextWindow.State.IsResume = true;
+                            }
+
+                            OpenWindows.Add(nextWindow);
+
+                            // nextWindow.Initialize(nextWindow.state.bibleToLoad, nextWindow.state.windowType);
+                        }
+                    }
+                }
+                else
+                {
+                    // no more windows to load.
+                    break;
+                }
+            }
+
+            //if (OpenWindows.Any())
+            //{
+            //    StartTimerForNotifications();
+            //}
+        }
+
+        private void LoadPersistantThemes(Dictionary<String, Object> objectsToLoad)
+        {
+            object markerXmlData;
+            if (objectsToLoad.TryGetValue("Themes", out markerXmlData))
+            {
+                Themes.FromString((string)markerXmlData);
+            }
+            else
+            {
+                Themes.InitializeFromResources();
+            }
+        }
+
+        private void LoadPersistantDisplaySettings(Dictionary<String, Object> objectsToLoad)
+        {
+            object markerXmlData;
+            DisplaySettings = new DisplaySettings();
+            if (!IsolatedStorageSettings.ApplicationSettings.Contains("LanguageIsoCode"))
+            {
+                IsolatedStorageSettings.ApplicationSettings["LanguageIsoCode"] = "default";
+            }
+
+            Translations.IsoLanguageCode = (string)IsolatedStorageSettings.ApplicationSettings["LanguageIsoCode"];
+
+            if (objectsToLoad.TryGetValue("DisplaySettings", out markerXmlData))
+            {
+                using (var sr = new StringReader((string)markerXmlData))
+                {
+                    var settings = new XmlReaderSettings();
+                    using (XmlReader reader = XmlReader.Create(sr, settings))
+                    {
+                        var types = new[] { typeof(DisplaySettings) };
+                        var ser = new DataContractSerializer(typeof(DisplaySettings), types);
+                        DisplaySettings = (DisplaySettings)ser.ReadObject(reader);
+                    }
+                }
+            }
+
+            if (DisplaySettings == null)
+            {
+                DisplaySettings = new DisplaySettings();
+            }
+
+            DisplaySettings.CheckForNullAndFix();
+        }
+
+        private void LoadPersistantHighlighting(Dictionary<String, Object> objectsToLoad)
+        {
+            object markerXmlData;
+            DisplaySettings.highlighter = new Highlighter();
+            if (objectsToLoad.TryGetValue("Highlights", out markerXmlData))
+            {
+                DisplaySettings.highlighter.FromString((string)markerXmlData);                //using (var sr = new StringReader((string)markerXmlData))
+                //{
+
+                //    var settings = new XmlReaderSettings();
+                //    using (XmlReader reader = XmlReader.Create(sr, settings))
+                //    {
+                //        var types = new[] { typeof(Highlighter), typeof(BiblePlaceMarker) };
+                //        var ser = new DataContractSerializer(typeof(Highlighter), types);
+                //        DisplaySettings.highlighter.FromString((string)ser.ReadObject(reader));
+                //    }
+                //}
+            }
+        }
+
+        private void LoadPersistantMarkers(Dictionary<String, Object> objectsToLoad)
+        {
+            PlaceMarkers = new BiblePlaceMarkers();
+            object markerXmlData;
+            if (objectsToLoad.TryGetValue("BiblePlaceMarkers", out markerXmlData))
+            {
+                using (var sr = new StringReader((string)markerXmlData))
+                {
+                    var settings = new XmlReaderSettings();
+                    using (XmlReader reader = XmlReader.Create(sr, settings))
+                    {
+                        var types = new[] { typeof(BiblePlaceMarkers), typeof(BiblePlaceMarker) };
+                        var ser = new DataContractSerializer(typeof(BiblePlaceMarkers), types);
+                        PlaceMarkers = (BiblePlaceMarkers)ser.ReadObject(reader);
+                    }
+                }
+            }
+
+            if (PlaceMarkers == null)
+            {
+                PlaceMarkers = new BiblePlaceMarkers();
+            }
+            else
+            {
+                BiblePlaceMarkers.FixOldStyleMarkers(PlaceMarkers.Bookmarks);
+                BiblePlaceMarkers.FixOldStyleMarkers(PlaceMarkers.History);
+            }
+        }
+
+        private async Task<bool> LoadPersistantObjects()
+        {
+            // just a test to see if the old system is there
+            string dailyPlanXmlData;
+            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue("DailyPlan", out dailyPlanXmlData) 
+                && !await Hoot.File.Exists(PersistantObjectsThemesFileName))
+            {
+                LoadPersistantObjectsOld();
+                DisplaySettings.highlighter = new Highlighter();
+                IsolatedStorageSettings.ApplicationSettings.Clear();
+                SavePersistantDisplaySettings();
+                SavePersistantHighlighting();
+                SavePersistantMarkers();
+                SavePersistantThemes();
+                await SavePersistantWindows();
+                return true;
+            }
+
+            try
+            {
+                // make sure some important directories exist.
+                IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
+                if (!root.DirectoryExists(WebDirIsolated))
+                {
+                    root.CreateDirectory(WebDirIsolated);
+                }
+
+                // clear web directory
+                string[] filenames = root.GetFileNames(WebDirIsolated + "/*.*");
+                foreach (string file in filenames)
+                {
+                    root.DeleteFile(WebDirIsolated + "/" + file);
+                }
+
+                InstalledBibles.Initialize();
+
+                var objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsDisplaySettingsFileName, true);
+                LoadPersistantDisplaySettings(objectsToLoad);
+                objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsThemesFileName);
+                LoadPersistantThemes(objectsToLoad);
+                objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsHighlightFileName);
+                LoadPersistantHighlighting(objectsToLoad);
+                objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsMarkersFileName);
+                LoadPersistantMarkers(objectsToLoad);
+                objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsWindowsFileName);
+                await LoadPersistantWindows(objectsToLoad);
+            }
+            catch (Exception ee)
+            {
+                Debug.WriteLine("crashed in a strange place. err=" + ee.StackTrace);
+            }
+            IsPersitanceLoaded = true;
+            if (MainWindow != null)
+            {
+                MainWindow.DoLoading();
+            }
+            return true;
+        }
+        private async Task<Dictionary<String, Object>> LoadPersistantObjectsFromFile(string filename, bool alwaysLocal = false)
+        {
+            var objectsToLoad = new Dictionary<String, Object>();
+
+            if (await Hoot.File.Exists(filename))
+            {
+                try
+                {
+                    using (var stream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(filename))
+                    {
+                        // debugging start
+                        //byte[] buff = new byte[20000];
+                        //var xx = inStream.AsStreamForRead().Read(buff, 0, buff.Length);
+                        //string all = System.Text.UTF8Encoding.UTF8.GetString(buff, 0, xx);
+                        //inStream.AsStreamForRead().Position = 0;
+                        // debugging stop
+
+                        // Deserialize the Session State
+                        var serializer = new DataContractSerializer(
+                            typeof(Dictionary<string, object>), new[] { typeof(string) });
+                        objectsToLoad = (Dictionary<string, object>)serializer.ReadObject(stream);
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+
+            return objectsToLoad;
+        }
+
+        private void LoadPersistantObjectsOld()
+        {
+            //we should only come here once
+
             DailyPlan = new SerializableDailyPlan();
             OpenWindows.Clear();
             PlaceMarkers = new BiblePlaceMarkers();
@@ -450,7 +807,7 @@ namespace CrossConnect
                                         typeof(BibleZtextReaderSerialData), typeof(CommentZtextReader),
                                         typeof(TranslatorReader), typeof(BookMarkReader), typeof(HistoryReader),
                                         typeof(SearchReader), typeof(DailyPlanReader), typeof(PersonalNotesReader),
-                                        typeof(InternetLinkReader), typeof(MediaReader), typeof(GreekHebrewDictReader),
+                                        typeof(InternetLinkReader), typeof(GreekHebrewDictReader),
                                         typeof(AudioPlayer.MediaInfo),typeof(RawGenTextReader), typeof(RawGenSearchReader),  
                                         typeof(RawGenTextPlaceMarker)
                                     };
@@ -565,91 +922,67 @@ namespace CrossConnect
             }
         }
 
-        private void SavePersistantObjects()
+        private static DispatcherTimer TimerForSavingWindows = null;
+
+        public static void StartTimerForSavingWindows()
         {
-            // remove all current settings.
-            for (int i = 0; i < MaxNumWindows; i++)
+            if (TimerForSavingWindows != null)
             {
-                string windowsXmlData;
-                if (IsolatedStorageSettings.ApplicationSettings.TryGetValue("Windows" + i, out windowsXmlData))
-                {
-                    IsolatedStorageSettings.ApplicationSettings.Remove("Windows" + i);
-                }
-                else
-                {
-                    // no more windows to remove.
-                    break;
-                }
+                TimerForSavingWindows.Stop();
             }
 
-            // add new settings.
+            TimerForSavingWindows = new DispatcherTimer();
+            TimerForSavingWindows.Tick += OnTimerForSavingWindowsTick;
+            TimerForSavingWindows.Interval = TimeSpan.FromSeconds(7);
+            TimerForSavingWindows.Start();
+        }
+
+        private static async void OnTimerForSavingWindowsTick(object sender, object e)
+        {
+            TimerForSavingWindows.Stop();
+            TimerForSavingWindows = null;
+            await SavePersistantWindows();
+        }
+
+        public static async Task SavePersistantWindows()
+        {
+            var objectsToSave = new Dictionary<string, object>();
             for (int i = 0; i < OpenWindows.Count(); i++)
             {
                 var types = new[]
-                    {
-                        typeof(SerializableWindowState), typeof(BibleZtextReader.VersePos),
-                        typeof(BibleZtextReader.ChapterPos), typeof(BibleZtextReader.BookPos), typeof(BibleZtextReader),
-                        typeof(BibleNoteReader), typeof(BibleZtextReaderSerialData), typeof(CommentZtextReader),
-                        typeof(TranslatorReader), typeof(BookMarkReader), typeof(HistoryReader), typeof(SearchReader),
-                        typeof(DailyPlanReader), typeof(PersonalNotesReader), typeof(InternetLinkReader),
-                        typeof(MediaReader), typeof(GreekHebrewDictReader), typeof(AudioPlayer.MediaInfo), 
-                        typeof(RawGenTextReader), typeof(RawGenSearchReader),  typeof(RawGenTextPlaceMarker)
-                    };
+                                {
+                                    typeof(SerializableWindowState), typeof(BibleZtextReader.VersePos),
+                                    typeof(BibleZtextReader.ChapterPos), typeof(BibleZtextReader.BookPos),
+                                    typeof(BibleZtextReader), typeof(BibleNoteReader), typeof(BibleZtextReaderSerialData),
+                                    typeof(CommentZtextReader), typeof(TranslatorReader), typeof(BookMarkReader),
+                                    typeof(HistoryReader), typeof(SearchReader), typeof(DailyPlanReader),
+                                    typeof(PersonalNotesReader), typeof(InternetLinkReader),
+                                    typeof(GreekHebrewDictReader), typeof(AudioPlayer.MediaInfo), typeof(RawGenTextReader), 
+                                    typeof(RawGenTextPlaceMarker), typeof(RawGenSearchReader)
+                                };
                 var ser = new DataContractSerializer(typeof(SerializableWindowState), types);
                 using (var sw = new StringWriter())
                 {
                     var settings = new XmlWriterSettings
-                        {
-                            OmitXmlDeclaration = true,
-                            Indent = true,
-                            NamespaceHandling = NamespaceHandling.OmitDuplicates
-                        };
+                    {
+                        OmitXmlDeclaration = true,
+                        Indent = true,
+                        NamespaceHandling = NamespaceHandling.OmitDuplicates
+                    };
                     using (XmlWriter writer = XmlWriter.Create(sw, settings))
                     {
                         OpenWindows[i].State.Source.SerialSave();
-                        if (OpenWindows[i].State.WindowType != WindowType.WindowMediaPlayer)
-                        {
-                            // change the windows view to this one
-                            OpenWindows[i].State.VSchrollPosition = ((BrowserTitledWindow)OpenWindows[i]).GetVScroll();
-                        }
+                        //if (OpenWindows[i].State.WindowType != WindowType.WindowMediaPlayer)
+                        //{
+                        //    // change the windows view to this one
+                        //    OpenWindows[i].State.VSchrollPosition = await ((BrowserTitledWindow)OpenWindows[i]).GetVScroll();
+                        //}
 
                         ser.WriteObject(writer, OpenWindows[i].State);
                     }
 
-                    IsolatedStorageSettings.ApplicationSettings.Add("Windows" + i, sw.ToString());
+                    objectsToSave.Add("Windows" + i, sw.ToString());
                 }
-            }
-
-            var types2 = new[] { typeof(BiblePlaceMarkers), typeof(BiblePlaceMarker) };
-
-            var ser2 = new DataContractSerializer(typeof(BiblePlaceMarkers), types2);
-            using (var sw = new StringWriter())
-            {
-                var settings = new XmlWriterSettings
-                    {
-                       OmitXmlDeclaration = true, Indent = true, NamespaceHandling = NamespaceHandling.OmitDuplicates
-                    };
-                using (XmlWriter writer = XmlWriter.Create(sw, settings))
-                {
-                    ser2.WriteObject(writer, PlaceMarkers);
-                }
-
-                IsolatedStorageSettings.ApplicationSettings["BiblePlaceMarkers"] = sw.ToString();
-            }
-
-            var ser4 = new DataContractSerializer(typeof(DisplaySettings), types2);
-            using (var sw = new StringWriter())
-            {
-                var settings = new XmlWriterSettings
-                    {
-                       OmitXmlDeclaration = true, Indent = true, NamespaceHandling = NamespaceHandling.OmitDuplicates
-                    };
-                using (XmlWriter writer = XmlWriter.Create(sw, settings))
-                {
-                    ser4.WriteObject(writer, DisplaySettings);
-                }
-
-                IsolatedStorageSettings.ApplicationSettings["DisplaySettings"] = sw.ToString();
             }
 
             var types3 = new[] { typeof(SerializableDailyPlan) };
@@ -658,36 +991,116 @@ namespace CrossConnect
             using (var sw = new StringWriter())
             {
                 var settings = new XmlWriterSettings
-                    {
-                       OmitXmlDeclaration = true, Indent = true, NamespaceHandling = NamespaceHandling.OmitDuplicates
-                    };
+                {
+                    OmitXmlDeclaration = true,
+                    Indent = true,
+                    NamespaceHandling = NamespaceHandling.OmitDuplicates
+                };
                 using (XmlWriter writer = XmlWriter.Create(sw, settings))
                 {
                     ser3.WriteObject(writer, DailyPlan);
                 }
 
-                IsolatedStorageSettings.ApplicationSettings["DailyPlan"] = sw.ToString();
+                objectsToSave["DailyPlan"] = sw.ToString();
             }
 
+            await SavePersistantObjects(objectsToSave, PersistantObjectsWindowsFileName);
+        }
+
+        public static async void SavePersistantThemes()
+        {
+            var objectsToSave = new Dictionary<string, object>();
             if (Themes.Themes.Count() > 0)
             {
                 string text = Themes.ToString();
-                IsolatedStorageSettings.ApplicationSettings["Themes"] = text;
+                objectsToSave["Themes"] = text;
             }
             else
             {
-                IsolatedStorageSettings.ApplicationSettings.Remove("Themes");
+                objectsToSave.Remove("Themes");
             }
 
-            // this particular state must be saved
-            object objCurrrentScreen;
-            int currentScreen = 0;
-            if (PhoneApplicationService.Current.State.TryGetValue("CurrentScreen", out objCurrrentScreen))
+            await SavePersistantObjects(objectsToSave, PersistantObjectsThemesFileName);
+        }
+
+        public static async void SavePersistantDisplaySettings()
+        {
+            var objectsToSave = new Dictionary<string, object>();
+            var types2 = new[] { typeof(DisplaySettings) };
+            var ser4 = new DataContractSerializer(typeof(DisplaySettings), types2);
+            using (var sw = new StringWriter())
             {
-                currentScreen = (int)objCurrrentScreen;
+                var settings = new XmlWriterSettings
+                {
+                    OmitXmlDeclaration = true,
+                    Indent = true,
+                    NamespaceHandling = NamespaceHandling.OmitDuplicates
+                };
+                using (XmlWriter writer = XmlWriter.Create(sw, settings))
+                {
+                    ser4.WriteObject(writer, DisplaySettings);
+                }
+
+                objectsToSave["DisplaySettings"] = sw.ToString();
+            }
+            // UseRemoteStorage is always local
+            await SavePersistantObjects(objectsToSave, PersistantObjectsDisplaySettingsFileName, true);
+            if (DisplaySettings.UseRemoteStorage)
+            {
+                await SavePersistantObjects(objectsToSave, PersistantObjectsDisplaySettingsFileName);
+            }
+        }
+
+        public static async void SavePersistantHighlighting()
+        {
+            var objectsToSave = new Dictionary<string, object>();
+            objectsToSave["Highlights"] = DisplaySettings.highlighter.ToString();
+            await SavePersistantObjects(objectsToSave, PersistantObjectsHighlightFileName);
+        }
+
+        public static async void SavePersistantMarkers()
+        {
+            var objectsToSave = new Dictionary<string, object>();
+            // add new settings.
+            var types2 = new[] { typeof(BiblePlaceMarkers), typeof(BiblePlaceMarker) };
+
+            var ser2 = new DataContractSerializer(typeof(BiblePlaceMarkers), types2);
+            using (var sw = new StringWriter())
+            {
+                var settings = new XmlWriterSettings
+                {
+                    OmitXmlDeclaration = true,
+                    Indent = true,
+                    NamespaceHandling = NamespaceHandling.OmitDuplicates
+                };
+                using (XmlWriter writer = XmlWriter.Create(sw, settings))
+                {
+                    ser2.WriteObject(writer, PlaceMarkers);
+                }
+
+                objectsToSave["BiblePlaceMarkers"] = sw.ToString();
             }
 
-            IsolatedStorageSettings.ApplicationSettings["CurrentScreen"] = currentScreen;
+            await SavePersistantObjects(objectsToSave, PersistantObjectsMarkersFileName);
+        }
+
+        private static async Task SavePersistantObjects(Dictionary<string, object> objectsToSave, string filename, bool alwaysLocal = false)
+        {
+            try
+            {
+                var sessionData = new MemoryStream();
+                var serializer = new DataContractSerializer(
+                    typeof(Dictionary<string, object>), new[] { typeof(string) });
+                serializer.WriteObject(sessionData, objectsToSave);
+                sessionData.Seek(0, SeekOrigin.Begin);
+                byte[] buffer = new byte[sessionData.Length];
+                sessionData.Read(buffer, 0, (int)sessionData.Length);
+                await Hoot.File.WriteAllBytes(filename, buffer);
+            }
+            catch (Exception e)
+            {
+                //throw new SuspensionManagerException(e);
+            }
         }
 
         #endregion Methods
@@ -702,11 +1115,27 @@ namespace CrossConnect
 
             [DataMember(Name = "bookmarks")]
             public List<BiblePlaceMarker> Bookmarks = new List<BiblePlaceMarker>();
+
             [DataMember(Name = "history")]
             public List<BiblePlaceMarker> History = new List<BiblePlaceMarker>();
 
-            #endregion Fields
+            #endregion
+
+            public static void FixOldStyleMarkers(List<BiblePlaceMarker> maybeOldStyleMarkers)
+            {
+                if (maybeOldStyleMarkers.Count() > 0 && string.IsNullOrEmpty(maybeOldStyleMarkers[0].BookShortName))
+                {
+                    var canon = CanonManager.GetCanon("KJV");
+                    foreach (var mark in maybeOldStyleMarkers)
+                    {
+                        var book = canon.GetBookFromAbsoluteChapter(mark.ChapterNum);
+                        mark.ChapterNum = mark.ChapterNum - book.VersesInChapterStartIndex;
+                        mark.BookShortName = book.ShortName1;
+                    }
+                }
+            }
         }
+
 
         [DataContract]
         public class SerializableDailyPlan
@@ -720,6 +1149,10 @@ namespace CrossConnect
             [DataMember(Name = "personalNotes")]
             public Dictionary<int, Dictionary<int, BiblePlaceMarker>> PersonalNotes = 
                 new Dictionary<int, Dictionary<int, BiblePlaceMarker>>();
+            [DataMember(Name = "PersonalNotesVersified")]
+            public Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> PersonalNotesVersified =
+                new Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>>();
+
             [DataMember]
             public string PlanBible = string.Empty;
             [DataMember]

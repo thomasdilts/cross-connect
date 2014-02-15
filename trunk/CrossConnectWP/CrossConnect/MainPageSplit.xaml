@@ -65,6 +65,7 @@
       <shell:ApplicationBar.MenuItems>
         <shell:ApplicationBarMenuItem Click="MenuRateThisAppClick" x:Name="menuRateThisApp"
                                       Text="Rate this application" />
+        <shell:ApplicationBarMenuItem Click="MenuHighlightClick" x:Name="menuHighlight" Text="Highlight" />
         <shell:ApplicationBarMenuItem Click="MenuCopyClick" x:Name="menuCopy" Text="Copy" />
         <shell:ApplicationBarMenuItem Click="MenuThemesClick" x:Name="menuThemes" Text="Select colors" />
         <shell:ApplicationBarMenuItem Click="MenuDownloadBibleClick" x:Name="menuDownloadBible"

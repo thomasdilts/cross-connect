@@ -31,7 +31,7 @@ namespace CrossConnect.readers
     using System.Runtime.Serialization;
     using System.Text;
     using System.Text.RegularExpressions;
-    using System.Windows;
+    using System.Threading.Tasks;
 
     using Hoot;
 
@@ -92,6 +92,13 @@ namespace CrossConnect.readers
             }
         }
 
+        public override bool IsTTChearable
+        {
+            get
+            {
+                return false;
+            }
+        }
         public override bool IsPageable
         {
             get
@@ -128,7 +135,7 @@ namespace CrossConnect.readers
 
         #region Public Methods and Operators
 
-        public void DoSearch(
+        public async void DoSearch(
             DisplaySettings displaySettings,
             int searchTypeIndex,
             string searchText,
@@ -146,7 +153,7 @@ namespace CrossConnect.readers
                 bool existsIndexes = true;
                 foreach (var index in indexes)
                 {
-                    if (!Hoot.File.Exists(Path.Combine(this.Serial.Path.Replace("/", "\\"), index)))
+                    if (!await Hoot.File.Exists(Path.Combine(this.Serial.Path.Replace("/", "\\"), index)))
                     {
                         existsIndexes = false;
                         break;
@@ -154,21 +161,21 @@ namespace CrossConnect.readers
                 }
                 progress(0, this.Found, false, false);
                 var hoot = new hOOt.Hoot();
-                Hoot.Directory.CreateDirectory(this.Serial.Path.Replace("/", "\\"));
-                hoot.Initialize(this.Serial.Path.Replace("/", "\\"), "index");
+
+                await hoot.Initialize(this.Serial.Path.Replace("/", "\\"), "index");
                 progress(10, this.Found, false, false);
                 if (!existsIndexes)
                 {
                     double lastReportedProgress = 0;
                     for (int i = 0; i < Chapters.Count; i++)
                     {
-                        byte[] chapterBuffer = this.GetChapterBytes(i);
+                        byte[] chapterBuffer = await this.GetChapterBytes(i);
                         if (chapterBuffer.Length > 20)
                         {
                             string chapter =
                                 RawGenTextReader.CleanXml(
                                     Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length), true);
-                            hoot.Index(i, chapter);
+                            await hoot.Index(i, chapter);
                         }
 
                         double percent = i * 80 / Chapters.Count;
@@ -180,12 +187,12 @@ namespace CrossConnect.readers
                         lastReportedProgress = percent;
                     }
 
-                    hoot.Save();
-                    //hoot.OptimizeIndex();
+                    await hoot.Save();
+                    //await hoot.OptimizeIndex();
                 }
                 progress(80, this.Found, false, false);
                 // time to do the search
-                var foundIndexes = hoot.Query(this.SearchText, 10000);
+                var foundIndexes = await hoot.Query(this.SearchText, 1000);
 
                 var displayTextBody = new StringBuilder();
                 var foundBitIndexes = foundIndexes.GetBitIndexes();
@@ -199,13 +206,13 @@ namespace CrossConnect.readers
                     {
                         counter++;
                         var chapt = Chapters[index];
-                        byte[] chapterBuffer = this.GetChapterBytes(index);
+                        byte[] chapterBuffer = await this.GetChapterBytes(index);
                         string chapter =
                             RawGenTextReader.CleanXml(
                                 Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length), true);
 
 
-                        string textId = "CHAP_" + chaptListToSearch[index] + "_VERS_0";
+                        string textId = "RAWBOOK_" + chaptListToSearch[index] + "_0";
                         string s = "<p><a name=\"" + textId
                                    + "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.notify('"
                                    + textId + "'); event.returnValue=false; return false;\" >";
@@ -223,7 +230,7 @@ namespace CrossConnect.readers
                 DoSlowSearch(displaySettings, isIgnoreCase, chaptListToSearch, progress);
             }
         }
-        public void DoSlowSearch(DisplaySettings displaySettings,
+        public async void DoSlowSearch(DisplaySettings displaySettings,
             bool isIgnoreCase,
             List<int> chaptListToSearch,
             ShowProgress progress)
@@ -244,8 +251,8 @@ namespace CrossConnect.readers
                         continue;
                     }
 
-                    byte[] chapterBuffer = this.GetChapterBytes(chaptListToSearch[i]);
-                    string chapter = RawGenTextReader.CleanXml(Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length), true);
+                    byte[] chapterBuffer = await this.GetChapterBytes(chaptListToSearch[i]);
+                    string chapter = RawGenTextReader.CleanXml(Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length),true);
                     MatchCollection matches = regex.Matches(chapter);
                     if (matches.Count > 0)
                     {
@@ -260,7 +267,7 @@ namespace CrossConnect.readers
                         foreach (Match match in matches)
                         {
                             // clean up the verse and make sure the text is still there.
-                            string textId = "CHAP_" + chaptListToSearch[i] + "_VERS_0";
+                            string textId = "RAWBOOK_" + chaptListToSearch[i] + "_0";
                             string s = "<p><a name=\"" + textId
                                        + "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.notify('"
                                        + textId + "'); event.returnValue=false; return false;\" >"
@@ -313,11 +320,13 @@ namespace CrossConnect.readers
             }
         }
 
-        public override string GetChapterHtml(
+        public override async Task<string> GetChapterHtml(
             DisplaySettings displaySettings,
-            string htmlBackgroundColor,
-            string htmlForegroundColor,
-            string htmlPhoneAccentColor,
+            HtmlColorRgba htmlBackgroundColor,
+            HtmlColorRgba htmlForegroundColor,
+            HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
@@ -325,26 +334,25 @@ namespace CrossConnect.readers
             bool forceReload)
         {
             // Debug.WriteLine("SearchReader GetChapterHtml.text=" + displayText);
-            return HtmlHeader(
+            return BibleZtextReader.HtmlHeader(
                 displaySettings,
                 htmlBackgroundColor,
                 htmlForegroundColor,
                 htmlPhoneAccentColor,
+                htmlWordsOfChristColor,
                 htmlFontSize,
                 fontFamily) + this.DisplayText + "</body></html>";
         }
 
         public override void GetInfo(
-            out int bookNum,
-            out int absouteChaptNum,
+            out string bookShortName,
             out int relChaptNum,
             out int verseNum,
             out string fullName,
             out string title)
         {
             verseNum = 0;
-            absouteChaptNum = 0;
-            bookNum = 0;
+            bookShortName = string.Empty;
             relChaptNum = 0;
             fullName = string.Empty;
             string extraText = string.Empty;

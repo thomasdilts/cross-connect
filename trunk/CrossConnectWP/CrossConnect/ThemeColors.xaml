@@ -101,6 +101,28 @@
         <TextBlock x:Name="BorderColorText" Text="Border Color" Style="{StaticResource PhoneTextTitle2Style}" />
         <cf4Ctrls:ColorPicker Margin="30,0,70,0" Height="200" InputMethod.IsInputMethodEnabled="True"
                               Name="BorderColor"></cf4Ctrls:ColorPicker>
+
+                <TextBlock x:Name="WordsOfChristRedText" Text="Border Color" Style="{StaticResource PhoneTextTitle2Style}" />
+        <cf4Ctrls:ColorPicker Margin="30,0,70,0" Height="200" InputMethod.IsInputMethodEnabled="True"
+                Name="WordsOfChristRed"></cf4Ctrls:ColorPicker>
+                <TextBlock x:Name="Highlight1Text" Text="Border Color" Style="{StaticResource PhoneTextTitle2Style}" />
+        <cf4Ctrls:ColorPicker Margin="30,0,70,0" Height="200" InputMethod.IsInputMethodEnabled="True"
+                Name="Highlight1"></cf4Ctrls:ColorPicker>
+                <TextBlock x:Name="Highlight2Text" Text="Border Color" Style="{StaticResource PhoneTextTitle2Style}" />
+        <cf4Ctrls:ColorPicker Margin="30,0,70,0" Height="200" InputMethod.IsInputMethodEnabled="True"
+                Name="Highlight2"></cf4Ctrls:ColorPicker>
+                <TextBlock x:Name="Highlight3Text" Text="Border Color" Style="{StaticResource PhoneTextTitle2Style}" />
+        <cf4Ctrls:ColorPicker Margin="30,0,70,0" Height="200" InputMethod.IsInputMethodEnabled="True"
+                Name="Highlight3"></cf4Ctrls:ColorPicker>
+                <TextBlock x:Name="Highlight4Text" Text="Border Color" Style="{StaticResource PhoneTextTitle2Style}" />
+        <cf4Ctrls:ColorPicker Margin="30,0,70,0" Height="200" InputMethod.IsInputMethodEnabled="True"
+                Name="Highlight4"></cf4Ctrls:ColorPicker>
+                <TextBlock x:Name="Highlight5Text" Text="Border Color" Style="{StaticResource PhoneTextTitle2Style}" />
+        <cf4Ctrls:ColorPicker Margin="30,0,70,0" Height="200" InputMethod.IsInputMethodEnabled="True"
+                Name="Highlight5"></cf4Ctrls:ColorPicker>
+                <TextBlock x:Name="Highlight6Text" Text="Border Color" Style="{StaticResource PhoneTextTitle2Style}" />
+        <cf4Ctrls:ColorPicker Margin="30,0,70,0" Height="200" InputMethod.IsInputMethodEnabled="True"
+                Name="Highlight6"></cf4Ctrls:ColorPicker>
       </StackPanel>
     </ScrollViewer>
   </Grid>

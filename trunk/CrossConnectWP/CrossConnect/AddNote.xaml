@@ -49,7 +49,7 @@
     <!--ContentPanel - place additional content here-->
     <TextBlock Grid.Row="1" TextWrapping="Wrap" Name="verse"
                Text="lkjdsö lks öfkjs öldfjölsa  dfjölsdjf ö df gsd fg sdfg sd fg sdf g" />
-    <TextBox Grid.Row="2" KeyUp="TextToAddKeyUp" Name="TextToAdd" Text="" />
+        <TextBox Grid.Row="2" KeyUp="TextToAddKeyUp" Name="TextToAdd" TextWrapping="Wrap" AcceptsReturn="True" Text="" />
 
   </Grid>
 

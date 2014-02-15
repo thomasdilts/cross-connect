@@ -33,33 +33,33 @@
       <Border Name="WebBrowserBorder" BorderBrush="Silver" BorderThickness="2" Grid.Row="1">
         <StackPanel Name="AllContent">
           <ProgressBar Name="WaitingForDownload" Margin="0,15,0,0" IsIndeterminate="True" />
-          <StackPanel Name="stackContent" Margin="0,15,0,0">
-            <StackPanel Name="stackProgress" Orientation="Horizontal">
-              <TextBlock TextAlignment="Center" Name="txtPosition" Text="00:00" Width="60" />
-              <Grid Name="GridProgressBars" VerticalAlignment="Top" Height="30" Width="285">
-                <ProgressBar Name="ProgressDownload" Maximum="100" Foreground="LightGray" />
-                <ProgressBar Name="ProgressPosition" Maximum="100" />
-              </Grid>
-              <TextBlock TextAlignment="Center" Name="txtDuration" Text="00:00" Width="60" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <local:ImageButton VerticalAlignment="Center" Margin="0,0,25,0" Width="55"
-                        Click="ButPreviousClick"  Image="/Images/dark/appbar.cancel.rest.png"
-                        PressedImage="/Images/dark/appbar.cancel.rest.pressed.png" x:Name="butPrevious"
-                        Template="{StaticResource ImageButtonControlTemplate}" />
-                <local:ImageButton VerticalAlignment="Center" Margin="0,0,25,0" Width="55"
-                        Click="ButPlayPauseClick" Image="/Images/dark/appbar.cancel.rest.png"
-                        PressedImage="/Images/dark/appbar.cancel.rest.pressed.png" x:Name="butPlayPause"
-                        Template="{StaticResource ImageButtonControlTemplate}" />
-                <local:ImageButton VerticalAlignment="Center" Margin="0,0,25,0" Width="55"
-                        Click="ButNextClick"  Image="/Images/dark/appbar.cancel.rest.png"
-                        PressedImage="/Images/dark/appbar.cancel.rest.pressed.png" x:Name="butNext"
-                        Template="{StaticResource ImageButtonControlTemplate}" />
-                <Image Width="55" Name="ImageIcon" Tap="ImageIconTap" />
-            </StackPanel>
-          </StackPanel>
-        </StackPanel>
-      </Border>
+                    <StackPanel Name="stackContent" Margin="0,15,0,0">
+                        <StackPanel Name="stackProgress" Orientation="Horizontal">
+                            <TextBlock TextAlignment="Center" Name="txtPosition" Text="00:00" Width="60" />
+                            <Grid Name="GridProgressBars" VerticalAlignment="Top" Height="30" Width="285">
+                                <ProgressBar Name="ProgressDownload" Maximum="100" Foreground="LightGray" />
+                                <ProgressBar Name="ProgressPosition" Maximum="100" />
+                            </Grid>
+                            <TextBlock TextAlignment="Center" Name="txtDuration" Text="00:00" Width="60" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <local:ImageButton VerticalAlignment="Center" Margin="0,0,25,0" Width="55"
+                            Click="ButPreviousClick"  Image="/Images/dark/appbar.cancel.rest.png"
+                            PressedImage="/Images/dark/appbar.cancel.rest.pressed.png" x:Name="butPrevious"
+                            Template="{StaticResource ImageButtonControlTemplate}" />
+                                <local:ImageButton VerticalAlignment="Center" Margin="0,0,25,0" Width="55"
+                            Click="ButPlayPauseClick" Image="/Images/dark/appbar.cancel.rest.png"
+                            PressedImage="/Images/dark/appbar.cancel.rest.pressed.png" x:Name="butPlayPause"
+                            Template="{StaticResource ImageButtonControlTemplate}" />
+                                <local:ImageButton VerticalAlignment="Center" Margin="0,0,25,0" Width="55"
+                            Click="ButNextClick"  Image="/Images/dark/appbar.cancel.rest.png"
+                            PressedImage="/Images/dark/appbar.cancel.rest.pressed.png" x:Name="butNext"
+                            Template="{StaticResource ImageButtonControlTemplate}" />
+                                <Image Width="55" Name="ImageIcon" Tap="ImageIconTap" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
     </Grid>
   </Border>
 </UserControl>

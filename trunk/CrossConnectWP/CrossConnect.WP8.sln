@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossConnect.WP8", "CrossConnect\CrossConnect.WP8.csproj", "{79E7C84A-B7CB-45C3-9DF4-F2D4703AB944}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zip.WP8", "zip2\Zip.WP8.csproj", "{460C536A-FA50-46C0-B9DA-A0B4F8546AEE}"
@@ -9,9 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zlib.WP8", "zlib\zlib.WP8.c
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sword.WP8", "Sword\Sword.WP8.csproj", "{CE4B6565-208F-41DA-B260-30C8758AD9F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioPlaybackAgent1.WP8", "AudioPlaybackAgent1\AudioPlaybackAgent1.WP8.csproj", "{F2BA106B-3098-495F-90DC-D23E5458C95B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hoot.WP8", "Hoot\Hoot.WP8.csproj", "{1896345A-8FAC-4D7E-A754-1509F4AA77D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioPlaybackAgent1.WP8", "AudioPlaybackAgent1\AudioPlaybackAgent1.WP8.csproj", "{F2BA106B-3098-495F-90DC-D23E5458C95B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,20 +89,6 @@ Global
 		{CE4B6565-208F-41DA-B260-30C8758AD9F4}.Release|x64.ActiveCfg = Release|Any CPU
 		{CE4B6565-208F-41DA-B260-30C8758AD9F4}.Release|x86.ActiveCfg = Release|x86
 		{CE4B6565-208F-41DA-B260-30C8758AD9F4}.Release|x86.Build.0 = Release|x86
-		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Debug|ARM.ActiveCfg = Debug|ARM
-		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Debug|ARM.Build.0 = Debug|ARM
-		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Debug|x86.ActiveCfg = Debug|x86
-		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Debug|x86.Build.0 = Debug|x86
-		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|ARM.ActiveCfg = Release|ARM
-		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|ARM.Build.0 = Release|ARM
-		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|x64.ActiveCfg = Release|Any CPU
-		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|x86.ActiveCfg = Release|x86
-		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|x86.Build.0 = Release|x86
 		{1896345A-8FAC-4D7E-A754-1509F4AA77D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1896345A-8FAC-4D7E-A754-1509F4AA77D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1896345A-8FAC-4D7E-A754-1509F4AA77D5}.Debug|ARM.ActiveCfg = Debug|ARM
@@ -115,6 +103,20 @@ Global
 		{1896345A-8FAC-4D7E-A754-1509F4AA77D5}.Release|x64.ActiveCfg = Release|Any CPU
 		{1896345A-8FAC-4D7E-A754-1509F4AA77D5}.Release|x86.ActiveCfg = Release|x86
 		{1896345A-8FAC-4D7E-A754-1509F4AA77D5}.Release|x86.Build.0 = Release|x86
+		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Debug|ARM.ActiveCfg = Debug|ARM
+		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Debug|ARM.Build.0 = Debug|ARM
+		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Debug|x86.ActiveCfg = Debug|x86
+		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Debug|x86.Build.0 = Debug|x86
+		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|ARM.ActiveCfg = Release|ARM
+		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|ARM.Build.0 = Release|ARM
+		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|x64.ActiveCfg = Release|Any CPU
+		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|x86.ActiveCfg = Release|x86
+		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

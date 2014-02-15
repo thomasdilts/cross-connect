@@ -1,6 +1,4 @@
-﻿#region Header
-
-// <copyright file="MGIndex.cs" company="Thomas Dilts">
+﻿// <copyright file="MGIndex.cs" company="Thomas Dilts">
 //
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
@@ -23,7 +21,6 @@
 // </summary>
 // <author>Thomas Dilts</author>
 
-#endregion Header
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +31,7 @@ using RaptorDB.Common;
 
 namespace RaptorDB
 {
-
+    using System.Threading.Tasks;
 
     using Hoot;
 
@@ -109,11 +106,11 @@ namespace RaptorDB
         private int _LastIndexedRecordNumber = 0;
         private int _maxPageItems = 0;
 
-        public void Initialize(string path, string filename, byte keysize, ushort maxcount, bool allowdups)
+        public async Task Initialize(string path, string filename, byte keysize, ushort maxcount, bool allowdups)
         {
             _AllowDuplicates = allowdups;
             _index = new IndexFile<T>();
-            _index.Initialize(path + PathHelper.DirectorySeparatorChar + filename, keysize, maxcount);
+            await _index.Initialize(path + PathHelper.DirectorySeparatorChar + filename, keysize, maxcount);
             _maxPageItems = maxcount;
             // load page list
             _index.GetPageList(_pageListDiskPages, _pageList, out _LastIndexedRecordNumber);
@@ -134,7 +131,7 @@ namespace RaptorDB
         }
 
         private object _setlock = new object();
-        public void Set(T key, int val)
+        public async Task Set(T key, int val)
         {
             //lock (_setlock)
             //{
@@ -147,9 +144,9 @@ namespace RaptorDB
                     // item exists
                     if (_AllowDuplicates)
                     {
-                        ki = SaveDuplicate(key, ki);
+                        ki = await SaveDuplicate(key, ki);
                         // set current record in the bitmap also
-                        _index.SetBitmapDuplicate(ki.DuplicateBitmapNumber, val);
+                        await _index.SetBitmapDuplicate(ki.DuplicateBitmapNumber, val);
                     }
                     ki.RecordNumber = val;
                     page.tree[key] = ki; // structs need resetting
@@ -159,7 +156,7 @@ namespace RaptorDB
                     // new item 
                     ki = new KeyInfo(val);
                     if (_AllowDuplicates)
-                        ki = SaveDuplicate(key, ki);
+                        ki = await SaveDuplicate(key, ki);
                     pi.UniqueCount++;
                     page.tree.Add(key, ki);
                 }
@@ -184,7 +181,7 @@ namespace RaptorDB
             return ret;
         }
 
-        public void SaveIndex()
+        public async Task SaveIndex()
         {
             //_log.Debug("Total split time (s) = " + _totalsplits);
             //_log.Debug("Total pages = " + _pageList.Count);
@@ -200,15 +197,15 @@ namespace RaptorDB
                     p.isDirty = false;
                 }
             }
-            _index.BitmapFlush();
+            await _index.BitmapFlush();
         }
 
-        public void Shutdown()
+        public async Task Shutdown()
         {
             // save page list
             _index.SavePageList(_pageList, _pageListDiskPages);
             // shutdown
-            _index.Shutdown();
+            await _index.Shutdown();
         }
 
         public void FreeMemory()
@@ -217,7 +214,7 @@ namespace RaptorDB
         }
 
 
-        public IEnumerable<int> GetDuplicates(T key)
+        public async Task<IEnumerable<int>> GetDuplicates(T key)
         {
             PageInfo pi;
             Page<T> page = LoadPage(key, out pi);
@@ -226,7 +223,7 @@ namespace RaptorDB
             if (ret)
                 // get duplicates
                 if (ki.DuplicateBitmapNumber != -1)
-                    return _index.GetDuplicatesRecordNumbers(ki.DuplicateBitmapNumber);
+                    return await _index.GetDuplicatesRecordNumbers(ki.DuplicateBitmapNumber);
 
             return new List<int>();
         }
@@ -330,12 +327,12 @@ namespace RaptorDB
             return page;
         }
 
-        private KeyInfo SaveDuplicate(T key, KeyInfo ki)
+        private async Task<KeyInfo> SaveDuplicate(T key, KeyInfo ki)
         {
             if (ki.DuplicateBitmapNumber == -1)
                 ki.DuplicateBitmapNumber = _index.GetBitmapDuplaicateFreeRecordNumber();
 
-            _index.SetBitmapDuplicate(ki.DuplicateBitmapNumber, ki.RecordNumber);
+            await _index.SetBitmapDuplicate(ki.DuplicateBitmapNumber, ki.RecordNumber);
             return ki;
         }
 

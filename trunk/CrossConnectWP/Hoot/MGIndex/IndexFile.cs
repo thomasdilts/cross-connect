@@ -1,6 +1,4 @@
-﻿#region Header
-
-// <copyright file="IndexFile.cs" company="Thomas Dilts">
+﻿// <copyright file="IndexFile.cs" company="Thomas Dilts">
 //
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
@@ -23,7 +21,6 @@
 // </summary>
 // <author>Thomas Dilts</author>
 
-#endregion Header
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,11 +30,11 @@ using RaptorDB.Common;
 
 namespace RaptorDB
 {
-
+    using System.Threading.Tasks;
 
     using Hoot;
 
-    
+    using Windows.Storage;
 
     internal class IndexFile<T>
     {
@@ -73,7 +70,7 @@ namespace RaptorDB
         {
         }
 
-        public void Initialize(string filename, byte maxKeySize, ushort pageNodeCount)
+        public async Task Initialize(string filename, byte maxKeySize, ushort pageNodeCount)
         {
             _T = RDBDataType<T>.ByteHandler();
             _maxKeySize = maxKeySize;
@@ -81,42 +78,40 @@ namespace RaptorDB
             _rowSize = (_maxKeySize + 1 + 4 + 4);
 
             string path = Path.GetDirectoryName(filename);
-            Directory.CreateDirectory(path);
-            if (File.Exists(filename))
+            await Directory.CreateDirectory(path);
+            if (await File.Exists(filename))
             {
                 // if file exists open and read header
-                _file = Hoot.File.OpenStreamForReadAsync(filename);
+                _file = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(filename);
                 ReadFileHeader();
-                File.CloseStream(_file);
-                _file = Hoot.File.OpenStreamForWriteAsync(filename,File.CreationCollisionOption.OpenIfExists);
+                _file.Dispose();
+                _file = await ApplicationData.Current.LocalFolder.OpenStreamForWriteAsync(filename,CreationCollisionOption.OpenIfExists);
                 // compute last page number from file length 
                 _PageLength = (_BlockHeader.Length + _rowSize * (_PageNodeCount));
                 _LastPageNumber = (int)((_file.Length - _FileHeader.Length) / _PageLength);
-                File.CloseStream(_file);
             }
             else
             {
                 // else create new file
-                _file = Hoot.File.OpenStreamForWriteAsync(filename, File.CreationCollisionOption.OpenIfExists);
+                _file = await ApplicationData.Current.LocalFolder.OpenStreamForWriteAsync(filename, CreationCollisionOption.OpenIfExists);
 
                 _PageLength = (_BlockHeader.Length + _rowSize * (_PageNodeCount));
 
                 CreateFileHeader(0);
 
                 _LastPageNumber = (int)((_file.Length - _FileHeader.Length) / _PageLength);
-                File.CloseStream(_file);
             }
             if (_LastPageNumber == 0)
                 _LastPageNumber = 1;
             // bitmap duplicates 
             _bitmap = new BitmapIndex();
-            _bitmap.Initialize(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename));
+            await _bitmap.Initialize(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename));
         }
 
         #region [  C o m m o n  ]
-        public void SetBitmapDuplicate(int bitmaprec, int rec)
+        public async Task SetBitmapDuplicate(int bitmaprec, int rec)
         {
-            _bitmap.SetDuplicate(bitmaprec, rec);
+            await _bitmap.SetDuplicate(bitmaprec, rec);
         }
 
         public int GetBitmapDuplaicateFreeRecordNumber()
@@ -124,14 +119,14 @@ namespace RaptorDB
             return _bitmap.GetFreeRecordNumber();
         }
 
-        public IEnumerable<int> GetDuplicatesRecordNumbers(int recno)
+        public async Task<IEnumerable<int>> GetDuplicatesRecordNumbers(int recno)
         {
-            return (GetDuplicateBitmap(recno)).GetBitIndexes();
+            return (await GetDuplicateBitmap(recno)).GetBitIndexes();
         }
 
-        public WAHBitArray GetDuplicateBitmap(int recno)
+        public async Task<WAHBitArray> GetDuplicateBitmap(int recno)
         {
-            return _bitmap.GetBitmap(recno);
+            return await _bitmap.GetBitmap(recno);
         }
 
         private byte[] CreateBlockHeader(byte type, ushort itemcount, int rightpagenumber)
@@ -217,7 +212,7 @@ namespace RaptorDB
             _file.Flush();
         }
 
-        public void Shutdown()
+        public async Task Shutdown()
         {
             //log.Debug("Shutdown IndexFile");
             if (_file != null)
@@ -226,8 +221,8 @@ namespace RaptorDB
                 _file.Dispose();
             }
             _file = null;
-            _bitmap.Commit(Global.FreeBitmapMemoryOnSave);
-            _bitmap.Shutdown();
+            await _bitmap.Commit(Global.FreeBitmapMemoryOnSave);
+            await _bitmap.Shutdown();
         }
 
         #endregion
@@ -425,9 +420,9 @@ namespace RaptorDB
             CreateFileHeader(recnum);
         }
 
-        internal void BitmapFlush()
+        internal async Task BitmapFlush()
         {
-            _bitmap.Commit(Global.FreeBitmapMemoryOnSave);
+            await _bitmap.Commit(Global.FreeBitmapMemoryOnSave);
         }
     }
 }

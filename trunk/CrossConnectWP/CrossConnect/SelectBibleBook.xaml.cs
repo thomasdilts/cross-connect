@@ -257,7 +257,8 @@ namespace CrossConnect
             }
             else
             {
-                App.OpenWindows[(int)openWindowIndex].State.Source.MoveChapterVerse((int)((Button)sender).Tag, 0, false, App.OpenWindows[(int)openWindowIndex].State.Source);
+                var book = ((BibleZtextReader)App.OpenWindows[(int)openWindowIndex].State.Source).canon.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
+                App.OpenWindows[(int)openWindowIndex].State.Source.MoveChapterVerse(book.ShortName1, (int)((Button)sender).Tag - book.VersesInChapterStartIndex, 0, false, App.OpenWindows[(int)openWindowIndex].State.Source);
                 PhoneApplicationService.Current.State["skipWindowSettings"] = true;
                 if (NavigationService.CanGoBack)
                 {
@@ -283,8 +284,22 @@ namespace CrossConnect
             }
             else
             {
+                var bookname = string.Empty;
+                var chapter = 0;
+                if (App.OpenWindows[(int)openWindowIndex].State.Source is BibleZtextReader)
+                {
+                    var book = ((BibleZtextReader)App.OpenWindows[(int)openWindowIndex].State.Source).canon.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
+                    bookname = book.ShortName1;
+                    chapter = (int)((Button)sender).Tag - book.VersesInChapterStartIndex;
+                }
+                else
+                {
+                    chapter = (int)((Button)sender).Tag;
+                } 
+                
                 App.OpenWindows[(int)openWindowIndex].State.Source.MoveChapterVerse(
-                    (int)((Button)sender).Tag,
+                    bookname,
+                    chapter,
                     0,
                     false,
                     App.OpenWindows[(int)openWindowIndex].State.Source);
@@ -313,8 +328,22 @@ namespace CrossConnect
             }
             else
             {
+                var bookname = string.Empty;
+                var chapter = 0;
+                if (App.OpenWindows[(int)openWindowIndex].State.Source is BibleZtextReader)
+                {
+                    var book = ((BibleZtextReader)App.OpenWindows[(int)openWindowIndex].State.Source).canon.GetBookFromAbsoluteChapter(this._selectBibleBookSecondSelection);
+                    bookname = book.ShortName1;
+                    chapter = this._selectBibleBookSecondSelection - book.VersesInChapterStartIndex;
+                }
+                else
+                {
+                    chapter = this._selectBibleBookSecondSelection;
+                } 
+                
                 App.OpenWindows[(int)openWindowIndex].State.Source.MoveChapterVerse(
-                    _selectBibleBookSecondSelection,
+                    bookname,
+                    chapter,
                     (int)((Button)sender).Tag,
                     false,
                     App.OpenWindows[(int)openWindowIndex].State.Source);
@@ -332,10 +361,22 @@ namespace CrossConnect
             if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
             {
                 openWindowIndex = 0;
-            } 
-            
+            }
+            var bookname = string.Empty;
+            var chapter = 0;
+            if (App.OpenWindows[(int)openWindowIndex].State.Source is BibleZtextReader)
+            {
+                var book = ((BibleZtextReader)App.OpenWindows[(int)openWindowIndex].State.Source).canon.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
+                bookname = book.ShortName1;
+                chapter = (int)((Button)sender).Tag - book.VersesInChapterStartIndex;
+            }
+            else
+            {
+                chapter = (int)((Button)sender).Tag;
+            }
             App.OpenWindows[(int)openWindowIndex].State.Source.MoveChapterVerse(
-                (int)((Button)sender).Tag,
+                bookname,
+                chapter,
                 0,
                 false,
                 App.OpenWindows[(int)openWindowIndex].State.Source);

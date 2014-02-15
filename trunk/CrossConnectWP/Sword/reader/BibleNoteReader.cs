@@ -25,11 +25,18 @@
 
 #endregion Header
 
-namespace Sword.reader
+namespace CrossConnect.readers
 {
     using System;
+    using System.Collections.Generic;
+    using System.IO;
     using System.Runtime.Serialization;
-
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Xml;
+    using System.Linq;
+    using Sword.reader;
+    using Sword.versification;
 
     /// <summary>
     ///     Load from a file all the book and verse pointers to the bzz file so that
@@ -44,7 +51,7 @@ namespace Sword.reader
         #region Fields
 
         [DataMember(Name = "serial2")]
-        public BibleZtextReaderSerialData Serial2 = new BibleZtextReaderSerialData(false, "", "", 0, 0, "", "");
+        public BibleZtextReaderSerialData Serial2 = new BibleZtextReaderSerialData(false, "", "", 0, 0, string.Empty, string.Empty);
 
         [DataMember(Name = "titleBrowserWindow")]
         public string TitleBrowserWindow = string.Empty;
@@ -53,8 +60,8 @@ namespace Sword.reader
 
         #region Constructors and Destructors
 
-        public BibleNoteReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string titleBrowserWindow, string cipherKey, string configPath)
-            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath)
+        public BibleNoteReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string titleBrowserWindow, string cipherKey, string configPath, string versification)
+            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification)
         {
             this.Serial2.CloneFrom(this.Serial);
             this.TitleBrowserWindow = titleBrowserWindow;
@@ -64,6 +71,14 @@ namespace Sword.reader
 
         #region Public Properties
 
+
+        public override bool IsTTChearable
+        {
+            get
+            {
+                return false;
+            }
+        }
         public override bool IsHearable
         {
             get
@@ -100,11 +115,13 @@ namespace Sword.reader
 
         #region Public Methods and Operators
 
-        public override string GetChapterHtml(
+        public override async Task<string> GetChapterHtml(
             DisplaySettings displaySettings,
-            string htmlBackgroundColor,
-            string htmlForegroundColor,
-            string htmlPhoneAccentColor,
+            HtmlColorRgba htmlBackgroundColor,
+            HtmlColorRgba htmlForegroundColor,
+            HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+            HtmlColorRgba[] htmlHighlightingColor,
             double htmlFontSize,
             string fontFamily,
             bool isNotesOnly,
@@ -112,13 +129,16 @@ namespace Sword.reader
             bool forceReload)
         {
             return
-                
+                await
                 this.GetChapterHtml(
                     displaySettings,
+                    this.Serial.PosBookShortName,
                     this.Serial.PosChaptNum,
                     htmlBackgroundColor,
                     htmlForegroundColor,
                     htmlPhoneAccentColor,
+                    htmlWordsOfChristColor,
+                    htmlHighlightingColor,
                     htmlFontSize,
                     fontFamily,
                     true,
@@ -127,25 +147,26 @@ namespace Sword.reader
         }
 
         public override void GetInfo(
-            out int bookNum,
-            out int absoluteChaptNum,
+            out string bookShortName,
             out int relChaptNum,
             out int verseNum,
             out string fullName,
             out string title)
         {
             verseNum = this.Serial.PosVerseNum;
-            absoluteChaptNum = this.Serial.PosChaptNum;
-            this.GetInfo(
-                this.Serial.PosChaptNum, this.Serial.PosVerseNum, out bookNum, out relChaptNum, out fullName, out title);
+            relChaptNum = this.Serial.PosChaptNum;
+            bookShortName = this.Serial.PosBookShortName;
+            this.GetInfo(bookShortName,
+                this.Serial.PosChaptNum, this.Serial.PosVerseNum, out fullName, out title);
             title = this.TitleBrowserWindow + " " + fullName + ":" + (relChaptNum + 1);
         }
 
-        public override string GetVerseTextOnly(
-            DisplaySettings displaySettings, int chapterNumber, int verseNumber)
+        public override async Task<string> GetVerseTextOnly(
+            DisplaySettings displaySettings, string bookShortName, int chapterNumber, int verseNumber)
         {
             //give them the notes if you can.
-            var chapterBuffer = this.GetChapterBytes(chapterNumber);
+            var book = canon.BookByShortName[bookShortName];
+            Task<byte[]> chapterBuffer = this.GetChapterBytes(chapterNumber + book.VersesInChapterStartIndex);
             VersePos verse = this.Chapters[chapterNumber].Verses[verseNumber];
             int noteMarker = 'a';
             bool isInPoetry = false;
@@ -153,7 +174,7 @@ namespace Sword.reader
                 displaySettings,
                 "",
                 "",
-                chapterBuffer,
+                await chapterBuffer,
                 (int)verse.StartPos,
                 verse.Length,
                 this.Serial.IsIsoEncoding,
@@ -163,10 +184,10 @@ namespace Sword.reader
                 ref isInPoetry);
         }
 
-        public override void Resume()
+        public override async Task Resume()
         {
             this.Serial.CloneFrom(this.Serial2);
-            base.Resume();
+            await base.Resume();
         }
 
         public override void SerialSave()
@@ -177,135 +198,4 @@ namespace Sword.reader
         #endregion
     }
 
-    [DataContract(Name = "DisplaySettings")]
-    public class DisplaySettings
-    {
-        #region Fields
-
-        [DataMember(Name = "customBibleDownloadLinks")]
-        public string CustomBibleDownloadLinks = @"www.cross-connect.se,/bibles/raw,/bibles/biblelist";
-
-        [DataMember(Name = "eachVerseNewLine")]
-        public bool EachVerseNewLine;
-
-        [DataMember(Name = "greekDictionaryLink")]
-        public string GreekDictionaryLink = @"http://www.eliyah.com/cgi-bin/strongs.cgi?file=greeklexicon&isindex={0}";
-
-        [DataMember(Name = "hebrewDictionaryLink")]
-        public string HebrewDictionaryLink = @"http://www.eliyah.com/cgi-bin/strongs.cgi?file=hebrewlexicon&isindex={0}";
-
-        [DataMember(Name = "Show2titleRows")]
-        public bool Show2titleRows;
-
-        [DataMember(Name = "highlightMarkings")]
-        public bool HighlightMarkings;
-
-        [DataMember]
-        public int NumberOfScreens = 3;
-
-        [DataMember(Name = "showAddedNotesByChapter")]
-        public bool ShowAddedNotesByChapter;
-
-        [DataMember(Name = "showBookName")]
-        public bool ShowBookName;
-
-        [DataMember(Name = "showChapterNumber")]
-        public bool ShowChapterNumber;
-
-        [DataMember(Name = "showHeadings")]
-        public bool ShowHeadings = true;
-
-        [DataMember(Name = "showMorphology")]
-        public bool ShowMorphology;
-
-        [DataMember(Name = "showNotePositions")]
-        public bool ShowNotePositions;
-
-        [DataMember(Name = "showStrongsNumbers")]
-        public bool ShowStrongsNumbers;
-
-        [DataMember(Name = "showVerseNumber")]
-        public bool ShowVerseNumber = true;
-
-        [DataMember(Name = "smallVerseNumbers")]
-        public bool SmallVerseNumbers = true;
-
-        [DataMember(Name = "soundLink")]
-        public string SoundLink =
-            @"http://www.cross-connect.se/bibles/talking/getabsolutechapter.php?chapternum={0}&language={1}";
-
-        [DataMember(Name = "useInternetGreekHebrewDict")]
-        public bool UseInternetGreekHebrewDict;
-
-        [DataMember(Name = "userUniqueGuuid")]
-        public string UserUniqueGuuid = "";
-
-        [DataMember(Name = "wordsOfChristRed")]
-        public bool WordsOfChristRed;
-
-        #endregion
-
-        #region Public Methods and Operators
-
-        public void CheckForNullAndFix()
-        {
-            var fixer = new DisplaySettings();
-            if (this.SoundLink == null
-                || this.SoundLink.Equals(
-                    @"http://www.chaniel.se/crossconnect/bibles/talking/getabsolutechapter.php?chapternum={0}&language={1}"))
-            {
-                this.SoundLink = fixer.SoundLink;
-            }
-            if (this.GreekDictionaryLink == null)
-            {
-                this.GreekDictionaryLink = fixer.GreekDictionaryLink;
-            }
-            if (this.HebrewDictionaryLink == null)
-            {
-                this.HebrewDictionaryLink = fixer.HebrewDictionaryLink;
-            }
-            if (this.CustomBibleDownloadLinks == null
-                || this.CustomBibleDownloadLinks.Equals(
-                    @"www.chaniel.se,/crossconnect/bibles/raw,/crossconnect/bibles/biblelist"))
-            {
-                this.CustomBibleDownloadLinks = fixer.CustomBibleDownloadLinks;
-            }
-            if (string.IsNullOrEmpty(this.UserUniqueGuuid))
-            {
-                this.UserUniqueGuuid = Guid.NewGuid().ToString();
-            }
-            if (this.NumberOfScreens == 0)
-            {
-                this.NumberOfScreens = 3;
-            }
-        }
-
-        public DisplaySettings Clone()
-        {
-            var cloned = new DisplaySettings
-                             {
-                                 CustomBibleDownloadLinks = this.CustomBibleDownloadLinks,
-                                 EachVerseNewLine = this.EachVerseNewLine,
-                                 GreekDictionaryLink = this.GreekDictionaryLink,
-                                 HebrewDictionaryLink = this.HebrewDictionaryLink,
-                                 HighlightMarkings = this.HighlightMarkings,
-                                 ShowAddedNotesByChapter = this.ShowAddedNotesByChapter,
-                                 ShowBookName = this.ShowBookName,
-                                 ShowChapterNumber = this.ShowChapterNumber,
-                                 ShowHeadings = this.ShowHeadings,
-                                 ShowMorphology = this.ShowMorphology,
-                                 ShowNotePositions = this.ShowNotePositions,
-                                 ShowStrongsNumbers = this.ShowStrongsNumbers,
-                                 ShowVerseNumber = this.ShowVerseNumber,
-                                 SmallVerseNumbers = this.SmallVerseNumbers,
-                                 SoundLink = this.SoundLink,
-                                 WordsOfChristRed = this.WordsOfChristRed,
-                                 UserUniqueGuuid = this.UserUniqueGuuid,
-                                 UseInternetGreekHebrewDict = this.UseInternetGreekHebrewDict
-                             };
-            return cloned;
-        }
-
-        #endregion
-    }
 }

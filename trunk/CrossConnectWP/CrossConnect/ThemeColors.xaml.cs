@@ -101,17 +101,11 @@ namespace CrossConnect
                         theme.Name = Translations.Translate("New") + " " + (int)(new Random().NextDouble() * 100);
                     }
 
-                    theme.BorderColor = BorderColor.Color;
-                    theme.AccentColor = AccentColor.Color;
-                    theme.TitleFontColor = TitleFontColor.Color;
-                    theme.TitleBackColor = TitleBackgroundColor.Color;
                     if (IsBackgroundImage.IsChecked != null)
                     {
                         theme.IsMainBackImage = (bool)IsBackgroundImage.IsChecked;
                     }
 
-                    theme.MainBackColor = MainBackColor.Color;
-                    theme.MainFontColor = MainFontColor.Color;
                     if (IsButtonDark.IsChecked != null)
                     {
                         theme.IsButtonColorDark = (bool)IsButtonDark.IsChecked;
@@ -119,6 +113,22 @@ namespace CrossConnect
 
                     theme.MainBackImage = _mainBackImage;
                     theme.FontFamily = _fontFamily;
+
+
+                    theme.BorderColor = this.BorderColor.Color;
+                    theme.AccentColor = this.AccentColor.Color;
+                    theme.TitleFontColor = this.TitleFontColor.Color;
+                    theme.TitleBackColor = this.TitleBackgroundColor.Color;
+                    theme.WordsOfChristRed = this.WordsOfChristRed.Color;
+                    theme.ColorHighligt[0] = this.Highlight1.Color;
+                    theme.ColorHighligt[1] = this.Highlight2.Color;
+                    theme.ColorHighligt[2] = this.Highlight3.Color;
+                    theme.ColorHighligt[3] = this.Highlight4.Color;
+                    theme.ColorHighligt[4] = this.Highlight5.Color;
+                    theme.ColorHighligt[5] = this.Highlight6.Color;
+                    theme.MainBackColor = this.MainBackColor.Color;
+                    theme.MainFontColor = this.MainFontColor.Color;
+
                     if (App.Themes.CurrentTheme.Equals(theme.UniqId))
                     {
                         App.Themes.Clone(theme);
@@ -151,6 +161,12 @@ namespace CrossConnect
             IsButtonDark.Header = Translations.Translate("Dark buttons");
             ButGetFromCamera.Content = Translations.Translate("From the camera");
             ButGetFromDownloaded.Content = Translations.Translate("From the downloads");
+            this.Highlight1Text.Text = Translations.Translate("Highlight color") + " 1 => " + App.DisplaySettings.HighlightName1;
+            this.Highlight2Text.Text = Translations.Translate("Highlight color") + " 2 => " + App.DisplaySettings.HighlightName2;
+            this.Highlight3Text.Text = Translations.Translate("Highlight color") + " 3 => " + App.DisplaySettings.HighlightName3;
+            this.Highlight4Text.Text = Translations.Translate("Highlight color") + " 4 => " + App.DisplaySettings.HighlightName4;
+            this.Highlight5Text.Text = Translations.Translate("Highlight color") + " 5 => " + App.DisplaySettings.HighlightName5;
+            this.Highlight6Text.Text = Translations.Translate("Highlight color") + " 6 => " + App.DisplaySettings.HighlightName6;
 
             ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).Text = Translations.Translate("Share this theme");
             ((ApplicationBarMenuItem)ApplicationBar.MenuItems[0]).Text = Translations.Translate("Share this theme");
@@ -161,14 +177,22 @@ namespace CrossConnect
                 Theme theme;
                 if (App.Themes.Themes.TryGetValue((Guid)unitId, out theme))
                 {
+                    this.BorderColor.Color = theme.BorderColor;
+                    this.AccentColor.Color = theme.AccentColor;
+                    this.TitleFontColor.Color = theme.TitleFontColor;
+                    this.TitleBackgroundColor.Color = theme.TitleBackColor;
+                    this.MainBackColor.Color = theme.MainBackColor;
+                    this.MainFontColor.Color = theme.MainFontColor;
+                    this.WordsOfChristRed.Color = theme.WordsOfChristRed;
+                    this.Highlight1.Color = theme.ColorHighligt[0];
+                    this.Highlight2.Color = theme.ColorHighligt[1];
+                    this.Highlight3.Color = theme.ColorHighligt[2];
+                    this.Highlight4.Color = theme.ColorHighligt[3];
+                    this.Highlight5.Color = theme.ColorHighligt[4];
+                    this.Highlight6.Color = theme.ColorHighligt[5];
+
                     ThemeName.Text = theme.Name;
-                    BorderColor.Color = theme.BorderColor;
-                    AccentColor.Color = theme.AccentColor;
-                    TitleFontColor.Color = theme.TitleFontColor;
-                    TitleBackgroundColor.Color = theme.TitleBackColor;
                     IsBackgroundImage.IsChecked = theme.IsMainBackImage;
-                    MainBackColor.Color = theme.MainBackColor;
-                    MainFontColor.Color = theme.MainFontColor;
                     IsButtonDark.IsChecked = theme.IsButtonColorDark;
                     _mainBackImage = theme.MainBackImage;
                     _fontFamily = theme.FontFamily;
@@ -330,7 +354,7 @@ namespace CrossConnect
                 if (App.Themes.Themes.TryGetValue((Guid)unitId, out theme))
                 {
                     body.Append(Translations.Translate("The definition of the theme") + "\n\n");
-                    body.Append(App.Themes.OneThemeToString(theme));
+                    body.Append(Theme.OneThemeToString(theme));
 
                     // cant add an image. it is too big.
                     // if(IsBackgroundImage.IsChecked!=null && (bool)IsBackgroundImage.IsChecked && !string.IsNullOrEmpty(_mainBackImage))
@@ -438,6 +462,7 @@ namespace CrossConnect
                     BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"),
                     BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
                     BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
+                    BrowserTitledWindow.GetBrowserColor("PhoneWordsOfChristColor"),
                     20,
                     string.Empty) + body + "</body></html>");
         }

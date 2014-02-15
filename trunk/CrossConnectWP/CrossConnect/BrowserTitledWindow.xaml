@@ -60,7 +60,7 @@
             <Border Name="WebBrowserBorder" BorderBrush="Silver" BorderThickness="1" Grid.Row="2">
         <phone:WebBrowser Margin="0 0 0 0" IsScriptEnabled="True"  ScriptNotify="WebBrowser1ScriptNotify" 
                           Unloaded="WebBrowser1Unloaded" Loaded="WebBrowser1Loaded" 
-                          NavigationFailed="WebBrowser1_OnNavigationFailed" Name="webBrowser1"  />
+                          NavigationFailed="WebBrowser1_OnNavigationFailed" LoadCompleted="webBrowser1_NavigationCompleted" Name="webBrowser1"  />
       </Border>
     </Grid>
   </Border>

@@ -1,6 +1,4 @@
-﻿#region Header
-
-// <copyright file="KeyStore.cs" company="Thomas Dilts">
+﻿// <copyright file="KeyStore.cs" company="Thomas Dilts">
 //
 // CrossConnect Bible and Bible Commentary Reader for CrossWire.org
 // Copyright (C) 2011 Thomas Dilts
@@ -23,7 +21,6 @@
 // </summary>
 // <author>Thomas Dilts</author>
 
-#endregion Header
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,10 +29,10 @@ using RaptorDB.Common;
 
 namespace RaptorDB
 {
-
-    using System.Windows.Threading;
+    using System.Threading.Tasks;
 
     using Hoot;
+    using System.Windows.Threading;
 
     //using Windows.UI.Xaml;
 /*
@@ -205,38 +202,38 @@ namespace RaptorDB
         private BoolIndex _deleted;
 
 
-        public static KeyStore<T> Open(string Filename, bool AllowDuplicateKeys)
+        public static async Task<KeyStore<T>> Open(string Filename, bool AllowDuplicateKeys)
         {
             var keystore = new KeyStore<T>();
-            keystore.Initialize(Filename, Global.DefaultStringKeySize, AllowDuplicateKeys);
+            await keystore.Initialize(Filename, Global.DefaultStringKeySize, AllowDuplicateKeys);
             return keystore; 
         }
 
-        public static KeyStore<T> Open(string Filename, byte MaxKeySize, bool AllowDuplicateKeys)
+        public static async Task<KeyStore<T>> Open(string Filename, byte MaxKeySize, bool AllowDuplicateKeys)
         {
             var keystore = new KeyStore<T>();
-            keystore.Initialize(Filename, MaxKeySize, AllowDuplicateKeys);
+            await keystore.Initialize(Filename, MaxKeySize, AllowDuplicateKeys);
             return keystore;
         }
 
         object _savelock = new object();
-        public void SaveIndex()
+        public async Task SaveIndex()
         {
             if (_index == null)
                 return;
             //lock (_savelock)
             //{
                 //log.Debug("saving to disk");
-                _index.SaveIndex();
-                _deleted.SaveIndex();
+                await _index.SaveIndex();
+                await _deleted.SaveIndex();
                 //log.Debug("index saved");
             //}
         }
 
-        public IEnumerable<int> GetDuplicates(T key)
+        public async Task<IEnumerable<int>> GetDuplicates(T key)
         {
             // get duplicates from index
-            return _index.GetDuplicates(key);
+            return await _index.GetDuplicates(key);
         }
 
         public byte[] FetchRecordBytes(int record)
@@ -284,24 +281,24 @@ namespace RaptorDB
             return false;
         }
 
-        public int Set(T key, string data)
+        public async Task<int> Set(T key, string data)
         {
-            return Set(key, Encoding.Unicode.GetBytes(data));
+            return await Set(key, Encoding.Unicode.GetBytes(data));
         }
 
-        public int Set(T key, byte[] data)
+        public async Task<int> Set(T key, byte[] data)
         {
             int recno = -1;
             // save to storage
             recno = _archive.WriteData(key, data, false);
             // save to index
-            _index.Set(key, recno);
+            await _index.Set(key, recno);
 
             return recno;
         }
 
         private object _shutdownlock = new object();
-        public void Shutdown()
+        public async Task Shutdown()
         {
             //lock (_shutdownlock)
             //{
@@ -310,13 +307,13 @@ namespace RaptorDB
                     //log.Debug("Shutting down");
                 }
                 else return;
-                SaveIndex();
+                await SaveIndex();
                 SaveLastRecord();
 
                 if (_deleted != null)
-                    _deleted.Shutdown();
+                    await _deleted.Shutdown();
                 if (_index != null)
-                    _index.Shutdown();
+                    await _index.Shutdown();
                 if (_archive != null)
                     _archive.Shutdown();
                 _index = null;
@@ -329,7 +326,7 @@ namespace RaptorDB
 
         public void Dispose()
         {
-            Shutdown();
+            var waiter = Shutdown().GetAwaiter();
         }
 
         #region [            P R I V A T E     M E T H O D S              ]
@@ -339,13 +336,13 @@ namespace RaptorDB
             _index.SaveLastRecordNumber(_archive.Count());
         }
 
-        private void Initialize(string filename, byte maxkeysize, bool AllowDuplicateKeys)
+        private async Task Initialize(string filename, byte maxkeysize, bool AllowDuplicateKeys)
         {
             _MaxKeySize = RDBDataType<T>.GetByteSize(maxkeysize);
             _T = RDBDataType<T>.ByteHandler();
 
             _Path = Path.GetDirectoryName(filename);
-            Directory.CreateDirectory(_Path);
+            await Directory.CreateDirectory(_Path);
 
             _FileName = Path.GetFileNameWithoutExtension(filename);
             string db = _Path + PathHelper.DirectorySeparatorChar + _FileName + _datExtension;
@@ -354,17 +351,17 @@ namespace RaptorDB
             //LogManager.Configure(_Path + Path.DirectorySeparatorChar + _FileName + ".txt", 500, false);
 
             _index = new MGIndex<T>();
-            _index.Initialize(_Path, _FileName + _idxExtension, _MaxKeySize, Global.PageItemCount, AllowDuplicateKeys);
+            await _index.Initialize(_Path, _FileName + _idxExtension, _MaxKeySize, Global.PageItemCount, AllowDuplicateKeys);
             _archive = new StorageFile<T>();
-            _archive.Initialize(db, false);
+            await _archive.Initialize(db, false);
 
             _deleted = new BoolIndex();
-            _deleted.Initialize(_Path, _FileName + "_deleted.idx");
+            await _deleted.Initialize(_Path, _FileName + "_deleted.idx");
             _archive.SkipDateTime = true;
 
             //log.Debug("Current Count = " + RecordCount().ToString("#,0"));
 
-            CheckIndexState();
+            await CheckIndexState();
 
             //log.Debug("Starting save timer");
             _saveTimer = new DispatcherTimer();
@@ -374,7 +371,7 @@ namespace RaptorDB
 
         }
 
-        private void CheckIndexState()
+        private async Task CheckIndexState()
         {
             //log.Debug("Checking Index state...");
             int last = _index.GetLastIndexedRecordNumber();
@@ -391,7 +388,7 @@ namespace RaptorDB
                     bool deleted = false;
                     T key = _archive.GetKey(i, out deleted);
                     if (deleted == false)
-                        _index.Set(key, i);
+                        await _index.Set(key, i);
                     else
                         _index.RemoveKey(key);
 
@@ -407,7 +404,7 @@ namespace RaptorDB
         void _saveTimer_Elapsed(object sender, object e)
         {
             _saveTimer.Stop();
-            SaveIndex();
+            var waiter = SaveIndex().GetAwaiter();
         }
 
         #endregion

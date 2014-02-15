@@ -192,7 +192,7 @@ namespace Sword
         {
             get
             {
-                return (string)this.GetProperty(ConfigEntryType.Description);
+                return (string)this.GetProperty(ConfigEntryType.Description) + " (" + (string)this.InternalName.ToUpper() + ")";
             }
         }
 

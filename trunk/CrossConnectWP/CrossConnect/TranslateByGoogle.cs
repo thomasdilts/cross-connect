@@ -41,14 +41,14 @@ namespace CrossConnect
         /// <summary>
         /// The crossconnect url.
         /// </summary>
-        private const string CrossconnectUrl = 
+        private const string CrossconnectUrl =
             "http://www.cross-connect.se/translate/gettranslatekey.php?uuid={0}&language={1}";
 
         // Google Translate REST service URL.
         /// <summary>
         /// The service url.
         /// </summary>
-        private const string ServiceUrl = 
+        private const string ServiceUrl =
             "https://www.googleapis.com/language/translate/v2?key={0}&source={1}&target={2}&q={3}";
 
         /// <summary>

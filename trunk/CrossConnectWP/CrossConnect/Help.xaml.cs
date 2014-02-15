@@ -75,6 +75,7 @@ namespace CrossConnect
                         BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"),
                         BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
                         BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
+                        BrowserTitledWindow.GetBrowserColor("PhoneWordsOfChristColor"),
                         state.HtmlFontSize,
                         Theme.FontFamilies[App.Themes.FontFamily]) + sr.ReadToEnd() + "</body></html>");
                 sr.Close();

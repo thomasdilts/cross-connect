@@ -234,7 +234,8 @@ namespace CrossConnect.readers
 
                 for (int i = 0; i < count; i++)
                 {
-                    int bookNum = canon.GetBibleNumber(sortedKeys[i]);
+
+                    int bookNum = canon.BookByShortName[sortedKeys[i]].BookNum;
                     if (!books.ContainsKey(bookNum))
                     {
                         butColors[books.Count] = ChapterCategories[sortedKeys[i]];
