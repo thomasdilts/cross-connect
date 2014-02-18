@@ -197,7 +197,16 @@ namespace CrossConnect
             SelectList.SelectedIndex = -1;
 
             var info = (AudioPlayer.MediaInfo)((TextBlock)e.AddedItems[0]).Tag;
-
+            object BookToHear;
+            object chapterToHear;
+            object language;
+            if (PhoneApplicationService.Current.State.TryGetValue("ChapterToHear", out chapterToHear)
+                && PhoneApplicationService.Current.State.TryGetValue("BookToHear", out BookToHear)
+                && PhoneApplicationService.Current.State.TryGetValue("ChapterToHearLanguage", out language))
+            {
+                info.Book = (string)BookToHear;
+                info.Chapter = (int)chapterToHear;
+            }
             if (NavigationService.CanGoBack)
             {
                 NavigationService.GoBack();
