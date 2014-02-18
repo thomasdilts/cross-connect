@@ -618,7 +618,7 @@ namespace CrossConnect
             {
                 return;
             }
-
+            App.StartTimerForSavingWindows();
             _isInScreenMoving = true;
             if (Math.Abs(_screenWidth) < 0.1)
             {

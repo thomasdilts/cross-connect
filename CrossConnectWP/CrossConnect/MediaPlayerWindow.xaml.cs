@@ -169,14 +169,9 @@ namespace CrossConnect
                 AudioPlayer.StartNewTrack(Info);
                 title.Text = AudioPlayer.GetTitle(Info);
                 SetButtonVisibility(false);
-                App.StartTimerForSavingWindows();
                 return;
             }
             InfinateLoopTextToSpeech(Info, GetSynthesizer(Info.VoiceName));
-
-
-            App.StartTimerForSavingWindows();
-
         }
         private static bool _IsCancel = false;
         private static bool _IsInLoop = false;
@@ -223,9 +218,9 @@ namespace CrossConnect
                                         : this._state.BibleDescription);
                 }
                 App.SynchronizeAllWindows(bookShortName, relChaptNum, verseNum, -1, this._state.Source);
+                SetButtonVisibilityTTS(true);
                 try
                 {
-                    SetButtonVisibilityTTS(true);
                     await synth.SpeakTextAsync(chapterdata);
                 }
                 catch(Exception e)

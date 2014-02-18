@@ -324,6 +324,8 @@ namespace CrossConnect
                     OpenWindows[i].SynchronizeWindow(bookShortName, chapterNum, verseNum, source);
                 }
             }
+
+            App.StartTimerForSavingWindows();
         }
 
         private void ApplicationActivated(object sender, ActivatedEventArgs e)
@@ -430,38 +432,6 @@ namespace CrossConnect
             {
                 DailyPlan = new SerializableDailyPlan();
             }
-            else
-            {
-                if (DailyPlan.PersonalNotes.Any())
-                {
-                    //convert to the new note system
-                    var canon = CanonManager.GetCanon("KJV");
-                    foreach (var chapter in DailyPlan.PersonalNotes)
-                    {
-                        var book = canon.GetBookFromAbsoluteChapter(chapter.Key);
-                        foreach (var verse in chapter.Value)
-                        {
-                            BiblePlaceMarker note = BiblePlaceMarker.Clone(verse.Value);
-                            note.BookShortName = book.ShortName1;
-                            note.VerseNum = note.VerseNum - book.VersesInChapterStartIndex;
-                            if (!App.DailyPlan.PersonalNotesVersified.ContainsKey(note.BookShortName))
-                            {
-                                App.DailyPlan.PersonalNotesVersified.Add(note.BookShortName, new Dictionary<int, Dictionary<int, BiblePlaceMarker>>());
-                            }
-
-                            if (!App.DailyPlan.PersonalNotesVersified[note.BookShortName].ContainsKey(note.ChapterNum))
-                            {
-                                App.DailyPlan.PersonalNotesVersified[note.BookShortName].Add(note.ChapterNum, new Dictionary<int, BiblePlaceMarker>());
-                            }
-
-                            App.DailyPlan.PersonalNotesVersified[note.BookShortName][note.ChapterNum][note.VerseNum] = note;
-                        }
-                    }
-
-                }
-
-                DailyPlan.PersonalNotes = new Dictionary<int, Dictionary<int, BiblePlaceMarker>>();
-            }
 
             if (DailyPlan.PlanBible == null)
             {
@@ -537,6 +507,12 @@ namespace CrossConnect
                     // no more windows to load.
                     break;
                 }
+            }
+
+            object objCurrrentScreen;
+            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue("CurrentScreen", out objCurrrentScreen))
+            {
+                PhoneApplicationService.Current.State["CurrentScreen"] = (int)objCurrrentScreen;
             }
 
             //if (OpenWindows.Any())
@@ -632,11 +608,6 @@ namespace CrossConnect
             if (PlaceMarkers == null)
             {
                 PlaceMarkers = new BiblePlaceMarkers();
-            }
-            else
-            {
-                BiblePlaceMarkers.FixOldStyleMarkers(PlaceMarkers.Bookmarks);
-                BiblePlaceMarkers.FixOldStyleMarkers(PlaceMarkers.History);
             }
         }
 
@@ -778,6 +749,38 @@ namespace CrossConnect
                 {
                     DailyPlan = new SerializableDailyPlan();
                 }
+                else
+                {
+                    if (DailyPlan.PersonalNotes.Any())
+                    {
+                        //convert to the new note system
+                        var canon = CanonManager.GetCanon("KJV");
+                        foreach (var chapter in DailyPlan.PersonalNotes)
+                        {
+                            var book = canon.GetBookFromAbsoluteChapter(chapter.Key);
+                            foreach (var verse in chapter.Value)
+                            {
+                                BiblePlaceMarker note = BiblePlaceMarker.Clone(verse.Value);
+                                note.BookShortName = book.ShortName1;
+                                note.VerseNum = note.VerseNum - book.VersesInChapterStartIndex;
+                                if (!App.DailyPlan.PersonalNotesVersified.ContainsKey(note.BookShortName))
+                                {
+                                    App.DailyPlan.PersonalNotesVersified.Add(note.BookShortName, new Dictionary<int, Dictionary<int, BiblePlaceMarker>>());
+                                }
+
+                                if (!App.DailyPlan.PersonalNotesVersified[note.BookShortName].ContainsKey(note.ChapterNum))
+                                {
+                                    App.DailyPlan.PersonalNotesVersified[note.BookShortName].Add(note.ChapterNum, new Dictionary<int, BiblePlaceMarker>());
+                                }
+
+                                App.DailyPlan.PersonalNotesVersified[note.BookShortName][note.ChapterNum][note.VerseNum] = note;
+                            }
+                        }
+
+                    }
+
+                    DailyPlan.PersonalNotes = new Dictionary<int, Dictionary<int, BiblePlaceMarker>>();
+                }
 
                 if (DailyPlan.PlanBible == null)
                 {
@@ -858,6 +861,11 @@ namespace CrossConnect
                 {
                     PlaceMarkers = new BiblePlaceMarkers();
                 }
+                else
+                {
+                    BiblePlaceMarkers.FixOldStyleMarkers(PlaceMarkers.Bookmarks);
+                    BiblePlaceMarkers.FixOldStyleMarkers(PlaceMarkers.History);
+                }
 
                 if (!IsolatedStorageSettings.ApplicationSettings.Contains("LanguageIsoCode"))
                 {
@@ -928,7 +936,7 @@ namespace CrossConnect
         {
             if (TimerForSavingWindows != null)
             {
-                TimerForSavingWindows.Stop();
+                return;
             }
 
             TimerForSavingWindows = new DispatcherTimer();
@@ -1003,7 +1011,16 @@ namespace CrossConnect
 
                 objectsToSave["DailyPlan"] = sw.ToString();
             }
+            // this particular state must be saved
+            object objCurrrentScreen;
+            int currentScreen = 0;
+            if (PhoneApplicationService.Current.State.TryGetValue("CurrentScreen", out objCurrrentScreen))
+            {
+                currentScreen = (int)objCurrrentScreen;
+            }
 
+            IsolatedStorageSettings.ApplicationSettings["CurrentScreen"] = currentScreen; 
+            
             await SavePersistantObjects(objectsToSave, PersistantObjectsWindowsFileName);
         }
 
