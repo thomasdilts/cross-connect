@@ -33,6 +33,7 @@ namespace CrossConnect
     using Microsoft.Phone.Shell;
 
     using Sword.reader;
+    using CrossConnect.readers;
 
     /// <summary>
     /// The select bible book.
@@ -248,8 +249,29 @@ namespace CrossConnect
                 openWindowIndex = 0;
             }
 
+            //may need to hide chapter...
+            var book = ((BibleZtextReader)App.OpenWindows[(int)openWindowIndex].State.Source).canon.GetBookFromBookNumber((int)((Button)sender).Tag);
+            var stage = (book == null || book.NumberOfChapters > 1) 
+                && !(App.OpenWindows[(int)openWindowIndex].State.Source is RawGenTextReader) 
+                && !(App.OpenWindows[(int)openWindowIndex].State.Source is DailyPlanReader)?1:2;
+            var stageInfo = (int)((Button)sender).Tag;
+            PhoneApplicationService.Current.State["SelectBibleBookFirstSelection"] = stageInfo;
+            if(stage==2)
+            {
+                _selectBibleBookSecondSelection = book.VersesInChapterStartIndex; //first chapter. there is only one chapter
+                stageInfo = book.VersesInChapterStartIndex;
+                ButtonWindowSpecs specs2 = App.OpenWindows[(int)openWindowIndex].State.Source.GetButtonWindowSpecs(
+                    stage, stageInfo); 
+                if (specs2 != null)
+                {
+                    ReloadWindow(specs2);
+                    return;
+                }
+                
+            }
+
             ButtonWindowSpecs specs = App.OpenWindows[(int)openWindowIndex].State.Source.GetButtonWindowSpecs(
-                1, (int)((Button)sender).Tag);
+                stage, stageInfo);
             if (specs != null)
             {
                 PhoneApplicationService.Current.State["SelectBibleBookFirstSelection"] = (int)((Button)sender).Tag;
@@ -257,7 +279,6 @@ namespace CrossConnect
             }
             else
             {
-                var book = ((BibleZtextReader)App.OpenWindows[(int)openWindowIndex].State.Source).canon.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
                 App.OpenWindows[(int)openWindowIndex].State.Source.MoveChapterVerse(book.ShortName1, (int)((Button)sender).Tag - book.VersesInChapterStartIndex, 0, false, App.OpenWindows[(int)openWindowIndex].State.Source);
                 PhoneApplicationService.Current.State["skipWindowSettings"] = true;
                 if (NavigationService.CanGoBack)

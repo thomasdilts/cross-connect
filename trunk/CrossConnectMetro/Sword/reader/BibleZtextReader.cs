@@ -1096,7 +1096,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 }
                 else
                 {
-                    var nextBook = canon.GetBookFromAbsoluteChapter(book.NumberOfChapters + book.VersesInChapterStartIndex + 1);
+                    var nextBook = canon.GetBookFromAbsoluteChapter(book.NumberOfChapters + book.VersesInChapterStartIndex);
                     this.MoveChapterVerse(nextBook.ShortName1, 0, 0, false, this);
                 }
             }
