@@ -653,13 +653,19 @@ function SetFontColorForElement(elemntId, colorRgba){
                             }
                             bookCounter++;
                         }
+                        var numBadShortNames = 0;
                         foreach (var book in canon.NewTestBooks)
                         {
                             if (this.Chapters[book.VersesInChapterStartIndex].Length != 0)
                             {
                                 colors.Add(ChapterCategories[book.ShortName1]);
                                 values.Add(bookCounter);
-                                buttonNames.Add(this.BookNames.GetShortName(book.ShortName1));
+                                var shortName = this.BookNames.GetShortName(book.ShortName1);
+                                if (shortName.Count()>4)
+                                {
+                                    numBadShortNames++;
+                                }
+                                buttonNames.Add(shortName);
                                 bookCounter++;
                             }
                         }
@@ -671,7 +677,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                             colors.ToArray(),
                             buttonNames.ToArray(),
                             values.ToArray(),
-                            !this.BookNames.ExistsShortNames ? ButtonSize.Large : ButtonSize.Medium);
+                            numBadShortNames>10 ? ButtonSize.Large : ButtonSize.Medium);
                     }
                 case 1:
                     {
@@ -1096,7 +1102,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 }
                 else
                 {
-                    var nextBook = canon.GetBookFromAbsoluteChapter(book.NumberOfChapters + book.VersesInChapterStartIndex + 1);
+                    var nextBook = canon.GetBookFromAbsoluteChapter(book.NumberOfChapters + book.VersesInChapterStartIndex);
                     this.MoveChapterVerse(nextBook.ShortName1, 0, 0, false, this);
                 }
             }
