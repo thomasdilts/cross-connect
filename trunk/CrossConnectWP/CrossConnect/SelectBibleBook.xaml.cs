@@ -248,27 +248,40 @@ namespace CrossConnect
             {
                 openWindowIndex = 0;
             }
-
-            //may need to hide chapter...
-            var book = ((BibleZtextReader)App.OpenWindows[(int)openWindowIndex].State.Source).canon.GetBookFromBookNumber((int)((Button)sender).Tag);
-            var stage = (book == null || book.NumberOfChapters > 1) 
-                && !(App.OpenWindows[(int)openWindowIndex].State.Source is RawGenTextReader) 
-                && !(App.OpenWindows[(int)openWindowIndex].State.Source is DailyPlanReader)?1:2;
-            var stageInfo = (int)((Button)sender).Tag;
-            PhoneApplicationService.Current.State["SelectBibleBookFirstSelection"] = stageInfo;
-            if(stage==2)
+            var source = App.OpenWindows[(int)openWindowIndex].State.Source;
+            Sword.versification.CanonBookDef book = null;
+            if (source is BibleZtextReader)
             {
-                _selectBibleBookSecondSelection = book.VersesInChapterStartIndex; //first chapter. there is only one chapter
-                stageInfo = book.VersesInChapterStartIndex;
+                book = ((BibleZtextReader)App.OpenWindows[(int)openWindowIndex].State.Source).canon.GetBookFromBookNumber((int)((Button)sender).Tag);
+            }
+            //may need to hide chapter...
+            var stage = (book == null || book.NumberOfChapters > 1)
+                && !(App.OpenWindows[(int)openWindowIndex].State.Source is RawGenTextReader)
+                && !(App.OpenWindows[(int)openWindowIndex].State.Source is DailyPlanReader) ? 1 : 2;
+            var stageInfo = (int)((Button)sender).Tag;
+            if (stage == 2)
+            {
+                if (source is BibleZtextReader)
+                {
+                    _selectBibleBookSecondSelection = book.VersesInChapterStartIndex; //first chapter. there is only one chapter
+                    stageInfo = book.VersesInChapterStartIndex;
+                }
+                else
+                {
+                    _selectBibleBookSecondSelection = stageInfo;
+                }
                 ButtonWindowSpecs specs2 = App.OpenWindows[(int)openWindowIndex].State.Source.GetButtonWindowSpecs(
-                    stage, stageInfo); 
+                    stage, stageInfo);
                 if (specs2 != null)
                 {
                     ReloadWindow(specs2);
                     return;
                 }
-                
+
             }
+            
+
+            PhoneApplicationService.Current.State["SelectBibleBookFirstSelection"] = stageInfo;
 
             ButtonWindowSpecs specs = App.OpenWindows[(int)openWindowIndex].State.Source.GetButtonWindowSpecs(
                 stage, stageInfo);
