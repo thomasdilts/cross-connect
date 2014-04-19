@@ -474,31 +474,14 @@ namespace CrossConnect
         private static async Task<StorageFolder> GetUsedFolderNoFail(string testFileName = null, bool AlwaysLocal=false)
         {
             StorageFolder folder = null;
-            if (DisplaySettings.UseRemoteStorage && !AlwaysLocal)
+            folder = ApplicationData.Current.LocalFolder;
+            if (testFileName != null)
             {
-                folder = ApplicationData.Current.RoamingFolder;
-                if(testFileName!=null)
+                if (!await BibleZtextReader.FileExists(folder, testFileName))
                 {
-                    if (!await BibleZtextReader.FileExists(folder, testFileName))
+                    if (!await BibleZtextReader.FileExists(ApplicationData.Current.RoamingFolder, testFileName))
                     {
-                        if (!await BibleZtextReader.FileExists(ApplicationData.Current.LocalFolder, testFileName))
-                        {
-                            folder = ApplicationData.Current.LocalFolder;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                folder = ApplicationData.Current.LocalFolder;
-                if (testFileName != null)
-                {
-                    if (!await BibleZtextReader.FileExists(folder, testFileName))
-                    {
-                        if (!await BibleZtextReader.FileExists(ApplicationData.Current.RoamingFolder, testFileName))
-                        {
-                            folder = ApplicationData.Current.RoamingFolder;
-                        }
+                        folder = ApplicationData.Current.RoamingFolder;
                     }
                 }
             }
@@ -506,10 +489,10 @@ namespace CrossConnect
             return folder;
         }
 
-        private async Task<Dictionary<String, Object>> LoadPersistantObjectsFromFile(string filename, bool alwaysLocal=false)
+        private async Task<Dictionary<String, Object>> LoadPersistantObjectsFromFile(string filename, LoadPersObjDelegate loadFunction, bool alwaysLocal=false)
         {
             var objectsToLoad = new Dictionary<String, Object>();
-
+            bool isLoaded = false;
             StorageFolder folder = await GetUsedFolderNoFail(filename, alwaysLocal);
             if (await BibleZtextReader.FileExists(folder, filename))
             {
@@ -532,42 +515,25 @@ namespace CrossConnect
                             typeof(Dictionary<string, object>), new[] { typeof(string) });
                         objectsToLoad = (Dictionary<string, object>)serializer.ReadObject(inStream.AsStreamForRead());
                     }
+
+                    await loadFunction(objectsToLoad);
+                    isLoaded = true;
                 }
                 catch (Exception e)
                 {
-                    throw new SuspensionManagerException(e);
+                    // we can't use the file. Just kill it.
+                    Hoot.File.Delete(filename);
+                    objectsToLoad = new Dictionary<String, Object>();
+                    isLoaded = false;
                 }
             }
 
+            if(!isLoaded)
+            {
+                await loadFunction(objectsToLoad);
+            }
+
             return objectsToLoad;
-        }
-
-        /// <summary>
-        /// We should come here a maximum of only ONCE in the life of this version during a version update.
-        /// So we need to delete the setup file which becomes the flag that this update is done
-        /// </summary>
-        /// <returns></returns>
-        private async Task<bool> LoadPersistantOldUpdate()
-        {
-            var objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsFileName);
-            LoadPersistantThemes(objectsToLoad);
-            LoadPersistantDisplaySettings(objectsToLoad);
-            LoadPersistantMarkers(objectsToLoad);
-            await LoadPersistantWindows(objectsToLoad);
-
-            // We should come here a maximum of only ONCE in the life of this version during a version update.
-            // So we need to delete the file which becomes the flag that this update is done
-            StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(PersistantObjectsFileName);
-            await file.DeleteAsync();
-            
-            // We must now save all the settings in the different NEW file names
-            SavePersistantDisplaySettings();
-            SavePersistantHighlighting();
-            SavePersistantMarkers();
-            SavePersistantThemes();
-            SavePersistantWindows();
-
-            return true;
         }
 
         private async Task LoadPersistantWindows(Dictionary<String, Object> objectsToLoad)
@@ -710,7 +676,7 @@ namespace CrossConnect
             }
         }
 
-        private void LoadPersistantThemes(Dictionary<String, Object> objectsToLoad)
+        private async Task LoadPersistantThemes(Dictionary<String, Object> objectsToLoad)
         {
             object markerXmlData;
             if (objectsToLoad.TryGetValue("Themes", out markerXmlData))
@@ -723,7 +689,7 @@ namespace CrossConnect
             }
         }
 
-        private void LoadPersistantDisplaySettings(Dictionary<String, Object> objectsToLoad)
+        private async Task LoadPersistantDisplaySettings(Dictionary<String, Object> objectsToLoad)
         {
             object markerXmlData;
             DisplaySettings = new DisplaySettings();
@@ -756,7 +722,7 @@ namespace CrossConnect
             DisplaySettings.CheckForNullAndFix();
         }
 
-        private void LoadPersistantHighlighting(Dictionary<String, Object> objectsToLoad)
+        private async Task LoadPersistantHighlighting(Dictionary<String, Object> objectsToLoad)
         {
             object markerXmlData;
             DisplaySettings.highlighter = new Highlighter();
@@ -776,7 +742,7 @@ namespace CrossConnect
             }
         }
 
-        private void LoadPersistantMarkers(Dictionary<String, Object> objectsToLoad)
+        private async Task LoadPersistantMarkers(Dictionary<String, Object> objectsToLoad)
         {
             PlaceMarkers = new BiblePlaceMarkers();
             object markerXmlData;
@@ -805,15 +771,11 @@ namespace CrossConnect
             }
         }
 
+        public delegate Task LoadPersObjDelegate(Dictionary<String, Object> objectsToLoad);
+
         private async Task<bool> LoadPersistantObjects(bool alwaysLocal=false)
         {
             StorageFolder folder = await GetUsedFolderNoFail(PersistantObjectsFileName, alwaysLocal);
-
-            // The next line is a one time only thing. Afterwards the file is deleted and never created again.
-            if (await BibleZtextReader.FileExists(folder, PersistantObjectsFileName))
-            {
-                return await LoadPersistantOldUpdate();
-            }
 
             try
             {
@@ -828,23 +790,11 @@ namespace CrossConnect
                 }
 
                 await InstalledBibles.Initialize();
-
-                var objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsDisplaySettingsFileName, true);
-                LoadPersistantDisplaySettings(objectsToLoad);
-                // once more now with the "UseRemoteStorage" properly set
-                if(DisplaySettings.UseRemoteStorage)
-                {
-                    objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsDisplaySettingsFileName);
-                    LoadPersistantDisplaySettings(objectsToLoad);
-                }
-                objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsThemesFileName);
-                LoadPersistantThemes(objectsToLoad);
-                objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsHighlightFileName);
-                LoadPersistantHighlighting(objectsToLoad);
-                objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsMarkersFileName);
-                LoadPersistantMarkers(objectsToLoad);
-                objectsToLoad = await LoadPersistantObjectsFromFile(PersistantObjectsWindowsFileName);
-                await LoadPersistantWindows(objectsToLoad);
+                await LoadPersistantObjectsFromFile(PersistantObjectsDisplaySettingsFileName, LoadPersistantDisplaySettings, true);
+                await LoadPersistantObjectsFromFile(PersistantObjectsThemesFileName, LoadPersistantThemes, true);
+                await LoadPersistantObjectsFromFile(PersistantObjectsHighlightFileName, LoadPersistantHighlighting, true);
+                await LoadPersistantObjectsFromFile(PersistantObjectsMarkersFileName, LoadPersistantMarkers, true);
+                await LoadPersistantObjectsFromFile(PersistantObjectsWindowsFileName, LoadPersistantWindows, true);
             }
             catch (Exception ee)
             {
@@ -973,10 +923,6 @@ namespace CrossConnect
             }
             // UseRemoteStorage is always local
             await SavePersistantObjects(objectsToSave, PersistantObjectsDisplaySettingsFileName, true);
-            if (DisplaySettings.UseRemoteStorage)
-            {
-                await SavePersistantObjects(objectsToSave, PersistantObjectsDisplaySettingsFileName);
-            }
         }
 
         public static async void SavePersistantHighlighting()
