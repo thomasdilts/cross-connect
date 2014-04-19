@@ -104,30 +104,6 @@ namespace Sword.reader
         #region Constants
 
         /// <summary>
-        ///     Constant for the number of books in the Bible
-        /// </summary>
-        //public const int BooksInBible = 66;
-
-        //public const int BooksInNt = 27;
-
-        //public const int BooksInOt = 39;
-
-        /// <summary>
-        ///     Constant for the number of chapters in the Bible
-        /// </summary>
-        //public const int ChaptersInBible = 1189;
-
-        /// <summary>
-        ///     Constant for the number of chapters in the NT
-        /// </summary>
-        //public const int ChaptersInNt = 260;
-
-        /// <summary>
-        ///     Constant for the number of chapters in the OT
-        /// </summary>
-        //public const int ChaptersInOt = 929;
-
-        /// <summary>
         ///     * The configuration directory
         /// </summary>
         public const string DirConf = "mods.d";
@@ -1917,6 +1893,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             bool isInQuote = false;
             bool isInInjectionElement = false;
             bool isInTitle = false;
+            bool isHiItalic = true;
             bool isChaptNumGiven = false;
             bool isChaptNumGivenNotes = false;
             bool isReferenceLinked = false;
@@ -2082,7 +2059,16 @@ function SetFontColorForElement(elemntId, colorRgba){
                                     case "hi":
                                         if (!isRaw)
                                         {
-                                            AppendText("<i>", plainText, noteText, isInElement);
+                                            isHiItalic = true;
+                                            if (reader.HasAttributes)
+                                            {
+                                                reader.MoveToFirstAttribute();
+                                                if (reader.Name.ToLower().Equals("type") && reader.Value.ToLower().Equals("bold"))
+                                                {
+                                                    isHiItalic = false;
+                                                }
+                                            }
+                                            AppendText(isHiItalic ? "<i>" : "<b>", plainText, noteText, isInElement);
                                         }
 
                                         break;
@@ -2189,10 +2175,10 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         break;
 
                                     case "versee":
-                                        AppendText(" ", plainText, noteText, isInElement);
+                                        //AppendText(" ", plainText, noteText, isInElement);
                                         break;
                                     default:
-                                        AppendText(" ", plainText, noteText, isInElement);
+                                        //AppendText(" ", plainText, noteText, isInElement);
                                         Debug.WriteLine("Element untreated: " + reader.Name);
                                         break;
                                 }
@@ -2275,7 +2261,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                     case "hi":
                                         if (!isRaw)
                                         {
-                                            AppendText("</i>", plainText, noteText, isInElement);
+                                            AppendText(isHiItalic ? "</i>" : "</b>", plainText, noteText, isInElement);
                                         }
 
                                         break;
@@ -2330,7 +2316,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                     case "l":
                                         if (!isRaw && !displaySettings.EachVerseNewLine)
                                         {
-                                            AppendText(" ", plainText, noteText, isInElement);
+                                            //AppendText(" ", plainText, noteText, isInElement);
                                         }
 
                                         break;
@@ -2338,7 +2324,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         AppendText(" ", plainText, noteText, isInElement);
                                         break;
                                     default:
-                                        AppendText(" ", plainText, noteText, isInElement);
+                                        //AppendText(" ", plainText, noteText, isInElement);
                                         Debug.WriteLine("EndElement untreated: " + reader.Name);
                                         break;
                                 }

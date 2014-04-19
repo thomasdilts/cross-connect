@@ -1923,6 +1923,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             bool isInQuote = false;
             bool isInInjectionElement = false;
             bool isInTitle = false;
+            bool isHiItalic = true;
             bool isChaptNumGiven = false;
             bool isChaptNumGivenNotes = false;
             bool isReferenceLinked = false;
@@ -2088,9 +2089,17 @@ function SetFontColorForElement(elemntId, colorRgba){
                                     case "hi":
                                         if (!isRaw)
                                         {
-                                            AppendText("<i>", plainText, noteText, isInElement);
+                                            isHiItalic = true;
+                                            if (reader.HasAttributes)
+                                            {
+                                                reader.MoveToFirstAttribute();
+                                                if (reader.Name.ToLower().Equals("type") && reader.Value.ToLower().Equals("bold"))
+                                                {
+                                                    isHiItalic = false;
+                                                }
+                                            }
+                                            AppendText(isHiItalic ? "<i>" : "<b>", plainText, noteText, isInElement);
                                         }
-
                                         break;
                                     case "Rf":
                                         isInElement = false;
@@ -2195,10 +2204,10 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         break;
 
                                     case "versee":
-                                        AppendText(" ", plainText, noteText, isInElement);
+                                        //AppendText(" ", plainText, noteText, isInElement);
                                         break;
                                     default:
-                                        AppendText(" ", plainText, noteText, isInElement);
+                                        //AppendText(" ", plainText, noteText, isInElement);
                                         Debug.WriteLine("Element untreated: " + reader.Name);
                                         break;
                                 }
@@ -2281,7 +2290,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                     case "hi":
                                         if (!isRaw)
                                         {
-                                            AppendText("</i>", plainText, noteText, isInElement);
+                                            AppendText(isHiItalic ? "</i>" : "</b>", plainText, noteText, isInElement);
                                         }
 
                                         break;
@@ -2336,7 +2345,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                     case "l":
                                         if (!isRaw && !displaySettings.EachVerseNewLine)
                                         {
-                                            AppendText(" ", plainText, noteText, isInElement);
+                                            //AppendText(" ", plainText, noteText, isInElement);
                                         }
 
                                         break;
@@ -2344,7 +2353,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         AppendText(" ", plainText, noteText, isInElement);
                                         break;
                                     default:
-                                        AppendText(" ", plainText, noteText, isInElement);
+                                        //AppendText(" ", plainText, noteText, isInElement);
                                         Debug.WriteLine("EndElement untreated: " + reader.Name);
                                         break;
                                 }

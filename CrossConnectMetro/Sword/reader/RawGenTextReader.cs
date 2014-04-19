@@ -1072,6 +1072,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
             bool isInElement = false;
             bool isInQuote = false;
+            bool isHiItalic = true;
             bool isInInjectionElement = false;
             bool isInTitle = false;
             bool isChaptNumGiven = false;
@@ -1217,7 +1218,16 @@ function SetFontColorForElement(elemntId, colorRgba){
                                     case "hi":
                                         if (!isRaw)
                                         {
-                                            AppendText("<i>", plainText, noteText, isInElement);
+                                            isHiItalic = true;
+                                            if (reader.HasAttributes)
+                                            {
+                                                reader.MoveToFirstAttribute();
+                                                if (reader.Name.ToLower().Equals("type") && reader.Value.ToLower().Equals("bold"))
+                                                {
+                                                    isHiItalic = false;
+                                                }
+                                            }
+                                            AppendText(isHiItalic?"<i>":"<b>", plainText, noteText, isInElement);
                                         }
 
                                         break;
@@ -1427,7 +1437,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                     case "hi":
                                         if (!isRaw)
                                         {
-                                            AppendText("</i>", plainText, noteText, isInElement);
+                                            AppendText(isHiItalic?"</i>":"</b>", plainText, noteText, isInElement);
                                         }
 
                                         break;

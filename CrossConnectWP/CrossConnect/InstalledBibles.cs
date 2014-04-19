@@ -23,8 +23,24 @@
 
 namespace CrossConnect
 {
+    using Sword;
+    using Sword.reader;
     using System.Collections.Generic;
     using System.IO.IsolatedStorage;
+    using System.Threading.Tasks;
+    using Windows.Storage;
+
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO.IsolatedStorage;
+    using System.Linq;
+    using System.Threading;
+    using System.Windows.Threading;
+
+
+
 
     public class InstalledBiblesAndCommentaries
     {
@@ -42,36 +58,19 @@ namespace CrossConnect
         {
         }
 
-        public void Initialize()
+        public async Task Initialize()
         {
-            InstalledBibles = new Dictionary<string, SwordBook>();
-            InstalledCommentaries = new Dictionary<string, SwordBook>();
-            InstalledGeneralBooks = new Dictionary<string, SwordBook>();
-            string sBooks;
-            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue("installedBibles", out sBooks))
-            {
-                string[] books = sBooks.Split("¤".ToCharArray());
-                foreach (string book in books)
-                {
-                    AddBook(book, false);
-                }
-            }
+            //ApplicationData.Current.LocalFolder
+            StorageFolder configFolder =
+                await ApplicationData.Current.LocalFolder.GetFolderAsync(BibleZtextReader.DirConf);
+            IReadOnlyList<StorageFile> configFiles = await configFolder.GetFilesAsync();
 
-            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue("installedCommentaries", out sBooks))
+            foreach (var file in configFiles)
             {
-                string[] books = sBooks.Split("¤".ToCharArray());
-                foreach (string book in books)
+                var splitFileName = file.Name.Split(new char[] { '.' });
+                if (splitFileName.Count() == 2 && ("." + splitFileName[splitFileName.Count() - 1].ToLower()).Equals(BibleZtextReader.ExtensionConf))
                 {
-                    AddCommentary(book, false);
-                }
-            }
-
-            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue("installedGeneralBooks", out sBooks))
-            {
-                string[] books = ((string)sBooks).Split("¤".ToCharArray());
-                foreach (string book in books)
-                {
-                    AddGeneralBook(book, false);
+                    AddGenericBook(splitFileName[splitFileName.Count() - 2].ToLower());
                 }
             }
         }
@@ -79,6 +78,33 @@ namespace CrossConnect
         #endregion Constructors
 
         #region Methods
+
+        public void AddGenericBook(string modPath, bool doSave = true)
+        {
+            var book = new SwordBook(modPath);
+            if (!book.IsLoaded)
+            {
+                return ;
+            }
+            if (((string)book.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper().Equals("ZTEXT"))
+            {
+                this.InstalledBibles[modPath] = book;
+            }
+            else if (((string)book.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper().Equals("ZCOM"))
+            {
+                this.InstalledCommentaries[modPath] = book;
+            }
+            else if (((string)book.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper().Equals("RAWGENBOOK"))
+            {
+                this.InstalledGeneralBooks[modPath] = book;
+            }
+
+            if (doSave)
+            {
+                this.Save();
+                //Windows.Storage.ApplicationData.Current.LocalSettings.Values.Save();
+            }
+        }
 
         public void AddBook(string modPath, bool doSave = true)
         {

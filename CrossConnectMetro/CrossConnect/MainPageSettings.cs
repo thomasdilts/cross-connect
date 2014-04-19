@@ -132,7 +132,6 @@ namespace CrossConnect
             App.DisplaySettings.HighlightName5 = this.highlightName5.Text;
             App.DisplaySettings.HighlightName6 = this.highlightName6.Text;
             App.DisplaySettings.UseHighlights = this.useHighlighting.IsOn;
-            App.DisplaySettings.UseRemoteStorage = this.useRemoteStorage.IsOn;
             App.DisplaySettings.SyncMediaVerses = this.SyncVerses.IsOn;
             App.RaiseBookmarkChangeEvent();
             App.RaiseHistoryChangeEvent();
@@ -211,7 +210,6 @@ namespace CrossConnect
                     this.highlightName6.Text = App.DisplaySettings.HighlightName6;
                     this.useInternetGreekHebrewDict.IsOn = App.DisplaySettings.UseInternetGreekHebrewDict;
                     this.useHighlighting.IsOn = App.DisplaySettings.UseHighlights;
-                    this.useRemoteStorage.IsOn = App.DisplaySettings.UseRemoteStorage;
                     this.SyncVerses.IsOn = App.DisplaySettings.SyncMediaVerses;
 
                     successfulInitialize = true;
