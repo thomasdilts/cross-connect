@@ -59,18 +59,26 @@ namespace CrossConnect
 
         public async Task Initialize()
         {
-            StorageFolder configFolder =
-                await ApplicationData.Current.LocalFolder.GetFolderAsync(BibleZtextReader.DirConf);
-            IReadOnlyList<StorageFile> configFiles = await configFolder.GetFilesAsync();
-
-            foreach (var file in configFiles)
+            try
             {
-                var splitFileName = file.Name.Split(new char[]{'.'});
-                if(splitFileName.Count() == 2 && ("." + splitFileName[splitFileName.Count()-1].ToLower()).Equals(BibleZtextReader.ExtensionConf))
+                StorageFolder configFolder =
+                    await ApplicationData.Current.LocalFolder.GetFolderAsync(BibleZtextReader.DirConf);
+                IReadOnlyList<StorageFile> configFiles = await configFolder.GetFilesAsync();
+
+                foreach (var file in configFiles)
                 {
-                    await AddGenericBook(splitFileName[splitFileName.Count() - 2].ToLower());
+                    var splitFileName = file.Name.Split(new char[] { '.' });
+                    if (splitFileName.Count() == 2 && ("." + splitFileName[splitFileName.Count() - 1].ToLower()).Equals(BibleZtextReader.ExtensionConf))
+                    {
+                        await AddGenericBook(splitFileName[splitFileName.Count() - 2].ToLower());
+                    }
                 }
             }
+            catch(Exception e)
+            {
+                // can come here if there are no files in the directory.
+            }
+
         }
 
         #endregion

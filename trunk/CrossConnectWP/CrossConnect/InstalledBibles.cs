@@ -60,18 +60,26 @@ namespace CrossConnect
 
         public async Task Initialize()
         {
-            //ApplicationData.Current.LocalFolder
-            StorageFolder configFolder =
-                await ApplicationData.Current.LocalFolder.GetFolderAsync(BibleZtextReader.DirConf);
-            IReadOnlyList<StorageFile> configFiles = await configFolder.GetFilesAsync();
-
-            foreach (var file in configFiles)
+            try
             {
-                var splitFileName = file.Name.Split(new char[] { '.' });
-                if (splitFileName.Count() == 2 && ("." + splitFileName[splitFileName.Count() - 1].ToLower()).Equals(BibleZtextReader.ExtensionConf))
+                //ApplicationData.Current.LocalFolder
+                StorageFolder configFolder =
+                    await ApplicationData.Current.LocalFolder.GetFolderAsync(BibleZtextReader.DirConf);
+                IReadOnlyList<StorageFile> configFiles = await configFolder.GetFilesAsync();
+
+                foreach (var file in configFiles)
                 {
-                    AddGenericBook(splitFileName[splitFileName.Count() - 2].ToLower());
+                    var splitFileName = file.Name.Split(new char[] { '.' });
+                    if (splitFileName.Count() == 2 && ("." + splitFileName[splitFileName.Count() - 1].ToLower()).Equals(BibleZtextReader.ExtensionConf))
+                    {
+                        AddGenericBook(splitFileName[splitFileName.Count() - 2].ToLower());
+                    }
                 }
+            }
+            catch(Exception e)
+            {
+                // this can crash here in windows 8 if there are no files.  But in wp8 it does not
+                // crash here. But just in case we put the try catch here.
             }
         }
 
