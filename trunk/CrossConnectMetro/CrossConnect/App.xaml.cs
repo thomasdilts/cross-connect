@@ -479,7 +479,7 @@ namespace CrossConnect
             {
                 if (!await BibleZtextReader.FileExists(folder, testFileName))
                 {
-                    if (!await BibleZtextReader.FileExists(ApplicationData.Current.RoamingFolder, testFileName))
+                    if (await BibleZtextReader.FileExists(ApplicationData.Current.RoamingFolder, testFileName))
                     {
                         folder = ApplicationData.Current.RoamingFolder;
                     }
