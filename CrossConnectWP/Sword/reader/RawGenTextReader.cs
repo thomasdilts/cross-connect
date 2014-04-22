@@ -1075,6 +1075,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             bool isInInjectionElement = false;
             bool isInTitle = false;
             bool isChaptNumGiven = false;
+            var isHiItalic = new List<bool>();
             bool isChaptNumGivenNotes = false;
             bool isReferenceLinked = false;
             int isLastElementLineBreak = 0;
@@ -1217,8 +1218,19 @@ function SetFontColorForElement(elemntId, colorRgba){
                                     case "hi":
                                         if (!isRaw)
                                         {
-                                            AppendText("<i>", plainText, noteText, isInElement);
+                                            bool localIsItalic = true;
+                                            if (reader.HasAttributes)
+                                            {
+                                                reader.MoveToFirstAttribute();
+                                                if (reader.Name.ToLower().Equals("type") && reader.Value.ToLower().Equals("bold"))
+                                                {
+                                                    localIsItalic = false;
+                                                }
+                                            }
+                                            isHiItalic.Add(localIsItalic);
+                                            AppendText(localIsItalic ? "<i>" : "<b>", plainText, noteText, isInElement);
                                         }
+
 
                                         break;
                                     case "Rf":
@@ -1390,11 +1402,11 @@ function SetFontColorForElement(elemntId, colorRgba){
                                 if ((!(noTitles || !displaySettings.ShowHeadings) || !isInTitle) && text.Length > 0)
                                 {
                                     char firstChar = text[0];
-                                    AppendText(
+                                    AppendText(/*
                                         ((!firstChar.Equals(',') && !firstChar.Equals('.') && !firstChar.Equals(':')
                                           && !firstChar.Equals(';') && !firstChar.Equals('?'))
                                              ? " "
-                                             : string.Empty) + text,
+                                             : string.Empty) +*/ text,
                                         plainText,
                                         noteText,
                                         isInElement || isInInjectionElement);
@@ -1425,9 +1437,11 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         isInElement = false;
                                         break;
                                     case "hi":
-                                        if (!isRaw)
+                                        if (!isRaw && isHiItalic.Any())
                                         {
-                                            AppendText("</i>", plainText, noteText, isInElement);
+                                            bool localIsItalic = isHiItalic[isHiItalic.Count() - 1];
+                                            isHiItalic.RemoveAt(isHiItalic.Count() - 1);
+                                            AppendText(localIsItalic ? "</i>" : "</b>", plainText, noteText, isInElement);
                                         }
 
                                         break;
