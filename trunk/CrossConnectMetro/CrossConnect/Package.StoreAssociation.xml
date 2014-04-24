@@ -353,7 +353,9 @@
       <ReservedName>Bible Reader Cross Connect</ReservedName>
     </ReservedNames>
   </ProductReservedInfo>
-  <AccountPackageIdentityNames />
+  <AccountPackageIdentityNames>
+    <MainPackageIdentityName>57294ThomasDilts.EurostepTrackLocateRecordTLR</MainPackageIdentityName>
+  </AccountPackageIdentityNames>
   <PackageInfoList LandingUrl="https://appdev.microsoft.com:443/StorePortals/Developer/Catalog/ReleaseAnchor/8e7d879d-105b-4d57-bd9c-907cfa7ff68f">
     <PackageInfo>
       <OsMinVersion>6.2.1.0</OsMinVersion>
@@ -374,252 +376,252 @@
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>X86</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>X64</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>ARM</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.1.9.54</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.9.57</PackageMaxArchitectureVersion>
       </PackageInfo>
     </BundleInfo>
   </PackageInfoList>
