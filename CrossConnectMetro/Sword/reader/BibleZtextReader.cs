@@ -1921,6 +1921,12 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                         switch (reader.NodeType)
                         {
+                            case XmlNodeType.SignificantWhitespace:
+                                AppendText(reader.Value, plainText, noteText, isInElement);
+                                break;
+                            case XmlNodeType.Whitespace:
+                                AppendText(reader.Value, plainText, noteText, isInElement);
+                                break;
                             case XmlNodeType.Element:
                                 switch (reader.Name)
                                 {
@@ -2306,7 +2312,10 @@ function SetFontColorForElement(elemntId, colorRgba){
                                             lemmaText = string.Empty;
                                             morphText = string.Empty;
                                         }
-
+                                        //else
+                                        //{
+                                        //    AppendText(" ", plainText, noteText, isInElement);
+                                        //}
                                         break;
                                     case "lg":
                                         if (!isRaw && !displaySettings.EachVerseNewLine)

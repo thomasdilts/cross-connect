@@ -1056,10 +1056,10 @@ function SetFontColorForElement(elemntId, colorRgba){
                 ms.Position = 0;
 
                 // debug
-                // byte[] buf = new byte[ms.Length]; ms.Read(buf, 0, (int)ms.Length);
-                // string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, buf.Length);
-                // System.Diagnostics.Debug.WriteLine("osisbuf: " + xxxxxx);
-                // ms.Position = 0;
+                //byte[] buf = new byte[ms.Length]; ms.Read(buf, 0, (int)ms.Length);
+                //string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, buf.Length);
+                //System.Diagnostics.Debug.WriteLine("osisbuf: " + xxxxxx);
+                //ms.Position = 0;
             }
             catch (Exception ee)
             {
@@ -1102,6 +1102,12 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                         switch (reader.NodeType)
                         {
+                            case XmlNodeType.SignificantWhitespace:
+                                AppendText(reader.Value, plainText, noteText, isInElement);
+                                break;
+                            case XmlNodeType.Whitespace:
+                                AppendText(reader.Value, plainText, noteText, isInElement);
+                                break;
                             case XmlNodeType.Element:
                                 switch (reader.Name)
                                 {
@@ -1482,6 +1488,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                             lemmaText = string.Empty;
                                             morphText = string.Empty;
                                         }
+
 
                                         break;
                                     case "lg":
