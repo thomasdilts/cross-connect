@@ -272,7 +272,7 @@ namespace CrossConnect
         */
         private void FirstClick(object sender, RoutedEventArgs e)
         {
-            ButtonWindowSpecs specs = this._state.Source.GetButtonWindowSpecs(1, (int)((Button)sender).Tag);
+            ButtonWindowSpecs specs = this._state.Source.GetButtonWindowSpecs(1, (int)((Button)sender).Tag,Translations.IsoLanguageCode);
             if (specs != null)
             {
                 this.ReloadBookPopupWindow(specs);
@@ -280,7 +280,7 @@ namespace CrossConnect
             else
             {
                 // go directly to verse
-                specs = this._state.Source.GetButtonWindowSpecs(2, (int)((Button)sender).Tag);
+                specs = this._state.Source.GetButtonWindowSpecs(2, (int)((Button)sender).Tag,Translations.IsoLanguageCode);
                 if (specs != null)
                 {
                     this._selectBibleBookSecondSelection = (int)((Button)sender).Tag;
@@ -349,7 +349,7 @@ namespace CrossConnect
                         this.BookPopup.IsOpen = true;
                         this.SearchPopup.IsOpen = false;
                     }
-                    this.ReloadBookPopupWindow(this._state.Source.GetButtonWindowSpecs(0, 0));
+                    this.ReloadBookPopupWindow(this._state.Source.GetButtonWindowSpecs(0, 0, Translations.IsoLanguageCode));
                     break;
                 case "ListChapter":
                     {
@@ -360,7 +360,7 @@ namespace CrossConnect
                         }
 
                         ButtonWindowSpecs specs = this._state.Source.GetButtonWindowSpecs(
-                            1, Info.Chapter);
+                            1, Info.Chapter, Translations.IsoLanguageCode);
                         if (specs != null)
                         {
                             this.ReloadBookPopupWindow(specs);

@@ -246,7 +246,7 @@ namespace CrossConnect
                 string bookShortName;
                 string fullName;
                 string titleText;
-                this._state.Source.GetInfo(
+                this._state.Source.GetInfo(Translations.IsoLanguageCode,
                     out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
             }
 
@@ -564,6 +564,7 @@ namespace CrossConnect
                 string fullName;
                 string title;
                 _state.Source.GetInfo(
+                    Translations.IsoLanguageCode,
                     out relbookShortName,
                     out relChaptNum,
                     out relverseNum,
@@ -650,6 +651,7 @@ namespace CrossConnect
                     {
                         string createdFileName =
                             await this._state.Source.GetChapterHtml(
+                                Translations.IsoLanguageCode,
                                 App.DisplaySettings.Clone(),
                                 backcolor,
                                 forecolor,
@@ -746,7 +748,7 @@ namespace CrossConnect
             int verseNum;
             string fullName;
             string titleText;
-            _state.Source.GetInfo(
+            _state.Source.GetInfo(Translations.IsoLanguageCode,
                 out bookNameShort, out relChaptNum, out verseNum, out fullName, out titleText);
             PhoneApplicationService.Current.State["BookToHear"] = bookNameShort;
             PhoneApplicationService.Current.State["ChapterToHear"] = relChaptNum;
@@ -904,7 +906,7 @@ namespace CrossConnect
             KillManipulation();
 
 
-            var obj = await _state.Source.GetTranslateableTexts(
+            var obj = await _state.Source.GetTranslateableTexts(Translations.IsoLanguageCode,
                 App.DisplaySettings, _state.BibleToLoad);
             var toTranslate = (string[])obj[0];
             var isTranslateable = (bool[])obj[1];
@@ -1015,7 +1017,7 @@ namespace CrossConnect
                 BiblePlaceMarker place = foundVerses[j];
                 string fullName;
                 string titleText;
-                ((BibleZtextReader)this.State.Source).GetInfo(place.BookShortName,
+                ((BibleZtextReader)this.State.Source).GetInfo(Translations.IsoLanguageCode, place.BookShortName,
                     place.ChapterNum, place.VerseNum, out fullName, out titleText);
                 string title = fullName + " " + (place.ChapterNum + 1) + ":" + (place.VerseNum + 1) + " - "
                                + this.State.BibleToLoad;
@@ -1199,7 +1201,7 @@ namespace CrossConnect
                         string id = bookShortName + "_" + chapterNum + "_" + verseNum;
                         this.webBrowser1.InvokeScript(
                             "SetFontColorForElement",
-                            new[] { id, ConvertColorToHtmlRgba(App.Themes.AccentColor).GetHtmlRgb() });
+                            new[] { id, ConvertColorToHtmlRgba(App.Themes.AccentColor).GetHtmlRgba() });
                         if (!string.IsNullOrEmpty(this._lastSelectedItem) && !this._lastSelectedItem.Equals(id))
                         {
                             try
@@ -1209,7 +1211,7 @@ namespace CrossConnect
                                     new[]
                                     {
                                         this._lastSelectedItem,
-                                        ConvertColorToHtmlRgba(App.Themes.MainFontColor).GetHtmlRgb()
+                                        ConvertColorToHtmlRgba(App.Themes.MainFontColor).GetHtmlRgba()
                                     });
                             }
                             catch (Exception)
@@ -1243,7 +1245,7 @@ namespace CrossConnect
             int verseNum;
             string fullName;
             string titleText;
-            _state.Source.GetInfo(
+            _state.Source.GetInfo(Translations.IsoLanguageCode,
                 out bookNameshort, out relChaptNum, out verseNum, out fullName, out titleText);
             var entireTitleText = titleText + " - "
                                   +
@@ -1310,7 +1312,7 @@ namespace CrossConnect
             int verseNum;
             string fullName;
             string titleText;
-            this._state.Source.GetInfo(
+            this._state.Source.GetInfo(Translations.IsoLanguageCode,
                 out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
             ScrollToThisVerse(bookShortName, relChaptNum, verseNum);
         }
@@ -1320,10 +1322,10 @@ namespace CrossConnect
             try
             {
                 string id = bookShortName + "_" + chapterNum + "_" + verseNum;
-                string xx = ConvertColorToHtmlRgba(App.Themes.AccentColor).GetHtmlRgb();
+                string xx = ConvertColorToHtmlRgba(App.Themes.AccentColor).GetHtmlRgba();
                 this.webBrowser1.InvokeScript(
                     "SetFontColorForElement",
-                    new[] { id, ConvertColorToHtmlRgba(App.Themes.AccentColor).GetHtmlRgb().ToUpper() });
+                    new[] { id, ConvertColorToHtmlRgba(App.Themes.AccentColor).GetHtmlRgba().ToUpper() });
                 if (!string.IsNullOrEmpty(this._lastSelectedItem) && !this._lastSelectedItem.Equals(id))
                 {
                     try
@@ -1333,7 +1335,7 @@ namespace CrossConnect
                             new[]
                             {
                                 this._lastSelectedItem,
-                                ConvertColorToHtmlRgba(App.Themes.MainFontColor).GetHtmlRgb()
+                                ConvertColorToHtmlRgba(App.Themes.MainFontColor).GetHtmlRgba()
                             });
                     }
                     catch (Exception)

@@ -55,7 +55,7 @@ namespace Sword.reader
     {
         #region Public Properties
 
-        bool ExistsShortNames { get; }
+        bool ExistsShortNames(string isoLangCode);
 
         bool IsExternalLink { get; }
 
@@ -79,9 +79,10 @@ namespace Sword.reader
 
         #region Public Methods and Operators
 
-        ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton);
+        ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton, string isoLangCode);
 
         Task<string> GetChapterHtml(
+            string isoLangCode,
             DisplaySettings displaySettings,
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
@@ -96,7 +97,7 @@ namespace Sword.reader
 
         string GetExternalLink(DisplaySettings displaySettings);
 
-        void GetInfo(
+        void GetInfo(string isoLangCode,
             out string bookShortName,
             out int relChaptNum,
             out int verseNum,
@@ -107,13 +108,13 @@ namespace Sword.reader
 
         Task<IBrowserTextSource> Clone();
 
-        Task<object[]> GetTranslateableTexts(DisplaySettings displaySettings, string bibleToLoad);
+        Task<object[]> GetTranslateableTexts(string isoLangCode, DisplaySettings displaySettings, string bibleToLoad);
 
         Task<string> GetVerseTextOnly(DisplaySettings displaySettings, string bookName, int chapterNumber, int verseNum);
 
         Task<string> GetTTCtext(bool isVerseOnly);
 
-        Task<List<string>> MakeListDisplayText(DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay);
+        Task<List<string>> MakeListDisplayText(string isoLangCode, DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay);
 
         void MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source);
 
@@ -122,6 +123,7 @@ namespace Sword.reader
         void MovePrevious(bool isVerse);
 
         Task<string> PutHtmlTofile(
+            string isoLangCode,
             DisplaySettings displaySettings,
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,

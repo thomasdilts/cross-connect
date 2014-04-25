@@ -205,7 +205,8 @@ namespace CrossConnect
                 int verseNum;
                 string fullName;
                 string title2;
-                this._state.Source.GetInfo(out bookShortName,
+                this._state.Source.GetInfo(Translations.IsoLanguageCode,
+                    out bookShortName,
                     out relChaptNum,
                     out verseNum,
                     out fullName,
@@ -587,7 +588,7 @@ namespace CrossConnect
             int verseNum;
             string fullName;
             string title;
-            _state.Source.GetInfo(out bookShortName,
+            _state.Source.GetInfo(Translations.IsoLanguageCode, out bookShortName,
                 out relChaptNum,
                 out verseNum,
                 out fullName,

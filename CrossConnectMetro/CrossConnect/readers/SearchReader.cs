@@ -254,7 +254,7 @@ namespace CrossConnect.readers
                                    + "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.notify('"
                                    + textId + "'); event.returnValue=false; return false;\" >"
                                    + (displaySettings.SmallVerseNumbers ? "<sup>" : "(")
-                                   + this.GetFullName(this.Chapters[chapterNum].Booknum) + " "
+                                   + this.GetFullName(this.Chapters[chapterNum].Booknum,Translations.IsoLanguageCode) + " "
                                    + (this.Chapters[chapterNum].BookRelativeChapterNum + 1) + ":" + (verseNum + 1)
                                    + (displaySettings.SmallVerseNumbers ? " </sup>" : ")");
                         const string htmlSuffix = "</a></p><hr />";
@@ -321,7 +321,7 @@ namespace CrossConnect.readers
                                        + "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.notify('"
                                        + textId + "'); event.returnValue=false; return false;\" >"
                                        + (displaySettings.SmallVerseNumbers ? "<sup>" : "(")
-                                       + this.GetFullName(this.Chapters[chaptListToSearch[i]].Booknum) + " "
+                                       + this.GetFullName(this.Chapters[chaptListToSearch[i]].Booknum,Translations.IsoLanguageCode) + " "
                                        + (this.Chapters[chaptListToSearch[i]].BookRelativeChapterNum + 1) + ":"
                                        + (j + 1) + (displaySettings.SmallVerseNumbers ? " </sup>" : ")");
                             const string htmlSuffix = "</a></p><hr />";
@@ -392,6 +392,7 @@ namespace CrossConnect.readers
         }
 
         public override async Task<string> GetChapterHtml(
+            string isoLangCode,
             DisplaySettings displaySettings,
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
@@ -416,6 +417,7 @@ namespace CrossConnect.readers
         }
 
         public override void GetInfo(
+            string isoLangCode,
             out string bookShortName,
             out int relChaptNum,
             out int verseNum,

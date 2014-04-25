@@ -407,7 +407,7 @@ namespace CrossConnect
                 int verseNum;
                 string fullName;
                 string titleText;
-                state.Source.GetInfo(
+                state.Source.GetInfo(Translations.IsoLanguageCode,
                     out bookNameShort, out relChaptNum, out verseNum, out fullName, out titleText);
                 isTranslateable = state.Source.IsTranslateable && !state.Source.GetLanguage().Equals(Translations.IsoLanguageCode);
                 var canon = CanonManager.GetCanon("KJV");
@@ -582,7 +582,7 @@ namespace CrossConnect
                 int verseNum;
                 string fullName;
                 string titleText;
-                state.Source.GetInfo(
+                state.Source.GetInfo(Translations.IsoLanguageCode,
                     out bookNameShort, out relChaptNum, out verseNum, out fullName, out titleText);
                 var canon = CanonManager.GetCanon("KJV");
                 butTranslate.Visibility = state.Source.IsTranslateable && !state.Source.GetLanguage().Equals(Translations.IsoLanguageCode) ? visibility : Visibility.Collapsed;
@@ -709,7 +709,7 @@ namespace CrossConnect
             }
 
             SerializableWindowState state = App.OpenWindows[(int)openWindowIndex].State;
-            var obj = await state.Source.GetTranslateableTexts(
+            var obj = await state.Source.GetTranslateableTexts(Translations.IsoLanguageCode,
                 App.DisplaySettings, state.BibleToLoad);
             var toTranslate = (string[])obj[0];
             var isTranslateable = (bool[])obj[1];
@@ -749,7 +749,7 @@ namespace CrossConnect
             int verseNum;
             string fullName;
             string titleText;
-            state.Source.GetInfo(
+            state.Source.GetInfo(Translations.IsoLanguageCode,
                 out bookNameShort, out relChaptNum, out verseNum, out fullName, out titleText);
             PhoneApplicationService.Current.State["BookToHear"] = bookNameShort;
             PhoneApplicationService.Current.State["ChapterToHear"] = relChaptNum;
@@ -805,7 +805,7 @@ namespace CrossConnect
             int verseNum;
             string fullName;
             string titleText;
-            state.Source.GetInfo(
+            state.Source.GetInfo(Translations.IsoLanguageCode,
                 out bookNameShort, out relChaptNum, out verseNum, out fullName, out titleText);
             PhoneApplicationService.Current.State["BookToHear"] = bookNameShort;
             PhoneApplicationService.Current.State["ChapterToHear"] = relChaptNum;

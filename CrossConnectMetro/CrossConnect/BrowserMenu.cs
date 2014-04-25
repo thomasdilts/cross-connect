@@ -61,7 +61,7 @@ namespace CrossConnect
             int verseNum;
             string fullName;
             string titleText;
-            this._state.Source.GetInfo(
+            this._state.Source.GetInfo(Translations.IsoLanguageCode, 
                 out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
             var canonKjv = CanonManager.GetCanon("KJV");
             CanonBookDef book;
@@ -206,7 +206,7 @@ namespace CrossConnect
                     this.MenuPopup.IsOpen = false;
 
                     object[] reply =
-                        await this._state.Source.GetTranslateableTexts(App.DisplaySettings, this._state.BibleToLoad);
+                        await this._state.Source.GetTranslateableTexts(Translations.IsoLanguageCode, App.DisplaySettings, this._state.BibleToLoad);
                     var toTranslate = (string[])reply[0];
                     var isTranslateable = (bool[])reply[1];
                     var transReader2 = new TranslatorReader(string.Empty, string.Empty, false, string.Empty, string.Empty, string.Empty);

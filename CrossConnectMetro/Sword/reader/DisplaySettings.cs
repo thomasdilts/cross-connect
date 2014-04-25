@@ -27,6 +27,8 @@ namespace Sword.reader
         [DataMember(Name = "hebrewDictionaryLink")]
         public string HebrewDictionaryLink = @"http://www.eliyah.com/cgi-bin/strongs.cgi?file=hebrewlexicon&isindex={0}";
 
+        [DataMember(Name = "Show2titleRows")]
+        public bool Show2titleRows;
         [DataMember(Name = "highlightMarkings")]
         public bool HighlightMarkings;
 
@@ -169,6 +171,7 @@ namespace Sword.reader
                 GreekDictionaryLink = this.GreekDictionaryLink,
                 HebrewDictionaryLink = this.HebrewDictionaryLink,
                 HighlightMarkings = this.HighlightMarkings,
+                Show2titleRows = this.Show2titleRows,
                 NumberOfScreens = this.NumberOfScreens,
                 ShowAddedNotesByChapter = this.ShowAddedNotesByChapter,
                 ShowBookName = this.ShowBookName,
@@ -386,7 +389,7 @@ namespace Sword.reader
             return returnList.ToString();
         }
 
-        public static void EvaluateXmlRow(string book,int chapter, int verse, string note,bool invalidEntry,
+        public static void EvaluateXmlRow(string book, int chapter, int verse, string note, bool invalidEntry,
             bool noteRequired, List<BiblePlaceMarker> markerList,
             Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> markerDictionary)
         {

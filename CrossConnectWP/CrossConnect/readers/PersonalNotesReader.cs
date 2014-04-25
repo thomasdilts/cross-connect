@@ -183,6 +183,7 @@ namespace CrossConnect.readers
                 this._displayText =
                     await
                     this.MakeListDisplayText(
+                        Translations.IsoLanguageCode,
                         App.DisplaySettings,
                         GetSortedList(this.Serial.PosBookShortName, this.Serial.PosChaptNum, false, true),
                         this._htmlBackgroundColor,
@@ -200,6 +201,7 @@ namespace CrossConnect.readers
                 this._displayText =
                     await
                     this.MakeListDisplayText(
+                        Translations.IsoLanguageCode,
                         App.DisplaySettings,
                         GetSortedList(string.Empty, 0, true, true),
                         this._htmlBackgroundColor,
@@ -217,7 +219,7 @@ namespace CrossConnect.readers
 
         /// <returns>
         /// </returns>
-        public override ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton)
+        public override ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton, string isoLangCode)
         {
             if (stage == 0)
             {
@@ -239,7 +241,7 @@ namespace CrossConnect.readers
                     if (!books.ContainsKey(bookNum))
                     {
                         butColors[books.Count] = ChapterCategories[sortedKeys[i]];
-                        butText[books.Count] = this.BookNames.GetShortName(sortedKeys[i]);
+                        butText[books.Count] = this.BookNames(isoLangCode).GetShortName(sortedKeys[i]);
                         values[books.Count] = bookNum;
 
                         books.Add(bookNum, bookNum);
@@ -253,7 +255,7 @@ namespace CrossConnect.readers
                     butColors,
                     butText,
                     values,
-                    !this.BookNames.ExistsShortNames ? ButtonSize.Large : ButtonSize.Medium);
+                    !this.BookNames(Translations.IsoLanguageCode).ExistsShortNames ? ButtonSize.Large : ButtonSize.Medium);
             }
             else
             {
@@ -282,6 +284,7 @@ namespace CrossConnect.readers
         }
 
         public override async Task<string> GetChapterHtml(
+            string isoLangCode,
             DisplaySettings displaySettings,
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
@@ -310,6 +313,7 @@ namespace CrossConnect.readers
                     this._displayText =
                         await
                         this.MakeListDisplayText(
+                            isoLangCode,
                             displaySettings,
                             GetSortedList(this.Serial.PosBookShortName, this.Serial.PosChaptNum, false, true),
                             htmlBackgroundColor,
@@ -327,6 +331,7 @@ namespace CrossConnect.readers
                     this._displayText =
                         await
                         this.MakeListDisplayText(
+                            Translations.IsoLanguageCode,
                             displaySettings,
                             GetSortedList(string.Empty, 0, true, true),
                             htmlBackgroundColor,
@@ -345,13 +350,14 @@ namespace CrossConnect.readers
         }
 
         public override void GetInfo(
+            string isoLangCode,
             out string bookShortName,
             out int relChaptNum,
             out int verseNum,
             out string fullName,
             out string title)
         {
-            base.GetInfo(out bookShortName, out relChaptNum, out verseNum, out fullName, out title);
+            base.GetInfo(isoLangCode, out bookShortName, out relChaptNum, out verseNum, out fullName, out title);
             title = Translations.Translate("Added notes");
         }
 

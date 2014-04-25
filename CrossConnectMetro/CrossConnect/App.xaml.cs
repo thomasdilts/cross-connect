@@ -306,7 +306,7 @@ namespace CrossConnect
                 string titlesOnly = string.Empty;
                 string textsWithTitles = string.Empty;
                 BiblePlaceMarker place = item.Value;
-                string title = ((BibleZtextReader)foundWindowToUse.State.Source).BookNames.GetShortName(place.BookShortName) + " " + (place.ChapterNum + 1) + ":" + (place.VerseNum + 1) + " - "
+                string title = ((BibleZtextReader)foundWindowToUse.State.Source).BookNames(Translations.IsoLanguageCode).GetShortName(place.BookShortName) + " " + (place.ChapterNum + 1) + ":" + (place.VerseNum + 1) + " - "
                                + foundWindowToUse.State.BibleDescription;
                 string verseText = string.Empty;
                 try
@@ -639,7 +639,7 @@ namespace CrossConnect
                                 int verseNum;
                                 string fullName;
                                 string title;
-                                nextWindow.State.Source.GetInfo(out bookShortName,
+                                nextWindow.State.Source.GetInfo(Translations.IsoLanguageCode, out bookShortName,
                                     out relChaptNum,
                                     out verseNum,
                                     out fullName,

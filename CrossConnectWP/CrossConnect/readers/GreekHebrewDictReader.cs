@@ -131,6 +131,7 @@ namespace CrossConnect.readers
         #region Public Methods and Operators
 
         public override async Task<string> GetChapterHtml(
+            string isoLangCode,
             DisplaySettings displaySettings,
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
@@ -176,6 +177,7 @@ namespace CrossConnect.readers
         }
 
         public override void GetInfo(
+            string isoLangCode,
             out string bookShortName,
             out int relChaptNum,
             out int verseNum,
@@ -197,7 +199,7 @@ namespace CrossConnect.readers
             return "en";
         }
 
-        public override async Task<object[]> GetTranslateableTexts(DisplaySettings displaySettings, string bibleToLoad)
+        public override async Task<object[]> GetTranslateableTexts(string isoLangCode, DisplaySettings displaySettings, string bibleToLoad)
         {
             var toTranslate = new string[2];
             var isTranslateable = new bool[2];

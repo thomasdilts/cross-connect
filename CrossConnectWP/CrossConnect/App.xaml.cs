@@ -478,7 +478,7 @@ namespace CrossConnect
                                 int verseNum;
                                 string fullName;
                                 string title;
-                                nextWindow.State.Source.GetInfo(out bookShortName,
+                                nextWindow.State.Source.GetInfo(Translations.IsoLanguageCode, out bookShortName,
                                     out relChaptNum,
                                     out verseNum,
                                     out fullName,
@@ -632,7 +632,7 @@ namespace CrossConnect
                     root.DeleteFile(WebDirIsolated + "/" + file);
                 }
 
-                InstalledBibles.Initialize();
+                await InstalledBibles.Initialize();
 
                 await LoadPersistantObjectsFromFile(PersistantObjectsDisplaySettingsFileName, LoadPersistantDisplaySettings, true);
                 await LoadPersistantObjectsFromFile(PersistantObjectsThemesFileName, LoadPersistantThemes, true);
@@ -836,10 +836,6 @@ namespace CrossConnect
             }
             // UseRemoteStorage is always local
             await SavePersistantObjects(objectsToSave, PersistantObjectsDisplaySettingsFileName, true);
-            if (DisplaySettings.UseRemoteStorage)
-            {
-                await SavePersistantObjects(objectsToSave, PersistantObjectsDisplaySettingsFileName);
-            }
         }
 
         public static async void SavePersistantHighlighting()

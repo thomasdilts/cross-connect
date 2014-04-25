@@ -170,7 +170,7 @@ namespace CrossConnect
                 int verseNum;
                 string fullName;
                 string title;
-                this._state.Source.GetInfo(out bookShortName,
+                this._state.Source.GetInfo(Translations.IsoLanguageCode, out bookShortName,
                     out relChaptNum,
                     out verseNum,
                     out fullName,
@@ -233,7 +233,7 @@ namespace CrossConnect
             int verseNum;
             string fullName;
             string titleText;
-            this._state.Source.GetInfo(
+            this._state.Source.GetInfo(Translations.IsoLanguageCode, 
                 out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText); 
             var canonKjv = CanonManager.GetCanon("KJV");
             CanonBookDef book;

@@ -120,7 +120,7 @@ namespace CrossConnect.readers
 
         #region Public Methods and Operators
 
-        public override ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton)
+        public override ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton, string isoLangCode)
         {
             if (stage == 0)
             {
@@ -145,6 +145,7 @@ namespace CrossConnect.readers
         }
 
         public override async Task<string> GetChapterHtml(
+            string isoLangCode,
             DisplaySettings displaySettings,
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
@@ -189,6 +190,7 @@ namespace CrossConnect.readers
                 string fullName;
                 string title;
                 this.GetInfo(
+                    isoLangCode,
                     book.ShortName1,
                     schedule[App.DailyPlan.PlanDayNumber][i]-book.VersesInChapterStartIndex,
                     0,
@@ -199,6 +201,7 @@ namespace CrossConnect.readers
                 sb.Append(
                     await
                     this.GetChapterHtml(
+                        isoLangCode,
                         displaySettings,
                         book.ShortName1,
                         schedule[App.DailyPlan.PlanDayNumber][i]-book.VersesInChapterStartIndex,
@@ -219,6 +222,7 @@ namespace CrossConnect.readers
         }
 
         public override void GetInfo(
+            string isoLangCode,
             out string bookShortName,
             out int relChaptNum,
             out int verseNum,
@@ -232,7 +236,7 @@ namespace CrossConnect.readers
                 App.DailyPlan.PlanDayNumber = 0;
             }
 
-            base.GetInfo(out bookShortName, out relChaptNum, out verseNum, out fullName, out title);
+            base.GetInfo(isoLangCode, out bookShortName, out relChaptNum, out verseNum, out fullName, out title);
             title = App.DailyPlan.PlanStartDate.AddDays(App.DailyPlan.PlanDayNumber).ToString("yyyy-MM-dd") + " "
                     + Translations.Translate("Daily plan");
         }

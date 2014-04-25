@@ -519,7 +519,7 @@ namespace AudioPlaybackAgent1
             //GetBookAndChapterFromAbsoluteChapter(
             //    info.Chapter, string.Empty, string.Empty, out bookShortName, out bookFullName, out relChapterNum, out source);
 
-            var bookNames = new BibleNames(info.Language);
+            var bookNames = new BibleNames(info.Language, string.Empty);
             return bookNames.GetFullName(info.Book, info.Book) + " : " + (info.Chapter + 1).ToString(CultureInfo.InvariantCulture);
         }
 

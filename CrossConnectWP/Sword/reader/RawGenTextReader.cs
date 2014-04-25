@@ -158,12 +158,9 @@ namespace Sword.reader
 
         #region Public Properties
 
-        public bool ExistsShortNames
+        public bool ExistsShortNames(string isoLangCode)
         {
-            get
-            {
-                return false;
-            }
+            return false;
         }
 
         public virtual bool IsExternalLink
@@ -322,78 +319,78 @@ function SetFontColorForElement(elemntId, colorRgba){
             head.Append("</head><body>");
             return head.ToString();
         }*/
-//        public static string HtmlHeader(
-//    DisplaySettings displaySettings,
-//    HtmlColorRgba htmlBackgroundColor,
-//    HtmlColorRgba htmlForegroundColor,
-//    HtmlColorRgba htmlPhoneAccentColor,
-//            HtmlColorRgba htmlWordsOfChristColor,
-//    double htmlFontSize,
-//    string fontFamily)
-//        {
-//            var head = new StringBuilder();
-//            head.Append(
-//                "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">");
+        public static string HtmlHeader(
+    DisplaySettings displaySettings,
+    HtmlColorRgba htmlBackgroundColor,
+    HtmlColorRgba htmlForegroundColor,
+    HtmlColorRgba htmlPhoneAccentColor,
+            HtmlColorRgba htmlWordsOfChristColor,
+    double htmlFontSize,
+    string fontFamily)
+        {
+            var head = new StringBuilder();
+            head.Append(
+                "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">");
 
-//            head.Append("<style>");
+            head.Append("<style>");
 
-//            head.Append(
-//                string.Format(
-//                    "body {{background:{0};color:{1};font-size:{2}pt;margin:0;padding:0;{3} }}",
-//                    htmlBackgroundColor.GetHtmlRgba(),
-//                    htmlForegroundColor.GetHtmlRgba(),
-//                    (int)(htmlFontSize + 0.5),
-//                    fontFamily)); // old fashioned way to round an integer
+            head.Append(
+                string.Format(
+                    "body {{background:{0};color:{1};font-size:{2}pt;margin:0;padding:0;{3} }}",
+                    htmlBackgroundColor.GetHtmlRgba(),
+                    htmlForegroundColor.GetHtmlRgba(),
+                    (int)(htmlFontSize + 0.5),
+                    fontFamily)); // old fashioned way to round an integer
 
-//            head.Append(
-//                string.Format(
-//                    "sup,sub {{color:{0};font-size: .83em;}} "
-//                    + "a.strongsmorph,a.strongsmorph:link,span.strongsmorph{{color:{1};text-decoration:none;}} "
-//                    + "a.normalcolor,a.normalcolor:link {{color:{2};text-decoration:none;}}",
-//                    displaySettings.HighlightMarkings
-//                        ? htmlPhoneAccentColor.GetHtmlRgba()
-//                        : htmlForegroundColor.GetHtmlRgba(),
-//                    displaySettings.HighlightMarkings
-//                        ? htmlPhoneAccentColor.GetHtmlRgba()
-//                        : htmlForegroundColor.GetHtmlRgba(),
-//                    htmlForegroundColor.GetHtmlRgba()));
+            head.Append(
+                string.Format(
+                    "sup,sub {{color:{0};font-size: .83em;}} "
+                    + "a.strongsmorph,a.strongsmorph:link,span.strongsmorph{{color:{1};text-decoration:none;}} "
+                    + "a.normalcolor,a.normalcolor:link {{color:{2};text-decoration:none;}}",
+                    displaySettings.HighlightMarkings
+                        ? htmlPhoneAccentColor.GetHtmlRgba()
+                        : htmlForegroundColor.GetHtmlRgba(),
+                    displaySettings.HighlightMarkings
+                        ? htmlPhoneAccentColor.GetHtmlRgba()
+                        : htmlForegroundColor.GetHtmlRgba(),
+                    htmlForegroundColor.GetHtmlRgba()));
 
-//            head.Append(
-//                string.Format(
-//                    " a.normalcolor:link span.christ {{ color: {1}; }}  a.normalcolor span.christ:visited {{ color: {3}; }}  a.normalcolor span.christ:hover {{ color: {2}; }} a.normalcolor:hover {{ color: {0}; }} ",
-//                    htmlPhoneAccentColor.GetHtmlRgba(),
-//                    htmlWordsOfChristColor.GetHtmlRgba(),
-//                    htmlPhoneAccentColor.GetHtmlRgba(),
-//                    htmlPhoneAccentColor.GetHtmlRgba()));
+            head.Append(
+                string.Format(
+                    " a.normalcolor:link span.christ {{ color: {1}; }}  a.normalcolor span.christ:visited {{ color: {3}; }}  a.normalcolor span.christ:hover {{ color: {2}; }} a.normalcolor:hover {{ color: {0}; }} ",
+                    htmlPhoneAccentColor.GetHtmlRgba(),
+                    htmlWordsOfChristColor.GetHtmlRgba(),
+                    htmlPhoneAccentColor.GetHtmlRgba(),
+                    htmlPhoneAccentColor.GetHtmlRgba()));
 
-//            head.Append("</style>");
-//            head.Append(@"<script type=""text/javascript"">
-//
-//function getVerticalScrollPosition() {
-//    return document.body.scrollTop.toString();
-//}
-//function setVerticalScrollPosition(position) {
-//    document.body.scrollTop = position;
-//}
-//function ScrollToAnchor(anchor, colorRgba) {
-//    window.location.hash=anchor;
-//    SetFontColorForElement(anchor, colorRgba);
-//}
-//function SetFontColorForElement(elemntId, colorRgba){
-//    var element = document.getElementById(elemntId);
-//    if(element!=null){
-//        element.style.color = colorRgba;
-//    }
-//}
-//
-//</script>");
-//            head.Append("</head><body>");
-//            return head.ToString();
-//        }
+            head.Append("</style>");
+            head.Append(@"<script type=""text/javascript"">
+
+function getVerticalScrollPosition() {
+    return document.body.scrollTop.toString();
+}
+function setVerticalScrollPosition(position) {
+    document.body.scrollTop = position;
+}
+function ScrollToAnchor(anchor, colorRgba) {
+    window.location.hash=anchor;
+    SetFontColorForElement(anchor, colorRgba);
+}
+function SetFontColorForElement(elemntId, colorRgba){
+    var element = document.getElementById(elemntId);
+    if(element!=null){
+        element.style.color = colorRgba;
+    }
+}
+
+</script>");
+            head.Append("</head><body>");
+            return head.ToString();
+        }
 
 
 
-        public virtual ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton)
+        public virtual ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton,string isoLangCode)
         {
             switch (stage)
             {
@@ -459,6 +456,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         }
         
         public virtual async Task<string> GetChapterHtml(
+            string isoLangCode,
             DisplaySettings displaySettings,
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
@@ -474,6 +472,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return
                 await
                 this.GetChapterHtml(
+                    isoLangCode,
                     displaySettings,
                     this.Serial.PosChaptNum,
                     htmlBackgroundColor,
@@ -505,6 +504,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         }
 
         public virtual void GetInfo(
+            string isoLangCode,
             out string bookShortName,
             out int relChaptNum,
             out int verseNum,
@@ -514,11 +514,11 @@ function SetFontColorForElement(elemntId, colorRgba){
             verseNum = this.Serial.PosVerseNum;
             relChaptNum = this.Serial.PosChaptNum;
             bookShortName = this.Serial.PosBookShortName;
-            this.GetInfo(bookShortName,
+            this.GetInfo(isoLangCode, bookShortName,
                 this.Serial.PosChaptNum, this.Serial.PosVerseNum, out fullName, out title);
         }
 
-        public void GetInfo(string bookShortName,
+        public void GetInfo(string isoLangCode, string bookShortName,
             int chapterNum, int verseNum, out string fullName, out string title)
         {
             fullName = string.Empty;
@@ -552,7 +552,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return this.Serial.Iso2DigitLangCode;
         }
 
-        public virtual async Task<object[]> GetTranslateableTexts(DisplaySettings displaySettings, string bibleToLoad)
+        public virtual async Task<object[]> GetTranslateableTexts(string isoLangCode, DisplaySettings displaySettings, string bibleToLoad)
         {
             var toTranslate = new string[2];
             var isTranslateable = new bool[2];
@@ -563,7 +563,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             string titleText;
             int verseNum;
 
-            this.GetInfo(out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
+            this.GetInfo(isoLangCode, out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
             string verseText = await this.GetVerseTextOnly(displaySettings, bookShortName, relChaptNum, verseNum);
 
             toTranslate[0] = "<p>" + fullName + " " + (relChaptNum + 1) + ":" + (verseNum + 1) + " - " + bibleToLoad
@@ -591,7 +591,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return string.Empty;
         }
 
-        public async Task<List<string>> MakeListDisplayText(
+        public async Task<List<string>> MakeListDisplayText(string isoLangCode,
             DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay)
         {
             var returnList = new List<string>();
@@ -690,6 +690,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         }
 
         public async Task<string> PutHtmlTofile(
+            string isoLangCode,
             DisplaySettings displaySettings,
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
@@ -763,6 +764,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             string fileContent =
                 await
                 this.GetChapterHtml(
+                    isoLangCode,
                     displaySettings,
                     htmlBackgroundColor,
                     htmlForegroundColor,
@@ -882,6 +884,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         /// <param name="forceReload"></param>
         /// <returns>Entire Chapter without notes and with lots of html markup for each verse</returns>
         protected async Task<string> GetChapterHtml(
+            string isoLangCode,
             DisplaySettings displaySettings,
             int chapterNumber,
             HtmlColorRgba htmlBackgroundColor,
@@ -911,7 +914,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             string chapterEndHtml = string.Empty;
             if (addStartFinishHtml)
             {
-                chapterStartHtml = BibleZtextReader.HtmlHeader(
+                chapterStartHtml = HtmlHeader(
                     displaySettings,
                     htmlBackgroundColor,
                     htmlForegroundColor,
@@ -988,6 +991,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         }
 
         protected async Task<string> MakeListDisplayText(
+            string isoLangCode,
             DisplaySettings displaySettings,
             List<BiblePlaceMarker> listToDisplay,
             HtmlColorRgba htmlBackgroundColor,
@@ -1056,10 +1060,10 @@ function SetFontColorForElement(elemntId, colorRgba){
                 ms.Position = 0;
 
                 // debug
-                // byte[] buf = new byte[ms.Length]; ms.Read(buf, 0, (int)ms.Length);
-                // string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, buf.Length);
-                // System.Diagnostics.Debug.WriteLine("osisbuf: " + xxxxxx);
-                // ms.Position = 0;
+                //byte[] buf = new byte[ms.Length]; ms.Read(buf, 0, (int)ms.Length);
+                //string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, buf.Length);
+                //System.Diagnostics.Debug.WriteLine("osisbuf: " + xxxxxx);
+                //ms.Position = 0;
             }
             catch (Exception ee)
             {
@@ -1414,7 +1418,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         ((!firstChar.Equals(',') && !firstChar.Equals('.') && !firstChar.Equals(':')
                                           && !firstChar.Equals(';') && !firstChar.Equals('?'))
                                              ? " "
-                                             : string.Empty) +*/ text,
+                                             : string.Empty) + */text,
                                         plainText,
                                         noteText,
                                         isInElement || isInInjectionElement);
@@ -1491,6 +1495,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                             lemmaText = string.Empty;
                                             morphText = string.Empty;
                                         }
+
 
                                         break;
                                     case "lg":

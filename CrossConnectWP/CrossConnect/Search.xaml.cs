@@ -463,7 +463,7 @@ namespace CrossConnect
             string fullName;
             string text;
             int verseNum;
-            App.OpenWindows[(int)openWindowIndex].State.Source.GetInfo(
+            App.OpenWindows[(int)openWindowIndex].State.Source.GetInfo(Translations.IsoLanguageCode,
                 out _currentBookName, out dummy2, out verseNum, out fullName, out text);
             Chapter.Content = fullName;
 

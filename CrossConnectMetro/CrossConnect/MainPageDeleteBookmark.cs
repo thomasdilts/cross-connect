@@ -83,7 +83,7 @@ namespace CrossConnect
             this.SelectListBookmarks.Items.Clear();
             List<string> allBookmarks =
                 await
-                App.OpenWindows[0].State.Source.MakeListDisplayText(App.DisplaySettings, App.PlaceMarkers.Bookmarks);
+                App.OpenWindows[0].State.Source.MakeListDisplayText(Translations.IsoLanguageCode, App.DisplaySettings, App.PlaceMarkers.Bookmarks);
 
             // the list is a reversed list from the original list. So we must mark it with the correct reversed index.
             int j = allBookmarks.Count - 1;
