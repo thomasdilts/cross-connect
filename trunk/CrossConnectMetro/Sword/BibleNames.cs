@@ -45,31 +45,84 @@ namespace Sword
 
         private readonly Dictionary<string, string> _shortNames = new Dictionary<string, string>();
 
+        private string _isoLanguage;
+        public string isoLanguage { get { return _isoLanguage; } }
+
         #endregion
 
         #region Constructors and Destructors
 
-        public BibleNames(string isoLang2DigitCode)
+        public BibleNames(string isoLang2DigitCode, string appChosenIsoLangCode)
         {
+            // rules:
+            // 1. Bible language code = isoLang2DigitCode unless it is zh, in that case 1.zh=os, os 2.zh=chosen,chosen, else simplified.
+            // 2. appChosenIsoLangCode
+            // 3. operating system iso lang code.
+            // 4. english
+
             Assembly assem = Assembly.Load(new AssemblyName("Sword"));
             string isocode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLower();
             string name = CultureInfo.CurrentCulture.Name.Replace('-', '_');
             Stream stream = null;
 
-            if (isocode.Equals(isoLang2DigitCode))
+            if (isoLang2DigitCode.Equals("zh"))
             {
-                // here we have the same language as the phone standard langauge
-                //
-                // Because none of the bibles have a culture code, but bible names have culturecodes, we
-                // will attempt to get the culture code of the phones standard language.
-                // try to get the culture code if it exists
-                stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + name + ".xml");
+                if (appChosenIsoLangCode.Substring(0,2).Equals(isoLang2DigitCode))
+                {
+                    stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + (appChosenIsoLangCode.Equals("zh")?"zh_tw":"zh_cn") + ".xml");
+                    if(stream!=null)
+                    {
+                        _isoLanguage = appChosenIsoLangCode.Equals("zh") ? "zh_tw" : "zh_cn";
+                    }
+                }
+
+                if (stream == null && isocode.Equals(isoLang2DigitCode))
+                {
+                    stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + name + ".xml");
+                    if (stream != null)
+                    {
+                        _isoLanguage = name;
+                    }
+                }
+
+                if (stream == null)
+                {
+                    stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + "zh_cn" + ".xml");
+                    if (stream != null)
+                    {
+                        _isoLanguage = "zh_cn";
+                    }
+                }
             }
 
-            if (stream == null)
+            if(stream==null)
             {
-                stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + isoLang2DigitCode + ".xml")
-                         ?? assem.GetManifestResourceStream("Sword.Properties.BibleNames_en.xml");
+                stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + isoLang2DigitCode + ".xml");
+                if(stream == null)
+                {
+                    stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + appChosenIsoLangCode + ".xml");
+                    if (stream == null)
+                    {
+                        stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + isocode + ".xml");
+                        if (stream == null)
+                        {
+                            stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + "en" + ".xml");
+                            _isoLanguage = "en";
+                        }
+                        else
+                        {
+                            _isoLanguage = isocode;
+                        }
+                    }
+                    else
+                    {
+                        _isoLanguage = appChosenIsoLangCode;
+                    }
+                }
+                else
+                {
+                    _isoLanguage = isoLang2DigitCode;
+                }
             }
 
             // This right to left problem was fixed when we went over to xml format. So this code is no longer needed.
@@ -108,7 +161,7 @@ namespace Sword
                                     }
                                 }
                                 while (reader.MoveToNextAttribute());
-                                if (shortName.Length > 4)
+                                if (shortName.Length > 5)
                                 {
                                     numberBadShortNames++;
                                 }
@@ -120,7 +173,7 @@ namespace Sword
                 }
                 stream.Dispose();
             }
-            this._isShortNamesExisting = numberBadShortNames < 10;
+            this._isShortNamesExisting = numberBadShortNames < 10 && !_isoLanguage.Substring(0, 2).Equals("zh");
         }
 
         #endregion

@@ -136,8 +136,20 @@ namespace CrossConnect
 
                             break;
                     }
-
-                    PageTitle.Text = Translations.Translate(buttonWindow.Title);
+                    string titletext = buttonWindow.Title;
+                    switch(buttonWindow.Title)
+                    {
+                        case "Select a book to view":
+                            titletext = "Select book";
+                            break;
+                        case "Select a chapter to view":
+                            titletext = "Select chapter";
+                            break;
+                        case "Select a verse to view":
+                            titletext = "Select a verse";
+                            break;
+                    }
+                    PageTitle.Text = Translations.Translate(titletext);
                     _usingNowSpec = buttonWindow;
                     ScrollContentGrid.Children.Clear();
                     ScrollContentGrid.ColumnDefinitions.Clear();
@@ -232,7 +244,7 @@ namespace CrossConnect
                 openWindowIndex = 0;
             }
 
-            ReloadWindow(App.OpenWindows[(int)openWindowIndex].State.Source.GetButtonWindowSpecs(0, 0));
+            ReloadWindow(App.OpenWindows[(int)openWindowIndex].State.Source.GetButtonWindowSpecs(0, 0, Translations.IsoLanguageCode));
         }
 
         private void PhoneApplicationPageOrientationChanged(object sender, OrientationChangedEventArgs e)
@@ -271,7 +283,7 @@ namespace CrossConnect
                     _selectBibleBookSecondSelection = stageInfo;
                 }
                 ButtonWindowSpecs specs2 = App.OpenWindows[(int)openWindowIndex].State.Source.GetButtonWindowSpecs(
-                    stage, stageInfo);
+                    stage, stageInfo,Translations.IsoLanguageCode);
                 if (specs2 != null)
                 {
                     ReloadWindow(specs2);
@@ -284,7 +296,7 @@ namespace CrossConnect
             PhoneApplicationService.Current.State["SelectBibleBookFirstSelection"] = stageInfo;
 
             ButtonWindowSpecs specs = App.OpenWindows[(int)openWindowIndex].State.Source.GetButtonWindowSpecs(
-                stage, stageInfo);
+                stage, stageInfo, Translations.IsoLanguageCode);
             if (specs != null)
             {
                 PhoneApplicationService.Current.State["SelectBibleBookFirstSelection"] = (int)((Button)sender).Tag;
@@ -310,7 +322,7 @@ namespace CrossConnect
             }
 
             ButtonWindowSpecs specs = App.OpenWindows[(int)openWindowIndex].State.Source.GetButtonWindowSpecs(
-                2, (int)((Button)sender).Tag);
+                2, (int)((Button)sender).Tag,Translations.IsoLanguageCode);
             if (specs != null)
             {
                 _selectBibleBookSecondSelection = (int)((Button)sender).Tag;
@@ -354,7 +366,7 @@ namespace CrossConnect
             }
 
             ButtonWindowSpecs specs = App.OpenWindows[(int)openWindowIndex].State.Source.GetButtonWindowSpecs(
-                3, (int)((Button)sender).Tag);
+                3, (int)((Button)sender).Tag, Translations.IsoLanguageCode);
             if (specs != null)
             {
                 PhoneApplicationService.Current.State["SelectBibleBookThirdSelection"] = (int)((Button)sender).Tag;

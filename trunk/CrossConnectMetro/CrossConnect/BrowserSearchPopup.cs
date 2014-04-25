@@ -391,7 +391,7 @@ namespace CrossConnect
             string text;
             int verseNum;
             int chaptNum;
-            this._state.Source.GetInfo(
+            this._state.Source.GetInfo(Translations.IsoLanguageCode, 
                 out this._currentBookName, out chaptNum, out verseNum, out fullName, out text);
             this.Chapter.Content = fullName;
 

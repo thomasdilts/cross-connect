@@ -321,6 +321,7 @@ namespace CrossConnect.readers
         }
 
         public override async Task<string> GetChapterHtml(
+            string isoLangCode,
             DisplaySettings displaySettings,
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
@@ -345,6 +346,7 @@ namespace CrossConnect.readers
         }
 
         public override void GetInfo(
+            string isoLangCode,
             out string bookShortName,
             out int relChaptNum,
             out int verseNum,

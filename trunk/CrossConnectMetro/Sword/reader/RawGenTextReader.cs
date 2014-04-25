@@ -158,12 +158,9 @@ namespace Sword.reader
 
         #region Public Properties
 
-        public bool ExistsShortNames
+        public bool ExistsShortNames(string isoLangCode)
         {
-            get
-            {
-                return false;
-            }
+            return false;
         }
 
         public virtual bool IsExternalLink
@@ -393,7 +390,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
 
 
-        public virtual ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton)
+        public virtual ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton,string isoLangCode)
         {
             switch (stage)
             {
@@ -459,6 +456,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         }
         
         public virtual async Task<string> GetChapterHtml(
+            string isoLangCode,
             DisplaySettings displaySettings,
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
@@ -474,6 +472,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return
                 await
                 this.GetChapterHtml(
+                    isoLangCode,
                     displaySettings,
                     this.Serial.PosChaptNum,
                     htmlBackgroundColor,
@@ -505,6 +504,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         }
 
         public virtual void GetInfo(
+            string isoLangCode,
             out string bookShortName,
             out int relChaptNum,
             out int verseNum,
@@ -514,11 +514,11 @@ function SetFontColorForElement(elemntId, colorRgba){
             verseNum = this.Serial.PosVerseNum;
             relChaptNum = this.Serial.PosChaptNum;
             bookShortName = this.Serial.PosBookShortName;
-            this.GetInfo(bookShortName,
+            this.GetInfo(isoLangCode, bookShortName,
                 this.Serial.PosChaptNum, this.Serial.PosVerseNum, out fullName, out title);
         }
 
-        public void GetInfo(string bookShortName,
+        public void GetInfo(string isoLangCode, string bookShortName,
             int chapterNum, int verseNum, out string fullName, out string title)
         {
             fullName = string.Empty;
@@ -552,7 +552,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return this.Serial.Iso2DigitLangCode;
         }
 
-        public virtual async Task<object[]> GetTranslateableTexts(DisplaySettings displaySettings, string bibleToLoad)
+        public virtual async Task<object[]> GetTranslateableTexts(string isoLangCode, DisplaySettings displaySettings, string bibleToLoad)
         {
             var toTranslate = new string[2];
             var isTranslateable = new bool[2];
@@ -563,7 +563,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             string titleText;
             int verseNum;
 
-            this.GetInfo(out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
+            this.GetInfo(isoLangCode, out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
             string verseText = await this.GetVerseTextOnly(displaySettings, bookShortName, relChaptNum, verseNum);
 
             toTranslate[0] = "<p>" + fullName + " " + (relChaptNum + 1) + ":" + (verseNum + 1) + " - " + bibleToLoad
@@ -591,7 +591,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return string.Empty;
         }
 
-        public async Task<List<string>> MakeListDisplayText(
+        public async Task<List<string>> MakeListDisplayText(string isoLangCode,
             DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay)
         {
             var returnList = new List<string>();
@@ -690,6 +690,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         }
 
         public async Task<string> PutHtmlTofile(
+            string isoLangCode,
             DisplaySettings displaySettings,
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
@@ -763,6 +764,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             string fileContent =
                 await
                 this.GetChapterHtml(
+                    isoLangCode,
                     displaySettings,
                     htmlBackgroundColor,
                     htmlForegroundColor,
@@ -882,6 +884,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         /// <param name="forceReload"></param>
         /// <returns>Entire Chapter without notes and with lots of html markup for each verse</returns>
         protected async Task<string> GetChapterHtml(
+            string isoLangCode,
             DisplaySettings displaySettings,
             int chapterNumber,
             HtmlColorRgba htmlBackgroundColor,
@@ -988,6 +991,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         }
 
         protected async Task<string> MakeListDisplayText(
+            string isoLangCode,
             DisplaySettings displaySettings,
             List<BiblePlaceMarker> listToDisplay,
             HtmlColorRgba htmlBackgroundColor,

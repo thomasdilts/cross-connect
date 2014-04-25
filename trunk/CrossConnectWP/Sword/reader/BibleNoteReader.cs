@@ -116,6 +116,7 @@ namespace CrossConnect.readers
         #region Public Methods and Operators
 
         public override async Task<string> GetChapterHtml(
+            string isoLangCode,
             DisplaySettings displaySettings,
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
@@ -131,6 +132,7 @@ namespace CrossConnect.readers
             return
                 await
                 this.GetChapterHtml(
+                    isoLangCode,
                     displaySettings,
                     this.Serial.PosBookShortName,
                     this.Serial.PosChaptNum,
@@ -147,6 +149,7 @@ namespace CrossConnect.readers
         }
 
         public override void GetInfo(
+            string isoLangCode,
             out string bookShortName,
             out int relChaptNum,
             out int verseNum,
@@ -156,7 +159,7 @@ namespace CrossConnect.readers
             verseNum = this.Serial.PosVerseNum;
             relChaptNum = this.Serial.PosChaptNum;
             bookShortName = this.Serial.PosBookShortName;
-            this.GetInfo(bookShortName,
+            this.GetInfo(isoLangCode, bookShortName,
                 this.Serial.PosChaptNum, this.Serial.PosVerseNum, out fullName, out title);
             title = this.TitleBrowserWindow + " " + fullName + ":" + (relChaptNum + 1);
         }

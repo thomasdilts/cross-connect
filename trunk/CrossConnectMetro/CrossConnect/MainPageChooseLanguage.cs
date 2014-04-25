@@ -23,6 +23,7 @@
 
 namespace CrossConnect
 {
+    using Sword.reader;
     using Windows.Storage;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
@@ -102,6 +103,14 @@ namespace CrossConnect
                 Translations.IsoLanguageCode = SupportedLanguages[this.SelectList.SelectedIndex];
                 ApplicationData.Current.LocalSettings.Values["LanguageIsoCode"] =
                     SupportedLanguages[this.SelectList.SelectedIndex];
+                foreach (var window in App.OpenWindows)
+                {
+                    if (window.State.Source is BibleZtextReader)
+                    {
+                        ((BibleZtextReader)window.State.Source).BookNames(Translations.IsoLanguageCode, true);
+                    }
+                }
+
                 App.MainWindow.ReDrawWindows();
                 this.ChooseLanguagePopup.IsOpen = false;
                 this.SetLanguageDependentTexts();

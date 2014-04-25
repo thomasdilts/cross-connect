@@ -69,6 +69,7 @@ namespace CrossConnect
             this.SelectHighlight4.Content = App.DisplaySettings.HighlightName4;
             this.SelectHighlight5.Content = App.DisplaySettings.HighlightName5;
             this.SelectHighlight6.Content = App.DisplaySettings.HighlightName6;
+            this.PageTitle.Text = Translations.Translate("Use highlighting");
             this.SelectHighlightNone.Content = Translations.Translate("None");
 
             this.Background1.Background = new SolidColorBrush(App.Themes.ColorHighligt[0]);

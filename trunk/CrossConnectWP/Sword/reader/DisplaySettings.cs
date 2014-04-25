@@ -29,7 +29,6 @@ namespace Sword.reader
 
         [DataMember(Name = "Show2titleRows")]
         public bool Show2titleRows;
-
         [DataMember(Name = "highlightMarkings")]
         public bool HighlightMarkings;
 
@@ -98,9 +97,6 @@ namespace Sword.reader
         public bool UseHighlights = true;
 
         [DataMember]
-        public bool UseRemoteStorage = true;
-
-        [DataMember]
         public bool SyncMediaVerses = true;
 
         public Highlighter highlighter = new Highlighter();
@@ -162,7 +158,6 @@ namespace Sword.reader
             if (string.IsNullOrEmpty(this.HighlightName6))
             {
                 UseHighlights = true;
-                UseRemoteStorage = true;
                 this.HighlightName6 = "Highlight 6";
             }
         }
@@ -198,7 +193,6 @@ namespace Sword.reader
                 HighlightName5 = this.HighlightName5,
                 HighlightName6 = this.HighlightName6,
                 UseHighlights = this.UseHighlights,
-                UseRemoteStorage = this.UseRemoteStorage,
                 SyncMediaVerses = this.SyncMediaVerses
             };
             cloned.highlighter = this.highlighter;

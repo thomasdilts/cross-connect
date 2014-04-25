@@ -161,7 +161,6 @@
     <EmbeddedResource Include="Properties\BibleNames_cy.xml" />
     <EmbeddedResource Include="Properties\BibleNames_da.xml" />
     <EmbeddedResource Include="Properties\BibleNames_de.xml" />
-    <EmbeddedResource Include="Properties\biblenames_en.xml" />
     <EmbeddedResource Include="Properties\BibleNames_es.xml" />
     <EmbeddedResource Include="Properties\BibleNames_et.xml" />
     <EmbeddedResource Include="Properties\BibleNames_fa.xml" />
@@ -192,11 +191,14 @@
     <EmbeddedResource Include="Properties\BibleNames_th.xml" />
     <EmbeddedResource Include="Properties\BibleNames_uk.xml" />
     <EmbeddedResource Include="Properties\BibleNames_vi.xml" />
-    <EmbeddedResource Include="Properties\BibleNames_zh_CN.xml" />
-    <EmbeddedResource Include="Properties\BibleNames_zh_TW.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_zh_cn.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_zh_tw.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\BibleNames_ar.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\BibleNames_en.xml" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

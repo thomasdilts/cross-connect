@@ -141,7 +141,7 @@ namespace CrossConnect
                 string bookShortName;
                 string fullName;
                 string titleText;
-                this._state.Source.GetInfo(
+                this._state.Source.GetInfo(Translations.IsoLanguageCode, 
                     out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
             }
 
@@ -421,6 +421,7 @@ namespace CrossConnect
                 string fullName;
                 string title;
                 _state.Source.GetInfo(
+                    Translations.IsoLanguageCode, 
                     out relbookShortName,
                     out relChaptNum,
                     out relverseNum,
@@ -508,6 +509,7 @@ namespace CrossConnect
                         string createdFileName =
                             await
                             this._state.Source.GetChapterHtml(
+                                Translations.IsoLanguageCode,
                                 App.DisplaySettings.Clone(),
                                 backcolor,
                                 forecolor,
@@ -717,6 +719,7 @@ namespace CrossConnect
                 string createdFileName =
                     await
                     this._state.Source.GetChapterHtml(
+                        Translations.IsoLanguageCode,
                         dispSet,
                         htmlBackgroundColor,
                         htmlForegroundColor,
@@ -1007,7 +1010,7 @@ namespace CrossConnect
             int verseNum;
             string fullName;
             string titleText;
-            this._state.Source.GetInfo(
+            this._state.Source.GetInfo(Translations.IsoLanguageCode, 
                 out bookNum, out relChaptNum, out verseNum, out fullName, out titleText);
             this.title.Text = titleText + " - "
                               + (string.IsNullOrEmpty(this._state.BibleDescription)
@@ -1035,7 +1038,7 @@ namespace CrossConnect
             int verseNum;
             string fullName;
             string titleText;
-            this._state.Source.GetInfo(
+            this._state.Source.GetInfo(Translations.IsoLanguageCode, 
                 out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
             ScrollToThisVerse(bookShortName, relChaptNum, verseNum);
         }

@@ -104,30 +104,30 @@ namespace Sword.reader
         #region Constants
 
         /// <summary>
-        ///     Constant for the number of books in the Bible
-        /// </summary>
-        //public const int BooksInBible = 66;
 
-        //public const int BooksInNt = 27;
 
-        //public const int BooksInOt = 39;
 
-        /// <summary>
-        ///     Constant for the number of chapters in the Bible
-        /// </summary>
-        //public const int ChaptersInBible = 1189;
 
-        /// <summary>
-        ///     Constant for the number of chapters in the NT
-        /// </summary>
-        //public const int ChaptersInNt = 260;
 
-        /// <summary>
-        ///     Constant for the number of chapters in the OT
-        /// </summary>
-        //public const int ChaptersInOt = 929;
 
-        /// <summary>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         ///     * The configuration directory
         /// </summary>
         public const string DirConf = "mods.d";
@@ -323,7 +323,16 @@ namespace Sword.reader
 
         protected IndexingBlockType BlockType = IndexingBlockType.Book;
 
-        public BibleNames BookNames;
+        private BibleNames _bookNames = null;
+        public BibleNames BookNames(string appChoosenIsoLangCode, bool reset=false)
+        {
+            if (this._bookNames == null || reset)
+            {
+                this._bookNames = new BibleNames(this.Serial.Iso2DigitLangCode, appChoosenIsoLangCode);
+            }
+
+            return this._bookNames ;
+        }
 
         private int _lastShownChapterNumber = -1;
 
@@ -387,17 +396,20 @@ namespace Sword.reader
 
         #region Public Properties
 
-        public bool ExistsShortNames
-        {
-            get
-            {
-                if (this.BookNames == null)
-                {
-                    this.BookNames = new BibleNames(this.Serial.Iso2DigitLangCode);
-                }
 
-                return this.BookNames.ExistsShortNames;
-            }
+
+
+
+
+
+
+
+
+
+        public bool ExistsShortNames(string appChoosenIsoLangCode)
+        {
+            return this.BookNames(appChoosenIsoLangCode).ExistsShortNames;
+
         }
 
         public virtual bool IsExternalLink
@@ -580,9 +592,9 @@ namespace Sword.reader
 
             head.Append(
                 string.Format(
-                    "body {{background:{0};color:{1};font-size:{2}pt;margin:6;padding:0;{3} }}",
-                    htmlBackgroundColor.GetHtmlRgb(),
-                    htmlForegroundColor.GetHtmlRgb(),
+                    "body {{background:{0};color:{1};font-size:{2}pt;margin:20;padding:0;{3} }}",
+                    htmlBackgroundColor.GetHtmlRgba(),
+                    htmlForegroundColor.GetHtmlRgba(),
                     (int)(htmlFontSize + 0.5),
                     fontFamily)); // old fashioned way to round an integer
 
@@ -592,20 +604,20 @@ namespace Sword.reader
                     + "a.strongsmorph,a.strongsmorph:link,span.strongsmorph{{color:{1};text-decoration:none;}} "
                     + "a.normalcolor,a.normalcolor:link {{color:{2};text-decoration:none;}}",
                     displaySettings.HighlightMarkings
-                        ? htmlPhoneAccentColor.GetHtmlRgb()
-                        : htmlForegroundColor.GetHtmlRgb(),
+                        ? htmlPhoneAccentColor.GetHtmlRgba()
+                        : htmlForegroundColor.GetHtmlRgba(),
                     displaySettings.HighlightMarkings
-                        ? htmlPhoneAccentColor.GetHtmlRgb()
-                        : htmlForegroundColor.GetHtmlRgb(),
-                    htmlForegroundColor.GetHtmlRgb()));
+                        ? htmlPhoneAccentColor.GetHtmlRgba()
+                        : htmlForegroundColor.GetHtmlRgba(),
+                    htmlForegroundColor.GetHtmlRgba()));
 
             head.Append(
                 string.Format(
                     " a.normalcolor:link span.christ {{ color: {1}; }}  a.normalcolor span.christ:visited {{ color: {3}; }}  a.normalcolor span.christ:hover {{ color: {2}; }} a.normalcolor:hover {{ color: {0}; }} ",
-                    htmlPhoneAccentColor.GetHtmlRgb(),
-                    htmlWordsOfChristColor.GetHtmlRgb(),
-                    htmlPhoneAccentColor.GetHtmlRgb(),
-                    htmlPhoneAccentColor.GetHtmlRgb()));
+                    htmlPhoneAccentColor.GetHtmlRgba(),
+                    htmlWordsOfChristColor.GetHtmlRgba(),
+                    htmlPhoneAccentColor.GetHtmlRgba(),
+                    htmlPhoneAccentColor.GetHtmlRgba()));
 
             head.Append("</style>");
             head.Append(@"<script type=""text/javascript"">
@@ -649,7 +661,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return false;
         }
 
-        public virtual ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton)
+        public virtual ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton, string appChoosenIsoLangCode)
         {
             switch (stage)
             {
@@ -659,16 +671,16 @@ function SetFontColorForElement(elemntId, colorRgba){
                         var colors = new List<int>();
                         var values = new List<int>();
                         var buttonNames = new List<string>();
-                        if (this.BookNames == null)
-                        {
-                            this.BookNames = new BibleNames(this.Serial.Iso2DigitLangCode);
-                        }
 
-                        //string[] buttonNamesStart = this.BookNames.GetAllShortNames();
-                        //if (!this.BookNames.ExistsShortNames)
-                        //{
-                        //    buttonNamesStart = this.BookNames.GetAllFullNames();
-                        //}
+
+
+
+
+
+
+
+
+
 
                         // assumption. if the first chapter in the book does not exist then the book does not exist
                         int bookCounter = 0;
@@ -678,23 +690,23 @@ function SetFontColorForElement(elemntId, colorRgba){
                             {
                                 colors.Add(ChapterCategories[book.ShortName1]);
                                 values.Add(bookCounter);
-                                buttonNames.Add(this.BookNames.GetShortName(book.ShortName1));
+                                buttonNames.Add(this.BookNames(appChoosenIsoLangCode).GetShortName(book.ShortName1));
                             }
                             bookCounter++;
                         }
-                        var numBadShortNames = 0;
+
                         foreach (var book in canon.NewTestBooks)
                         {
                             if (this.Chapters[book.VersesInChapterStartIndex].Length != 0)
                             {
                                 colors.Add(ChapterCategories[book.ShortName1]);
                                 values.Add(bookCounter);
-                                var shortName = this.BookNames.GetShortName(book.ShortName1);
-                                if (shortName.Count()>4)
-                                {
-                                    numBadShortNames++;
-                                }
-                                buttonNames.Add(shortName);
+                                buttonNames.Add(this.BookNames(appChoosenIsoLangCode).GetShortName(book.ShortName1));
+
+
+
+
+
                                 bookCounter++;
                             }
                         }
@@ -706,7 +718,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                             colors.ToArray(),
                             buttonNames.ToArray(),
                             values.ToArray(),
-                            numBadShortNames>10 ? ButtonSize.Large : ButtonSize.Medium);
+                            !this.BookNames(appChoosenIsoLangCode).ExistsShortNames ? ButtonSize.Large : ButtonSize.Medium);
                     }
                 case 1:
                     {
@@ -771,6 +783,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         }
 
         public virtual async Task<string> GetChapterHtml(
+            string isoLangCode,
             DisplaySettings displaySettings,
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
@@ -786,6 +799,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return
                 await
                 this.GetChapterHtml(
+                    isoLangCode,
                     displaySettings,
                     this.Serial.PosBookShortName,
                     this.Serial.PosChaptNum,
@@ -818,28 +832,31 @@ function SetFontColorForElement(elemntId, colorRgba){
             return string.Empty;
         }
 
-        public string GetFullName(string bookShortName)
+        public string GetFullName(string bookShortName, string appChoosenIsoLangCode)
         {
-            if (this.BookNames == null)
-            {
-                this.BookNames = new BibleNames(this.Serial.Iso2DigitLangCode);
-            }
-            var book = canon.BookByShortName[bookShortName];
-            return this.BookNames.GetFullName(book.ShortName1, book.FullName);
-        }
-            
-        public string GetFullName(int bookNum)
-        {
-            if (this.BookNames == null)
-            {
-                this.BookNames = new BibleNames(this.Serial.Iso2DigitLangCode);
-            }
 
+
+
+
+            var book = canon.BookByShortName[bookShortName];
+            return this.BookNames(appChoosenIsoLangCode).GetFullName(book.ShortName1, book.FullName);
+        }
+
+
+
+
+
+
+
+
+        public string GetFullName(int bookNum, string appChoosenIsoLangCode)
+        {
             CanonBookDef book = canon.GetBookFromBookNumber(bookNum);
-            return this.BookNames.GetFullName(book.ShortName1, book.FullName);
+            return this.BookNames(appChoosenIsoLangCode).GetFullName(book.ShortName1, book.FullName);
         }
 
         public virtual void GetInfo(
+            string isoLangCode,
             out string bookShortName,
             out int relChaptNum,
             out int verseNum,
@@ -849,11 +866,11 @@ function SetFontColorForElement(elemntId, colorRgba){
             bookShortName = this.Serial.PosBookShortName;
             relChaptNum = this.Serial.PosChaptNum;
             verseNum = this.Serial.PosVerseNum;
-            this.GetInfo(bookShortName,
+            this.GetInfo(isoLangCode, bookShortName,
                 this.Serial.PosChaptNum, this.Serial.PosVerseNum, out fullName, out title);
         }
 
-        public void GetInfo(string bookShortName,
+        public void GetInfo(string isoLangCode, string bookShortName,
             int chapterNum, int verseNum, out string fullName, out string title)
         {
             fullName = string.Empty;
@@ -865,7 +882,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             try
             {
 
-                fullName = GetFullName(bookShortName);
+                fullName = GetFullName(bookShortName, isoLangCode);
                 title = fullName + " " + (chapterNum + 1) + ":" + (verseNum + 1);
             }
             catch (Exception ee)
@@ -879,12 +896,12 @@ function SetFontColorForElement(elemntId, colorRgba){
             return this.Serial.Iso2DigitLangCode;
         }
 
-        public string GetShortName(int bookNum)
+        public string GetShortName(int bookNum, string appChoosenIsoLangCode)
         {
-            if (this.BookNames == null)
-            {
-                this.BookNames = new BibleNames(this.Serial.Iso2DigitLangCode);
-            }
+
+
+
+
 
             CanonBookDef book = null;
             if (bookNum >= canon.OldTestBooks.Count())
@@ -896,10 +913,10 @@ function SetFontColorForElement(elemntId, colorRgba){
                 book = canon.OldTestBooks[bookNum];
             }
 
-            return this.BookNames.GetShortName(book.ShortName1);
+            return this.BookNames(appChoosenIsoLangCode).GetShortName(book.ShortName1);
         }
 
-        public virtual async Task<object[]> GetTranslateableTexts(DisplaySettings displaySettings, string bibleToLoad)
+        public virtual async Task<object[]> GetTranslateableTexts(string isoLangCode, DisplaySettings displaySettings, string bibleToLoad)
         {
             var toTranslate = new string[2];
             var isTranslateable = new bool[2];
@@ -910,7 +927,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             string titleText;
             int verseNum;
 
-            this.GetInfo(out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
+            this.GetInfo(isoLangCode, out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
             string verseText = await this.GetVerseTextOnly(displaySettings, bookShortName, relChaptNum, verseNum);
 
             toTranslate[0] = "<p>" + fullName + " " + (relChaptNum + 1) + ":" + (verseNum + 1) + " - " + bibleToLoad
@@ -1034,7 +1051,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             }
             return returnText.ToString();*/
         }
-        public async Task<List<string>> MakeListDisplayText(
+        public async Task<List<string>> MakeListDisplayText(string appChoosenIsoLangCode,
             DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay)
         {
             var returnList = new List<string>();
@@ -1052,7 +1069,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 int noteMarker = 'a';
                 string verseTxt = this.ParseOsisText(
                     displaySettings,
-                    this.GetFullName(chaptPos.Booknum) + " " + (chaptPos.BookRelativeChapterNum + 1) + ":"
+                    this.GetFullName(chaptPos.Booknum, appChoosenIsoLangCode) + " " + (chaptPos.BookRelativeChapterNum + 1) + ":"
                     + (place.VerseNum + 1) + "  " + place.When.ToString("yyyy-MM-dd") + " "
                     + place.When.ToString("hh.mm.ss") + "---",
                     string.Empty,
@@ -1098,7 +1115,8 @@ function SetFontColorForElement(elemntId, colorRgba){
         public virtual void MoveNext(bool isVerseMove)
         {
 
-            if (this.Serial == null || canon == null || string.IsNullOrEmpty(this.Serial.PosBookShortName))
+
+            if(this.Serial==null || canon == null)
             {
                 return;
             }
@@ -1246,6 +1264,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         }
 
         public async Task<string> PutHtmlTofile(
+            string isoLangCode,
             DisplaySettings displaySettings,
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
@@ -1325,6 +1344,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             string fileContent =
                 await
                 this.GetChapterHtml(
+                    isoLangCode,
                     displaySettings,
                     htmlBackgroundColor,
                     htmlForegroundColor,
@@ -1382,14 +1402,14 @@ function SetFontColorForElement(elemntId, colorRgba){
             }
         }
 
-        protected string[] GetAllShortNames()
+        protected string[] GetAllShortNames(string appChoosenIsoLangCode)
         {
-            if (this.BookNames == null)
-            {
-                this.BookNames = new BibleNames(this.Serial.Iso2DigitLangCode);
-            }
 
-            return this.BookNames.GetAllShortNames();
+
+
+
+
+            return this.BookNames(appChoosenIsoLangCode).GetAllShortNames();
         }
 
         protected int GetByteFromStream(Stream fs, out bool isEnd)
@@ -1532,6 +1552,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         /// <param name="forceReload"></param>
         /// <returns>Entire Chapter without notes and with lots of html markup for each verse</returns>
         protected async Task<string> GetChapterHtml(
+            string isoLangCode,
             DisplaySettings displaySettings,
             string bookShortName,
             int chapterNumber,
@@ -1573,7 +1594,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             string bookName = string.Empty;
             if (displaySettings.ShowBookName)
             {
-                bookName = this.GetFullName(versesForChapterPositions.Booknum);
+                bookName = this.GetFullName(versesForChapterPositions.Booknum, isoLangCode);
             }
 
             bool isVerseMarking = displaySettings.ShowBookName || displaySettings.ShowChapterNumber
@@ -1744,10 +1765,10 @@ function SetFontColorForElement(elemntId, colorRgba){
             {
                 return string.Empty;
             }
-            return "style=\"background-color:" + htmlHighlightingColor[(int)highlight].GetHtmlRgb() + ";\"";
+            return "style=\"background-color:" + htmlHighlightingColor[(int)highlight].GetHtmlRgba() + ";\"";
         }
 
-        protected async Task<string> MakeListTtcHearingText(
+        protected async Task<string> MakeListTtcHearingText(string appChoosenIsoLangCode,
             List<BiblePlaceMarker> listToDisplay)
         {
 
@@ -1772,7 +1793,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 {
                     return " POSSIBLE ERROR IN BIBLE, TEXT MISSING HERE ";
                 }
-                listText.Append(this.GetFullName(chaptPos.Booknum) + " "
+                listText.Append(this.GetFullName(chaptPos.Booknum, appChoosenIsoLangCode) + " "
                     + (chaptPos.BookRelativeChapterNum + 1) + ":" + (place.VerseNum + 1) + " . " + 
                     RawGenTextReader.CleanXml(Encoding.UTF8.GetString(chapterBuffer, (int)verse.StartPos, (int)verse.Length), true).Replace(".", ". "));
             }
@@ -1780,6 +1801,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return listText.ToString();
         }
         protected async Task<string> MakeListDisplayText(
+            string appChoosenIsoLangCode,
             DisplaySettings displaySettings,
             List<BiblePlaceMarker> listToDisplay,
             HtmlColorRgba htmlBackgroundColor,
@@ -1836,11 +1858,11 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                 if (showBookTitles && lastBookNum != chaptPos.Booknum)
                 {
-                    htmlListText.Append("<h3>" + this.GetFullName(chaptPos.Booknum) + "</h3>");
+                    htmlListText.Append("<h3>" + this.GetFullName(chaptPos.Booknum, appChoosenIsoLangCode) + "</h3>");
                     lastBookNum = chaptPos.Booknum;
                 }
 
-                string htmlChapterText = startVerseMarking + this.GetFullName(chaptPos.Booknum) + " "
+                string htmlChapterText = startVerseMarking + this.GetFullName(chaptPos.Booknum, appChoosenIsoLangCode) + " "
                                          + (chaptPos.BookRelativeChapterNum + 1) + ":" + (place.VerseNum + 1) + "  "
                                          + place.When.ToString("yyyy-MM-dd") + " " + place.When.ToString("hh.mm.ss")
                                          + stopVerseMarking;
@@ -1937,7 +1959,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 //byte[] buf = new byte[ms.Length]; ms.Read(buf, 0, (int)ms.Length);
                 //string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, buf.Length);
                 //System.Diagnostics.Debug.WriteLine("osisbuf: " + xxxxxx);
-                ms.Position = 0;
+                //ms.Position = 0;
             }
             catch (Exception ee)
             {
@@ -2131,7 +2153,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                                 {
                                                     var fontStyle = reader.Value.ToLower();
                                                     string startText;
-                                                    if (FontPropertiesStartHtml.TryGetValue(fontStyle, out startText))
+                                                    if(FontPropertiesStartHtml.TryGetValue(fontStyle, out startText))
                                                     {
                                                         if (!isInElement && !isInInjectionElement && chapterNumber.Length > 0 && !isInTitle
                                                             && !isChaptNumGiven)
@@ -2156,6 +2178,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                                 }
                                             }
                                         }
+
                                         break;
                                     case "Rf":
                                         isInElement = false;
@@ -2391,6 +2414,10 @@ function SetFontColorForElement(elemntId, colorRgba){
                                             morphText = string.Empty;
                                         }
 
+                                        //else
+                                        //{
+                                        //    AppendText(" ", plainText, noteText, isInElement);
+                                        //}
                                         break;
                                     case "lg":
                                         if (!isRaw && !displaySettings.EachVerseNewLine)

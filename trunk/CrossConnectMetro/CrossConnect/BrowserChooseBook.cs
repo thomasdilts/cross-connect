@@ -261,7 +261,7 @@ namespace CrossConnect
                 int verseNum;
                 string fullName;
                 string title;
-                this._state.Source.GetInfo(
+                this._state.Source.GetInfo(Translations.IsoLanguageCode, 
                     out shortBookName, out relChaptNum, out verseNum, out fullName, out title);
                 var book = !string.IsNullOrEmpty(shortBookName) ? ((BibleZtextReader)this._state.Source).canon.BookByShortName[shortBookName]:null;
 
@@ -339,7 +339,7 @@ namespace CrossConnect
                         this.BookPopup.IsOpen = true;
                         this.SearchPopup.IsOpen = false;
                     }
-                    this.ReloadBookPopupWindow(this._state.Source.GetButtonWindowSpecs(0, 0));
+                    this.ReloadBookPopupWindow(this._state.Source.GetButtonWindowSpecs(0, 0,Translations.IsoLanguageCode));
                     break;
                 case "ListChapter":
                     {
@@ -354,11 +354,11 @@ namespace CrossConnect
                         string fullName;
                         string title;
                         this._state.Source.GetInfo(
-                            out bookShortName, out relChaptNum, out verseNum, out fullName, out title);
+                            Translations.IsoLanguageCode, out bookShortName, out relChaptNum, out verseNum, out fullName, out title);
 
                         var bookNum = ((BibleZtextReader)this._state.Source).canon.BookByShortName[bookShortName].BookNum;
                         ButtonWindowSpecs specs = this._state.Source.GetButtonWindowSpecs(
-                            1, bookNum);
+                            1, bookNum,Translations.IsoLanguageCode);
                         if (specs != null)
                         {
                             this.ReloadBookPopupWindow(specs);
@@ -386,9 +386,9 @@ namespace CrossConnect
                         string fullName;
                         string title;
                         this._state.Source.GetInfo(
-                            out bookShortName, out relChaptNum, out verseNum, out fullName, out title);
+                            Translations.IsoLanguageCode, out bookShortName, out relChaptNum, out verseNum, out fullName, out title);
                         var book = ((BibleZtextReader)this._state.Source).canon.BookByShortName[bookShortName];
-                        ButtonWindowSpecs specs = this._state.Source.GetButtonWindowSpecs(2, book.VersesInChapterStartIndex + relChaptNum);
+                        ButtonWindowSpecs specs = this._state.Source.GetButtonWindowSpecs(2, book.VersesInChapterStartIndex + relChaptNum,Translations.IsoLanguageCode);
                         if (specs != null)
                         {
                             this.ReloadBookPopupWindow(specs);
@@ -409,7 +409,7 @@ namespace CrossConnect
 
         private void FirstClick(object sender, RoutedEventArgs e)
         {
-            ButtonWindowSpecs specs = this._state.Source.GetButtonWindowSpecs(1, (int)((Button)sender).Tag);
+            ButtonWindowSpecs specs = this._state.Source.GetButtonWindowSpecs(1, (int)((Button)sender).Tag,Translations.IsoLanguageCode);
             if (specs != null)
             {
                 this.ReloadBookPopupWindow(specs);
@@ -419,7 +419,7 @@ namespace CrossConnect
                 // convert book number to a chapter number
                 var book1 = ((BibleZtextReader)this._state.Source).canon.GetBookFromBookNumber((int)((Button)sender).Tag);
                 // go directly to verse
-                specs = this._state.Source.GetButtonWindowSpecs(2, book1.VersesInChapterStartIndex);
+                specs = this._state.Source.GetButtonWindowSpecs(2, book1.VersesInChapterStartIndex, Translations.IsoLanguageCode);
                 if (specs != null)
                 {
                     this._selectBibleBookSecondSelection = book1.VersesInChapterStartIndex;
@@ -439,7 +439,7 @@ namespace CrossConnect
 
         private void SecondClick(object sender, RoutedEventArgs e)
         {
-            ButtonWindowSpecs specs = this._state.Source.GetButtonWindowSpecs(2, (int)((Button)sender).Tag);
+            ButtonWindowSpecs specs = this._state.Source.GetButtonWindowSpecs(2, (int)((Button)sender).Tag,Translations.IsoLanguageCode);
             if (specs != null)
             {
                 this._selectBibleBookSecondSelection = (int)((Button)sender).Tag;
@@ -468,7 +468,7 @@ namespace CrossConnect
 
         private void ThirdClick(object sender, RoutedEventArgs e)
         {
-            ButtonWindowSpecs specs = this._state.Source.GetButtonWindowSpecs(3, (int)((Button)sender).Tag);
+            ButtonWindowSpecs specs = this._state.Source.GetButtonWindowSpecs(3, (int)((Button)sender).Tag, Translations.IsoLanguageCode);
             if (specs != null)
             {
                 this._selectBibleBookSecondSelection = (int)((Button)sender).Tag;

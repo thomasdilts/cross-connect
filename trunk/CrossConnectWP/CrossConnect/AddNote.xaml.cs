@@ -73,7 +73,9 @@ namespace CrossConnect
             BiblePlaceMarker place = App.PlaceMarkers.History[App.PlaceMarkers.History.Count - 1];
             string fullName;
             string titleText;
-            ((BibleZtextReader)state.Source).GetInfo(place.BookShortName,
+            ((BibleZtextReader)state.Source).GetInfo(
+                Translations.IsoLanguageCode,
+                place.BookShortName,
                 place.ChapterNum, place.VerseNum, out fullName, out titleText);
             string title = fullName + " " + (place.ChapterNum + 1) + ":" + (place.VerseNum + 1) + " - " + state.BibleToLoad;
             string verseText = await state.Source.GetVerseTextOnly(App.DisplaySettings, place.BookShortName, place.ChapterNum, place.VerseNum);

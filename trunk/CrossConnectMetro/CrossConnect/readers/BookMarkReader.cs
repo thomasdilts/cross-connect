@@ -136,6 +136,7 @@ namespace CrossConnect.readers
             this._displayText =
                 await
                 this.MakeListDisplayText(
+                    Translations.IsoLanguageCode,
                     App.DisplaySettings,
                     App.PlaceMarkers.Bookmarks,
                     this._htmlBackgroundColor,
@@ -151,7 +152,7 @@ namespace CrossConnect.readers
 
         public override async Task<string> GetTTCtext(bool isVerseOnly)
         {
-            var text = await MakeListTtcHearingText(App.PlaceMarkers.Bookmarks);
+            var text = await MakeListTtcHearingText(Translations.IsoLanguageCode, App.PlaceMarkers.Bookmarks);
             return string.IsNullOrEmpty(text) ? "empty" : text;
         }
         public override void MoveNext(bool isVerseMove)
@@ -164,6 +165,7 @@ namespace CrossConnect.readers
         }
 
         public override async Task<string> GetChapterHtml(
+            string isoLangCode,
             DisplaySettings displaySettings,
             HtmlColorRgba htmlBackgroundColor,
             HtmlColorRgba htmlForegroundColor,
@@ -188,6 +190,7 @@ namespace CrossConnect.readers
                 this._displayText =
                     await
                     this.MakeListDisplayText(
+                        isoLangCode,
                         displaySettings,
                         App.PlaceMarkers.Bookmarks,
                         htmlBackgroundColor,
@@ -205,6 +208,7 @@ namespace CrossConnect.readers
         }
 
         public override void GetInfo(
+            string isoLangCode,
             out string bookShortName,
             out int relChaptNum,
             out int verseNum,
