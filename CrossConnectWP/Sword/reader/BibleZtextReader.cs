@@ -2133,6 +2133,23 @@ function SetFontColorForElement(elemntId, colorRgba){
                                                     string startText;
                                                     if (FontPropertiesStartHtml.TryGetValue(fontStyle, out startText))
                                                     {
+                                                        if (!isInElement && !isInInjectionElement && chapterNumber.Length > 0 && !isInTitle
+                                                            && !isChaptNumGiven)
+                                                        {
+                                                            if (isInQuote)
+                                                            {
+                                                                AppendText("</span>", plainText, noteText, isInElement);
+                                                            }
+
+                                                            plainText.Append(chapterNumber);
+                                                            if (isInQuote)
+                                                            {
+                                                                AppendText("<span class=\"christ\">", plainText, noteText, isInElement);
+                                                            }
+
+                                                            isChaptNumGiven = true;
+                                                        }
+
                                                         AppendText(startText, plainText, noteText, isInElement);
                                                         fontStylesEnd.Add(FontPropertiesEndHtml[fontStyle]);
                                                     }
