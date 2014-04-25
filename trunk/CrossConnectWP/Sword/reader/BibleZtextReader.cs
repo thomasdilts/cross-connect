@@ -178,6 +178,35 @@ namespace Sword.reader
 
         #region Static Fields
 
+        public static Dictionary<string, string> FontPropertiesStartHtml = new Dictionary<string, string> 
+        { 
+            { "acrostic", "<span style=\"text-shadow:1px 1px 5px white;\">" }, 
+            { "bold", "<b>" }, 
+            { "emphasis", "<em>" }, 
+            { "illuminated", "<span style=\"text-shadow:1px 1px 5px white;\">" }, 
+            { "italic", "<i>" }, 
+            { "line-through", "<s>" }, 
+            { "normal", "<span style=\"font-variant:normal;\">" }, 
+            { "small-caps", "<span style=\"font-variant:small-caps;\">" }, 
+            { "sub", "<sub>" }, 
+            { "super", "<sup>" }, 
+            { "underline", "<u>" } 
+        };
+        public static Dictionary<string, string> FontPropertiesEndHtml = new Dictionary<string, string>  
+        { 
+            { "acrostic", "</span>" }, 
+            { "bold", "</b>" }, 
+            { "emphasis", "</em>" }, 
+            { "illuminated", "</span>" }, 
+            { "italic", "</i>" }, 
+            { "line-through", "</s>" }, 
+            { "normal", "</span>" }, 
+            { "small-caps", "</span>" }, 
+            { "sub", "</sub>" }, 
+            { "super", "</sup>" }, 
+            { "underline", "</u>" } 
+        };
+
         /// <summary>
         ///     Chapters divided into categories
         /// </summary>
@@ -1923,7 +1952,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             bool isInQuote = false;
             bool isInInjectionElement = false;
             bool isInTitle = false;
-            var isHiItalic = new List<bool>();
+            var fontStylesEnd = new List<string>();
             bool isChaptNumGiven = false;
             bool isChaptNumGivenNotes = false;
             bool isReferenceLinked = false;
@@ -2095,17 +2124,20 @@ function SetFontColorForElement(elemntId, colorRgba){
                                     case "hi":
                                         if (!isRaw)
                                         {
-                                            bool localIsItalic = true;
                                             if (reader.HasAttributes)
                                             {
                                                 reader.MoveToFirstAttribute();
-                                                if (reader.Name.ToLower().Equals("type") && reader.Value.ToLower().Equals("bold"))
+                                                if (reader.Name.ToLower().Equals("type"))
                                                 {
-                                                    localIsItalic = false;
+                                                    var fontStyle = reader.Value.ToLower();
+                                                    string startText;
+                                                    if (FontPropertiesStartHtml.TryGetValue(fontStyle, out startText))
+                                                    {
+                                                        AppendText(startText, plainText, noteText, isInElement);
+                                                        fontStylesEnd.Add(FontPropertiesEndHtml[fontStyle]);
+                                                    }
                                                 }
                                             }
-                                            isHiItalic.Add(localIsItalic);
-                                            AppendText(localIsItalic ? "<i>" : "<b>", plainText, noteText, isInElement);
                                         }
                                         break;
                                     case "Rf":
@@ -2295,11 +2327,11 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         isInElement = false;
                                         break;
                                     case "hi":
-                                        if (!isRaw && isHiItalic.Any())
+                                        if (!isRaw && fontStylesEnd.Any())
                                         {
-                                            bool localIsItalic = isHiItalic[isHiItalic.Count() - 1];
-                                            isHiItalic.RemoveAt(isHiItalic.Count() - 1);
-                                            AppendText(localIsItalic ? "</i>" : "</b>", plainText, noteText, isInElement);
+                                            string fontStyleEnd = fontStylesEnd[fontStylesEnd.Count() - 1];
+                                            fontStylesEnd.RemoveAt(fontStylesEnd.Count() - 1);
+                                            AppendText(fontStyleEnd, plainText, noteText, isInElement);
                                         }
 
                                         break;
