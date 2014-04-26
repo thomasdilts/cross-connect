@@ -592,7 +592,7 @@ namespace Sword.reader
 
             head.Append(
                 string.Format(
-                    "body {{background:{0};color:{1};font-size:{2}pt;margin:20;padding:0;{3} }}",
+                    "body {{background:{0};color:{1};font-size:{2}pt;margin:5;padding:0;{3} }}",
                     htmlBackgroundColor.GetHtmlRgba(),
                     htmlForegroundColor.GetHtmlRgba(),
                     (int)(htmlFontSize + 0.5),

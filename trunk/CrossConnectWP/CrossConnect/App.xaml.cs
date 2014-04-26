@@ -212,6 +212,94 @@ namespace CrossConnect
             RaiseHistoryChangeEvent();
             SavePersistantMarkers();
         }
+        public static void StartTimerForNotifications()
+        {
+            var tmr = new DispatcherTimer();
+            tmr.Tick += OnStartNotificationsTimerTick;
+            tmr.Interval = TimeSpan.FromSeconds(15);
+            tmr.Start();
+        }
+        private static async void OnStartNotificationsTimerTick(object sender, object e)
+        {
+            ((DispatcherTimer)sender).Stop();
+
+            // find the window
+            if (!OpenWindows.Any())
+            {
+                return;
+            }
+
+            ITiledWindow foundWindowToUse = null;
+            ITiledWindow firstBibleWindowToUse = null;
+            foreach (var window in OpenWindows)
+            {
+                if (window.State.WindowType == WindowType.WindowBible)
+                {
+                    if (firstBibleWindowToUse == null)
+                    {
+                        firstBibleWindowToUse = window;
+                    }
+
+                    if (window.State.Source.GetLanguage().Substring(0, 2).ToLower().Equals(Translations.IsoLanguageCode.Substring(0, 2).ToLower()))
+                    {
+                        foundWindowToUse = window;
+                        break;
+                    }
+                }
+            }
+
+            if (foundWindowToUse == null)
+            {
+                foundWindowToUse = firstBibleWindowToUse;
+                if (foundWindowToUse == null)
+                {
+                    return;
+                }
+            }
+
+            var random = new Random();
+            string verseText = string.Empty;
+            string title = string.Empty;
+            for (int i = 0; i < 40 && string.IsNullOrEmpty(verseText); i++)
+            {
+                var index = random.Next(0, StaticBibleVerses.Markers.Count - 1);
+                var place = StaticBibleVerses.Markers[index];
+                try
+                {
+                    verseText = await foundWindowToUse.State.Source.GetVerseTextOnly(App.DisplaySettings, place.BookShortName, place.ChapterNum, place.VerseNum);
+                    title = ((BibleZtextReader)foundWindowToUse.State.Source).BookNames(Translations.IsoLanguageCode).GetShortName(place.BookShortName) + " " + (place.ChapterNum + 1) + ":" + (place.VerseNum + 1) + " - "
+                        + foundWindowToUse.State.BibleDescription;
+                }
+                catch (Exception)
+                {
+                    //this text is not in that bible.
+                    //continue;
+                }
+            }
+
+            if(string.IsNullOrEmpty(verseText))
+            {
+                return;
+            }
+
+            foreach (var item in ShellTile.ActiveTiles)
+            {
+                FlipTileData TileData = new FlipTileData()
+                {
+                    Title = "CrossConnect",
+                    BackTitle = title,
+                    BackContent = verseText,
+                    WideBackContent = verseText,
+                    Count = 0,
+                    SmallBackgroundImage = new Uri("Background.png", UriKind.Relative),
+                    BackgroundImage = new Uri("Background.png", UriKind.Relative),
+                    BackBackgroundImage = new Uri("Backgroundlight.png", UriKind.Relative),
+                    WideBackgroundImage = new Uri("crossbigbut691x336.png", UriKind.Relative),
+                    WideBackBackgroundImage = new Uri("sidecrossbigbut691x336.png", UriKind.Relative),
+                };
+                item.Update(TileData);
+            }
+        }
 
         public static async void AddMediaWindow(AudioPlayer.MediaInfo info)
         {
@@ -285,7 +373,7 @@ namespace CrossConnect
             {
                 MainWindow.ReDrawWindows();
             }
-
+            App.StartTimerForNotifications();
         }
 
         public static void RaiseBookmarkChangeEvent()
@@ -649,6 +737,10 @@ namespace CrossConnect
             if (MainWindow != null)
             {
                 MainWindow.DoLoading();
+            }
+            if (OpenWindows.Any())
+            {
+                StartTimerForNotifications();
             }
             return true;
         }
