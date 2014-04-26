@@ -23,6 +23,7 @@
 
 namespace CrossConnect
 {
+    using Sword.reader;
     using System;
     using System.IO.IsolatedStorage;
     using System.Windows;
@@ -117,6 +118,14 @@ namespace CrossConnect
             if (!_isInUpdateList)
             {
                 Translations.IsoLanguageCode = SupportedLanguages[SelectList.SelectedIndex];
+                foreach (var window in App.OpenWindows)
+                {
+                    if (window.State.Source is BibleZtextReader)
+                    {
+                        ((BibleZtextReader)window.State.Source).BookNames(Translations.IsoLanguageCode, true);
+                    }
+                }
+                App.MainWindow.ReDrawWindows();
                 if (NavigationService.CanGoBack)
                 {
                     NavigationService.GoBack();
