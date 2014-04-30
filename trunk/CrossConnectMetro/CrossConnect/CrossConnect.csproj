@@ -186,7 +186,6 @@
     <Compile Include="Common\LayoutAwarePage.cs" />
     <Compile Include="Common\RichTextColumns.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
-    <Compile Include="StaticBibleVerses.cs" />
     <Compile Include="Theme.cs" />
     <Compile Include="Translations.cs" />
     <Compile Include="WebClient.cs" />
@@ -267,9 +266,6 @@
     <Content Include="Assets\LightGray.png" />
     <Content Include="Assets\MediumGray.png" />
     <Content Include="Assets\DarkGray.png" />
-    <EmbeddedResource Include="Properties\verses.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <None Include="Package.StoreAssociation.xml" />
     <EmbeddedResource Include="Properties\crossc_af.xml">
       <SubType>Designer</SubType>

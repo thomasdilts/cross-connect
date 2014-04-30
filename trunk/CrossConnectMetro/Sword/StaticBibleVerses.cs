@@ -32,9 +32,9 @@ using System.Xml;
 using Sword.reader;
 using Sword.versification;
 
-namespace CrossConnect
+namespace Sword
 {
-    class StaticBibleVerses
+    public class StaticBibleVerses
     {
         private static List<BiblePlaceMarker> markers = null;
 
@@ -53,9 +53,9 @@ namespace CrossConnect
         {
             markers = new List<BiblePlaceMarker>();
             var now = DateTime.Now;
-            Assembly assem = Assembly.Load(new AssemblyName("CrossConnect"));
+            Assembly assem = Assembly.Load(new AssemblyName("Sword"));
             Stream stream = assem.GetManifestResourceStream(
-                "CrossConnect.Properties.verses.xml");
+                "Sword.Properties.verses.xml");
             var canon = CanonManager.GetCanon("KJV");
             if (stream != null)
             {

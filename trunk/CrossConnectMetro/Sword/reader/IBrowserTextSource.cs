@@ -214,8 +214,12 @@ namespace Sword.reader
 
         public string GetHtmlRgba()
         {
+#if WINDOWS_PHONE
+            return string.Format("#{0:x2}{1:x2}{2:x2}", this.R, this.G, this.B);
+#else
             return "rgba(" + this.R + "," + this.G + "," + this.B + ","
                    + Math.Round(this.alpha, 4).ToString(CultureInfo.InvariantCulture) + ")";
+#endif
         }
 
         #endregion

@@ -592,7 +592,7 @@ namespace Sword.reader
 
             head.Append(
                 string.Format(
-                    "body {{background:{0};color:{1};font-size:{2}pt;margin:5;padding:0;{3} }}",
+                    "body {{background:{0};color:{1};font-size:{2}pt;margin:20;padding:0;{3} }}",
                     htmlBackgroundColor.GetHtmlRgba(),
                     htmlForegroundColor.GetHtmlRgba(),
                     (int)(htmlFontSize + 0.5),
@@ -629,6 +629,10 @@ function setVerticalScrollPosition(position) {
     document.body.scrollTop = position;
 }
 function ShowNode (elemntId) {
+    var element = document.getElementById(""ID_"" + elemntId);
+    document.documentElement.scrollTop = element.offsetTop;
+}
+function ShowNodePhone (elemntId) {
     var element = document.getElementById(""ID_"" + elemntId);
     document.body.scrollTop = element.offsetTop;
 }
@@ -2066,8 +2070,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                                                     isReferenceLinked = true;
                                                     string textId = bookShortName + "_" + chaptNumLoc + "_" + verseNumLoc;
                                                     noteText.Append(
-                                                        "</a><a class=\"normalcolor\" id=\"ID_" + textId
-                                                        + "\"  href=\"#\" onclick=\"window.external.notify('" + textId
+ 															"</a><a class=\"normalcolor\" id=\"ID_" + textId
+                                                       + "\"  href=\"#\" onclick=\"window.external.notify('" + textId
                                                         + "'); event.returnValue=false; return false;\" >");
                                                 }
                                             }
