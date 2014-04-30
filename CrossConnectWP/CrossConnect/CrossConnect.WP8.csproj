@@ -145,7 +145,6 @@
     <Compile Include="SelectTtsToPlay.xaml.cs">
       <DependentUpon>SelectTtsToPlay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StaticBibleVerses.cs" />
     <Compile Include="TranslateByGoogle.cs" />
     <Compile Include="WebFontSelect.xaml.cs">
       <DependentUpon>WebFontSelect.xaml</DependentUpon>
@@ -447,7 +446,6 @@
     <Content Include="Images\light\window.smaller.pressed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Properties\verses.xml" />
     <Content Include="README_FIRST.txt" />
     <Content Include="sidecrossbigbut691x336.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />

@@ -46,6 +46,7 @@ namespace CrossConnect
     using AudioPlaybackAgent1;
     using Windows.Storage;
     using Sword.versification;
+    using Sword;
 
     #region Enumerations
 
