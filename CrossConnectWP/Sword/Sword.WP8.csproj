@@ -114,6 +114,7 @@
     <Compile Include="reader\IBrowserTextSource.cs" />
     <Compile Include="reader\RawGenTextReader.cs" />
     <Compile Include="reader\sapphire.cs" />
+    <Compile Include="StaticBibleVerses.cs" />
     <Compile Include="SwordBookMetaData.cs" />
     <Compile Include="versification\Canon.cs" />
     <Compile Include="versification\CanonCatholic.cs" />
@@ -215,6 +216,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Properties\BibleNames_zh_cn.xml" />
     <EmbeddedResource Include="Properties\BibleNames_zh_tw.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\verses.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

@@ -119,6 +119,7 @@
     <Compile Include="reader\IBrowserTextSource.cs" />
     <Compile Include="reader\RawGenTextReader.cs" />
     <Compile Include="reader\sapphire.cs" />
+    <Compile Include="StaticBibleVerses.cs" />
     <Compile Include="SwordBookMetaData.cs" />
     <Compile Include="versification\Canon.cs" />
     <Compile Include="versification\CanonKjva.cs" />
@@ -146,6 +147,7 @@
     <EmbeddedResource Include="Properties\iso639_fa.properties" />
     <EmbeddedResource Include="Properties\iso639_in.properties" />
     <EmbeddedResource Include="Properties\iso639_vi.properties" />
+    <EmbeddedResource Include="Properties\verses.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\zlib\zlib.csproj">

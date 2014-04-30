@@ -389,7 +389,7 @@ namespace Sword.reader
             return returnList.ToString();
         }
 
-        public static void EvaluateXmlRow(string book,int chapter, int verse, string note,bool invalidEntry,
+        public static void EvaluateXmlRow(string book, int chapter, int verse, string note, bool invalidEntry,
             bool noteRequired, List<BiblePlaceMarker> markerList,
             Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> markerDictionary)
         {

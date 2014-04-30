@@ -65,9 +65,34 @@ namespace Sword
             string name = CultureInfo.CurrentCulture.Name.Replace('-', '_');
             Stream stream = null;
 
-            if (isoLang2DigitCode.Equals("zh"))
+            if (isoLang2DigitCode.ToLower().StartsWith("zh"))
             {
-                if (appChosenIsoLangCode.Substring(0,2).Equals(isoLang2DigitCode))
+                switch (isoLang2DigitCode.ToLower().Replace('-', '_'))
+                {
+                    case "zh_hant":
+                    case "zh_tw":
+                    case "zh_hk":
+                    case "zh_mo":
+                        stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + "zh_tw" + ".xml");
+                        if(stream!=null)
+                        {
+                            _isoLanguage = "zh_tw";
+                        }
+                        break;
+                    case "zh_hans":
+                    case "zh_cn":
+                    case "zh_sg":
+                    case "zh_my":
+                        stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + "zh_cn" + ".xml");
+                        if(stream!=null)
+                        {
+                            _isoLanguage = "zh_cn";
+                        }
+                        break;
+                    case "zh":
+                        break;
+                }
+                if (stream == null && appChosenIsoLangCode.Substring(0, 2).Equals(isoLang2DigitCode.Substring(0, 2)))
                 {
                     stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + (appChosenIsoLangCode.Equals("zh")?"zh_tw":"zh_cn") + ".xml");
                     if(stream!=null)
@@ -76,7 +101,7 @@ namespace Sword
                     }
                 }
 
-                if (stream == null && isocode.Equals(isoLang2DigitCode))
+                if (stream == null && isocode.Equals(isoLang2DigitCode.Substring(0, 2)))
                 {
                     stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + name + ".xml");
                     if (stream != null)
@@ -97,7 +122,7 @@ namespace Sword
 
             if(stream==null)
             {
-                stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + isoLang2DigitCode + ".xml");
+                stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + isoLang2DigitCode.Substring(0, 2) + ".xml");
                 if(stream == null)
                 {
                     stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + appChosenIsoLangCode + ".xml");

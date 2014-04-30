@@ -46,6 +46,7 @@ namespace CrossConnect
     using Windows.UI.Notifications;
     using NotificationsExtensions.TileContent;
     using Sword.versification;
+    using Sword;
 
     /// <summary>
     ///     Provides application-specific behavior to supplement the default Application class.
@@ -615,17 +616,17 @@ namespace CrossConnect
                         using (XmlReader reader = XmlReader.Create(sr, settings))
                         {
                             var types = new[]
-                                                {
-                                                    typeof(SerializableWindowState), typeof(BibleZtextReader.VersePos),
-                                                    typeof(BibleZtextReader.ChapterPos), typeof(BibleZtextReader.BookPos),
-                                                    typeof(BibleZtextReader), typeof(BibleNoteReader),
-                                                    typeof(BibleZtextReaderSerialData), typeof(CommentZtextReader),
-                                                    typeof(TranslatorReader), typeof(BookMarkReader),
-                                                    typeof(HistoryReader), typeof(SearchReader), typeof(DailyPlanReader),
-                                                    typeof(PersonalNotesReader), typeof(InternetLinkReader),
-                                                    typeof(GreekHebrewDictReader), typeof(RawGenSearchReader),
-                                                    typeof(AudioPlayer.MediaInfo), typeof(RawGenTextReader), typeof(RawGenTextPlaceMarker)
-                                                };
+                            {
+                                typeof(SerializableWindowState), typeof(BibleZtextReader.VersePos),
+                                typeof(BibleZtextReader.ChapterPos), typeof(BibleZtextReader.BookPos),
+                                typeof(BibleZtextReader), typeof(BibleNoteReader),
+                                typeof(BibleZtextReaderSerialData), typeof(CommentZtextReader),
+                                typeof(TranslatorReader), typeof(BookMarkReader),
+                                typeof(HistoryReader), typeof(SearchReader), typeof(DailyPlanReader),
+                                typeof(PersonalNotesReader), typeof(InternetLinkReader),
+                                typeof(GreekHebrewDictReader), typeof(RawGenSearchReader),
+                                typeof(AudioPlayer.MediaInfo), typeof(RawGenTextReader), typeof(RawGenTextPlaceMarker)
+                            };
                             var ser = new DataContractSerializer(typeof(SerializableWindowState), types);
                             var state = (SerializableWindowState)ser.ReadObject(reader);
                             ITiledWindow nextWindow;
@@ -653,6 +654,21 @@ namespace CrossConnect
                             {
                                 nextWindow = new BrowserTitledWindow { State = state };
                                 ((BrowserTitledWindow)nextWindow).SetVScroll(state.VSchrollPosition);
+                                // find config file and fix the language.
+                                // this will update a language in the case that the config file has changed.
+                                if (nextWindow.State.Source is BibleZtextReader)
+                                {
+                                    var path = ((BibleZtextReader)nextWindow.State.Source).Serial.Path;
+                                    foreach (var book in App.InstalledBibles.InstalledBibles)
+                                    {
+                                        if (book.Value.Sbmd != null && book.Value.Sbmd.GetCetProperty(ConfigEntryType.ADataPath).ToString().Substring(2).Equals(path))
+                                        {
+                                            ((BibleZtextReader)nextWindow.State.Source).Serial.Iso2DigitLangCode = ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code;
+                                            break;
+                                        }
+                                    }
+                                }
+
                                 await nextWindow.State.Source.Resume();
                                 nextWindow.State.IsResume = true;
                             }

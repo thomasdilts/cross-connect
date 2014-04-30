@@ -104,6 +104,30 @@ namespace Sword.reader
         #region Constants
 
         /// <summary>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         ///     * The configuration directory
         /// </summary>
         public const string DirConf = "mods.d";
@@ -374,9 +398,18 @@ namespace Sword.reader
 
 
 
+
+
+
+
+
+
+
+
         public bool ExistsShortNames(string appChoosenIsoLangCode)
         {
             return this.BookNames(appChoosenIsoLangCode).ExistsShortNames;
+
         }
 
         public virtual bool IsExternalLink
@@ -596,15 +629,19 @@ function setVerticalScrollPosition(position) {
     document.body.scrollTop = position;
 }
 function ShowNode (elemntId) {
-    var element = document.getElementById(elemntId);
+    var element = document.getElementById(""ID_"" + elemntId);
     document.documentElement.scrollTop = element.offsetTop;
+}
+function ShowNodePhone (elemntId) {
+    var element = document.getElementById(""ID_"" + elemntId);
+    document.body.scrollTop = element.offsetTop;
 }
 function ScrollToAnchor(anchor, colorRgba) {
     window.location.hash=anchor;
     SetFontColorForElement(anchor, colorRgba);
 }
 function SetFontColorForElement(elemntId, colorRgba){
-    var element = document.getElementById(elemntId);
+    var element = document.getElementById(""ID_"" + elemntId);
     if(element!=null){
         element.style.color = colorRgba;
     }
@@ -639,6 +676,16 @@ function SetFontColorForElement(elemntId, colorRgba){
                         var values = new List<int>();
                         var buttonNames = new List<string>();
 
+
+
+
+
+
+
+
+
+
+
                         // assumption. if the first chapter in the book does not exist then the book does not exist
                         int bookCounter = 0;
                         foreach (var book in canon.OldTestBooks)
@@ -651,6 +698,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                             }
                             bookCounter++;
                         }
+
                         foreach (var book in canon.NewTestBooks)
                         {
                             if (this.Chapters[book.VersesInChapterStartIndex].Length != 0)
@@ -658,6 +706,11 @@ function SetFontColorForElement(elemntId, colorRgba){
                                 colors.Add(ChapterCategories[book.ShortName1]);
                                 values.Add(bookCounter);
                                 buttonNames.Add(this.BookNames(appChoosenIsoLangCode).GetShortName(book.ShortName1));
+
+
+
+
+
                                 bookCounter++;
                             }
                         }
@@ -785,9 +838,20 @@ function SetFontColorForElement(elemntId, colorRgba){
 
         public string GetFullName(string bookShortName, string appChoosenIsoLangCode)
         {
+
+
+
+
             var book = canon.BookByShortName[bookShortName];
             return this.BookNames(appChoosenIsoLangCode).GetFullName(book.ShortName1, book.FullName);
         }
+
+
+
+
+
+
+
 
         public string GetFullName(int bookNum, string appChoosenIsoLangCode)
         {
@@ -838,6 +902,11 @@ function SetFontColorForElement(elemntId, colorRgba){
 
         public string GetShortName(int bookNum, string appChoosenIsoLangCode)
         {
+
+
+
+
+
             CanonBookDef book = null;
             if (bookNum >= canon.OldTestBooks.Count())
             {
@@ -1049,6 +1118,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
         public virtual void MoveNext(bool isVerseMove)
         {
+
 
             if(this.Serial==null || canon == null)
             {
@@ -1338,6 +1408,11 @@ function SetFontColorForElement(elemntId, colorRgba){
 
         protected string[] GetAllShortNames(string appChoosenIsoLangCode)
         {
+
+
+
+
+
             return this.BookNames(appChoosenIsoLangCode).GetAllShortNames();
         }
 
@@ -1598,7 +1673,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                          + stopVerseMarking;
                 string verseTxt;
                 string id = bookShortName + "_" + chapterNumber + "_" + i;
-                string restartText = "<a name=\"" + id + "\"></a><a " + GetHighlightStyle(displaySettings, htmlHighlightingColor, bookShortName, chapterNumber, i) + " class=\"normalcolor\" id=\"" + id
+                string restartText = "<a name=\"" + id + "\"></a><a " + GetHighlightStyle(displaySettings, htmlHighlightingColor, bookShortName, chapterNumber, i) + " class=\"normalcolor\" id=\"ID_" + id
                                      + "\" href=\"#\" onclick=\"window.external.notify('" + id
                                      + "'); event.returnValue=false; return false;\" > ";
                 string startText = htmlChapterText + restartText;
@@ -1800,7 +1875,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 int noteMarker = 'a';
                 string verseTxt = this.ParseOsisText(
                     displaySettings,
-                    "<p><a name=\"" + textId + "\"></a><a class=\"normalcolor\" id=\"" + textId
+                    "<p><a name=\"" + textId + "\"></a><a class=\"normalcolor\" id=\"ID_" + textId
                     + "\"  href=\"#\" onclick=\"window.external.notify('" + textId
                     + "'); event.returnValue=false; return false;\" >" + htmlChapterText,
                     string.Empty,
@@ -1995,8 +2070,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                                                     isReferenceLinked = true;
                                                     string textId = bookShortName + "_" + chaptNumLoc + "_" + verseNumLoc;
                                                     noteText.Append(
-                                                        "</a><a class=\"normalcolor\" id=\"" + textId
-                                                        + "\"  href=\"#\" onclick=\"window.external.notify('" + textId
+ 															"</a><a class=\"normalcolor\" id=\"ID_" + textId
+                                                       + "\"  href=\"#\" onclick=\"window.external.notify('" + textId
                                                         + "'); event.returnValue=false; return false;\" >");
                                                 }
                                             }
@@ -2342,6 +2417,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                             lemmaText = string.Empty;
                                             morphText = string.Empty;
                                         }
+
                                         //else
                                         //{
                                         //    AppendText(" ", plainText, noteText, isInElement);

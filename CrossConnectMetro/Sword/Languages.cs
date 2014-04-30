@@ -91,12 +91,24 @@ namespace Sword
         /// <returns> the code for the language </returns>
         public static string GetLanguageCode(string input)
         {
-            string lookup = input;
+            string lookup = input!=null?input.ToLower().Replace("-", "_"):null;
             if (string.IsNullOrEmpty(lookup))
             {
                 return DefaultLangCode;
             }
-
+            switch (lookup)
+            {
+                case "zh_hant":
+                case "zh_tw":
+                case "zh_hk":
+                case "zh_mo":
+                    return "zh-Hant"; //traditional chinese
+                case "zh_hans":
+                case "zh_cn":
+                case "zh_sg":
+                case "zh_my":
+                    return "zh-Hans"; // simplified chinese
+            }
             if (lookup.IndexOf('_') != -1)
             {
                 string[] locale = lookup.Split('_');
