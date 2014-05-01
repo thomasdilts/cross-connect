@@ -232,7 +232,7 @@ namespace CrossConnect
             if (this.selectType.SelectedItem != null
                 && this.selectType.SelectedItem.Equals(Translations.Translate("Commentaries")))
             {
-                await App.InstalledBibles.AddCommentary(this._sb.Sbmd.InternalName);
+                await App.InstalledBibles.AddGenericBook(this._sb.Sbmd.InternalName);
                 await App.AddWindow(
                     this._sb.Sbmd.InternalName,
                     this._sb.Sbmd.Name,
@@ -245,7 +245,7 @@ namespace CrossConnect
             else if (this.selectType.SelectedItem != null
                 && this.selectType.SelectedItem.Equals(Translations.Translate("Books")))
             {
-                await App.InstalledBibles.AddGeneralBook(this._sb.Sbmd.InternalName);
+                await App.InstalledBibles.AddGenericBook(this._sb.Sbmd.InternalName);
                 await App.AddWindow(
                     this._sb.Sbmd.InternalName,
                     this._sb.Sbmd.Name,
@@ -257,7 +257,7 @@ namespace CrossConnect
             }
             else
             {
-                await App.InstalledBibles.AddBook(this._sb.Sbmd.InternalName);
+                await App.InstalledBibles.AddGenericBook(this._sb.Sbmd.InternalName);
                 await App.AddWindow(
                     this._sb.Sbmd.InternalName, this._sb.Sbmd.Name, WindowType.WindowBible, Font, Window, null, false);
             }

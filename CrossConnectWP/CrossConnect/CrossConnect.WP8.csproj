@@ -188,7 +188,6 @@
     </Compile>
     <Compile Include="readers\HistoryReader.cs" />
     <Compile Include="ImageButton.cs" />
-    <Compile Include="InstalledBibles.cs" />
     <Compile Include="MainPageSplit.xaml.cs">
       <DependentUpon>MainPageSplit.xaml</DependentUpon>
     </Compile>

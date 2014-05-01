@@ -71,7 +71,7 @@ namespace CrossConnect
             try
             {
                 WindowType selectedType;
-                SwordBook bookSelected;
+                SwordBookMetaData bookSelected;
                 this.GetSelectedData(out selectedType, out bookSelected); 
                 if (this.selectDocumentType.SelectedIndex == 4)
                 {
@@ -94,8 +94,8 @@ namespace CrossConnect
                     }
 
                     App.DailyPlan.PlanDayNumber = dayOfPlan;
-                    App.DailyPlan.PlanBible = bookSelected.Sbmd.InternalName;
-                    App.DailyPlan.PlanBibleDescription = bookSelected.Sbmd.Name;
+                    App.DailyPlan.PlanBible = bookSelected.InternalName;
+                    App.DailyPlan.PlanBibleDescription = bookSelected.Name;
                 }
 
                 int column = 0;
@@ -109,8 +109,8 @@ namespace CrossConnect
                 }
 
                 await App.AddWindow(
-                    bookSelected.Sbmd.InternalName,
-                    bookSelected.Sbmd.Name,
+                    bookSelected.InternalName,
+                    bookSelected.Name,
                     selectedType,
                     this.sliderTextSize.Value,
                     column,
@@ -151,7 +151,7 @@ namespace CrossConnect
             this.AddWindowPopup.IsOpen = true;
         }
 
-        private void GetSelectedData(out WindowType selectedType, out SwordBook bookSelected)
+        private void GetSelectedData(out WindowType selectedType, out SwordBookMetaData bookSelected)
         {
             bookSelected = null;
             selectedType = WindowType.WindowBible;
@@ -200,7 +200,7 @@ namespace CrossConnect
                     // did the book choice change?
                     foreach (var book in App.InstalledBibles.InstalledCommentaries)
                     {
-                        if (this.selectDocument.SelectedItem.Equals(book.Value.Sbmd.Name))
+                        if (this.selectDocument.SelectedItem.Equals(book.Value.Name))
                         {
                             bookSelected = book.Value;
                             break;
@@ -212,7 +212,7 @@ namespace CrossConnect
                     // did the book choice change?
                     foreach (var book in App.InstalledBibles.InstalledGeneralBooks)
                     {
-                        if (this.selectDocument.SelectedItem.Equals(book.Value.Sbmd.Name))
+                        if (this.selectDocument.SelectedItem.Equals(book.Value.Name))
                         {
                             bookSelected = book.Value;
                             break;
@@ -223,7 +223,7 @@ namespace CrossConnect
                 {
                     foreach (var book in App.InstalledBibles.InstalledBibles)
                     {
-                        if (this.selectDocument.SelectedItem.Equals(book.Value.Sbmd.Name))
+                        if (this.selectDocument.SelectedItem.Equals(book.Value.Name))
                         {
                             bookSelected = book.Value;
                             break;
