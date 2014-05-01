@@ -1,0 +1,135 @@
+﻿<UserControl
+    x:Class="CrossConnect.MediaPlayerWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CrossConnect"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="600" SizeChanged="MediaPlayerWindow_OnSizeChanged"
+    d:DesignWidth="600" Loaded="MediaPlayerWindowLoaded" LayoutUpdated="MediaPlayerWindow_OnLayoutUpdated">
+
+    <Border BorderBrush="Silver" BorderThickness="3"
+            Name="border1">
+
+        <Grid Name="grid1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <StackPanel Name="stackPanelButtons" Grid.Column="0" Grid.Row="0" Orientation="Vertical"
+                        HorizontalAlignment="Left">
+                <Grid Name="gridPanelButtons1" HorizontalAlignment="Center" Margin="0,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="ButPrevious" Grid.Column="0" Click="ButPreviousClick" HorizontalAlignment="Center"
+                            Style="{StaticResource PreviousAppBarButtonStyle2}" Tag="Edit" />
+                    <Button x:Name="ButPause" Grid.Column="1" Click="ButPause_OnClick" HorizontalAlignment="Center"
+                            Style="{StaticResource PauseAppBarButtonStyle2}" Tag="Edit" />
+                    <Button x:Name="ButPlay" Grid.Column="1" Click="ButPlay_OnClick" HorizontalAlignment="Center"
+                            Style="{StaticResource PlayAppBarButtonStyle2}" Tag="Edit" />
+                    <Button x:Name="ButNext" Grid.Column="2" Click="ButNextClick" HorizontalAlignment="Center"
+                            Style="{StaticResource NextAppBarButtonStyle2}" Tag="Edit" />
+                    <Button x:Name="ButMenu" Grid.Column="4" Click="ButMenuClick" HorizontalAlignment="Center"
+                            Style="{StaticResource ListAppBarButtonStyle2}" Tag="Edit" />
+                    <Button x:Name="ButClose" Grid.Column="5" Click="ButCloseClick" HorizontalAlignment="Center"
+                            Style="{StaticResource DeleteAppBarButtonStyle2}" Tag="Edit" />
+                </Grid>
+                <TextBlock Name="title" Text="This is the first strange text" FontSize="18" />
+            </StackPanel>
+            <Popup x:Name="SearchPopup" Opened="SearchPopup_OnOpened" Closed="SearchPopup_OnClosed" Grid.Row="1"
+                   HorizontalOffset="150" VerticalOffset="-60" IsLightDismissEnabled="True">
+                <Popup.ChildTransitions>
+                    <TransitionCollection>
+                        <PopupThemeTransition />
+                    </TransitionCollection>
+                </Popup.ChildTransitions>
+                <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" BorderThickness="2"
+                        Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <ListBox Name="SubMenuSearchPopup" SelectedItem="-1"
+                                 SelectionChanged="SubMenuSearchPopup_OnSelectionChanged">
+                            <ListBoxItem Name="ListBook">Book</ListBoxItem>
+                            <ListBoxItem Name="ListChapter">Chapter</ListBoxItem>
+                        </ListBox>
+                    </StackPanel>
+                </Border>
+            </Popup>
+            <Popup x:Name="BookPopup" Closed="SearchPopup_OnClosed" HorizontalOffset="-100" VerticalOffset="-100"
+                   IsLightDismissEnabled="True">
+                <Popup.ChildTransitions>
+                    <TransitionCollection>
+                        <PopupThemeTransition />
+                    </TransitionCollection>
+                </Popup.ChildTransitions>
+                <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" BorderThickness="2"
+                        Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
+                        <TextBlock Name="ListTitle" Text="Select book" Margin="6 6 6 6" FontSize="18" />
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Name="SelectBookScrollViewer">
+                            <Grid x:Name="ScrollContentGrid" Background="Transparent"></Grid>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Border>
+            </Popup>
+            <Popup x:Name="MenuPopup" Opened="MenuPopup_OnOpened" Closed="MenuPopup_OnClosed" Grid.Row="1"
+                   HorizontalOffset="100" VerticalOffset="-40" IsLightDismissEnabled="True">
+                <Popup.ChildTransitions>
+                    <TransitionCollection>
+                        <PopupThemeTransition />
+                    </TransitionCollection>
+                </Popup.ChildTransitions>
+                <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" BorderThickness="2"
+                        Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                    <StackPanel Name="SubMenuStackPanel" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <ListBox Name="SubMenuMenuPopup" SelectionChanged="SubMenuMenuPopup_OnSelectionChanged"
+                                 SelectedItem="-1">
+                            <ListBoxItem Name="MoveWindowRight">MoveWindowRight</ListBoxItem>
+                            <ListBoxItem Name="MoveWindowLeft">MoveWindowLeft</ListBoxItem>
+                            <ListBoxItem Name="WindowSmaller">WindowSmaller</ListBoxItem>
+                            <ListBoxItem Name="WindowLarger">WindowLarger</ListBoxItem>
+                        </ListBox>
+                    </StackPanel>
+                </Border>
+            </Popup>
+
+            <Border Name="WebBrowserBorder" BorderBrush="Silver" BorderThickness="1" Grid.Row="1">
+                <StackPanel Name="AllContent">
+                    <ProgressBar Name="WaitingForDownload" Margin="0,15,0,0" IsIndeterminate="True" />
+                    <StackPanel Name="stackContent" Margin="0,15,0,0">
+                        <StackPanel Name="stackProgress" Orientation="Horizontal">
+                            <TextBlock TextAlignment="Center" Name="txtPosition" Text="00:00" Width="60" />
+                            <Grid Name="GridProgressBars" VerticalAlignment="Top" Height="30" Width="285">
+                                <ProgressBar Name="ProgressDownload" Maximum="100" Foreground="LightGray" />
+                                <ProgressBar Name="ProgressPosition" Maximum="100" />
+                            </Grid>
+                            <TextBlock TextAlignment="Center" Name="txtDuration" Text="00:00" Width="60" />
+                        </StackPanel>
+                        <Image Width="55" Name="ImageIcon" Tapped="ImageIcon_OnTapped" />
+                        <MediaElement
+                            x:Name="myMedia"
+                            MediaEnded="MyMedia_OnMediaEnded"
+                            MediaFailed="MyMedia_OnMediaFailed"
+                            MediaOpened="MyMedia_OnMediaOpened"
+                            CurrentStateChanged="MyMedia_OnCurrentStateChanged"
+                            BufferingProgressChanged="MyMedia_OnBufferingProgressChanged"
+                            DownloadProgressChanged="MyMedia_OnDownloadProgressChanged"
+                            MarkerReached="MyMedia_OnMarkerReached"
+                            AudioCategory="BackgroundCapableMedia" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+
+</UserControl>

@@ -1,0 +1,376 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{01DE01EF-2853-4291-810E-EBEA44945D3F}</ProjectGuid>
+    <OutputType>AppContainerExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CrossConnect</RootNamespace>
+    <AssemblyName>CrossConnect</AssemblyName>
+    <DefaultLanguage>en</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PackageCertificateKeyFile>CrossConnect_StoreKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <PackageCertificateThumbprint>7F2065C67DFD6157889C3164AAF07251294478B3</PackageCertificateThumbprint>
+    <!-- <SupportedCultures>es-ES;fr-FR;it-IT;de-DE;af-AF;ar-AR;az-AZ;be-BE;bg-BG;cs-CS;da-DA;el-EL;et-ET;fa-FA;fi-FI;hi-HI;hr-HR;hu-HU;hy-HY;id-ID;is-IS;iw-IW;ja-JA;ko-KO;lt-LT;lv-LV;mk-MK;ms-MS;mt-MT;nl-NL;no-NO;pl-PL;pt-PT;ro-RO;ru-RU;sk-SK;sl-SL;sq-SQ;sr-SR;sv-SV;sw-SW;th-TH;tl-TL;tr-TR;uk-UK;ur-UR;vi-VI;zh-CN;zh-TW</SupportedCultures> -->
+    <SupportedCultures>es-ES;fr-FR;it-IT;de-DE;af-AF;ar-AR;az-AZ;be-BE;bg-BG;cs-CS;da-DA;el-EL;et-ET;fa-FA;fi-FI;hi-HI;hr-HR;hu-HU;hy-HY;id-ID;is-IS;iw-IW;ja-JA;ko-KO;lt-LT;lv-LV;mk-MK;ms-MS;mt-MT;nl-NL;no-NO;pl-PL;pt-PT;ro-RO;ru-RU;sk-SK;sl-SL;sq-SQ;sr-SR;sv-SV;sw-SW;th-TH;tl-TL;tr-TR;uk-UK;ur-UR;vi-VI;zh-CN;zh-TW</SupportedCultures>
+    <TargetPlatformVersion>8.1</TargetPlatformVersion>
+    <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
+    <TargetFrameworkVersion />
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <ProjectReference Include="..\Hoot\Hoot.csproj">
+      <Project>{74c2dfdb-64c9-4b14-8ea3-42aa2544f362}</Project>
+      <Name>Hoot</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NotificationsExtensions\NotificationsExtensions.csproj">
+      <Project>{6e87464b-b064-40ca-8161-7c18c337adff}</Project>
+      <Name>NotificationsExtensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sword\Sword.csproj">
+      <Project>{8f9ce9b3-1ec9-4285-984f-6404f1085428}</Project>
+      <Name>Sword</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\zlib\zlib.csproj">
+      <Project>{24d4e3e7-0eed-42b1-b2bc-5e05de81865f}</Project>
+      <Name>zlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddNote.xaml.cs">
+      <DependentUpon>AddNote.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BadgeHelper.cs" />
+    <Compile Include="BrowserAddNote.cs" />
+    <Compile Include="BrowserChooseBook.cs" />
+    <Compile Include="BrowserHighlight.cs" />
+    <Compile Include="BrowserCopy.cs" />
+    <Compile Include="BrowserMenu.cs" />
+    <Compile Include="BrowserSearchPopup.cs" />
+    <Compile Include="BrowserTitledWindow.xaml.cs">
+      <DependentUpon>BrowserTitledWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ColorPicker.xaml.cs">
+      <DependentUpon>ColorPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BrowserStartAudio.cs" />
+    <Compile Include="BrowserEnterKey.cs" />
+    <Compile Include="MainPageAddWindow.cs" />
+    <Compile Include="MainPageDownloadBible.cs" />
+    <Compile Include="MainPageThemes.cs" />
+    <Compile Include="MediaPlayerChooseBook.cs" />
+    <Compile Include="MediaPlayerMenu.cs" />
+    <Compile Include="MainPageChooseLanguage.cs" />
+    <Compile Include="MainPageDeleteBible.cs" />
+    <Compile Include="MainPageDeleteBookmark.cs" />
+    <Compile Include="MainPageSettings.cs" />
+    <Compile Include="MediaPlayerWindow.xaml.cs">
+      <DependentUpon>MediaPlayerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="InstallManager.cs" />
+    <Compile Include="ITiledWindow.cs" />
+    <Compile Include="MorphologyTranslator.cs" />
+    <Compile Include="readers\AudioPlayer.cs" />
+    <Compile Include="readers\BookMarkReader.cs" />
+    <Compile Include="readers\RawGenSearchReader.cs" />
+    <Compile Include="readers\DailyPlanReader.cs" />
+    <Compile Include="readers\GreekHebrewDictReader.cs" />
+    <Compile Include="readers\HistoryReader.cs" />
+    <Compile Include="readers\InternetLinkReader.cs" />
+    <Compile Include="readers\PersonalNotesReader.cs" />
+    <Compile Include="readers\SearchReader.cs" />
+    <Compile Include="readers\TranslateByGoogle.cs" />
+    <Compile Include="readers\TranslatorReader.cs" />
+    <Compile Include="MainPageSplit.xaml.cs">
+      <DependentUpon>MainPageSplit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Common\BindableBase.cs" />
+    <Compile Include="Common\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Common\BooleanNegationConverter.cs" />
+    <Compile Include="Common\LayoutAwarePage.cs" />
+    <Compile Include="Common\RichTextColumns.cs" />
+    <Compile Include="Common\SuspensionManager.cs" />
+    <Compile Include="Theme.cs" />
+    <Compile Include="Translations.cs" />
+    <Compile Include="WebClient.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+    <None Include="Common\ReadMe.txt" />
+    <None Include="App2_TemporaryKey.pfx" />
+    <EmbeddedResource Include="Properties\strongsgreek.xml.gz" />
+    <EmbeddedResource Include="Properties\strongshebrew.xml.gz" />
+    <None Include="CrossConnect_StoreKey.pfx" />
+    <PRIResource Include="Locale\af\resource.resw" />
+    <PRIResource Include="Locale\ar\resource.resw" />
+    <PRIResource Include="Locale\az-latn\resource.resw" />
+    <PRIResource Include="Locale\be\resource.resw" />
+    <PRIResource Include="Locale\bg\resource.resw" />
+    <PRIResource Include="Locale\cs\resource.resw" />
+    <PRIResource Include="Locale\da\resource.resw" />
+    <PRIResource Include="Locale\de\resource.resw" />
+    <PRIResource Include="Locale\el\resource.resw" />
+    <PRIResource Include="Locale\en\resource.resw" />
+    <PRIResource Include="Locale\es\resource.resw" />
+    <PRIResource Include="Locale\et\resource.resw" />
+    <PRIResource Include="Locale\fa\resource.resw" />
+    <PRIResource Include="Locale\fi\resource.resw" />
+    <PRIResource Include="Locale\fr\resource.resw" />
+    <PRIResource Include="Locale\he\resource.resw" />
+    <PRIResource Include="Locale\hi\resource.resw" />
+    <PRIResource Include="Locale\hr\resource.resw" />
+    <PRIResource Include="Locale\hu\resource.resw" />
+    <PRIResource Include="Locale\hy\resource.resw" />
+    <PRIResource Include="Locale\id\resource.resw" />
+    <PRIResource Include="Locale\is\resource.resw" />
+    <PRIResource Include="Locale\it\resource.resw" />
+    <PRIResource Include="Locale\ja\resource.resw" />
+    <PRIResource Include="Locale\ko\resource.resw" />
+    <PRIResource Include="Locale\lt\resource.resw" />
+    <PRIResource Include="Locale\lv\resource.resw" />
+    <PRIResource Include="Locale\mk\resource.resw" />
+    <PRIResource Include="Locale\ms\resource.resw" />
+    <PRIResource Include="Locale\mt\resource.resw" />
+    <PRIResource Include="Locale\nl\resource.resw" />
+    <PRIResource Include="Locale\no\resource.resw" />
+    <PRIResource Include="Locale\pl\resource.resw" />
+    <PRIResource Include="Locale\pt\resource.resw" />
+    <PRIResource Include="Locale\ro\resource.resw" />
+    <PRIResource Include="Locale\ru\resource.resw" />
+    <PRIResource Include="Locale\sk\resource.resw" />
+    <PRIResource Include="Locale\sl\resource.resw" />
+    <PRIResource Include="Locale\sq\resource.resw" />
+    <PRIResource Include="Locale\sr\resource.resw" />
+    <PRIResource Include="Locale\sv\resource.resw" />
+    <PRIResource Include="Locale\sw\resource.resw" />
+    <PRIResource Include="Locale\th\resource.resw" />
+    <PRIResource Include="Locale\tr\resource.resw" />
+    <PRIResource Include="Locale\uk\resource.resw" />
+    <PRIResource Include="Locale\ur\resource.resw" />
+    <PRIResource Include="Locale\vi\resource.resw" />
+    <PRIResource Include="Locale\zh-cn\resource.resw" />
+    <PRIResource Include="Locale\zh-TW\resource.resw" />
+    <None Include="CrossConnect_TemporaryKey.pfx" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\AppBar\appbar.linkto.rest.pressed.png" />
+    <Content Include="Assets\Badge.png" />
+    <Content Include="Assets\Logo.png" />
+    <Content Include="Assets\SmallLogo.png" />
+    <Content Include="Assets\splash.png" />
+    <Content Include="Assets\splash150x150.png" />
+    <Content Include="Assets\splash24x24.png" />
+    <Content Include="Assets\splash30x30.png" />
+    <Content Include="Assets\splash310x150.png" />
+    <Content Include="Assets\splash50x50.png" />
+    <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\LightGray.png" />
+    <Content Include="Assets\MediumGray.png" />
+    <Content Include="Assets\DarkGray.png" />
+    <None Include="Package.StoreAssociation.xml" />
+    <EmbeddedResource Include="Properties\crossc_af.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\crossc_ar.xml" />
+    <EmbeddedResource Include="Properties\crossc_az.xml" />
+    <EmbeddedResource Include="Properties\crossc_be.xml" />
+    <EmbeddedResource Include="Properties\crossc_bg.xml" />
+    <EmbeddedResource Include="Properties\crossc_cs.xml" />
+    <EmbeddedResource Include="Properties\crossc_da.xml" />
+    <EmbeddedResource Include="Properties\crossc_de.xml" />
+    <EmbeddedResource Include="Properties\crossc_el.xml" />
+    <EmbeddedResource Include="Properties\crossc_en.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\crossc_es.xml" />
+    <EmbeddedResource Include="Properties\crossc_et.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\crossc_fa.xml" />
+    <EmbeddedResource Include="Properties\crossc_fi.xml" />
+    <EmbeddedResource Include="Properties\crossc_fr.xml" />
+    <EmbeddedResource Include="Properties\crossc_hi.xml" />
+    <EmbeddedResource Include="Properties\crossc_hr.xml" />
+    <EmbeddedResource Include="Properties\crossc_hu.xml" />
+    <EmbeddedResource Include="Properties\crossc_hy.xml" />
+    <EmbeddedResource Include="Properties\crossc_id.xml" />
+    <EmbeddedResource Include="Properties\crossc_is.xml" />
+    <EmbeddedResource Include="Properties\crossc_it.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\crossc_iw.xml" />
+    <EmbeddedResource Include="Properties\crossc_ja.xml" />
+    <EmbeddedResource Include="Properties\crossc_ko.xml" />
+    <EmbeddedResource Include="Properties\crossc_lt.xml" />
+    <EmbeddedResource Include="Properties\crossc_lv.xml" />
+    <EmbeddedResource Include="Properties\crossc_mk.xml" />
+    <EmbeddedResource Include="Properties\crossc_ms.xml" />
+    <EmbeddedResource Include="Properties\crossc_mt.xml" />
+    <EmbeddedResource Include="Properties\crossc_nl.xml" />
+    <EmbeddedResource Include="Properties\crossc_no.xml" />
+    <EmbeddedResource Include="Properties\crossc_pl.xml" />
+    <EmbeddedResource Include="Properties\crossc_pt.xml" />
+    <EmbeddedResource Include="Properties\crossc_ro.xml" />
+    <EmbeddedResource Include="Properties\crossc_ru.xml" />
+    <EmbeddedResource Include="Properties\crossc_sk.xml" />
+    <EmbeddedResource Include="Properties\crossc_sl.xml" />
+    <EmbeddedResource Include="Properties\crossc_sq.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\crossc_sr.xml" />
+    <EmbeddedResource Include="Properties\crossc_sv.xml" />
+    <EmbeddedResource Include="Properties\crossc_sw.xml" />
+    <EmbeddedResource Include="Properties\crossc_th.xml" />
+    <EmbeddedResource Include="Properties\crossc_tl.xml" />
+    <EmbeddedResource Include="Properties\crossc_tr.xml" />
+    <EmbeddedResource Include="Properties\crossc_uk.xml" />
+    <EmbeddedResource Include="Properties\crossc_ur.xml" />
+    <EmbeddedResource Include="Properties\crossc_vi.xml" />
+    <EmbeddedResource Include="Properties\crossc_zh.xml" />
+    <EmbeddedResource Include="Properties\crossc_zh_cn.xml" />
+    <EmbeddedResource Include="Properties\regex.html" />
+    <EmbeddedResource Include="Properties\themes.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="AddNote.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BrowserTitledWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ColorPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\StandardStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MediaPlayerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainPageSplit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
+    <VisualStudioVersion>12.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

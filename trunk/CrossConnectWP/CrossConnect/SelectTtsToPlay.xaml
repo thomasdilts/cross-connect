@@ -36,11 +36,6 @@
 
   <Grid x:Name="LayoutRoot" Background="Transparent">
     <Grid.RowDefinitions>
-      <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
     </Grid.RowDefinitions>
@@ -54,12 +49,6 @@
                  Style="{StaticResource PhoneTextNormalStyle}" />
     </StackPanel>
     <ListBox Grid.Row="1" SelectionChanged="SelectListSelectionChanged" Name="SelectList" />
-        <TextBlock Margin="10 10 10 10" Grid.Row="2" Name="text1"/>
-        <TextBlock Margin="10 10 10 10" Grid.Row="3" Name="text2"/>
-        <TextBlock Margin="10 10 10 10" Grid.Row="4" Name="text3"/>
-        <TextBlock Margin="10 10 10 10" Grid.Row="5" Name="text4"/>
-        <TextBlock Margin="10 10 10 10" Grid.Row="5" Name="text5"/>
-        <toolkit:ToggleSwitch Grid.Row="6" Margin="0,0,0,-30" Header="SyncVerses" Name="SyncVerses" />
     </Grid>
 
 </local:AutoRotatePage>

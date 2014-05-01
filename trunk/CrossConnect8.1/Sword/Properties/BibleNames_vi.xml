@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<biblenames isolang="vi" isolocale="" version="1.0">
+<book key="Gen" short="SÁNG THẾ KÝ" full="SÁNG THẾ KÝ" />
+<book key="Exod" short="XUẤT ÊDÍPTÔ KÝ" full="XUẤT ÊDÍPTÔ KÝ" />
+<book key="Lev" short="LÊVI KÝ" full="LÊVI KÝ" />
+<book key="Num" short="DÂN SỐ KÝ" full="DÂN SỐ KÝ" />
+<book key="Deut" short="PHỤC TRUYỀN LUẬT LỆ KÝ" full="PHỤC TRUYỀN LUẬT LỆ KÝ" />
+<book key="Josh" short="GIÔSUÊ" full="GIÔSUÊ" />
+<book key="Judg" short="CÁC QUAN XÉT" full="CÁC QUAN XÉT" />
+<book key="Ruth" short="RUTƠ" full="RUTƠ" />
+<book key="1Sam" short="I SAMUÊN" full="I SAMUÊN" />
+<book key="2Sam" short="II SAMUÊN" full="II SAMUÊN" />
+<book key="1Kgs" short="I CÁC VUA" full="I CÁC VUA" />
+<book key="2Kgs" short="II CÁC VUA" full="II CÁC VUA" />
+<book key="1Chr" short="I SỬ KÝ" full="I SỬ KÝ" />
+<book key="2Chr" short="II SỬ KÝ" full="II SỬ KÝ" />
+<book key="Ezra" short="EXƠRA" full="EXƠRA" />
+<book key="Neh" short="NÊHÊMI" full="NÊHÊMI" />
+<book key="Esth" short="ÊXƠTÊ" full="ÊXƠTÊ" />
+<book key="Job" short="GIÓP" full="GIÓP" />
+<book key="Ps" short="THI THIÊN" full="THI THIÊN" />
+<book key="Prov" short="CHÂM NGÔN" full="CHÂM NGÔN" />
+<book key="Eccl" short="TRUYỀN ĐẠO" full="TRUYỀN ĐẠO" />
+<book key="Song" short="NHÃ CA" full="NHÃ CA" />
+<book key="Isa" short="ÊSAI" full="ÊSAI" />
+<book key="Jer" short="GIÊRÊMI" full="GIÊRÊMI" />
+<book key="Lam" short="CA THƯƠNG" full="CA THƯƠNG" />
+<book key="Ezek" short="ÊXÊCHIÊN" full="ÊXÊCHIÊN" />
+<book key="Dan" short="ĐANIÊN" full="ĐANIÊN" />
+<book key="Hos" short="ÔSÊ" full="ÔSÊ" />
+<book key="Joel" short="GIÔÊN" full="GIÔÊN" />
+<book key="Amos" short="AMỐT" full="AMỐT" />
+<book key="Obad" short="ÁPĐIA" full="ÁPĐIA" />
+<book key="Jonah" short="GIÔNA" full="GIÔNA" />
+<book key="Mic" short="MICHÊ" full="MICHÊ" />
+<book key="Nah" short="NAHUM" full="NAHUM" />
+<book key="Hab" short="HABACÚC" full="HABACÚC" />
+<book key="Zeph" short="SÔPHÔNI" full="SÔPHÔNI" />
+<book key="Hag" short="AGHÊ" full="AGHÊ" />
+<book key="Zech" short="XACHARI" full="XACHARI" />
+<book key="Mal" short="MALACHI" full="MALACHI" />
+<book key="Matt" short="MATHIƠ" full="MATHIƠ" />
+<book key="Mark" short="MÁC" full="MÁC" />
+<book key="Luke" short="LUCA" full="LUCA" />
+<book key="John" short="GIĂNG" full="GIĂNG" />
+<book key="Acts" short="CÔNG VỤ CÁC SỨ ĐỒ" full="CÔNG VỤ CÁC SỨ ĐỒ" />
+<book key="Rom" short="RÔMA" full="RÔMA" />
+<book key="1Cor" short="I CÔRINHTÔ" full="I CÔRINHTÔ" />
+<book key="2Cor" short="II CÔRINHTÔ" full="II CÔRINHTÔ" />
+<book key="Gal" short="GALATI" full="GALATI" />
+<book key="Eph" short="ÊPHÊSÔ" full="ÊPHÊSÔ" />
+<book key="Phil" short="PHILÍP" full="PHILÍP" />
+<book key="Col" short="CÔLÔSE" full="CÔLÔSE" />
+<book key="1Thess" short="I TÊSALÔNICA" full="I TÊSALÔNICA" />
+<book key="2Thess" short="II TÊSALÔNICA" full="II TÊSALÔNICA" />
+<book key="1Tim" short="I TIMÔTHÊ" full="I TIMÔTHÊ" />
+<book key="2Tim" short="II TIMÔTHÊ" full="II TIMÔTHÊ" />
+<book key="Titus" short="TÍT" full="TÍT" />
+<book key="Phlm" short="PHILÊMÔN" full="PHILÊMÔN" />
+<book key="Heb" short="HÊBƠRƠ" full="HÊBƠRƠ" />
+<book key="Jas" short="GIACƠ" full="GIACƠ" />
+<book key="1Pet" short="I PHIERƠ" full="I PHIERƠ" />
+<book key="2Pet" short="II PHIERƠ" full="II PHIERƠ" />
+<book key="1John" short="I GIĂNG" full="I GIĂNG" />
+<book key="2John" short="II GIĂNG" full="II GIĂNG" />
+<book key="3John" short="III GIĂNG" full="III GIĂNG" />
+<book key="Jude" short="GIUĐE" full="GIUĐE" />
+<book key="Rev" short="KHẢI HUYỀN" full="KHẢI HUYỀN" />
+<book key="1Esd" short="I ESDRAS" full="I ESDRAS" />
+<book key="2Esd" short="II ESDRAS" full="II ESDRAS" />
+<book key="Tob" short="TÔBIA" full="TÔBIA" />
+<book key="Jdt" short="GIUĐITHA" full="GIUĐITHA" />
+<book key="AddEsth" short="PHẦN BỔ SUNG ÊXƠTÊ" full="PHẦN BỔ SUNG ÊXƠTÊ" />
+<book key="EsthGr" short="ÊXƠTÊ (TIẾNG HY LẠP)" full="ÊXƠTÊ (TIẾNG HY LẠP)" />
+<book key="Wis" short="KHÔN NGOAN" full="KHÔN NGOAN" />
+<book key="Sir" short="HUẤN CA" full="HUẤN CA" />
+<book key="Bar" short="BARÚC" full="BARÚC" />
+<book key="PrAzar" short="CẦU NGUYỆN CỦA AXARIA" full="CẦU NGUYỆN CỦA AXARIA" />
+<book key="Sus" short="SUSANNA" full="SUSANNA" />
+<book key="1Macc" short="MACABÊ QUYỂN 1" full="MACABÊ QUYỂN 1" />
+<book key="2Macc" short="MACABÊ QUYỂN 2" full="MACABÊ QUYỂN 2" />
+<book key="3Macc" short="MACABÊ QUYỂN 3" full="MACABÊ QUYỂN 3" />
+<book key="4Macc" short="MACABÊ QUYỂN 4" full="MACABÊ QUYỂN 4" />
+<book key="AddPs" short="THI THIÊN 151" full="THI THIÊN 151" />
+</biblenames>

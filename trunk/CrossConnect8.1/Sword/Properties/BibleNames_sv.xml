@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<biblenames isolang="sv" isolocale="" version="1.0">
+<book key="Gen" short="1. MOSEBOK" full="1. MOSEBOK" />
+<book key="Exod" short="2. MOSEBOK" full="2. MOSEBOK" />
+<book key="Lev" short="3. MOSEBOK" full="3. MOSEBOK" />
+<book key="Num" short="4. MOSEBOK" full="4. MOSEBOK" />
+<book key="Deut" short="5. MOSEBOK" full="5. MOSEBOK" />
+<book key="Josh" short="JOSUA" full="JOSUA" />
+<book key="Judg" short="DOMARBOKEN" full="DOMARBOKEN" />
+<book key="Ruth" short="RUT" full="RUT" />
+<book key="1Sam" short="1. SAMUELSBOKEN" full="1. SAMUELSBOKEN" />
+<book key="2Sam" short="2. SAMUELSBOKEN" full="2. SAMUELSBOKEN" />
+<book key="1Kgs" short="1. KUNGABOKEN" full="1. KUNGABOKEN" />
+<book key="2Kgs" short="2. KUNGABOKEN" full="2. KUNGABOKEN" />
+<book key="1Chr" short="1. KRÖNIKEBOKEN" full="1. KRÖNIKEBOKEN" />
+<book key="2Chr" short="2. KRÖNIKEBOKEN" full="2. KRÖNIKEBOKEN" />
+<book key="Ezra" short="ESRA" full="ESRA" />
+<book key="Neh" short="NEHEMJA" full="NEHEMJA" />
+<book key="Esth" short="ESTER" full="ESTER" />
+<book key="Job" short="JOB" full="JOB" />
+<book key="Ps" short="PSALTAREN" full="PSALTAREN" />
+<book key="Prov" short="ORDSPRÅKSBOKEN" full="ORDSPRÅKSBOKEN" />
+<book key="Eccl" short="PREDIKAREN" full="PREDIKAREN" />
+<book key="Song" short="HÖGA VISAN" full="HÖGA VISAN" />
+<book key="Isa" short="JESAJA" full="JESAJA" />
+<book key="Jer" short="JEREMIA" full="JEREMIA" />
+<book key="Lam" short="KLAGOVISORNA" full="KLAGOVISORNA" />
+<book key="Ezek" short="HESEKIEL" full="HESEKIEL" />
+<book key="Dan" short="DANIEL" full="DANIEL" />
+<book key="Hos" short="HOSEA" full="HOSEA" />
+<book key="Joel" short="JOEL" full="JOEL" />
+<book key="Amos" short="AMOS" full="AMOS" />
+<book key="Obad" short="OBADJA" full="OBADJA" />
+<book key="Jonah" short="JONA" full="JONA" />
+<book key="Mic" short="MIKA" full="MIKA" />
+<book key="Nah" short="NAAHUM" full="NAAHUM" />
+<book key="Hab" short="HABACKUK" full="HABACKUK" />
+<book key="Zeph" short="SEFANJA" full="SEFANJA" />
+<book key="Hag" short="HAGGAI" full="HAGGAI" />
+<book key="Zech" short="SAKARJA" full="SAKARJA" />
+<book key="Mal" short="MALAKI" full="MALAKI" />
+<book key="Matt" short="MATTEUS" full="MATTEUS" />
+<book key="Mark" short="MARKUS" full="MARKUS" />
+<book key="Luke" short="LUKAS" full="LUKAS" />
+<book key="John" short="JOHANNES" full="JOHANNES" />
+<book key="Acts" short="APOSTLAGÄRNINGARNA" full="APOSTLAGÄRNINGARNA" />
+<book key="Rom" short="ROMARBREVET" full="ROMARBREVET" />
+<book key="1Cor" short="1. KORINTIERBREVET" full="1. KORINTIERBREVET" />
+<book key="2Cor" short="2. KORINTIERBREVET" full="2. KORINTIERBREVET" />
+<book key="Gal" short="GALATERBREVET" full="GALATERBREVET" />
+<book key="Eph" short="EFESIERBREVET" full="EFESIERBREVET" />
+<book key="Phil" short="FILIPPERBREVET" full="FILIPPERBREVET" />
+<book key="Col" short="KOLOSSERBREVET" full="KOLOSSERBREVET" />
+<book key="1Thess" short="1. TESSALONIKERBREVET" full="1. TESSALONIKERBREVET" />
+<book key="2Thess" short="2. TESSALONIKERBREVET" full="2. TESSALONIKERBREVET" />
+<book key="1Tim" short="1. TIMOTEUSBREVET" full="1. TIMOTEUSBREVET" />
+<book key="2Tim" short="2. TIMOTEUSBREVET" full="2. TIMOTEUSBREVET" />
+<book key="Titus" short="BREVET TILL TITUS" full="BREVET TILL TITUS" />
+<book key="Phlm" short="BREVET TILL FILEMON" full="BREVET TILL FILEMON" />
+<book key="Heb" short="HEBREERBREVET" full="HEBREERBREVET" />
+<book key="Jas" short="JAKOBS BREV" full="JAKOBS BREV" />
+<book key="1Pet" short="1. PETRUSBREVET" full="1. PETRUSBREVET" />
+<book key="2Pet" short="2. PETRUSBREVET" full="2. PETRUSBREVET" />
+<book key="1John" short="1. JOHANNESBREVET" full="1. JOHANNESBREVET" />
+<book key="2John" short="2. JOHANNESBREVET" full="2. JOHANNESBREVET" />
+<book key="3John" short="3. JOHANNESBREVET" full="3. JOHANNESBREVET" />
+<book key="Jude" short="JUDAS BREV" full="JUDAS BREV" />
+<book key="Rev" short="UPPENBARELSEBOKEN" full="UPPENBARELSEBOKEN" />
+</biblenames>

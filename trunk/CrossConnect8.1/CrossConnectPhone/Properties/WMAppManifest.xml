@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Deployment xmlns="http://schemas.microsoft.com/windowsphone/2014/deployment" AppPlatformVersion="8.1">
+  <DefaultLanguage xmlns="" code="en" />
+  <Languages xmlns="">
+    <Language code="es-ES" />
+    <Language code="fr-FR" />
+    <Language code="it-IT" />
+    <Language code="de-DE" />
+    <Language code="bg-BG" />
+    <Language code="fi-FI" />
+    <Language code="hr-HR" />
+    <Language code="hu-HU" />
+    <Language code="id-ID" />
+    <Language code="is-IS" />
+    <Language code="lt-LT" />
+    <Language code="lv-LV" />
+    <Language code="mk-MK" />
+    <Language code="mt-MT" />
+    <Language code="nl-NL" />
+    <Language code="pl-PL" />
+    <Language code="pt-PT" />
+    <Language code="ro-RO" />
+    <Language code="ru-RU" />
+    <Language code="sk-SK" />
+    <Language code="th-TH" />
+    <Language code="tr-TR" />
+    <Language code="zh-CN" />
+    <Language code="zh-TW" />
+  </Languages>
+  <App xmlns="" ProductID="{d9a3e975-c3d4-4d88-8a61-541a55e8b722}" Title="CrossConnect" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="CrossConnect author" Description="Sample description" Publisher="CrossConnect" PublisherID="{6312fed0-e13d-4929-b54f-d174229773e2}">
+    <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
+    <Capabilities>
+      <Capability Name="ID_CAP_IDENTITY_DEVICE" />
+      <Capability Name="ID_CAP_NETWORKING" />
+      <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
+      <Capability Name="ID_CAP_MEDIALIB_AUDIO" />
+      <Capability Name="ID_CAP_MEDIALIB_PHOTO" />
+      <Capability Name="ID_CAP_MEDIALIB_PLAYBACK" />
+      <Capability Name="ID_CAP_SPEECH_RECOGNITION" />
+    </Capabilities>
+    <Tasks>
+      <DefaultTask Name="_default" NavigationPage="MainPageSplit.xaml" />
+      <ExtendedTask Name="BackgroundTask">
+        <BackgroundServiceAgent Specifier="AudioPlayerAgent" Name="AudioPlaybackAgent1" Source="AudioPlaybackAgent1" Type="AudioPlaybackAgent1.AudioPlayer" />
+      </ExtendedTask>
+    </Tasks>
+    <Tokens>
+      <PrimaryToken TokenID="CrossConnectToken" TaskName="_default">
+        <TemplateFlip>
+          <SmallImageURI IsResource="false" IsRelative="true">Background.png</SmallImageURI>
+          <Count>0</Count>
+          <BackgroundImageURI IsResource="false" IsRelative="true">Background.png</BackgroundImageURI>
+          <Title>CrossConnect</Title>
+          <BackContent></BackContent>
+          <BackBackgroundImageURI></BackBackgroundImageURI>
+          <BackTitle></BackTitle>
+          <LargeBackgroundImageURI IsRelative="true" IsResource="false">crossbigbut691x336.png</LargeBackgroundImageURI>
+          <LargeBackContent />
+          <LargeBackBackgroundImageURI IsRelative="true" IsResource="false"></LargeBackBackgroundImageURI>
+          <DeviceLockImageURI></DeviceLockImageURI>
+          <HasLarge>True</HasLarge>
+        </TemplateFlip>
+      </PrimaryToken>
+    </Tokens>
+    <ScreenResolutions>
+      <ScreenResolution Name="ID_RESOLUTION_WVGA" />
+      <ScreenResolution Name="ID_RESOLUTION_WXGA" />
+      <ScreenResolution Name="ID_RESOLUTION_HD720P" />
+    </ScreenResolutions>
+    <Requirements>
+      <Requirement Name="ID_REQ_MEMORY_90" />
+    </Requirements>
+  </App>
+</Deployment>
