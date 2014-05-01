@@ -120,6 +120,7 @@ namespace CrossConnect
 
                                 this.LoadList();
                                 this._isInSelectionChanged = false;
+                                App.OnTimerForSavingWindowsTick(null, null);
                             }));
                 dialog.Commands.Add(new UICommand(Translations.Translate("Cancel")));
                 dialog.ShowAsync();

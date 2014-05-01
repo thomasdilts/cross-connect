@@ -165,6 +165,7 @@ namespace CrossConnect
                         App.InstalledBibles.InstalledCommentaries.Remove(foundKey);
                     }
 
+                    App.SavePersistantWindows();
                     LoadList();
                 }
                 else

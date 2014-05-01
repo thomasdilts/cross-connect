@@ -194,7 +194,7 @@ namespace CrossConnect
             TimerForSavingWindows.Start();
         }
 
-        private static async void OnTimerForSavingWindowsTick(object sender, object e)
+        public static async void OnTimerForSavingWindowsTick(object sender, object e)
         {
             TimerForSavingWindows.Stop();
             TimerForSavingWindows = null;
