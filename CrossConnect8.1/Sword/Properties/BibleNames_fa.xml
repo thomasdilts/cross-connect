@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<biblenames isolang="fa" isolocale="" version="1.0">
+<book key="Gen" short="پیدایش" full="پیدایش" />
+<book key="Exod" short="خروج" full="خروج" />
+<book key="Lev" short="لاویان" full="لاویان" />
+<book key="Num" short="اعداد" full="اعداد" />
+<book key="Deut" short="تثنیه" full="تثنیه" />
+<book key="Josh" short="یوشع" full="یوشع" />
+<book key="Judg" short="داوران" full="داوران" />
+<book key="Ruth" short="روت" full="روت" />
+<book key="1Sam" short="اول سموئیل" full="اول سموئیل" />
+<book key="2Sam" short="دوم سموئیل" full="دوم سموئیل" />
+<book key="1Kgs" short="اول پادشاهان" full="اول پادشاهان" />
+<book key="2Kgs" short="دوم پادشاهان" full="دوم پادشاهان" />
+<book key="1Chr" short="اول تواریخ" full="اول تواریخ" />
+<book key="2Chr" short="دوم تواریخ" full="دوم تواریخ" />
+<book key="Ezra" short="عزرا" full="عزرا" />
+<book key="Neh" short="نحمیا" full="نحمیا" />
+<book key="Esth" short="استر" full="استر" />
+<book key="Job" short="ایوب" full="ایوب" />
+<book key="Ps" short="مزامیر" full="مزامیر" />
+<book key="Prov" short="امثال سلیمان" full="امثال سلیمان" />
+<book key="Eccl" short="جامعه" full="جامعه" />
+<book key="Song" short="غزل غزلهای سلیمان" full="غزل غزلهای سلیمان" />
+<book key="Isa" short="اشعیا" full="اشعیا" />
+<book key="Jer" short="ارمیا" full="ارمیا" />
+<book key="Lam" short="مراثی ارمیا" full="مراثی ارمیا" />
+<book key="Ezek" short="حزقیال" full="حزقیال" />
+<book key="Dan" short="دانیال" full="دانیال" />
+<book key="Hos" short="هوشع" full="هوشع" />
+<book key="Joel" short="یوییل" full="یوییل" />
+<book key="Amos" short="عاموس" full="عاموس" />
+<book key="Obad" short="عوبدیا" full="عوبدیا" />
+<book key="Jonah" short="یونس" full="یونس" />
+<book key="Mic" short="میکاه" full="میکاه" />
+<book key="Nah" short="ناحوم" full="ناحوم" />
+<book key="Hab" short="حبقوق" full="حبقوق" />
+<book key="Zeph" short="ضفنیا" full="ضفنیا" />
+<book key="Hag" short="حجی" full="حجی" />
+<book key="Zech" short="زکریا" full="زکریا" />
+<book key="Mal" short="ملاکی" full="ملاکی" />
+<book key="Matt" short="متی" full="متی" />
+<book key="Mark" short="مرقس" full="مرقس" />
+<book key="Luke" short="لوقا" full="لوقا" />
+<book key="John" short="یوحنا" full="یوحنا" />
+<book key="Acts" short="اعمال رسولان" full="اعمال رسولان" />
+<book key="Rom" short="رومیان" full="رومیان" />
+<book key="1Cor" short="اول قرنتیان" full="اول قرنتیان" />
+<book key="2Cor" short="دوم قرنتیان" full="دوم قرنتیان" />
+<book key="Gal" short="غلاطیان" full="غلاطیان" />
+<book key="Eph" short="افسسیان" full="افسسیان" />
+<book key="Phil" short="فیلیپیان" full="فیلیپیان" />
+<book key="Col" short="کولسیان" full="کولسیان" />
+<book key="1Thess" short="اول تسالونکیان" full="اول تسالونکیان" />
+<book key="2Thess" short="دوم تسالونکیان" full="دوم تسالونکیان" />
+<book key="1Tim" short="اول تیموتاؤس" full="اول تیموتاؤس" />
+<book key="2Tim" short="دوم تیموتاؤس" full="دوم تیموتاؤس" />
+<book key="Titus" short="تیطوس" full="تیطوس" />
+<book key="Phlm" short="فلیمون" full="فلیمون" />
+<book key="Heb" short="عبرانیان" full="عبرانیان" />
+<book key="Jas" short="یعقوب" full="یعقوب" />
+<book key="1Pet" short="اول پطرس" full="اول پطرس" />
+<book key="2Pet" short="دوم پطرس" full="دوم پطرس" />
+<book key="1John" short="اول یوحنا" full="اول یوحنا" />
+<book key="2John" short="دوم یوحنا" full="دوم یوحنا" />
+<book key="3John" short="سوم یوحنا" full="سوم یوحنا" />
+<book key="Jude" short="یهودا" full="یهودا" />
+<book key="Rev" short="مکاشفه یوحنا" full="مکاشفه یوحنا" />
+</biblenames>

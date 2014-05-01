@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<biblenames isolang="es" isolocale="" version="1.0">
+<book key="Gen" short="GÉNESIS" full="GÉNESIS" />
+<book key="Exod" short="ÉXODO" full="ÉXODO" />
+<book key="Lev" short="LEVÍTICO" full="LEVÍTICO" />
+<book key="Num" short="NÚMEROS" full="NÚMEROS" />
+<book key="Deut" short="DEUTERONOMIO" full="DEUTERONOMIO" />
+<book key="Josh" short="JOSUÉ" full="JOSUÉ" />
+<book key="Judg" short="JUECES" full="JUECES" />
+<book key="Ruth" short="RUT" full="RUT" />
+<book key="1Sam" short="1 SAMUEL" full="1 SAMUEL" />
+<book key="2Sam" short="2 SAMUEL" full="2 SAMUEL" />
+<book key="1Kgs" short="1 REYES" full="1 REYES" />
+<book key="2Kgs" short="2 REYES" full="2 REYES" />
+<book key="1Chr" short="1 CRÓNICAS" full="1 CRÓNICAS" />
+<book key="2Chr" short="2 CRÓNICAS" full="2 CRÓNICAS" />
+<book key="Ezra" short="ESDRAS" full="ESDRAS" />
+<book key="Neh" short="NEHEMÍAS" full="NEHEMÍAS" />
+<book key="Esth" short="ESTER" full="ESTER" />
+<book key="Job" short="JOB" full="JOB" />
+<book key="Ps" short="SALMOS" full="SALMOS" />
+<book key="Prov" short="PROVERBIOS" full="PROVERBIOS" />
+<book key="Eccl" short="ECLESIASTÉS" full="ECLESIASTÉS" />
+<book key="Song" short="CANTARES" full="CANTARES" />
+<book key="Isa" short="ISAÍAS" full="ISAÍAS" />
+<book key="Jer" short="JEREMÍAS" full="JEREMÍAS" />
+<book key="Lam" short="LAMENTACIONES" full="LAMENTACIONES" />
+<book key="Ezek" short="EZEQUIEL" full="EZEQUIEL" />
+<book key="Dan" short="DANIEL" full="DANIEL" />
+<book key="Hos" short="OSEAS" full="OSEAS" />
+<book key="Joel" short="JOEL" full="JOEL" />
+<book key="Amos" short="AMÓS" full="AMÓS" />
+<book key="Obad" short="ABDÍAS" full="ABDÍAS" />
+<book key="Jonah" short="JONÁS" full="JONÁS" />
+<book key="Mic" short="MIQUEAS" full="MIQUEAS" />
+<book key="Nah" short="NAHUM" full="NAHUM" />
+<book key="Hab" short="HABACUC" full="HABACUC" />
+<book key="Zeph" short="SOFONÍAS" full="SOFONÍAS" />
+<book key="Hag" short="HAGEO" full="HAGEO" />
+<book key="Zech" short="ZACARÍAS" full="ZACARÍAS" />
+<book key="Mal" short="MALAQUÍAS" full="MALAQUÍAS" />
+<book key="Matt" short="MATEO" full="MATEO" />
+<book key="Mark" short="MARCOS" full="MARCOS" />
+<book key="Luke" short="LUCAS" full="LUCAS" />
+<book key="John" short="JUAN" full="JUAN" />
+<book key="Acts" short="HECHOS" full="HECHOS" />
+<book key="Rom" short="ROMANOS" full="ROMANOS" />
+<book key="1Cor" short="1 CORINTIOS" full="1 CORINTIOS" />
+<book key="2Cor" short="2 CORINTIOS" full="2 CORINTIOS" />
+<book key="Gal" short="GÁLATAS" full="GÁLATAS" />
+<book key="Eph" short="EFESIOS" full="EFESIOS" />
+<book key="Phil" short="FILIPENSES" full="FILIPENSES" />
+<book key="Col" short="COLOSENSES" full="COLOSENSES" />
+<book key="1Thess" short="1 TESALONICENSES" full="1 TESALONICENSES" />
+<book key="2Thess" short="2 TESALONICENSES" full="2 TESALONICENSES" />
+<book key="1Tim" short="1 TIMOTEO" full="1 TIMOTEO" />
+<book key="2Tim" short="2 TIMOTEO" full="2 TIMOTEO" />
+<book key="Titus" short="TITO" full="TITO" />
+<book key="Phlm" short="FILEMÓN" full="FILEMÓN" />
+<book key="Heb" short="HEBREOS" full="HEBREOS" />
+<book key="Jas" short="SANTIAGO" full="SANTIAGO" />
+<book key="1Pet" short="1 PEDRO" full="1 PEDRO" />
+<book key="2Pet" short="2 PEDRO" full="2 PEDRO" />
+<book key="1John" short="1 JUAN" full="1 JUAN" />
+<book key="2John" short="2 JUAN" full="2 JUAN" />
+<book key="3John" short="3 JUAN" full="3 JUAN" />
+<book key="Jude" short="JUDAS" full="JUDAS" />
+<book key="Rev" short="APOCALIPSIS" full="APOCALIPSIS" />
+</biblenames>

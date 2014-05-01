@@ -94,9 +94,6 @@ namespace CrossConnect
                 //show the voices available.
                 // get all of the installed voices
                 var voices = Windows.Phone.Speech.Synthesis.InstalledVoices.All;
-                SyncVerses.Visibility = Visibility.Visible;
-                SyncVerses.Header = Translations.Translate("Synchronize to every verse");
-                SyncVerses.IsChecked = App.DisplaySettings.SyncMediaVerses;
                 // get the currently selected voice
                 this.SelectList.Items.Clear();
                 foreach (var voice in voices)
@@ -123,11 +120,7 @@ namespace CrossConnect
             }
 
             _isInSelectionChanged = true;
-            if (this.SyncVerses.IsChecked != null)
-            {
-                App.DisplaySettings.SyncMediaVerses = (bool)SyncVerses.IsChecked;
-                App.SavePersistantDisplaySettings();
-            }
+
             // clear the selection because we might come here again after the media player
             SelectList.SelectedIndex = -1;
             object BookToHear;

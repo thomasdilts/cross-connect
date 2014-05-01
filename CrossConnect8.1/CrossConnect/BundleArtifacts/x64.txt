@@ -1,0 +1,2 @@
+MainPackage=E:\cross-connectSource\cross-connect\CrossConnectMetro\CrossConnect\bin\x64\Release\CrossConnect_2.1.9.62_Bundle\CrossConnect_2.1.9.62_x64.appx
+SymbolPackage=E:\cross-connectSource\cross-connect\CrossConnectMetro\CrossConnect\AppPackages\CrossConnect_2.1.9.62_Test\CrossConnect_2.1.9.62_x64.appxsym
