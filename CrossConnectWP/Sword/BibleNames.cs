@@ -92,7 +92,7 @@ namespace Sword
                     case "zh":
                         break;
                 }
-                if (stream == null && appChosenIsoLangCode.Substring(0, 2).Equals(isoLang2DigitCode.Substring(0, 2)))
+                if (stream == null && !string.IsNullOrEmpty(appChosenIsoLangCode) && appChosenIsoLangCode.Substring(0, 2).Equals(isoLang2DigitCode.Substring(0, 2)))
                 {
                     stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + (appChosenIsoLangCode.Equals("zh")?"zh_tw":"zh_cn") + ".xml");
                     if(stream!=null)

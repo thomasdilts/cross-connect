@@ -39,7 +39,7 @@ namespace Sword
     {
         #region Fields
 
-        private readonly Dictionary<string,string> _fullNames = new Dictionary<string,string>();
+        private readonly Dictionary<string, string> _fullNames = new Dictionary<string, string>();
 
         private readonly bool _isShortNamesExisting = true;
 
@@ -74,7 +74,7 @@ namespace Sword
                     case "zh_hk":
                     case "zh_mo":
                         stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + "zh_tw" + ".xml");
-                        if(stream!=null)
+                        if (stream != null)
                         {
                             _isoLanguage = "zh_tw";
                         }
@@ -84,7 +84,7 @@ namespace Sword
                     case "zh_sg":
                     case "zh_my":
                         stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + "zh_cn" + ".xml");
-                        if(stream!=null)
+                        if (stream != null)
                         {
                             _isoLanguage = "zh_cn";
                         }
@@ -92,10 +92,10 @@ namespace Sword
                     case "zh":
                         break;
                 }
-                if (stream == null && appChosenIsoLangCode.Substring(0, 2).Equals(isoLang2DigitCode.Substring(0, 2)))
+                if (stream == null && !string.IsNullOrEmpty(appChosenIsoLangCode) && appChosenIsoLangCode.Substring(0, 2).Equals(isoLang2DigitCode.Substring(0, 2)))
                 {
-                    stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + (appChosenIsoLangCode.Equals("zh")?"zh_tw":"zh_cn") + ".xml");
-                    if(stream!=null)
+                    stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + (appChosenIsoLangCode.Equals("zh") ? "zh_tw" : "zh_cn") + ".xml");
+                    if (stream != null)
                     {
                         _isoLanguage = appChosenIsoLangCode.Equals("zh") ? "zh_tw" : "zh_cn";
                     }
@@ -120,10 +120,10 @@ namespace Sword
                 }
             }
 
-            if(stream==null)
+            if (stream == null)
             {
                 stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + isoLang2DigitCode.Substring(0, 2) + ".xml");
-                if(stream == null)
+                if (stream == null)
                 {
                     stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + appChosenIsoLangCode + ".xml");
                     if (stream == null)
@@ -246,7 +246,7 @@ namespace Sword
                 return fullname;
             }
 
-            return bookShortName; 
+            return bookShortName;
         }
 
         public string Reverse(string str)
