@@ -472,29 +472,11 @@ namespace CrossConnect
             Window.Current.Activate();
         }
 
-        private static async Task<StorageFolder> GetUsedFolderNoFail(string testFileName = null, bool AlwaysLocal=false)
-        {
-            StorageFolder folder = null;
-            folder = ApplicationData.Current.LocalFolder;
-            if (testFileName != null)
-            {
-                if (!await BibleZtextReader.FileExists(folder, testFileName))
-                {
-                    if (await BibleZtextReader.FileExists(ApplicationData.Current.RoamingFolder, testFileName))
-                    {
-                        folder = ApplicationData.Current.RoamingFolder;
-                    }
-                }
-            }
-
-            return folder;
-        }
-
         private async Task<Dictionary<String, Object>> LoadPersistantObjectsFromFile(string filename, LoadPersObjDelegate loadFunction, bool alwaysLocal=false)
         {
             var objectsToLoad = new Dictionary<String, Object>();
             bool isLoaded = false;
-            StorageFolder folder = await GetUsedFolderNoFail(filename, alwaysLocal);
+            StorageFolder folder = ApplicationData.Current.LocalFolder;
             if (await BibleZtextReader.FileExists(folder, filename))
             {
                 try
@@ -661,9 +643,9 @@ namespace CrossConnect
                                     var path = ((BibleZtextReader)nextWindow.State.Source).Serial.Path;
                                     foreach (var book in App.InstalledBibles.InstalledBibles)
                                     {
-                                        if (book.Value.Sbmd != null && book.Value.Sbmd.GetCetProperty(ConfigEntryType.ADataPath).ToString().Substring(2).Equals(path))
+                                        if (book.Value != null && book.Value.GetCetProperty(ConfigEntryType.ADataPath).ToString().Substring(2).Equals(path))
                                         {
-                                            ((BibleZtextReader)nextWindow.State.Source).Serial.Iso2DigitLangCode = ((Language)book.Value.Sbmd.GetCetProperty(ConfigEntryType.Lang)).Code;
+                                            ((BibleZtextReader)nextWindow.State.Source).Serial.Iso2DigitLangCode = ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code;
                                             break;
                                         }
                                     }
@@ -791,7 +773,7 @@ namespace CrossConnect
 
         private async Task<bool> LoadPersistantObjects(bool alwaysLocal=false)
         {
-            StorageFolder folder = await GetUsedFolderNoFail(PersistantObjectsFileName, alwaysLocal);
+            StorageFolder folder = ApplicationData.Current.LocalFolder;
 
             try
             {
@@ -984,7 +966,7 @@ namespace CrossConnect
                 serializer.WriteObject(sessionData, objectsToSave);
 
                 // Get an output stream for the SessionState file and write the state asynchronously
-                StorageFolder folder = await GetUsedFolderNoFail(null, alwaysLocal);
+                StorageFolder folder = ApplicationData.Current.LocalFolder;
                 StorageFile file = await folder.CreateFileAsync(
                             filename, CreationCollisionOption.ReplaceExisting);
 

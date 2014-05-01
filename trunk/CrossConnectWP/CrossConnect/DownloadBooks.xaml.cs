@@ -33,6 +33,7 @@ namespace CrossConnect
     using System.Windows.Controls;
 
     using Sword;
+    using System.Threading.Tasks;
 
     public partial class DownloadBooks
     {
@@ -223,18 +224,7 @@ namespace CrossConnect
                 return;
             }
 
-            if (selectType.SelectedItem.Equals(Translations.Translate("Commentaries")))
-            {
-                App.InstalledBibles.AddCommentary(_sb.Sbmd.InternalName);
-            }
-            else if (selectType.SelectedItem.Equals(Translations.Translate("Books")))
-            {
-                App.InstalledBibles.AddGeneralBook(_sb.Sbmd.InternalName);
-            }
-            else
-            {
-                App.InstalledBibles.AddBook(_sb.Sbmd.InternalName);
-            }
+            App.InstalledBibles.AddGenericBook(_sb.Sbmd.InternalName);
 
             _sb = null;
             _isInThisWindow = false;

@@ -336,32 +336,6 @@ namespace CrossConnect
             return true;
         }
 
-        public async Task<bool> DoLoading(string internalName)
-        {
-            this.IsLoaded = false;
-            if (string.IsNullOrEmpty(internalName))
-            {
-                return false;
-            }
-            try
-            {
-                StorageFolder folder = ApplicationData.Current.LocalFolder;
-                string filepath = BibleZtextReader.DirConf + '/' + internalName.ToLower()
-                                  + BibleZtextReader.ExtensionConf;
-                StorageFile file = await folder.GetFileAsync(filepath.Replace("/", "\\"));
-                IRandomAccessStream istream = await file.OpenAsync(FileAccessMode.Read);
-                Stream stream = istream.AsStreamForRead();
-                this.Sbmd = new SwordBookMetaData(stream, internalName);
-                this.IsLoaded = true;
-            }
-            catch (Exception ee)
-            {
-                Debug.WriteLine(ee.StackTrace);
-            }
-
-            return true;
-        }
-
         public string DownloadBookNow(WebInstaller iManager)
         {
             try
@@ -378,76 +352,6 @@ namespace CrossConnect
             {
                 Logger.Fail(e.ToString());
                 return e.Message;
-            }
-        }
-
-        public async void RemoveBible()
-        {
-            try
-            {
-                string modFile = BibleZtextReader.DirConf + '/' + this.Sbmd.InternalName.ToLower()
-                                 + BibleZtextReader.ExtensionConf;
-                string bookPath = this.Sbmd.GetCetProperty(ConfigEntryType.ADataPath).ToString().Substring(2);
-                StorageFolder bookFolder =
-                    await ApplicationData.Current.LocalFolder.GetFolderAsync(bookPath.Replace("/", "\\"));
-                IReadOnlyList<StorageFile> bookFiles = await bookFolder.GetFilesAsync();
-
-                try
-                {
-                    StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(modFile);
-                    await file.DeleteAsync();
-                }
-                catch (Exception)
-                {
-                }
-
-                foreach (var file in bookFiles)
-                {
-                        try
-                        {
-                            StorageFile deletefile = await bookFolder.GetFileAsync(file.Name);
-                            await deletefile.DeleteAsync();
-                        }
-                        catch (Exception)
-                        {
-                        }
-                }
-
-                if (this.Sbmd.GetCetProperty(ConfigEntryType.ModDrv).Equals("RawGenBook"))
-                {
-                    // In a book, the main files are one searchway down.
-                    var mainDir = Path.GetDirectoryName(bookPath.Replace("/", "\\") + ".idx");
-                    bookFolder =
-                        await
-                        ApplicationData.Current.LocalFolder.GetFolderAsync(mainDir);
-                    bookFiles = await bookFolder.GetFilesAsync();
-                    foreach (var file in bookFiles)
-                    {
-                        try
-                        {
-                            StorageFile deletefile = await bookFolder.GetFileAsync(file.Name);
-                            await deletefile.DeleteAsync();
-                        }
-                        catch (Exception)
-                        {
-                        }
-                    }
-                }
-
-                try
-                {
-                    StorageFolder file =
-                        await ApplicationData.Current.LocalFolder.GetFolderAsync(bookPath.Replace("/", "\\"));
-                    await file.DeleteAsync();
-                }
-                catch (Exception)
-                {
-                }
-            }
-            catch (Exception e3)
-            {
-                // many things can go wrong here. It is no danger to leave the bible in the rare case that this does not work.
-                Debug.WriteLine(e3);
             }
         }
 

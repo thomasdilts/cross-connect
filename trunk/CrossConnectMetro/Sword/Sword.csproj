@@ -107,6 +107,7 @@
     <Compile Include="ConfigEntryTable.cs" />
     <Compile Include="ConfigEntryType.cs" />
     <Compile Include="DailyPlans.cs" />
+    <Compile Include="InstalledBibles.cs" />
     <Compile Include="javaprops\JavaProperties.cs" />
     <Compile Include="javaprops\JavaPropertyReader.cs" />
     <Compile Include="Language.cs" />

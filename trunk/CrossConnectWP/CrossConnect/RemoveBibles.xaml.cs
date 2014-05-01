@@ -23,6 +23,7 @@
 
 namespace CrossConnect
 {
+    using Sword;
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows;
@@ -62,14 +63,14 @@ namespace CrossConnect
         private void LoadList()
         {
             SelectList.Items.Clear();
-            Dictionary<string, SwordBook> biblesAndCommentaries =
+            Dictionary<string, SwordBookMetaData> biblesAndCommentaries =
                 App.InstalledBibles.InstalledBibles.Concat(App.InstalledBibles.InstalledCommentaries).Concat(App.InstalledBibles.InstalledGeneralBooks).ToDictionary(
                     x => x.Key, x => x.Value);
             foreach (var book in biblesAndCommentaries)
             {
                 var block = new TextBlock
                     {
-                       Text = book.Value.Name, Tag = book.Value.Sbmd.Initials, TextWrapping = TextWrapping.Wrap
+                       Text = book.Value.Name, Tag = book.Value.Initials, TextWrapping = TextWrapping.Wrap
                     };
                 SelectList.Items.Add(block);
             }
@@ -107,15 +108,15 @@ namespace CrossConnect
             }
 
             _isInSelectionChanged = true;
-            SwordBook foundBook = null;
+            SwordBookMetaData foundBook = null;
             string foundKey = string.Empty;
             var index = (string)((TextBlock)e.AddedItems[0]).Tag;
-            Dictionary<string, SwordBook> biblesAndCommentaries =
+            Dictionary<string, SwordBookMetaData> biblesAndCommentaries =
                 App.InstalledBibles.InstalledBibles.Concat(App.InstalledBibles.InstalledCommentaries).Concat(App.InstalledBibles.InstalledGeneralBooks).ToDictionary(
                     x => x.Key, x => x.Value);
             foreach (var book in biblesAndCommentaries)
             {
-                if (book.Value.Sbmd.Initials.Equals(index))
+                if (book.Value.Initials.Equals(index))
                 {
                     foundBook = book.Value;
                     foundKey = book.Key;
@@ -138,7 +139,7 @@ namespace CrossConnect
                     {
                         if (foundBook != null
                             &&
-                            (App.OpenWindows[i].State.BibleToLoad.Equals(foundBook.Sbmd.InternalName)
+                            (App.OpenWindows[i].State.BibleToLoad.Equals(foundBook.InternalName)
                              && App.MainWindow != null))
                         {
                             App.OpenWindows.RemoveAt(i);
@@ -148,7 +149,7 @@ namespace CrossConnect
 
                     if (foundBook != null)
                     {
-                        foundBook.RemoveBible();
+                        InstalledBiblesAndCommentaries.RemoveBible(foundBook);
                     }
 
                     if (App.InstalledBibles.InstalledBibles.ContainsKey(foundKey))
@@ -164,7 +165,6 @@ namespace CrossConnect
                         App.InstalledBibles.InstalledCommentaries.Remove(foundKey);
                     }
 
-                    App.InstalledBibles.Save();
                     LoadList();
                 }
                 else

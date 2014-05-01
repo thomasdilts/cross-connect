@@ -102,6 +102,7 @@
     <Compile Include="ConfigEntryTable.cs" />
     <Compile Include="ConfigEntryType.cs" />
     <Compile Include="DailyPlans.cs" />
+    <Compile Include="InstalledBibles.cs" />
     <Compile Include="javaprops\JavaProperties.cs" />
     <Compile Include="javaprops\JavaPropertyReader.cs" />
     <Compile Include="Language.cs" />
@@ -174,9 +175,15 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\verses.xml" />
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="Properties\BibleNames_af.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_ar.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_az.xml" />
     <EmbeddedResource Include="Properties\BibleNames_bg.xml" />
     <EmbeddedResource Include="Properties\BibleNames_cs.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_cy.xml" />
     <EmbeddedResource Include="Properties\BibleNames_da.xml" />
     <EmbeddedResource Include="Properties\BibleNames_de.xml" />
     <EmbeddedResource Include="Properties\BibleNames_en.xml" />
@@ -186,15 +193,17 @@
     <EmbeddedResource Include="Properties\BibleNames_fi.xml" />
     <EmbeddedResource Include="Properties\BibleNames_fo.xml" />
     <EmbeddedResource Include="Properties\BibleNames_fr.xml" />
-    <EmbeddedResource Include="Properties\BibleNames_he.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\BibleNames_ga.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_he.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_hr.xml" />
     <EmbeddedResource Include="Properties\BibleNames_hu.xml" />
     <EmbeddedResource Include="Properties\BibleNames_id.xml" />
     <EmbeddedResource Include="Properties\BibleNames_it.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_ja.xml" />
     <EmbeddedResource Include="Properties\BibleNames_ko.xml" />
     <EmbeddedResource Include="Properties\BibleNames_la.xml" />
     <EmbeddedResource Include="Properties\BibleNames_lt.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_mt.xml" />
     <EmbeddedResource Include="Properties\BibleNames_nb.xml" />
     <EmbeddedResource Include="Properties\BibleNames_nl.xml" />
     <EmbeddedResource Include="Properties\BibleNames_no.xml" />
@@ -204,21 +213,12 @@
     <EmbeddedResource Include="Properties\BibleNames_ru.xml" />
     <EmbeddedResource Include="Properties\BibleNames_sk.xml" />
     <EmbeddedResource Include="Properties\BibleNames_sl.xml" />
-    <EmbeddedResource Include="Properties\BibleNames_sv.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\BibleNames_th.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\BibleNames_sv.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_th.xml" />
     <EmbeddedResource Include="Properties\BibleNames_uk.xml" />
     <EmbeddedResource Include="Properties\BibleNames_vi.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Properties\BibleNames_zh_cn.xml" />
     <EmbeddedResource Include="Properties\BibleNames_zh_tw.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\verses.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

@@ -103,7 +103,7 @@ namespace CrossConnect
         /// <param name="bookSelected">
         /// The book selected.
         /// </param>
-        private void GetSelectedData(out WindowType selectedType, out SwordBook bookSelected)
+        private void GetSelectedData(out WindowType selectedType, out SwordBookMetaData bookSelected)
         {
             bookSelected = null;
             selectedType = WindowType.WindowBible;
@@ -146,7 +146,7 @@ namespace CrossConnect
                     // did the book choice change?
                     foreach (var book in App.InstalledBibles.InstalledCommentaries)
                     {
-                        if (selectDocument.SelectedItem.Equals(book.Value.Sbmd.Name))
+                        if (selectDocument.SelectedItem.Equals(book.Value.Name))
                         {
                             bookSelected = book.Value;
                             break;
@@ -158,7 +158,7 @@ namespace CrossConnect
                     // did the book choice change?
                     foreach (var book in App.InstalledBibles.InstalledGeneralBooks)
                     {
-                        if (selectDocument.SelectedItem.Equals(book.Value.Sbmd.Name))
+                        if (selectDocument.SelectedItem.Equals(book.Value.Name))
                         {
                             bookSelected = book.Value;
                             break;
@@ -169,7 +169,7 @@ namespace CrossConnect
                 {
                     foreach (var book in App.InstalledBibles.InstalledBibles)
                     {
-                        if (selectDocument.SelectedItem.Equals(book.Value.Sbmd.Name))
+                        if (selectDocument.SelectedItem.Equals(book.Value.Name))
                         {
                             bookSelected = book.Value;
                             break;
@@ -233,11 +233,11 @@ namespace CrossConnect
                 if ((bool)isAddNewWindowOnly)
                 {
                     WindowType selectedType;
-                    SwordBook bookSelected;
+                    SwordBookMetaData bookSelected;
                     GetSelectedData(out selectedType, out bookSelected);
 
                     App.AddWindow(
-                        bookSelected.Sbmd.InternalName, bookSelected.Sbmd.Name, selectedType, sliderTextSize.Value);
+                        bookSelected.InternalName, bookSelected.Name, selectedType, sliderTextSize.Value);
 
                     // if (NavigationService.CanGoBack)
                     // {
@@ -362,7 +362,7 @@ namespace CrossConnect
                 {
                     selectDocument.Items.Add(book.Value.Name);
                     if ((bool)isAddNewWindowOnly == false && App.OpenWindows.Count > 0
-                        && App.OpenWindows[(int)openWindowIndex].State.BibleToLoad.Equals(book.Value.Sbmd.InternalName))
+                        && App.OpenWindows[(int)openWindowIndex].State.BibleToLoad.Equals(book.Value.InternalName))
                     {
                         selectDocument.SelectedIndex = selectDocument.Items.Count - 1;
                     }
@@ -375,7 +375,7 @@ namespace CrossConnect
                 {
                     selectDocument.Items.Add(book.Value.Name);
                     if ((bool)isAddNewWindowOnly == false && App.OpenWindows.Count > 0
-                        && App.OpenWindows[(int)openWindowIndex].State.BibleToLoad.Equals(book.Value.Sbmd.InternalName))
+                        && App.OpenWindows[(int)openWindowIndex].State.BibleToLoad.Equals(book.Value.InternalName))
                     {
                         selectDocument.SelectedIndex = selectDocument.Items.Count - 1;
                     }
@@ -388,7 +388,7 @@ namespace CrossConnect
                 {
                     selectDocument.Items.Add(book.Value.Name);
                     if ((bool)isAddNewWindowOnly == false && App.OpenWindows.Count > 0
-                        && App.OpenWindows[(int)openWindowIndex].State.BibleToLoad.Equals(book.Value.Sbmd.InternalName))
+                        && App.OpenWindows[(int)openWindowIndex].State.BibleToLoad.Equals(book.Value.InternalName))
                     {
                         selectDocument.SelectedIndex = selectDocument.Items.Count - 1;
                     }
@@ -435,7 +435,7 @@ namespace CrossConnect
         private void SetBookChoosen()
         {
             WindowType selectedType;
-            SwordBook bookSelected;
+            SwordBookMetaData bookSelected;
             GetSelectedData(out selectedType, out bookSelected);
             object openWindowIndex;
             if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
@@ -444,11 +444,11 @@ namespace CrossConnect
             }
 
             SerializableWindowState state = App.OpenWindows[(int)openWindowIndex].State;
-            if (!state.BibleToLoad.Equals(bookSelected.Sbmd.InternalName) || state.WindowType != selectedType)
+            if (!state.BibleToLoad.Equals(bookSelected.InternalName) || state.WindowType != selectedType)
             {
                 state.WindowType = selectedType;
-                state.BibleToLoad = bookSelected.Sbmd.InternalName;
-                state.BibleDescription = bookSelected.Sbmd.Name;
+                state.BibleToLoad = bookSelected.InternalName;
+                state.BibleDescription = bookSelected.Name;
 
                 if (state.WindowType == WindowType.WindowDailyPlan)
                 {
@@ -522,7 +522,7 @@ namespace CrossConnect
             {
                 selectDocument.Items.Add(book.Value.Name);
                 if ((bool)isAddNewWindowOnly == false && App.OpenWindows.Count > 0
-                    && App.OpenWindows[(int)openWindowIndex].State.BibleToLoad.Equals(book.Value.Sbmd.InternalName))
+                    && App.OpenWindows[(int)openWindowIndex].State.BibleToLoad.Equals(book.Value.InternalName))
                 {
                     selectDocument.SelectedIndex = selectDocument.Items.Count - 1;
                 }
@@ -620,7 +620,7 @@ namespace CrossConnect
                             if ((bool)isAddNewWindowOnly == false && App.OpenWindows.Count > 0
                                 &&
                                 App.OpenWindows[(int)openWindowIndex].State.BibleToLoad.Equals(
-                                    book.Value.Sbmd.InternalName))
+                                    book.Value.InternalName))
                             {
                                 selectDocument.SelectedIndex = selectDocument.Items.Count - 1;
                             }
@@ -636,7 +636,7 @@ namespace CrossConnect
                             if ((bool)isAddNewWindowOnly == false && App.OpenWindows.Count > 0
                                 &&
                                 App.OpenWindows[(int)openWindowIndex].State.BibleToLoad.Equals(
-                                    book.Value.Sbmd.InternalName))
+                                    book.Value.InternalName))
                             {
                                 selectDocument.SelectedIndex = selectDocument.Items.Count - 1;
                             }

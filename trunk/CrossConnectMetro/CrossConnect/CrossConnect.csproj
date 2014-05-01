@@ -161,7 +161,6 @@
     <Compile Include="MediaPlayerWindow.xaml.cs">
       <DependentUpon>MediaPlayerWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="InstalledBibles.cs" />
     <Compile Include="InstallManager.cs" />
     <Compile Include="ITiledWindow.cs" />
     <Compile Include="MorphologyTranslator.cs" />
