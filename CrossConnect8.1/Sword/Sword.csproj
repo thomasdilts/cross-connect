@@ -201,6 +201,9 @@
     <TargetPlatform Include="Windows Phone, Version=8.1" />
     <TargetPlatform Include="Windows, Version=8.1" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\BibleNames_el.xml" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>
