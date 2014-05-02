@@ -119,6 +119,10 @@ namespace Sword
                     }
                 }
             }
+            if (isoLang2DigitCode.ToLower().StartsWith("grc"))
+            {
+                isoLang2DigitCode = "el";
+            }
 
             if (stream == null)
             {
