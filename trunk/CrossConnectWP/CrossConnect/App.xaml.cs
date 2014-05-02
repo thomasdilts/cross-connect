@@ -814,7 +814,10 @@ namespace CrossConnect
 
         private static async void OnTimerForSavingWindowsTick(object sender, object e)
         {
-            TimerForSavingWindows.Stop();
+            if (TimerForSavingWindows != null)
+            {
+                TimerForSavingWindows.Stop();
+            }
             TimerForSavingWindows = null;
             await SavePersistantWindows();
         }

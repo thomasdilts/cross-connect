@@ -220,6 +220,9 @@
     <EmbeddedResource Include="Properties\BibleNames_zh_cn.xml" />
     <EmbeddedResource Include="Properties\BibleNames_zh_tw.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\BibleNames_el.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <ProjectExtensions />
