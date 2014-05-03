@@ -181,7 +181,7 @@ namespace Sword.reader
 
         #endregion
     }
-    public class HtmlColorRgba
+    public abstract class HtmlColorRgba
     {
         #region Fields
 
@@ -197,30 +197,8 @@ namespace Sword.reader
 
         #region Public Methods and Operators
 
-        public static HtmlColorRgba CreateWithHtmlRgb(string rgb)
-        {
-            if (string.IsNullOrEmpty(rgb) || rgb.Length < 6)
-            {
-                return new HtmlColorRgba();
-            }
-            return new HtmlColorRgba
-            {
-                alpha = 1,
-                R = byte.Parse(rgb.Substring(0, 2), NumberStyles.HexNumber),
-                G = byte.Parse(rgb.Substring(2, 2), NumberStyles.HexNumber),
-                B = byte.Parse(rgb.Substring(4, 2), NumberStyles.HexNumber)
-            };
-        }
+        public abstract string GetHtmlRgba();
 
-        public string GetHtmlRgba()
-        {
-#if WINDOWS_PHONE
-            return string.Format("#{0:x2}{1:x2}{2:x2}", this.R, this.G, this.B);
-#else
-            return "rgba(" + this.R + "," + this.G + "," + this.B + ","
-                   + Math.Round(this.alpha, 4).ToString(CultureInfo.InvariantCulture) + ")";
-#endif
-        }
 
         #endregion
     }

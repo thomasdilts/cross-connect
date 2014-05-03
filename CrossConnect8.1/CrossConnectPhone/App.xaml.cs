@@ -654,7 +654,7 @@ namespace CrossConnect
             }
 
             DisplaySettings.CheckForNullAndFix();
-            if (DisplaySettings.MarginInsideTextWindow < 0)
+            if (DisplaySettings.MarginInsideTextWindow <= 0)
             {
                 DisplaySettings.MarginInsideTextWindow = 4;
             }

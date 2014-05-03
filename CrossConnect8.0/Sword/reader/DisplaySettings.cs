@@ -99,6 +99,9 @@ namespace Sword.reader
         [DataMember]
         public bool SyncMediaVerses = true;
 
+        [DataMember]
+        public int MarginInsideTextWindow = -1;
+
         public Highlighter highlighter = new Highlighter();
         #endregion
 
@@ -193,7 +196,8 @@ namespace Sword.reader
                 HighlightName5 = this.HighlightName5,
                 HighlightName6 = this.HighlightName6,
                 UseHighlights = this.UseHighlights,
-                SyncMediaVerses = this.SyncMediaVerses
+                SyncMediaVerses = this.SyncMediaVerses,
+                MarginInsideTextWindow = this.MarginInsideTextWindow
             };
             cloned.highlighter = this.highlighter;
             return cloned;

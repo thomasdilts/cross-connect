@@ -147,7 +147,8 @@ namespace CrossConnect
         /// <returns>The root frame of the Phone Application.</returns>
         private PhoneApplicationFrame RootFrame
         {
-            get; set;
+            get;
+            set;
         }
 
         #endregion Properties
@@ -278,7 +279,7 @@ namespace CrossConnect
                 }
             }
 
-            if(string.IsNullOrEmpty(verseText))
+            if (string.IsNullOrEmpty(verseText))
             {
                 return;
             }
@@ -328,7 +329,7 @@ namespace CrossConnect
                 if (OpenWindows[i].State.WindowType == WindowType.WindowMediaPlayer)
                 {
                     // change the windows view to this one
-                    ((MediaPlayerWindow)OpenWindows[i]).SetMediaInfo(state,info);
+                    ((MediaPlayerWindow)OpenWindows[i]).SetMediaInfo(state, info);
                     MainWindow.OverRideCurrentlyShowingScreen(OpenWindows[i].State.Window);
                     return;
                 }
@@ -654,6 +655,10 @@ namespace CrossConnect
             }
 
             DisplaySettings.CheckForNullAndFix();
+            if (DisplaySettings.MarginInsideTextWindow <= 0)
+            {
+                DisplaySettings.MarginInsideTextWindow = 4;
+            }
         }
 
         private async Task LoadPersistantHighlighting(Dictionary<String, Object> objectsToLoad)
@@ -889,8 +894,8 @@ namespace CrossConnect
                 currentScreen = (int)objCurrrentScreen;
             }
 
-            IsolatedStorageSettings.ApplicationSettings["CurrentScreen"] = currentScreen; 
-            
+            IsolatedStorageSettings.ApplicationSettings["CurrentScreen"] = currentScreen;
+
             await SavePersistantObjects(objectsToSave, PersistantObjectsWindowsFileName);
         }
 
@@ -1030,7 +1035,7 @@ namespace CrossConnect
             [DataMember(Name = "currentVerseNumber")]
             public int CurrentVerseNumber;
             [DataMember(Name = "personalNotes")]
-            public Dictionary<int, Dictionary<int, BiblePlaceMarker>> PersonalNotes = 
+            public Dictionary<int, Dictionary<int, BiblePlaceMarker>> PersonalNotes =
                 new Dictionary<int, Dictionary<int, BiblePlaceMarker>>();
             [DataMember(Name = "PersonalNotesVersified")]
             public Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> PersonalNotesVersified =
