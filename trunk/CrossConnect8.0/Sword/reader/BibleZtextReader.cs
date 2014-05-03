@@ -83,11 +83,11 @@ namespace Sword.reader
         public static BiblePlaceMarker Clone(BiblePlaceMarker toClone)
         {
             var newMarker = new BiblePlaceMarker(toClone.BookShortName, toClone.ChapterNum, toClone.VerseNum, toClone.When)
-                                {
-                                    Note =
-                                        toClone
-                                        .Note
-                                };
+            {
+                Note =
+                    toClone
+                    .Note
+            };
             return newMarker;
         }
 
@@ -301,14 +301,14 @@ namespace Sword.reader
         protected IndexingBlockType BlockType = IndexingBlockType.Book;
 
         private BibleNames _bookNames = null;
-        public BibleNames BookNames(string appChoosenIsoLangCode, bool reset=false)
+        public BibleNames BookNames(string appChoosenIsoLangCode, bool reset = false)
         {
             if (this._bookNames == null || reset)
             {
                 this._bookNames = new BibleNames(this.Serial.Iso2DigitLangCode, appChoosenIsoLangCode);
             }
 
-            return this._bookNames ;
+            return this._bookNames;
         }
 
         private int _lastShownChapterNumber = -1;
@@ -446,7 +446,7 @@ namespace Sword.reader
         {
             get
             {
-                return this.Serial.CipherKey != null && this.Serial.CipherKey.Length==0;
+                return this.Serial.CipherKey != null && this.Serial.CipherKey.Length == 0;
             }
         }
 
@@ -553,18 +553,13 @@ namespace Sword.reader
                 "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\" />");
 
             head.Append("<style>");
-#if WINDOWS_PHONE
-            var margin = 4;
-#else
-            var margin = 20;
-#endif
             head.Append(
                 string.Format(
                     "body {{background:{0};color:{1};font-size:{2}pt;margin:{3};padding:0;{4} }}",
                     htmlBackgroundColor.GetHtmlRgba(),
                     htmlForegroundColor.GetHtmlRgba(),
                     (int)(htmlFontSize + 0.5),
-                    margin,
+                    displaySettings.MarginInsideTextWindow,
                     fontFamily)); // old fashioned way to round an integer
 
             head.Append(
@@ -624,12 +619,12 @@ function SetFontColorForElement(elemntId, colorRgba){
         private bool ExistsBook(CanonBookDef book)
         {
             for (int i = 0; i < book.NumberOfChapters; i++)
-			{
+            {
                 if (this.Chapters[book.VersesInChapterStartIndex + i].Length != 0)
                 {
                     return true;
                 }
-			}
+            }
 
             return false;
         }
@@ -691,30 +686,33 @@ function SetFontColorForElement(elemntId, colorRgba){
                             return null;
                         }
 
-                        var butColors = new int[numOfChapters];
-                        var values = new int[numOfChapters];
-                        var butText = new string[numOfChapters];
+                        var butColors = new List<int>();
+                        var values = new List<int>();
+                        var butText = new List<string>();
                         for (int i = 0; i < numOfChapters; i++)
                         {
-                            butColors[i] = 0;
-                            butText[i] = (i + 1).ToString();
-                            values[i] = book.VersesInChapterStartIndex + i;
+                            if (!this.Chapters[book.VersesInChapterStartIndex + i].IsEmpty)
+                            {
+                                butColors.Add(0);
+                                butText.Add((i + 1).ToString());
+                                values.Add(book.VersesInChapterStartIndex + i);
+                            }
                         }
 
                         // do a nice transition
                         return new ButtonWindowSpecs(
                             stage,
                             "Select a chapter to view",
-                            numOfChapters,
-                            butColors,
-                            butText,
-                            values,
+                            butColors.Count(),
+                            butColors.ToArray(),
+                            butText.ToArray(),
+                            values.ToArray(),
                             ButtonSize.Small);
                     }
                 case 2:
                     {
                         // verses
-                        int numOfVerses = canon.VersesInChapter[lastSelectedButton]; 
+                        int numOfVerses = canon.VersesInChapter[lastSelectedButton];
 
                         if (numOfVerses <= 1)
                         {
@@ -948,7 +946,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             }
             else
             {
-                return RawGenTextReader.CleanXml(Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length), true).Replace(".",". ");
+                return RawGenTextReader.CleanXml(Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length), true).Replace(".", ". ");
             }
         }
 
@@ -962,7 +960,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
             //give them the notes if you can.
 
-            var  chapterBuffer = await this.GetChapterBytes(chapterNumber + book.VersesInChapterStartIndex);
+            var chapterBuffer = await this.GetChapterBytes(chapterNumber + book.VersesInChapterStartIndex);
             return RawGenTextReader.CleanXml(Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length), true);
         }
         public async Task<List<string>> MakeListDisplayText(string appChoosenIsoLangCode,
@@ -1012,12 +1010,12 @@ function SetFontColorForElement(elemntId, colorRgba){
             {
                 // see if the chapter exists, if not, then don't do anything.
                 CanonBookDef book;
-                if (canon.BookByShortName.TryGetValue(bookShortName, out book) && this.Chapters != null && chapter < book.NumberOfChapters)
+                if (canon.BookByShortName.TryGetValue(bookShortName, out book) && this.Chapters != null && chapter < book.NumberOfChapters && !this.Chapters[book.VersesInChapterStartIndex + chapter].IsEmpty)
                 {
                     this.Serial.PosBookShortName = bookShortName;
                     this.Serial.PosChaptNum = chapter;
-                    this.Serial.PosVerseNum = canon.VersesInChapter[book.VersesInChapterStartIndex + chapter] > verse 
-                        ? verse : (canon.VersesInChapter[book.VersesInChapterStartIndex + chapter]-1);
+                    this.Serial.PosVerseNum = canon.VersesInChapter[book.VersesInChapterStartIndex + chapter] > verse
+                        ? verse : (canon.VersesInChapter[book.VersesInChapterStartIndex + chapter] - 1);
                 }
             }
             catch (Exception e)
@@ -1028,7 +1026,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
         public virtual void MoveNext(bool isVerseMove)
         {
-            if(this.Serial==null || canon == null)
+            if (this.Serial == null || canon == null)
             {
                 return;
             }
@@ -1052,22 +1050,16 @@ function SetFontColorForElement(elemntId, colorRgba){
             int nextChapter = this.Serial.PosChaptNum + 1;
             if (nextChapter >= book.NumberOfChapters)
             {
-                // must go to the next book.
-                if ((book.NumberOfChapters + book.VersesInChapterStartIndex + 1) > canon.GetNumChaptersInBible())
-                {
-                    // no more books left. Go to the first one.
-                    var nextBook = canon.GetBookFromAbsoluteChapter(0);
-                    this.MoveChapterVerse(nextBook.ShortName1, 0, 0, false, this);
-                }
-                else
-                {
-                    var nextBook = canon.GetBookFromAbsoluteChapter(book.NumberOfChapters + book.VersesInChapterStartIndex);
-                    this.MoveChapterVerse(nextBook.ShortName1, 0, 0, false, this);
-                }
+                var absChapter = (book.NumberOfChapters + book.VersesInChapterStartIndex + 1) > this.Chapters.Count() ? 0 : book.NumberOfChapters + book.VersesInChapterStartIndex;
+                var absAvailChapter = GetAvailableChapter(absChapter);
+                var newBook = canon.GetBookFromAbsoluteChapter(absAvailChapter);
+                this.MoveChapterVerse(newBook.ShortName1, absAvailChapter - newBook.VersesInChapterStartIndex, 0, false, this);
             }
             else
             {
-                this.MoveChapterVerse(this.Serial.PosBookShortName, nextChapter, 0, false, this);
+                var absAvailChapter = GetAvailableChapter(book.VersesInChapterStartIndex + nextChapter);
+                var newBook = canon.GetBookFromAbsoluteChapter(absAvailChapter);
+                this.MoveChapterVerse(newBook.ShortName1, absAvailChapter - newBook.VersesInChapterStartIndex, 0, false, this);
             }
         }
 
@@ -1092,23 +1084,54 @@ function SetFontColorForElement(elemntId, colorRgba){
             int prevChapter = this.Serial.PosChaptNum - 1;
             if (prevChapter < 0)
             {
-                // must go to the previous book.
-                if (book.VersesInChapterStartIndex == 0)
-                {
-                    // no more previous books left. Go to the last one.
-                    var lastBook = canon.NewTestBooks.Any() ? canon.NewTestBooks[canon.NewTestBooks.Count() - 1] : canon.OldTestBooks[canon.OldTestBooks.Count() - 1];
-                    this.MoveChapterVerse(lastBook.ShortName1, lastBook.NumberOfChapters-1, 0, false, this);
-                }
-                else
-                {
-                    var previousBook = canon.GetBookFromAbsoluteChapter(book.VersesInChapterStartIndex - 1);
-                    this.MoveChapterVerse(previousBook.ShortName1, previousBook.NumberOfChapters - 1, 0, false, this);
-                }
+                var absChapter = book.VersesInChapterStartIndex == 0 ? this.Chapters.Count() - 1 : book.VersesInChapterStartIndex - 1;
+                var absAvailChapter = GetAvailableChapter(absChapter, true);
+                var newBook = canon.GetBookFromAbsoluteChapter(absAvailChapter);
+                this.MoveChapterVerse(newBook.ShortName1, absAvailChapter - newBook.VersesInChapterStartIndex, 0, false, this);
             }
             else
             {
-                this.MoveChapterVerse(this.Serial.PosBookShortName, prevChapter, 0, false, this);
+                var absAvailChapter = GetAvailableChapter(book.VersesInChapterStartIndex + prevChapter);
+                var newBook = canon.GetBookFromAbsoluteChapter(absAvailChapter);
+                this.MoveChapterVerse(newBook.ShortName1, absAvailChapter - newBook.VersesInChapterStartIndex, 0, false, this);
             }
+        }
+        private int GetAvailableChapter(int chapterNumber, bool IsReverseFind = false)
+        {
+            int returnChapterNum = chapterNumber;
+            if (this.Chapters[chapterNumber].IsEmpty)
+            {
+                if (IsReverseFind)
+                {
+                    int i;
+                    for (i = chapterNumber; i >= 0 && this.Chapters[i].IsEmpty; i--) ;
+                    if (i < 0)
+                    {
+                        for (i = this.Chapters.Count() - 1; i >= 0 && this.Chapters[i].IsEmpty; i--) ;
+                        if (i < 0)
+                        {
+                            i = 0;
+                        }
+                    }
+                    returnChapterNum = i;
+                }
+                else
+                {
+                    int i;
+                    for (i = chapterNumber; i < this.Chapters.Count() && this.Chapters[i].IsEmpty; i++) ;
+                    if (i >= this.Chapters.Count())
+                    {
+                        for (i = 0; i < this.Chapters.Count() && this.Chapters[i].IsEmpty; i++) ;
+                        if (i >= this.Chapters.Count())
+                        {
+                            i = 0;
+                        }
+                    }
+                    returnChapterNum = i;
+                }
+            }
+
+            return returnChapterNum;
         }
 
         public async Task<string> PutHtmlTofile(
@@ -1285,7 +1308,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             long blockStartPos = versesForChapterPositions.StartPos;
             long blockLen = versesForChapterPositions.Length;
             Stream fs;
-            var book = canon.OldTestBooks[canon.OldTestBooks.Count()-1];
+            var book = canon.OldTestBooks[canon.OldTestBooks.Count() - 1];
             string fileName = (chapterNumber < (book.VersesInChapterStartIndex + book.NumberOfChapters)) ? "ot." : "nt.";
             try
             {
@@ -1307,7 +1330,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             // we must read the entire book up to the chapter we want even though we just want one chapter.
             fs.Position = bookStartPos;
             ZInputStream zipStream;
-            zipStream = string.IsNullOrEmpty(this.Serial.CipherKey) ? new ZInputStream(fs) : new ZInputStream(new SapphireStream(fs,this.Serial.CipherKey));
+            zipStream = string.IsNullOrEmpty(this.Serial.CipherKey) ? new ZInputStream(fs) : new ZInputStream(new SapphireStream(fs, this.Serial.CipherKey));
 
             var chapterBuffer = new byte[blockLen];
             int totalBytesRead = 0;
@@ -1466,7 +1489,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                     // get the key from the file.
                     var buf = new byte[1000];
                     var len = await fs.ReadAsync(buf, 0, 1000);
-                    this.Serial.CipherKey = Encoding.UTF8.GetString(buf,0,len);
+                    this.Serial.CipherKey = Encoding.UTF8.GetString(buf, 0, len);
                 }
                 catch (Exception ee)
                 {
@@ -1604,7 +1627,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         {
             var style = string.Empty;
             var highlight = displaySettings.highlighter.GetHighlightForVerse(book, chapter, verse);
-            if(highlight == Highlighter.Highlight.COLOR_NONE)
+            if (highlight == Highlighter.Highlight.COLOR_NONE)
             {
                 return string.Empty;
             }
@@ -1637,7 +1660,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                     return " POSSIBLE ERROR IN BIBLE, TEXT MISSING HERE ";
                 }
                 listText.Append(this.GetFullName(chaptPos.Booknum, appChoosenIsoLangCode) + " "
-                    + (chaptPos.BookRelativeChapterNum + 1) + ":" + (place.VerseNum + 1) + " . " + 
+                    + (chaptPos.BookRelativeChapterNum + 1) + ":" + (place.VerseNum + 1) + " . " +
                     RawGenTextReader.CleanXml(Encoding.UTF8.GetString(chapterBuffer, (int)verse.StartPos, (int)verse.Length), true).Replace(".", ". "));
             }
 
@@ -1736,7 +1759,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 {
                     htmlListText.Append(
                         verseTxt + "</p><p>" + (displaySettings.SmallVerseNumbers ? "<sup>" : "(") + notesTitle
-                        + (displaySettings.SmallVerseNumbers ? "</sup>" : ") ") + "<br />" + place.Note.Replace("\n","<br />") + "</a></p><hr />");
+                        + (displaySettings.SmallVerseNumbers ? "</sup>" : ") ") + "<br />" + place.Note.Replace("\n", "<br />") + "</a></p><hr />");
                 }
             }
 
@@ -1909,7 +1932,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                                     isReferenceLinked = true;
                                                     string textId = bookShortName + "_" + chaptNumLoc + "_" + verseNumLoc;
                                                     noteText.Append(
- 															"</a><a class=\"normalcolor\" id=\"ID_" + textId
+                                                            "</a><a class=\"normalcolor\" id=\"ID_" + textId
                                                        + "\"  href=\"#\" onclick=\"window.external.notify('" + textId
                                                         + "'); event.returnValue=false; return false;\" >");
                                                 }
@@ -1996,7 +2019,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                                 {
                                                     var fontStyle = reader.Value.ToLower();
                                                     string startText;
-                                                    if(FontPropertiesStartHtml.TryGetValue(fontStyle, out startText))
+                                                    if (FontPropertiesStartHtml.TryGetValue(fontStyle, out startText))
                                                     {
                                                         if (!isInElement && !isInInjectionElement && chapterNumber.Length > 0 && !isInTitle
                                                             && !isChaptNumGiven)
@@ -2338,7 +2361,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 bool isEnd;
 
                 // read book position index
-                for (int i = 0;; i++)
+                for (int i = 0; ; i++)
                 {
                     long startPos = this.GetintFromStream(fs, out isEnd);
                     if (isEnd)
@@ -2400,11 +2423,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                             }
 
                             length = this.GetShortIntFromStream(fs, out isEnd);
-                            if (length != 0)
-                            {
-                                lastNonZeroLength = length;
-                            } 
-                            
+
                             if (k == 0)
                             {
                                 chapterStartPos = startPos;
@@ -2420,6 +2439,13 @@ function SetFontColorForElement(elemntId, colorRgba){
                                 }
 
                                 chapt = new ChapterPos(chapterStartPos, i, j, bookStartPos);
+                                chapt.IsEmpty = true;
+                            }
+
+                            if (length != 0)
+                            {
+                                lastNonZeroLength = length;
+                                chapt.IsEmpty = false;
                             }
 
                             if (booknum == 0 && startPos == 0 && length == 0)
@@ -2469,6 +2495,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                     for (int j = 0; j < bookDef.NumberOfChapters; j++)
                     {
                         var chapt = new ChapterPos(0, i, j, 0);
+                        chapt.IsEmpty = true;
                         for (int k = 0; k < canon.VersesInChapter[bookDef.VersesInChapterStartIndex + j]; k++)
                         {
                             chapt.Verses.Add(new VersePos(0, 0, i));
@@ -2485,7 +2512,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
         private async Task<bool> ReloadSettingsFile()
         {
-            if(canon==null)
+            if (canon == null)
             {
                 canon = CanonManager.GetCanon(this.Serial.Versification);
             }
@@ -2626,6 +2653,8 @@ function SetFontColorForElement(elemntId, colorRgba){
 
             [DataMember(Name = "verses")]
             public List<VersePos> Verses = new List<VersePos>();
+
+            public bool IsEmpty = false;
 
             #endregion
 

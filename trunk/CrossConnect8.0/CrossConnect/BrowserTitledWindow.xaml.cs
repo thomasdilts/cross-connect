@@ -110,7 +110,14 @@ namespace CrossConnect
 
         public static HtmlColorRgba ConvertColorToHtmlRgba(Color color)
         {
-            return new HtmlColorRgba { R = color.R, G = color.G, B = color.B, alpha = color.A / 255.0 };
+            return new LocalHtmlColorRgba { R = color.R, G = color.G, B = color.B, alpha = color.A / 255.0 };
+        }
+        public class LocalHtmlColorRgba : HtmlColorRgba
+        {
+            public override string GetHtmlRgba()
+            {
+                return string.Format("#{0:x2}{1:x2}{2:x2}", this.R, this.G, this.B);
+            }
         }
 
         public static HtmlColorRgba GetBrowserColor(string sourceResource)
