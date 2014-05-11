@@ -215,4 +215,14 @@
 <string key="Import bookmarks, highlights and notes from the clipboard">Import bookmarks, mambo muhimu na maelezo kutoka clipboard</string>
 <string key="Highlight">Highlight</string>
 <string key="Synchronize to every verse">Synchronize kwa kila mstari</string>
+<string key="OneDrive backup / restore">OneDrive Backup / kurejesha</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Kuchagua vitu unataka Backup / kurejesha. Kisha kugonga kitufe hapo chini</string>
+<string key="Backup">Backup</string>
+<string key="Restore">Kurejesha</string>
+<string key="Bookmarks and custom notes">Bookmarks na maelezo desturi</string>
+<string key="Window setup">Dirisha kuanzisha</string>
+<string key="Folder on OneDrive">Folder juu ya OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Haipo katika OneDrive. Ondoa na kujaribu tena</string>
+<string key="There is no backup to restore">Hakuna Backup kurejesha</string>
+<string key="Connect to OneDrive">Kuungana na OneDrive</string>
 </translations>

@@ -215,4 +215,14 @@
 <string key="Import bookmarks, highlights and notes from the clipboard">Import könyvjelzőket, kiemeléseket és jegyzeteket a vágólapra</string>
 <string key="Highlight">Fénypont</string>
 <string key="Synchronize to every verse">Szinkronizálása minden vers</string>
+<string key="OneDrive backup / restore">OneDrive backup / visszaállítás</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Válassza ki a kívánt elemeket mentés / visszaállítás. Majd nyomja meg a gombot az alján</string>
+<string key="Backup">Backup</string>
+<string key="Restore">Visszaad</string>
+<string key="Bookmarks and custom notes">Könyvjelzők és egyedi jegyzetek</string>
+<string key="Window setup">Ablak beállítás</string>
+<string key="Folder on OneDrive">Mappa OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Nem létezik OneDrive. Vegye ki, és próbálja újra</string>
+<string key="There is no backup to restore">Nincs biztonsági mentés visszaállítása</string>
+<string key="Connect to OneDrive">Csatlakozás OneDrive</string>
 </translations>

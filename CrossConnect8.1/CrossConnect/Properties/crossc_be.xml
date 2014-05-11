@@ -215,4 +215,14 @@
 <string key="Import bookmarks, highlights and notes from the clipboard">Імпарт закладак, асноўныя моманты і нататкі з буфера абмену</string>
 <string key="Highlight">Асноўны момант</string>
 <string key="Synchronize to every verse">Сінхранізацыя, каб кожны верш</string>
+<string key="OneDrive backup / restore">OneDrive рэзервовага капіявання / аднаўлення</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Выберыце элементы, якія вы хочаце рэзервовага капіявання / аднаўлення. Затым націсніце кнопку ў ніжняй</string>
+<string key="Backup">Рэзервовы</string>
+<string key="Restore">Аднаўленне</string>
+<string key="Bookmarks and custom notes">Закладкі і прыстасаваныя нататкі</string>
+<string key="Window setup">Ўстаноўка вокнаў</string>
+<string key="Folder on OneDrive">Тэчка на OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Не існуе ў OneDrive. Выдаліце ​​яго і паспрабуйце яшчэ раз</string>
+<string key="There is no backup to restore">Там няма рэзервовай копіі для аднаўлення</string>
+<string key="Connect to OneDrive">Падключэнне да OneDrive</string>
 </translations>

@@ -234,4 +234,14 @@
 <string key="Highlight">Връхна точка</string>
 <string key="Synchronize to every verse">Синхронизиране на всеки стих</string>
 <string key="None">Никой</string>
+<string key="OneDrive backup / restore">OneDrive архивиране / възстановяване</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Изберете елементите, които искате да направите резервно копие / възстановяване. След това натиснете бутона в дъното</string>
+<string key="Backup">Резервно копие</string>
+<string key="Restore">Възстановявам</string>
+<string key="Bookmarks and custom notes">Bookmarks и потребителски бележки</string>
+<string key="Window setup">Настройка на Window</string>
+<string key="Folder on OneDrive">Folder на OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Не съществува в OneDrive. Извадете го и опитайте отново</string>
+<string key="There is no backup to restore">Има няма гръб да се възстанови</string>
+<string key="Connect to OneDrive">Свържете се с OneDrive</string>
 </translations>

@@ -234,4 +234,14 @@
 <string key="Highlight">Atrakcja</string>
 <string key="Synchronize to every verse">Synchronizacji do każdego wersetu</string>
 <string key="None">Żaden</string>
+<string key="OneDrive backup / restore">OneDrive kopia zapasowa / przywracanie</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Zaznacz elementy, które chcesz do tworzenia kopii zapasowych / przywracania. Następnie naciśnij przycisk u dołu</string>
+<string key="Backup">Kopia zapasowa</string>
+<string key="Restore">Przywracać</string>
+<string key="Bookmarks and custom notes">Zakładki i notatki na zamówienie</string>
+<string key="Window setup">Okno konfiguracji</string>
+<string key="Folder on OneDrive">Folder na OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Nie istnieje w OneDrive. Usuń je i spróbuj ponownie</string>
+<string key="There is no backup to restore">Nie ma kopii zapasowej w celu przywrócenia</string>
+<string key="Connect to OneDrive">Połącz się OneDrive</string>
 </translations>

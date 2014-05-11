@@ -1,0 +1,92 @@
+﻿<local:AutoRotatePage x:Class="CrossConnect.OneDriveExport" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+                      xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:CrossConnect"
+                      FontFamily="{StaticResource PhoneFontFamilyNormal}" FontSize="{StaticResource PhoneFontSizeNormal}"
+                      Foreground="{StaticResource PhoneForegroundBrush}" SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+                      mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
+                      xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+                      shell:SystemTray.IsVisible="False" xmlns:my="clr-namespace:CrossConnect"
+                      xmlns:sys="clr-namespace:System;assembly=mscorlib" Loaded="AutoRotatePageLoaded"
+                      BackKeyPress="AutoRotatePageBackKeyPress">
+
+  <toolkit:TransitionService.NavigationInTransition>
+    <toolkit:NavigationInTransition>
+      <toolkit:NavigationInTransition.Backward>
+        <toolkit:TurnstileTransition Mode="BackwardIn" />
+      </toolkit:NavigationInTransition.Backward>
+      <toolkit:NavigationInTransition.Forward>
+        <toolkit:TurnstileTransition Mode="ForwardIn" />
+      </toolkit:NavigationInTransition.Forward>
+    </toolkit:NavigationInTransition>
+  </toolkit:TransitionService.NavigationInTransition>
+  <toolkit:TransitionService.NavigationOutTransition>
+    <toolkit:NavigationOutTransition>
+      <toolkit:NavigationOutTransition.Backward>
+        <toolkit:TurnstileTransition Mode="BackwardOut" />
+      </toolkit:NavigationOutTransition.Backward>
+      <toolkit:NavigationOutTransition.Forward>
+        <toolkit:TurnstileTransition Mode="ForwardOut" />
+      </toolkit:NavigationOutTransition.Forward>
+    </toolkit:NavigationOutTransition>
+  </toolkit:TransitionService.NavigationOutTransition>
+
+  <!--LayoutRoot is the root grid where all page content is placed-->
+  <ScrollViewer Name="scrollViewer1">
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <!--TitlePanel contains the name of the application and page title-->
+      <StackPanel Grid.Row="0" x:Name="TitlePanel" Margin="12,5,0,0" Height="63" VerticalAlignment="Top">
+        <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}" />
+        <TextBlock x:Name="PageTitle" Text="Export to OneDrive" Margin="9,-7,0,0"
+                   Style="{StaticResource PhoneTextTitle2Style}" />
+      </StackPanel>
+      <!--ContentPanel - place additional content here-->
+            <StackPanel Grid.Row="1" x:Name="oneDriveContentPanel">
+                <TextBlock TextWrapping="Wrap" Name="oneDriveInformationText" Text="Select the items you want to export. Then hit the export button at the bottom" />
+                <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Window setup" IsChecked="true"
+                              Name="oneDriveWindowSetup" />
+                <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Themes" IsChecked="true"
+                              Name="oneDriveThemes" />
+                <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Bookmarks and custom notes" IsChecked="true"
+                              Name="oneDriveBookmarks" />
+                <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Highlighting" IsChecked="true"
+                              Name="oneDriveHighlighting" />
+                <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Settings" IsChecked="true"
+                              Name="oneDriveSettings" />
+                <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Bibles." IsChecked="true"
+                              Name="oneDriveBibles" />
+                <TextBlock Name="oneDriveCaptionPutInFolder" Text="Put in this folder on OneDrive" />
+                <TextBox Name="oneDrivePutInFolder" Text="CrossConnectBackup" />
+                <Grid Grid.Row="1" x:Name="oneDriveActionPanel" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Row="0" Grid.Column="0"  Content="Backup" Name="oneDriveButExport" Click="ButExportClick" />
+                    <Button Grid.Row="0" Grid.Column="1"  Content="Restore" Name="oneDriveButImport" Click="butImport_Click" />
+                </Grid>
+            </StackPanel>
+            <StackPanel Grid.Row="2" x:Name="oneDriveConnectPanel">
+                <Button Content="Connect" Name="oneDriveButConnect" Click="ButConnectClick" />
+                <ProgressBar Margin="0 40 0 0" IsIndeterminate="True" Name="oneDriveProgressBar" />
+            </StackPanel>
+            <StackPanel Grid.Row="3" x:Name="oneDriveConnectPanelTransfer">
+                <ProgressBar Margin="0 40 0 0" IsIndeterminate="False" Name="oneDriveProgressBarTotal" />
+                <ProgressBar Margin="0 40 0 0" IsIndeterminate="False" Name="oneDriveProgressBarPartial" />
+            </StackPanel>
+        </Grid>
+  </ScrollViewer>
+
+</local:AutoRotatePage>

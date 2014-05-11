@@ -215,4 +215,14 @@
 <string key="Import bookmarks, highlights and notes from the clipboard">Import tanda, acara kemuncak dan nota daripada papan klip</string>
 <string key="Highlight">Highlight</string>
 <string key="Synchronize to every verse">Segerakkan kepada setiap ayat</string>
+<string key="OneDrive backup / restore">OneDrive sandaran / memulihkan</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Pilih item yang anda mahu untuk membuat sandaran / memulihkan. Kemudian tekan butang di bahagian bawah</string>
+<string key="Backup">Backup</string>
+<string key="Restore">Simpan semula</string>
+<string key="Bookmarks and custom notes">Penanda buku dan nota adat</string>
+<string key="Window setup">Persediaan Window</string>
+<string key="Folder on OneDrive">Folder pada OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Tidak wujud dalam OneDrive. Keluarkan dan cuba lagi</string>
+<string key="There is no backup to restore">Tidak ada sandaran untuk memulihkan</string>
+<string key="Connect to OneDrive">Sambung ke OneDrive</string>
 </translations>

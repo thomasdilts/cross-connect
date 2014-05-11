@@ -215,4 +215,14 @@
 <string key="Import bookmarks, highlights and notes from the clipboard">Увоз обележувачи, нагласува и белешки од таблата со исечоци</string>
 <string key="Highlight">Врв</string>
 <string key="Synchronize to every verse">Синхронизирате со секој стих</string>
+<string key="OneDrive backup / restore">OneDrive резервната / врати</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Изберете ги ставките што сакате да направите резерва / врати. Потоа кликнете на копчето на дното</string>
+<string key="Backup">Резерви</string>
+<string key="Restore">Врати</string>
+<string key="Bookmarks and custom notes">Обележувачи и сопствени белешки</string>
+<string key="Window setup">Прозорец подесување</string>
+<string key="Folder on OneDrive">Папката на OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Не постои во OneDrive. Отстранете ја и обидете се повторно</string>
+<string key="There is no backup to restore">Не постои резервна копија за враќање на</string>
+<string key="Connect to OneDrive">Поврзете се со OneDrive</string>
 </translations>

@@ -67,6 +67,8 @@
                                 Style="{StaticResource DeleteAppBarButtonStyle}" Tag="Next" />
                         <Button x:Name="DeleteBookmarks" Click="MenuDeleteBookmarkClick"
                                 Style="{StaticResource UnfavoriteAppBarButtonStyle}" Tag="Next" />
+                        <Button x:Name="OneDriveBackupRestore" Click="MenuOneDriveBackupRestoreClick"
+                                Style="{StaticResource UploadSkyDriveAppBarButtonStyle}" Tag="Next" />
                     </StackPanel>
                     <StackPanel x:Name="RightPanel22" Orientation="Horizontal" Grid.Column="1"
                                 HorizontalAlignment="Right">
@@ -544,6 +546,62 @@
                             <Button Name="ThemeCopy" Content="Theme Copy" Click="Copy_OnClick" />
                             <Button Name="ThemePaste" Content="Theme Paste" Click="Paste_OnClick" />
                             <Button Name="ThemeReset" Content="Factory reset themes" Click="ThemeReset_OnClick" />
+                        </StackPanel>
+
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Popup>
+        <Popup x:Name="OneDrivePopup" IsLightDismissEnabled="True" Closed="OneDrivePopup_OnClosed"
+               Opened="OneDrivePopup_OnOpened">
+            <Popup.ChildTransitions>
+                <TransitionCollection>
+                    <PaneThemeTransition />
+                </TransitionCollection>
+            </Popup.ChildTransitions>
+            <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" BorderThickness="2"
+                    Background="{StaticResource ApplicationPageBackgroundThemeBrush}" x:Name="OneDriveborder">
+                <Grid Name="MainPaneOneDrivePopup">
+                    <ScrollViewer Name="scrollViewerOneDrive">
+                        <StackPanel x:Name="OneDriveMainContent">
+                            <TextBlock x:Name="OneDriveTitle" Margin="20 20 20 20" FontSize="18" />
+                            <StackPanel Grid.Row="1" x:Name="oneDriveContentPanel">
+                                <TextBlock TextWrapping="Wrap" Name="oneDriveInformationText" Text="Select the items you want to export. Then hit the export button at the bottom" />
+                                <ToggleSwitch Header="Window setup" IsOn="true"
+                              Name="oneDriveWindowSetup" />
+                                <ToggleSwitch Header="Themes" IsOn="true"
+                              Name="oneDriveThemes" />
+                                <ToggleSwitch Header="Bookmarks and custom notes" IsOn="true"
+                              Name="oneDriveBookmarks" />
+                                <ToggleSwitch Header="Highlighting" IsOn="true"
+                              Name="oneDriveHighlighting" />
+                                <ToggleSwitch Header="Settings" IsOn="true"
+                              Name="oneDriveSettings" />
+                                <ToggleSwitch Header="Bibles." IsOn="true"
+                              Name="oneDriveBibles" />
+                                <TextBlock Name="oneDriveCaptionPutInFolder" Text="Put in this folder on OneDrive" />
+                                <TextBox Name="oneDrivePutInFolder" Text="CrossConnectBackup" />
+                                <Grid Grid.Row="1" x:Name="oneDriveActionPanel" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Row="0" Grid.Column="0"  Content="Backup" Name="oneDriveButExport" Click="ButExportClick" />
+                                    <Button Grid.Row="0" Grid.Column="1"  Content="Restore" Name="oneDriveButImport" Click="butImport_Click" />
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" x:Name="oneDriveConnectPanel">
+                                <Button Content="Connect" Name="oneDriveButConnect" Click="ButConnectClick" />
+                                <ProgressBar Margin="0 40 0 0" IsIndeterminate="True" Name="oneDriveProgressBar" />
+                            </StackPanel>
+                            <StackPanel Grid.Row="3" x:Name="oneDriveConnectPanelTransfer">
+                                <ProgressBar Margin="0 40 0 0" IsIndeterminate="False" Name="oneDriveProgressBarTotal" />
+                                <ProgressBar Margin="0 40 0 0" IsIndeterminate="False" Name="oneDriveProgressBarPartial" />
+                                <Button Content="Cancel" Margin="0 40 0 0" Name="oneDriveButCancel" Click="oneDriveButCancelClick" />
+                            </StackPanel>
                         </StackPanel>
 
                     </ScrollViewer>

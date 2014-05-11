@@ -234,4 +234,14 @@
 <string key="Highlight">Փաստ</string>
 <string key="Synchronize to every verse">Միարժամանակ տեղի ունենալ յուրաքանչյուր չափածո</string>
 <string key="None">Ոչ ոք</string>
+<string key="OneDrive backup / restore">OneDrive կրկնօրինակում / վերականգնել</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Ընտրեք կետերը, որոնք ցանկանում եք կրկնօրինակում / վերականգնել. Ապա հարվածել կոճակը ներքեւում</string>
+<string key="Backup">Պահուստ</string>
+<string key="Restore">Վերականգնել</string>
+<string key="Bookmarks and custom notes">Էջանիշեր ու մաքսային նշումները</string>
+<string key="Window setup">Window setup</string>
+<string key="Folder on OneDrive">Folder է OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Գոյություն չունի OneDrive. Հեռացնել այն եւ փորձեք կրկին</string>
+<string key="There is no backup to restore">Չկա կրկնօրինակում վերականգնել</string>
+<string key="Connect to OneDrive">Միացեք OneDrive</string>
 </translations>

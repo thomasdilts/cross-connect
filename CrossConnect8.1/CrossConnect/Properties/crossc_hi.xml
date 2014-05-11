@@ -215,4 +215,14 @@
 <string key="Import bookmarks, highlights and notes from the clipboard">बुकमार्क आयात करें, पर प्रकाश डाला गया और क्लिपबोर्ड से नोट्स</string>
 <string key="Highlight">उभार</string>
 <string key="Synchronize to every verse">हर कविता को सिंक्रनाइज़</string>
+<string key="OneDrive backup / restore">OneDrive बैकअप / बहाल</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">बैकअप के लिए आइटम आप चाहते हैं का चयन करें / बहाल. तब तल पर बटन मारा</string>
+<string key="Backup">बैकअप</string>
+<string key="Restore">पुनर्स्थापित</string>
+<string key="Bookmarks and custom notes">बुकमार्क और कस्टम नोट्स</string>
+<string key="Window setup">खिड़की सेटअप</string>
+<string key="Folder on OneDrive">OneDrive पर फ़ोल्डर</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">OneDrive में मौजूद नहीं है. यह निकालें और फिर से कोशिश</string>
+<string key="There is no backup to restore">बहाल करने के लिए कोई बैकअप नहीं है</string>
+<string key="Connect to OneDrive">OneDrive से कनेक्ट करें</string>
 </translations>

@@ -215,4 +215,14 @@
 <string key="Import bookmarks, highlights and notes from the clipboard">Mag-import ng mga bookmark, mga highlight at tala mula sa clipboard</string>
 <string key="Highlight">I-highlight</string>
 <string key="Synchronize to every verse">I-synchronize sa bawat taludtod</string>
+<string key="OneDrive backup / restore">OneDrive backup / ibalik</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Piliin ang mga item na gusto mong i-backup / ibalik. Pagkatapos ay pindutin ang pindutan sa ibaba</string>
+<string key="Backup">Backup</string>
+<string key="Restore">Ibalik</string>
+<string key="Bookmarks and custom notes">Mga Bookmark at pasadyang mga tala</string>
+<string key="Window setup">Pag-setup ng Bintana</string>
+<string key="Folder on OneDrive">Folder sa OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Ay hindi umiiral sa OneDrive. Alisin ito at subukang muli</string>
+<string key="There is no backup to restore">Walang backup na ibalik</string>
+<string key="Connect to OneDrive">Kumonekta sa OneDrive</string>
 </translations>

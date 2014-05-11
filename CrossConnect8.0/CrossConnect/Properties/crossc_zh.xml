@@ -234,4 +234,14 @@
 <string key="Highlight">突出</string>
 <string key="Synchronize to every verse">同步到每一節經文</string>
 <string key="None">無</string>
+<string key="OneDrive backup / restore">OneDrive備份/恢復</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">選擇您想要的項目備份/恢復。然後點擊底部按鈕</string>
+<string key="Backup">備用</string>
+<string key="Restore">恢復</string>
+<string key="Bookmarks and custom notes">書籤和自定義筆記</string>
+<string key="Window setup">窗口設置</string>
+<string key="Folder on OneDrive">文件夾上OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">不會在OneDrive存在。刪除它，然後再試一次</string>
+<string key="There is no backup to restore">沒有備份恢復</string>
+<string key="Connect to OneDrive">連接到OneDrive</string>
 </translations>

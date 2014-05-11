@@ -84,6 +84,7 @@
         <shell:ApplicationBarMenuItem Click="ButGoToPlanClick" x:Name="menuGoToPlan" Text="Daily plan" />
         <shell:ApplicationBarMenuItem Click="MenuSettingsClick" x:Name="menuSettings" Text="Settings" />
         <shell:ApplicationBarMenuItem Click="MenuLanguageClick" x:Name="menuLanguage" Text="Select language" />
+        <shell:ApplicationBarMenuItem Click="MenuExportClick" x:Name="menuExport" Text="OneDrive backup / restore" />
         <shell:ApplicationBarMenuItem Click="ButHelpClick" x:Name="menuHelp" Text="help" />
       </shell:ApplicationBar.MenuItems>
     </shell:ApplicationBar>

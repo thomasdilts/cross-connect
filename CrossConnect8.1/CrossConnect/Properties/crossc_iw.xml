@@ -215,4 +215,14 @@
 <string key="Import bookmarks, highlights and notes from the clipboard">ייבא סימניות, מדגיש והערות מהלוח</string>
 <string key="Highlight">שיא</string>
 <string key="Synchronize to every verse">סנכרן לכל פסוק</string>
+<string key="OneDrive backup / restore">OneDrive גיבוי / שחזור</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">בחר את הפריטים שברצונך גיבוי / שחזור. ואז ללחוץ על הכפתור בתחתית</string>
+<string key="Backup">גיבוי</string>
+<string key="Restore">לשחזר</string>
+<string key="Bookmarks and custom notes">סימניות והערות מותאמות אישית</string>
+<string key="Window setup">התקנת חלון</string>
+<string key="Folder on OneDrive">תיקייה בOneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">אינו קיים בOneDrive. הסר אותו ונסה שוב</string>
+<string key="There is no backup to restore">אין גיבוי כדי לשחזר</string>
+<string key="Connect to OneDrive">להתחבר לOneDrive</string>
 </translations>

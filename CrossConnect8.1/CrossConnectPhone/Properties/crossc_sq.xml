@@ -234,4 +234,14 @@
 <string key="Highlight">Theksoj</string>
 <string key="Synchronize to every verse">Synchronize të secilës strofë</string>
 <string key="None">Asnjë</string>
+<string key="OneDrive backup / restore">OneDrive backup / rivendosur</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Zgjidhni artikujt që dëshironi të backup / rivendosur. Pastaj goditi butonin në pjesën e poshtme</string>
+<string key="Backup">Rezervë</string>
+<string key="Restore">Kthej</string>
+<string key="Bookmarks and custom notes">Faqerojtësa dhe shënime me porosi</string>
+<string key="Window setup">Window Setup</string>
+<string key="Folder on OneDrive">Folder on OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Nuk ekziston në OneDrive. Hiqni atë dhe provoni përsëri</string>
+<string key="There is no backup to restore">Nuk ka asnjë rezervë për të rivendosur</string>
+<string key="Connect to OneDrive">Lidhja me OneDrive</string>
 </translations>

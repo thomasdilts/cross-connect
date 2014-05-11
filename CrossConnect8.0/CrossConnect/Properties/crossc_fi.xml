@@ -234,4 +234,14 @@
 <string key="Highlight">Kohokohta</string>
 <string key="Synchronize to every verse">Synkronoida jokaisen jakeen</string>
 <string key="None">Ei mitään</string>
+<string key="OneDrive backup / restore">OneDrive varmuuskopiointi / palauttaminen</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Valitse kohteet, jotka haluat varmuuskopioida / palauttaa. Kaahaa alareunassa</string>
+<string key="Backup">Varmuuskopio</string>
+<string key="Restore">Palauttaa</string>
+<string key="Bookmarks and custom notes">Kirjanmerkkejä ja omia muistiinpanoja</string>
+<string key="Window setup">Ikkunoiden asetukset</string>
+<string key="Folder on OneDrive">Kansio OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Ei ole olemassa OneDrive. Poista se ja yritä uudelleen</string>
+<string key="There is no backup to restore">Ei ole varmuuskopio palauttaa</string>
+<string key="Connect to OneDrive">Yhdistä OneDrive</string>
 </translations>

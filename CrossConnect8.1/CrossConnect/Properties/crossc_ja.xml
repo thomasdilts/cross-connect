@@ -215,4 +215,14 @@
 <string key="Import bookmarks, highlights and notes from the clipboard">クリップボードからのインポートブックマーク、ハイライトやノート</string>
 <string key="Highlight">ハイライト</string>
 <string key="Synchronize to every verse">すべての詩に同期</string>
+<string key="OneDrive backup / restore">OneDriveバックアップ/リストア</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">あなたは/復元バックアップするアイテムを選択します。そして、一番下にあるボタンを押す</string>
+<string key="Backup">バックアップ</string>
+<string key="Restore">復元する</string>
+<string key="Bookmarks and custom notes">ブックマークやカスタムノート</string>
+<string key="Window setup">ウィンドウの設定</string>
+<string key="Folder on OneDrive">OneDrive上のフォルダ</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">OneDriveには存在しません。それを削除して、再試行してください</string>
+<string key="There is no backup to restore">復元するバックアップはありません</string>
+<string key="Connect to OneDrive">OneDriveに接続</string>
 </translations>

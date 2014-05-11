@@ -234,4 +234,14 @@
 <string key="Highlight">Highlight</string>
 <string key="Synchronize to every verse">Samstilla við hvert vers</string>
 <string key="None">Enginn</string>
+<string key="OneDrive backup / restore">OneDrive varabúnaður / skila aftur</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Velja svo atriðin sem þú vilt taka öryggisafrit / skila aftur. Þá högg the hnappur neðst</string>
+<string key="Backup">Backup</string>
+<string key="Restore">Endurheimta</string>
+<string key="Bookmarks and custom notes">Bókamerki og sérsniðin athugasemdum</string>
+<string key="Window setup">Gluggi skipulag</string>
+<string key="Folder on OneDrive">Möppu á OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Er ekki til í OneDrive. Fjarlægja það og reyndu aftur</string>
+<string key="There is no backup to restore">Það er engin afrit til að endurheimta</string>
+<string key="Connect to OneDrive">Tengjast OneDrive</string>
 </translations>

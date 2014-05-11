@@ -134,6 +134,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BackupRestore.cs" />
     <Compile Include="BadgeHelper.cs" />
     <Compile Include="BrowserAddNote.cs" />
     <Compile Include="BrowserChooseBook.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="BrowserEnterKey.cs" />
     <Compile Include="MainPageAddWindow.cs" />
     <Compile Include="MainPageDownloadBible.cs" />
+    <Compile Include="MainPageOneDrive.cs" />
     <Compile Include="MainPageThemes.cs" />
     <Compile Include="MediaPlayerChooseBook.cs" />
     <Compile Include="MediaPlayerMenu.cs" />
@@ -361,7 +363,11 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <SDKReference Include="LiveSDKXAML, Version=5.6">
+      <Name>Live SDK</Name>
+    </SDKReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>

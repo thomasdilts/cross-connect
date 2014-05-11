@@ -234,4 +234,14 @@
 <string key="Highlight">Điểm nổi bật</string>
 <string key="Synchronize to every verse">Đồng bộ hóa với tất cả các câu</string>
 <string key="None">Không ai</string>
+<string key="OneDrive backup / restore">OneDrive sao lưu / khôi phục</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Chọn các mục bạn muốn sao lưu / khôi phục lại. Sau đó nhấn vào nút ở phía dưới</string>
+<string key="Backup">Sao lưu</string>
+<string key="Restore">Khôi phục</string>
+<string key="Bookmarks and custom notes">Đánh dấu và ghi chú tùy chỉnh</string>
+<string key="Window setup">Thiết lập cửa sổ</string>
+<string key="Folder on OneDrive">Thư mục trên OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Không tồn tại trong OneDrive. Loại bỏ nó và thử lại</string>
+<string key="There is no backup to restore">Không có sao lưu để khôi phục lại</string>
+<string key="Connect to OneDrive">Kết nối với OneDrive</string>
 </translations>

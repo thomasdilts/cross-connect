@@ -64,13 +64,6 @@ namespace CrossConnect
         // this is actually superceded but needs to be checked for older programs updated to the newer version
         private const string PersistantObjectsFileName = "_PersistantObjects.xml";
 
-        // the newer file names divided into sections.
-        private const string PersistantObjectsWindowsFileName = "_Windows.xml";
-        private const string PersistantObjectsThemesFileName = "_Themes.xml";
-        private const string PersistantObjectsDisplaySettingsFileName = "_DisplaySettings.xml";
-        private const string PersistantObjectsMarkersFileName = "_Markers.xml";
-        private const string PersistantObjectsHighlightFileName = "_Highlights.xml";
-
         #endregion
 
         #region Static Fields
@@ -429,7 +422,7 @@ namespace CrossConnect
         {
             if (args.PreviousExecutionState != ApplicationExecutionState.Suspended && args.PreviousExecutionState != ApplicationExecutionState.Running)
             {
-                await this.LoadPersistantObjects();
+                await LoadPersistantObjects();
             }
 
             var rootFrame = Window.Current.Content as Frame;
@@ -475,7 +468,7 @@ namespace CrossConnect
             Window.Current.Activate();
         }
 
-        private async Task<Dictionary<String, Object>> LoadPersistantObjectsFromFile(string filename, LoadPersObjDelegate loadFunction, bool alwaysLocal=false)
+        private static async Task<Dictionary<String, Object>> LoadPersistantObjectsFromFile(string filename, LoadPersObjDelegate loadFunction, bool alwaysLocal=false)
         {
             var objectsToLoad = new Dictionary<String, Object>();
             bool isLoaded = false;
@@ -522,7 +515,7 @@ namespace CrossConnect
             return objectsToLoad;
         }
 
-        private async Task LoadPersistantWindows(Dictionary<String, Object> objectsToLoad)
+        private static async Task LoadPersistantWindows(Dictionary<String, Object> objectsToLoad)
         {
             OpenWindows.Clear();
             DailyPlan = new SerializableDailyPlan();
@@ -677,7 +670,7 @@ namespace CrossConnect
             }
         }
 
-        private async Task LoadPersistantThemes(Dictionary<String, Object> objectsToLoad)
+        private static async Task LoadPersistantThemes(Dictionary<String, Object> objectsToLoad)
         {
             object markerXmlData;
             if (objectsToLoad.TryGetValue("Themes", out markerXmlData))
@@ -690,7 +683,7 @@ namespace CrossConnect
             }
         }
 
-        private async Task LoadPersistantDisplaySettings(Dictionary<String, Object> objectsToLoad)
+        private static async Task LoadPersistantDisplaySettings(Dictionary<String, Object> objectsToLoad)
         {
             object markerXmlData;
             DisplaySettings = new DisplaySettings();
@@ -722,13 +715,10 @@ namespace CrossConnect
             }
 
             DisplaySettings.CheckForNullAndFix();
-            if (DisplaySettings.MarginInsideTextWindow <= 0)
-            {
-                DisplaySettings.MarginInsideTextWindow = 20;
-            }
+            DisplaySettings.MarginInsideTextWindow = 20;
         }
 
-        private async Task LoadPersistantHighlighting(Dictionary<String, Object> objectsToLoad)
+        private static async Task LoadPersistantHighlighting(Dictionary<String, Object> objectsToLoad)
         {
             object markerXmlData;
             DisplaySettings.highlighter = new Highlighter();
@@ -748,7 +738,7 @@ namespace CrossConnect
             }
         }
 
-        private async Task LoadPersistantMarkers(Dictionary<String, Object> objectsToLoad)
+        private static async Task LoadPersistantMarkers(Dictionary<String, Object> objectsToLoad)
         {
             PlaceMarkers = new BiblePlaceMarkers();
             object markerXmlData;
@@ -779,7 +769,7 @@ namespace CrossConnect
 
         public delegate Task LoadPersObjDelegate(Dictionary<String, Object> objectsToLoad);
 
-        private async Task<bool> LoadPersistantObjects(bool alwaysLocal=false)
+        public static async Task<bool> LoadPersistantObjects(bool alwaysLocal = false)
         {
             StorageFolder folder = ApplicationData.Current.LocalFolder;
 
@@ -796,11 +786,11 @@ namespace CrossConnect
                 }
 
                 await InstalledBibles.Initialize();
-                await LoadPersistantObjectsFromFile(PersistantObjectsDisplaySettingsFileName, LoadPersistantDisplaySettings, true);
-                await LoadPersistantObjectsFromFile(PersistantObjectsThemesFileName, LoadPersistantThemes, true);
-                await LoadPersistantObjectsFromFile(PersistantObjectsHighlightFileName, LoadPersistantHighlighting, true);
-                await LoadPersistantObjectsFromFile(PersistantObjectsMarkersFileName, LoadPersistantMarkers, true);
-                await LoadPersistantObjectsFromFile(PersistantObjectsWindowsFileName, LoadPersistantWindows, true);
+                await LoadPersistantObjectsFromFile(BackupRestore.PersistantObjectsDisplaySettingsFileName, LoadPersistantDisplaySettings, true);
+                await LoadPersistantObjectsFromFile(BackupRestore.PersistantObjectsThemesFileName, LoadPersistantThemes, true);
+                await LoadPersistantObjectsFromFile(BackupRestore.PersistantObjectsHighlightFileName, LoadPersistantHighlighting, true);
+                await LoadPersistantObjectsFromFile(BackupRestore.PersistantObjectsMarkersFileName, LoadPersistantMarkers, true);
+                await LoadPersistantObjectsFromFile(BackupRestore.PersistantObjectsWindowsFileName, LoadPersistantWindows, true);
             }
             catch (Exception ee)
             {
@@ -888,10 +878,21 @@ namespace CrossConnect
                 objectsToSave["DailyPlan"] = sw.ToString();
             }
 
-            await SavePersistantObjects(objectsToSave, PersistantObjectsWindowsFileName);
+            await SavePersistantObjects(objectsToSave, BackupRestore.PersistantObjectsWindowsFileName);
         }
-
-        public static async void SavePersistantThemes()
+        public static async Task SaveAllPersistantObjects()
+        {
+            await SavePersistantThemes();
+            await SavePersistantDisplaySettings();
+            await SavePersistantHighlighting();
+            await SavePersistantMarkers();
+            if (TimerForSavingWindows != null)
+            {
+                TimerForSavingWindows.Stop();
+            }
+            await SavePersistantWindows();
+        }
+        public static async Task SavePersistantThemes()
         {
             var objectsToSave = new Dictionary<string, object>();
             if (Themes.Themes.Count() > 0)
@@ -904,10 +905,10 @@ namespace CrossConnect
                 objectsToSave.Remove("Themes");
             }
 
-            await SavePersistantObjects(objectsToSave, PersistantObjectsThemesFileName);
+            await SavePersistantObjects(objectsToSave, BackupRestore.PersistantObjectsThemesFileName);
         }
 
-        public static async void SavePersistantDisplaySettings()
+        public static async Task SavePersistantDisplaySettings()
         {
             var objectsToSave = new Dictionary<string, object>();
             var types2 = new[] { typeof(DisplaySettings) };
@@ -928,17 +929,17 @@ namespace CrossConnect
                 objectsToSave["DisplaySettings"] = sw.ToString();
             }
             // UseRemoteStorage is always local
-            await SavePersistantObjects(objectsToSave, PersistantObjectsDisplaySettingsFileName, true);
+            await SavePersistantObjects(objectsToSave, BackupRestore.PersistantObjectsDisplaySettingsFileName, true);
         }
 
-        public static async void SavePersistantHighlighting()
+        public static async Task SavePersistantHighlighting()
         {
             var objectsToSave = new Dictionary<string, object>();
             objectsToSave["Highlights"] = DisplaySettings.highlighter.ToString();
-            await SavePersistantObjects(objectsToSave, PersistantObjectsHighlightFileName);
+            await SavePersistantObjects(objectsToSave, BackupRestore.PersistantObjectsHighlightFileName);
         }
 
-        public static async void SavePersistantMarkers()
+        public static async Task SavePersistantMarkers()
         {
             var objectsToSave = new Dictionary<string, object>();
             // add new settings.
@@ -961,7 +962,7 @@ namespace CrossConnect
                 objectsToSave["BiblePlaceMarkers"] = sw.ToString();
             }
 
-            await SavePersistantObjects(objectsToSave, PersistantObjectsMarkersFileName);
+            await SavePersistantObjects(objectsToSave, BackupRestore.PersistantObjectsMarkersFileName);
         }
 
         private static async Task SavePersistantObjects(Dictionary<string, object> objectsToSave, string filename, bool alwaysLocal=false)

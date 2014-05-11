@@ -389,7 +389,8 @@ namespace CrossConnect
             ((ApplicationBarMenuItem)ApplicationBar.MenuItems[14]).Text = Translations.Translate("Settings");
             ((ApplicationBarMenuItem)ApplicationBar.MenuItems[15]).Text =
                 Translations.Translate("Select the language") + " (language)";
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[16]).Text = Translations.Translate("Help");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[16]).Text = Translations.Translate("OneDrive backup / restore");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[17]).Text = Translations.Translate("Help");
 
             if (!App.OpenWindows.Any() || !App.InstalledBibles.InstalledBibles.Any())
             {
@@ -546,6 +547,11 @@ namespace CrossConnect
         private void MenuThemesClick(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/Themes.xaml", UriKind.Relative));
+        }
+
+        private void MenuExportClick(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/OneDriveExport.xaml", UriKind.Relative));
         }
 
         private void OverRideCurrentlyShowingScreenTimerTick(object sender, EventArgs e)

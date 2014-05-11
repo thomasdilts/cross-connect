@@ -234,4 +234,14 @@
 <string key="Highlight">Hoogtepunt</string>
 <string key="Synchronize to every verse">Sinchroniseer om elke vers</string>
 <string key="None">Geen</string>
+<string key="OneDrive backup / restore">OneDrive Friends / herstel</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Kies die items wat jy wil Friends / herstel. Toe tref aan die onderkant van die knoppie</string>
+<string key="Backup">Friends</string>
+<string key="Restore">Herstel</string>
+<string key="Bookmarks and custom notes">Boekmerke en persoonlike notas</string>
+<string key="Window setup">Vensteropstelling</string>
+<string key="Folder on OneDrive">Gids op OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Maak in OneDrive nie bestaan ​​nie. Verwyder dit en probeer weer</string>
+<string key="There is no backup to restore">Daar is geen Friends te herstel</string>
+<string key="Connect to OneDrive">Skakel in op OneDrive</string>
 </translations>
