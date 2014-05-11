@@ -39,28 +39,63 @@ namespace Hoot
         {
             try
             {
-                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(path);
+                await ApplicationData.Current.LocalFolder.GetItemAsync(path);
                 return true;
             }
             catch (Exception)
             {
                 return false;
-            }          
+            }
         }
-
+        public static async Task<bool> Exists(StorageFolder folder, string path)
+        {
+            try
+            {
+                await folder.GetItemAsync(path);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         public static async Task Move(string fromFullFileName, string toDir, string toName)
         {
             var mover = await ApplicationData.Current.LocalFolder.GetFileAsync(fromFullFileName);
             var newDir = await ApplicationData.Current.LocalFolder.GetFolderAsync(toDir);
             await mover.MoveAsync(newDir, toName);
         }
-        public static async Task<string[]> GetFiles(string folderPath)
+
+        public static async Task<string[]> GetFiles(string folderPath, StorageFolder containingFolder = null)
+        {
+            if (containingFolder == null)
+            {
+                containingFolder = ApplicationData.Current.LocalFolder;
+            }
+            //IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
+            try
+            {
+                var newDir = await containingFolder.GetFolderAsync(folderPath);
+                var storageFiles = await newDir.GetFilesAsync();
+                var files = new string[storageFiles.Count()];
+                for (int i = 0; i < storageFiles.Count(); i++)
+                {
+                    files[i] = storageFiles[i].Name;
+                }
+                return files;
+            }
+            catch (Exception e)
+            {
+                return new string[0];
+            }
+        }
+        public static async Task<string[]> GetFolders(string folderPath, StorageFolder containingFolder)
         {
             //IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
             try
             {
-                var newDir = await ApplicationData.Current.LocalFolder.GetFolderAsync(folderPath);
-                var storageFiles = await newDir.GetFilesAsync();
+                var newDir = await containingFolder.GetFolderAsync(folderPath);
+                var storageFiles = await newDir.GetFoldersAsync();
                 var files = new string[storageFiles.Count()];
                 for (int i = 0; i < storageFiles.Count(); i++)
                 {
@@ -97,11 +132,15 @@ namespace Hoot
             stream.Dispose();
         }
 
-        public static async Task<bool> Delete(string filePath)
+        public static async Task<bool> Delete(string filePath, StorageFolder containingFolder = null)
         {
+            if (containingFolder == null)
+            {
+                containingFolder = ApplicationData.Current.LocalFolder;
+            }
             try
             {
-                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(filePath);
+                StorageFile file = await containingFolder.GetFileAsync(filePath);
                 await file.DeleteAsync();
                 return true;
             }

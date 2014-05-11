@@ -234,4 +234,14 @@
 <string key="Highlight">Punto culminante</string>
 <string key="Synchronize to every verse">Sincronizar a cada verso</string>
 <string key="None">Ninguno</string>
+<string key="OneDrive backup / restore">OneDrive backup / restore</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Seleccione los elementos que desea hacer copia de seguridad / restauración. Después haga clic en el botón en la parte inferior</string>
+<string key="Backup">Reserva</string>
+<string key="Restore">Restaurar</string>
+<string key="Bookmarks and custom notes">Los marcadores y notas personalizadas</string>
+<string key="Window setup">Ventana de configuración</string>
+<string key="Folder on OneDrive">Carpeta en OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">No existe en OneDrive. Retire y vuelva a intentarlo</string>
+<string key="There is no backup to restore">No hay seguridad para restaurar</string>
+<string key="Connect to OneDrive">Conecte con OneDrive</string>
 </translations>

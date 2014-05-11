@@ -102,6 +102,9 @@ namespace Sword.reader
         [DataMember]
         public int MarginInsideTextWindow = -1;
 
+        [DataMember]
+        public string OneDriveFolder = "CrossConnectBackup";
+
         public Highlighter highlighter = new Highlighter();
         #endregion
 
@@ -163,6 +166,10 @@ namespace Sword.reader
                 UseHighlights = true;
                 this.HighlightName6 = "Highlight 6";
             }
+            if (string.IsNullOrEmpty(this.OneDriveFolder))
+            {
+                this.OneDriveFolder = "CrossConnectBackup";
+            } 
         }
 
         public DisplaySettings Clone()

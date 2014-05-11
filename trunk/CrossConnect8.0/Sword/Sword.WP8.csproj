@@ -117,22 +117,22 @@
     <Compile Include="reader\sapphire.cs" />
     <Compile Include="StaticBibleVerses.cs" />
     <Compile Include="SwordBookMetaData.cs" />
-    <Compile Include="versification\Canon.cs" />
-    <Compile Include="versification\CanonCatholic.cs" />
-    <Compile Include="versification\CanonCatholic2.cs" />
-    <Compile Include="versification\CanonGerman.cs" />
-    <Compile Include="versification\CanonKjva.cs" />
-    <Compile Include="versification\CanonLeningrad.cs" />
-    <Compile Include="versification\CanonLuther.cs" />
-    <Compile Include="versification\CanonLxx.cs" />
-    <Compile Include="versification\CanonManager.cs" />
-    <Compile Include="versification\CanonMt.cs" />
-    <Compile Include="versification\CanonNrsv.cs" />
-    <Compile Include="versification\CanonNrsva.cs" />
-    <Compile Include="versification\CanonOrthodox.cs" />
-    <Compile Include="versification\CanonSynodal.cs" />
-    <Compile Include="versification\CanonSynodalProt.cs" />
-    <Compile Include="versification\CanonVulg.cs" />
+    <Compile Include="reader\versification\Canon.cs" />
+    <Compile Include="reader\versification\CanonCatholic.cs" />
+    <Compile Include="reader\versification\CanonCatholic2.cs" />
+    <Compile Include="reader\versification\CanonGerman.cs" />
+    <Compile Include="reader\versification\CanonKjva.cs" />
+    <Compile Include="reader\versification\CanonLeningrad.cs" />
+    <Compile Include="reader\versification\CanonLuther.cs" />
+    <Compile Include="reader\versification\CanonLxx.cs" />
+    <Compile Include="reader\versification\CanonManager.cs" />
+    <Compile Include="reader\versification\CanonMt.cs" />
+    <Compile Include="reader\versification\CanonNrsv.cs" />
+    <Compile Include="reader\versification\CanonNrsva.cs" />
+    <Compile Include="reader\versification\CanonOrthodox.cs" />
+    <Compile Include="reader\versification\CanonSynodal.cs" />
+    <Compile Include="reader\versification\CanonSynodalProt.cs" />
+    <Compile Include="reader\versification\CanonVulg.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\iso639full.properties" />
@@ -222,6 +222,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\BibleNames_el.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Live, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

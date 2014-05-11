@@ -371,7 +371,18 @@ namespace CrossConnect
                                     }
                                 }
                                 while (reader.MoveToNextAttribute());
-
+                                Theme existingTheme;
+                                if (this.Themes.TryGetValue(foundTheme.UniqId, out existingTheme))
+                                {
+                                    if (foundTheme.FrameColor.Equals(StringToColor("00000000")))
+                                    {
+                                        foundTheme.FrameColor = existingTheme.FrameColor;
+                                    }
+                                }
+                                if (foundTheme.FrameColor.Equals(StringToColor("00000000")))
+                                {
+                                    foundTheme.FrameColor = foundTheme.TitleBackColor;
+                                }
                                 this.Themes[foundTheme.UniqId] = foundTheme;
                             }
 

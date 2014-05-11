@@ -234,4 +234,14 @@
 <string key="Highlight">ไฮไลต์</string>
 <string key="Synchronize to every verse">ประสานไปยังทุกข้อ</string>
 <string key="None">ไม่</string>
+<string key="OneDrive backup / restore">OneDrive สำรอง / กู้คืน</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">เลือกรายการที่คุณต้องการสำรองข้อมูล / restore จากนั้นกดปุ่มที่อยู่ด้านล่าง</string>
+<string key="Backup">การสำรองข้อมูล</string>
+<string key="Restore">ฟื้นฟู</string>
+<string key="Bookmarks and custom notes">ที่คั่นหน้าเว็บและบันทึกที่กำหนดเอง</string>
+<string key="Window setup">การติดตั้งหน้าต่าง</string>
+<string key="Folder on OneDrive">โฟลเดอร์บน OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">ไม่อยู่ใน OneDrive เอามันออกไปและลองอีกครั้ง</string>
+<string key="There is no backup to restore">มีการสำรองข้อมูลเพื่อเรียกคืนไม่</string>
+<string key="Connect to OneDrive">เชื่อมต่อไปยัง OneDrive</string>
 </translations>

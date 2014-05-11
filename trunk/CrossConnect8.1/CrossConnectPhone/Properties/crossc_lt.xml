@@ -234,4 +234,14 @@
 <string key="Highlight">Pabrėžti</string>
 <string key="Synchronize to every verse">Sinchronizuoti kiekvieną stichijos</string>
 <string key="None">Nė vienas</string>
+<string key="OneDrive backup / restore">OneDrive atsarginę kopiją / atkurti</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Pasirinkite elementus, kuriuos norite atsarginę kopiją / atkurti. Tada paspauskite mygtuką apačioje</string>
+<string key="Backup">Atsarginė</string>
+<string key="Restore">Atkurti</string>
+<string key="Bookmarks and custom notes">Žymes ir pasirinktinius pastabos</string>
+<string key="Window setup">Langų montavimas</string>
+<string key="Folder on OneDrive">Aplankas OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Neegzistuoja OneDrive. Pašalinti jį ir bandykite dar kartą</string>
+<string key="There is no backup to restore">Nėra atsarginės kopijos atkurti</string>
+<string key="Connect to OneDrive">Prisijunkite prie OneDrive</string>
 </translations>

@@ -234,4 +234,14 @@
 <string key="Highlight">Αποκορύφωμα</string>
 <string key="Synchronize to every verse">Συγχρονισμός σε κάθε στίχο</string>
 <string key="None">Κανένας</string>
+<string key="OneDrive backup / restore">OneDrive backup / restore</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Επιλέξτε τα στοιχεία που θέλετε να κάνετε backup / restore. Στη συνέχεια, πατήστε το κουμπί στο κάτω μέρος</string>
+<string key="Backup">Εφεδρικός</string>
+<string key="Restore">Επαναφορά</string>
+<string key="Bookmarks and custom notes">Σελιδοδείκτες και προσαρμοσμένες σημειώσεις</string>
+<string key="Window setup">Ρύθμιση Παράθυρο</string>
+<string key="Folder on OneDrive">Φάκελος για OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Δεν υπάρχει στην OneDrive. Αφαιρέστε το και προσπαθήστε ξανά</string>
+<string key="There is no backup to restore">Δεν υπάρχει αντίγραφο ασφαλείας για επαναφορά</string>
+<string key="Connect to OneDrive">Συνδεθείτε με OneDrive</string>
 </translations>

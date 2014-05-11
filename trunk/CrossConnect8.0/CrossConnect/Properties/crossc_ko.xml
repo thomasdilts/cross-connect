@@ -234,4 +234,14 @@
 <string key="Highlight">하이라이트</string>
 <string key="Synchronize to every verse">모든 절에 동기화</string>
 <string key="None">없음</string>
+<string key="OneDrive backup / restore">OneDrive 백업 / 복원</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">백업에 원하는 항목을 선택 / 복원 할 수 있습니다. 그런 다음 하단에있는 버튼을 누르면</string>
+<string key="Backup">지원</string>
+<string key="Restore">복원</string>
+<string key="Bookmarks and custom notes">즐겨 찾기 및 사용자 지정 노트</string>
+<string key="Window setup">윈도우 설치</string>
+<string key="Folder on OneDrive">OneDrive에 폴더</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">OneDrive에 존재하지 않습니다. 그것을 제거하고 다시 시도</string>
+<string key="There is no backup to restore">복원 할 백업이 없습니다</string>
+<string key="Connect to OneDrive">OneDrive에 연결</string>
 </translations>

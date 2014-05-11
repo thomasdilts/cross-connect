@@ -207,4 +207,14 @@
 <string key="Enter key">Enter tuşuna</string>
 <string key="Save">Kurtarmak</string>
 <string key="Synchronize to every verse">Her ayet için senkronize</string>
+<string key="OneDrive backup / restore">OneDrive yedekleme / geri yükleme</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Yedeklemek istediğiniz öğeleri seçin / geri. Sonra altındaki düğmesine basın</string>
+<string key="Backup">Yedek</string>
+<string key="Restore">Restore</string>
+<string key="Bookmarks and custom notes">Yer imleri ve özel notlar</string>
+<string key="Window setup">Pencere kurulum</string>
+<string key="Folder on OneDrive">OneDrive Klasör</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">OneDrive mevcut değil. Çıkarın ve tekrar deneyin</string>
+<string key="There is no backup to restore">Geri yedekleme olmadığı</string>
+<string key="Connect to OneDrive">OneDrive bağlan</string>
 </translations>

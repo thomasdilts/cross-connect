@@ -234,4 +234,14 @@
 <string key="Highlight">Highlight</string>
 <string key="Synchronize to every verse">Jissinkronizzaw għal kull poeżiji</string>
 <string key="None">Xejn</string>
+<string key="OneDrive backup / restore">OneDrive backup / jirrestawraw</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Tagħżel l-oġġetti li inti tixtieq li backup / jirrestawraw. Imbagħad laqat il-buttuna fil-qiegħ</string>
+<string key="Backup">Backup</string>
+<string key="Restore">Restore</string>
+<string key="Bookmarks and custom notes">Bookmarks u noti tad-dwana</string>
+<string key="Window setup">Setup Window</string>
+<string key="Folder on OneDrive">Folder fuq OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Ma jeżistix fil OneDrive. Tneħħiha u erġa 'pprova</string>
+<string key="There is no backup to restore">M'hemm l-ebda backup biex jirrestawraw</string>
+<string key="Connect to OneDrive">Qabbad l OneDrive</string>
 </translations>

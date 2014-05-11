@@ -234,4 +234,14 @@
 <string key="Highlight">Highlight</string>
 <string key="Synchronize to every verse">Hər ayənin sinxronizasiya</string>
 <string key="None">Heç kim</string>
+<string key="OneDrive backup / restore">OneDrive backup / bərpa</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Backup istədiyiniz öğeleri seçin / bərpa edin. Sonra altındakı düyməsini basın</string>
+<string key="Backup">Backup</string>
+<string key="Restore">Bərpa etmək</string>
+<string key="Bookmarks and custom notes">Bookmarks və xüsusi qeydlər</string>
+<string key="Window setup">Window quraşdırma</string>
+<string key="Folder on OneDrive">OneDrive Qovluq</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">OneDrive mövcud deyil. Aradan qaldırılması və yenidən cəhd edin</string>
+<string key="There is no backup to restore">Bərpa etmək üçün heç bir backup var</string>
+<string key="Connect to OneDrive">OneDrive qoşulmaq</string>
 </translations>

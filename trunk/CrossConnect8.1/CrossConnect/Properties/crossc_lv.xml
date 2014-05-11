@@ -215,4 +215,14 @@
 <string key="Import bookmarks, highlights and notes from the clipboard">Importēt grāmatzīmes, izceļ un atzīmē no starpliktuves</string>
 <string key="Highlight">Izcelt</string>
 <string key="Synchronize to every verse">Sinhronizēt katru dzejolis</string>
+<string key="OneDrive backup / restore">OneDrive backup / atjaunot</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Izvēlieties objektus, kurus vēlaties backup / atjaunot. Tad hit pogu apakšā</string>
+<string key="Backup">Rezerves</string>
+<string key="Restore">Atjaunot</string>
+<string key="Bookmarks and custom notes">Grāmatzīmes un pasūtījuma piezīmes</string>
+<string key="Window setup">Logu uzstādīšana</string>
+<string key="Folder on OneDrive">Mape OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Nepastāv OneDrive. Izņemiet to un mēģiniet vēlreiz</string>
+<string key="There is no backup to restore">Nav rezerves, lai atjaunotu</string>
+<string key="Connect to OneDrive">Pieslēgties OneDrive</string>
 </translations>

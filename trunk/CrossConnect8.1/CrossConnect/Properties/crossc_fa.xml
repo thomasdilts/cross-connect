@@ -215,4 +215,14 @@
 <string key="Import bookmarks, highlights and notes from the clipboard">بوک مارک واردات، برجسته و یادداشت ها را از کلیپ بورد</string>
 <string key="Highlight">نماد</string>
 <string key="Synchronize to every verse">همگام سازی به هر آیه</string>
+<string key="OneDrive backup / restore">OneDrive تهیه پشتیبان / بازیابی</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">موارد شما می خواهید را انتخاب کنید تا پشتیبان گیری / بازیابی. سپس بر روی دکمه در پایین ضربه</string>
+<string key="Backup">پشتیبان</string>
+<string key="Restore">بازیابی</string>
+<string key="Bookmarks and custom notes">بوک مارک ها و یادداشت های سفارشی</string>
+<string key="Window setup">راه اندازی پنجره</string>
+<string key="Folder on OneDrive">پوشه در OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">آیا در OneDrive وجود ندارد. آن را حذف و دوباره سعی کنید</string>
+<string key="There is no backup to restore">هیچ پشتیبان گیری برای بازگرداندن وجود دارد</string>
+<string key="Connect to OneDrive">اتصال به OneDrive</string>
 </translations>

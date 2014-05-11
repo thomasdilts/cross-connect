@@ -115,6 +115,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libraries\Coding4Fun.Phone.Site.Controls.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Live, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Live.Controls, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libraries\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
@@ -128,6 +130,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AutoRotatePage.cs" />
+    <Compile Include="BackupRestore.cs" />
     <Compile Include="CopyTexts.xaml.cs">
       <DependentUpon>CopyTexts.xaml</DependentUpon>
     </Compile>
@@ -144,6 +147,9 @@
     </Compile>
     <Compile Include="SelectTtsToPlay.xaml.cs">
       <DependentUpon>SelectTtsToPlay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OneDriveExport.xaml.cs">
+      <DependentUpon>OneDriveExport.xaml</DependentUpon>
     </Compile>
     <Compile Include="TranslateByGoogle.cs" />
     <Compile Include="WebFontSelect.xaml.cs">
@@ -236,6 +242,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SelectTtsToPlay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OneDriveExport.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

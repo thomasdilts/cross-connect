@@ -234,4 +234,14 @@
 <string key="Highlight">Highlight</string>
 <string key="Synchronize to every verse">Synkronisera till varje vers</string>
 <string key="None">Inget</string>
+<string key="OneDrive backup / restore">OneDrive backup / restore</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Markera de objekt som du vill säkerhetskopiera / återställa. Slå sedan på knappen längst ner</string>
+<string key="Backup">Backup</string>
+<string key="Restore">Återställ</string>
+<string key="Bookmarks and custom notes">Bokmärken och egna anteckningar</string>
+<string key="Window setup">Fönster inställnings</string>
+<string key="Folder on OneDrive">Mapp på OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Finns inte i OneDrive. Ta bort den och försök igen</string>
+<string key="There is no backup to restore">Det finns ingen backup för att återställa</string>
+<string key="Connect to OneDrive">Anslut till OneDrive</string>
 </translations>

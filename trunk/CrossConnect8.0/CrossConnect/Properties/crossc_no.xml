@@ -234,4 +234,14 @@
 <string key="Highlight">Høydepunkt</string>
 <string key="Synchronize to every verse">Synkronisere til hver vers</string>
 <string key="None">Ingen</string>
+<string key="OneDrive backup / restore">OneDrive backup / restore</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Velg elementene du ønsker å ta backup / restore. Deretter traff knappen nederst</string>
+<string key="Backup">Backup</string>
+<string key="Restore">Gjenopprett</string>
+<string key="Bookmarks and custom notes">Bokmerker og tilpassede notater</string>
+<string key="Window setup">Vindusoppsett</string>
+<string key="Folder on OneDrive">Mappe på OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Eksisterer ikke i OneDrive. Fjern det, og prøv igjen</string>
+<string key="There is no backup to restore">Det er ingen backup å gjenopprette</string>
+<string key="Connect to OneDrive">Koble til OneDrive</string>
 </translations>

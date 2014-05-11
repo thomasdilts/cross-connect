@@ -234,4 +234,14 @@
 <string key="Highlight">Основний момент</string>
 <string key="Synchronize to every verse">Синхронізація, щоб кожен вірш</string>
 <string key="None">Жоден</string>
+<string key="OneDrive backup / restore">OneDrive резервного копіювання / відновлення</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Виберіть елементи, які ви хочете резервного копіювання / відновлення. Потім натисніть кнопку в нижній</string>
+<string key="Backup">Резервний</string>
+<string key="Restore">Відновлення</string>
+<string key="Bookmarks and custom notes">Закладки і призначені для користувача замітки</string>
+<string key="Window setup">Установка вікон</string>
+<string key="Folder on OneDrive">Папка на OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Не існує в OneDrive. Видаліть його і спробуйте ще раз</string>
+<string key="There is no backup to restore">Там немає резервної копії для відновлення</string>
+<string key="Connect to OneDrive">Підключення до OneDrive</string>
 </translations>

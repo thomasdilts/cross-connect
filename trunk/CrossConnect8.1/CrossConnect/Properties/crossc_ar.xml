@@ -215,4 +215,14 @@
 <string key="Import bookmarks, highlights and notes from the clipboard">استيراد الإشارات، ويسلط الضوء على الملاحظات من الحافظة</string>
 <string key="Highlight">تسليط الضوء على</string>
 <string key="Synchronize to every verse">مزامنة إلى كل آية</string>
+<string key="OneDrive backup / restore">OneDrive النسخ الاحتياطي / استعادة</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">حدد العناصر التي تريد النسخ الاحتياطي / استعادة. ثم الضغط على زر في أسفل</string>
+<string key="Backup">دعم</string>
+<string key="Restore">استعادة</string>
+<string key="Bookmarks and custom notes">العناوين والملاحظات مخصصة</string>
+<string key="Window setup">الإعداد النافذة</string>
+<string key="Folder on OneDrive">مجلد على OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">غير موجود في OneDrive. إزالته وحاول مرة أخرى</string>
+<string key="There is no backup to restore">لا يوجد أي النسخ الاحتياطي لاستعادة</string>
+<string key="Connect to OneDrive">الاتصال OneDrive</string>
 </translations>

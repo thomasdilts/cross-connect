@@ -234,4 +234,14 @@
 <string key="Highlight">Zdůraznit</string>
 <string key="Synchronize to every verse">Synchronizace na každém verši</string>
 <string key="None">Žádný</string>
+<string key="OneDrive backup / restore">OneDrive zálohování / obnovení</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Vyberte položky, které chcete zálohovat / obnovit. Poté stiskněte tlačítko v dolní části</string>
+<string key="Backup">Zálohování</string>
+<string key="Restore">Obnovit</string>
+<string key="Bookmarks and custom notes">Záložky a vlastní poznámky</string>
+<string key="Window setup">Nastavení okna</string>
+<string key="Folder on OneDrive">Složka na OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Neexistuje v OneDrive. Vyjměte ji a zkuste to znovu</string>
+<string key="There is no backup to restore">Neexistuje žádná záloha obnovit</string>
+<string key="Connect to OneDrive">Připojte se k OneDrive</string>
 </translations>

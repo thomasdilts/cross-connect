@@ -215,4 +215,14 @@
 <string key="Import bookmarks, highlights and notes from the clipboard">درآمد بک مارکس، روشنی ڈالی گئی ہے اور کلپ بورڈ سے نوٹ</string>
 <string key="Highlight">نمایاں کریں</string>
 <string key="Synchronize to every verse">ہر آیت پر ہم آہنگ</string>
+<string key="OneDrive backup / restore">OneDrive بیک اپ / بحال</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">بیک اپ کرنا چاہتے اشیاء کو منتخب / بحال. اس کے بعد نیچے دیے گئے بٹن پر کلک کیجیئے</string>
+<string key="Backup">بیک اپ</string>
+<string key="Restore">بحال</string>
+<string key="Bookmarks and custom notes">بک مارک اور اپنی مرضی کے نوٹ</string>
+<string key="Window setup">ونڈو سیٹ اپ</string>
+<string key="Folder on OneDrive">OneDrive پر فولڈر</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">OneDrive میں موجود نہیں ہے. اس کو ہٹا دیں اور دوبارہ کوشش کریں</string>
+<string key="There is no backup to restore">بحال کرنے کے لئے کوئی بیک اپ نہیں ہے</string>
+<string key="Connect to OneDrive">OneDrive سے رابطہ قائم کریں</string>
 </translations>

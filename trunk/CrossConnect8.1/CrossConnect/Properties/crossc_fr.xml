@@ -215,4 +215,14 @@
 <string key="Import bookmarks, highlights and notes from the clipboard">Importer des signets, surlignages et notes du presse-papiers</string>
 <string key="Highlight">Highlight</string>
 <string key="Synchronize to every verse">Synchroniser à chaque verset</string>
+<string key="OneDrive backup / restore">OneDrive sauvegarde / restauration</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Sélectionnez les éléments que vous souhaitez sauvegarder / restaurer. Puis cliquez sur le bouton en bas</string>
+<string key="Backup">Sauvegarde</string>
+<string key="Restore">Restaurer</string>
+<string key="Bookmarks and custom notes">Signets et notes personnalisées</string>
+<string key="Window setup">installation de fenêtre</string>
+<string key="Folder on OneDrive">Dossier sur OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">N'existe pas dans OneDrive. Retirez-le et essayez à nouveau</string>
+<string key="There is no backup to restore">Il n'y a pas de sauvegarde à restaurer</string>
+<string key="Connect to OneDrive">Connectez-vous à OneDrive</string>
 </translations>

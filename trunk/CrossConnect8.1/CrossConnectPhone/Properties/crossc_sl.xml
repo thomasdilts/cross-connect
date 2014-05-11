@@ -234,4 +234,14 @@
 <string key="Highlight">Vrhunec</string>
 <string key="Synchronize to every verse">Sinhronizacijo na vsak verz</string>
 <string key="None">Noben</string>
+<string key="OneDrive backup / restore">OneDrive backup / restore</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Izberite elemente, ki jih želite backup / restore. Nato pritisnite gumb na dnu</string>
+<string key="Backup">Backup</string>
+<string key="Restore">Restore</string>
+<string key="Bookmarks and custom notes">Zaznamki in meri pojasnila</string>
+<string key="Window setup">Nastavitev okno</string>
+<string key="Folder on OneDrive">Mapa OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Ne obstaja v OneDrive. Ga odstranite in poskusite znova</string>
+<string key="There is no backup to restore">Ni backup obnoviti</string>
+<string key="Connect to OneDrive">Povežite se OneDrive</string>
 </translations>

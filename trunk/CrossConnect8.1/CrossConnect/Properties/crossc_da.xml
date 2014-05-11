@@ -215,4 +215,14 @@
 <string key="Import bookmarks, highlights and notes from the clipboard">Import af bogmærker, højdepunkter og noter fra klippebordet</string>
 <string key="Highlight">Highlight</string>
 <string key="Synchronize to every verse">Synkroniser til alle vers</string>
+<string key="OneDrive backup / restore">OneDrive backup / gendannelse</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Vælg de emner, du ønsker at backup / gendannelse. Så ramte knappen nederst</string>
+<string key="Backup">Backup</string>
+<string key="Restore">Gendan</string>
+<string key="Bookmarks and custom notes">Bogmærker og brugerdefinerede noter</string>
+<string key="Window setup">Vinduesopsætning</string>
+<string key="Folder on OneDrive">Folder om OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Findes ikke i OneDrive. Fjern den og prøv igen</string>
+<string key="There is no backup to restore">Der er ingen backup at genskabe</string>
+<string key="Connect to OneDrive">Tilslut til OneDrive</string>
 </translations>

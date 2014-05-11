@@ -234,4 +234,14 @@
 <string key="Highlight">Evidențiați</string>
 <string key="Synchronize to every verse">Sincroniza la fiecare verset</string>
 <string key="None">Nici unul</string>
+<string key="OneDrive backup / restore">OneDrive backup / restore</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Selectați elementele pe care doriți să backup / restore. Apoi apăsați pe butonul din partea de jos</string>
+<string key="Backup">Backup</string>
+<string key="Restore">Restabili</string>
+<string key="Bookmarks and custom notes">Marcaje și note personalizate</string>
+<string key="Window setup">Configurare fereastră</string>
+<string key="Folder on OneDrive">Folder de pe OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Nu există în OneDrive. Scoateți-l și încercați din nou</string>
+<string key="There is no backup to restore">Nu există nici o rezervă pentru a restaura</string>
+<string key="Connect to OneDrive">Conectați-vă la OneDrive</string>
 </translations>

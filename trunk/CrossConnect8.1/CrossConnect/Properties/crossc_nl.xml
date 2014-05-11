@@ -215,4 +215,14 @@
 <string key="Import bookmarks, highlights and notes from the clipboard">Bladwijzers, markeringen en notities van het klembord importeren</string>
 <string key="Highlight">Highlight</string>
 <string key="Synchronize to every verse">Synchroniseren met elk vers</string>
+<string key="OneDrive backup / restore">OneDrive backup / restore</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Selecteer de items die u wilt back-up / restore. Dan druk op de knop aan de onderkant</string>
+<string key="Backup">Reservekopie</string>
+<string key="Restore">Herstellen</string>
+<string key="Bookmarks and custom notes">Bladwijzers en aangepaste notities</string>
+<string key="Window setup">Window setup</string>
+<string key="Folder on OneDrive">Map op OneDrive</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Bestaat niet in de OneDrive. Verwijder het en probeer het opnieuw</string>
+<string key="There is no backup to restore">Er is geen back-up te herstellen</string>
+<string key="Connect to OneDrive">Aansluiten op OneDrive</string>
 </translations>

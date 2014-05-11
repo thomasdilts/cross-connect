@@ -234,4 +234,14 @@
 <string key="Highlight">Врхунац</string>
 <string key="Synchronize to every verse">Синхронизација у сваком стиху</string>
 <string key="None">Ниједан</string>
+<string key="OneDrive backup / restore">ОнеДриве бацкуп / ресторе</string>
+<string key="Select the items you want to backup / restore. Then hit the button at the bottom">Изаберите ставке које желите да направите резервну копију / враћање. Затим притисните дугме на дну</string>
+<string key="Backup">Резерва</string>
+<string key="Restore">Вратити</string>
+<string key="Bookmarks and custom notes">Адресе и прилагођене белешке</string>
+<string key="Window setup">Подешавање прозора</string>
+<string key="Folder on OneDrive">Папка на ОнеДриве</string>
+<string key="Doesn't exist in OneDrive. Remove it and try again">Не постоји у ОнеДриве. Извадите га и покушајте поново</string>
+<string key="There is no backup to restore">Не постоји резерва да поврати</string>
+<string key="Connect to OneDrive">Повезивање са ОнеДриве</string>
 </translations>
