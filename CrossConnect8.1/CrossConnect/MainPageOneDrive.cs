@@ -179,7 +179,7 @@ namespace CrossConnect
 
         private void OneDrivePopup_OnClosed(object sender, object e)
         {
-
+            App.ShowUserInterface(true);
         }
 
         private void OneDrivePopup_OnOpened(object sender, object e)
