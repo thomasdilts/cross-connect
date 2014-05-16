@@ -584,6 +584,7 @@
                                 <Grid Grid.Row="1" x:Name="oneDriveActionPanel" >
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -591,6 +592,7 @@
                                     </Grid.ColumnDefinitions>
                                     <Button Grid.Row="0" Grid.Column="0"  Content="Backup" Name="oneDriveButExport" Click="ButExportClick" />
                                     <Button Grid.Row="0" Grid.Column="1"  Content="Restore" Name="oneDriveButImport" Click="butImport_Click" />
+                                    <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"  Content="Logout" Name="oneDriveButLogout" Click="oneDriveButLogout_Click" />
                                 </Grid>
                             </StackPanel>
                             <StackPanel Grid.Row="2" x:Name="oneDriveConnectPanel">

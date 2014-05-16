@@ -12,44 +12,44 @@
                       xmlns:sys="clr-namespace:System;assembly=mscorlib" Loaded="AutoRotatePageLoaded"
                       BackKeyPress="AutoRotatePageBackKeyPress">
 
-  <toolkit:TransitionService.NavigationInTransition>
-    <toolkit:NavigationInTransition>
-      <toolkit:NavigationInTransition.Backward>
-        <toolkit:TurnstileTransition Mode="BackwardIn" />
-      </toolkit:NavigationInTransition.Backward>
-      <toolkit:NavigationInTransition.Forward>
-        <toolkit:TurnstileTransition Mode="ForwardIn" />
-      </toolkit:NavigationInTransition.Forward>
-    </toolkit:NavigationInTransition>
-  </toolkit:TransitionService.NavigationInTransition>
-  <toolkit:TransitionService.NavigationOutTransition>
-    <toolkit:NavigationOutTransition>
-      <toolkit:NavigationOutTransition.Backward>
-        <toolkit:TurnstileTransition Mode="BackwardOut" />
-      </toolkit:NavigationOutTransition.Backward>
-      <toolkit:NavigationOutTransition.Forward>
-        <toolkit:TurnstileTransition Mode="ForwardOut" />
-      </toolkit:NavigationOutTransition.Forward>
-    </toolkit:NavigationOutTransition>
-  </toolkit:TransitionService.NavigationOutTransition>
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn" />
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn" />
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut" />
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut" />
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
 
-  <!--LayoutRoot is the root grid where all page content is placed-->
-  <ScrollViewer Name="scrollViewer1">
-    <Grid x:Name="LayoutRoot" Background="Transparent">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="*" />
-      </Grid.RowDefinitions>
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <ScrollViewer Name="scrollViewer1">
+        <Grid x:Name="LayoutRoot" Background="Transparent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-      <!--TitlePanel contains the name of the application and page title-->
-      <StackPanel Grid.Row="0" x:Name="TitlePanel" Margin="12,5,0,0" Height="63" VerticalAlignment="Top">
-        <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}" />
-        <TextBlock x:Name="PageTitle" Text="Export to OneDrive" Margin="9,-7,0,0"
+            <!--TitlePanel contains the name of the application and page title-->
+            <StackPanel Grid.Row="0" x:Name="TitlePanel" Margin="12,5,0,0" Height="63" VerticalAlignment="Top">
+                <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}" />
+                <TextBlock x:Name="PageTitle" Text="Export to OneDrive" Margin="9,-7,0,0"
                    Style="{StaticResource PhoneTextTitle2Style}" />
-      </StackPanel>
-      <!--ContentPanel - place additional content here-->
+            </StackPanel>
+            <!--ContentPanel - place additional content here-->
             <StackPanel Grid.Row="1" x:Name="oneDriveContentPanel">
                 <TextBlock TextWrapping="Wrap" Name="oneDriveInformationText" Text="Select the items you want to export. Then hit the export button at the bottom" />
                 <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Window setup" IsChecked="true"
@@ -69,6 +69,7 @@
                 <Grid Grid.Row="1" x:Name="oneDriveActionPanel" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -76,6 +77,7 @@
                     </Grid.ColumnDefinitions>
                     <Button Grid.Row="0" Grid.Column="0"  Content="Backup" Name="oneDriveButExport" Click="ButExportClick" />
                     <Button Grid.Row="0" Grid.Column="1"  Content="Restore" Name="oneDriveButImport" Click="butImport_Click" />
+                    <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"  Content="Logout" Name="oneDriveButLogout" Click="oneDriveButLogout_Click" />
                 </Grid>
             </StackPanel>
             <StackPanel Grid.Row="2" x:Name="oneDriveConnectPanel">
@@ -85,8 +87,9 @@
             <StackPanel Grid.Row="3" x:Name="oneDriveConnectPanelTransfer">
                 <ProgressBar Margin="0 40 0 0" IsIndeterminate="False" Name="oneDriveProgressBarTotal" />
                 <ProgressBar Margin="0 40 0 0" IsIndeterminate="False" Name="oneDriveProgressBarPartial" />
+                <TextBlock Name="oneDriveDebugText" Text="" />
             </StackPanel>
         </Grid>
-  </ScrollViewer>
+    </ScrollViewer>
 
 </local:AutoRotatePage>
