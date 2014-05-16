@@ -113,6 +113,7 @@ namespace CrossConnect
             oneDriveWindowSetup.Header = Translations.Translate("Window setup");
             this.oneDriveCaptionPutInFolder.Text = Translations.Translate("Folder on OneDrive");
             this.oneDriveButConnect.Content = Translations.Translate("Connect to OneDrive");
+            this.oneDriveButLogout.Content = Translations.Translate("Logout from OneDrive");
 
             bool successfulInitialize = false;
             while (!successfulInitialize)
@@ -131,8 +132,13 @@ namespace CrossConnect
         }
 
         #endregion Methods
-        private async void BackupRestoreProgress(double percentTotal, double percentPartial, bool IsFinal, string Message, string MessageTranslateable1, string MessageTranslateable2)
+        private async void BackupRestoreProgress(double percentTotal, double percentPartial, bool IsFinal, string debug, string Message, string MessageTranslateable1, string MessageTranslateable2)
         {
+            if (!string.IsNullOrEmpty(debug))
+            {
+                oneDriveDebugText.Text = debug;
+                return;
+            }
             this.oneDriveProgressBarTotal.Value = percentTotal;
             this.oneDriveProgressBarPartial.Value = percentPartial;
             if (IsFinal && !string.IsNullOrEmpty(Message))
@@ -140,19 +146,21 @@ namespace CrossConnect
                 MessageBox.Show(Translations.Translate(
                                 "An error occurred trying to connect to the network. Try again later.") + "; " + Message);
                 _isTransfering = false;
+                UpdateUi();
             }
             else if (IsFinal && !string.IsNullOrEmpty(MessageTranslateable1))
             {
-                MessageBox.Show(Translations.Translate(MessageTranslateable1) + (string.IsNullOrEmpty(MessageTranslateable2) ? " - " + Translations.Translate(MessageTranslateable2) : string.Empty));
+                MessageBox.Show(Translations.Translate(MessageTranslateable1) + (!string.IsNullOrEmpty(MessageTranslateable2) ? " - " + Translations.Translate(MessageTranslateable2) : string.Empty));
                 _isTransfering = false;
+                UpdateUi();
             }
             if (IsFinal)
             {
                 await App.LoadPersistantObjects();
                 _isTransfering = false;
                 UpdateUi();
-                App.MainWindow.ReDrawWindows();
-                Deployment.Current.Dispatcher.BeginInvoke(() => Deployment.Current.Dispatcher.BeginInvoke(() =>{App.SavePersistantDisplaySettings();App.SavePersistantThemes();}));
+                Deployment.Current.Dispatcher.BeginInvoke(() => Deployment.Current.Dispatcher.BeginInvoke(() => { App.SavePersistantDisplaySettings(); App.SavePersistantThemes(); }));
+
             }
         }
         private async void ButExportClick(object sender, RoutedEventArgs e)
@@ -200,6 +208,13 @@ namespace CrossConnect
                     windowSetup = (bool)this.oneDriveWindowSetup.IsChecked,
                     IsWindowsPhone = true
                 }, this.oneDrivePutInFolder.Text, BackupRestoreProgress);
+        }
+
+        private void oneDriveButLogout_Click(object sender, RoutedEventArgs e)
+        {
+            backupRestoreObj.LogOut();
+            _isTransfering = false;
+            UpdateUi();
         }
     }
 }

@@ -65,6 +65,7 @@ namespace CrossConnect
             this.oneDriveCaptionPutInFolder.Text = Translations.Translate("Folder on OneDrive");
             oneDriveButCancel.Content = Translations.Translate("Cancel");
             this.oneDriveButConnect.Content = Translations.Translate("Connect to OneDrive");
+            this.oneDriveButLogout.Content = Translations.Translate("Logout from OneDrive");
 
             oneDrivePutInFolder.Text = App.DisplaySettings.OneDriveFolder;
         }
@@ -87,6 +88,7 @@ namespace CrossConnect
                 await dialog.ShowAsync();
             }
             UpdateUi();
+            this.oneDriveButLogout.Visibility = backupRestoreObj.CanLogOut ? Visibility.Visible : Visibility.Collapsed;
             OneDrivePopup.IsOpen = true;
         }
 
@@ -109,13 +111,15 @@ namespace CrossConnect
                 await dialog.ShowAsync();
                 _isTransfering = false;
                 isError = true;
+                UpdateUi();
             }
             else if (IsFinal && !string.IsNullOrEmpty(MessageTranslateable1))
             {
-                var dialog = new MessageDialog(Translations.Translate(MessageTranslateable1) + (string.IsNullOrEmpty(MessageTranslateable2) ? " - " + Translations.Translate(MessageTranslateable2) : string.Empty));
+                var dialog = new MessageDialog(Translations.Translate(MessageTranslateable1) + (!string.IsNullOrEmpty(MessageTranslateable2) ? " - " + Translations.Translate(MessageTranslateable2) : string.Empty));
                 await dialog.ShowAsync();
                 _isTransfering = false;
                 isError = true;
+                UpdateUi();
             }
             if (IsFinal && !isError)
             {
@@ -177,6 +181,13 @@ namespace CrossConnect
                 }, this.oneDrivePutInFolder.Text, BackupRestoreProgress);
         }
 
+        private void oneDriveButLogout_Click(object sender, RoutedEventArgs e)
+        {
+            backupRestoreObj.LogOut();
+            _isTransfering = false;
+            UpdateUi();
+            OneDrivePopup.IsOpen = false;
+        }
         private void OneDrivePopup_OnClosed(object sender, object e)
         {
             App.ShowUserInterface(true);

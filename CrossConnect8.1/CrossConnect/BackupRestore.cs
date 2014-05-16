@@ -31,10 +31,25 @@ namespace CrossConnect
         public const string PersistantObjectsDisplaySettingsFileName = "_DisplaySettings.xml";
         public const string PersistantObjectsMarkersFileName = "_Markers.xml";
         public const string PersistantObjectsHighlightFileName = "_Highlights.xml";
-        private readonly string[] _defaultAuthScopes = new string[] { "wl.signin", "wl.skydrive", "wl.skydrive_update" };
+        private readonly string[] _defaultAuthScopes = new string[] { "wl.signin", "wl.basic", "wl.skydrive", "wl.skydrive_update" };
         private LiveConnectClient liveClient = null;
 
-        private LiveAuthClient authClient;
+        private LiveAuthClient authClient = null;
+        public string LogOut()
+        {
+            _isConnected = false;
+            if (authClient.CanLogout)
+            {
+                authClient.Logout();
+                return string.Empty;
+            }
+            else
+            {
+                return "You may not logout.";
+            }
+        }
+
+        public bool CanLogOut { get { return authClient.CanLogout; } }
         public async Task<string> AuthenticateUser()
         {
             string text = null;
