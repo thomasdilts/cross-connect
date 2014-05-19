@@ -1928,7 +1928,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                                 string bookShortName;
                                                 if (ConvertOsisRefToAbsoluteChaptVerse(
                                                     reader.Value, out bookShortName, out chaptNumLoc, out verseNumLoc))
-                                                {
+                                                {                                                    
                                                     isReferenceLinked = true;
                                                     string textId = bookShortName + "_" + chaptNumLoc + "_" + verseNumLoc;
                                                     noteText.Append(
@@ -1986,7 +1986,17 @@ function SetFontColorForElement(elemntId, colorRgba){
                                             noteText.Append("<p>" + chapterNumber);
                                             isChaptNumGivenNotes = true;
                                         }
-
+                                        if (!isRaw && displaySettings.ShowNotePositions)
+                                        {
+                                            noteText.Append(
+                                                (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
+                                                + this.convertNoteNumToId(noteIdentifier)
+                                                + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
+                                            if (isNotesOnly)
+                                            {
+                                                noteIdentifier++;
+                                            }
+                                        }
                                         noteText.Append("(");
                                         isInInjectionElement = true;
                                         break;
@@ -2006,6 +2016,19 @@ function SetFontColorForElement(elemntId, colorRgba){
                                             noteText.Append("<p>" + chapterNumber);
                                             isChaptNumGivenNotes = true;
                                         }
+                                        
+                                        if (!isRaw && displaySettings.ShowNotePositions)
+                                        {
+                                            noteText.Append(
+                                                (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
+                                                + this.convertNoteNumToId(noteIdentifier)
+                                                + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
+                                            if(isNotesOnly)
+                                            {
+                                                noteIdentifier++;
+                                            }
+                                        }
+
 
                                         isInElement = true;
                                         break;
