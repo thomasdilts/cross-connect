@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<translations isolang="zh" isolocale="TW" version="1.0">
+<translations isolang="zh" isolocale="tw" version="1.0">
 <string key="Accent color">強調色</string>
 <string key="Add a note">添加註釋</string>
 <string key="Add new window">添加新的窗口</string>
@@ -244,4 +244,5 @@
 <string key="Doesn't exist in OneDrive. Remove it and try again">不會在OneDrive存在。刪除它，然後再試一次</string>
 <string key="There is no backup to restore">沒有備份恢復</string>
 <string key="Connect to OneDrive">連接到OneDrive</string>
+<string key="Add a line between notes">添加音符之間的一條線</string>
 </translations>

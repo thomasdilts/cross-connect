@@ -248,4 +248,5 @@
     <string key="Doesn't exist in OneDrive. Remove it and try again">Doesn't exist in OneDrive. Remove it and try again</string>
     <string key="There is no backup to restore">There is no backup to restore</string>
     <string key="Connect to OneDrive">Connect to OneDrive</string>
+    <string key="Add a line between notes">Add a line between notes</string>
 </translations>

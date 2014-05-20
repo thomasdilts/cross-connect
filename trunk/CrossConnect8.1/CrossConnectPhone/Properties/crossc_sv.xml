@@ -244,4 +244,5 @@
 <string key="Doesn't exist in OneDrive. Remove it and try again">Finns inte i OneDrive. Ta bort den och försök igen</string>
 <string key="There is no backup to restore">Det finns ingen backup för att återställa</string>
 <string key="Connect to OneDrive">Anslut till OneDrive</string>
+<string key="Add a line between notes">Lägga till en linje mellan anteckningar</string>
 </translations>

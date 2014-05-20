@@ -166,8 +166,9 @@
                                           Name="useHighlighting" />
                             <ToggleSwitch Header="Use remote storage of settings" IsOn="true"
                                           Name="useRemoteStorage" />
-                            <ToggleSwitch Header="SyncVerses" Grid.Row="2" Name="SyncVerses" />
-
+                            <ToggleSwitch Header="SyncVerses" Name="SyncVerses" />
+                            <ToggleSwitch Header="AddLineBetweenNotes" Name="AddLineBetweenNotes" />
+                            
                             <TextBlock Name="captionHebrewDictionaryLink" Text="Hebrew dictionary internet link" />
                             <TextBox Name="hebrewDictionaryLink" Text="" Margin="10 10 10 10" />
                             <TextBlock Name="captionGreekDictionaryLink" Text="Greek dictionary internet link" />

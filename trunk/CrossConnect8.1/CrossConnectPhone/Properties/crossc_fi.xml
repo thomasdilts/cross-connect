@@ -244,4 +244,5 @@
 <string key="Doesn't exist in OneDrive. Remove it and try again">Ei ole olemassa OneDrive. Poista se ja yritä uudelleen</string>
 <string key="There is no backup to restore">Ei ole varmuuskopio palauttaa</string>
 <string key="Connect to OneDrive">Yhdistä OneDrive</string>
+<string key="Add a line between notes">Lisää linjan välillä muistiinpanoja</string>
 </translations>

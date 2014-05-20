@@ -325,7 +325,7 @@ namespace CrossConnect.readers
                                        + (this.Chapters[chaptListToSearch[i]].BookRelativeChapterNum + 1) + ":"
                                        + (j + 1) + (displaySettings.SmallVerseNumbers ? " </sup>" : ")");
                             const string htmlSuffix = "</a></p><hr />";
-                            int noteMarker = 'a';
+                            int noteMarker = 0;
                             string verseTxt = this.ParseOsisText(
                                 displaySettings,
                                 string.Empty,

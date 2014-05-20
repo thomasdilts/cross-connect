@@ -91,6 +91,7 @@
                               Name="useInternetGreekHebrewDict" />
         <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="Use highlighting" Name="useHighlighting" />
         <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="SyncVerses" Name="SyncVerses" />
+                <toolkit:ToggleSwitch Margin="0,0,0,-30" Header="AddLineBetweenNotes" Name="AddLineBetweenNotes" />
         <TextBlock Name="captionHebrewDictionaryLink" Text="Hebrew dictionary internet link" />
         <TextBox Name="hebrewDictionaryLink" Text="" />
         <TextBlock Name="captionGreekDictionaryLink" Text="Greek dictionary internet link" />

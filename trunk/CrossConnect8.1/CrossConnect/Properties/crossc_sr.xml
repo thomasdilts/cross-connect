@@ -225,4 +225,5 @@
 <string key="Doesn't exist in OneDrive. Remove it and try again">Не постоји у ОнеДриве. Извадите га и покушајте поново</string>
 <string key="There is no backup to restore">Не постоји резерва да поврати</string>
 <string key="Connect to OneDrive">Повезивање са ОнеДриве</string>
+<string key="Add a line between notes">Додајте линију између белешке</string>
 </translations>

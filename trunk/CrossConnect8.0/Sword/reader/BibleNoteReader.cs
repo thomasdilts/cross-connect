@@ -171,7 +171,7 @@ namespace CrossConnect.readers
             var book = canon.BookByShortName[bookShortName];
             Task<byte[]> chapterBuffer = this.GetChapterBytes(chapterNumber + book.VersesInChapterStartIndex);
             VersePos verse = this.Chapters[chapterNumber].Verses[verseNumber];
-            int noteMarker = 'a';
+            int noteMarker = 0;
             bool isInPoetry = false;
             return this.ParseOsisText(
                 displaySettings,

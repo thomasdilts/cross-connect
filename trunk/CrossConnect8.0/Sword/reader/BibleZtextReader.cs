@@ -903,7 +903,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             // debug only
             // string all = System.Text.UTF8Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
             VersePos verse = this.Chapters[book.VersesInChapterStartIndex + chapterNumber].Verses[verseNumber];
-            int noteMarker = 'a';
+            int noteMarker = 0;
             bool isInPoetry = false;
             return this.ParseOsisText(
                 displaySettings,
@@ -978,7 +978,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 ChapterPos versesForChapterPositions = this.Chapters[place.ChapterNum + book.VersesInChapterStartIndex];
 
                 VersePos verse = versesForChapterPositions.Verses[place.VerseNum];
-                int noteMarker = 'a';
+                int noteMarker = 0;
                 string verseTxt = this.ParseOsisText(
                     displaySettings,
                     this.GetFullName(chaptPos.Booknum, appChoosenIsoLangCode) + " " + (chaptPos.BookRelativeChapterNum + 1) + ":"
@@ -1471,7 +1471,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             string stopVerseMarking = displaySettings.SmallVerseNumbers
                                           ? "</sup>"
                                           : (isVerseMarking ? ")</span>" : string.Empty);
-            int noteIdentifier = 'a';
+            int noteIdentifier = 0;
 
             // in some commentaries, the verses repeat. Stop these repeats from comming in!
             var verseRepeatCheck = new Dictionary<long, int>();
@@ -1734,7 +1734,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                          + stopVerseMarking;
 
                 string textId = place.BookShortName + "_" + place.ChapterNum + "_" + place.VerseNum;
-                int noteMarker = 'a';
+                int noteMarker = 0;
                 string verseTxt = this.ParseOsisText(
                     displaySettings,
                     "<p><a name=\"" + textId + "\"></a><a class=\"normalcolor\" id=\"ID_" + textId
@@ -1847,6 +1847,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             int isLastElementLineBreak = 0;
             string lemmaText = string.Empty;
             string morphText = string.Empty;
+            bool isFirstNoteInText = true;
             using (XmlReader reader = XmlReader.Create(ms, settings))
             {
                 try
@@ -1928,7 +1929,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                                 string bookShortName;
                                                 if (ConvertOsisRefToAbsoluteChaptVerse(
                                                     reader.Value, out bookShortName, out chaptNumLoc, out verseNumLoc))
-                                                {
+                                                {                                                    
                                                     isReferenceLinked = true;
                                                     string textId = bookShortName + "_" + chaptNumLoc + "_" + verseNumLoc;
                                                     noteText.Append(
@@ -2016,14 +2017,20 @@ function SetFontColorForElement(elemntId, colorRgba){
                                             noteText.Append("<p>" + chapterNumber);
                                             isChaptNumGivenNotes = true;
                                         }
-
+                                        
                                         if (!isRaw && displaySettings.ShowNotePositions)
                                         {
+                                            if (!isFirstNoteInText && displaySettings.AddLineBetweenNotes)
+                                            {
+                                                noteText.Append("<br />");
+                                                
+                                            }
+                                            isFirstNoteInText = false;
                                             noteText.Append(
                                                 (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
                                                 + this.convertNoteNumToId(noteIdentifier)
                                                 + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
-                                            if (isNotesOnly)
+                                            if(isNotesOnly)
                                             {
                                                 noteIdentifier++;
                                             }
@@ -2568,17 +2575,45 @@ function SetFontColorForElement(elemntId, colorRgba){
             }
         }
 
+        //private string convertNoteNumToId(int noteIdentifier)
+        //{
+        //    string noteReturned = string.Empty;
+        //    string startChar = ((char)((noteIdentifier - 'a') % 24 + 'a')).ToString();
+        //    int numChars = (noteIdentifier - 'a') / 24;
+        //    for (int i = 0; i <= numChars; i++)
+        //    {
+        //        noteReturned += startChar;
+        //    }
+
+        //    return "(" + noteReturned + ")";
+        //}
+        //private static string[] IntToBase24 = new string[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
         private string convertNoteNumToId(int noteIdentifier)
         {
-            string noteReturned = string.Empty;
-            string startChar = ((char)((noteIdentifier - 'a') % 24 + 'a')).ToString();
-            int numChars = (noteIdentifier - 'a') / 24;
-            for (int i = 0; i <= numChars; i++)
+            string base26 = string.Empty;
+            do
             {
-                noteReturned += startChar;
+                base26 += (char)(noteIdentifier % 26 + 'a');// IntToBase24[noteIdentifier % 26];
+                noteIdentifier = noteIdentifier / 26;
             }
+            while (noteIdentifier > 0);
 
-            return "(" + noteReturned + ")";
+            return "(" + Reverse(base26) + ")";
+        }
+        public string Reverse(string input)
+        {
+            char[] output = new char[input.Length];
+
+            int forwards = 0;
+            int backwards = input.Length - 1;
+
+            do
+            {
+                output[forwards] = input[backwards];
+                output[backwards] = input[forwards];
+            } while (++forwards <= --backwards);
+
+            return new String(output);
         }
 
         #endregion
