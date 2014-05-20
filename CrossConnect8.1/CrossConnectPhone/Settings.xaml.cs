@@ -152,7 +152,11 @@ namespace CrossConnect
             {
                 App.DisplaySettings.UseInternetGreekHebrewDict = (bool)useInternetGreekHebrewDict.IsChecked;
             }
-
+            if (AddLineBetweenNotes.IsChecked != null)
+            {
+                App.DisplaySettings.AddLineBetweenNotes = (bool)AddLineBetweenNotes.IsChecked;
+            }
+            
             App.RaiseBookmarkChangeEvent();
             App.RaiseHistoryChangeEvent();
             App.RaisePersonalNotesChangeEvent();
@@ -213,6 +217,8 @@ namespace CrossConnect
             this.captionHightlight6.Text = Translations.Translate("Highlight name") + " 6";
             this.useHighlighting.Header = Translations.Translate("Use highlighting");
             this.SyncVerses.Header = Translations.Translate("Synchronize to every verse");
+            this.AddLineBetweenNotes.Header = Translations.Translate("Add a line between notes");
+            
             butExportBookmarksHighlightsAndNotes.Content = Translations.Translate("Copy bookmarks, highlights and notes to the clipboard");
             butImportBookmarksHighlightsAndNotes.Content = Translations.Translate("Import bookmarks, highlights and notes after you paste the clipboard into the box below");
 
@@ -248,7 +254,8 @@ namespace CrossConnect
                     this.highlightName6.Text = App.DisplaySettings.HighlightName6;
                     this.useHighlighting.IsChecked = App.DisplaySettings.UseHighlights;
                     this.SyncVerses.IsChecked = App.DisplaySettings.SyncMediaVerses;
-
+                    this.AddLineBetweenNotes.IsChecked = App.DisplaySettings.AddLineBetweenNotes;
+                    
                     successfulInitialize = true;
                 }
                 catch (Exception eee)

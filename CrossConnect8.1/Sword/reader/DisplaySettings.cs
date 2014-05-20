@@ -105,6 +105,9 @@ namespace Sword.reader
         [DataMember]
         public string OneDriveFolder = "CrossConnectBackup";
 
+        [DataMember]
+        public bool AddLineBetweenNotes = false;
+
         public Highlighter highlighter = new Highlighter();
         #endregion
 
@@ -204,7 +207,8 @@ namespace Sword.reader
                 HighlightName6 = this.HighlightName6,
                 UseHighlights = this.UseHighlights,
                 SyncMediaVerses = this.SyncMediaVerses,
-                MarginInsideTextWindow = this.MarginInsideTextWindow
+                MarginInsideTextWindow = this.MarginInsideTextWindow,
+                AddLineBetweenNotes = this.AddLineBetweenNotes
             };
             cloned.highlighter = this.highlighter;
             return cloned;

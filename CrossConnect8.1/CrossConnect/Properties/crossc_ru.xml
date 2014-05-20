@@ -225,4 +225,5 @@
 <string key="Doesn't exist in OneDrive. Remove it and try again">Не существует в OneDrive. Удалите его и попробуйте еще раз</string>
 <string key="There is no backup to restore">Там нет резервной копии для восстановления</string>
 <string key="Connect to OneDrive">Подключение к OneDrive</string>
+<string key="Add a line between notes">Добавьте строку между нотами</string>
 </translations>

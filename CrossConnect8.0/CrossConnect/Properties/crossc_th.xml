@@ -244,4 +244,5 @@
 <string key="Doesn't exist in OneDrive. Remove it and try again">ไม่อยู่ใน OneDrive เอามันออกไปและลองอีกครั้ง</string>
 <string key="There is no backup to restore">มีการสำรองข้อมูลเพื่อเรียกคืนไม่</string>
 <string key="Connect to OneDrive">เชื่อมต่อไปยัง OneDrive</string>
+<string key="Add a line between notes">เพิ่มเส้นแบ่งระหว่างบันทึก</string>
 </translations>

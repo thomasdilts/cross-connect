@@ -133,6 +133,8 @@ namespace CrossConnect
             App.DisplaySettings.HighlightName6 = this.highlightName6.Text;
             App.DisplaySettings.UseHighlights = this.useHighlighting.IsOn;
             App.DisplaySettings.SyncMediaVerses = this.SyncVerses.IsOn;
+            App.DisplaySettings.AddLineBetweenNotes = this.AddLineBetweenNotes.IsOn;
+            
             App.RaiseBookmarkChangeEvent();
             App.RaiseHistoryChangeEvent();
             App.RaisePersonalNotesChangeEvent();
@@ -178,6 +180,8 @@ namespace CrossConnect
             this.useHighlighting.Header = Translations.Translate("Use highlighting");
             this.useRemoteStorage.Header = Translations.Translate("Use remote storage");
             this.SyncVerses.Header = Translations.Translate("Synchronize to every verse");
+            this.AddLineBetweenNotes.Header = Translations.Translate("Add a line between notes");
+            
             butExportBookmarksHighlightsAndNotes.Content = Translations.Translate("Copy bookmarks, highlights and notes to the clipboard");
             butImportBookmarksHighlightsAndNotes.Content = Translations.Translate("Import bookmarks, highlights and notes from the clipboard");
 
@@ -211,7 +215,8 @@ namespace CrossConnect
                     this.useInternetGreekHebrewDict.IsOn = App.DisplaySettings.UseInternetGreekHebrewDict;
                     this.useHighlighting.IsOn = App.DisplaySettings.UseHighlights;
                     this.SyncVerses.IsOn = App.DisplaySettings.SyncMediaVerses;
-
+                    this.AddLineBetweenNotes.IsOn = App.DisplaySettings.AddLineBetweenNotes;
+                    
                     successfulInitialize = true;
                 }
                 catch (Exception eee)

@@ -217,4 +217,5 @@
 <string key="Doesn't exist in OneDrive. Remove it and try again">OneDrive mevcut değil. Çıkarın ve tekrar deneyin</string>
 <string key="There is no backup to restore">Geri yedekleme olmadığı</string>
 <string key="Connect to OneDrive">OneDrive bağlan</string>
+<string key="Add a line between notes">Notlar arasına çizgi eklemek</string>
 </translations>
