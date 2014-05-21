@@ -1929,7 +1929,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                                 string bookShortName;
                                                 if (ConvertOsisRefToAbsoluteChaptVerse(
                                                     reader.Value, out bookShortName, out chaptNumLoc, out verseNumLoc))
-                                                {                                                    
+                                                {
                                                     isReferenceLinked = true;
                                                     string textId = bookShortName + "_" + chaptNumLoc + "_" + verseNumLoc;
                                                     noteText.Append(
@@ -1975,6 +1975,12 @@ function SetFontColorForElement(elemntId, colorRgba){
                                     case "FI":
                                         if (!isRaw && !isNotesOnly && displaySettings.ShowNotePositions)
                                         {
+                                            if (chapterNumber.Length > 0 && !isChaptNumGiven)
+                                            {
+                                                plainText.Append(chapterNumber);
+                                                isChaptNumGiven = true;
+                                            }
+
                                             plainText.Append(
                                                 (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
                                                 + this.convertNoteNumToId(noteIdentifier)
@@ -1989,6 +1995,12 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         }
                                         if (!isRaw && displaySettings.ShowNotePositions)
                                         {
+                                            if (!isFirstNoteInText && displaySettings.AddLineBetweenNotes)
+                                            {
+                                                noteText.Append("<br />");
+
+                                            }
+                                            isFirstNoteInText = false;
                                             noteText.Append(
                                                 (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
                                                 + this.convertNoteNumToId(noteIdentifier)
@@ -2005,6 +2017,12 @@ function SetFontColorForElement(elemntId, colorRgba){
                                     case "note":
                                         if (!isRaw && !isNotesOnly && displaySettings.ShowNotePositions)
                                         {
+                                            if (chapterNumber.Length > 0 && !isChaptNumGiven)
+                                            {
+                                                plainText.Append(chapterNumber);
+                                                isChaptNumGiven = true;
+                                            }
+
                                             plainText.Append(
                                                 (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
                                                 + this.convertNoteNumToId(noteIdentifier)
@@ -2017,20 +2035,20 @@ function SetFontColorForElement(elemntId, colorRgba){
                                             noteText.Append("<p>" + chapterNumber);
                                             isChaptNumGivenNotes = true;
                                         }
-                                        
+
                                         if (!isRaw && displaySettings.ShowNotePositions)
                                         {
                                             if (!isFirstNoteInText && displaySettings.AddLineBetweenNotes)
                                             {
                                                 noteText.Append("<br />");
-                                                
+
                                             }
                                             isFirstNoteInText = false;
                                             noteText.Append(
                                                 (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
                                                 + this.convertNoteNumToId(noteIdentifier)
                                                 + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
-                                            if(isNotesOnly)
+                                            if (isNotesOnly)
                                             {
                                                 noteIdentifier++;
                                             }
