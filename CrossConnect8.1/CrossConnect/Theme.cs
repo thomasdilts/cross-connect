@@ -140,6 +140,38 @@ namespace CrossConnect
                                                                                  {
                                                                                      "Verdana",
                                                                                      "font-family: verdana,arial,helvetica,sans-serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "SimHei 黑体",
+                                                                                     "font-family: SimHei,黑体,sans-serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "SimSun 宋体",
+                                                                                     "font-family: SimSun,宋体,sans-serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "NSimSun 新宋体",
+                                                                                     "font-family: NSimSun,新宋体,sans-serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "FangSong 仿宋",
+                                                                                     "font-family: FangSong,仿宋,sans-serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "KaiTi 楷体",
+                                                                                     "font-family: KaiTi,楷体,sans-serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "Microsoft YaHei 微软雅黑体",
+                                                                                     "font-family: Microsoft YaHei,微软雅黑体,sans-serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "FangSong_GB2312 仿宋_GB2312",
+                                                                                     "font-family: FangSong_GB2312,仿宋_GB2312,sans-serif;"
+                                                                                 },
+                                                                                 {
+                                                                                     "KaiTi_GB2312 楷体_GB2312",
+                                                                                     "font-family: KaiTi_GB2312,楷体_GB2312,sans-serif;"
                                                                                  }
                                                                              };
 
