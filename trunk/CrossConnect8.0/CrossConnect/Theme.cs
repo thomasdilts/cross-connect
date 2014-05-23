@@ -64,8 +64,9 @@ namespace CrossConnect
             { "Copperplate", "font-family: Copperplate, 'Copperplate Gothic Light', fantasy;" },
             { "Courier New", "font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;" },
             { "Courier", "font-family: courier,monospace;" },
+            { "DengXian", "font-family: DengXian,sans-serif;" },
             { "Didot", "font-family: Didot, 'Didot LT STD', 'Hoefler Text', Garamond, 'Times New Roman', serif;" },
-            { "Dotum", "font-family: Dotum, sans-serif;" },
+            { "Dotum 돋움", "font-family: Dotum, sans-serif;" },
             { "FangSong 仿宋", "font-family: FangSong,仿宋,sans-serif;" },
             { "FangSong_GB2312 仿宋_GB2312", "font-family: FangSong_GB2312,仿宋_GB2312,sans-serif;" },
             { "Franklin Gothic Medium", "font-family: 'Franklin Gothic Medium', Arial, sans-serif;" },
@@ -83,15 +84,19 @@ namespace CrossConnect
             { "Impact", "font-family: Impact, Haettenschweiler, 'Franklin Gothic Bold', Charcoal, 'Helvetica Inserat', 'Bitstream Vera Sans Bold', 'Arial Black', sans serif;" },
             { "KaiTi 楷体", "font-family: KaiTi,楷体,sans-serif;" },
             { "KaiTi_GB2312 楷体_GB2312", "font-family: KaiTi_GB2312,楷体_GB2312,sans-serif;" },
+            { "Leelawadee", "font-family: 'Leelawadee',sans-serif;" },
             { "Lucida Bright", "font-family: 'Lucida Bright', Georgia, serif;" },
             { "Lucida Console", "font-family: 'Lucida Console', 'Lucida Sans Typewriter', Monaco, 'Bitstream Vera Sans Mono', monospace;" },
             { "Lucida Grande", "font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Geneva, Verdana, sans-serif;" },
             { "Lucida Sans Typewriter", "font-family: 'Lucida Sans Typewriter', 'Lucida Console', Monaco, 'Bitstream Vera Sans Mono', monospace;" },
             { "MS Mincho 明朝", "font-family: 'MS Mincho', 'MS 明朝', 'MS PMincho', 'MS ゴシック',sans-serif;" },
+            { "Microsoft Mhei", "font-family: 'Microsoft Mhei',sans-serif;" },
+            { "Microsoft NeoGothic", "font-family: 'Microsoft NeoGothic',sans-serif;" },
             { "Microsoft YaHei 微软雅黑体", "font-family: 'Microsoft YaHei',微软雅黑体,sans-serif;" },
             { "Monaco", "font-family: monaco, consolas, 'Lucida Console', monospace;" },
             { "Museo-500", "font-family: 'Museo-500', Rockwell, Courier, 'Courier New', serif;" },
             { "NSimSun 新宋体", "font-family: NSimSun,新宋体,sans-serif;" },
+            { "Nirmala UI", "font-family: 'Nirmala UI',sans-serif;" },
             { "Optima", "font-family: Optima, Segoe, 'Segoe UI', Candara, Calibri, Arial, sans-serif;" },
             { "PMingLiu 新细明體", "font-family: PMingLiu,新细明體, sans-serif;" },            
             { "Palatino Linotype", "font-family: 'Palatino Linotype','URW Palladio L','palladio l',palatino,'book antiqua',times,serif;" },
@@ -108,7 +113,8 @@ namespace CrossConnect
             { "Times New Roman", "font-family: 'Times New Roman','Times Roman',TimesNR,times,serif;" },
             { "Times Roman", "font-family: 'Times Roman',times,serif;" },
             { "Trebuchet MS", "font-family: 'Trebuchet MS', 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Tahoma, sans-serif;" },
-            { "Verdana", "font-family: verdana,arial,helvetica,sans-serif;" }
+            { "Verdana", "font-family: verdana,arial,helvetica,sans-serif;" },
+            { "Yu Gothic", "font-family: 'Yu Gothic',sans-serif;" }
         };
 
         #endregion
