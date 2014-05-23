@@ -142,7 +142,8 @@ namespace CrossConnect
         /// <returns>The root frame of the Phone Application.</returns>
         private PhoneApplicationFrame RootFrame
         {
-            get; set;
+            get;
+            set;
         }
 
         #endregion Properties
@@ -273,7 +274,7 @@ namespace CrossConnect
                 }
             }
 
-            if(string.IsNullOrEmpty(verseText))
+            if (string.IsNullOrEmpty(verseText))
             {
                 return;
             }
@@ -323,7 +324,7 @@ namespace CrossConnect
                 if (OpenWindows[i].State.WindowType == WindowType.WindowMediaPlayer)
                 {
                     // change the windows view to this one
-                    ((MediaPlayerWindow)OpenWindows[i]).SetMediaInfo(state,info);
+                    ((MediaPlayerWindow)OpenWindows[i]).SetMediaInfo(state, info);
                     MainWindow.OverRideCurrentlyShowingScreen(OpenWindows[i].State.Window);
                     return;
                 }
@@ -352,9 +353,10 @@ namespace CrossConnect
             string bibleDescription,
             WindowType typeOfWindow,
             double textSize,
+            string font,
             IBrowserTextSource source = null)
         {
-            var nextWindow = new BrowserTitledWindow { State = { HtmlFontSize = textSize } };
+            var nextWindow = new BrowserTitledWindow { State = { HtmlFontSize = textSize, Font = font } };
             await nextWindow.Initialize(bibleToLoad, bibleDescription, typeOfWindow, source);
             nextWindow.State.CurIndex = OpenWindows.Count();
             OpenWindows.Add(nextWindow);
@@ -551,13 +553,11 @@ namespace CrossConnect
                                                 };
                             var ser = new DataContractSerializer(typeof(SerializableWindowState), types);
                             var state = (SerializableWindowState)ser.ReadObject(reader);
-                            ITiledWindow nextWindow;
-
                             if ((state.Window + 1) > App.DisplaySettings.NumberOfScreens)
                             {
                                 App.DisplaySettings.NumberOfScreens = state.Window + 1;
                             }
-
+                            ITiledWindow nextWindow;
                             if (state.WindowType.Equals(WindowType.WindowMediaPlayer))
                             {
                                 nextWindow = new MediaPlayerWindow { State = state };
@@ -980,7 +980,7 @@ namespace CrossConnect
             await SavePersistantObjects(objectsToSave, BackupRestore.PersistantObjectsMarkersFileName);
         }
 
-        private static async Task SavePersistantObjects(Dictionary<string, object> objectsToSave, string filename, bool alwaysLocal = false)
+        public static async Task SavePersistantObjects(Dictionary<string, object> objectsToSave, string filename, bool alwaysLocal = false)
         {
             try
             {
@@ -1043,7 +1043,7 @@ namespace CrossConnect
             [DataMember(Name = "currentVerseNumber")]
             public int CurrentVerseNumber;
             [DataMember(Name = "personalNotes")]
-            public Dictionary<int, Dictionary<int, BiblePlaceMarker>> PersonalNotes = 
+            public Dictionary<int, Dictionary<int, BiblePlaceMarker>> PersonalNotes =
                 new Dictionary<int, Dictionary<int, BiblePlaceMarker>>();
             [DataMember(Name = "PersonalNotesVersified")]
             public Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> PersonalNotesVersified =

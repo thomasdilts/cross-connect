@@ -159,6 +159,9 @@ namespace CrossConnect
         [DataMember]
         public string code = string.Empty;
 
+        [DataMember]
+        public string Font = string.Empty;
+
         #endregion
     }
 }

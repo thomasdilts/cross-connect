@@ -39,139 +39,77 @@ namespace CrossConnect
         #region Static Fields
 
         public static readonly Dictionary<string, string> FontFamilies = new Dictionary<string, string>
-                                                                             {
-                                                                                 {
-                                                                                     "Andale Mono"
-                                                                                     ,
-                                                                                     "font-family: 'andale mono','monotype.com',monaco,'courier new',courier,monospace;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Arial Black"
-                                                                                     ,
-                                                                                     "font-family: 'Arial Black',helvetica,sans-serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Arial",
-                                                                                     "font-family: arial,helvetica,sans-serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Avant Garde Gothic"
-                                                                                     ,
-                                                                                     "font-family: 'Century Gothic','Avant Garde Gothic','Avant Garde','URW Gothic L',helvetica,sans-serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Bookman Old Style"
-                                                                                     ,
-                                                                                     "font-family: 'Bookman Old Style','URW Bookman L','itc bookman',times,serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Century Schoolbook"
-                                                                                     ,
-                                                                                     "font-family: 'Century Schoolbook',Century,'new century schoolbook','Century Schoolbook L',times,serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Comic Sans MS"
-                                                                                     ,
-                                                                                     "font-family: 'Comic Sans MS',arial,helvetica,sans-serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Courier New"
-                                                                                     ,
-                                                                                     "font-family: 'courier new',courier,monospace;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Courier",
-                                                                                     "font-family: courier,monospace;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Garamond"
-                                                                                     ,
-                                                                                     "font-family: Garamond,Garamond,'Garamond Antiqua',times,serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Georgia",
-                                                                                     "font-family: georgia,times,serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Helvetica"
-                                                                                     ,
-                                                                                     "font-family: helvetica,sans-serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Impact",
-                                                                                     "font-family: impact,helvetica,sans-serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Palatino Linotype"
-                                                                                     ,
-                                                                                     "font-family: 'Palatino Linotype','URW Palladio L','palladio l',palatino,'book antiqua',times,serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Segoe WP"
-                                                                                     ,
-                                                                                     "font-family: Segoe WP;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Segoe UI"
-                                                                                     ,
-                                                                                     "font-family: Segoe UI;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Tahoma",
-                                                                                     "font-family: tahoma,arial,helvetica,sans-serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Times New Roman"
-                                                                                     ,
-                                                                                     "font-family: 'Times New Roman','Times Roman',TimesNR,times,serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Times Roman"
-                                                                                     ,
-                                                                                     "font-family: 'Times Roman',times,serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Trebuchet MS"
-                                                                                     ,
-                                                                                     "font-family: 'Trebuchet MS',arial,helvetica,sans-serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Verdana",
-                                                                                     "font-family: verdana,arial,helvetica,sans-serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "SimHei 黑体",
-                                                                                     "font-family: SimHei,黑体,sans-serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "SimSun 宋体",
-                                                                                     "font-family: SimSun,宋体,sans-serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "NSimSun 新宋体",
-                                                                                     "font-family: NSimSun,新宋体,sans-serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "FangSong 仿宋",
-                                                                                     "font-family: FangSong,仿宋,sans-serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "KaiTi 楷体",
-                                                                                     "font-family: KaiTi,楷体,sans-serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "Microsoft YaHei 微软雅黑体",
-                                                                                     "font-family: Microsoft YaHei,微软雅黑体,sans-serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "FangSong_GB2312 仿宋_GB2312",
-                                                                                     "font-family: FangSong_GB2312,仿宋_GB2312,sans-serif;"
-                                                                                 },
-                                                                                 {
-                                                                                     "KaiTi_GB2312 楷体_GB2312",
-                                                                                     "font-family: KaiTi_GB2312,楷体_GB2312,sans-serif;"
-                                                                                 }
-                                                                             };
+        {
+            { "Andale Mono", "font-family: 'andale mono','monotype.com',monaco,'courier new',courier,monospace;" },
+            { "Arial Black", "font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif;" },
+            { "Arial Narrow", "font-family: 'Arial Narrow', Arial, sans-serif;" },
+            { "Arial Rounded", "font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;" },
+            { "Arial", "font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;" },
+            { "Avant Garde", "font-family: 'Avant Garde', Avantgarde, 'Century Gothic', CenturyGothic, 'Apple Gothic', sans-serif;" },
+            { "Baskerville", "font-family: Baskerville, 'Baskerville old face', 'Hoefler Text', Garamond, 'Times New Roman', serif;" },
+            { "Batang 바탕", "font-family: Batang, 바탕, sans-serif;" },
+            { "Big Caslon", "font-family: 'Big Caslon', 'Book Antiqua', 'Palatino Linotype', Georgia, serif;" },
+            { "Bodoni MT", "font-family: 'Bodoni MT', Didot, 'Didot LT STD', 'Hoefler Text', Garamond, 'Times New Roman', serif;" },
+            { "Book Antiqua", "font-family: 'Book Antiqua', Palatino, 'Palatino Linotype', 'Palatino LT STD', Georgia, serif;" },
+            { "Bookman Old Style", "font-family: 'Bookman Old Style','URW Bookman L','itc bookman',times,serif;" },
+            { "Brush Script MT", "font-family: 'Brush Script MT', cursive;" },
+            { "Calibri", "font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;" },
+            { "Calisto MT", "font-family: 'Calisto MT', 'Bookman Old Style', Bookman, 'Goudy Old Style', Garamond, 'Hoefler Text', 'Bitstream Charter', Georgia, serif;" },
+            { "Cambria", "font-family: Cambria, Georgia, serif;" },
+            { "Candara", "font-family: Candara, Calibri, Segoe, 'Segoe UI', Optima, Arial, sans-serif;" },
+            { "Century Gothic", "font-family: 'Century Gothic', CenturyGothic, 'Apple Gothic', sans-serif;" },
+            { "Century Schoolbook", "font-family: 'Century Schoolbook',Century,'new century schoolbook','Century Schoolbook L',times,serif;" },
+            { "Comic Sans MS", "font-family: 'Comic Sans MS',arial,helvetica,sans-serif;" },
+            { "Consolas", "font-family: consolas, monaco, 'Lucida Console', monospace;" },
+            { "Copperplate", "font-family: Copperplate, 'Copperplate Gothic Light', fantasy;" },
+            { "Courier New", "font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;" },
+            { "Courier", "font-family: courier,monospace;" },
+            { "Didot", "font-family: Didot, 'Didot LT STD', 'Hoefler Text', Garamond, 'Times New Roman', serif;" },
+            { "Dotum", "font-family: Dotum, sans-serif;" },
+            { "FangSong 仿宋", "font-family: FangSong,仿宋,sans-serif;" },
+            { "FangSong_GB2312 仿宋_GB2312", "font-family: FangSong_GB2312,仿宋_GB2312,sans-serif;" },
+            { "Franklin Gothic Medium", "font-family: 'Franklin Gothic Medium', Arial, sans-serif;" },
+            { "Frutiger", "font-family: Frutiger, 'Frutiger Linotype', Univers, Calibri, 'Gill Sans', 'Gill Sans MT', 'Myriad Pro', Myriad, 'DejaVu Sans Condensed', 'Liberation Sans', 'Nimbus Sans L', Tahoma, Geneva, 'Helvetica Neue', Helvetica, Arial, sans-serif;" },
+            { "Futura", "font-family: Futura, 'Trebuchet MS', Arial, sans-serif;" },
+            { "Garamond", "font-family: Garamond, Baskerville, 'Baskerville Old Face', 'Hoefler Text', 'Times New Roman', serif;" },
+            { "Geneva", "font-family: Geneva, Tahoma, Verdana, sans-serif;" },
+            { "Georgia", "font-family: Georgia, Times, 'Times New Romanâ', serif;" },
+            { "Gill Sans", "font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;" },
+            { "Goudy Old Style", "font-family: 'Goudy Old Style', Garamond, 'Big Caslon', 'Times New Roman', serif;" },
+            { "Gulim 굴림", "font-family: Gulim, 굴림, sans-serif;" },
+            { "Helvetica Neue", "font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;" },
+            { "Helvetica", "font-family: helvetica,sans-serif;" },
+            { "Hoefler Text", "font-family: 'Hoefler Text', 'Baskerville old face', Garamond, 'Times New Roman', serif;" },
+            { "Impact", "font-family: Impact, Haettenschweiler, 'Franklin Gothic Bold', Charcoal, 'Helvetica Inserat', 'Bitstream Vera Sans Bold', 'Arial Black', sans serif;" },
+            { "KaiTi 楷体", "font-family: KaiTi,楷体,sans-serif;" },
+            { "KaiTi_GB2312 楷体_GB2312", "font-family: KaiTi_GB2312,楷体_GB2312,sans-serif;" },
+            { "Lucida Bright", "font-family: 'Lucida Bright', Georgia, serif;" },
+            { "Lucida Console", "font-family: 'Lucida Console', 'Lucida Sans Typewriter', Monaco, 'Bitstream Vera Sans Mono', monospace;" },
+            { "Lucida Grande", "font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Geneva, Verdana, sans-serif;" },
+            { "Lucida Sans Typewriter", "font-family: 'Lucida Sans Typewriter', 'Lucida Console', Monaco, 'Bitstream Vera Sans Mono', monospace;" },
+            { "MS Mincho 明朝", "font-family: 'MS Mincho', 'MS 明朝', 'MS PMincho', 'MS ゴシック',sans-serif;" },
+            { "Microsoft YaHei 微软雅黑体", "font-family: 'Microsoft YaHei',微软雅黑体,sans-serif;" },
+            { "Monaco", "font-family: monaco, consolas, 'Lucida Console', monospace;" },
+            { "Museo-500", "font-family: 'Museo-500', Rockwell, Courier, 'Courier New', serif;" },
+            { "NSimSun 新宋体", "font-family: NSimSun,新宋体,sans-serif;" },
+            { "Optima", "font-family: Optima, Segoe, 'Segoe UI', Candara, Calibri, Arial, sans-serif;" },
+            { "PMingLiu 新细明體", "font-family: PMingLiu,新细明體, sans-serif;" },            
+            { "Palatino Linotype", "font-family: 'Palatino Linotype','URW Palladio L','palladio l',palatino,'book antiqua',times,serif;" },
+            { "Palatino", "font-family: Palatino, 'Palatino Linotype', 'Palatino LT STD', 'Book Antiqua', Georgia, serif;" },
+            { "Papyrus", "font-family: Papyrus, fantasy;" },
+            { "Perpetua", "font-family: Perpetua, Baskerville, 'Big Caslon', 'Palatino Linotype', Palatino, 'URW Palladio L', 'Nimbus Roman No9 L', serif;" },
+            { "Rockwell Extra Bold", "font-family: 'Rockwell Extra Bold', 'Rockwell Bold', monospace;" },
+            { "Rockwell", "font-family: Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;" },
+            { "Segoe UI", "font-family: Segoe UI, Segoe, 'Helvetica Neue', Arial, sans-serif;" },
+            { "Segoe WP", "font-family: Segoe WP, Segoe, 'Helvetica Neue', Arial, sans-serif;" },
+            { "SimHei 黑体", "font-family: SimHei,黑体,sans-serif;" },
+            { "SimSun 宋体", "font-family: SimSun,宋体,sans-serif;" },
+            { "Tahoma", "font-family: Tahoma, Verdana, Segoe, sans-serif;" },
+            { "Times New Roman", "font-family: 'Times New Roman','Times Roman',TimesNR,times,serif;" },
+            { "Times Roman", "font-family: 'Times Roman',times,serif;" },
+            { "Trebuchet MS", "font-family: 'Trebuchet MS', 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Tahoma, sans-serif;" },
+            { "Verdana", "font-family: verdana,arial,helvetica,sans-serif;" }
+        };
 
         #endregion
 

@@ -56,8 +56,10 @@
           <RowDefinition Height="Auto" />
           <RowDefinition Height="Auto" />
           <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -75,20 +77,23 @@
           <toolkit:DatePicker Name="planStartDate" />
         </StackPanel>
 
-        <toolkit:ListPicker Name="selectDocument" Grid.Row="3" Header="Select the bible">
+        <toolkit:ListPicker Name="selectDocument" Grid.Row="3" Header="Select the bible" SelectionChanged="SelectBibleSelectionChanged">
 
         </toolkit:ListPicker>
-                <TextBlock Name="EnterKeyTitle" Grid.Row="4" Text="Enter Key" />
-                <TextBox Name="EnterKeyText" Grid.Row="5" Text="" />
-                <Button Content="Save" Grid.Row="6" Name="butEnterKeySave"
+                <TextBlock x:Name="ThemeFont" Grid.Row="4" Text="Font" />
+                <phone:WebBrowser Height="50" Width="480" Grid.Row="5" Margin="0 0 0 20" IsScriptEnabled="True"
+                          ScriptNotify="WebBrowser2ScriptNotify" Name="webBrowser2" />
+                <TextBlock Name="EnterKeyTitle" Grid.Row="6" Text="Enter Key" />
+                <TextBox Name="EnterKeyText" Grid.Row="7" Text="" />
+                <Button Content="Save" Grid.Row="8" Name="butEnterKeySave"
                 Click="ButEnterKeySave_OnClick" />
-                <Button Content="Listen to this chapter" Grid.Row="7" Name="butListen"
+                <Button Content="Listen to this chapter" Grid.Row="9" Name="butListen"
                 Click="ButListen_OnClick" />
-                <Button Content="(TTS) Listen to this chapter" Grid.Row="8" Name="butListenTts"
+                <Button Content="(TTS) Listen to this chapter" Grid.Row="10" Name="butListenTts"
                 Click="ButTtsListen_OnClick" />
-                <Button Content="Translate selected text" Grid.Row="9" Name="butTranslate" Click="ButTranslate_OnClick" />
-        <phone:WebBrowser Grid.Row="10" Margin="0 0 0 0" Name="webBrowser1" MinHeight="50" /> 
-        <Slider Grid.Row="11" Maximum="37.0" Minimum="5.0" ValueChanged="SliderTextSizeValueChanged"
+                <Button Content="Translate selected text" Grid.Row="11" Name="butTranslate" Click="ButTranslate_OnClick" />
+        <phone:WebBrowser Grid.Row="12" Margin="0 0 0 0" Name="webBrowser1" MinHeight="50" /> 
+        <Slider Grid.Row="13" Maximum="37.0" Minimum="5.0" ValueChanged="SliderTextSizeValueChanged"
                 Name="sliderTextSize" />
       </Grid>
     </Grid>

@@ -353,9 +353,10 @@ namespace CrossConnect
             string bibleDescription,
             WindowType typeOfWindow,
             double textSize,
+            string font,
             IBrowserTextSource source = null)
         {
-            var nextWindow = new BrowserTitledWindow { State = { HtmlFontSize = textSize } };
+            var nextWindow = new BrowserTitledWindow { State = { HtmlFontSize = textSize, Font = font } };
             await nextWindow.Initialize(bibleToLoad, bibleDescription, typeOfWindow, source);
             nextWindow.State.CurIndex = OpenWindows.Count();
             OpenWindows.Add(nextWindow);

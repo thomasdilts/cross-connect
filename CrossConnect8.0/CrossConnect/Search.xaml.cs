@@ -196,6 +196,7 @@ namespace CrossConnect
                             App.OpenWindows[(int)openWindowIndex].State.BibleDescription,
                             WindowType.WindowSearch,
                             App.OpenWindows[(int)openWindowIndex].State.HtmlFontSize,
+                            App.OpenWindows[(int)openWindowIndex].State.Font,
                             SourceSearch);
                     }
 

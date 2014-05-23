@@ -501,8 +501,12 @@ namespace CrossConnect
                         htmlHighlights[i] = ConvertColorToHtmlRgba(App.Themes.ColorHighligt[i]);
                     }
 
-                    string fontFamily;
-                    if (!Theme.FontFamilies.TryGetValue(App.Themes.FontFamily, out fontFamily))
+                    string fontFamily = string.Empty;
+                    if (!string.IsNullOrEmpty(this._state.Font))
+                    {
+                        Theme.FontFamilies.TryGetValue(this._state.Font, out fontFamily);
+                    }
+                    if (string.IsNullOrEmpty(fontFamily) && !Theme.FontFamilies.TryGetValue(App.Themes.FontFamily, out fontFamily))
                     {
                         fontFamily = Theme.FontFamilies.First().Key;
                     }
@@ -545,87 +549,6 @@ namespace CrossConnect
             Debug.WriteLine("UpdateBrowser end");
 
         }
-        /*
-        public void UpdateBrowser(bool isOrientationChangeOnly)
-        {
-            App.StartTimerForSavingWindows();
-            if (isOrientationChangeOnly)
-            {
-                return;
-            }
-            this.border1.BorderBrush = new SolidColorBrush(App.Themes.BorderColor);
-            this.WebBrowserBorder.BorderBrush = this.border1.BorderBrush;
-            this.grid1.Background = new SolidColorBrush(App.Themes.TitleBackColor);
-            this.title.Foreground = new SolidColorBrush(App.Themes.TitleFontColor);
-            Debug.WriteLine("UpdateBrowser start");
-            if (this._state.Source != null && this.Parent != null)
-            {
-                if (this._state.Source.IsExternalLink)
-                {
-                    try
-                    {
-                        var source = new Uri(this._state.Source.GetExternalLink(App.DisplaySettings));
-                        //webBrowser1.Base = string.Empty;
-                        this.webBrowser1.Navigate(source);
-                        this.WriteTitle();
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine("UpdateBrowser webBrowser1.Navigate ; " + e.Message);
-                    }
-                }
-                else
-                {
-                    double fontSizeMultiplier = 1;
-                    if (this.Parent != null && ((Grid)this.Parent).Parent != null)
-                    {
-                        //var parent = (MainPageSplit)((Grid)((Grid)((Grid)Parent).Parent).Parent).Parent;
-                        //if (parent.Orientation == PageOrientation.Landscape
-                        //    || parent.Orientation == PageOrientation.LandscapeLeft
-                        //    || parent.Orientation == PageOrientation.LandscapeRight)
-                        //{
-                        //    // we must adjust the font size for the new orientation. otherwise the font is too big.
-                        //    // fontSizeMultiplier = parent.ActualHeight/parent.ActualWidth;
-                        //}
-                    }
-
-                    HtmlColorRgba backcolor = GetBrowserColor("PhoneBackgroundColor");
-                    HtmlColorRgba forecolor = GetBrowserColor("PhoneForegroundColor");
-                    HtmlColorRgba accentcolor = GetBrowserColor("PhoneAccentColor");
-                    HtmlColorRgba htmlWordsOfChristColor = GetBrowserColor("PhoneWordsOfChristColor");
-                    HtmlColorRgba[] htmlHighlights = new HtmlColorRgba[6];
-                    for (int i = 0; i < 6; i++)
-                    {
-                        htmlHighlights[i] = ConvertColorToHtmlRgba(App.Themes.ColorHighligt[i]);
-                    }
-
-                    string fontFamily;
-                    if (!Theme.FontFamilies.TryGetValue(App.Themes.FontFamily, out fontFamily))
-                    {
-                        fontFamily = Theme.FontFamilies.First().Key;
-                    }
-
-                    if (App.Themes.IsMainBackImage && !string.IsNullOrEmpty(App.Themes.MainBackImage))
-                    {
-                        fontFamily += "background-image:url('/images/" + App.Themes.MainBackImage + "');";
-                    }
-
-                    this.GetHtmlAsynchronously(
-                        App.DisplaySettings.Clone(),
-                        backcolor,
-                        forecolor,
-                        accentcolor,
-                        htmlWordsOfChristColor,
-                        htmlHighlights,
-                        this._state.HtmlFontSize * fontSizeMultiplier,
-                        fontFamily,
-                        App.WebDirIsolated + "/" + this._lastFileName);
-                }
-            }
-
-            Debug.WriteLine("UpdateBrowser end");
-        }
-        */
 
         #endregion
 
@@ -869,6 +792,7 @@ namespace CrossConnect
                             this._state.BibleDescription,
                             WindowType.WindowInternetLink,
                             this._state.HtmlFontSize,
+                            this._state.Font,
                             this.State.Window,
                             win);
                     }
@@ -898,6 +822,7 @@ namespace CrossConnect
                             this._state.BibleDescription,
                             WindowType.WindowLexiconLink,
                             this._state.HtmlFontSize,
+                            this._state.Font,
                             this.State.Window,
                             win);
                     }

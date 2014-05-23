@@ -35,6 +35,7 @@ namespace CrossConnect
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Controls.Primitives;
+    using Windows.UI.Xaml.Media;
 
     public sealed partial class MainPageSplit
     {
@@ -107,12 +108,13 @@ namespace CrossConnect
                         break;
                     }
                 }
-
+                var fontFamily = WindowFontComboBox.SelectedItem!=null?((TextBlock)WindowFontComboBox.SelectedItem).Text:string.Empty;
                 await App.AddWindow(
                     bookSelected.InternalName,
                     bookSelected.Name,
                     selectedType,
                     this.sliderTextSize.Value,
+                    fontFamily,
                     column,
                     null,
                     false);
@@ -365,6 +367,7 @@ namespace CrossConnect
             this.planActualDateCaption.Text = Translations.Translate("Select the daily plan current date");
             this.selectPlanTypeHeader.Text = Translations.Translate("Select the daily plan");
             this.SetDateToday.Content = Translations.Translate("Today");
+            this.WindowFontComboBoxHeader.Text = Translations.Translate("Special font for this window");
 
             this.selectDocumentType.Items.Clear();
             this.selectDocumentType.Items.Add(Translations.Translate("Bible"));
@@ -409,6 +412,23 @@ namespace CrossConnect
             }
 
             this.columns[0].IsChecked = true;
+            ItemCollection itemCollection = this.WindowFontComboBox.Items;
+            if (itemCollection != null)
+            {
+                itemCollection.Clear();
+                foreach (var font in Theme.FontFamilies)
+                {
+                    itemCollection.Add(
+                        new TextBlock
+                        {
+                            FontSize = 28,
+                            Text = font.Key,
+                            FontFamily = new FontFamily(font.Value),
+                            Tag = font.Value
+                        });
+                }
+            }
+            selectDocumentSelectionChanged(null, null);
         }
 
         private void SliderTextSizeValueChanged(object sender, RangeBaseValueChangedEventArgs e)
@@ -437,6 +457,58 @@ namespace CrossConnect
             }
         }
 
+        private void WindowFontComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                this.webBrowser1.NavigateToString(
+                    BibleZtextReader.HtmlHeader(
+                        App.DisplaySettings,
+                        BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"),
+                        BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
+                        BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
+                        BrowserTitledWindow.GetBrowserColor("PhoneWordsOfChristColor"),
+                        this.sliderTextSize.Value,
+                        Theme.FontFamilies[((TextBlock)WindowFontComboBox.SelectedItem).Text]) + "<a class=\"normalcolor\" href=\"#\">"
+                    + Translations.Translate("Text size") + "</a>" + "</body></html>");
+            }
+            catch (Exception ee)
+            {
+                Debug.WriteLine("sliderTextSize_ValueChanged webBrowser1.NavigateToString; " + ee.Message);
+            }
+            this.Dispatcher.RunAsync(CoreDispatcherPriority.Low, () => this.ShowFontImage());
+        }
+
+        private void selectDocumentSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            WindowType selectedType;
+            SwordBookMetaData bookSelected;
+            this.WindowFontComboBox.SelectedIndex = -1;
+            this.GetSelectedData(out selectedType, out bookSelected);
+            if (bookSelected != null)
+            {
+                var fontFromBible = (string)bookSelected.GetProperty(ConfigEntryType.Font);
+                if (fontFromBible != null)
+                {
+                    string fontFamily;
+                    if (Theme.FontFamilies.TryGetValue(fontFromBible, out fontFamily))
+                    {
+                        ItemCollection itemCollection = this.WindowFontComboBox.Items;
+                        if (itemCollection != null)
+                        {
+                            for (int i = 0; i < itemCollection.Count; i++)
+                            {
+                                if (((TextBlock)itemCollection[i]).Text.Equals(fontFromBible))
+                                {
+                                    this.WindowFontComboBox.SelectedIndex = i;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         #endregion
     }
 }
