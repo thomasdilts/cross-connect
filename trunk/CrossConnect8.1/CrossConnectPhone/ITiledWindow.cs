@@ -136,6 +136,9 @@ namespace CrossConnect
         [DataMember]
         public string Icon = string.Empty;
 
+        [DataMember]
+        public string Font = string.Empty;
+
         #endregion Fields
         public async Task<SerializableWindowState> Clone()
         {
@@ -160,7 +163,8 @@ namespace CrossConnect
                 IconLink = this.IconLink,
                 Language = this.Language,
                 Name = this.Name,
-                Icon = this.Icon
+                Icon = this.Icon,
+                Font = this.Font
             };
         }
     }

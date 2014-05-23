@@ -440,14 +440,17 @@
                                 <ComboBox Name="planActualDateDay" Margin="10 10 10 10" />
                             </StackPanel>
                             <TextBlock Name="selectDocumentHeader" Text="Select the bible" TextWrapping="Wrap"
-                                       Style="{StaticResource BaselineTextStyle}" />
-                            <ComboBox Margin="10 10 0 10" Name="selectDocument">
+                                       Style="{StaticResource BaselineTextStyle}"/>
+                            <ComboBox Margin="10 10 0 10" Name="selectDocument" SelectionChanged="selectDocumentSelectionChanged">
                             </ComboBox>
                             <Grid>
                                 <Rectangle Name="UserInterfaceBlocker" MinHeight="50" />
                                 <WebView Margin="0 0 0 0" Visibility="Collapsed" Name="webBrowser1" MinHeight="50" />
                             </Grid>
                             <Slider ValueChanged="SliderTextSizeValueChanged" Name="sliderTextSize" />
+                            <TextBlock Name="WindowFontComboBoxHeader" Text="Special font for this window" TextWrapping="Wrap"
+                                       Style="{StaticResource BaselineTextStyle}" />
+                            <ComboBox Margin="10 10 10 10" Name="WindowFontComboBox" SelectionChanged="WindowFontComboBox_SelectionChanged" />
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>

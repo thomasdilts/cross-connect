@@ -52,6 +52,7 @@ namespace CrossConnect.readers
         private HtmlColorRgba _htmlBackgroundColor;
 
         private double _htmlFontSize;
+        private double _font;
 
         private HtmlColorRgba _htmlForegroundColor;
 

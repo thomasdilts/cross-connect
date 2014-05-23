@@ -295,7 +295,7 @@ namespace CrossConnect
 
         private void ButGoToPlanClick(object sender, EventArgs e)
         {
-            App.AddWindow(string.Empty, string.Empty, WindowType.WindowDailyPlan, 10);
+            App.AddWindow(string.Empty, string.Empty, WindowType.WindowDailyPlan, 10, string.Empty);
         }
 
         private void ButHelpClick(object sender, EventArgs e)

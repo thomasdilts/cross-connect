@@ -215,6 +215,7 @@ namespace CrossConnect
                         this._state.BibleDescription,
                         WindowType.WindowTranslator,
                         this._state.HtmlFontSize,
+                        this._state.Font,
                         this._state.Window,
                         transReader2);
                     transReader2.TranslateThis(toTranslate, isTranslateable, this._state.Source.GetLanguage());

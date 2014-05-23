@@ -107,6 +107,10 @@ namespace CrossConnect
         {
             bookSelected = null;
             selectedType = WindowType.WindowBible;
+            if (this.selectDocumentType.SelectedItem==null)
+            {
+                return;
+            }
             switch (selectDocumentType.SelectedIndex)
             {
                 case 0:
@@ -237,7 +241,7 @@ namespace CrossConnect
                     GetSelectedData(out selectedType, out bookSelected);
 
                     App.AddWindow(
-                        bookSelected.InternalName, bookSelected.Name, selectedType, sliderTextSize.Value);
+                        bookSelected.InternalName, bookSelected.Name, selectedType, sliderTextSize.Value, _fontFamily);
 
                     // if (NavigationService.CanGoBack)
                     // {
@@ -280,12 +284,23 @@ namespace CrossConnect
         /// </param>
         private void PhoneApplicationPageLoaded(object sender, RoutedEventArgs e)
         {
+            object changedFont;
+            _fontFamily = string.Empty;
+            if (PhoneApplicationService.Current.State.TryGetValue("WebFontSelectWindowSelection", out changedFont))
+            {
+                _fontFamily = (string)changedFont;
+                SetFontWindow(_fontFamily);
+                PhoneApplicationService.Current.State.Remove("WebFontSelectWindowSelection");
+            }
+             
+            
             if (_isInThisWindow)
             {
                 return;
             }
 
             _isInThisWindow = true;
+
             object skipWindowSettings;
             if (PhoneApplicationService.Current.State.TryGetValue("skipWindowSettings", out skipWindowSettings))
             {
@@ -311,6 +326,7 @@ namespace CrossConnect
             if ((bool)initializeWindow)
             {
                 SetupEntirePage();
+                SetFontWindow(_fontFamily);
                 PhoneApplicationService.Current.State["InitializeWindowSettings"] = false;
             }
         }
@@ -458,6 +474,7 @@ namespace CrossConnect
                 }
 
                 state.HtmlFontSize = sliderTextSize.Value;
+                state.Font = _fontFamily;
                 ((BrowserTitledWindow)App.OpenWindows[(int)openWindowIndex]).Initialize(
                     state.BibleToLoad, state.BibleDescription, state.WindowType);
             }
@@ -469,6 +486,7 @@ namespace CrossConnect
                 }
 
                 state.HtmlFontSize = sliderTextSize.Value;
+                state.Font = _fontFamily;
             }
         }
 
@@ -570,6 +588,8 @@ namespace CrossConnect
                         selectDocument.Visibility = Visibility.Collapsed;
                         webBrowser1.Visibility=Visibility.Collapsed;
                         sliderTextSize.Visibility=Visibility.Collapsed;
+                        ThemeFont.Visibility = Visibility.Collapsed;
+                        webBrowser2.Visibility = Visibility.Collapsed;
                         
                         planStartDateCaption.Visibility = Visibility.Collapsed;
                         return;
@@ -647,10 +667,14 @@ namespace CrossConnect
                     case WindowType.WindowInternetLink:
                         selectDocumentType.Visibility = Visibility.Collapsed;
                         selectDocument.Visibility = Visibility.Collapsed;
+                        ThemeFont.Visibility = Visibility.Collapsed;
+                        webBrowser2.Visibility = Visibility.Collapsed;
                         break;
                     case WindowType.WindowLexiconLink:
                         selectDocumentType.Visibility = Visibility.Collapsed;
                         selectDocument.Visibility = Visibility.Collapsed;
+                        ThemeFont.Visibility = Visibility.Collapsed;
+                        webBrowser2.Visibility = Visibility.Collapsed;
                         break;
                     case WindowType.WindowSearch:
                         selectDocumentType.Visibility = Visibility.Collapsed;
@@ -659,6 +683,11 @@ namespace CrossConnect
                 }
 
                 sliderTextSize.Value = state.HtmlFontSize;
+                
+                if (Theme.FontFamilies.ContainsKey(state.Font))
+                {
+                    _fontFamily = state.Font;
+                }
             }
         }
 
@@ -720,6 +749,7 @@ namespace CrossConnect
                 state.BibleDescription,
                 WindowType.WindowTranslator,
                 state.HtmlFontSize,
+                _fontFamily,
                 transReader2);
             transReader2.TranslateThis(toTranslate, isTranslateable, state.Source.GetLanguage());
 
@@ -815,5 +845,64 @@ namespace CrossConnect
             PhoneApplicationService.Current.State["skipWindowSettings"] = true;
             NavigationService.Navigate(new Uri("/SelectTtsToPlay.xaml", UriKind.Relative));
         }
+
+        private string _fontFamily;
+        private void WebBrowser2ScriptNotify(object sender, Microsoft.Phone.Controls.NotifyEventArgs e)
+        {
+            WindowType selectedType;
+            SwordBookMetaData bookSelected;
+            GetSelectedData(out selectedType, out bookSelected);
+
+            //AutoRotatePageBackKeyPress(null, null);
+            PhoneApplicationService.Current.State["WebFontSelectWindowSelection"] = _fontFamily;
+            NavigationService.Navigate(new Uri("/WebFontSelect.xaml", UriKind.Relative));
+        }
+        private void SetFontWindow(string font)
+        {
+            string foundFamily;
+            if (!Theme.FontFamilies.TryGetValue(font, out foundFamily))
+            {
+                font = "Default";
+                foundFamily = "Default";
+            }
+
+            string body = "<p><a style=\"" + foundFamily + "color:"
+                          + BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor")
+                          + ";decoration:none\" href=\"#\" onclick=\"window.external.Notify('" + font
+                          + "'); event.returnValue=false; return false;\" >" + font + "</a></p>";
+            webBrowser2.NavigateToString(
+                BibleZtextReader.HtmlHeader(
+                    App.DisplaySettings,
+                    BrowserTitledWindow.GetBrowserColor("PhoneBackgroundColor"),
+                    BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
+                    BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
+                    BrowserTitledWindow.GetBrowserColor("PhoneWordsOfChristColor"),
+                    20,
+                    string.Empty) + body + "</body></html>");
+        }
+
+        private void SelectBibleSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            WindowType selectedType;
+            SwordBookMetaData bookSelected;
+            _fontFamily = "";
+            SetFontWindow(_fontFamily);
+
+            this.GetSelectedData(out selectedType, out bookSelected);
+            if (bookSelected != null)
+            {
+                var fontFromBible = (string)bookSelected.GetProperty(ConfigEntryType.Font);
+                if (fontFromBible != null)
+                {
+                    string fontFamily;
+                    if (Theme.FontFamilies.TryGetValue(fontFromBible, out fontFamily))
+                    {
+                        _fontFamily = fontFromBible;
+                        SetFontWindow(_fontFamily);
+                    }
+                }
+            }
+        }
+
     }
 }

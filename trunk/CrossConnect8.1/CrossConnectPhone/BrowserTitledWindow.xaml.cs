@@ -643,8 +643,12 @@ namespace CrossConnect
                         htmlHighlights[i] = ConvertColorToHtmlRgba(App.Themes.ColorHighligt[i]);
                     }
 
-                    string fontFamily;
-                    if (!Theme.FontFamilies.TryGetValue(App.Themes.FontFamily, out fontFamily))
+                    string fontFamily = string.Empty;
+                    if (!string.IsNullOrEmpty(this._state.Font))
+                    {
+                        Theme.FontFamilies.TryGetValue(this._state.Font, out fontFamily);
+                    }
+                    if (string.IsNullOrEmpty(fontFamily) && !Theme.FontFamilies.TryGetValue(App.Themes.FontFamily, out fontFamily))
                     {
                         fontFamily = Theme.FontFamilies.First().Key;
                     }
@@ -924,6 +928,7 @@ namespace CrossConnect
                 _state.BibleDescription,
                 WindowType.WindowTranslator,
                 _state.HtmlFontSize,
+                _state.Font,
                 transReader2);
             transReader2.TranslateThis(toTranslate, isTranslateable, _state.Source.GetLanguage());
         }
@@ -1145,6 +1150,7 @@ namespace CrossConnect
                             this._state.BibleDescription,
                             WindowType.WindowInternetLink,
                             this._state.HtmlFontSize,
+                            this._state.Font,
                             win);
                     }
                     else
@@ -1173,6 +1179,7 @@ namespace CrossConnect
                             this._state.BibleDescription,
                             WindowType.WindowLexiconLink,
                             this._state.HtmlFontSize,
+                            this._state.Font,
                             win);
                     }
                     else

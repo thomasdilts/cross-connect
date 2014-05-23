@@ -229,6 +229,8 @@ namespace CrossConnect
                 Window = App.OpenWindows[0].State.Window;
                 Font = App.OpenWindows[0].State.HtmlFontSize;
             }
+            var fontFamily = (string)_sb.Sbmd.GetProperty(ConfigEntryType.Font);
+            fontFamily = fontFamily==null?string.Empty:fontFamily;
             if (this.selectType.SelectedItem != null
                 && this.selectType.SelectedItem.Equals(Translations.Translate("Commentaries")))
             {
@@ -238,6 +240,7 @@ namespace CrossConnect
                     this._sb.Sbmd.Name,
                     WindowType.WindowCommentary,
                     Font,
+                    fontFamily,
                     Window,
                     null,
                     false);
@@ -251,6 +254,7 @@ namespace CrossConnect
                     this._sb.Sbmd.Name,
                     WindowType.WindowBook,
                     Font,
+                    fontFamily,
                     Window,
                     null,
                     false);
@@ -259,7 +263,7 @@ namespace CrossConnect
             {
                 await App.InstalledBibles.AddGenericBook(this._sb.Sbmd.InternalName);
                 await App.AddWindow(
-                    this._sb.Sbmd.InternalName, this._sb.Sbmd.Name, WindowType.WindowBible, Font, Window, null, false);
+                    this._sb.Sbmd.InternalName, this._sb.Sbmd.Name, WindowType.WindowBible, Font,fontFamily, Window, null, false);
             }
 
             this._sb = null;
