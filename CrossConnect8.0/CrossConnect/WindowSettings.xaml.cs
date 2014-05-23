@@ -505,6 +505,7 @@ namespace CrossConnect
             selectPlanType.Header = Translations.Translate("Select the daily plan");
             EnterKeyTitle.Text = Translations.Translate("Enter key");
             butEnterKeySave.Content = Translations.Translate("Save");
+            ThemeFont.Text = Translations.Translate("Font");
 
             selectDocumentType.Items.Clear();
             selectDocumentType.Items.Add(Translations.Translate("Bible"));

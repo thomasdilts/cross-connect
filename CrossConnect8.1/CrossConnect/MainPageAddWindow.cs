@@ -367,7 +367,7 @@ namespace CrossConnect
             this.planActualDateCaption.Text = Translations.Translate("Select the daily plan current date");
             this.selectPlanTypeHeader.Text = Translations.Translate("Select the daily plan");
             this.SetDateToday.Content = Translations.Translate("Today");
-            this.WindowFontComboBoxHeader.Text = Translations.Translate("Special font for this window");
+            this.WindowFontComboBoxHeader.Text = Translations.Translate("Font");
 
             this.selectDocumentType.Items.Clear();
             this.selectDocumentType.Items.Add(Translations.Translate("Bible"));
