@@ -685,7 +685,7 @@ namespace CrossConnect
 
                 sliderTextSize.Value = state.HtmlFontSize;
                 
-                if (Theme.FontFamilies.ContainsKey(state.Font))
+                if (!string.IsNullOrEmpty(state.Font) && Theme.FontFamilies.ContainsKey(state.Font))
                 {
                     _fontFamily = state.Font;
                 }
