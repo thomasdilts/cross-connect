@@ -262,7 +262,7 @@ namespace CrossConnect
             }
             var source = App.OpenWindows[(int)openWindowIndex].State.Source;
             Sword.versification.CanonBookDef book = null;
-            if (source is BibleZtextReader)
+            if (source is BibleZtextReader && !(source is DailyPlanReader))
             {
                 book = ((BibleZtextReader)App.OpenWindows[(int)openWindowIndex].State.Source).canon.GetBookFromBookNumber((int)((Button)sender).Tag);
             }
@@ -273,7 +273,7 @@ namespace CrossConnect
             var stageInfo = (int)((Button)sender).Tag;
             if (stage == 2)
             {
-                if (source is BibleZtextReader)
+                if (source is BibleZtextReader && !(source is DailyPlanReader))
                 {
                     _selectBibleBookSecondSelection = book.VersesInChapterStartIndex; //first chapter. there is only one chapter
                     stageInfo = book.VersesInChapterStartIndex;
@@ -304,7 +304,18 @@ namespace CrossConnect
             }
             else
             {
-                App.OpenWindows[(int)openWindowIndex].State.Source.MoveChapterVerse(book.ShortName1, (int)((Button)sender).Tag - book.VersesInChapterStartIndex, 0, false, App.OpenWindows[(int)openWindowIndex].State.Source);
+                int moveToChapter = 0;
+                string bookName = string.Empty;
+                if (source is BibleZtextReader && !(source is DailyPlanReader))
+                {
+                    moveToChapter = (int)((Button)sender).Tag - book.VersesInChapterStartIndex;
+                    bookName = book.ShortName1;
+                }
+                else
+                {
+                    moveToChapter = (int)((Button)sender).Tag;
+                }
+                App.OpenWindows[(int)openWindowIndex].State.Source.MoveChapterVerse(bookName, moveToChapter, 0, false, App.OpenWindows[(int)openWindowIndex].State.Source);
                 PhoneApplicationService.Current.State["skipWindowSettings"] = true;
                 if (NavigationService.CanGoBack)
                 {
