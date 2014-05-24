@@ -1,2 +1,2 @@
-MainPackage=E:\cross-connectSource\cross-connect\CrossConnect8.1\CrossConnect\bin\x64\Release\CrossConnect_2.1.9.74_Bundle\CrossConnect_2.1.9.74_x64.appx
-SymbolPackage=E:\cross-connectSource\cross-connect\CrossConnect8.1\CrossConnect\AppPackages\CrossConnect_2.1.9.74_Test\CrossConnect_2.1.9.74_x64.appxsym
+MainPackage=E:\cross-connectSource\cross-connect\CrossConnect8.1\CrossConnect\bin\x64\Release\CrossConnect_2.1.9.75_Bundle\CrossConnect_2.1.9.75_x64.appx
+SymbolPackage=E:\cross-connectSource\cross-connect\CrossConnect8.1\CrossConnect\AppPackages\CrossConnect_2.1.9.75_Test\CrossConnect_2.1.9.75_x64.appxsym

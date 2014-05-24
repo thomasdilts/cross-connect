@@ -416,19 +416,32 @@ namespace CrossConnect
             }
             else
             {
-                // convert book number to a chapter number
-                var book1 = ((BibleZtextReader)this._state.Source).canon.GetBookFromBookNumber((int)((Button)sender).Tag);
+                var chapterNumber = (int)((Button)sender).Tag;
+                if (this._state.Source is BibleZtextReader && !(this._state.Source is DailyPlanReader))
+                {
+                    // convert book number to a chapter number
+                    var book1 = ((BibleZtextReader)this._state.Source).canon.GetBookFromBookNumber((int)((Button)sender).Tag);
+                    chapterNumber = book1.VersesInChapterStartIndex;
+                }
                 // go directly to verse
-                specs = this._state.Source.GetButtonWindowSpecs(2, book1.VersesInChapterStartIndex, Translations.IsoLanguageCode);
+                specs = this._state.Source.GetButtonWindowSpecs(2, chapterNumber, Translations.IsoLanguageCode);
                 if (specs != null)
                 {
-                    this._selectBibleBookSecondSelection = book1.VersesInChapterStartIndex;
+                    this._selectBibleBookSecondSelection = chapterNumber;
                     this.ReloadBookPopupWindow(specs);
                 }
                 else
                 {
-                    var book = ((BibleZtextReader)this._state.Source).canon.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
-                    this._state.Source.MoveChapterVerse(book.ShortName1, (int)((Button)sender).Tag - book.VersesInChapterStartIndex, 0, false, this._state.Source);
+                    var bookName = string.Empty;
+                    chapterNumber = (int)((Button)sender).Tag;
+                    if (this._state.Source is BibleZtextReader && !(this._state.Source is DailyPlanReader))
+                    {
+                        // convert book number to a chapter number
+                        var book = ((BibleZtextReader)this._state.Source).canon.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
+                        chapterNumber = (int)((Button)sender).Tag - book.VersesInChapterStartIndex;
+                        bookName = book.ShortName1;
+                    }
+                    this._state.Source.MoveChapterVerse(bookName, chapterNumber, 0, false, this._state.Source);
 
                     this.BookPopup.IsOpen = false;
                     this.SearchPopup.IsOpen = false;
