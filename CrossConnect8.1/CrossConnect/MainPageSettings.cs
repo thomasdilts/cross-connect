@@ -80,7 +80,9 @@ namespace CrossConnect
             popup.VerticalOffset = - absolutePosition.Y;
             if (scroller != null)
             {
-                scroller.MaxHeight = windowBounds.Height;
+                //GeneralTransform gtscroller = scroller.TransformToVisual(rootVisual);
+                //Point scrollerPosition = gtscroller.TransformPoint(new Point(0, 0));
+                scroller.MaxHeight = windowBounds.Height;// -scrollerPosition.Y * 2;
                 scroller.MaxWidth = popupWidth;
             }
         }
