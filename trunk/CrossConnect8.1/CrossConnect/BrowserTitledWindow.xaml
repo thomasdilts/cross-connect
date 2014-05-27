@@ -323,7 +323,8 @@
                 </Popup.ChildTransitions>
                 <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" BorderThickness="2"
                         Background="{StaticResource ApplicationPageBackgroundThemeBrush}" x:Name="audioborder">
-                    <Grid Name="MainPaneStartAudioPopup">
+                    <ScrollViewer Name="scrollViewerStartAudio" Grid.Row="1">
+                        <Grid Name="MainPaneStartAudioPopup">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
@@ -334,14 +335,13 @@
                             <TextBlock x:Name="MsgFromServer" Margin="20 20 20 20" FontSize="14" />
                         </StackPanel>
                         <ProgressBar Grid.Row="1" Name="WaitingForDownload" Margin="0,30,0,0" IsIndeterminate="True" />
-                        <ScrollViewer Name="scrollViewerStartAudio" Grid.Row="1">
                             <ListBox SelectionChanged="ListStartAudio_OnSelectionChanged" Grid.Row="1"
                                      x:Name="ListStartAudio" FontSize="14">
 
                             </ListBox>
-                        </ScrollViewer>
                         <ToggleSwitch Header="SyncVerses" Grid.Row="2" Margin="0 20 0 0" FontSize="18" Name="SyncVerses" />
                     </Grid>
+                    </ScrollViewer>
                 </Border>
             </Popup>
             <Border Name="WebBrowserBorder" BorderBrush="Silver" BorderThickness="1" Grid.Row="1">
