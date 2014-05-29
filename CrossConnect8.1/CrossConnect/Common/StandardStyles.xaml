@@ -638,7 +638,11 @@
         <Setter Property="AutomationProperties.Name" Value="Move to Folder"/>
         <Setter Property="Content" Value="&#xE19C;"/>
     </Style>
-
+    <Style x:Key="SettingsAppBarButtonStyle2" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle2}">
+        <Setter Property="AutomationProperties.AutomationId" Value="SettingsAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Settings"/>
+        <Setter Property="Content" Value="&#xE115;"/>
+    </Style>
     <Style x:Key="SkipBackAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="SkipBackAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Skip Back"/>

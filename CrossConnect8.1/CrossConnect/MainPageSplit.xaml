@@ -406,7 +406,7 @@
                         <StackPanel Grid.Row="1" x:Name="ContentAddWindowPanel">
                             <TextBlock Name="selectColumn" Text="Column" TextWrapping="Wrap"
                                        Style="{StaticResource BaselineTextStyle}" />
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Name="stackPanelSelectColumn" Orientation="Horizontal">
                                 <RadioButton GroupName="selectColumn" Content="1" FontSize="18" Name="Col1" />
                                 <RadioButton GroupName="selectColumn" Content="2" FontSize="18" Name="Col2" />
                                 <RadioButton GroupName="selectColumn" Content="3" FontSize="18" Name="Col3" />

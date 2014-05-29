@@ -760,7 +760,15 @@ namespace CrossConnect
                                          && this.State.Source.IsPageable)
                                             ? Visibility.Visible
                                             : Visibility.Collapsed;
-
+            this.ButWindowSettings.Visibility = (this._state != null && this._state.Source != null
+                                         && this._state.WindowType != WindowType.WindowSearch
+                                         && this._state.WindowType != WindowType.WindowTranslator
+                                         && this._state.WindowType != WindowType.WindowLexiconLink
+                                         && this._state.WindowType != WindowType.WindowInternetLink
+                                         )
+                                            ? Visibility.Visible
+                                            : Visibility.Collapsed;
+            
             this.border1.BorderBrush = new SolidColorBrush(App.Themes.BorderColor);
             this.WebBrowserBorder.BorderBrush = this.border1.BorderBrush;
             this.grid1.Background = new SolidColorBrush(App.Themes.TitleBackColor);
@@ -974,6 +982,11 @@ namespace CrossConnect
             this._state.Source.GetInfo(Translations.IsoLanguageCode, 
                 out bookShortName, out relChaptNum, out verseNum, out fullName, out titleText);
             ScrollToThisVerse(bookShortName, relChaptNum, verseNum);
+        }
+
+        private void ButWindowSettings_OnClick(object sender, RoutedEventArgs e)
+        {
+            App.MainWindow.ButAddWindowClick(this, null);
         }
     }
 }
