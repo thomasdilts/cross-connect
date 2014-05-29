@@ -109,15 +109,29 @@ namespace CrossConnect
                     }
                 }
                 var fontFamily = WindowFontComboBox.SelectedItem!=null?((TextBlock)WindowFontComboBox.SelectedItem).Text:string.Empty;
-                await App.AddWindow(
-                    bookSelected.InternalName,
-                    bookSelected.Name,
-                    selectedType,
-                    this.sliderTextSize.Value,
-                    fontFamily,
-                    column,
-                    null,
-                    false);
+                if (WindowToChange == null)
+                {
+                    await App.AddWindow(
+                        bookSelected.InternalName,
+                        bookSelected.Name,
+                        selectedType,
+                        this.sliderTextSize.Value,
+                        fontFamily,
+                        column,
+                        null,
+                        false);
+                }
+                else
+                {
+                    WindowToChange.State.Font = fontFamily;
+                    WindowToChange.State.HtmlFontSize = this.sliderTextSize.Value;
+                    WindowToChange.State.WindowType = selectedType;
+                    await WindowToChange.Initialize(bookSelected.InternalName,
+                        bookSelected.Name, selectedType);
+                    WindowToChange.ForceReload = true;
+                    WindowToChange.DelayUpdateBrowser();
+                    App.StartTimerForNotifications();
+                }
             }
             catch (Exception ee)
             {
@@ -142,8 +156,11 @@ namespace CrossConnect
             this.Dispatcher.RunAsync(CoreDispatcherPriority.Low, () => this.ShowFontImage());
         }
 
-        private void ButAddWindowClick(object sender, RoutedEventArgs e)
+        private BrowserTitledWindow WindowToChange = null;
+        public void ButAddWindowClick(object sender, RoutedEventArgs e)
         {
+            WindowToChange = sender is BrowserTitledWindow ? (BrowserTitledWindow)sender : null;
+
             SideBarShowPopup(
                 this.AddWindowPopup,
                 this.MainPaneAddWindowPopup,
@@ -151,6 +168,45 @@ namespace CrossConnect
                 this.TopAppBar1,
                 this.BottomAppBar);
             this.AddWindowPopup.IsOpen = true;
+        }
+
+        private void SetSelectedData(WindowType selectedType, string bookSelected)
+        {
+            switch (selectedType)
+            {
+                case WindowType.WindowBible:
+                    this.selectDocumentType.SelectedIndex = 0;
+                    break;
+                case WindowType.WindowBibleNotes:
+                    this.selectDocumentType.SelectedIndex = 1;
+                    break;
+                case WindowType.WindowHistory:
+                    this.selectDocumentType.SelectedIndex = 2;
+                    break;
+                case WindowType.WindowBookmarks:
+                    this.selectDocumentType.SelectedIndex = 3;
+                    break;
+                case WindowType.WindowDailyPlan:
+                    this.selectDocumentType.SelectedIndex = 4;
+                    break;
+                case WindowType.WindowAddedNotes:
+                    this.selectDocumentType.SelectedIndex = 5;
+                    break;
+                case WindowType.WindowCommentary:
+                    this.selectDocumentType.SelectedIndex = 6;
+                    break;
+                case WindowType.WindowBook:
+                    this.selectDocumentType.SelectedIndex = App.InstalledBibles.InstalledCommentaries.Count > 0?7:6;
+                    break;
+            }
+            foreach (var item in  this.selectDocument.Items)
+	        {
+                if (item.Equals(bookSelected))
+                {
+                    this.selectDocument.SelectedItem = item;
+                    break;
+                }
+	        }
         }
 
         private void GetSelectedData(out WindowType selectedType, out SwordBookMetaData bookSelected)
@@ -360,7 +416,7 @@ namespace CrossConnect
 
         private void SetupEntirePage()
         {
-            this.AddWindowTitle.Text = Translations.Translate("Add a new window");
+            this.AddWindowTitle.Text = Translations.Translate(WindowToChange==null?"Add a new window":"Settings");
             this.selectDocumentTypeHeader.Text = Translations.Translate("Select the window type");
             this.selectDocumentHeader.Text = Translations.Translate("Select the bible");
             this.planStartDateCaption.Text = Translations.Translate("Select the daily plan start date");
@@ -368,6 +424,7 @@ namespace CrossConnect
             this.selectPlanTypeHeader.Text = Translations.Translate("Select the daily plan");
             this.SetDateToday.Content = Translations.Translate("Today");
             this.WindowFontComboBoxHeader.Text = Translations.Translate("Font");
+            this.selectColumn.Text = Translations.Translate("Column");
 
             this.selectDocumentType.Items.Clear();
             this.selectDocumentType.Items.Add(Translations.Translate("Bible"));
@@ -397,6 +454,8 @@ namespace CrossConnect
                 this.selectDocument.SelectedIndex = 0;
             }
 
+            this.stackPanelSelectColumn.Visibility = WindowToChange == null ? Visibility.Visible : Visibility.Collapsed;
+            this.selectColumn.Visibility = WindowToChange == null ? Visibility.Visible : Visibility.Collapsed;
             this.selectPlanTypeHeader.Visibility = Visibility.Collapsed;
             this.DateSelectPanel.Visibility = Visibility.Collapsed;
             this.planStartDateCaption.Visibility = Visibility.Collapsed;
@@ -425,10 +484,24 @@ namespace CrossConnect
                             Text = font.Key,
                             FontFamily = new FontFamily(font.Value),
                             Tag = font.Value
-                        });
+                        }
+                    );
                 }
             }
             selectDocumentSelectionChanged(null, null);
+            if (WindowToChange != null)
+            {
+                SetSelectedData(WindowToChange.State.WindowType, WindowToChange.State.BibleDescription);
+                this.sliderTextSize.Value = WindowToChange.State.HtmlFontSize;
+                foreach (var item in WindowFontComboBox.Items)
+                {
+                    if (((TextBlock)item).Text.Equals(WindowToChange.State.Font))
+                    {
+                        WindowFontComboBox.SelectedItem = item;
+                        break;
+                    }
+                }
+            }
         }
 
         private void SliderTextSizeValueChanged(object sender, RangeBaseValueChangedEventArgs e)
