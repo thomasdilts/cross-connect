@@ -123,11 +123,24 @@ namespace CrossConnect
                 }
                 else
                 {
+                    string relbookShortName;
+                    int relChaptNum;
+                    int relverseNum;
+                    string fullName;
+                    string title;
+                    WindowToChange.State.Source.GetInfo(
+                        Translations.IsoLanguageCode,
+                        out relbookShortName,
+                        out relChaptNum,
+                        out relverseNum,
+                        out fullName,
+                        out title);
                     WindowToChange.State.Font = fontFamily;
                     WindowToChange.State.HtmlFontSize = this.sliderTextSize.Value;
                     WindowToChange.State.WindowType = selectedType;
                     await WindowToChange.Initialize(bookSelected.InternalName,
                         bookSelected.Name, selectedType);
+                    WindowToChange.State.Source.MoveChapterVerse(relbookShortName, relChaptNum, relverseNum, false, WindowToChange.State.Source);
                     WindowToChange.ForceReload = true;
                     WindowToChange.DelayUpdateBrowser();
                     App.StartTimerForNotifications();
