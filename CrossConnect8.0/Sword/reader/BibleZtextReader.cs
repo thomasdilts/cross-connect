@@ -1030,7 +1030,13 @@ function SetFontColorForElement(elemntId, colorRgba){
             {
                 return;
             }
-
+            if (string.IsNullOrEmpty(this.Serial.PosBookShortName))
+            {
+                var absChapt = GetAvailableChapter(0);
+                var book1 = canon.GetBookFromAbsoluteChapter(absChapt);
+                this.Serial.PosBookShortName = book1.ShortName1;
+                this.Serial.PosChaptNum = absChapt - book1.VersesInChapterStartIndex;
+            }
             var book = canon.BookByShortName[this.Serial.PosBookShortName];
             if (isVerseMove)
             {
@@ -1065,6 +1071,17 @@ function SetFontColorForElement(elemntId, colorRgba){
 
         public virtual void MovePrevious(bool isVerseMove)
         {
+            if (this.Serial == null || canon == null)
+            {
+                return;
+            } 
+            if (string.IsNullOrEmpty(this.Serial.PosBookShortName))
+            {
+                var absChapt = GetAvailableChapter(0);
+                var book1 = canon.GetBookFromAbsoluteChapter(absChapt);
+                this.Serial.PosBookShortName = book1.ShortName1;
+                this.Serial.PosChaptNum = absChapt - book1.VersesInChapterStartIndex;
+            }
             var book = canon.BookByShortName[this.Serial.PosBookShortName];
             if (isVerseMove)
             {

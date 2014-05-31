@@ -1030,7 +1030,13 @@ function SetFontColorForElement(elemntId, colorRgba){
             {
                 return;
             }
-
+            if (string.IsNullOrEmpty(this.Serial.PosBookShortName))
+            {
+                var absChapt = GetAvailableChapter(0);
+                var book1 = canon.GetBookFromAbsoluteChapter(absChapt);
+                this.Serial.PosBookShortName = book1.ShortName1;
+                this.Serial.PosChaptNum = absChapt - book1.VersesInChapterStartIndex;
+            }
             var book = canon.BookByShortName[this.Serial.PosBookShortName];
             if (isVerseMove)
             {
@@ -1065,6 +1071,17 @@ function SetFontColorForElement(elemntId, colorRgba){
 
         public virtual void MovePrevious(bool isVerseMove)
         {
+            if (this.Serial == null || canon == null)
+            {
+                return;
+            }
+            if (string.IsNullOrEmpty(this.Serial.PosBookShortName))
+            {
+                var absChapt = GetAvailableChapter(0);
+                var book1 = canon.GetBookFromAbsoluteChapter(absChapt);
+                this.Serial.PosBookShortName = book1.ShortName1;
+                this.Serial.PosChaptNum = absChapt - book1.VersesInChapterStartIndex;
+            }
             var book = canon.BookByShortName[this.Serial.PosBookShortName];
             if (isVerseMove)
             {
@@ -1929,7 +1946,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                                 string bookShortName;
                                                 if (ConvertOsisRefToAbsoluteChaptVerse(
                                                     reader.Value, out bookShortName, out chaptNumLoc, out verseNumLoc))
-                                                {                                                    
+                                                {
                                                     isReferenceLinked = true;
                                                     string textId = bookShortName + "_" + chaptNumLoc + "_" + verseNumLoc;
                                                     noteText.Append(
@@ -2017,7 +2034,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                     case "note":
                                         if (!isRaw && !isNotesOnly && displaySettings.ShowNotePositions)
                                         {
-                                            if ( chapterNumber.Length > 0 && !isChaptNumGiven)
+                                            if (chapterNumber.Length > 0 && !isChaptNumGiven)
                                             {
                                                 plainText.Append(chapterNumber);
                                                 isChaptNumGiven = true;
@@ -2035,20 +2052,20 @@ function SetFontColorForElement(elemntId, colorRgba){
                                             noteText.Append("<p>" + chapterNumber);
                                             isChaptNumGivenNotes = true;
                                         }
-                                        
+
                                         if (!isRaw && displaySettings.ShowNotePositions)
                                         {
                                             if (!isFirstNoteInText && displaySettings.AddLineBetweenNotes)
                                             {
                                                 noteText.Append("<br />");
-                                                
+
                                             }
                                             isFirstNoteInText = false;
                                             noteText.Append(
                                                 (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
                                                 + this.convertNoteNumToId(noteIdentifier)
                                                 + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
-                                            if(isNotesOnly)
+                                            if (isNotesOnly)
                                             {
                                                 noteIdentifier++;
                                             }

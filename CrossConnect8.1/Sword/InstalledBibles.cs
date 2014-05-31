@@ -59,6 +59,10 @@ namespace Sword
 
         public async Task Initialize()
         {
+            InstalledBibles = new Dictionary<string, SwordBookMetaData>();
+            InstalledCommentaries = new Dictionary<string, SwordBookMetaData>();
+            InstalledGeneralBooks = new Dictionary<string, SwordBookMetaData>();
+
             try
             {
                 StorageFolder configFolder =

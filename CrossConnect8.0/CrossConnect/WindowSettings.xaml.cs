@@ -490,6 +490,8 @@ namespace CrossConnect
                 await ((BrowserTitledWindow)App.OpenWindows[(int)openWindowIndex]).Initialize(
                     state.BibleToLoad, state.BibleDescription, state.WindowType);
                 App.OpenWindows[(int)openWindowIndex].State.Source.MoveChapterVerse(relbookShortName, relChaptNum, relverseNum, false, App.OpenWindows[(int)openWindowIndex].State.Source);
+                App.OpenWindows[(int)openWindowIndex].ForceReload = true;
+                App.OpenWindows[(int)openWindowIndex].UpdateBrowser(false);
             }
             else
             {
