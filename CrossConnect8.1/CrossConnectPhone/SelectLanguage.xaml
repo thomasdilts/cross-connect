@@ -12,146 +12,179 @@
                       xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
                       shell:SystemTray.IsVisible="False" xmlns:my="clr-namespace:CrossConnect" Loaded="AutoRotatePageLoaded">
 
-  <toolkit:TransitionService.NavigationInTransition>
-    <toolkit:NavigationInTransition>
-      <toolkit:NavigationInTransition.Backward>
-        <toolkit:TurnstileTransition Mode="BackwardIn" />
-      </toolkit:NavigationInTransition.Backward>
-      <toolkit:NavigationInTransition.Forward>
-        <toolkit:TurnstileTransition Mode="ForwardIn" />
-      </toolkit:NavigationInTransition.Forward>
-    </toolkit:NavigationInTransition>
-  </toolkit:TransitionService.NavigationInTransition>
-  <toolkit:TransitionService.NavigationOutTransition>
-    <toolkit:NavigationOutTransition>
-      <toolkit:NavigationOutTransition.Backward>
-        <toolkit:TurnstileTransition Mode="BackwardOut" />
-      </toolkit:NavigationOutTransition.Backward>
-      <toolkit:NavigationOutTransition.Forward>
-        <toolkit:TurnstileTransition Mode="ForwardOut" />
-      </toolkit:NavigationOutTransition.Forward>
-    </toolkit:NavigationOutTransition>
-  </toolkit:TransitionService.NavigationOutTransition>
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn" />
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn" />
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut" />
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut" />
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
 
-  <!--LayoutRoot is the root grid where all page content is placed-->
+    <!--LayoutRoot is the root grid where all page content is placed-->
 
-  <Grid x:Name="LayoutRoot" Background="Transparent">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="*" />
-    </Grid.RowDefinitions>
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-    <!--TitlePanel contains the name of the application and page title-->
-    <StackPanel Grid.Row="0" x:Name="TitlePanel" Margin="12,5,0,0" Height="63" VerticalAlignment="Top">
-      <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}" />
-      <TextBlock x:Name="PageTitle" Text="Select Language" Margin="9,-7,0,0"
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel Grid.Row="0" x:Name="TitlePanel" Margin="12,5,0,0" Height="63" VerticalAlignment="Top">
+            <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}" />
+            <TextBlock x:Name="PageTitle" Text="Select Language" Margin="9,-7,0,0"
                  Style="{StaticResource PhoneTextTitle2Style}" />
-    </StackPanel>
-    <!--ContentPanel - place additional content here-->
-    <ListBox Grid.Row="1" SelectionChanged="SelectListSelectionChanged" Name="SelectList" FontSize="32">
-      <sys:String>
-        zzDefault system language
-      </sys:String>
-      <sys:String>Afrikaans (af)</sys:String>
-      <sys:String>العربية (Arabic ar)</sys:String>
-      <sys:String>
-        Azərbaycan (Azerbaijani az)
-      </sys:String>
-      <sys:String>
-        Беларускі (Belarussian be)
-      </sys:String>
-      <sys:String>
-        Български (Bulgarian bg)
-      </sys:String>
-      <sys:String>Čeština (Czech cs)</sys:String>
-      <sys:String>Dansk (Danish da)</sys:String>
-      <sys:String>Deutsch (German de)</sys:String>
-      <sys:String>Ελληνικά (Greek el)</sys:String>
-      <sys:String>English (en)</sys:String>
-      <sys:String>Español (Spanish es)</sys:String>
-      <sys:String>
-        Eesti Keel (Estonian et)
-      </sys:String>
-      <sys:String>فارسی (Persian fa)</sys:String>
-      <sys:String>Suomi (Finish fi)</sys:String>
-      <sys:String>Français (French fr)</sys:String>
-      <sys:String>हिन्दी (Hindi hi)</sys:String>
-      <sys:String>
-        Hrvatski (Croatian hr)
-      </sys:String>
-      <sys:String>
-        Magyar (Hungarian hu)
-      </sys:String>
-      <sys:String>
-        Հայերեն (Armenian hy)
-      </sys:String>
-      <sys:String>
-        Bahasa Indonesia (Indonesian id)
-      </sys:String>
-      <sys:String>
-        Íslenska (Icelandic is)
-      </sys:String>
-      <sys:String>
-        Italiano (Italian it)
-      </sys:String>
-      <sys:String>עברית (Hebrew iw)</sys:String>
-      <sys:String>日本 (Japanese ja)</sys:String>
-      <sys:String>한국어 (Korean ko)</sys:String>
-      <sys:String>
-        Lietuvių (Lithuanian lt)
-      </sys:String>
-      <sys:String>
-        Latviešu (Latvian lv)
-      </sys:String>
-      <sys:String>
-        Македонски (Macedonian mk)
-      </sys:String>
-      <sys:String>
-        Malaysia (Malaysian ms)
-      </sys:String>
-      <sys:String>Malti (Maltese mt)</sys:String>
-      <sys:String>
-        Nederlands (Dutch nl)
-      </sys:String>
-      <sys:String>
-        Norske (Norwegian no)
-      </sys:String>
-      <sys:String>
-        Polszczyzna (Polish pl)
-      </sys:String>
-      <sys:String>
-        Português (Portuguese pt)
-      </sys:String>
-      <sys:String>Română (Romanian ro)</sys:String>
-      <sys:String>Русский (Russian ru)</sys:String>
-      <sys:String>
-        Slovenskom jazyku (Slovakian sk)
-      </sys:String>
-      <sys:String>
-        Slovenščina (Slovenian sl)
-      </sys:String>
-      <sys:String>Shqip (Albanian sq)</sys:String>
-      <sys:String>Српска (Serbian sr)</sys:String>
-      <sys:String>Swahili (sw)</sys:String>
-      <sys:String>Svenska (Swedish sv)</sys:String>
-      <sys:String>ภาษาไทย (Thai th)</sys:String>
-      <sys:String>
-        Wikang Tagalog (Tagalog tl)
-      </sys:String>
-      <sys:String>Türk (Turkish tr)</sys:String>
-      <sys:String>
-        Українська (Ukrainian uk)
-      </sys:String>
-      <sys:String>اردو (Urdu ur)</sys:String>
-      <sys:String>Việt (Vietnamese vi)</sys:String>
-      <sys:String>
-        簡化字 (Traditional Chinese zh)
-      </sys:String>
-      <sys:String>
-        简化字 (Simplified Chinese zh_cn)
-      </sys:String>
-    </ListBox>
-  </Grid>
+        </StackPanel>
+        <!--ContentPanel - place additional content here-->
+        <ListBox Grid.Row="1" SelectionChanged="SelectListSelectionChanged" Name="SelectList" FontSize="32">
+            <sys:String>
+                zzDefault system language
+            </sys:String>
+            <sys:String>Afrikaans (af)</sys:String>
+            <sys:String>العربية (Arabic ar)</sys:String>
+            <sys:String>
+                Azərbaycan (Azerbaijani az)
+            </sys:String>
+            <sys:String>
+                Беларускі (Belarussian be)
+            </sys:String>
+            <sys:String>
+                Български (Bulgarian bg)
+            </sys:String>
+            <sys:String>
+                বাংলা (Bengali bn)
+            </sys:String>
+            <sys:String>Čeština (Czech cs)</sys:String>
+            <sys:String>Cymraeg (Welsh cy)</sys:String>
+            <sys:String>Dansk (Danish da)</sys:String>
+            <sys:String>Deutsch (German de)</sys:String>
+            <sys:String>Ελληνικά (Greek el)</sys:String>
+            <sys:String>English (en)</sys:String>
+            <sys:String>Esperanto (Esperanto eo)</sys:String>
+            <sys:String>Español (Spanish es)</sys:String>
+            <sys:String>
+                Eesti Keel (Estonian et)
+            </sys:String>
+            <sys:String>euskara (Basque eu)</sys:String>
+            <sys:String>فارسی (Persian fa)</sys:String>
+            <sys:String>Suomi (Finish fi)</sys:String>
+            <sys:String>Français (French fr)</sys:String>
+            <sys:String>Gaeilge (Irish ga)</sys:String>
+            <sys:String>galego (Galician gl)</sys:String>
+            <sys:String>ગુજરાતી (Gujarati gu)</sys:String>
+            <sys:String>हिन्दी (Hindi hi)</sys:String>
+            <sys:String>
+                Hrvatski (Croatian hr)
+            </sys:String>
+            <sys:String>Kreyòl ayisyen (Haitian Creole ht)</sys:String>
+            <sys:String>
+                Magyar (Hungarian hu)
+            </sys:String>
+            <sys:String>
+                Հայերեն (Armenian hy)
+            </sys:String>
+            <sys:String>
+                Bahasa Indonesia (Indonesian id)
+            </sys:String>
+            <sys:String>
+                Íslenska (Icelandic is)
+            </sys:String>
+            <sys:String>
+                Italiano (Italian it)
+            </sys:String>
+            <sys:String>עברית (Hebrew iw)</sys:String>
+            <sys:String>日本 (Japanese ja)</sys:String>
+            <sys:String>ქართული (Georgian ka)</sys:String>
+            <sys:String>ខ្មែរ, ខេមរភាសា, ភាសាខ្មែរ (Khmer km)</sys:String>
+            <sys:String>ಕನ್ನಡ (Kannada kn)</sys:String>
+            <sys:String>한국어 (Korean ko)</sys:String>
+            <sys:String>
+                Lietuvių (Lithuanian lt)
+            </sys:String>
+            <sys:String>
+                Latviešu (Latvian lv)
+            </sys:String>
+            <sys:String>
+                te reo Māori (Maori mi)
+            </sys:String>
+            <sys:String>
+                Македонски (Macedonian mk)
+            </sys:String>
+            <sys:String>
+                монгол (Mongolian mn)
+            </sys:String>
+            <sys:String>
+                मराठी (Marathi mr)
+            </sys:String>
+            <sys:String>
+                Malaysia (Malaysian ms)
+            </sys:String>
+            <sys:String>Malti (Maltese mt)</sys:String>
+            <sys:String>
+                Nederlands (Dutch nl)
+            </sys:String>
+            <sys:String>
+                Norske (Norwegian no)
+            </sys:String>
+            <sys:String>
+                ਪੰਜਾਬੀ (Punjabi pa)
+            </sys:String>
+            <sys:String>
+                Polszczyzna (Polish pl)
+            </sys:String>
+            <sys:String>
+                Português (Portuguese pt)
+            </sys:String>
+            <sys:String>Română (Romanian ro)</sys:String>
+            <sys:String>Русский (Russian ru)</sys:String>
+            <sys:String>
+                Slovenskom jazyku (Slovakian sk)
+            </sys:String>
+            <sys:String>
+                Slovenščina (Slovenian sl)
+            </sys:String>
+            <sys:String>
+                Soomaaliga (Somalian so)
+            </sys:String>
+            <sys:String>Shqip (Albanian sq)</sys:String>
+            <sys:String>Српска (Serbian sr)</sys:String>
+            <sys:String>Swahili (sw)</sys:String>
+            <sys:String>Svenska (Swedish sv)</sys:String>
+            <sys:String>தமிழ் (Tamil ta)</sys:String>
+            <sys:String>తెలుగు (Telugu te)</sys:String>
+            <sys:String>ภาษาไทย (Thai th)</sys:String>
+            <sys:String>
+                Wikang Tagalog (Tagalog tl)
+            </sys:String>
+            <sys:String>Türk (Turkish tr)</sys:String>
+            <sys:String>
+                Українська (Ukrainian uk)
+            </sys:String>
+            <sys:String>اردو (Urdu ur)</sys:String>
+            <sys:String>Việt (Vietnamese vi)</sys:String>
+            <sys:String>
+                簡化字 (Traditional Chinese zh)
+            </sys:String>
+            <sys:String>
+                简化字 (Simplified Chinese zh_cn)
+            </sys:String>
+            <sys:String>
+                isiZulu (zulu zu)
+            </sys:String>
+        </ListBox>
+    </Grid>
 
 
 </local:AutoRotatePage>
