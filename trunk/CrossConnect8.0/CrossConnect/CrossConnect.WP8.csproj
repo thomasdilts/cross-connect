@@ -311,6 +311,7 @@
     <None Include="Properties\AppManifest.xml">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="AppResources.ja.resx" />
     <EmbeddedResource Include="Properties\strongsgreek.xml.gz" />
     <EmbeddedResource Include="Properties\strongshebrew.xml.gz" />
     <None Include="Properties\WMAppManifest.xml">
@@ -455,21 +456,42 @@
     <Content Include="Images\light\window.smaller.pressed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Properties\crossc_bn.xml" />
+    <EmbeddedResource Include="Properties\crossc_cy.xml" />
+    <EmbeddedResource Include="Properties\crossc_eo.xml" />
+    <EmbeddedResource Include="Properties\crossc_eu.xml" />
+    <EmbeddedResource Include="Properties\crossc_ga.xml" />
+    <EmbeddedResource Include="Properties\crossc_gl.xml" />
+    <EmbeddedResource Include="Properties\crossc_gu.xml" />
+    <EmbeddedResource Include="Properties\crossc_ht.xml" />
+    <EmbeddedResource Include="Properties\crossc_ka.xml" />
+    <EmbeddedResource Include="Properties\crossc_km.xml" />
+    <EmbeddedResource Include="Properties\crossc_kn.xml" />
+    <EmbeddedResource Include="Properties\crossc_mi.xml" />
+    <EmbeddedResource Include="Properties\crossc_mn.xml" />
+    <EmbeddedResource Include="Properties\crossc_mr.xml" />
+    <EmbeddedResource Include="Properties\crossc_pa.xml" />
+    <EmbeddedResource Include="Properties\crossc_so.xml" />
+    <EmbeddedResource Include="Properties\crossc_ta.xml" />
+    <EmbeddedResource Include="Properties\crossc_te.xml" />
+    <EmbeddedResource Include="Properties\crossc_zu.xml" />
     <Content Include="README_FIRST.txt" />
     <Content Include="sidecrossbigbut691x336.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
-    <EmbeddedResource Include="Resources\AppResources.af-AF.resx">
+    <EmbeddedResource Include="Resources\AppResources.af.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\AppResources.ar-AR.resx" />
-    <EmbeddedResource Include="Resources\AppResources.az-AZ.resx" />
-    <EmbeddedResource Include="Resources\AppResources.be-BE.resx" />
+    <EmbeddedResource Include="Resources\AppResources.ar.resx" />
+    <EmbeddedResource Include="Resources\AppResources.az-Cyrl-AZ.resx" />
+    <EmbeddedResource Include="Resources\AppResources.bn.resx" />
+    <EmbeddedResource Include="Resources\AppResources.be.resx" />
     <EmbeddedResource Include="Resources\AppResources.bg-BG.resx" />
-    <EmbeddedResource Include="Resources\AppResources.cs-CS.resx" />
-    <EmbeddedResource Include="Resources\AppResources.da-DA.resx" />
-    <EmbeddedResource Include="Resources\AppResources.de-DE.resx" />
-    <EmbeddedResource Include="Resources\AppResources.el-EL.resx" />
+    <EmbeddedResource Include="Resources\AppResources.cy.resx" />
+    <EmbeddedResource Include="Resources\AppResources.cs.resx" />
+    <EmbeddedResource Include="Resources\AppResources.da.resx" />
+    <EmbeddedResource Include="Resources\AppResources.de.resx" />
+    <EmbeddedResource Include="Resources\AppResources.el.resx" />
     <EmbeddedResource Include="Properties\crossc_az.xml" />
     <EmbeddedResource Include="Properties\crossc_fa.xml" />
     <EmbeddedResource Include="Properties\crossc_ro.xml" />
@@ -479,7 +501,7 @@
     <EmbeddedResource Include="Properties\crossc_sw.xml" />
     <EmbeddedResource Include="Properties\crossc_ur.xml" />
     <EmbeddedResource Include="Properties\crossc_vi.xml" />
-    <EmbeddedResource Include="Properties\crossc_iw.xml" />
+    <EmbeddedResource Include="Properties\crossc_he.xml" />
     <Content Include="Images\dark\appbar.speaker.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -686,42 +708,59 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SplashScreenImage.jpg" />
-    <EmbeddedResource Include="Resources\AppResources.et-ET.resx" />
-    <EmbeddedResource Include="Resources\AppResources.fa-FA.resx" />
+    <EmbeddedResource Include="Resources\AppResources.es-ES.resx" />
+    <EmbeddedResource Include="Resources\AppResources.et.resx" />
+    <EmbeddedResource Include="Resources\AppResources.fa-IR.resx" />
     <EmbeddedResource Include="Resources\AppResources.fi-FI.resx" />
-    <EmbeddedResource Include="Resources\AppResources.hi-HI.resx" />
+    <EmbeddedResource Include="Resources\AppResources.ga.resx" />
+    <EmbeddedResource Include="Resources\AppResources.gl.resx" />
+    <EmbeddedResource Include="Resources\AppResources.gu.resx" />
+    <EmbeddedResource Include="Resources\AppResources.he.resx" />
+    <EmbeddedResource Include="Resources\AppResources.fr.resx" />
+    <EmbeddedResource Include="Resources\AppResources.hi.resx" />
     <EmbeddedResource Include="Resources\AppResources.hr-HR.resx" />
-    <EmbeddedResource Include="Resources\AppResources.hu-HU.resx" />
-    <EmbeddedResource Include="Resources\AppResources.hy-HY.resx" />
+    <EmbeddedResource Include="Resources\AppResources.hu.resx" />
+    <EmbeddedResource Include="Resources\AppResources.hy.resx" />
     <EmbeddedResource Include="Resources\AppResources.id-ID.resx" />
     <EmbeddedResource Include="Resources\AppResources.is-IS.resx" />
-    <EmbeddedResource Include="Resources\AppResources.iw-IW.resx" />
-    <EmbeddedResource Include="Resources\AppResources.ja-JA.resx" />
-    <EmbeddedResource Include="Resources\AppResources.ko-KO.resx" />
+    <EmbeddedResource Include="Resources\AppResources.it-IT.resx" />
+    <EmbeddedResource Include="Resources\AppResources.ka.resx" />
+    <EmbeddedResource Include="Resources\AppResources.km.resx" />
+    <EmbeddedResource Include="Resources\AppResources.kn.resx" />
+    <EmbeddedResource Include="Resources\AppResources.ja.resx" />
+    <EmbeddedResource Include="Resources\AppResources.ko.resx" />
     <EmbeddedResource Include="Resources\AppResources.lt-LT.resx" />
     <EmbeddedResource Include="Resources\AppResources.lv-LV.resx" />
+    <EmbeddedResource Include="Resources\AppResources.mi.resx" />
+    <EmbeddedResource Include="Resources\AppResources.mr.resx" />
+    <EmbeddedResource Include="Resources\AppResources.mn.resx" />
     <EmbeddedResource Include="Resources\AppResources.mk-MK.resx" />
-    <EmbeddedResource Include="Resources\AppResources.ms-MS.resx" />
+    <EmbeddedResource Include="Resources\AppResources.ms.resx" />
     <EmbeddedResource Include="Resources\AppResources.mt-MT.resx" />
     <EmbeddedResource Include="Resources\AppResources.nl-NL.resx" />
-    <EmbeddedResource Include="Resources\AppResources.no-NO.resx" />
+    <EmbeddedResource Include="Resources\AppResources.pa.resx" />
+    <EmbeddedResource Include="Resources\AppResources.no.resx" />
     <EmbeddedResource Include="Resources\AppResources.pl-PL.resx" />
     <EmbeddedResource Include="Resources\AppResources.pt-PT.resx" />
     <EmbeddedResource Include="Resources\AppResources.resx" />
     <EmbeddedResource Include="Resources\AppResources.ro-RO.resx" />
     <EmbeddedResource Include="Resources\AppResources.ru-RU.resx" />
     <EmbeddedResource Include="Resources\AppResources.sk-SK.resx" />
-    <EmbeddedResource Include="Resources\AppResources.sl-SL.resx" />
-    <EmbeddedResource Include="Resources\AppResources.sq-SQ.resx" />
-    <EmbeddedResource Include="Resources\AppResources.sr-SR.resx" />
-    <EmbeddedResource Include="Resources\AppResources.sv-SV.resx" />
-    <EmbeddedResource Include="Resources\AppResources.sw-SW.resx" />
+    <EmbeddedResource Include="Resources\AppResources.sl.resx" />
+    <EmbeddedResource Include="Resources\AppResources.so.resx" />
+    <EmbeddedResource Include="Resources\AppResources.sq.resx" />
+    <EmbeddedResource Include="Resources\AppResources.sr.resx" />
+    <EmbeddedResource Include="Resources\AppResources.ta.resx" />
+    <EmbeddedResource Include="Resources\AppResources.sv.resx" />
+    <EmbeddedResource Include="Resources\AppResources.te.resx" />
+    <EmbeddedResource Include="Resources\AppResources.sw.resx" />
     <EmbeddedResource Include="Resources\AppResources.th-TH.resx" />
     <EmbeddedResource Include="Resources\AppResources.tl-TL.resx" />
     <EmbeddedResource Include="Resources\AppResources.tr-TR.resx" />
-    <EmbeddedResource Include="Resources\AppResources.uk-UK.resx" />
-    <EmbeddedResource Include="Resources\AppResources.ur-UR.resx" />
-    <EmbeddedResource Include="Resources\AppResources.vi-VI.resx" />
+    <EmbeddedResource Include="Resources\AppResources.uk.resx" />
+    <EmbeddedResource Include="Resources\AppResources.ur.resx" />
+    <EmbeddedResource Include="Resources\AppResources.zu.resx" />
+    <EmbeddedResource Include="Resources\AppResources.vi.resx" />
     <EmbeddedResource Include="Resources\AppResources.zh-CN.resx" />
     <EmbeddedResource Include="Resources\AppResources.zh-TW.resx" />
   </ItemGroup>

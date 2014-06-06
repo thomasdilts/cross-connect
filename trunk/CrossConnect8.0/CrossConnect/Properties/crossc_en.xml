@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-
-<translations isolang="en" isolocale="" version="1.0"><string key="Accent color">Accent color</string>
+<translations isolang="en" isolocale="" version="1.0">
+  <string key="Accent color">Accent color</string>
   <string key="Add a note">Add a note</string>
   <string key="Add new window">Add new window</string>
   <string key="Add to bookmarks">Add to bookmarks</string>
@@ -224,9 +224,7 @@
   <string key="Show two title rows in each window">Show two title rows in each window</string>
   <string key="Invalid key. Try again">Invalid key. Try again</string>
   <string key="Enter key">Enter key</string>
-  <string key="Save">Save</string>
   <string key="Fast search help text">A fast search is slow the first time you use it on a bible and fast each time thereafter. A fast search returns verses containing all of the given words. Put a "+" in front of each word to find any of the given words in each verse. Put a "-" in front of a word to find all of the verses that don't have that word.  Wildcards "*" and "?" can be used. In languages using symbols like chinese and japanese you must put "*" before and after each character. Use only the slow search to find "Strongs" numbers.</string>
-
     <string key="Unsuccessful import">Unsuccessful import</string>
     <string key="Successful import">Successful import</string>
     <string key="Highlight name">Highlight name</string>
@@ -237,7 +235,6 @@
     <string key="Highlight">Highlight</string>
     <string key="Synchronize to every verse">Synchronize to every verse</string>
     <string key="None">None</string>
-    
     <string key="OneDrive backup / restore">OneDrive backup / restore</string>
     <string key="Select the items you want to backup / restore. Then hit the button at the bottom">Select the items you want to backup / restore. Then hit the button at the bottom</string>
     <string key="Backup">Backup</string>

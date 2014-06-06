@@ -11,6 +11,7 @@
   <PropertyGroup>
     <CurrentDeployCmdId />
     <CurrentDeployID />
+    <ProjectView>ShowAllFiles</ProjectView>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <CurrentDeployCmdId>256</CurrentDeployCmdId>
