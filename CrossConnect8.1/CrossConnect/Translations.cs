@@ -55,16 +55,16 @@ namespace CrossConnect
                     Assembly assem = Assembly.Load(new AssemblyName("CrossConnect"));
                     //var ci = System.Threading.Thread.CurrentThread.CurrentUICulture;
                     //string isocode = System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLower();
+
+                    if (!isocode.Equals("fr_ht"))
+                    {
+                        isocode = "ht";
+                    } 
+                    
                     if (!isocode.Equals("zh_tw"))
                     {
                         isocode = isocode.Substring(0, 2);
-                    }
-
-                    // fix for hebrew
-                    if (isocode.Equals("he"))
-                    {
-                        isocode = "iw";
-                    }
+                    } 
 
                     if (ApplicationData.Current.LocalSettings.Values.TryGetValue("LanguageIsoCode", out name))
                     {

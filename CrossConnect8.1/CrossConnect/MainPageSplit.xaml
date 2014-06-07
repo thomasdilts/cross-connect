@@ -277,109 +277,76 @@
                         </StackPanel>
                         <ListBox SelectionChanged="SelectListSelectionChanged" Grid.Row="1" x:Name="SelectList"
                                  FontSize="14">
-                            <ListBoxItem>
-                                zzDefault system language
-                            </ListBoxItem>
+                            <ListBoxItem>zzDefault system language</ListBoxItem>
                             <ListBoxItem>Afrikaans (af)</ListBoxItem>
                             <ListBoxItem>العربية (Arabic ar)</ListBoxItem>
-                            <ListBoxItem>
-                                Azərbaycan (Azerbaijani az)
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                Беларускі (Belarussian be)
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                Български (Bulgarian bg)
-                            </ListBoxItem>
+                            <ListBoxItem>Azərbaycan (Azerbaijani az)</ListBoxItem>
+                            <ListBoxItem>Беларускі (Belarussian be)</ListBoxItem>
+                            <ListBoxItem>Български (Bulgarian bg)</ListBoxItem>
+                            <ListBoxItem>বাংলা (Bengali bn)</ListBoxItem>
                             <ListBoxItem>Čeština (Czech cs)</ListBoxItem>
+                            <ListBoxItem>Cymraeg (Welsh cy)</ListBoxItem>
                             <ListBoxItem>Dansk (Danish da)</ListBoxItem>
                             <ListBoxItem>Deutsch (German de)</ListBoxItem>
                             <ListBoxItem>Ελληνικά (Greek el)</ListBoxItem>
                             <ListBoxItem>English (en)</ListBoxItem>
+                            <ListBoxItem>Esperanto (Esperanto eo)</ListBoxItem>
                             <ListBoxItem>Español (Spanish es)</ListBoxItem>
-                            <ListBoxItem>
-                                Eesti Keel (Estonian et)
-                            </ListBoxItem>
+                            <ListBoxItem>Eesti Keel (Estonian et)</ListBoxItem>
+                            <ListBoxItem>euskara (Basque eu)</ListBoxItem>
                             <ListBoxItem>فارسی (Persian fa)</ListBoxItem>
                             <ListBoxItem>Suomi (Finish fi)</ListBoxItem>
                             <ListBoxItem>Français (French fr)</ListBoxItem>
+                            <ListBoxItem>Gaeilge (Irish ga)</ListBoxItem>
+                            <ListBoxItem>galego (Galician gl)</ListBoxItem>
+                            <ListBoxItem>ગુજરાતી (Gujarati gu)</ListBoxItem>
+                            <ListBoxItem>עברית (Hebrew he)</ListBoxItem>
                             <ListBoxItem>हिन्दी (Hindi hi)</ListBoxItem>
-                            <ListBoxItem>
-                                Hrvatski (Croatian hr)
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                Magyar (Hungarian hu)
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                Հայերեն (Armenian hy)
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                Bahasa Indonesia (Indonesian id)
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                Íslenska (Icelandic is)
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                Italiano (Italian it)
-                            </ListBoxItem>
-                            <ListBoxItem>עברית (Hebrew iw)</ListBoxItem>
+                            <ListBoxItem>Hrvatski (Croatian hr)</ListBoxItem>
+                            <ListBoxItem>Kreyòl ayisyen (Haitian Creole ht)</ListBoxItem>
+                            <ListBoxItem>Magyar (Hungarian hu)</ListBoxItem>
+                            <ListBoxItem>Հայերեն (Armenian hy)</ListBoxItem>
+                            <ListBoxItem>Bahasa Indonesia (Indonesian id)</ListBoxItem>
+                            <ListBoxItem>Íslenska (Icelandic is)</ListBoxItem>
+                            <ListBoxItem>Italiano (Italian it)</ListBoxItem>
                             <ListBoxItem>日本 (Japanese ja)</ListBoxItem>
+                            <ListBoxItem>ქართული (Georgian ka)</ListBoxItem>
+                            <ListBoxItem>ខ្មែរ, ខេមរភាសា, ភាសាខ្មែរ (Khmer km)</ListBoxItem>
+                            <ListBoxItem>ಕನ್ನಡ (Kannada kn)</ListBoxItem>
                             <ListBoxItem>한국어 (Korean ko)</ListBoxItem>
-                            <ListBoxItem>
-                                Lietuvių (Lithuanian lt)
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                Latviešu (Latvian lv)
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                Македонски (Macedonian mk)
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                Malaysia (Malaysian ms)
-                            </ListBoxItem>
+                            <ListBoxItem>Lietuvių (Lithuanian lt)</ListBoxItem>
+                            <ListBoxItem>Latviešu (Latvian lv)</ListBoxItem>
+                            <ListBoxItem>te reo Māori (Maori mi)</ListBoxItem>
+                            <ListBoxItem>Македонски (Macedonian mk)</ListBoxItem>
+                            <ListBoxItem>монгол (Mongolian mn)</ListBoxItem>
+                            <ListBoxItem>मराठी (Marathi mr)</ListBoxItem>
+                            <ListBoxItem>Malaysia (Malaysian ms)</ListBoxItem>
                             <ListBoxItem>Malti (Maltese mt)</ListBoxItem>
-                            <ListBoxItem>
-                                Nederlands (Dutch nl)
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                Norske (Norwegian no)
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                Polszczyzna (Polish pl)
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                Português (Portuguese pt)
-                            </ListBoxItem>
+                            <ListBoxItem>Nederlands (Dutch nl)</ListBoxItem>
+                            <ListBoxItem>Norske (Norwegian no)</ListBoxItem>
+                            <ListBoxItem>ਪੰਜਾਬੀ (Punjabi pa)</ListBoxItem>
+                            <ListBoxItem>Polszczyzna (Polish pl)</ListBoxItem>
+                            <ListBoxItem>Português (Portuguese pt)</ListBoxItem>
                             <ListBoxItem>Română (Romanian ro)</ListBoxItem>
                             <ListBoxItem>Русский (Russian ru)</ListBoxItem>
-                            <ListBoxItem>
-                                Slovenskom jazyku (Slovakian sk)
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                Slovenščina (Slovenian sl)
-                            </ListBoxItem>
+                            <ListBoxItem>Slovenskom jazyku (Slovakian sk)</ListBoxItem>
+                            <ListBoxItem>Slovenščina (Slovenian sl)</ListBoxItem>
+                            <ListBoxItem>Soomaaliga (Somalian so)</ListBoxItem>
                             <ListBoxItem>Shqip (Albanian sq)</ListBoxItem>
                             <ListBoxItem>Српска (Serbian sr)</ListBoxItem>
                             <ListBoxItem>Swahili (sw)</ListBoxItem>
                             <ListBoxItem>Svenska (Swedish sv)</ListBoxItem>
+                            <ListBoxItem>தமிழ் (Tamil ta)</ListBoxItem>
+                            <ListBoxItem>తెలుగు (Telugu te)</ListBoxItem>
                             <ListBoxItem>ภาษาไทย (Thai th)</ListBoxItem>
-                            <ListBoxItem>
-                                Wikang Tagalog (Tagalog tl)
-                            </ListBoxItem>
+                            <ListBoxItem>Wikang Tagalog (Tagalog tl)</ListBoxItem>
                             <ListBoxItem>Türk (Turkish tr)</ListBoxItem>
-                            <ListBoxItem>
-                                Українська (Ukrainian uk)
-                            </ListBoxItem>
+                            <ListBoxItem>Українська (Ukrainian uk)</ListBoxItem>
                             <ListBoxItem>اردو (Urdu ur)</ListBoxItem>
                             <ListBoxItem>Việt (Vietnamese vi)</ListBoxItem>
-                            <ListBoxItem>
-                                簡化字 (Traditional Chinese zh)
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                简化字 (Simplified Chinese zh_cn)
-                            </ListBoxItem>
-
-
+                            <ListBoxItem>簡化字 (Traditional Chinese zh)</ListBoxItem>
+                            <ListBoxItem>简化字 (Simplified Chinese zh_cn)</ListBoxItem>
+                            <ListBoxItem>isiZulu (Zulu zu)</ListBoxItem>
                         </ListBox>
                     </Grid>
                 </ScrollViewer>

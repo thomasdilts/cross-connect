@@ -310,6 +310,52 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <EmbeddedResource Include="Resources\AppResources.af-ZA.resx" />
+    <EmbeddedResource Include="Resources\AppResources.ar-SA.resx" />
+    <EmbeddedResource Include="Resources\AppResources.az-Latn-AZ.resx" />
+    <EmbeddedResource Include="Resources\AppResources.be-BY.resx" />
+    <EmbeddedResource Include="Resources\AppResources.bg-BG.resx" />
+    <EmbeddedResource Include="Resources\AppResources.cs-CZ.resx" />
+    <EmbeddedResource Include="Resources\AppResources.da-DK.resx" />
+    <EmbeddedResource Include="Resources\AppResources.de-DE.resx" />
+    <EmbeddedResource Include="Resources\AppResources.el-GR.resx" />
+    <EmbeddedResource Include="Resources\AppResources.es-ES.resx" />
+    <EmbeddedResource Include="Resources\AppResources.et-EE.resx" />
+    <EmbeddedResource Include="Resources\AppResources.eu-ES.resx" />
+    <EmbeddedResource Include="Resources\AppResources.fa-IR.resx" />
+    <EmbeddedResource Include="Resources\AppResources.fi-FI.resx" />
+    <EmbeddedResource Include="Resources\AppResources.fr-FR.resx" />
+    <EmbeddedResource Include="Resources\AppResources.gl-ES.resx" />
+    <EmbeddedResource Include="Resources\AppResources.he-IL.resx" />
+    <EmbeddedResource Include="Resources\AppResources.hi-IN.resx" />
+    <EmbeddedResource Include="Resources\AppResources.hr-HR.resx" />
+    <EmbeddedResource Include="Resources\AppResources.hu-HU.resx" />
+    <EmbeddedResource Include="Resources\AppResources.id-ID.resx" />
+    <EmbeddedResource Include="Resources\AppResources.it-IT.resx" />
+    <EmbeddedResource Include="Resources\AppResources.ja-JP.resx" />
+    <EmbeddedResource Include="Resources\AppResources.ko-KR.resx" />
+    <EmbeddedResource Include="Resources\AppResources.lt-LT.resx" />
+    <EmbeddedResource Include="Resources\AppResources.lv-LV.resx" />
+    <EmbeddedResource Include="Resources\AppResources.mk-MK.resx" />
+    <EmbeddedResource Include="Resources\AppResources.ms-MY.resx" />
+    <EmbeddedResource Include="Resources\AppResources.nb-NO.resx" />
+    <EmbeddedResource Include="Resources\AppResources.nl-NL.resx" />
+    <EmbeddedResource Include="Resources\AppResources.pl-PL.resx" />
+    <EmbeddedResource Include="Resources\AppResources.pt-PT.resx" />
+    <EmbeddedResource Include="Resources\AppResources.resx" />
+    <EmbeddedResource Include="Resources\AppResources.ro-RO.resx" />
+    <EmbeddedResource Include="Resources\AppResources.ru-RU.resx" />
+    <EmbeddedResource Include="Resources\AppResources.sk-SK.resx" />
+    <EmbeddedResource Include="Resources\AppResources.sl-SL.resx" />
+    <EmbeddedResource Include="Resources\AppResources.sq-AL.resx" />
+    <EmbeddedResource Include="Resources\AppResources.sr-Latn-CS.resx" />
+    <EmbeddedResource Include="Resources\AppResources.sv-SE.resx" />
+    <EmbeddedResource Include="Resources\AppResources.th-TH.resx" />
+    <EmbeddedResource Include="Resources\AppResources.tr-TR.resx" />
+    <EmbeddedResource Include="Resources\AppResources.uk-UA.resx" />
+    <EmbeddedResource Include="Resources\AppResources.vi-VN.resx" />
+    <EmbeddedResource Include="Resources\AppResources.zh-CN.resx" />
+    <EmbeddedResource Include="Resources\AppResources.zh-TW.resx" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml">
       <SubType>Designer</SubType>
@@ -488,17 +534,6 @@
     <Content Include="sidecrossbigbut691x336.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
-    <EmbeddedResource Include="Resources\AppResources.af-AF.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\AppResources.ar-AR.resx" />
-    <EmbeddedResource Include="Resources\AppResources.az-AZ.resx" />
-    <EmbeddedResource Include="Resources\AppResources.be-BE.resx" />
-    <EmbeddedResource Include="Resources\AppResources.bg-BG.resx" />
-    <EmbeddedResource Include="Resources\AppResources.cs-CS.resx" />
-    <EmbeddedResource Include="Resources\AppResources.da-DA.resx" />
-    <EmbeddedResource Include="Resources\AppResources.de-DE.resx" />
-    <EmbeddedResource Include="Resources\AppResources.el-EL.resx" />
     <EmbeddedResource Include="Properties\crossc_az.xml" />
     <EmbeddedResource Include="Properties\crossc_fa.xml" />
     <EmbeddedResource Include="Properties\crossc_ro.xml" />
@@ -508,7 +543,7 @@
     <EmbeddedResource Include="Properties\crossc_sw.xml" />
     <EmbeddedResource Include="Properties\crossc_ur.xml" />
     <EmbeddedResource Include="Properties\crossc_vi.xml" />
-    <EmbeddedResource Include="Properties\crossc_iw.xml" />
+    <EmbeddedResource Include="Properties\crossc_he.xml" />
     <Content Include="Images\dark\appbar.speaker.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -715,47 +750,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SplashScreenImage.jpg" />
-    <EmbeddedResource Include="Resources\AppResources.es-ES.resx" />
-    <EmbeddedResource Include="Resources\AppResources.et-ET.resx" />
-    <EmbeddedResource Include="Resources\AppResources.fa-FA.resx" />
-    <EmbeddedResource Include="Resources\AppResources.fi-FI.resx" />
-    <EmbeddedResource Include="Resources\AppResources.fr-FR.resx" />
-    <EmbeddedResource Include="Resources\AppResources.hi-HI.resx" />
-    <EmbeddedResource Include="Resources\AppResources.hr-HR.resx" />
-    <EmbeddedResource Include="Resources\AppResources.hu-HU.resx" />
-    <EmbeddedResource Include="Resources\AppResources.hy-HY.resx" />
-    <EmbeddedResource Include="Resources\AppResources.id-ID.resx" />
-    <EmbeddedResource Include="Resources\AppResources.is-IS.resx" />
-    <EmbeddedResource Include="Resources\AppResources.it-IT.resx" />
-    <EmbeddedResource Include="Resources\AppResources.iw-IW.resx" />
-    <EmbeddedResource Include="Resources\AppResources.ja-JA.resx" />
-    <EmbeddedResource Include="Resources\AppResources.ko-KO.resx" />
-    <EmbeddedResource Include="Resources\AppResources.lt-LT.resx" />
-    <EmbeddedResource Include="Resources\AppResources.lv-LV.resx" />
-    <EmbeddedResource Include="Resources\AppResources.mk-MK.resx" />
-    <EmbeddedResource Include="Resources\AppResources.ms-MS.resx" />
-    <EmbeddedResource Include="Resources\AppResources.mt-MT.resx" />
-    <EmbeddedResource Include="Resources\AppResources.nl-NL.resx" />
-    <EmbeddedResource Include="Resources\AppResources.no-NO.resx" />
-    <EmbeddedResource Include="Resources\AppResources.pl-PL.resx" />
-    <EmbeddedResource Include="Resources\AppResources.pt-PT.resx" />
-    <EmbeddedResource Include="Resources\AppResources.resx" />
-    <EmbeddedResource Include="Resources\AppResources.ro-RO.resx" />
-    <EmbeddedResource Include="Resources\AppResources.ru-RU.resx" />
-    <EmbeddedResource Include="Resources\AppResources.sk-SK.resx" />
-    <EmbeddedResource Include="Resources\AppResources.sl-SL.resx" />
-    <EmbeddedResource Include="Resources\AppResources.sq-SQ.resx" />
-    <EmbeddedResource Include="Resources\AppResources.sr-SR.resx" />
-    <EmbeddedResource Include="Resources\AppResources.sv-SV.resx" />
-    <EmbeddedResource Include="Resources\AppResources.sw-SW.resx" />
-    <EmbeddedResource Include="Resources\AppResources.th-TH.resx" />
-    <EmbeddedResource Include="Resources\AppResources.tl-TL.resx" />
-    <EmbeddedResource Include="Resources\AppResources.tr-TR.resx" />
-    <EmbeddedResource Include="Resources\AppResources.uk-UK.resx" />
-    <EmbeddedResource Include="Resources\AppResources.ur-UR.resx" />
-    <EmbeddedResource Include="Resources\AppResources.vi-VI.resx" />
-    <EmbeddedResource Include="Resources\AppResources.zh-CN.resx" />
-    <EmbeddedResource Include="Resources\AppResources.zh-TW.resx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AudioPlaybackAgent1\AudioPlaybackAgent1.WP8.csproj">
