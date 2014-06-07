@@ -84,6 +84,7 @@
             <sys:String>Gaeilge (Irish ga)</sys:String>
             <sys:String>galego (Galician gl)</sys:String>
             <sys:String>ગુજરાતી (Gujarati gu)</sys:String>
+            <sys:String>עברית (Hebrew he)</sys:String>
             <sys:String>हिन्दी (Hindi hi)</sys:String>
             <sys:String>
                 Hrvatski (Croatian hr)
@@ -104,7 +105,6 @@
             <sys:String>
                 Italiano (Italian it)
             </sys:String>
-            <sys:String>עברית (Hebrew iw)</sys:String>
             <sys:String>日本 (Japanese ja)</sys:String>
             <sys:String>ქართული (Georgian ka)</sys:String>
             <sys:String>ខ្មែរ, ខេមរភាសា, ភាសាខ្មែរ (Khmer km)</sys:String>

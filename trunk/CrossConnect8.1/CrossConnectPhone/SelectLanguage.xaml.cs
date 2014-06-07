@@ -41,8 +41,8 @@ namespace CrossConnect
         /// </summary>
         private static readonly string[] SupportedLanguages = {
                                                                   "default", "af", "ar", "az", "be", "bg", "bn", "cs", "cy", "da",
-                                                                  "de", "el", "en", "eo", "es", "et", "eu", "fa", "fi", "fr", "ga", "gl", "gu", "hi",
-                                                                  "hr", "ht", "hu", "hy", "id", "is", "it", "iw", "ja", "ka", "km", "kn", "ko",
+                                                                  "de", "el", "en", "eo", "es", "et", "eu", "fa", "fi", "fr", "ga", "gl", "gu", "he", "hi",
+                                                                  "hr", "ht", "hu", "hy", "id", "is", "it", "ja", "ka", "km", "kn", "ko",
                                                                   "lt", "lv", "mi", "mk", "mn", "mr", "ms", "mt", "nl", "no", "pa", "pl", "pt",
                                                                   "ro", "ru", "sk", "sl", "so", "sq", "sr", "sw", "sv", "ta", "te", "th",
                                                                   "tl", "tr", "uk", "ur", "vi", "zh", "zh_cn", "zu"

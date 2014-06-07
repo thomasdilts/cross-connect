@@ -250,6 +250,23 @@
     <PRIResource Include="Locale\zh-cn\resource.resw" />
     <PRIResource Include="Locale\zh-TW\resource.resw" />
     <None Include="CrossConnect_TemporaryKey.pfx" />
+    <PRIResource Include="Locale\bn\resource.resw" />
+    <PRIResource Include="Locale\cy\resource.resw" />
+    <PRIResource Include="Locale\eu\resource.resw" />
+    <PRIResource Include="Locale\ga\resource.resw" />
+    <PRIResource Include="Locale\gl\resource.resw" />
+    <PRIResource Include="Locale\gu\resource.resw" />
+    <PRIResource Include="Locale\fr-ht\resource.resw" />
+    <PRIResource Include="Locale\ka\resource.resw" />
+    <PRIResource Include="Locale\km\resource.resw" />
+    <PRIResource Include="Locale\kn\resource.resw" />
+    <PRIResource Include="Locale\mi\resource.resw" />
+    <PRIResource Include="Locale\mn-cyrl\resource.resw" />
+    <PRIResource Include="Locale\mr\resource.resw" />
+    <PRIResource Include="Locale\pa\resource.resw" />
+    <PRIResource Include="Locale\ta\resource.resw" />
+    <PRIResource Include="Locale\te\resource.resw" />
+    <PRIResource Include="Locale\zu\resource.resw" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -267,6 +284,25 @@
     <Content Include="Assets\LightGray.png" />
     <Content Include="Assets\MediumGray.png" />
     <Content Include="Assets\DarkGray.png" />
+    <EmbeddedResource Include="Properties\crossc_zu.xml" />
+    <EmbeddedResource Include="Properties\crossc_te.xml" />
+    <EmbeddedResource Include="Properties\crossc_ta.xml" />
+    <EmbeddedResource Include="Properties\crossc_so.xml" />
+    <EmbeddedResource Include="Properties\crossc_pa.xml" />
+    <EmbeddedResource Include="Properties\crossc_mr.xml" />
+    <EmbeddedResource Include="Properties\crossc_mn.xml" />
+    <EmbeddedResource Include="Properties\crossc_mi.xml" />
+    <EmbeddedResource Include="Properties\crossc_kn.xml" />
+    <EmbeddedResource Include="Properties\crossc_km.xml" />
+    <EmbeddedResource Include="Properties\crossc_ka.xml" />
+    <EmbeddedResource Include="Properties\crossc_ht.xml" />
+    <EmbeddedResource Include="Properties\crossc_gu.xml" />
+    <EmbeddedResource Include="Properties\crossc_gl.xml" />
+    <EmbeddedResource Include="Properties\crossc_ga.xml" />
+    <EmbeddedResource Include="Properties\crossc_eu.xml" />
+    <EmbeddedResource Include="Properties\crossc_eo.xml" />
+    <EmbeddedResource Include="Properties\crossc_cy.xml" />
+    <EmbeddedResource Include="Properties\crossc_bn.xml" />
     <None Include="Package.StoreAssociation.xml" />
     <EmbeddedResource Include="Properties\crossc_af.xml">
       <SubType>Designer</SubType>
@@ -298,7 +334,9 @@
     <EmbeddedResource Include="Properties\crossc_it.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\crossc_iw.xml" />
+    <EmbeddedResource Include="Properties\crossc_he.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\crossc_ja.xml" />
     <EmbeddedResource Include="Properties\crossc_ko.xml" />
     <EmbeddedResource Include="Properties\crossc_lt.xml" />
