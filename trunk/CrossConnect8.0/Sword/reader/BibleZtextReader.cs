@@ -454,7 +454,7 @@ namespace Sword.reader
 
         #region Public Methods and Operators
 
-        public bool ConvertOsisRefToAbsoluteChaptVerse(string osisRef, out string bookShortName, out int chaptNumLoc, out int verseNumLoc)
+        public static bool ConvertOsisRefToAbsoluteChaptVerse(string osisRef, out string bookShortName, out int chaptNumLoc, out int verseNumLoc)
         {
             chaptNumLoc = 0;
             verseNumLoc = 0;
@@ -481,6 +481,8 @@ namespace Sword.reader
             if (osis.Length > 0)
             {
                 CanonBookDef book = null;
+                // we use KJVA because it probably has all possible books.
+                var canon = CanonManager.GetCanon("KJVA");
                 if (!canon.BookByShortName.TryGetValue(osis[0], out book))
                 {
                     // try with tolower conversion
@@ -1001,10 +1003,10 @@ function SetFontColorForElement(elemntId, colorRgba){
 
         public virtual void MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
         {
-            if (!(source is BibleZtextReader))
-            {
-                return;
-            }
+            //if (!(source is BibleZtextReader))
+            //{
+            //    return;
+            //}
 
             try
             {
@@ -1074,7 +1076,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             if (this.Serial == null || canon == null)
             {
                 return;
-            } 
+            }
             if (string.IsNullOrEmpty(this.Serial.PosBookShortName))
             {
                 var absChapt = GetAvailableChapter(0);
@@ -1434,7 +1436,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         /// <param name="addStartFinishHtml"></param>
         /// <param name="forceReload"></param>
         /// <returns>Entire Chapter without notes and with lots of html markup for each verse</returns>
-        protected async Task<string> GetChapterHtml(
+        protected virtual async Task<string> GetChapterHtml(
             string isoLangCode,
             DisplaySettings displaySettings,
             string bookShortName,
@@ -1640,7 +1642,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return buf[3] * 0x100000 + buf[2] * 0x10000 + buf[1] * 0x100 + buf[0];
         }
 
-        private string GetHighlightStyle(DisplaySettings displaySettings, HtmlColorRgba[] htmlHighlightingColor, string book, int chapter, int verse)
+        protected string GetHighlightStyle(DisplaySettings displaySettings, HtmlColorRgba[] htmlHighlightingColor, string book, int chapter, int verse)
         {
             var style = string.Empty;
             var highlight = displaySettings.highlighter.GetHighlightForVerse(book, chapter, verse);
@@ -2623,7 +2625,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         //    return "(" + noteReturned + ")";
         //}
         //private static string[] IntToBase24 = new string[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
-        private string convertNoteNumToId(int noteIdentifier)
+        protected string convertNoteNumToId(int noteIdentifier)
         {
             string base26 = string.Empty;
             do
