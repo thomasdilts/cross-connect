@@ -56,7 +56,7 @@ namespace CrossConnect
                     //var ci = System.Threading.Thread.CurrentThread.CurrentUICulture;
                     //string isocode = System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLower();
 
-                    if (!isocode.Equals("fr_ht"))
+                    if (isocode.Equals("fr_ht"))
                     {
                         isocode = "ht";
                     } 

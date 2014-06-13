@@ -1156,6 +1156,28 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                                         break;
                                     case "reference":
+                                        if (reader.HasAttributes)
+                                        {
+                                            reader.MoveToFirstAttribute();
+                                            if (reader.Name.Equals("osisRef"))
+                                            {
+                                                int chaptNumLoc;
+                                                int verseNumLoc;
+                                                string bookShortName;
+                                                if (BibleZtextReader.ConvertOsisRefToAbsoluteChaptVerse(
+                                                    reader.Value, out bookShortName, out chaptNumLoc, out verseNumLoc))
+                                                {
+                                                    isReferenceLinked = true;
+                                                    string textId = bookShortName + "_" + chaptNumLoc + "_" + verseNumLoc;
+                                                    plainText.Append(
+                                                            "</a><a class=\"normalcolor\" id=\"ID_" + textId
+                                                       + "\"  href=\"#\" onclick=\"window.external.notify('" + textId
+                                                        + "'); event.returnValue=false; return false;\" >");
+                                                }
+                                            }
+                                        }
+
+                                        plainText.Append("  [");
                                         break;
                                     case "lg":
                                         if (!isRaw && !displaySettings.EachVerseNewLine)
@@ -1437,10 +1459,10 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         isInTitle = false;
                                         break;
                                     case "reference":
-                                        noteText.Append("] ");
+                                        plainText.Append("] ");
                                         if (isReferenceLinked)
                                         {
-                                            noteText.Append("</a>" + restartText);
+                                            plainText.Append("</a>" + restartText);
                                         }
 
                                         isReferenceLinked = false;
