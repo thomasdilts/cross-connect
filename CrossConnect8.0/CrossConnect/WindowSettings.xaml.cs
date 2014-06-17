@@ -427,7 +427,7 @@ namespace CrossConnect
                     out bookNameShort, out relChaptNum, out verseNum, out fullName, out titleText);
                 isTranslateable = state.Source.IsTranslateable && !state.Source.GetLanguage().Equals(Translations.IsoLanguageCode);
                 var canon = CanonManager.GetCanon("KJV");
-                isListenable = state.Source.IsHearable && canon.BookByShortName.ContainsKey(bookNameShort);
+                isListenable = bookNameShort!=null && state.Source.IsHearable && canon.BookByShortName.ContainsKey(bookNameShort);
                 isTtsListenable = state.Source.IsTTChearable && InstalledVoices.All.Any();
                 windowType = state.WindowType;
             }
@@ -622,7 +622,7 @@ namespace CrossConnect
                     out bookNameShort, out relChaptNum, out verseNum, out fullName, out titleText);
                 var canon = CanonManager.GetCanon("KJV");
                 butTranslate.Visibility = state.Source.IsTranslateable && !state.Source.GetLanguage().Equals(Translations.IsoLanguageCode) ? visibility : Visibility.Collapsed;
-                butListen.Visibility = state.Source.IsHearable && canon.BookByShortName.ContainsKey(bookNameShort) ? visibility : Visibility.Collapsed;
+                butListen.Visibility = bookNameShort!=null && state.Source.IsHearable && canon.BookByShortName.ContainsKey(bookNameShort) ? visibility : Visibility.Collapsed;
                 butListenTts.Visibility = state.Source.IsTTChearable && InstalledVoices.All.Any() ? visibility : Visibility.Collapsed;
                 switch (state.WindowType)
                 {

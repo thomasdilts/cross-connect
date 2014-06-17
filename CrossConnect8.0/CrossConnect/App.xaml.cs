@@ -417,7 +417,10 @@ namespace CrossConnect
         private void ApplicationActivated(object sender, ActivatedEventArgs e)
         {
             IsPersitanceLoaded = false;
-            LoadPersistantObjects();
+            if (!e.IsApplicationInstancePreserved)
+            {
+                LoadPersistantObjects();
+            }
         }
 
         // Code to execute when the application is closing (eg, user hit Back)
@@ -495,51 +498,59 @@ namespace CrossConnect
 
         private static async Task LoadPersistantWindows(Dictionary<String, Object> objectsToLoad)
         {
-            OpenWindows.Clear();
-            DailyPlan = new SerializableDailyPlan();
-
-            // get the daily plan first
-            object dailyPlanXmlData;
-            if (objectsToLoad.TryGetValue("DailyPlan", out dailyPlanXmlData))
+            try
             {
-                using (var sr = new StringReader((string)dailyPlanXmlData))
+                OpenWindows.Clear();
+                DailyPlan = new SerializableDailyPlan();
+
+                // get the daily plan first
+                object dailyPlanXmlData;
+                if (objectsToLoad.TryGetValue("DailyPlan", out dailyPlanXmlData))
                 {
-                    var settings = new XmlReaderSettings();
-                    using (XmlReader reader = XmlReader.Create(sr, settings))
+                    using (var sr = new StringReader((string)dailyPlanXmlData))
                     {
-                        var types = new[] { typeof(SerializableDailyPlan) };
-                        var ser = new DataContractSerializer(typeof(SerializableDailyPlan), types);
-                        DailyPlan = (SerializableDailyPlan)ser.ReadObject(reader);
+                        var settings = new XmlReaderSettings();
+                        using (XmlReader reader = XmlReader.Create(sr, settings))
+                        {
+                            var types = new[] { typeof(SerializableDailyPlan) };
+                            var ser = new DataContractSerializer(typeof(SerializableDailyPlan), types);
+                            DailyPlan = (SerializableDailyPlan)ser.ReadObject(reader);
+                        }
                     }
                 }
-            }
 
-            if (DailyPlan == null)
+                if (DailyPlan == null)
+                {
+                    DailyPlan = new SerializableDailyPlan();
+                }
+
+                if (DailyPlan.PlanBible == null)
+                {
+                    DailyPlan.PlanBible = string.Empty;
+                    DailyPlan.PlanBibleDescription = string.Empty;
+                    DailyPlan.PlanTextSize = 15;
+                }
+            }
+            catch(Exception e)
             {
-                DailyPlan = new SerializableDailyPlan();
-            }
 
-            if (DailyPlan.PlanBible == null)
-            {
-                DailyPlan.PlanBible = string.Empty;
-                DailyPlan.PlanBibleDescription = string.Empty;
-                DailyPlan.PlanTextSize = 15;
             }
-
             OpenWindows.Clear();
 
             // get all windows
             for (int i = 0; i < MaxNumWindows; i++)
             {
-                object windowsXmlData;
-                if (objectsToLoad.TryGetValue("Windows" + i, out windowsXmlData))
+                try
                 {
-                    using (var sr = new StringReader((string)windowsXmlData))
+                    object windowsXmlData;
+                    if (objectsToLoad.TryGetValue("Windows" + i, out windowsXmlData))
                     {
-                        var settings = new XmlReaderSettings();
-                        using (XmlReader reader = XmlReader.Create(sr, settings))
+                        using (var sr = new StringReader((string)windowsXmlData))
                         {
-                            var types = new[]
+                            var settings = new XmlReaderSettings();
+                            using (XmlReader reader = XmlReader.Create(sr, settings))
+                            {
+                                var types = new[]
                                                 {
                                                     typeof(SerializableWindowState), typeof(BibleZtextReader.VersePos),
                                                     typeof(BibleZtextReader.ChapterPos), typeof(BibleZtextReader.BookPos),
@@ -551,51 +562,56 @@ namespace CrossConnect
                                                     typeof(GreekHebrewDictReader), typeof(RawGenSearchReader),
                                                     typeof(AudioPlayer.MediaInfo), typeof(RawGenTextReader), typeof(RawGenTextPlaceMarker)
                                                 };
-                            var ser = new DataContractSerializer(typeof(SerializableWindowState), types);
-                            var state = (SerializableWindowState)ser.ReadObject(reader);
-                            if ((state.Window + 1) > App.DisplaySettings.NumberOfScreens)
-                            {
-                                App.DisplaySettings.NumberOfScreens = state.Window + 1;
-                            }
-                            ITiledWindow nextWindow;
-                            if (state.WindowType.Equals(WindowType.WindowMediaPlayer))
-                            {
-                                nextWindow = new MediaPlayerWindow { State = state };
-                                await nextWindow.State.Source.Resume();
-                                nextWindow.State.IsResume = true;
-                                string bookShortName;
-                                int relChaptNum;
-                                int verseNum;
-                                string fullName;
-                                string title;
-                                nextWindow.State.Source.GetInfo(Translations.IsoLanguageCode, out bookShortName,
-                                    out relChaptNum,
-                                    out verseNum,
-                                    out fullName,
-                                    out title);
-                                var canon = CanonManager.GetCanon("KJV");
-                                var book = canon.BookByShortName[bookShortName];
-                                var info = new AudioPlayer.MediaInfo() { Book = bookShortName, Chapter = book.VersesInChapterStartIndex + relChaptNum, Verse = verseNum, VoiceName = nextWindow.State.VoiceName, IsNtOnly = nextWindow.State.IsNtOnly, Pattern = nextWindow.State.Pattern, Src = nextWindow.State.Src, Code = nextWindow.State.code };
-                                ((MediaPlayerWindow)nextWindow).SetMediaInfo(nextWindow.State, info);
-                            }
-                            else
-                            {
-                                nextWindow = new BrowserTitledWindow { State = state };
-                                ((BrowserTitledWindow)nextWindow).SetVScroll(state.VSchrollPosition);
-                                await nextWindow.State.Source.Resume();
-                                nextWindow.State.IsResume = true;
-                            }
+                                var ser = new DataContractSerializer(typeof(SerializableWindowState), types);
+                                var state = (SerializableWindowState)ser.ReadObject(reader);
+                                if ((state.Window + 1) > App.DisplaySettings.NumberOfScreens)
+                                {
+                                    App.DisplaySettings.NumberOfScreens = state.Window + 1;
+                                }
+                                ITiledWindow nextWindow;
+                                if (state.WindowType.Equals(WindowType.WindowMediaPlayer))
+                                {
+                                    nextWindow = new MediaPlayerWindow { State = state };
+                                    await nextWindow.State.Source.Resume();
+                                    nextWindow.State.IsResume = true;
+                                    string bookShortName;
+                                    int relChaptNum;
+                                    int verseNum;
+                                    string fullName;
+                                    string title;
+                                    nextWindow.State.Source.GetInfo(Translations.IsoLanguageCode, out bookShortName,
+                                        out relChaptNum,
+                                        out verseNum,
+                                        out fullName,
+                                        out title);
+                                    var canon = CanonManager.GetCanon("KJV");
+                                    var book = canon.BookByShortName[bookShortName];
+                                    var info = new AudioPlayer.MediaInfo() { Book = bookShortName, Chapter = book.VersesInChapterStartIndex + relChaptNum, Verse = verseNum, VoiceName = nextWindow.State.VoiceName, IsNtOnly = nextWindow.State.IsNtOnly, Pattern = nextWindow.State.Pattern, Src = nextWindow.State.Src, Code = nextWindow.State.code };
+                                    ((MediaPlayerWindow)nextWindow).SetMediaInfo(nextWindow.State, info);
+                                }
+                                else
+                                {
+                                    nextWindow = new BrowserTitledWindow { State = state };
+                                    ((BrowserTitledWindow)nextWindow).SetVScroll(state.VSchrollPosition);
+                                    await nextWindow.State.Source.Resume();
+                                    nextWindow.State.IsResume = true;
+                                }
 
-                            OpenWindows.Add(nextWindow);
+                                OpenWindows.Add(nextWindow);
 
-                            // nextWindow.Initialize(nextWindow.state.bibleToLoad, nextWindow.state.windowType);
+                                // nextWindow.Initialize(nextWindow.state.bibleToLoad, nextWindow.state.windowType);
+                            }
                         }
                     }
+                    else
+                    {
+                        // no more windows to load.
+                        break;
+                    }
                 }
-                else
+                catch(Exception e)
                 {
-                    // no more windows to load.
-                    break;
+
                 }
             }
 
@@ -724,13 +740,29 @@ namespace CrossConnect
                 }
 
                 await InstalledBibles.Initialize();
+                var fileNames = new List<string> { 
+                    BackupRestore.PersistantObjectsDisplaySettingsFileName,
+                    BackupRestore.PersistantObjectsThemesFileName,
+                    BackupRestore.PersistantObjectsHighlightFileName,
+                    BackupRestore.PersistantObjectsMarkersFileName,
+                    BackupRestore.PersistantObjectsWindowsFileName};
+                var loadFunctions = new List<LoadPersObjDelegate>{
+                    LoadPersistantDisplaySettings,
+                    LoadPersistantThemes,
+                    LoadPersistantHighlighting,
+                    LoadPersistantMarkers,
+                    LoadPersistantWindows};
+                for (int i = 0; i < loadFunctions.Count(); i++)
+                {
+                    try
+                    {
+                        await LoadPersistantObjectsFromFile(fileNames[i], loadFunctions[i], true);
+                    }
+                    catch (Exception e)
+                    {
 
-                await LoadPersistantObjectsFromFile(BackupRestore.PersistantObjectsDisplaySettingsFileName, LoadPersistantDisplaySettings, true);
-                await LoadPersistantObjectsFromFile(BackupRestore.PersistantObjectsThemesFileName, LoadPersistantThemes, true);
-                await LoadPersistantObjectsFromFile(BackupRestore.PersistantObjectsHighlightFileName, LoadPersistantHighlighting, true);
-                await LoadPersistantObjectsFromFile(BackupRestore.PersistantObjectsMarkersFileName, LoadPersistantMarkers, true);
-                await LoadPersistantObjectsFromFile(BackupRestore.PersistantObjectsWindowsFileName, LoadPersistantWindows, true);
-
+                    }
+                }
             }
             catch (Exception ee)
             {
@@ -805,12 +837,16 @@ namespace CrossConnect
         {
             if (TimerForSavingWindows != null)
             {
-                return;
+                TimerForSavingWindows.Stop();
+            }
+            else
+            {
+                OnTimerForSavingWindowsTick(null,null);
             }
 
             TimerForSavingWindows = new DispatcherTimer();
             TimerForSavingWindows.Tick += OnTimerForSavingWindowsTick;
-            TimerForSavingWindows.Interval = TimeSpan.FromSeconds(7);
+            TimerForSavingWindows.Interval = TimeSpan.FromMilliseconds(1500);
             TimerForSavingWindows.Start();
         }
 
@@ -827,9 +863,12 @@ namespace CrossConnect
         public static async Task SavePersistantWindows()
         {
             var objectsToSave = new Dictionary<string, object>();
+            var windowCounter = 0;
             for (int i = 0; i < OpenWindows.Count(); i++)
             {
-                var types = new[]
+                try
+                {
+                    var types = new[]
                                 {
                                     typeof(SerializableWindowState), typeof(BibleZtextReader.VersePos),
                                     typeof(BibleZtextReader.ChapterPos), typeof(BibleZtextReader.BookPos),
@@ -840,7 +879,42 @@ namespace CrossConnect
                                     typeof(GreekHebrewDictReader), typeof(AudioPlayer.MediaInfo), typeof(RawGenTextReader), 
                                     typeof(RawGenTextPlaceMarker), typeof(RawGenSearchReader)
                                 };
-                var ser = new DataContractSerializer(typeof(SerializableWindowState), types);
+                    var ser = new DataContractSerializer(typeof(SerializableWindowState), types);
+                    using (var sw = new StringWriter())
+                    {
+                        var settings = new XmlWriterSettings
+                        {
+                            OmitXmlDeclaration = true,
+                            Indent = true,
+                            NamespaceHandling = NamespaceHandling.OmitDuplicates
+                        };
+                        using (XmlWriter writer = XmlWriter.Create(sw, settings))
+                        {
+                            OpenWindows[i].State.Source.SerialSave();
+                            //if (OpenWindows[i].State.WindowType != WindowType.WindowMediaPlayer)
+                            //{
+                            //    // change the windows view to this one
+                            //    OpenWindows[i].State.VSchrollPosition = await ((BrowserTitledWindow)OpenWindows[i]).GetVScroll();
+                            //}
+
+                            ser.WriteObject(writer, OpenWindows[i].State);
+                        }
+
+                        objectsToSave.Add("Windows" + windowCounter, sw.ToString());
+                        windowCounter++;
+                    }
+                }
+                catch(Exception e)
+                {
+
+                }
+            }
+
+            try
+            {
+                var types3 = new[] { typeof(SerializableDailyPlan) };
+
+                var ser3 = new DataContractSerializer(typeof(SerializableDailyPlan), types3);
                 using (var sw = new StringWriter())
                 {
                     var settings = new XmlWriterSettings
@@ -851,48 +925,25 @@ namespace CrossConnect
                     };
                     using (XmlWriter writer = XmlWriter.Create(sw, settings))
                     {
-                        OpenWindows[i].State.Source.SerialSave();
-                        //if (OpenWindows[i].State.WindowType != WindowType.WindowMediaPlayer)
-                        //{
-                        //    // change the windows view to this one
-                        //    OpenWindows[i].State.VSchrollPosition = await ((BrowserTitledWindow)OpenWindows[i]).GetVScroll();
-                        //}
-
-                        ser.WriteObject(writer, OpenWindows[i].State);
+                        ser3.WriteObject(writer, DailyPlan);
                     }
 
-                    objectsToSave.Add("Windows" + i, sw.ToString());
+                    objectsToSave["DailyPlan"] = sw.ToString();
                 }
-            }
-
-            var types3 = new[] { typeof(SerializableDailyPlan) };
-
-            var ser3 = new DataContractSerializer(typeof(SerializableDailyPlan), types3);
-            using (var sw = new StringWriter())
-            {
-                var settings = new XmlWriterSettings
+                // this particular state must be saved
+                object objCurrrentScreen;
+                int currentScreen = 0;
+                if (PhoneApplicationService.Current.State.TryGetValue("CurrentScreen", out objCurrrentScreen))
                 {
-                    OmitXmlDeclaration = true,
-                    Indent = true,
-                    NamespaceHandling = NamespaceHandling.OmitDuplicates
-                };
-                using (XmlWriter writer = XmlWriter.Create(sw, settings))
-                {
-                    ser3.WriteObject(writer, DailyPlan);
+                    currentScreen = (int)objCurrrentScreen;
                 }
 
-                objectsToSave["DailyPlan"] = sw.ToString();
+                IsolatedStorageSettings.ApplicationSettings["CurrentScreen"] = currentScreen;
             }
-            // this particular state must be saved
-            object objCurrrentScreen;
-            int currentScreen = 0;
-            if (PhoneApplicationService.Current.State.TryGetValue("CurrentScreen", out objCurrrentScreen))
+            catch(Exception e)
             {
-                currentScreen = (int)objCurrrentScreen;
+
             }
-
-            IsolatedStorageSettings.ApplicationSettings["CurrentScreen"] = currentScreen;
-
             await SavePersistantObjects(objectsToSave, BackupRestore.PersistantObjectsWindowsFileName);
         }
         public static async Task SaveAllPersistantObjects()
