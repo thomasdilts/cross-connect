@@ -592,7 +592,6 @@ namespace CrossConnect
 
         public async void UpdateBrowser(bool isOrientationChangeOnly)
         {
-            App.StartTimerForSavingWindows();
             if (isOrientationChangeOnly)
             {
                 return;
@@ -687,6 +686,7 @@ namespace CrossConnect
                 }
             }
 
+            App.StartTimerForSavingWindows();
             Debug.WriteLine("UpdateBrowser end");
         }
 

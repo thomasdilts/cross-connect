@@ -427,7 +427,7 @@ namespace CrossConnect
                     out bookNameShort, out relChaptNum, out verseNum, out fullName, out titleText);
                 isTranslateable = state.Source.IsTranslateable && !state.Source.GetLanguage().Equals(Translations.IsoLanguageCode);
                 var canon = CanonManager.GetCanon("KJV");
-                isListenable = state.Source.IsHearable && canon.BookByShortName.ContainsKey(bookNameShort);
+                isListenable = bookNameShort!=null && state.Source.IsHearable && canon.BookByShortName.ContainsKey(bookNameShort);
                 isTtsListenable = state.Source.IsTTChearable && InstalledVoices.All.Any();
                 windowType = state.WindowType;
             }
@@ -448,7 +448,7 @@ namespace CrossConnect
         /// <summary>
         /// The set book choosen.
         /// </summary>
-        private void SetBookChoosen()
+        private async void SetBookChoosen()
         {
             WindowType selectedType;
             SwordBookMetaData bookSelected;
@@ -462,6 +462,18 @@ namespace CrossConnect
             SerializableWindowState state = App.OpenWindows[(int)openWindowIndex].State;
             if (!state.BibleToLoad.Equals(bookSelected.InternalName) || state.WindowType != selectedType)
             {
+                string relbookShortName;
+                int relChaptNum;
+                int relverseNum;
+                string fullName;
+                string title;
+                state.Source.GetInfo(
+                    Translations.IsoLanguageCode,
+                    out relbookShortName,
+                    out relChaptNum,
+                    out relverseNum,
+                    out fullName,
+                    out title);
                 state.WindowType = selectedType;
                 state.BibleToLoad = bookSelected.InternalName;
                 state.BibleDescription = bookSelected.Name;
@@ -475,8 +487,11 @@ namespace CrossConnect
 
                 state.HtmlFontSize = sliderTextSize.Value;
                 state.Font = _fontFamily;
-                ((BrowserTitledWindow)App.OpenWindows[(int)openWindowIndex]).Initialize(
+                await ((BrowserTitledWindow)App.OpenWindows[(int)openWindowIndex]).Initialize(
                     state.BibleToLoad, state.BibleDescription, state.WindowType);
+                App.OpenWindows[(int)openWindowIndex].State.Source.MoveChapterVerse(relbookShortName, relChaptNum, relverseNum, false, App.OpenWindows[(int)openWindowIndex].State.Source);
+                App.OpenWindows[(int)openWindowIndex].ForceReload = true;
+                App.OpenWindows[(int)openWindowIndex].UpdateBrowser(false);
             }
             else
             {
@@ -607,7 +622,7 @@ namespace CrossConnect
                     out bookNameShort, out relChaptNum, out verseNum, out fullName, out titleText);
                 var canon = CanonManager.GetCanon("KJV");
                 butTranslate.Visibility = state.Source.IsTranslateable && !state.Source.GetLanguage().Equals(Translations.IsoLanguageCode) ? visibility : Visibility.Collapsed;
-                butListen.Visibility = state.Source.IsHearable && canon.BookByShortName.ContainsKey(bookNameShort) ? visibility : Visibility.Collapsed;
+                butListen.Visibility = bookNameShort!=null && state.Source.IsHearable && canon.BookByShortName.ContainsKey(bookNameShort) ? visibility : Visibility.Collapsed;
                 butListenTts.Visibility = state.Source.IsTTChearable && InstalledVoices.All.Any() ? visibility : Visibility.Collapsed;
                 switch (state.WindowType)
                 {
