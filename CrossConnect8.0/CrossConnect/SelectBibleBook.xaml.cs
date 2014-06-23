@@ -88,6 +88,10 @@ namespace CrossConnect
 
         #region Methods
 
+        public delegate void VerseSelectedEvent(string bookname, int chapter,int verse);
+        public static VerseSelectedEvent SelectedEvent;
+
+
         /// <summary>
         /// The reload window.
         /// </summary>
@@ -315,7 +319,11 @@ namespace CrossConnect
                 {
                     moveToChapter = (int)((Button)sender).Tag;
                 }
-                App.OpenWindows[(int)openWindowIndex].State.Source.MoveChapterVerse(bookName, moveToChapter, 0, false, App.OpenWindows[(int)openWindowIndex].State.Source);
+                if (SelectedEvent!=null)
+                {
+                    SelectedEvent(bookName, moveToChapter, 0);
+                    SelectedEvent = null;
+                }
                 PhoneApplicationService.Current.State["skipWindowSettings"] = true;
                 if (NavigationService.CanGoBack)
                 {
@@ -352,14 +360,13 @@ namespace CrossConnect
                 else
                 {
                     chapter = (int)((Button)sender).Tag;
-                } 
-                
-                App.OpenWindows[(int)openWindowIndex].State.Source.MoveChapterVerse(
-                    bookname,
-                    chapter,
-                    0,
-                    false,
-                    App.OpenWindows[(int)openWindowIndex].State.Source);
+                }
+
+                if (SelectedEvent != null)
+                {
+                    SelectedEvent(bookname, chapter, 0);
+                    SelectedEvent = null;
+                }
                 PhoneApplicationService.Current.State["skipWindowSettings"] = true;
                 if (NavigationService.CanGoBack)
                 {
@@ -396,14 +403,13 @@ namespace CrossConnect
                 else
                 {
                     chapter = this._selectBibleBookSecondSelection;
-                } 
-                
-                App.OpenWindows[(int)openWindowIndex].State.Source.MoveChapterVerse(
-                    bookname,
-                    chapter,
-                    (int)((Button)sender).Tag,
-                    false,
-                    App.OpenWindows[(int)openWindowIndex].State.Source);
+                }
+                if (SelectedEvent != null)
+                {
+                    SelectedEvent(bookname, chapter, (int)((Button)sender).Tag);
+                    SelectedEvent = null;
+                }
+
                 PhoneApplicationService.Current.State["skipWindowSettings"] = true;
                 if (NavigationService.CanGoBack)
                 {
@@ -419,6 +425,12 @@ namespace CrossConnect
             {
                 openWindowIndex = 0;
             }
+
+            object moveOpenWindow;
+            if (!PhoneApplicationService.Current.State.TryGetValue("MoveOpenWindow", out openWindowIndex))
+            {
+                moveOpenWindow = true;
+            }
             var bookname = string.Empty;
             var chapter = 0;
             if (App.OpenWindows[(int)openWindowIndex].State.Source is BibleZtextReader)
@@ -431,12 +443,12 @@ namespace CrossConnect
             {
                 chapter = (int)((Button)sender).Tag;
             }
-            App.OpenWindows[(int)openWindowIndex].State.Source.MoveChapterVerse(
-                bookname,
-                chapter,
-                0,
-                false,
-                App.OpenWindows[(int)openWindowIndex].State.Source);
+            if (SelectedEvent != null)
+            {
+                SelectedEvent(bookname, chapter, 0);
+                SelectedEvent = null;
+            }
+
             PhoneApplicationService.Current.State["skipWindowSettings"] = true;
             if (NavigationService.CanGoBack)
             {
@@ -445,5 +457,10 @@ namespace CrossConnect
         }
 
         #endregion Methods
+
+        private void PhoneApplicationPageBackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            SelectedEvent = null;
+        }
     }
 }

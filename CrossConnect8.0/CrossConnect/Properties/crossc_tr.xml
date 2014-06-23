@@ -245,4 +245,7 @@
 <string key="There is no backup to restore">Geri yedekleme olmadığı</string>
 <string key="Connect to OneDrive">OneDrive bağlan</string>
 <string key="Add a line between notes">Notlar arasına çizgi eklemek</string>
+<string key="Selected verses">Seçilmiş ayetler</string>
+<string key="Select verse">Seç ayet</string>
+<string key="To verse">Ayet için</string>
 </translations>

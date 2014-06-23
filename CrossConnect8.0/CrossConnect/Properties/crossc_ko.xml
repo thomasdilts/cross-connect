@@ -245,4 +245,7 @@
 <string key="There is no backup to restore">복원 할 백업이 없습니다</string>
 <string key="Connect to OneDrive">OneDrive에 연결</string>
 <string key="Add a line between notes">노트 사이에 선을 추가</string>
+<string key="Selected verses">선택된 구절</string>
+<string key="Select verse">선택시</string>
+<string key="To verse">구절에</string>
 </translations>

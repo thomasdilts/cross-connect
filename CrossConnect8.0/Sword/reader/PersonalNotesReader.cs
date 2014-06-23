@@ -21,7 +21,7 @@
 
 #endregion Header
 
-namespace CrossConnect.readers
+namespace Sword.reader
 {
     using System;
     using System.Collections.Generic;
@@ -29,7 +29,6 @@ namespace CrossConnect.readers
     using System.Runtime.Serialization;
     using System.Threading.Tasks;
 
-    using Sword.reader;
     using Sword.versification;
 
     /// <summary>
@@ -40,7 +39,7 @@ namespace CrossConnect.readers
     [KnownType(typeof(ChapterPos))]
     [KnownType(typeof(BookPos))]
     [KnownType(typeof(VersePos))]
-    public class PersonalNotesReader : BibleZtextReader
+    public class PersonalNotesReader : BiblePlaceMarkReader
     {
         #region Constants
 
@@ -50,77 +49,29 @@ namespace CrossConnect.readers
 
         #endregion
 
-        #region Fields
-
-        [DataMember(Name = "serial2")]
-        public BibleZtextReaderSerialData Serial2 = new BibleZtextReaderSerialData(
-            false, string.Empty, string.Empty, 0, 0, string.Empty, string.Empty);
-
-        private string _displayText = string.Empty;
-
-        private string _fontFamily = string.Empty;
-
-        private HtmlColorRgba _htmlBackgroundColor;
-
-        private double _htmlFontSize;
-
-        private HtmlColorRgba _htmlForegroundColor;
-
-        private HtmlColorRgba _htmlPhoneAccentColor;
-
-        private HtmlColorRgba _htmlWordsOfChristColor;
-
-        #endregion
-
+        public Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> NotesToShow;
+        public DisplaySettings LocalDisplaySettings;
         #region Constructors and Destructors
+        public delegate void NotesChangedDelegate(Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> notesToShow, DisplaySettings displaySettings);
 
-        public PersonalNotesReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification)
-            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification)
+        public PersonalNotesReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification, Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> notesToShow, string title, DisplaySettings displaySettings)
+            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification, new List<BiblePlaceMarker>(),title)
         {
-            this.Serial2.CloneFrom(this.Serial);
-            App.PersonalNotesChanged += this.AppPersonalNotesChanged;
+            this.NotesToShow = notesToShow;
+            this.LocalDisplaySettings = displaySettings;
             this.SetToFirstChapter();
-        }
-
-        ~PersonalNotesReader()
-        {
-            App.PersonalNotesChanged -= this.AppPersonalNotesChanged;
         }
 
         #endregion
 
         #region Public Properties
 
-
-        public override bool IsTTChearable
-        {
-            get
-            {
-                return false;
-            }
-        }
-        public override bool IsHearable
-        {
-            get
-            {
-                return false;
-            }
-        }
-
         public override bool IsPageable
         {
             get
             {
-                int count = App.DailyPlan.PersonalNotesVersified.Sum(dict => dict.Value.Sum(dict2 => dict2.Value.Count));
-                return App.DisplaySettings.ShowAddedNotesByChapter || count > LimitForPaging;
-            }
-        }
-
-        public override bool IsSearchable
-        {
-            get
-            {
-                return false;
+                int count = this.NotesToShow==null?0:this.NotesToShow.Sum(dict => dict.Value.Sum(dict2 => dict2.Value.Count));
+                return (LocalDisplaySettings!=null && LocalDisplaySettings.ShowAddedNotesByChapter) || count > LimitForPaging;
             }
         }
 
@@ -132,13 +83,6 @@ namespace CrossConnect.readers
             }
         }
 
-        public override bool IsTranslateable
-        {
-            get
-            {
-                return false;
-            }
-        }
 
         #endregion
 
@@ -174,8 +118,10 @@ namespace CrossConnect.readers
             return -1;
         }
 
-        public async void AppPersonalNotesChanged()
+        public async void NotesSourceChanged(Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> notesToShow, DisplaySettings displaySettings)
         {
+            this.NotesToShow = notesToShow;
+            this.LocalDisplaySettings = displaySettings;
             if (this.IsPageable)
             {
                 var book = canon.BookByShortName[Serial.PosBookShortName];
@@ -183,8 +129,8 @@ namespace CrossConnect.readers
                 this._displayText =
                     await
                     this.MakeListDisplayText(
-                        Translations.IsoLanguageCode,
-                        App.DisplaySettings,
+                        Serial2.Iso2DigitLangCode,
+                        displaySettings,
                         GetSortedList(this.Serial.PosBookShortName, this.Serial.PosChaptNum, false, true),
                         this._htmlBackgroundColor,
                         this._htmlForegroundColor,
@@ -193,7 +139,7 @@ namespace CrossConnect.readers
                         this._htmlFontSize,
                         this._fontFamily,
                         false,
-                        Translations.Translate("Added notes"));
+                        _title);
             }
             else
             {
@@ -201,8 +147,8 @@ namespace CrossConnect.readers
                 this._displayText =
                     await
                     this.MakeListDisplayText(
-                        Translations.IsoLanguageCode,
-                        App.DisplaySettings,
+                        Serial2.Iso2DigitLangCode,
+                        displaySettings,
                         GetSortedList(string.Empty, 0, true, true),
                         this._htmlBackgroundColor,
                         this._htmlForegroundColor,
@@ -211,7 +157,7 @@ namespace CrossConnect.readers
                         this._htmlFontSize,
                         this._fontFamily,
                         true,
-                        Translations.Translate("Added notes"));
+                        _title);
             }
 
             this.RaiseSourceChangedEvent();
@@ -224,13 +170,13 @@ namespace CrossConnect.readers
             if (stage == 0)
             {
                 var books = new Dictionary<int, int>();
-                int count = App.DailyPlan.PersonalNotesVersified.Count;
+                int count = this.NotesToShow.Count;
                 var butColors = new int[count];
                 var values = new int[count];
                 var butText = new string[count];
 
                 var keys = new string[count];
-                App.DailyPlan.PersonalNotesVersified.Keys.CopyTo(keys, 0);
+                this.NotesToShow.Keys.CopyTo(keys, 0);
                 var sortedKeys = new List<string>(keys);
                 canon.SortNames(sortedKeys);
 
@@ -255,12 +201,12 @@ namespace CrossConnect.readers
                     butColors,
                     butText,
                     values,
-                    !this.BookNames(Translations.IsoLanguageCode).ExistsShortNames ? ButtonSize.Large : ButtonSize.Medium);
+                    !this.BookNames(Serial2.Iso2DigitLangCode).ExistsShortNames ? ButtonSize.Large : ButtonSize.Medium);
             }
             else
             {
                 CanonBookDef book = canon.GetBookFromBookNumber(lastSelectedButton);
-                var allInBook = App.DailyPlan.PersonalNotesVersified[book.ShortName1];
+                var allInBook = this.NotesToShow[book.ShortName1];
                 int count = allInBook.Keys.Count();
                 var keys = new int[count];
                 allInBook.Keys.CopyTo(keys, 0);
@@ -323,7 +269,7 @@ namespace CrossConnect.readers
                             htmlFontSize,
                             fontFamily,
                             false,
-                            Translations.Translate("Added notes"));
+                            _title);
                 }
                 else
                 {
@@ -331,7 +277,7 @@ namespace CrossConnect.readers
                     this._displayText =
                         await
                         this.MakeListDisplayText(
-                            Translations.IsoLanguageCode,
+                            isoLangCode,
                             displaySettings,
                             GetSortedList(string.Empty, 0, true, true),
                             htmlBackgroundColor,
@@ -341,24 +287,12 @@ namespace CrossConnect.readers
                             htmlFontSize,
                             this._fontFamily,
                             true,
-                            Translations.Translate("Added notes"));
+                            _title);
                 }
             }
 
             this._htmlFontSize = htmlFontSize;
             return this._displayText;
-        }
-
-        public override void GetInfo(
-            string isoLangCode,
-            out string bookShortName,
-            out int relChaptNum,
-            out int verseNum,
-            out string fullName,
-            out string title)
-        {
-            base.GetInfo(isoLangCode, out bookShortName, out relChaptNum, out verseNum, out fullName, out title);
-            title = Translations.Translate("Added notes");
         }
 
         public override void MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
@@ -437,13 +371,6 @@ namespace CrossConnect.readers
 
         }
 
-        public override async Task Resume()
-        {
-            this.Serial.CloneFrom(this.Serial2);
-            App.PersonalNotesChanged += this.AppPersonalNotesChanged;
-            await base.Resume();
-        }
-
         public override void SerialSave()
         {
             this.Serial2.CloneFrom(this.Serial);
@@ -457,7 +384,7 @@ namespace CrossConnect.readers
         {
             var returnList = new List<BiblePlaceMarker>();
             
-            foreach (var book in App.DailyPlan.PersonalNotesVersified)
+            foreach (var book in this.NotesToShow)
             {
                 foreach (var chapter in book.Value)
                 {

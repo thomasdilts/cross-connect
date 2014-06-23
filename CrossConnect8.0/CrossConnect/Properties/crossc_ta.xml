@@ -245,4 +245,7 @@
 <string key="There is no backup to restore">மீட்க எந்த காப்பு உள்ளது</string>
 <string key="Connect to OneDrive">OneDrive இணைக்க</string>
 <string key="Add a line between notes">குறிப்புகள் இடையே ஒரு வரி சேர்த்து</string>
+<string key="Selected verses">தேர்ந்தெடுக்கப்பட்ட வசனங்கள்</string>
+<string key="Select verse">தேர்வு வசனம்</string>
+<string key="To verse">வசனம்</string>
 </translations>

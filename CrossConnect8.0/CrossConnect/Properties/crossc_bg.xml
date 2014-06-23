@@ -245,4 +245,7 @@
 <string key="There is no backup to restore">Има няма гръб да се възстанови</string>
 <string key="Connect to OneDrive">Свържете се с OneDrive</string>
 <string key="Add a line between notes">Добавяне на линия между бележки</string>
+<string key="Selected verses">Избрани стихове</string>
+<string key="Select verse">Изберете стих</string>
+<string key="To verse">Стих</string>
 </translations>

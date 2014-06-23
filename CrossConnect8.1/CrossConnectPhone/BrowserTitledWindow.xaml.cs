@@ -1240,6 +1240,7 @@ namespace CrossConnect
                     App.SynchronizeAllWindows(bookShortName, chapterNum, verseNum, this._state.CurIndex, this._state.Source);
 
                     App.AddHistory(bookShortName, chapterNum, verseNum);
+                    PhoneApplicationService.Current.State["openWindowIndex"] = _state.CurIndex;
                 }
             }
         }

@@ -245,4 +245,7 @@
 <string key="There is no backup to restore">Det finns ingen backup för att återställa</string>
 <string key="Connect to OneDrive">Anslut till OneDrive</string>
 <string key="Add a line between notes">Lägga till en linje mellan anteckningar</string>
+<string key="Selected verses">Valda verser</string>
+<string key="Select verse">Välj vers</string>
+<string key="To verse">Till vers</string>
 </translations>

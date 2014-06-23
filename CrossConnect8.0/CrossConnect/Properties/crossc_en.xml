@@ -246,4 +246,7 @@
     <string key="There is no backup to restore">There is no backup to restore</string>
     <string key="Connect to OneDrive">Connect to OneDrive</string>
     <string key="Add a line between notes">Add a line between notes</string>
+  <string key="Selected verses">Selected verses</string>
+  <string key="Select verse">Select verse</string>
+  <string key="To verse">To verse</string>
 </translations>
