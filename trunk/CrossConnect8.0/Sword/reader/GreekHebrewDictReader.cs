@@ -21,7 +21,7 @@
 
 #endregion Header
 
-namespace CrossConnect.readers
+namespace Sword.reader
 {
     using System.Collections.Generic;
     using System.IO;

@@ -245,4 +245,7 @@
 <string key="There is no backup to restore">لا يوجد أي النسخ الاحتياطي لاستعادة</string>
 <string key="Connect to OneDrive">الاتصال OneDrive</string>
 <string key="Add a line between notes">إضافة سطر بين الملاحظات</string>
+<string key="Selected verses">آيات مختارة</string>
+<string key="Select verse">حدد الآية</string>
+<string key="To verse">إلى الآية</string>
 </translations>

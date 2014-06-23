@@ -21,7 +21,7 @@
 
 #endregion Header
 
-namespace CrossConnect.readers
+namespace Sword.reader
 {
     using System;
     using System.Collections.Generic;
@@ -65,13 +65,21 @@ namespace CrossConnect.readers
         [DataMember]
         public int Found;
 
+        [DataMember]
+        public string translationSearch;
+
+        [DataMember]
+        public string translationFound;
+
         #endregion
 
         #region Constructors and Destructors
 
-        public RawGenSearchReader(string path, string iso2DigitLangCode, bool isIsoEncoding)
+        public RawGenSearchReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string translationSearch, string translationFound)
             : base(path, iso2DigitLangCode, isIsoEncoding)
         {
+            this.translationSearch = translationSearch;
+            this.translationFound = translationFound;
         }
 
         #endregion
@@ -358,7 +366,7 @@ namespace CrossConnect.readers
             relChaptNum = 0;
             fullName = string.Empty;
             string extraText = string.Empty;
-            title = Translations.Translate("Search") + "; " + this.SearchText + "; " + extraText + "; " + Translations.Translate("Found") + "(" + this.Found + ")";
+            title = translationSearch + "; " + this.SearchText + "; " + extraText + "; " + translationFound + "(" + this.Found + ")";
         }
 
         #endregion

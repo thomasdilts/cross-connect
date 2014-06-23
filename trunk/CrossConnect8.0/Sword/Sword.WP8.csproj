@@ -110,11 +110,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="reader\BibleNoteReader.cs" />
     <Compile Include="reader\BibleZtextReader.cs" />
+    <Compile Include="reader\BiblePlaceMarkReader.cs" />
     <Compile Include="reader\CommentZtextReader.cs" />
     <Compile Include="reader\DisplaySettings.cs" />
+    <Compile Include="reader\GreekHebrewDictReader.cs" />
     <Compile Include="reader\IBrowserTextSource.cs" />
+    <Compile Include="reader\PersonalNotesReader.cs" />
+    <Compile Include="reader\RawGenSearchReader.cs" />
     <Compile Include="reader\RawGenTextReader.cs" />
     <Compile Include="reader\sapphire.cs" />
+    <Compile Include="reader\SearchReader.cs" />
     <Compile Include="StaticBibleVerses.cs" />
     <Compile Include="SwordBookMetaData.cs" />
     <Compile Include="versification\Canon.cs" />

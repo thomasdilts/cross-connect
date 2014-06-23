@@ -90,7 +90,15 @@ namespace Sword.reader
             };
             return newMarker;
         }
-
+        public static List<BiblePlaceMarker> Clone(List<BiblePlaceMarker> toClone)
+        {
+            var returnedClone = new List<BiblePlaceMarker>();
+            foreach (var item in toClone)
+            {
+                returnedClone.Add(BiblePlaceMarker.Clone(item));
+            }
+            return returnedClone;
+        }
         #endregion
     }
 
@@ -1724,10 +1732,32 @@ function SetFontColorForElement(elemntId, colorRgba){
                                           ? "</sup>"
                                           : (isVerseMarking ? ")" : string.Empty);
             bool isInPoetry = false;
+            var lastBook = string.Empty;
+            var lastChapter = -1;
+            var lastVerse = -1;
+            var lastVerseContinued = false;
             for (int j = listToDisplay.Count - 1; j >= 0; j--)
             {
                 BiblePlaceMarker place = listToDisplay[j];
-
+                bool isContinuedVerse = lastBook.Equals(place.BookShortName) && lastChapter == place.ChapterNum && lastVerse == (place.VerseNum - 1);
+                bool isNextVerseContinued = j >= 1 && place.BookShortName.Equals(listToDisplay[j - 1].BookShortName) && listToDisplay[j - 1].ChapterNum == place.ChapterNum && listToDisplay[j - 1].VerseNum == (place.VerseNum + 1);
+                var ToVerse = -1;
+                if(!isContinuedVerse && isNextVerseContinued)
+                {
+                    ToVerse = place.VerseNum + 1;
+                    //look ahead to find the end of the consecutive verses
+                    for (int k = j-1; k >=0; k--)
+                    {
+                        if(k >= 1 && listToDisplay[k].BookShortName.Equals(listToDisplay[k - 1].BookShortName) && listToDisplay[k - 1].ChapterNum == listToDisplay[k].ChapterNum && listToDisplay[k - 1].VerseNum == (listToDisplay[k].VerseNum + 1))
+                        {
+                            ToVerse = listToDisplay[k].VerseNum + 1;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
                 CanonBookDef book;
                 if (!canon.BookByShortName.TryGetValue(place.BookShortName, out book) || place.ChapterNum >= book.NumberOfChapters || place.VerseNum >= canon.VersesInChapter[place.ChapterNum + book.VersesInChapterStartIndex])
                 {
@@ -1748,7 +1778,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 }
 
                 string htmlChapterText = startVerseMarking + this.GetFullName(chaptPos.Booknum, appChoosenIsoLangCode) + " "
-                                         + (chaptPos.BookRelativeChapterNum + 1) + ":" + (place.VerseNum + 1) + "  "
+                    + (chaptPos.BookRelativeChapterNum + 1) + ":" + (place.VerseNum + 1) + (ToVerse > 0 ? "-" + (ToVerse + 1) : string.Empty) + "  "
                                          + place.When.ToString("yyyy-MM-dd") + " " + place.When.ToString("hh.mm.ss")
                                          + stopVerseMarking;
 
@@ -1756,9 +1786,9 @@ function SetFontColorForElement(elemntId, colorRgba){
                 int noteMarker = 0;
                 string verseTxt = this.ParseOsisText(
                     displaySettings,
-                    "<p><a name=\"" + textId + "\"></a><a class=\"normalcolor\" id=\"ID_" + textId
+                    "<a name=\"" + textId + "\"></a><a class=\"normalcolor\" id=\"ID_" + textId
                     + "\"  href=\"#\" onclick=\"window.external.notify('" + textId
-                    + "'); event.returnValue=false; return false;\" >" + htmlChapterText,
+                    + "'); event.returnValue=false; return false;\" >" + (isContinuedVerse ? startVerseMarking + (place.VerseNum + 1) + stopVerseMarking : htmlChapterText),
                     string.Empty,
                     chapterBuffer,
                     (int)verse.StartPos,
@@ -1769,10 +1799,12 @@ function SetFontColorForElement(elemntId, colorRgba){
                     ref noteMarker,
                     ref isInPoetry);
 
+                lastVerseContinued = false;
                 // create the verse
                 if (string.IsNullOrEmpty(place.Note))
                 {
-                    htmlListText.Append(verseTxt + "</a></p><hr />");
+                    htmlListText.Append((isContinuedVerse ? string.Empty : "<p>") + verseTxt + "</a>" + (isNextVerseContinued ? string.Empty : "</p><hr />"));
+                    lastVerseContinued=isContinuedVerse;
                 }
                 else
                 {
@@ -1780,6 +1812,9 @@ function SetFontColorForElement(elemntId, colorRgba){
                         verseTxt + "</p><p>" + (displaySettings.SmallVerseNumbers ? "<sup>" : "(") + notesTitle
                         + (displaySettings.SmallVerseNumbers ? "</sup>" : ") ") + "<br />" + place.Note.Replace("\n", "<br />") + "</a></p><hr />");
                 }
+                lastBook = place.BookShortName;
+                lastChapter = place.ChapterNum;
+                lastVerse = place.VerseNum;
             }
 
             htmlListText.Append(chapterEndHtml);

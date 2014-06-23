@@ -141,7 +141,15 @@
     <Compile Include="ImageBrowse.xaml.cs">
       <DependentUpon>ImageBrowse.xaml</DependentUpon>
     </Compile>
-    <Compile Include="readers\RawGenSearchReader.cs" />
+    <Compile Include="SelectToVerse.xaml.cs">
+      <DependentUpon>SelectToVerse.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SelectBibleVerse.xaml.cs">
+      <DependentUpon>SelectBibleVerse.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SelectBibleVerses.xaml.cs">
+      <DependentUpon>SelectBibleVerses.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SelectHighlight.xaml.cs">
       <DependentUpon>SelectHighlight.xaml</DependentUpon>
     </Compile>
@@ -163,7 +171,6 @@
       <DependentUpon>Themes.xaml</DependentUpon>
     </Compile>
     <Compile Include="readers\TranslatorReader.cs" />
-    <Compile Include="readers\GreekHebrewDictReader.cs" />
     <Compile Include="SelectToPlay.xaml.cs">
       <DependentUpon>SelectToPlay.xaml</DependentUpon>
     </Compile>
@@ -171,7 +178,6 @@
     <Compile Include="MorphologyTranslator.cs" />
     <Compile Include="readers\DailyPlanReader.cs" />
     <Compile Include="readers\InternetLinkReader.cs" />
-    <Compile Include="readers\PersonalNotesReader.cs" />
     <Compile Include="SelectLanguage.xaml.cs">
       <DependentUpon>SelectLanguage.xaml</DependentUpon>
     </Compile>
@@ -179,7 +185,6 @@
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Translations.cs" />
-    <Compile Include="readers\BookMarkReader.cs" />
     <Compile Include="BrowserTitledWindow.xaml.cs">
       <DependentUpon>BrowserTitledWindow.xaml</DependentUpon>
     </Compile>
@@ -192,7 +197,6 @@
     <Compile Include="Help.xaml.cs">
       <DependentUpon>Help.xaml</DependentUpon>
     </Compile>
-    <Compile Include="readers\HistoryReader.cs" />
     <Compile Include="ImageButton.cs" />
     <Compile Include="MainPageSplit.xaml.cs">
       <DependentUpon>MainPageSplit.xaml</DependentUpon>
@@ -204,7 +208,6 @@
     <Compile Include="Search.xaml.cs">
       <DependentUpon>Search.xaml</DependentUpon>
     </Compile>
-    <Compile Include="readers\SearchReader.cs" />
     <Compile Include="SelectBibleBook.xaml.cs">
       <DependentUpon>SelectBibleBook.xaml</DependentUpon>
     </Compile>
@@ -236,6 +239,18 @@
     <Page Include="ImageBrowse.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SelectToVerse.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SelectBibleVerse.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SelectBibleVerses.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SelectHighlight.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -327,6 +342,21 @@
     </Content>
     <Content Include="Backgroundlight.png" />
     <Content Include="crossbigbut691x336.png" />
+    <Content Include="Images\dark\appbar.arrowdown.rest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\dark\appbar.arrowdown.rest.press.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\dark\appbar.arrowto.rest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\dark\appbar.arrowup.rest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\dark\appbar.arrowup.rest.press.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\dark\appbar.download.rest.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -436,6 +466,21 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\dark\window.smaller.pressed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\light\appbar.arrowdown.rest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\light\appbar.arrowdown.rest.press.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\light\appbar.arrowto.rest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\light\appbar.arrowup.rest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\light\appbar.arrowup.rest.press.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\light\open.folder.png">
