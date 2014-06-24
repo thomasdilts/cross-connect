@@ -9,7 +9,7 @@
                       Foreground="{StaticResource PhoneForegroundBrush}" SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
                       mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
                       xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-                      Loaded="PhoneApplicationPageLoaded" OrientationChanged="PhoneApplicationPageOrientationChanged"
+                      Loaded="PhoneApplicationPageLoaded" OrientationChanged="PhoneApplicationPageOrientationChanged" BackKeyPress="PhoneApplicationPageBackKeyPress"
                       shell:SystemTray.IsVisible="False" xmlns:my="clr-namespace:CrossConnect">
 
   <toolkit:TransitionService.NavigationInTransition>

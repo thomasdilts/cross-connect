@@ -34,7 +34,7 @@ namespace Sword.reader
     using System.Threading.Tasks;
     using System.Xml;
 
-    using ComponentAce.Compression.Libs.zlib;
+    //using ComponentAce.Compression.Libs.zlib;
 
     using Windows.Storage;
 

@@ -65,7 +65,7 @@ namespace CrossConnect
         {
             _isInThisWindow = false;
             backupRestoreObj.IsCanceled = true;
-
+            
         }
 
         bool _isTransfering = false;
@@ -141,20 +141,20 @@ namespace CrossConnect
             }
             this.oneDriveProgressBarTotal.Value = percentTotal;
             this.oneDriveProgressBarPartial.Value = percentPartial;
-            if (IsFinal && !string.IsNullOrEmpty(Message))
+            if(IsFinal && !string.IsNullOrEmpty(Message))
             {
                 MessageBox.Show(Translations.Translate(
                                 "An error occurred trying to connect to the network. Try again later.") + "; " + Message);
                 _isTransfering = false;
                 UpdateUi();
             }
-            else if (IsFinal && !string.IsNullOrEmpty(MessageTranslateable1))
+            else if(IsFinal && !string.IsNullOrEmpty(MessageTranslateable1))
             {
-                MessageBox.Show(Translations.Translate(MessageTranslateable1) + (!string.IsNullOrEmpty(MessageTranslateable2) ? " - " + Translations.Translate(MessageTranslateable2) : string.Empty));
+                MessageBox.Show(Translations.Translate(MessageTranslateable1) +  (!string.IsNullOrEmpty(MessageTranslateable2)? " - " + Translations.Translate(MessageTranslateable2):string.Empty));
                 _isTransfering = false;
                 UpdateUi();
             }
-            if (IsFinal)
+            if(IsFinal)
             {
                 await App.LoadPersistantObjects();
                 _isTransfering = false;
@@ -178,9 +178,9 @@ namespace CrossConnect
             App.DisplaySettings.OneDriveFolder = this.oneDrivePutInFolder.Text;
             await App.SaveAllPersistantObjects();
             await backupRestoreObj.DoExport(
-                new BackupRestore.BackupManifest
-                {
-                    bibles = (bool)this.oneDriveBibles.IsChecked,
+                new BackupRestore.BackupManifest 
+                {  
+                    bibles=(bool)this.oneDriveBibles.IsChecked,
                     settings = (bool)this.oneDriveSettings.IsChecked,
                     bookmarks = (bool)this.oneDriveBookmarks.IsChecked,
                     themes = (bool)this.oneDriveThemes.IsChecked,

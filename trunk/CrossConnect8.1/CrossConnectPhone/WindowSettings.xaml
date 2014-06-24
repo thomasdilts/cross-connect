@@ -6,6 +6,7 @@
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:local="clr-namespace:CrossConnect"
+                        xmlns:ccc="clr-namespace:CrossConnect"
                       FontFamily="{StaticResource PhoneFontFamilyNormal}" FontSize="{StaticResource PhoneFontSizeNormal}"
                       Foreground="{StaticResource PhoneForegroundBrush}" SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
                       mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
@@ -64,8 +65,9 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <toolkit:ListPicker Name="selectDocumentType" Grid.Row="0" Header="Select the window type"
@@ -95,6 +97,7 @@
         <phone:WebBrowser Grid.Row="12" Margin="0 0 0 0" Name="webBrowser1" MinHeight="50" /> 
         <Slider Grid.Row="13" Maximum="37.0" Minimum="5.0" ValueChanged="SliderTextSizeValueChanged"
                 Name="sliderTextSize" />
+                <ccc:SelectBibleVerses Grid.Row="14" Name="selectbibelverses"></ccc:SelectBibleVerses>
       </Grid>
     </Grid>
   </ScrollViewer>

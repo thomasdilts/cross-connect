@@ -21,7 +21,7 @@
 
 #endregion Header
 
-namespace CrossConnect.readers
+namespace Sword.reader
 {
     using System.Collections.Generic;
     using System.IO;
@@ -31,7 +31,8 @@ namespace CrossConnect.readers
     using System.Xml;
 
     using Sword.reader;
-    using ICSharpCode.SharpZipLib.GZip;
+    using Ionic.Zlib;
+    //using ICSharpCode.SharpZipLib.GZip;
         //using ICSharpCode.SharpZipLib.GZip;
 
     /// <summary>
@@ -315,7 +316,8 @@ namespace CrossConnect.readers
             {
                 Assembly assem = Assembly.Load(new AssemblyName("CrossConnect"));
                 Stream stream = assem.GetManifestResourceStream("CrossConnect.Properties." + filepath);
-                var gzip = new GZipInputStream(stream);
+                
+                var gzip = new GZipStream(stream,CompressionMode.Decompress);
 
                 string entry = string.Empty;
                 LexiconEntry lexEntry = null;

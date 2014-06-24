@@ -109,8 +109,6 @@ namespace CrossConnect
                     };
                     this.SelectList.Items.Add(item);
                 }
-                SelectList.UpdateLayout();
-                LayoutRoot.UpdateLayout();
             }
         }
 

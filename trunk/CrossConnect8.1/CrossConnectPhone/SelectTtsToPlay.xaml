@@ -33,20 +33,22 @@
   </toolkit:TransitionService.NavigationOutTransition>
 
   <!--LayoutRoot is the root grid where all page content is placed-->
-        <Grid x:Name="LayoutRoot" Background="Transparent">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
 
-            <!--TitlePanel contains the name of the application and page title-->
-            <StackPanel Grid.Row="0" x:Name="TitlePanel" Margin="12,5,0,10" VerticalAlignment="Top">
-                <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}" />
-                <TextBlock x:Name="PageTitle" Text="Select what you want to hear" Margin="9,-7,0,0"
+  <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <!--TitlePanel contains the name of the application and page title-->
+    <StackPanel Grid.Row="0" x:Name="TitlePanel" Margin="12,5,0,10" VerticalAlignment="Top">
+      <TextBlock x:Name="ApplicationTitle" Text="Cross Connect" Style="{StaticResource PhoneTextNormalStyle}" />
+      <TextBlock x:Name="PageTitle" Text="Select what you want to hear" Margin="9,-7,0,0"
                  Style="{StaticResource PhoneTextTitle2Style}" />
-                <TextBlock x:Name="MsgFromServer" TextWrapping="Wrap" Text=""
+      <TextBlock x:Name="MsgFromServer" TextWrapping="Wrap" Text=""
                  Style="{StaticResource PhoneTextNormalStyle}" />
-            </StackPanel>
-            <ListBox Grid.Row="1" SelectionChanged="SelectListSelectionChanged" Name="SelectList" />
-        </Grid>
+    </StackPanel>
+    <ListBox Grid.Row="1" SelectionChanged="SelectListSelectionChanged" Name="SelectList" />
+    </Grid>
+
 </local:AutoRotatePage>

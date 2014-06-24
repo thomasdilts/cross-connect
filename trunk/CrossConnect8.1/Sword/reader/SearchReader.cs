@@ -21,7 +21,7 @@
 
 #endregion Header
 
-namespace CrossConnect.readers
+namespace Sword.reader
 {
     using System;
     using System.Collections.Generic;
@@ -33,7 +33,7 @@ namespace CrossConnect.readers
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
-    using Hoot;
+    //using Hoot;
 
     using Sword.reader;
 
@@ -67,13 +67,33 @@ namespace CrossConnect.readers
         [DataMember]
         public int Found;
 
+        [DataMember]
+        public string translationSearch;
+
+        [DataMember]
+        public string translationFound;
+
+        [DataMember]
+        public string translationWholeBible;
+
+        [DataMember]
+        public string translationNewTestement;
+
+        [DataMember]
+        public string translationOldTestement;
+
         #endregion
 
         #region Constructors and Destructors
 
-        public SearchReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification)
+        public SearchReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification, string translationSearch, string translationFound, string translationWholeBible, string translationNewTestement, string translationOldTestement)
             : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification)
         {
+            this.translationSearch = translationSearch;
+            this.translationFound = translationFound;
+            this.translationWholeBible = translationWholeBible;
+            this.translationNewTestement = translationNewTestement;
+            this.translationOldTestement = translationOldTestement;
         }
 
         #endregion
@@ -157,7 +177,7 @@ namespace CrossConnect.readers
                 bool existsIndexes = true;
                 foreach (var index in indexes)
                 {
-                    if (!await File.Exists(Path.Combine(this.Serial.Path.Replace("/", "\\"), index)))
+                    if (!await Hoot.File.Exists(Path.Combine(this.Serial.Path.Replace("/", "\\"), index)))
                     {
                         existsIndexes = false;
                         break;
@@ -254,7 +274,7 @@ namespace CrossConnect.readers
                                    + "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.notify('"
                                    + textId + "'); event.returnValue=false; return false;\" >"
                                    + (displaySettings.SmallVerseNumbers ? "<sup>" : "(")
-                                   + this.GetFullName(this.Chapters[chapterNum].Booknum,Translations.IsoLanguageCode) + " "
+                                   + this.GetFullName(this.Chapters[chapterNum].Booknum, Serial.Iso2DigitLangCode) + " "
                                    + (this.Chapters[chapterNum].BookRelativeChapterNum + 1) + ":" + (verseNum + 1)
                                    + (displaySettings.SmallVerseNumbers ? " </sup>" : ")");
                         const string htmlSuffix = "</a></p><hr />";
@@ -321,7 +341,7 @@ namespace CrossConnect.readers
                                        + "\"></a><a class=\"normalcolor\" href=\"#\" onclick=\"window.external.notify('"
                                        + textId + "'); event.returnValue=false; return false;\" >"
                                        + (displaySettings.SmallVerseNumbers ? "<sup>" : "(")
-                                       + this.GetFullName(this.Chapters[chaptListToSearch[i]].Booknum,Translations.IsoLanguageCode) + " "
+                                       + this.GetFullName(this.Chapters[chaptListToSearch[i]].Booknum,Serial.Iso2DigitLangCode) + " "
                                        + (this.Chapters[chaptListToSearch[i]].BookRelativeChapterNum + 1) + ":"
                                        + (j + 1) + (displaySettings.SmallVerseNumbers ? " </sup>" : ")");
                             const string htmlSuffix = "</a></p><hr />";
@@ -432,20 +452,20 @@ namespace CrossConnect.readers
             switch (this.SearchTypeIndex)
             {
                 case 0:
-                    extraText = Translations.Translate("Whole bible");
+                    extraText = translationWholeBible;
                     break;
                 case 1:
-                    extraText = Translations.Translate("The Old Testement");
+                    extraText = translationOldTestement;
                     break;
                 case 2:
-                    extraText = Translations.Translate("The New Testement");
+                    extraText = translationNewTestement;
                     break;
                 case 3:
                     extraText = fullName;
                     break;
             }
 
-            title = Translations.Translate("Search") + "; " + this.SearchText + "; " + extraText + "; " + Translations.Translate("Found") + "(" + this.Found +")";
+            title = translationSearch + "; " + this.SearchText + "; " + extraText + "; " + translationFound + "(" + this.Found +")";
         }
 
         #endregion
