@@ -131,6 +131,9 @@ namespace CrossConnect
                 case 5:
                     selectedType = WindowType.WindowAddedNotes;
                     break;
+                case 6:
+                    selectedType = WindowType.WindowSelectedVerses;
+                    break;
                 default:
                     if (this.selectDocumentType.SelectedItem.Equals(Translations.Translate("Commentaries")))
                     {
@@ -233,7 +236,6 @@ namespace CrossConnect
 
                     App.DailyPlan.PlanNumber = selectPlanType.SelectedIndex;
                 }
-
                 if ((bool)isAddNewWindowOnly)
                 {
                     WindowType selectedType;
@@ -241,7 +243,7 @@ namespace CrossConnect
                     GetSelectedData(out selectedType, out bookSelected);
 
                     App.AddWindow(
-                        bookSelected.InternalName, bookSelected.Name, selectedType, sliderTextSize.Value, _fontFamily);
+                        bookSelected.InternalName, bookSelected.Name, selectedType, sliderTextSize.Value, _fontFamily, selectbibelverses.GetPlaceMarkers());
 
                     // if (NavigationService.CanGoBack)
                     // {
@@ -261,10 +263,11 @@ namespace CrossConnect
                         SetBookChoosen();
                     }
 
-                    // if (NavigationService.CanGoBack)
-                    // {
-                    // NavigationService.GoBack();
-                    // }
+                    var source = App.OpenWindows[(int)openWindowIndex].State.Source;
+                    if (selectDocumentType.SelectedIndex == 6 && source is BiblePlaceMarkReader)
+                    {
+                        ((BiblePlaceMarkReader)source).BookMarksToShow = selectbibelverses.GetPlaceMarkers();
+                    }
                 }
             }
             catch (Exception ee)
@@ -442,6 +445,7 @@ namespace CrossConnect
 
             visibility = selectDocumentType.SelectedIndex == 4 ? Visibility.Visible : Visibility.Collapsed;
             DateSelectPanel.Visibility = visibility;
+            selectbibelverses.Visibility = this.selectDocumentType.SelectedItem!=null && this.selectDocumentType.SelectedItem.Equals(Translations.Translate("Selected verses")) ? Visibility.Visible : Visibility.Collapsed;
             selectPlanType.Visibility = visibility;
         }
 
@@ -488,7 +492,7 @@ namespace CrossConnect
                 state.HtmlFontSize = sliderTextSize.Value;
                 state.Font = _fontFamily;
                 await ((BrowserTitledWindow)App.OpenWindows[(int)openWindowIndex]).Initialize(
-                    state.BibleToLoad, state.BibleDescription, state.WindowType);
+                    state.BibleToLoad, state.BibleDescription, state.WindowType, selectbibelverses.GetPlaceMarkers());
                 App.OpenWindows[(int)openWindowIndex].State.Source.MoveChapterVerse(relbookShortName, relChaptNum, relverseNum, false, App.OpenWindows[(int)openWindowIndex].State.Source);
                 App.OpenWindows[(int)openWindowIndex].ForceReload = true;
                 App.OpenWindows[(int)openWindowIndex].UpdateBrowser(false);
@@ -529,6 +533,7 @@ namespace CrossConnect
             selectDocumentType.Items.Add(Translations.Translate("Bookmarks"));
             selectDocumentType.Items.Add(Translations.Translate("Daily plan"));
             selectDocumentType.Items.Add(Translations.Translate("My comments"));
+            selectDocumentType.Items.Add(Translations.Translate("Selected verses"));
             if (App.InstalledBibles.InstalledCommentaries.Count > 0)
             {
                 selectDocumentType.Items.Add(Translations.Translate("Commentaries"));
@@ -624,6 +629,7 @@ namespace CrossConnect
                 butTranslate.Visibility = state.Source.IsTranslateable && !state.Source.GetLanguage().Equals(Translations.IsoLanguageCode) ? visibility : Visibility.Collapsed;
                 butListen.Visibility = bookNameShort!=null && state.Source.IsHearable && canon.BookByShortName.ContainsKey(bookNameShort) ? visibility : Visibility.Collapsed;
                 butListenTts.Visibility = state.Source.IsTTChearable && InstalledVoices.All.Any() ? visibility : Visibility.Collapsed;
+                selectbibelverses.Visibility = Visibility.Collapsed;
                 switch (state.WindowType)
                 {
                     case WindowType.WindowBible:
@@ -648,6 +654,11 @@ namespace CrossConnect
                     case WindowType.WindowAddedNotes:
                         selectDocumentType.SelectedIndex = 5;
                         break;
+                    case WindowType.WindowSelectedVerses:
+                        selectbibelverses.Visibility = Visibility.Visible;
+                        selectbibelverses.SetPlaceMarkers(((BiblePlaceMarkReader)state.Source).BookMarksToShow);
+                        selectDocumentType.SelectedIndex = 6;
+                        break;
                     case WindowType.WindowBook:
                         selectDocument.Items.Clear();
                         foreach (var book in App.InstalledBibles.InstalledGeneralBooks)
@@ -661,7 +672,7 @@ namespace CrossConnect
                                 selectDocument.SelectedIndex = selectDocument.Items.Count - 1;
                             }
                         }
-                        this.selectDocumentType.SelectedIndex = App.InstalledBibles.InstalledCommentaries.Count > 0 ? 7 : 6;
+                        this.selectDocumentType.SelectedIndex = App.InstalledBibles.InstalledCommentaries.Count > 0 ? 8 : 7;
 
                         break;
                     case WindowType.WindowCommentary:
@@ -678,7 +689,7 @@ namespace CrossConnect
                             }
                         }
 
-                        selectDocumentType.SelectedIndex = 6;
+                        selectDocumentType.SelectedIndex = 7;
                         break;
                     case WindowType.WindowInternetLink:
                         selectDocumentType.Visibility = Visibility.Collapsed;

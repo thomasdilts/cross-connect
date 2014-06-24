@@ -32,6 +32,7 @@
     <DefineConstants>DEBUG;TRACE;NETFX_CORE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -167,14 +168,8 @@
     <Compile Include="ITiledWindow.cs" />
     <Compile Include="MorphologyTranslator.cs" />
     <Compile Include="readers\AudioPlayer.cs" />
-    <Compile Include="readers\BookMarkReader.cs" />
-    <Compile Include="readers\RawGenSearchReader.cs" />
     <Compile Include="readers\DailyPlanReader.cs" />
-    <Compile Include="readers\GreekHebrewDictReader.cs" />
-    <Compile Include="readers\HistoryReader.cs" />
     <Compile Include="readers\InternetLinkReader.cs" />
-    <Compile Include="readers\PersonalNotesReader.cs" />
-    <Compile Include="readers\SearchReader.cs" />
     <Compile Include="readers\TranslateByGoogle.cs" />
     <Compile Include="readers\TranslatorReader.cs" />
     <Compile Include="MainPageSplit.xaml.cs">

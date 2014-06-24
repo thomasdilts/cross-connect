@@ -292,23 +292,31 @@ namespace CrossConnect
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     break;
                                 case WindowType.WindowBookmarks:
-                                    this._state.Source = new BookMarkReader(
+                                    var bookmarkreader = new BiblePlaceMarkReader(
                                         bookPath,
                                         ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
                                         isIsoEncoding,
                                         (string)book.Value.GetCetProperty(ConfigEntryType.CipherKey),
                                         book.Value.ConfPath,
-                                        (string)book.Value.GetCetProperty(ConfigEntryType.Versification));
+                                        (string)book.Value.GetCetProperty(ConfigEntryType.Versification),
+                                        App.PlaceMarkers.Bookmarks,
+                                        Translations.Translate("Bookmarks"));
+                                    App.BookMarksChanged += bookmarkreader.BiblePlaceMarkSourceChanged;
+                                    this._state.Source = bookmarkreader;
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     return;
                                 case WindowType.WindowHistory:
-                                    this._state.Source = new HistoryReader(
+                                    var history = new BiblePlaceMarkReader(
                                         bookPath,
                                         ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
                                         isIsoEncoding,
                                         (string)book.Value.GetCetProperty(ConfigEntryType.CipherKey),
                                         book.Value.ConfPath,
-                                        (string)book.Value.GetCetProperty(ConfigEntryType.Versification));
+                                        (string)book.Value.GetCetProperty(ConfigEntryType.Versification),
+                                        App.PlaceMarkers.History,
+                                        Translations.Translate("History"));
+                                    App.HistoryChanged += history.BiblePlaceMarkSourceChanged;
+                                    this._state.Source = history;
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     return;
                                 case WindowType.WindowDailyPlan:
@@ -341,13 +349,18 @@ namespace CrossConnect
                                     await ((RawGenTextReader)this._state.Source).Initialize();
                                     return;
                                 case WindowType.WindowAddedNotes:
-                                    this._state.Source = new PersonalNotesReader(
+                                    var notes = new PersonalNotesReader(
                                         bookPath,
                                         ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
                                         isIsoEncoding,
                                         (string)book.Value.GetCetProperty(ConfigEntryType.CipherKey),
                                         book.Value.ConfPath,
-                                        (string)book.Value.GetCetProperty(ConfigEntryType.Versification));
+                                        (string)book.Value.GetCetProperty(ConfigEntryType.Versification),
+                                        App.DailyPlan.PersonalNotesVersified,
+                                        Translations.Translate("Added notes"),
+                                        App.DisplaySettings);
+                                    App.PersonalNotesChanged += notes.NotesSourceChanged;
+                                    this._state.Source = notes;
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     return;
                                 case WindowType.WindowTranslator:

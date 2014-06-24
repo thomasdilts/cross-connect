@@ -21,23 +21,23 @@
 
 #endregion Header
 
-namespace CrossConnect.readers
+namespace Sword.reader
 {
     using System;
     using System.Runtime.Serialization;
     using System.Threading.Tasks;
 
-    using Sword.reader;
+    using System.Collections.Generic;
 
     /// <summary>
     ///     Load from a file all the book and verse pointers to the bzz file so that
     ///     we can later read the bzz file quickly and efficiently.
     /// </summary>
-    [DataContract(Name = "BookMarkReader")]
+    [DataContract(Name = "BiblePlaceMarkReader")]
     [KnownType(typeof(ChapterPos))]
     [KnownType(typeof(BookPos))]
     [KnownType(typeof(VersePos))]
-    public class BookMarkReader : BibleZtextReader
+    public class BiblePlaceMarkReader : BibleZtextReader
     {
         #region Fields
 
@@ -45,35 +45,58 @@ namespace CrossConnect.readers
         public BibleZtextReaderSerialData Serial2 = new BibleZtextReaderSerialData(
             false, string.Empty, string.Empty, 0, 0, string.Empty, string.Empty);
 
-        private string _displayText = string.Empty;
+        [DataMember]
+        public List<BiblePlaceMarker> BookMarksToShow;
 
-        private string _fontFamily = string.Empty;
+        [DataMember]
+        protected string _title;
 
-        private HtmlColorRgba _htmlBackgroundColor;
+        protected string _displayText = string.Empty;
 
-        private double _htmlFontSize;
+        protected string _fontFamily = string.Empty;
 
-        private HtmlColorRgba _htmlForegroundColor;
+        protected HtmlColorRgba _htmlBackgroundColor;
 
-        private HtmlColorRgba _htmlPhoneAccentColor;
+        protected double _htmlFontSize;
 
-        private HtmlColorRgba _htmlWordsOfChristColor;
+        protected HtmlColorRgba _htmlForegroundColor;
+
+        protected HtmlColorRgba _htmlPhoneAccentColor;
+
+        protected HtmlColorRgba _htmlWordsOfChristColor;
 
         #endregion
 
+        public delegate void BiblePlaceMarkChangedDelegate(List<BiblePlaceMarker> bookMarksToShow, DisplaySettings displaySettings);
+        
+        public virtual async void BiblePlaceMarkSourceChanged(List<BiblePlaceMarker> biblePlaceMarkToShow, DisplaySettings displaySettings)
+        {
+            this.BookMarksToShow = BiblePlaceMarker.Clone(biblePlaceMarkToShow);
+            this._displayText =
+                await
+                this.MakeListDisplayText(
+                    Serial2.Iso2DigitLangCode,
+                    displaySettings,
+                    this.BookMarksToShow,
+                    this._htmlBackgroundColor,
+                    this._htmlForegroundColor,
+                    this._htmlPhoneAccentColor,
+                    this._htmlWordsOfChristColor,
+                    this._htmlFontSize,
+                    this._fontFamily,
+                    false,
+                    string.Empty);
+            this.RaiseSourceChangedEvent();
+        }
+
         #region Constructors and Destructors
 
-        public BookMarkReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification)
+        public BiblePlaceMarkReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification, List<BiblePlaceMarker> bookMarksToShow,string title)
             : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification)
         {
             this.Serial2.CloneFrom(this.Serial);
-            App.BookMarksChanged += this.AppBookMarksChanged;
-        }
-
-        // destructor
-        ~BookMarkReader()
-        {
-            App.BookMarksChanged -= this.AppBookMarksChanged;
+            this.BookMarksToShow = bookMarksToShow;
+            this._title = title;
         }
 
         #endregion
@@ -126,33 +149,14 @@ namespace CrossConnect.readers
 
         public override async Task<IBrowserTextSource> Clone()
         {
-            var cloned = new BookMarkReader(this.Serial.Path, this.Serial.Iso2DigitLangCode, this.Serial.IsIsoEncoding, this.Serial.CipherKey, this.Serial.ConfigPath, this.Serial.Versification);
+            var cloned = new BiblePlaceMarkReader(this.Serial.Path, this.Serial.Iso2DigitLangCode, this.Serial.IsIsoEncoding, this.Serial.CipherKey, this.Serial.ConfigPath, this.Serial.Versification, BiblePlaceMarker.Clone(this.BookMarksToShow),this._title);
             await cloned.Resume();
             return cloned;
         }
 
-        public async void AppBookMarksChanged()
-        {
-            this._displayText =
-                await
-                this.MakeListDisplayText(
-                    Translations.IsoLanguageCode,
-                    App.DisplaySettings,
-                    App.PlaceMarkers.Bookmarks,
-                    this._htmlBackgroundColor,
-                    this._htmlForegroundColor,
-                    this._htmlPhoneAccentColor,
-                    this._htmlWordsOfChristColor,
-                    this._htmlFontSize,
-                    this._fontFamily,
-                    false,
-                    string.Empty);
-            this.RaiseSourceChangedEvent();
-        }
-
         public override async Task<string> GetTTCtext(bool isVerseOnly)
         {
-            var text = await MakeListTtcHearingText(Translations.IsoLanguageCode, App.PlaceMarkers.Bookmarks);
+            var text = await MakeListTtcHearingText(Serial2.Iso2DigitLangCode, this.BookMarksToShow);
             return string.IsNullOrEmpty(text) ? "empty" : text;
         }
         public override void MoveNext(bool isVerseMove)
@@ -192,7 +196,7 @@ namespace CrossConnect.readers
                     this.MakeListDisplayText(
                         isoLangCode,
                         displaySettings,
-                        App.PlaceMarkers.Bookmarks,
+                        this.BookMarksToShow,
                         htmlBackgroundColor,
                         htmlForegroundColor,
                         htmlPhoneAccentColor,
@@ -219,13 +223,12 @@ namespace CrossConnect.readers
             bookShortName = string.Empty;
             relChaptNum = 0;
             fullName = string.Empty;
-            title = Translations.Translate("Bookmarks");
+            title = this._title;
         }
 
         public override async Task Resume()
         {
             this.Serial.CloneFrom(this.Serial2);
-            App.BookMarksChanged += this.AppBookMarksChanged;
             await base.Resume();
         }
 

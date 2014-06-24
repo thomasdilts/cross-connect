@@ -217,7 +217,7 @@ namespace CrossConnect
             this.captionHightlight6.Text = Translations.Translate("Highlight name") + " 6";
             this.useHighlighting.Header = Translations.Translate("Use highlighting");
             this.SyncVerses.Header = Translations.Translate("Synchronize to every verse");
-            this.AddLineBetweenNotes.Header = Translations.Translate("Add a line between notes");
+            this.AddLineBetweenNotes.Header = Translations.Translate("Add a new line between notes");
             
             butExportBookmarksHighlightsAndNotes.Content = Translations.Translate("Copy bookmarks, highlights and notes to the clipboard");
             butImportBookmarksHighlightsAndNotes.Content = Translations.Translate("Import bookmarks, highlights and notes after you paste the clipboard into the box below");

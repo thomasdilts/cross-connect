@@ -32,7 +32,7 @@ namespace CrossConnect
     using System.Windows.Controls;
 
     using ICSharpCode.SharpZipLib.Zip;
-    
+
     using Microsoft.Phone.Shell;
 
     /// <summary>

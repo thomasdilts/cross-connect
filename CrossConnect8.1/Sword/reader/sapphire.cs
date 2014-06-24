@@ -8,8 +8,6 @@ namespace Sword.reader
 {
     using System.IO;
 
-    using ComponentAce.Compression.Libs.zlib;
-
     public class SapphireStream:Stream
     {
         private Sapphire _decoder;

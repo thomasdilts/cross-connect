@@ -144,9 +144,17 @@
     <Compile Include="OneDriveExport.xaml.cs">
       <DependentUpon>OneDriveExport.xaml</DependentUpon>
     </Compile>
-    <Compile Include="readers\RawGenSearchReader.cs" />
+    <Compile Include="SelectBibleVerse.xaml.cs">
+      <DependentUpon>SelectBibleVerse.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SelectBibleVerses.xaml.cs">
+      <DependentUpon>SelectBibleVerses.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SelectHighlight.xaml.cs">
       <DependentUpon>SelectHighlight.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SelectToVerse.xaml.cs">
+      <DependentUpon>SelectToVerse.xaml</DependentUpon>
     </Compile>
     <Compile Include="SelectTtsToPlay.xaml.cs">
       <DependentUpon>SelectTtsToPlay.xaml</DependentUpon>
@@ -163,7 +171,6 @@
       <DependentUpon>Themes.xaml</DependentUpon>
     </Compile>
     <Compile Include="readers\TranslatorReader.cs" />
-    <Compile Include="readers\GreekHebrewDictReader.cs" />
     <Compile Include="SelectToPlay.xaml.cs">
       <DependentUpon>SelectToPlay.xaml</DependentUpon>
     </Compile>
@@ -171,7 +178,6 @@
     <Compile Include="MorphologyTranslator.cs" />
     <Compile Include="readers\DailyPlanReader.cs" />
     <Compile Include="readers\InternetLinkReader.cs" />
-    <Compile Include="readers\PersonalNotesReader.cs" />
     <Compile Include="SelectLanguage.xaml.cs">
       <DependentUpon>SelectLanguage.xaml</DependentUpon>
     </Compile>
@@ -179,7 +185,6 @@
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Translations.cs" />
-    <Compile Include="readers\BookMarkReader.cs" />
     <Compile Include="BrowserTitledWindow.xaml.cs">
       <DependentUpon>BrowserTitledWindow.xaml</DependentUpon>
     </Compile>
@@ -192,7 +197,6 @@
     <Compile Include="Help.xaml.cs">
       <DependentUpon>Help.xaml</DependentUpon>
     </Compile>
-    <Compile Include="readers\HistoryReader.cs" />
     <Compile Include="ImageButton.cs" />
     <Compile Include="MainPageSplit.xaml.cs">
       <DependentUpon>MainPageSplit.xaml</DependentUpon>
@@ -204,7 +208,6 @@
     <Compile Include="Search.xaml.cs">
       <DependentUpon>Search.xaml</DependentUpon>
     </Compile>
-    <Compile Include="readers\SearchReader.cs" />
     <Compile Include="SelectBibleBook.xaml.cs">
       <DependentUpon>SelectBibleBook.xaml</DependentUpon>
     </Compile>
@@ -241,7 +244,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="SelectBibleVerse.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SelectBibleVerses.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SelectHighlight.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SelectToVerse.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -356,6 +371,7 @@
     <EmbeddedResource Include="Resources\AppResources.vi-VN.resx" />
     <EmbeddedResource Include="Resources\AppResources.zh-CN.resx" />
     <EmbeddedResource Include="Resources\AppResources.zh-TW.resx" />
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml">
       <SubType>Designer</SubType>
@@ -767,10 +783,6 @@
     <ProjectReference Include="..\zip2\Zip.WP8.csproj">
       <Project>{460c536a-fa50-46c0-b9da-a0b4f8546aee}</Project>
       <Name>Zip.WP8</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\zlib\zlib.csproj">
-      <Project>{24d4e3e7-0eed-42b1-b2bc-5e05de81865f}</Project>
-      <Name>zlib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />

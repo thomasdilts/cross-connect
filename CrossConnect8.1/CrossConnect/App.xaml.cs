@@ -100,15 +100,15 @@ namespace CrossConnect
 
         #endregion
 
-        #region Public Events
+        #region Events
 
-        public static event WindowSourceChanged BookMarksChanged;
+        public static event Sword.reader.BiblePlaceMarkReader.BiblePlaceMarkChangedDelegate BookMarksChanged;
 
-        public static event WindowSourceChanged HistoryChanged;
+        public static event Sword.reader.BiblePlaceMarkReader.BiblePlaceMarkChangedDelegate HistoryChanged;
 
-        public static event WindowSourceChanged PersonalNotesChanged;
+        public static event Sword.reader.PersonalNotesReader.NotesChangedDelegate PersonalNotesChanged;
 
-        #endregion
+        #endregion Events
 
         #region Public Methods and Operators
 
@@ -370,24 +370,26 @@ namespace CrossConnect
         {
             if (BookMarksChanged != null)
             {
-                BookMarksChanged();
+                BookMarksChanged(App.PlaceMarkers.Bookmarks, App.DisplaySettings);
             }
+            SavePersistantMarkers();
         }
-
         public static void RaiseHistoryChangeEvent()
         {
             if (HistoryChanged != null)
             {
-                HistoryChanged();
+                HistoryChanged(App.PlaceMarkers.History, App.DisplaySettings);
             }
+            SavePersistantMarkers();
         }
 
         public static void RaisePersonalNotesChangeEvent()
         {
             if (PersonalNotesChanged != null)
             {
-                PersonalNotesChanged();
+                PersonalNotesChanged(App.DailyPlan.PersonalNotesVersified, App.DisplaySettings);
             }
+            SavePersistantMarkers();
         }
 
         public static void ShowUserInterface(bool isShow)
@@ -600,8 +602,8 @@ namespace CrossConnect
                                 typeof(BibleZtextReader.ChapterPos), typeof(BibleZtextReader.BookPos),
                                 typeof(BibleZtextReader), typeof(BibleNoteReader),
                                 typeof(BibleZtextReaderSerialData), typeof(CommentZtextReader),
-                                typeof(TranslatorReader), typeof(BookMarkReader),
-                                typeof(HistoryReader), typeof(SearchReader), typeof(DailyPlanReader),
+                                typeof(TranslatorReader), typeof(BiblePlaceMarkReader),
+                                typeof(SearchReader), typeof(DailyPlanReader),
                                 typeof(PersonalNotesReader), typeof(InternetLinkReader),
                                 typeof(GreekHebrewDictReader), typeof(RawGenSearchReader),
                                 typeof(AudioPlayer.MediaInfo), typeof(RawGenTextReader), typeof(RawGenTextPlaceMarker)
@@ -829,8 +831,8 @@ namespace CrossConnect
                                     typeof(SerializableWindowState), typeof(BibleZtextReader.VersePos),
                                     typeof(BibleZtextReader.ChapterPos), typeof(BibleZtextReader.BookPos),
                                     typeof(BibleZtextReader), typeof(BibleNoteReader), typeof(BibleZtextReaderSerialData),
-                                    typeof(CommentZtextReader), typeof(TranslatorReader), typeof(BookMarkReader),
-                                    typeof(HistoryReader), typeof(SearchReader), typeof(DailyPlanReader),
+                                    typeof(CommentZtextReader), typeof(TranslatorReader), typeof(BiblePlaceMarkReader),
+                                    typeof(SearchReader), typeof(DailyPlanReader),
                                     typeof(PersonalNotesReader), typeof(InternetLinkReader),
                                     typeof(GreekHebrewDictReader), typeof(AudioPlayer.MediaInfo), typeof(RawGenTextReader), 
                                     typeof(RawGenTextPlaceMarker), typeof(RawGenSearchReader)

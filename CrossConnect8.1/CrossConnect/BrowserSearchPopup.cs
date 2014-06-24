@@ -289,7 +289,11 @@ namespace CrossConnect
                 }
 
                 this.SourceSearch = new SearchReader(
-                    source.Serial.Path, source.Serial.Iso2DigitLangCode, source.Serial.IsIsoEncoding, source.Serial.CipherKey, source.Serial.ConfigPath, source.Serial.Versification);
+                    source.Serial.Path, source.Serial.Iso2DigitLangCode, source.Serial.IsIsoEncoding,
+                    source.Serial.CipherKey, source.Serial.ConfigPath, source.Serial.Versification,
+                    Translations.Translate("Search"), Translations.Translate("Found"),
+                    Translations.Translate("Whole bible"), Translations.Translate("The Old Testement"),
+                    Translations.Translate("The New Testement"));
                 await ((BibleZtextReader)this.SourceSearch).Initialize();
             } 
             else if (this._state.Source is RawGenTextReader)
@@ -303,7 +307,8 @@ namespace CrossConnect
                 this.SearchTypeIndex = 0; 
                 var source = (RawGenTextReader)this._state.Source;
                 this.SourceSearch = new RawGenSearchReader(
-                    source.Serial.Path, source.Serial.Iso2DigitLangCode, source.Serial.IsIsoEncoding);
+                    source.Serial.Path, source.Serial.Iso2DigitLangCode, source.Serial.IsIsoEncoding,
+                    Translations.Translate("Search"), Translations.Translate("Found"));
                 await ((RawGenTextReader)this.SourceSearch).Initialize();
             }
 

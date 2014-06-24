@@ -350,7 +350,7 @@ namespace CrossConnect
         private DispatcherTimer updateHighlightTimer;
 
         public async Task<bool> Initialize(
-            string bibleToLoad, string bibleDescription, WindowType windowType, IBrowserTextSource source = null)
+            string bibleToLoad, string bibleDescription, WindowType windowType, object initialData, IBrowserTextSource source = null)
         {
             if (string.IsNullOrEmpty(bibleToLoad) && App.InstalledBibles.InstalledBibles.Any())
             {
@@ -423,23 +423,44 @@ namespace CrossConnect
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     break;
                                 case WindowType.WindowBookmarks:
-                                    this._state.Source = new BookMarkReader(
+                                    
+                                    var bookmarkreader = new BiblePlaceMarkReader(
                                         bookPath,
                                         ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
                                         isIsoEncoding,
                                         (string)book.Value.GetCetProperty(ConfigEntryType.CipherKey),
                                         book.Value.ConfPath,
-                                        (string)book.Value.GetCetProperty(ConfigEntryType.Versification));
+                                        (string)book.Value.GetCetProperty(ConfigEntryType.Versification),
+                                        App.PlaceMarkers.Bookmarks,
+                                        Translations.Translate("Bookmarks"));
+                                    App.BookMarksChanged += bookmarkreader.BiblePlaceMarkSourceChanged;
+                                    this._state.Source = bookmarkreader;
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     return true;
                                 case WindowType.WindowHistory:
-                                    this._state.Source = new HistoryReader(
+                                    var history = new BiblePlaceMarkReader(
                                         bookPath,
                                         ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
                                         isIsoEncoding,
                                         (string)book.Value.GetCetProperty(ConfigEntryType.CipherKey),
                                         book.Value.ConfPath,
-                                        (string)book.Value.GetCetProperty(ConfigEntryType.Versification));
+                                        (string)book.Value.GetCetProperty(ConfigEntryType.Versification),
+                                        App.PlaceMarkers.History,
+                                        Translations.Translate("History"));
+                                    App.HistoryChanged += history.BiblePlaceMarkSourceChanged;
+                                    this._state.Source = history;
+                                    await ((BibleZtextReader)this._state.Source).Initialize();
+                                    return true;
+                                case WindowType.WindowSelectedVerses:
+                                    this._state.Source = new BiblePlaceMarkReader(
+                                        bookPath,
+                                        ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
+                                        isIsoEncoding,
+                                        (string)book.Value.GetCetProperty(ConfigEntryType.CipherKey),
+                                        book.Value.ConfPath,
+                                        (string)book.Value.GetCetProperty(ConfigEntryType.Versification),
+                                        (List<BiblePlaceMarker>)initialData,
+                                        Translations.Translate("Selected verses"));
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     return true;
                                 case WindowType.WindowDailyPlan:
@@ -472,13 +493,18 @@ namespace CrossConnect
                                     await ((RawGenTextReader)this._state.Source).Initialize();
                                     return true;
                                 case WindowType.WindowAddedNotes:
-                                    this._state.Source = new PersonalNotesReader(
+                                    var notes = new PersonalNotesReader(
                                         bookPath,
                                         ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
                                         isIsoEncoding,
                                         (string)book.Value.GetCetProperty(ConfigEntryType.CipherKey),
                                         book.Value.ConfPath,
-                                        (string)book.Value.GetCetProperty(ConfigEntryType.Versification));
+                                        (string)book.Value.GetCetProperty(ConfigEntryType.Versification),
+                                        App.DailyPlan.PersonalNotesVersified,
+                                        Translations.Translate("Added notes"),
+                                        App.DisplaySettings);
+                                    App.PersonalNotesChanged += notes.NotesSourceChanged;
+                                    this._state.Source = notes;
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     return true;
                                 case WindowType.WindowTranslator:
@@ -690,13 +716,13 @@ namespace CrossConnect
             Debug.WriteLine("UpdateBrowser end");
         }
 
-        private static ImageSource GetImage(string path)
+        public static ImageSource GetImage(string path)
         {
             var uri = new Uri(path, UriKind.Relative);
             return new BitmapImage(uri);
         }
 
-        private static void SetButtonVisibility(ImageButton but, bool isVisible, string image, string pressedImage)
+        public static void SetButtonVisibility(ImageButton but, bool isVisible, string image, string pressedImage)
         {
             if (isVisible)
             {
@@ -839,6 +865,7 @@ namespace CrossConnect
             PhoneApplicationService.Current.State["skipWindowSettings"] = false;
             PhoneApplicationService.Current.State["openWindowIndex"] = _state.CurIndex;
             PhoneApplicationService.Current.State["InitializeWindowSettings"] = true;
+            PhoneApplicationService.Current.State["MoveOpenWindow"] = true;
 
             var parent = (MainPageSplit)((Grid)((Grid)((Grid)Parent).Parent).Parent).Parent;
             parent.NavigationService.Navigate(new Uri("/WindowSettings.xaml", UriKind.Relative));
@@ -1240,7 +1267,6 @@ namespace CrossConnect
                     App.SynchronizeAllWindows(bookShortName, chapterNum, verseNum, this._state.CurIndex, this._state.Source);
 
                     App.AddHistory(bookShortName, chapterNum, verseNum);
-                    PhoneApplicationService.Current.State["openWindowIndex"] = _state.CurIndex;
                 }
             }
         }
@@ -1291,12 +1317,15 @@ namespace CrossConnect
             e.Handled = true;
             Deployment.Current.Dispatcher.BeginInvoke(() => CallbackFromUpdate(_lastFileName));
         }
-
+        public void SelectedVerseEvent(string bookName, int moveToChapter, int verse)
+        {
+            this._state.Source.MoveChapterVerse(bookName, moveToChapter, verse, false, this._state.Source);
+        }
         private void ButSelectBook_OnClick(object sender, RoutedEventArgs e)
         {
             KillManipulation();
             PhoneApplicationService.Current.State["openWindowIndex"] = _state.CurIndex;
-
+            SelectBibleBook.SelectedEvent += SelectedVerseEvent;
             var parent = (MainPageSplit)((Grid)((Grid)((Grid)Parent).Parent).Parent).Parent;
             parent.NavigationService.Navigate(new Uri("/SelectBibleBook.xaml", UriKind.Relative));
         }
