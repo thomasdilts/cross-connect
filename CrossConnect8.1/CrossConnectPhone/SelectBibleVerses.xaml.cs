@@ -13,6 +13,7 @@ namespace CrossConnect
 {
     public partial class SelectBibleVerses : UserControl
     {
+        public BibleZtextReader source;
         private List<SelectBibleVerse> allRows;
         public SelectBibleVerses()
         {
@@ -38,7 +39,27 @@ namespace CrossConnect
                 this.row17,
                 this.row18,
                 this.row19,
-                this.row20
+                this.row20,
+                this.row21,
+                this.row22,
+                this.row23,
+                this.row24,
+                this.row25,
+                this.row26,
+                this.row27,
+                this.row28,
+                this.row29,
+                this.row30,
+                this.row31,
+                this.row32,
+                this.row33,
+                this.row34,
+                this.row35,
+                this.row36,
+                this.row37,
+                this.row38,
+                this.row39,
+                this.row40
             };
         }
         public void SetPlaceMarkers(List<BiblePlaceMarker> placeMarkers)
@@ -76,6 +97,7 @@ namespace CrossConnect
             for (int i = 0; i <= rowcounter; i++)
             {
                 var toVerse = allRows[i].toVerse;
+                allRows[i].parent = this;
                 allRows[i].SelectedBookChapterVerseEvent(allRows[i].bookName,allRows[i].chapter,allRows[i].verse);
                 allRows[i].SelectedToVerseEvent(toVerse);
             }

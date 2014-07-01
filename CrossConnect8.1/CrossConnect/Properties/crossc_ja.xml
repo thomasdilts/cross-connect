@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">OneDriveに接続</string>
 <string key="Add a line between notes">音符の間に線を追加する</string>
 <string key="Column">コラム</string>
+<string key="Selected verses">選択された詩</string>
+<string key="Book">本</string>
+<string key="Chapter">章</string>
+<string key="Verse">詩</string>
+<string key="To verse">詩へ</string>
 </translations>

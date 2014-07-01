@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">الاتصال OneDrive</string>
 <string key="Add a line between notes">إضافة سطر بين الملاحظات</string>
 <string key="Column">عمود</string>
+<string key="Selected verses">آيات مختارة</string>
+<string key="Book">كتاب</string>
+<string key="Chapter">باب</string>
+<string key="Verse">آية</string>
+<string key="To verse">إلى الآية</string>
 </translations>

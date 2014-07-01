@@ -245,4 +245,7 @@
 <string key="There is no backup to restore">Сэргээх ямар ч нөөц байна</string>
 <string key="Connect to OneDrive">OneDrive уруу холбогдохын тулд</string>
 <string key="Add a line between notes">Тэмдэглэл хооронд мөрийг нэмнэ</string>
+<string key="Selected verses">Сонгосон ишлэл</string>
+<string key="Select verse">Сонгох шүлэг</string>
+<string key="To verse">Шүлэг тулд</string>
 </translations>

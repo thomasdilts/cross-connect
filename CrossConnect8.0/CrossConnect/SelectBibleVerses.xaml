@@ -19,7 +19,7 @@
         <TextBlock Grid.Row="0" Name="title" Text="Selected verses" />
         <Border Grid.Row="1" BorderBrush="Silver" BorderThickness="3"
           Name="border1" Background="{StaticResource PhoneBackgroundBrush}">
-            <ScrollViewer Height="400" Name="scroller" Background="{StaticResource PhoneBackgroundBrush}">
+            <ScrollViewer Name="scroller" Background="{StaticResource PhoneBackgroundBrush}">
                 <StackPanel x:Name="MainContent" Orientation="Vertical"  Background="{StaticResource PhoneBackgroundBrush}">
                     <local:SelectBibleVerse x:Name="row1"></local:SelectBibleVerse>
                     <local:SelectBibleVerse x:Name="row2"></local:SelectBibleVerse>
@@ -41,6 +41,26 @@
                     <local:SelectBibleVerse x:Name="row18"></local:SelectBibleVerse>
                     <local:SelectBibleVerse x:Name="row19"></local:SelectBibleVerse>
                     <local:SelectBibleVerse x:Name="row20"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row21"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row22"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row23"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row24"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row25"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row26"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row27"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row28"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row29"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row30"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row31"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row32"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row33"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row34"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row35"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row36"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row37"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row38"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row39"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:Name="row40"></local:SelectBibleVerse>
                 </StackPanel>
             </ScrollViewer>
         </Border>

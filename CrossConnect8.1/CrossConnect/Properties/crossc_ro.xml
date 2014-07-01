@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">Conectați-vă la OneDrive</string>
 <string key="Add a line between notes">Adăuga o linie între note</string>
 <string key="Column">Coloană</string>
+<string key="Selected verses">Versete selectate</string>
+<string key="Book">Carte</string>
+<string key="Chapter">Capitol</string>
+<string key="Verse">Verset</string>
+<string key="To verse">La versetul</string>
 </translations>

@@ -245,4 +245,7 @@
 <string key="There is no backup to restore">มีการสำรองข้อมูลเพื่อเรียกคืนไม่</string>
 <string key="Connect to OneDrive">เชื่อมต่อไปยัง OneDrive</string>
 <string key="Add a line between notes">เพิ่มเส้นแบ่งระหว่างบันทึก</string>
+<string key="Selected verses">บทที่เลือก</string>
+<string key="Select verse">เลือกบทกวี</string>
+<string key="To verse">ไปข้อ</string>
 </translations>

@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">Συνδεθείτε με OneDrive</string>
 <string key="Add a line between notes">Προσθέστε μια γραμμή μεταξύ των σημειώσεων</string>
 <string key="Column">Στήλη</string>
+<string key="Selected verses">Επιλεγμένα στίχους</string>
+<string key="Book">Βιβλίο</string>
+<string key="Chapter">Κεφάλαιο</string>
+<string key="Verse">Στίχος</string>
+<string key="To verse">Για στίχο</string>
 </translations>

@@ -42,7 +42,7 @@ namespace CrossConnect
     {
         #region Static Fields
 
-        private static readonly Color[] ColorConversionScheme =
+        public static readonly Color[] ColorConversionScheme =
             {
                 Color.FromArgb(0, 0, 0, 0),
                 Color.FromArgb(255, 0xD2, 0x69, 0x1E), // chochlate

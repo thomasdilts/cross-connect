@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">Подключение к OneDrive</string>
 <string key="Add a line between notes">Добавьте строку между нотами</string>
 <string key="Column">Колонка</string>
+<string key="Selected verses">Избранные стихи</string>
+<string key="Book">Книга</string>
+<string key="Chapter">Глава</string>
+<string key="Verse">Стих</string>
+<string key="To verse">Для стих</string>
 </translations>

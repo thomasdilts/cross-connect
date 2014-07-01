@@ -228,4 +228,9 @@
     <string key="Connect to OneDrive">Connect to OneDrive</string>
 	<string key="Add a line between notes">Add a line between notes</string>
 	<string key="Column">Column</string>
+  <string key="Selected verses">Selected verses</string>
+  <string key="Book">Book</string>
+  <string key="Chapter">Chapter</string>
+  <string key="Verse">Verse</string>
+  <string key="To verse">To verse</string>
 </translations>

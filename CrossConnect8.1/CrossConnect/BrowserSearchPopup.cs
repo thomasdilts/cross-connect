@@ -157,6 +157,7 @@ namespace CrossConnect
                         WindowType.WindowSearch,
                         this._state.HtmlFontSize,
                         this._state.Font,
+                        null,
                         _state.Window,
                         this.SourceSearch);
                     this.RealSearchPopup.IsOpen = false;

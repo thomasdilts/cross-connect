@@ -245,4 +245,7 @@
 <string key="There is no backup to restore">هیچ پشتیبان گیری برای بازگرداندن وجود دارد</string>
 <string key="Connect to OneDrive">اتصال به OneDrive</string>
 <string key="Add a line between notes">اضافه کردن یک خط بین یادداشت ها</string>
+<string key="Selected verses">آیاتی از قرآن کریم</string>
+<string key="Select verse">انتخاب آیه</string>
+<string key="To verse">به آیه</string>
 </translations>

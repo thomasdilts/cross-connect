@@ -245,4 +245,7 @@
 <string key="There is no backup to restore">পুনঃস্থাপন কোন ব্যাকআপ নেই</string>
 <string key="Connect to OneDrive">OneDrive সংযোগ করুন</string>
 <string key="Add a line between notes">নোট মধ্যে একটি লাইন যোগ করুন</string>
+<string key="Selected verses">সিলেক্টেড আয়াত</string>
+<string key="Select verse">নির্বাচন পদ্য</string>
+<string key="To verse">শ্লোক</string>
 </translations>

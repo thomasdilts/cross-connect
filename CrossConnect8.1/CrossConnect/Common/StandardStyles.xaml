@@ -771,6 +771,11 @@
         <Setter Property="AutomationProperties.Name" Value="Download"/>
         <Setter Property="Content" Value="&#xE118;"/>
     </Style>
+    <Style x:Key="DownloadAppBarButtonStyle2" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle2}">
+        <Setter Property="AutomationProperties.AutomationId" Value="DownloadAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Download"/>
+        <Setter Property="Content" Value="&#xE118;"/>
+    </Style>
     <Style x:Key="MailAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="MailAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Mail"/>
@@ -787,6 +792,11 @@
         <Setter Property="Content" Value="&#xE11B;"/>
     </Style>
     <Style x:Key="UploadAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="UploadAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Upload"/>
+        <Setter Property="Content" Value="&#xE11C;"/>
+    </Style>
+    <Style x:Key="UploadAppBarButtonStyle2" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle2}">
         <Setter Property="AutomationProperties.AutomationId" Value="UploadAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Upload"/>
         <Setter Property="Content" Value="&#xE11C;"/>

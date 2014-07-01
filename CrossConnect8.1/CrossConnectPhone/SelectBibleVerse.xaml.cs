@@ -33,18 +33,16 @@ namespace CrossConnect
             this.bookName = bookName;
             this.chapter = chapter;
             this.verse = verse;
-            object openWindowIndex;
-            if (string.IsNullOrEmpty(this.bookName))
+            this.toVerse = verse;
+            if (string.IsNullOrEmpty(this.bookName) || !parent.source.canon.BookByShortName.ContainsKey(this.bookName))
             {
+                this.bookName = string.Empty;
+                this.chapter = -1;
+                this.verse = -1;
                 UserControl_Loaded(null, null);
                 return;
             }
-            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
-            {
-                openWindowIndex = 0;
-            }
-            var source = App.OpenWindows[(int)openWindowIndex].State.Source;
-            var name = ((BibleZtextReader)source).GetFullName(this.bookName,Translations.IsoLanguageCode);
+            var name = parent.source.GetFullName(this.bookName,Translations.IsoLanguageCode);
             SelectBible.Content = name + " " + (chapter + 1) + ":" + (verse + 1);
             SelectToVerse.Content = (verse + 1);
             butMoveUp.Visibility = Visibility.Visible;
@@ -65,19 +63,17 @@ namespace CrossConnect
         private void SelectBible_Click(object sender, RoutedEventArgs e)
         {
             SelectBibleBook.SelectedEvent += SelectedBookChapterVerseEvent;
+            PhoneApplicationService.Current.State["openWindowSource"] = parent.source;
             App.MainWindow.NavigationService.Navigate(new Uri("/SelectBibleBook.xaml", UriKind.Relative));
         }
 
         private void SelectToVerse_Click(object sender, RoutedEventArgs e)
         {
-           
-            object openWindowIndex;
-            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            if (string.IsNullOrEmpty(this.bookName))
             {
-                openWindowIndex = 0;
-            }
-            var source = App.OpenWindows[(int)openWindowIndex].State.Source;
-            var canon = ((BibleZtextReader)source).canon;
+                return;
+            } 
+            var canon = parent.source.canon;
             var book = canon.BookByShortName[this.bookName];
             CrossConnect.SelectToVerse.VerseMax = canon.VersesInChapter[book.VersesInChapterStartIndex + this.chapter];
             CrossConnect.SelectToVerse.VerseMin = verse;

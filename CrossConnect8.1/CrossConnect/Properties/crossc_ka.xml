@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">დაკავშირება OneDrive</string>
 <string key="Add a line between notes">დამატება ხაზს შენიშვნები</string>
 <string key="Column">სვეტი</string>
+<string key="Selected verses">შერჩეული ლექსები</string>
+<string key="Book">Book</string>
+<string key="Chapter">თავი</string>
+<string key="Verse">ლექსი</string>
+<string key="To verse">რომ ლექსი</string>
 </translations>

@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">Conecte con OneDrive</string>
 <string key="Add a line between notes">Agregar una línea entre las notas</string>
 <string key="Column">Columna</string>
+<string key="Selected verses">Versos seleccionados</string>
+<string key="Book">Libro</string>
+<string key="Chapter">Capítulo</string>
+<string key="Verse">Verso</string>
+<string key="To verse">Para verso</string>
 </translations>

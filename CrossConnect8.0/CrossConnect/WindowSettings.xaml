@@ -97,7 +97,7 @@
         <phone:WebBrowser Grid.Row="12" Margin="0 0 0 0" Name="webBrowser1" MinHeight="50" /> 
         <Slider Grid.Row="13" Maximum="37.0" Minimum="5.0" ValueChanged="SliderTextSizeValueChanged"
                 Name="sliderTextSize" />
-                <ccc:SelectBibleVerses Grid.Row="14" Name="selectbibelverses"></ccc:SelectBibleVerses>
+                <ccc:SelectBibleVerses Grid.Row="14" Height="325" Name="selectbibelverses"></ccc:SelectBibleVerses>
       </Grid>
     </Grid>
   </ScrollViewer>

@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">เชื่อมต่อไปยัง OneDrive</string>
 <string key="Add a line between notes">เพิ่มเส้นแบ่งระหว่างบันทึก</string>
 <string key="Column">คอลัมน์</string>
+<string key="Selected verses">บทที่เลือก</string>
+<string key="Book">หนังสือ</string>
+<string key="Chapter">บท</string>
+<string key="Verse">บทกวี</string>
+<string key="To verse">ไปข้อ</string>
 </translations>

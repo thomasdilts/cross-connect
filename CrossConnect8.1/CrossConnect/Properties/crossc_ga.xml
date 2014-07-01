@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">Ceangail le OneDrive</string>
 <string key="Add a line between notes">Cuir líne idir nótaí</string>
 <string key="Column">Colún</string>
+<string key="Selected verses">Véarsaí Roghnaithe</string>
+<string key="Book">Leabhar</string>
+<string key="Chapter">Caibidil</string>
+<string key="Verse">Verse</string>
+<string key="To verse">Chun véarsa</string>
 </translations>

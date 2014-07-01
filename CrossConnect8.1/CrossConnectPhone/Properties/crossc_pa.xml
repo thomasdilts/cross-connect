@@ -245,4 +245,7 @@
 <string key="There is no backup to restore">ਨੂੰ ਬਹਾਲ ਕਰਨ ਦਾ ਕੋਈ ਬੈਕਅੱਪ ਨਹੀ ਹੈ</string>
 <string key="Connect to OneDrive">OneDrive ਨਾਲ ਕੁਨੈਕਟ ਕਰੋ</string>
 <string key="Add a line between notes">ਨੋਟਿਸ, ਵਿਚਕਾਰ ਇੱਕ ਲਾਈਨ ਸ਼ਾਮਲ ਕਰੋ</string>
+<string key="Selected verses">ਚੁਣੇ ਬਾਣੀ</string>
+<string key="Select verse">ਚੁਣੋ ਆਇਤ</string>
+<string key="To verse">ਆਇਤ ਕਰਨ ਲਈ,</string>
 </translations>

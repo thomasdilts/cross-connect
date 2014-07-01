@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">Anslut till OneDrive</string>
 <string key="Add a line between notes">Lägga till en linje mellan anteckningar</string>
 <string key="Column">Kolonn</string>
+<string key="Selected verses">Valda verser</string>
+<string key="Book">Bok</string>
+<string key="Chapter">Område</string>
+<string key="Verse">Vers</string>
+<string key="To verse">Till vers</string>
 </translations>

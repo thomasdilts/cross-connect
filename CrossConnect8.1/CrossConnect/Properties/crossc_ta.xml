@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">OneDrive இணைக்க</string>
 <string key="Add a line between notes">குறிப்புகள் இடையே ஒரு வரி சேர்த்து</string>
 <string key="Column">பத்தி</string>
+<string key="Selected verses">தேர்ந்தெடுக்கப்பட்ட வசனங்கள்</string>
+<string key="Book">புத்தகம்</string>
+<string key="Chapter">அத்தியாயம்</string>
+<string key="Verse">கவிதை</string>
+<string key="To verse">வசனம்</string>
 </translations>

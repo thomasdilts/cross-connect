@@ -55,7 +55,7 @@ namespace Sword.reader
         public delegate void NotesChangedDelegate(Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> notesToShow, DisplaySettings displaySettings);
 
         public PersonalNotesReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification, Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> notesToShow, string title, DisplaySettings displaySettings)
-            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification, new List<BiblePlaceMarker>(),title)
+            : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification, new List<BiblePlaceMarker>(),title,true)
         {
             this.NotesToShow = notesToShow;
             this.LocalDisplaySettings = displaySettings;
@@ -139,7 +139,8 @@ namespace Sword.reader
                         this._htmlFontSize,
                         this._fontFamily,
                         false,
-                        _title);
+                        _title,
+                        true);
             }
             else
             {
@@ -157,7 +158,8 @@ namespace Sword.reader
                         this._htmlFontSize,
                         this._fontFamily,
                         true,
-                        _title);
+                        _title,
+                        true);
             }
 
             this.RaiseSourceChangedEvent();
@@ -269,7 +271,8 @@ namespace Sword.reader
                             htmlFontSize,
                             fontFamily,
                             false,
-                            _title);
+                            _title,
+                            true);
                 }
                 else
                 {
@@ -287,7 +290,8 @@ namespace Sword.reader
                             htmlFontSize,
                             this._fontFamily,
                             true,
-                            _title);
+                            _title,
+                            true);
                 }
             }
 
