@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<translations isolang="iw" isolocale="" version="1.0">
+<translations isolang="he" isolocale="" version="1.0">
 <string key="Accent color">צבע מבטא</string>
 <string key="Add a note">הוסף הערה</string>
 <string key="Add new window">להוסיף חלון חדש</string>
@@ -245,4 +245,7 @@
 <string key="There is no backup to restore">אין גיבוי כדי לשחזר</string>
 <string key="Connect to OneDrive">להתחבר לOneDrive</string>
 <string key="Add a line between notes">הוספת קו בין הערות</string>
+<string key="Selected verses">פסוקים נבחרים</string>
+<string key="Select verse">פסוק בחר</string>
+<string key="To verse">פסוק</string>
 </translations>

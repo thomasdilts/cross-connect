@@ -242,13 +242,13 @@ namespace CrossConnect
 
         private void PhoneApplicationPageLoaded(object sender, RoutedEventArgs e)
         {
-            object openWindowIndex;
-            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            object openWindowSource;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowSource", out openWindowSource))
             {
-                openWindowIndex = 0;
+                return;
             }
 
-            ReloadWindow(App.OpenWindows[(int)openWindowIndex].State.Source.GetButtonWindowSpecs(0, 0, Translations.IsoLanguageCode));
+            ReloadWindow(((BibleZtextReader)openWindowSource).GetButtonWindowSpecs(0, 0, Translations.IsoLanguageCode));
         }
 
         private void PhoneApplicationPageOrientationChanged(object sender, OrientationChangedEventArgs e)
@@ -259,21 +259,21 @@ namespace CrossConnect
         private void FirstClick(object sender, RoutedEventArgs e)
         {
             PhoneApplicationService.Current.State["SelectBibleBookFirstSelection"] = 0;
-            object openWindowIndex;
-            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            object openWindowSource;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowSource", out openWindowSource))
             {
-                openWindowIndex = 0;
+                return;
             }
-            var source = App.OpenWindows[(int)openWindowIndex].State.Source;
+            var source = (IBrowserTextSource)openWindowSource;
             Sword.versification.CanonBookDef book = null;
             if (source is BibleZtextReader && !(source is DailyPlanReader))
             {
-                book = ((BibleZtextReader)App.OpenWindows[(int)openWindowIndex].State.Source).canon.GetBookFromBookNumber((int)((Button)sender).Tag);
+                book = ((BibleZtextReader)source).canon.GetBookFromBookNumber((int)((Button)sender).Tag);
             }
             //may need to hide chapter...
             var stage = (book == null || book.NumberOfChapters > 1)
-                && !(App.OpenWindows[(int)openWindowIndex].State.Source is RawGenTextReader)
-                && !(App.OpenWindows[(int)openWindowIndex].State.Source is DailyPlanReader) ? 1 : 2;
+                && !(source is RawGenTextReader)
+                && !(source is DailyPlanReader) ? 1 : 2;
             var stageInfo = (int)((Button)sender).Tag;
             if (stage == 2)
             {
@@ -286,7 +286,7 @@ namespace CrossConnect
                 {
                     _selectBibleBookSecondSelection = stageInfo;
                 }
-                ButtonWindowSpecs specs2 = App.OpenWindows[(int)openWindowIndex].State.Source.GetButtonWindowSpecs(
+                ButtonWindowSpecs specs2 = source.GetButtonWindowSpecs(
                     stage, stageInfo,Translations.IsoLanguageCode);
                 if (specs2 != null)
                 {
@@ -299,7 +299,7 @@ namespace CrossConnect
 
             PhoneApplicationService.Current.State["SelectBibleBookFirstSelection"] = stageInfo;
 
-            ButtonWindowSpecs specs = App.OpenWindows[(int)openWindowIndex].State.Source.GetButtonWindowSpecs(
+            ButtonWindowSpecs specs = source.GetButtonWindowSpecs(
                 stage, stageInfo, Translations.IsoLanguageCode);
             if (specs != null)
             {
@@ -334,13 +334,14 @@ namespace CrossConnect
 
         private void SecondClick(object sender, RoutedEventArgs e)
         {
-            object openWindowIndex;
-            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            object openWindowSource;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowSource", out openWindowSource))
             {
-                openWindowIndex = 0;
+                return;
             }
+            var source = (IBrowserTextSource)openWindowSource;
 
-            ButtonWindowSpecs specs = App.OpenWindows[(int)openWindowIndex].State.Source.GetButtonWindowSpecs(
+            ButtonWindowSpecs specs = source.GetButtonWindowSpecs(
                 2, (int)((Button)sender).Tag,Translations.IsoLanguageCode);
             if (specs != null)
             {
@@ -351,9 +352,9 @@ namespace CrossConnect
             {
                 var bookname = string.Empty;
                 var chapter = 0;
-                if (App.OpenWindows[(int)openWindowIndex].State.Source is BibleZtextReader)
+                if (source is BibleZtextReader)
                 {
-                    var book = ((BibleZtextReader)App.OpenWindows[(int)openWindowIndex].State.Source).canon.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
+                    var book = ((BibleZtextReader)source).canon.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
                     bookname = book.ShortName1;
                     chapter = (int)((Button)sender).Tag - book.VersesInChapterStartIndex;
                 }
@@ -377,13 +378,13 @@ namespace CrossConnect
 
         private void ThirdClick(object sender, RoutedEventArgs e)
         {
-            object openWindowIndex;
-            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            object openWindowSource;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowSource", out openWindowSource))
             {
-                openWindowIndex = 0;
+                return;
             }
-
-            ButtonWindowSpecs specs = App.OpenWindows[(int)openWindowIndex].State.Source.GetButtonWindowSpecs(
+            var source = (IBrowserTextSource)openWindowSource;
+            ButtonWindowSpecs specs = source.GetButtonWindowSpecs(
                 3, (int)((Button)sender).Tag, Translations.IsoLanguageCode);
             if (specs != null)
             {
@@ -394,9 +395,9 @@ namespace CrossConnect
             {
                 var bookname = string.Empty;
                 var chapter = 0;
-                if (App.OpenWindows[(int)openWindowIndex].State.Source is BibleZtextReader)
+                if (source is BibleZtextReader)
                 {
-                    var book = ((BibleZtextReader)App.OpenWindows[(int)openWindowIndex].State.Source).canon.GetBookFromAbsoluteChapter(this._selectBibleBookSecondSelection);
+                    var book = ((BibleZtextReader)source).canon.GetBookFromAbsoluteChapter(this._selectBibleBookSecondSelection);
                     bookname = book.ShortName1;
                     chapter = this._selectBibleBookSecondSelection - book.VersesInChapterStartIndex;
                 }
@@ -420,22 +421,23 @@ namespace CrossConnect
 
         private void FourthClick(object sender, RoutedEventArgs e)
         {
-            object openWindowIndex;
-            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
+            object openWindowSource;
+            if (!PhoneApplicationService.Current.State.TryGetValue("openWindowSource", out openWindowSource))
             {
-                openWindowIndex = 0;
+                return;
             }
+            var source = (IBrowserTextSource)openWindowSource;
 
             object moveOpenWindow;
-            if (!PhoneApplicationService.Current.State.TryGetValue("MoveOpenWindow", out openWindowIndex))
+            if (!PhoneApplicationService.Current.State.TryGetValue("MoveOpenWindow", out moveOpenWindow))
             {
                 moveOpenWindow = true;
             }
             var bookname = string.Empty;
             var chapter = 0;
-            if (App.OpenWindows[(int)openWindowIndex].State.Source is BibleZtextReader)
+            if (source is BibleZtextReader)
             {
-                var book = ((BibleZtextReader)App.OpenWindows[(int)openWindowIndex].State.Source).canon.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
+                var book = ((BibleZtextReader)source).canon.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
                 bookname = book.ShortName1;
                 chapter = (int)((Button)sender).Tag - book.VersesInChapterStartIndex;
             }

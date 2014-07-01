@@ -60,6 +60,11 @@ namespace CrossConnect
             popup.IsOpen = true;
             Rect windowBounds = Window.Current.Bounds;
             double popupWidth = windowBounds.Width / 4;
+            if(popup.Width>popupWidth)
+            {
+                var maxWidth = 0.9 * windowBounds.Width;
+                popupWidth = popup.Width < maxWidth?popup.Width:maxWidth;
+            }
             const double MinimumDesiredWidth = 350;
             if (popupWidth < MinimumDesiredWidth)
             {

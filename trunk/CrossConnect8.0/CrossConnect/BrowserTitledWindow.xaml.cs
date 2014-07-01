@@ -432,7 +432,8 @@ namespace CrossConnect
                                         book.Value.ConfPath,
                                         (string)book.Value.GetCetProperty(ConfigEntryType.Versification),
                                         App.PlaceMarkers.Bookmarks,
-                                        Translations.Translate("Bookmarks"));
+                                        Translations.Translate("Bookmarks"),
+                                        true);
                                     App.BookMarksChanged += bookmarkreader.BiblePlaceMarkSourceChanged;
                                     this._state.Source = bookmarkreader;
                                     await ((BibleZtextReader)this._state.Source).Initialize();
@@ -446,7 +447,8 @@ namespace CrossConnect
                                         book.Value.ConfPath,
                                         (string)book.Value.GetCetProperty(ConfigEntryType.Versification),
                                         App.PlaceMarkers.History,
-                                        Translations.Translate("History"));
+                                        Translations.Translate("History"),
+                                        true);
                                     App.HistoryChanged += history.BiblePlaceMarkSourceChanged;
                                     this._state.Source = history;
                                     await ((BibleZtextReader)this._state.Source).Initialize();
@@ -460,7 +462,8 @@ namespace CrossConnect
                                         book.Value.ConfPath,
                                         (string)book.Value.GetCetProperty(ConfigEntryType.Versification),
                                         (List<BiblePlaceMarker>)initialData,
-                                        Translations.Translate("Selected verses"));
+                                        Translations.Translate("Selected verses"),
+                                        false);
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     return true;
                                 case WindowType.WindowDailyPlan:
@@ -956,6 +959,7 @@ namespace CrossConnect
                 WindowType.WindowTranslator,
                 _state.HtmlFontSize,
                 _state.Font,
+                null,
                 transReader2);
             transReader2.TranslateThis(toTranslate, isTranslateable, _state.Source.GetLanguage());
         }
@@ -1178,6 +1182,7 @@ namespace CrossConnect
                             WindowType.WindowInternetLink,
                             this._state.HtmlFontSize,
                             this._state.Font,
+                            null,
                             win);
                     }
                     else
@@ -1207,6 +1212,7 @@ namespace CrossConnect
                             WindowType.WindowLexiconLink,
                             this._state.HtmlFontSize,
                             this._state.Font,
+                            null,
                             win);
                     }
                     else
@@ -1325,6 +1331,7 @@ namespace CrossConnect
         {
             KillManipulation();
             PhoneApplicationService.Current.State["openWindowIndex"] = _state.CurIndex;
+            PhoneApplicationService.Current.State["openWindowSource"] = _state.Source;
             SelectBibleBook.SelectedEvent += SelectedVerseEvent;
             var parent = (MainPageSplit)((Grid)((Grid)((Grid)Parent).Parent).Parent).Parent;
             parent.NavigationService.Navigate(new Uri("/SelectBibleBook.xaml", UriKind.Relative));

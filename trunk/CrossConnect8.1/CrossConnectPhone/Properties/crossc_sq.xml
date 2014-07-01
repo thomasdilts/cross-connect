@@ -245,4 +245,7 @@
 <string key="There is no backup to restore">Nuk ka asnjë rezervë për të rivendosur</string>
 <string key="Connect to OneDrive">Lidhja me OneDrive</string>
 <string key="Add a line between notes">Shto një linjë në mes të shënimeve</string>
+<string key="Selected verses">Vargjet e zgjedhura</string>
+<string key="Select verse">Zgjidh ajeti</string>
+<string key="To verse">Për vargun</string>
 </translations>

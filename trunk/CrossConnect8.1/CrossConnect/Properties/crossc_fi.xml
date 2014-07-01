@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">Yhdistä OneDrive</string>
 <string key="Add a line between notes">Lisää linjan välillä muistiinpanoja</string>
 <string key="Column">Sarake</string>
+<string key="Selected verses">Valittu säkeet</string>
+<string key="Book">Kirja</string>
+<string key="Chapter">Luku</string>
+<string key="Verse">Jae</string>
+<string key="To verse">Sanoiksi</string>
 </translations>

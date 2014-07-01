@@ -604,11 +604,15 @@ function setVerticalScrollPosition(position) {
 }
 function ShowNode (elemntId) {
     var element = document.getElementById(""ID_"" + elemntId);
-    document.documentElement.scrollTop = element.offsetTop;
+    if(element!=null){
+        document.documentElement.scrollTop = element.offsetTop;
+    }
 }
 function ShowNodePhone (elemntId) {
     var element = document.getElementById(""ID_"" + elemntId);
-    document.body.scrollTop = element.offsetTop;
+    if(element!=null){
+        document.body.scrollTop = element.offsetTop;
+    }
 }
 function ScrollToAnchor(anchor, colorRgba) {
     window.location.hash=anchor;
@@ -1704,7 +1708,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             double htmlFontSize,
             string fontFamily,
             bool showBookTitles,
-            string notesTitle)
+            string notesTitle,
+            bool showDate)
         {
             if (htmlBackgroundColor == null)
             {
@@ -1779,8 +1784,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                 string htmlChapterText = startVerseMarking + this.GetFullName(chaptPos.Booknum, appChoosenIsoLangCode) + " "
                     + (chaptPos.BookRelativeChapterNum + 1) + ":" + (place.VerseNum + 1) + (ToVerse > 0 ? "-" + (ToVerse + 1) : string.Empty) + "  "
-                                         + place.When.ToString("yyyy-MM-dd") + " " + place.When.ToString("hh.mm.ss")
-                                         + stopVerseMarking;
+                    + (showDate ? place.When.ToString("yyyy-MM-dd") + " " + place.When.ToString("hh.mm.ss") : string.Empty) + stopVerseMarking;
 
                 string textId = place.BookShortName + "_" + place.ChapterNum + "_" + place.VerseNum;
                 int noteMarker = 0;
@@ -1867,6 +1871,11 @@ function SetFontColorForElement(elemntId, colorRgba){
                     // this might be a problem or it might not. Put some stars here anyway.
                     return "***";
                 }
+            }
+            // if it contains a 0 character then it is also an empty verse
+            if (xmlbytes[0]== 0)
+            {
+                return string.Empty;
             }
 
             try
@@ -2442,7 +2451,6 @@ function SetFontColorForElement(elemntId, colorRgba){
                 this.SourceChanged();
             }
         }
-
         private async Task<bool> ReloadOneIndex(string filename, int startBook, int endBook, CanonBookDef[] booksInTestement)
         {
             if (string.IsNullOrEmpty(this.Serial.Path))
@@ -2459,7 +2467,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                         this.Serial.Path.Replace("/", "\\") + filename + ((char)this.BlockType) + "zs");
                 //var folder = await appData.LocalFolder.GetFolderAsync(Serial.Path.Replace("/", "\\"));
                 //var file = await folder.CreateFileAsync(filename + ((char)BlockType) + "zs");
-                //var fs = await file.OpenStreamForReadAsync(); 
+                //var fs = await file.OpenStreamForReadAsync();
                 bool isEnd;
 
                 // read book position index
@@ -2507,10 +2515,16 @@ function SetFontColorForElement(elemntId, colorRgba){
                 for (int i = startBook; i < endBook; i++)
                 {
                     var bookDef = booksInTestement[i - startBook];
+                    long bookStartPos = 0;
+                    var booknumCalculated = i - startBook + 1;
+                    if (booknumCalculated < bookPositions.Count)
+                    {
+                        bookStartPos = bookPositions[booknumCalculated].StartPos;
+                    }
+
                     for (int j = 0; j < bookDef.NumberOfChapters; j++)
                     {
-                        long chapterStartPos = 0;
-                        ChapterPos chapt = null;
+                        ChapterPos chapt = new ChapterPos(-1, i, j, bookStartPos);
                         long lastNonZeroStartPos = 0;
                         long lastNonZeroLength = 0;
                         int length = 0;
@@ -2526,50 +2540,28 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                             length = this.GetShortIntFromStream(fs, out isEnd);
 
-                            if (k == 0)
-                            {
-                                chapterStartPos = startPos;
-                                long bookStartPos = 0;
-                                if (booknum < bookPositions.Count)
-                                {
-                                    bookStartPos = bookPositions[booknum].StartPos;
-                                }
-
-                                if (this.BlockType == IndexingBlockType.Chapter)
-                                {
-                                    chapterStartPos = 0;
-                                }
-
-                                chapt = new ChapterPos(chapterStartPos, i, j, bookStartPos);
-                                chapt.IsEmpty = true;
-                            }
-
                             if (length != 0)
                             {
                                 lastNonZeroLength = length;
                                 chapt.IsEmpty = false;
-                            }
 
-                            if (booknum == 0 && startPos == 0 && length == 0)
-                            {
-                                if (chapt != null)
+                                if (chapt.StartPos == -1)
                                 {
-                                    chapt.Verses.Add(new VersePos(0, 0, i));
+                                    chapt.StartPos = this.BlockType != IndexingBlockType.Chapter ? 0 : startPos;
+                                    chapt.BookStartPos = bookPositions[booknum].StartPos;
                                 }
+                                chapt.Verses.Add(new VersePos(startPos - chapt.StartPos, length, i));
                             }
                             else
                             {
-                                if (chapt != null)
-                                {
-                                    chapt.Verses.Add(new VersePos(startPos - chapterStartPos, length, i));
-                                }
+                                chapt.Verses.Add(new VersePos(0, 0, i));
                             }
                         }
 
                         // update the chapter length now that we know it
                         if (chapt != null)
                         {
-                            chapt.Length = (int)(lastNonZeroStartPos - chapterStartPos) + lastNonZeroLength;
+                            chapt.Length = (int)(lastNonZeroStartPos - chapt.StartPos) + lastNonZeroLength;
                             this.Chapters.Add(chapt);
                         }
 

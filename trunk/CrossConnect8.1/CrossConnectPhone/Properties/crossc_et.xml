@@ -245,4 +245,7 @@
 <string key="There is no backup to restore">Ei ole backup taastada</string>
 <string key="Connect to OneDrive">Ühenda OneDrive</string>
 <string key="Add a line between notes">Lisa piiri märkmed</string>
+<string key="Selected verses">Valitud värsse</string>
+<string key="Select verse">Vali salm</string>
+<string key="To verse">Salmi</string>
 </translations>

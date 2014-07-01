@@ -79,6 +79,8 @@ namespace CrossConnect
 
         WindowBookmarks,
 
+        WindowSelectedVerses,
+
         WindowDailyPlan,
 
         WindowAddedNotes,

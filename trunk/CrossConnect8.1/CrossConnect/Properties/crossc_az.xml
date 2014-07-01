@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">OneDrive qoşulmaq</string>
 <string key="Add a line between notes">Qeydlər arasında bir xətt əlavə et</string>
 <string key="Column">Sütun</string>
+<string key="Selected verses">Seçilmiş ayələri</string>
+<string key="Book">Kitab</string>
+<string key="Chapter">Fəsil</string>
+<string key="Verse">Şer</string>
+<string key="To verse">Ayədə</string>
 </translations>

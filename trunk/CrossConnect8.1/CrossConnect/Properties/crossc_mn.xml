@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">OneDrive уруу холбогдохын тулд</string>
 <string key="Add a line between notes">Тэмдэглэл хооронд мөрийг нэмнэ</string>
 <string key="Column">Багана</string>
+<string key="Selected verses">Сонгосон ишлэл</string>
+<string key="Book">ОУХДНС</string>
+<string key="Chapter">Бүлэг</string>
+<string key="Verse">Ишлэл</string>
+<string key="To verse">Шүлэг тулд</string>
 </translations>

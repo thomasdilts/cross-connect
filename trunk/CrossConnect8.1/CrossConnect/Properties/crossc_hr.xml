@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">Spajanje na OneDrive</string>
 <string key="Add a line between notes">Dodaj crtu između nota</string>
 <string key="Column">Kolona</string>
+<string key="Selected verses">Odabrani stihovi</string>
+<string key="Book">Knjiga</string>
+<string key="Chapter">Poglavlje</string>
+<string key="Verse">Stih</string>
+<string key="To verse">Da stihu</string>
 </translations>

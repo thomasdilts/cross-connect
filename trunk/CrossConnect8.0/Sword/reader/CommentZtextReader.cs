@@ -83,55 +83,7 @@ namespace Sword.reader
         }
 
         #endregion
-        /*
-        protected override string ParseOsisText(
-            DisplaySettings displaySettings,
-            string chapterNumber,
-            string restartText,
-            byte[] xmlbytes,
-            int startPos,
-            int length,
-            bool isIsoText,
-            bool isNotesOnly,
-            bool noTitles,
-            ref int noteIdentifier,
-            ref bool isInPoetry,
-            bool isRaw = false)
-        {
-            // Some indexes are bad. make sure the startpos and length are not bad
-            if (length == 0)
-            {
-                return string.Empty;
-            }
 
-            if (startPos >= xmlbytes.Length)
-            {
-                Debug.WriteLine("Bad startpos;" + xmlbytes.Length + ";" + startPos + ";" + length);
-                return "*** POSSIBLE ERROR IN BIBLE, TEXT MISSING HERE ***";
-            }
-
-            if (startPos + length > xmlbytes.Length)
-            {
-                // we can fix this
-                Debug.WriteLine("Fixed bad length;" + xmlbytes.Length + ";" + startPos + ";" + length);
-                length = xmlbytes.Length - startPos - 1;
-                if (length == 0)
-                {
-                    // this might be a problem or it might not. Put some stars here anyway.
-                    return "***";
-                }
-            }
-
-            try
-            {
-                return chapterNumber + System.Text.UTF8Encoding.UTF8.GetString(xmlbytes, 0, xmlbytes.Length) + "</a>";
-            }
-            catch (Exception ee)
-            {
-                Debug.WriteLine("crashed in a strange place. err=" + ee.StackTrace);
-            }
-            return string.Empty;
-        }*/
         protected override string ParseOsisText(
             DisplaySettings displaySettings,
             string chapterNumber,
@@ -179,18 +131,22 @@ namespace Sword.reader
                     return "***";
                 }
             }
+            // if it contains a 0 character then it is also an empty verse
+            if (xmlbytes[startPos] == 0)
+            {
+                return string.Empty;
+            }
 
             try
             {
                 ms.Write(xmlbytes, startPos, length);
                 ms.Write(Suffix, 0, Suffix.Length);
                 ms.Position = 0;
-
                 // debug
-                //byte[] buf = new byte[ms.Length]; ms.Read(buf, 0, (int)ms.Length);
-                //string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, buf.Length);
-                //System.Diagnostics.Debug.WriteLine("osisbuf: " + xxxxxx);
-                //ms.Position = 0;
+                byte[] buf = new byte[ms.Length]; ms.Read(buf, 0, (int)ms.Length);
+                string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, buf.Length);
+                System.Diagnostics.Debug.WriteLine("osisbuf: " + xxxxxx);
+                ms.Position = 0;
             }
             catch (Exception ee)
             {
@@ -863,7 +819,7 @@ namespace Sword.reader
                     }
                 }
             }
-            byte[] chapterBuffer = await this.GetChapterBytes(chapterNumber + book.VersesInChapterStartIndex);
+            var chapterBuffer = await this.GetChapterBytes(chapterNumber + book.VersesInChapterStartIndex);
 
             // for debug
             //string xxxxxx = Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
@@ -872,6 +828,7 @@ namespace Sword.reader
             for (int i = 0; i < versesForChapterPositions.Verses.Count; i++)
             {
                 VersePos verse = versesForChapterPositions.Verses[i];
+
                 string htmlChapterText = startVerseMarking
                                          + (displaySettings.ShowBookName ? bookName + " " : string.Empty)
                                          + (displaySettings.ShowChapterNumber

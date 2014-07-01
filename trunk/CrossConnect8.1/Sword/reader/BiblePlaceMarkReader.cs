@@ -49,7 +49,10 @@ namespace Sword.reader
         public List<BiblePlaceMarker> BookMarksToShow;
 
         [DataMember]
-        protected string _title;
+        public string _title;
+
+        [DataMember]
+        protected bool ShowDate = true;
 
         protected string _displayText = string.Empty;
 
@@ -85,18 +88,20 @@ namespace Sword.reader
                     this._htmlFontSize,
                     this._fontFamily,
                     false,
-                    string.Empty);
+                    string.Empty,
+                    this.ShowDate);
             this.RaiseSourceChangedEvent();
         }
 
         #region Constructors and Destructors
 
-        public BiblePlaceMarkReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification, List<BiblePlaceMarker> bookMarksToShow,string title)
+        public BiblePlaceMarkReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification, List<BiblePlaceMarker> bookMarksToShow, string title, bool ShowDate)
             : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification)
         {
             this.Serial2.CloneFrom(this.Serial);
             this.BookMarksToShow = bookMarksToShow;
             this._title = title;
+            this.ShowDate = ShowDate;
         }
 
         #endregion
@@ -149,7 +154,7 @@ namespace Sword.reader
 
         public override async Task<IBrowserTextSource> Clone()
         {
-            var cloned = new BiblePlaceMarkReader(this.Serial.Path, this.Serial.Iso2DigitLangCode, this.Serial.IsIsoEncoding, this.Serial.CipherKey, this.Serial.ConfigPath, this.Serial.Versification, BiblePlaceMarker.Clone(this.BookMarksToShow),this._title);
+            var cloned = new BiblePlaceMarkReader(this.Serial.Path, this.Serial.Iso2DigitLangCode, this.Serial.IsIsoEncoding, this.Serial.CipherKey, this.Serial.ConfigPath, this.Serial.Versification, BiblePlaceMarker.Clone(this.BookMarksToShow),this._title,this.ShowDate);
             await cloned.Resume();
             return cloned;
         }
@@ -204,7 +209,8 @@ namespace Sword.reader
                         htmlFontSize,
                         fontFamily,
                         false,
-                        string.Empty);
+                        string.Empty,
+                        this.ShowDate);
             }
 
             this._htmlFontSize = htmlFontSize;

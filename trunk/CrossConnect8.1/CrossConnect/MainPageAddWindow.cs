@@ -117,6 +117,7 @@ namespace CrossConnect
                         selectedType,
                         this.sliderTextSize.Value,
                         fontFamily,
+                        SelectVerses.GetPlaceMarkers(),
                         column,
                         null,
                         false);
@@ -139,7 +140,7 @@ namespace CrossConnect
                     WindowToChange.State.HtmlFontSize = this.sliderTextSize.Value;
                     WindowToChange.State.WindowType = selectedType;
                     await WindowToChange.Initialize(bookSelected.InternalName,
-                        bookSelected.Name, selectedType);
+                        bookSelected.Name, selectedType, SelectVerses.GetPlaceMarkers());
                     WindowToChange.State.Source.MoveChapterVerse(relbookShortName, relChaptNum, relverseNum, false, WindowToChange.State.Source);
                     WindowToChange.ForceReload = true;
                     WindowToChange.DelayUpdateBrowser();
@@ -205,11 +206,14 @@ namespace CrossConnect
                 case WindowType.WindowAddedNotes:
                     this.selectDocumentType.SelectedIndex = 5;
                     break;
-                case WindowType.WindowCommentary:
+                case WindowType.WindowSelectedVerses:
                     this.selectDocumentType.SelectedIndex = 6;
                     break;
+                case WindowType.WindowCommentary:
+                    this.selectDocumentType.SelectedIndex = 7;
+                    break;
                 case WindowType.WindowBook:
-                    this.selectDocumentType.SelectedIndex = App.InstalledBibles.InstalledCommentaries.Count > 0?7:6;
+                    this.selectDocumentType.SelectedIndex = App.InstalledBibles.InstalledCommentaries.Count > 0?8:7;
                     break;
             }
             foreach (var item in  this.selectDocument.Items)
@@ -250,6 +254,9 @@ namespace CrossConnect
                     break;
                 case 5:
                     selectedType = WindowType.WindowAddedNotes;
+                    break;
+                case 6:
+                    selectedType = WindowType.WindowSelectedVerses;
                     break;
                 default:
                     if (this.selectDocumentType.SelectedItem.Equals(Translations.Translate("Commentaries")))
@@ -376,6 +383,9 @@ namespace CrossConnect
                 windowType = state.WindowType;
             }
 
+            this.SelectVerses.Visibility = this.selectDocumentType.SelectedIndex == 6 ? Visibility.Visible : Visibility.Collapsed; 
+
+
             Visibility visibility = this.selectDocumentType.SelectedIndex == 4 ? Visibility.Visible : Visibility.Collapsed;
             this.DateSelectPanel.Visibility = visibility;
             this.DateActualSelectPanel.Visibility = visibility;
@@ -446,6 +456,7 @@ namespace CrossConnect
             this.selectDocumentType.Items.Add(Translations.Translate("Bookmarks"));
             this.selectDocumentType.Items.Add(Translations.Translate("Daily plan"));
             this.selectDocumentType.Items.Add(Translations.Translate("Added notes"));
+            this.selectDocumentType.Items.Add(Translations.Translate("Selected verses"));
 
             if (App.InstalledBibles.InstalledCommentaries.Count > 0)
             {
@@ -466,7 +477,6 @@ namespace CrossConnect
             {
                 this.selectDocument.SelectedIndex = 0;
             }
-
             this.stackPanelSelectColumn.Visibility = WindowToChange == null ? Visibility.Visible : Visibility.Collapsed;
             this.selectColumn.Visibility = WindowToChange == null ? Visibility.Visible : Visibility.Collapsed;
             this.selectPlanTypeHeader.Visibility = Visibility.Collapsed;
@@ -565,8 +575,14 @@ namespace CrossConnect
             this.Dispatcher.RunAsync(CoreDispatcherPriority.Low, () => this.ShowFontImage());
         }
 
-        private void selectDocumentSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private bool IsInSelectDocChanged = false;
+        private async void selectDocumentSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(IsInSelectDocChanged)
+            {
+                return;
+            }
+            IsInSelectDocChanged = true;
             WindowType selectedType;
             SwordBookMetaData bookSelected;
             this.WindowFontComboBox.SelectedIndex = -1;
@@ -593,7 +609,32 @@ namespace CrossConnect
                         }
                     }
                 }
+
+                if (selectedType == WindowType.WindowSelectedVerses)
+                {
+                    string bookPath =
+                        bookSelected.GetCetProperty(ConfigEntryType.ADataPath).ToString().Substring(2);
+                    bool isIsoEncoding = !bookSelected.GetCetProperty(ConfigEntryType.Encoding).Equals("UTF-8");
+
+                    this.SelectVerses.source = new BibleZtextReader(
+                                        bookPath,
+                                        ((Language)bookSelected.GetCetProperty(ConfigEntryType.Lang)).Code,
+                                        isIsoEncoding,
+                                        (string)bookSelected.GetCetProperty(ConfigEntryType.CipherKey),
+                                        bookSelected.ConfPath,
+                                        (string)bookSelected.GetCetProperty(ConfigEntryType.Versification));
+                    await SelectVerses.source.Initialize();
+                    var markers = new System.Collections.Generic.List<BiblePlaceMarker>();
+                    if (this.WindowToChange != null && this.WindowToChange.State.Source is BiblePlaceMarkReader && ((BiblePlaceMarkReader)this.WindowToChange.State.Source)._title.Equals(Translations.Translate("Selected verses")))
+                    {
+                        markers = BiblePlaceMarker.Clone( ((BiblePlaceMarkReader)this.WindowToChange.State.Source).BookMarksToShow);
+                    }
+                    this.SelectVerses.SetPlaceMarkers(markers);
+                }
             }
+
+            IsInSelectDocChanged = false;
+
         }
         #endregion
     }

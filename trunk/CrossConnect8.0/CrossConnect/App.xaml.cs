@@ -87,6 +87,7 @@ namespace CrossConnect
         public static BiblePlaceMarkers PlaceMarkers = new BiblePlaceMarkers();
         public static Theme Themes = new Theme();
         public static bool IsPersitanceLoaded = false;
+        public static bool IsClosingDown = false;
 
         private const int MaxNumWindows = 30;
 
@@ -210,17 +211,24 @@ namespace CrossConnect
             RaiseHistoryChangeEvent();
             SavePersistantMarkers();
         }
+
+        private static DispatcherTimer TimerForNotifications = null;
         public static void StartTimerForNotifications()
         {
-            var tmr = new DispatcherTimer();
-            tmr.Tick += OnStartNotificationsTimerTick;
-            tmr.Interval = TimeSpan.FromSeconds(15);
-            tmr.Start();
+            TimerForNotifications = new DispatcherTimer();
+            TimerForNotifications.Tick += OnStartNotificationsTimerTick;
+            TimerForNotifications.Interval = TimeSpan.FromSeconds(15);
+            TimerForNotifications.Start();
         }
         private static async void OnStartNotificationsTimerTick(object sender, object e)
         {
-            ((DispatcherTimer)sender).Stop();
+            if (TimerForNotifications != null)
+            {
+                TimerForNotifications.Stop();
+                TimerForNotifications = null;
+            }
 
+            if (IsClosingDown) return;
             // find the window
             if (!OpenWindows.Any())
             {
@@ -229,23 +237,31 @@ namespace CrossConnect
 
             ITiledWindow foundWindowToUse = null;
             ITiledWindow firstBibleWindowToUse = null;
-            foreach (var window in OpenWindows)
+            try
             {
-                if (window.State.WindowType == WindowType.WindowBible)
+                foreach (var window in OpenWindows)
                 {
-                    if (firstBibleWindowToUse == null)
+                    if (window.State.WindowType == WindowType.WindowBible)
                     {
-                        firstBibleWindowToUse = window;
-                    }
+                        if (firstBibleWindowToUse == null)
+                        {
+                            firstBibleWindowToUse = window;
+                        }
 
-                    if (window.State.Source.GetLanguage().Substring(0, 2).ToLower().Equals(Translations.IsoLanguageCode.Substring(0, 2).ToLower()))
-                    {
-                        foundWindowToUse = window;
-                        break;
+                        if (window.State.Source.GetLanguage().Substring(0, 2).ToLower().Equals(Translations.IsoLanguageCode.Substring(0, 2).ToLower()))
+                        {
+                            foundWindowToUse = window;
+                            break;
+                        }
                     }
                 }
             }
+            catch(Exception)
+            {
 
+            }
+
+            if (IsClosingDown) return;
             if (foundWindowToUse == null)
             {
                 foundWindowToUse = firstBibleWindowToUse;
@@ -255,6 +271,7 @@ namespace CrossConnect
                 }
             }
 
+            if (IsClosingDown) return;
             var random = new Random();
             string verseText = string.Empty;
             string title = string.Empty;
@@ -275,6 +292,7 @@ namespace CrossConnect
                 }
             }
 
+            if (IsClosingDown) return;
             if (string.IsNullOrEmpty(verseText))
             {
                 return;
@@ -429,6 +447,19 @@ namespace CrossConnect
         // This code will not execute when the application is deactivated
         private void ApplicationClosing(object sender, ClosingEventArgs e)
         {
+            // stop any attempts to save data
+            IsClosingDown = true;
+            if (TimerForSavingWindows != null)
+            {
+                TimerForSavingWindows.Stop();
+                TimerForSavingWindows = null;
+            }
+            if(TimerForNotifications != null)
+            {
+                TimerForNotifications.Stop();
+                TimerForNotifications = null;
+            }
+
             //SavePersistantObjects();
         }
 
@@ -443,6 +474,7 @@ namespace CrossConnect
         // This code will not execute when the application is reactivated
         private void ApplicationLaunching(object sender, LaunchingEventArgs e)
         {
+            IsClosingDown = false;
             IsPersitanceLoaded = false;
             LoadPersistantObjects();
 
@@ -727,6 +759,8 @@ namespace CrossConnect
             // just a test to see if the old system is there
             try
             {
+                if (IsClosingDown == true) return true;
+ 
                 // make sure some important directories exist.
                 IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
                 if (!root.DirectoryExists(WebDirIsolated))
@@ -756,6 +790,7 @@ namespace CrossConnect
                     LoadPersistantWindows};
                 for (int i = 0; i < loadFunctions.Count(); i++)
                 {
+                    if (IsClosingDown == true) return true;
                     try
                     {
                         await LoadPersistantObjectsFromFile(fileNames[i], loadFunctions[i], true);
@@ -787,27 +822,51 @@ namespace CrossConnect
             bool isLoaded = false;
             if (await Hoot.File.Exists(filename))
             {
+                Stream stream = null;
                 try
                 {
-                    using (var stream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(filename))
-                    {
-                        // debugging start
-                        //byte[] buff = new byte[20000];
-                        //var xx = inStream.AsStreamForRead().Read(buff, 0, buff.Length);
-                        //string all = System.Text.UTF8Encoding.UTF8.GetString(buff, 0, xx);
-                        //inStream.AsStreamForRead().Position = 0;
-                        // debugging stop
-
-                        // Deserialize the Session State
-                        var serializer = new DataContractSerializer(
-                            typeof(Dictionary<string, object>), new[] { typeof(string) });
-                        objectsToLoad = (Dictionary<string, object>)serializer.ReadObject(stream);
-                        await loadFunction(objectsToLoad);
-                        isLoaded = true;
-                    }
+                    stream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(filename);
+                    
+                    // Deserialize the Session State
+                    var serializer = new DataContractSerializer(
+                        typeof(Dictionary<string, object>), new[] { typeof(string) });
+                    objectsToLoad = (Dictionary<string, object>)serializer.ReadObject(stream);
+                    await loadFunction(objectsToLoad);
+                    isLoaded = true;
+                    stream.Close();
+                    stream=null;
+                    
                 }
                 catch (Exception e)
                 {
+                    // debugging start
+                    //if(stream!=null)
+                    //{
+                    //    byte[] buf = new byte[20000];
+                    //    var mstream = new MemoryStream();
+
+                    //    int i;
+                    //    if ((i = stream.Read(buf, 0, buf.Count())) > 0)
+                    //    {
+                    //        string all = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, i);
+                    //        Debug.WriteLine(all);
+                    //    }
+                    //}
+                    // debugging stop
+
+                    if(stream!=null)
+                    {
+                        try
+                        {
+                            stream.Close();
+                        }
+                        catch(Exception )
+                        {
+
+                        }
+                    }
+
+
                     // we can't use the file. Just kill it.
                     Hoot.File.Delete(filename);
                     objectsToLoad = new Dictionary<String, Object>();
@@ -837,6 +896,7 @@ namespace CrossConnect
 
         public static void StartTimerForSavingWindows()
         {
+            if (IsClosingDown) return;
             if (TimerForSavingWindows != null)
             {
                 TimerForSavingWindows.Stop();
@@ -950,14 +1010,19 @@ namespace CrossConnect
         }
         public static async Task SaveAllPersistantObjects()
         {
+            if (IsClosingDown) return;
             await SavePersistantThemes();
+            if (IsClosingDown) return;
             await SavePersistantDisplaySettings();
+            if (IsClosingDown) return;
             await SavePersistantHighlighting();
+            if (IsClosingDown) return;
             await SavePersistantMarkers();
             if (TimerForSavingWindows != null)
             {
                 TimerForSavingWindows.Stop();
             }
+            if (IsClosingDown) return;
             await SavePersistantWindows();
         }
         public static async Task SavePersistantThemes()
@@ -1037,13 +1102,16 @@ namespace CrossConnect
         {
             try
             {
+                if (IsClosingDown) return;
                 var sessionData = new MemoryStream();
                 var serializer = new DataContractSerializer(
                     typeof(Dictionary<string, object>), new[] { typeof(string) });
                 serializer.WriteObject(sessionData, objectsToSave);
+                if (IsClosingDown) return;
                 sessionData.Seek(0, SeekOrigin.Begin);
                 byte[] buffer = new byte[sessionData.Length];
                 sessionData.Read(buffer, 0, (int)sessionData.Length);
+                if (IsClosingDown) return;
                 await Hoot.File.WriteAllBytes(filename, buffer);
             }
             catch (Exception e)

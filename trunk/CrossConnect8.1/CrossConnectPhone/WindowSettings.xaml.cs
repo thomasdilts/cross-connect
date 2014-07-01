@@ -23,31 +23,28 @@
 
 namespace CrossConnect
 {
+    using CrossConnect.readers;
+    using Microsoft.Phone.Shell;
+    using Sword;
+    using Sword.reader;
+    using Sword.versification;
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.Linq;
     using System.Text;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Linq;
-
-    using CrossConnect.readers;
-
-    using Hoot;
-
-    using Microsoft.Phone.Shell;
-
-    using Sword;
-    using Sword.reader;
     using Windows.Phone.Speech.Synthesis;
-    using Sword.versification;
 
     /// <summary>
     /// The window settings.
     /// </summary>
     public partial class WindowSettings
     {
+        private string _fontFamily;
         private bool _isInThisWindow = false;
+
         #region Constructors
 
         /// <summary>
@@ -61,6 +58,8 @@ namespace CrossConnect
         #endregion Constructors
 
         #region Methods
+
+        private bool HasFoundGoodKey = false;
 
         /// <summary>
         /// The but search click.
@@ -107,7 +106,7 @@ namespace CrossConnect
         {
             bookSelected = null;
             selectedType = WindowType.WindowBible;
-            if (this.selectDocumentType.SelectedItem==null)
+            if (this.selectDocumentType.SelectedItem == null)
             {
                 return;
             }
@@ -116,24 +115,31 @@ namespace CrossConnect
                 case 0:
                     selectedType = WindowType.WindowBible;
                     break;
+
                 case 1:
                     selectedType = WindowType.WindowBibleNotes;
                     break;
+
                 case 2:
                     selectedType = WindowType.WindowHistory;
                     break;
+
                 case 3:
                     selectedType = WindowType.WindowBookmarks;
                     break;
+
                 case 4:
                     selectedType = WindowType.WindowDailyPlan;
                     break;
+
                 case 5:
                     selectedType = WindowType.WindowAddedNotes;
                     break;
+
                 case 6:
                     selectedType = WindowType.WindowSelectedVerses;
                     break;
+
                 default:
                     if (this.selectDocumentType.SelectedItem.Equals(Translations.Translate("Commentaries")))
                     {
@@ -185,9 +191,6 @@ namespace CrossConnect
                 }
             }
         }
-
-        private bool HasFoundGoodKey = false;
-
         /// <summary>
         /// The phone application page back key press.
         /// </summary>
@@ -287,6 +290,13 @@ namespace CrossConnect
         /// </param>
         private void PhoneApplicationPageLoaded(object sender, RoutedEventArgs e)
         {
+            if (_isInThisWindow)
+            {
+                return;
+            }
+
+            _isInThisWindow = true;
+            
             object changedFont;
             _fontFamily = string.Empty;
             if (PhoneApplicationService.Current.State.TryGetValue("WebFontSelectWindowSelection", out changedFont))
@@ -295,15 +305,6 @@ namespace CrossConnect
                 SetFontWindow(_fontFamily);
                 PhoneApplicationService.Current.State.Remove("WebFontSelectWindowSelection");
             }
-             
-            
-            if (_isInThisWindow)
-            {
-                return;
-            }
-
-            _isInThisWindow = true;
-
             object skipWindowSettings;
             if (PhoneApplicationService.Current.State.TryGetValue("skipWindowSettings", out skipWindowSettings))
             {
@@ -374,7 +375,7 @@ namespace CrossConnect
                                                ? App.DailyPlan.PlanStartDate
                                                : DateTime.Now;
             }
-            else if (this.selectDocumentType.SelectedItem!=null && this.selectDocumentType.SelectedItem.Equals(Translations.Translate("Commentaries")))
+            else if (this.selectDocumentType.SelectedItem != null && this.selectDocumentType.SelectedItem.Equals(Translations.Translate("Commentaries")))
             {
                 selectDocument.Items.Clear();
                 foreach (var book in App.InstalledBibles.InstalledCommentaries)
@@ -387,7 +388,7 @@ namespace CrossConnect
                     }
                 }
             }
-            else if (this.selectDocumentType.SelectedItem!=null && this.selectDocumentType.SelectedItem.Equals(Translations.Translate("Books")))
+            else if (this.selectDocumentType.SelectedItem != null && this.selectDocumentType.SelectedItem.Equals(Translations.Translate("Books")))
             {
                 selectDocument.Items.Clear();
                 foreach (var book in App.InstalledBibles.InstalledGeneralBooks)
@@ -430,7 +431,7 @@ namespace CrossConnect
                     out bookNameShort, out relChaptNum, out verseNum, out fullName, out titleText);
                 isTranslateable = state.Source.IsTranslateable && !state.Source.GetLanguage().Equals(Translations.IsoLanguageCode);
                 var canon = CanonManager.GetCanon("KJV");
-                isListenable = bookNameShort!=null && state.Source.IsHearable && canon.BookByShortName.ContainsKey(bookNameShort);
+                isListenable = bookNameShort != null && state.Source.IsHearable && canon.BookByShortName.ContainsKey(bookNameShort);
                 isTtsListenable = state.Source.IsTTChearable && InstalledVoices.All.Any();
                 windowType = state.WindowType;
             }
@@ -445,7 +446,7 @@ namespace CrossConnect
 
             visibility = selectDocumentType.SelectedIndex == 4 ? Visibility.Visible : Visibility.Collapsed;
             DateSelectPanel.Visibility = visibility;
-            selectbibelverses.Visibility = this.selectDocumentType.SelectedItem!=null && this.selectDocumentType.SelectedItem.Equals(Translations.Translate("Selected verses")) ? Visibility.Visible : Visibility.Collapsed;
+            selectbibelverses.Visibility = this.selectDocumentType.SelectedItem != null && this.selectDocumentType.SelectedItem.Equals(Translations.Translate("Selected verses")) ? Visibility.Visible : Visibility.Collapsed;
             selectPlanType.Visibility = visibility;
         }
 
@@ -607,14 +608,13 @@ namespace CrossConnect
                         selectPlanType.Visibility = Visibility.Collapsed;
                         selectDocumentType.Visibility = Visibility.Collapsed;
                         selectDocument.Visibility = Visibility.Collapsed;
-                        webBrowser1.Visibility=Visibility.Collapsed;
-                        sliderTextSize.Visibility=Visibility.Collapsed;
+                        webBrowser1.Visibility = Visibility.Collapsed;
+                        sliderTextSize.Visibility = Visibility.Collapsed;
                         ThemeFont.Visibility = Visibility.Collapsed;
                         webBrowser2.Visibility = Visibility.Collapsed;
-                        
+
                         planStartDateCaption.Visibility = Visibility.Collapsed;
                         return;
-
                     }
                 }
 
@@ -627,7 +627,7 @@ namespace CrossConnect
                     out bookNameShort, out relChaptNum, out verseNum, out fullName, out titleText);
                 var canon = CanonManager.GetCanon("KJV");
                 butTranslate.Visibility = state.Source.IsTranslateable && !state.Source.GetLanguage().Equals(Translations.IsoLanguageCode) ? visibility : Visibility.Collapsed;
-                butListen.Visibility = bookNameShort!=null && state.Source.IsHearable && canon.BookByShortName.ContainsKey(bookNameShort) ? visibility : Visibility.Collapsed;
+                butListen.Visibility = bookNameShort != null && state.Source.IsHearable && canon.BookByShortName.ContainsKey(bookNameShort) ? visibility : Visibility.Collapsed;
                 butListenTts.Visibility = state.Source.IsTTChearable && InstalledVoices.All.Any() ? visibility : Visibility.Collapsed;
                 selectbibelverses.Visibility = Visibility.Collapsed;
                 switch (state.WindowType)
@@ -635,15 +635,19 @@ namespace CrossConnect
                     case WindowType.WindowBible:
                         selectDocumentType.SelectedIndex = 0;
                         break;
+
                     case WindowType.WindowBibleNotes:
                         selectDocumentType.SelectedIndex = 1;
                         break;
+
                     case WindowType.WindowHistory:
                         selectDocumentType.SelectedIndex = 2;
                         break;
+
                     case WindowType.WindowBookmarks:
                         selectDocumentType.SelectedIndex = 3;
                         break;
+
                     case WindowType.WindowDailyPlan:
                         selectDocumentType.SelectedIndex = 4;
                         selectPlanType.SelectedIndex = App.DailyPlan.PlanNumber;
@@ -651,14 +655,18 @@ namespace CrossConnect
                                                        ? App.DailyPlan.PlanStartDate
                                                        : DateTime.Now;
                         break;
+
                     case WindowType.WindowAddedNotes:
                         selectDocumentType.SelectedIndex = 5;
                         break;
+
                     case WindowType.WindowSelectedVerses:
                         selectbibelverses.Visibility = Visibility.Visible;
+                        selectbibelverses.source = (BiblePlaceMarkReader)state.Source;
                         selectbibelverses.SetPlaceMarkers(((BiblePlaceMarkReader)state.Source).BookMarksToShow);
                         selectDocumentType.SelectedIndex = 6;
                         break;
+
                     case WindowType.WindowBook:
                         selectDocument.Items.Clear();
                         foreach (var book in App.InstalledBibles.InstalledGeneralBooks)
@@ -675,6 +683,7 @@ namespace CrossConnect
                         this.selectDocumentType.SelectedIndex = App.InstalledBibles.InstalledCommentaries.Count > 0 ? 8 : 7;
 
                         break;
+
                     case WindowType.WindowCommentary:
                         selectDocument.Items.Clear();
                         foreach (var book in App.InstalledBibles.InstalledCommentaries)
@@ -691,18 +700,21 @@ namespace CrossConnect
 
                         selectDocumentType.SelectedIndex = 7;
                         break;
+
                     case WindowType.WindowInternetLink:
                         selectDocumentType.Visibility = Visibility.Collapsed;
                         selectDocument.Visibility = Visibility.Collapsed;
                         ThemeFont.Visibility = Visibility.Collapsed;
                         webBrowser2.Visibility = Visibility.Collapsed;
                         break;
+
                     case WindowType.WindowLexiconLink:
                         selectDocumentType.Visibility = Visibility.Collapsed;
                         selectDocument.Visibility = Visibility.Collapsed;
                         ThemeFont.Visibility = Visibility.Collapsed;
                         webBrowser2.Visibility = Visibility.Collapsed;
                         break;
+
                     case WindowType.WindowSearch:
                         selectDocumentType.Visibility = Visibility.Collapsed;
                         selectDocument.Visibility = Visibility.Collapsed;
@@ -710,7 +722,7 @@ namespace CrossConnect
                 }
 
                 sliderTextSize.Value = state.HtmlFontSize;
-                
+
                 if (!string.IsNullOrEmpty(state.Font) && Theme.FontFamilies.ContainsKey(state.Font))
                 {
                     _fontFamily = state.Font;
@@ -754,10 +766,8 @@ namespace CrossConnect
 
         #endregion Methods
 
-        private async void ButTranslate_OnClick(object sender, RoutedEventArgs e)
+        private async void ButEnterKeySave_OnClick(object sender, RoutedEventArgs e)
         {
-            _isInThisWindow = false;
-            SetBookChoosen();
             object openWindowIndex;
             if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
             {
@@ -765,28 +775,22 @@ namespace CrossConnect
             }
 
             SerializableWindowState state = App.OpenWindows[(int)openWindowIndex].State;
-            var obj = await state.Source.GetTranslateableTexts(Translations.IsoLanguageCode,
-                App.DisplaySettings, state.BibleToLoad);
-            var toTranslate = (string[])obj[0];
-            var isTranslateable = (bool[])obj[1];
-            var serial = ((BibleZtextReader)state.Source).Serial;
-            var transReader2 = new TranslatorReader(serial.Path, serial.Iso2DigitLangCode, serial.IsIsoEncoding, serial.CipherKey, serial.ConfigPath, serial.Versification);
-            App.AddWindow(
-                state.BibleToLoad,
-                state.BibleDescription,
-                WindowType.WindowTranslator,
-                state.HtmlFontSize,
-                _fontFamily,
-                transReader2);
-            transReader2.TranslateThis(toTranslate, isTranslateable, state.Source.GetLanguage());
-
-            PhoneApplicationService.Current.State["skipWindowSettings"] = false;
-
-            // request to skip this window.
-            if (NavigationService.CanGoBack)
+            if (await ((BibleZtextReader)state.Source).IsCipherKeyGood(this.EnterKeyText.Text))
             {
-                Debug.WriteLine("WindowSettings AutoBackout");
-                NavigationService.GoBack();
+                ((BibleZtextReader)state.Source).Serial.CipherKey = this.EnterKeyText.Text;
+                string filenameComplete = ((BibleZtextReader)state.Source).Serial.Path + "CipherKey.txt";
+                await Hoot.File.WriteAllBytes(filenameComplete, Encoding.UTF8.GetBytes(this.EnterKeyText.Text));
+                App.OpenWindows[(int)openWindowIndex].ForceReload = true;
+                App.OpenWindows[(int)openWindowIndex].UpdateBrowser(false);
+                HasFoundGoodKey = true;
+                if (NavigationService.CanGoBack)
+                {
+                    NavigationService.GoBack();
+                }
+            }
+            else
+            {
+                this.EnterKeyTitle.Text = Translations.Translate("Invalid key. Try again"); ;
             }
         }
 
@@ -817,8 +821,10 @@ namespace CrossConnect
             NavigationService.Navigate(new Uri("/SelectToPlay.xaml", UriKind.Relative));
         }
 
-        private async void ButEnterKeySave_OnClick(object sender, RoutedEventArgs e)
+        private async void ButTranslate_OnClick(object sender, RoutedEventArgs e)
         {
+            _isInThisWindow = false;
+            SetBookChoosen();
             object openWindowIndex;
             if (!PhoneApplicationService.Current.State.TryGetValue("openWindowIndex", out openWindowIndex))
             {
@@ -826,26 +832,31 @@ namespace CrossConnect
             }
 
             SerializableWindowState state = App.OpenWindows[(int)openWindowIndex].State;
-            if (await ((BibleZtextReader)state.Source).IsCipherKeyGood(this.EnterKeyText.Text))
-            {
-                ((BibleZtextReader)state.Source).Serial.CipherKey = this.EnterKeyText.Text;
-                string filenameComplete = ((BibleZtextReader)state.Source).Serial.Path + "CipherKey.txt";
-                await Hoot.File.WriteAllBytes(filenameComplete, Encoding.UTF8.GetBytes(this.EnterKeyText.Text));
-                App.OpenWindows[(int)openWindowIndex].ForceReload = true;
-                App.OpenWindows[(int)openWindowIndex].UpdateBrowser(false);
-                HasFoundGoodKey=true;
-                if (NavigationService.CanGoBack)
-                {
-                    NavigationService.GoBack();
-                }
-            }
-            else
-            {
-                this.EnterKeyTitle.Text = Translations.Translate("Invalid key. Try again"); ;
+            var obj = await state.Source.GetTranslateableTexts(Translations.IsoLanguageCode,
+                App.DisplaySettings, state.BibleToLoad);
+            var toTranslate = (string[])obj[0];
+            var isTranslateable = (bool[])obj[1];
+            var serial = ((BibleZtextReader)state.Source).Serial;
+            var transReader2 = new TranslatorReader(serial.Path, serial.Iso2DigitLangCode, serial.IsIsoEncoding, serial.CipherKey, serial.ConfigPath, serial.Versification);
+            App.AddWindow(
+                state.BibleToLoad,
+                state.BibleDescription,
+                WindowType.WindowTranslator,
+                state.HtmlFontSize,
+                _fontFamily,
+                null,
+                transReader2);
+            transReader2.TranslateThis(toTranslate, isTranslateable, state.Source.GetLanguage());
 
+            PhoneApplicationService.Current.State["skipWindowSettings"] = false;
+
+            // request to skip this window.
+            if (NavigationService.CanGoBack)
+            {
+                Debug.WriteLine("WindowSettings AutoBackout");
+                NavigationService.GoBack();
             }
         }
-
         private void ButTtsListen_OnClick(object sender, RoutedEventArgs e)
         {
             _isInThisWindow = false;
@@ -872,18 +883,46 @@ namespace CrossConnect
             PhoneApplicationService.Current.State["skipWindowSettings"] = true;
             NavigationService.Navigate(new Uri("/SelectTtsToPlay.xaml", UriKind.Relative));
         }
-
-        private string _fontFamily;
-        private void WebBrowser2ScriptNotify(object sender, Microsoft.Phone.Controls.NotifyEventArgs e)
+        private async void SelectBibleSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             WindowType selectedType;
             SwordBookMetaData bookSelected;
-            GetSelectedData(out selectedType, out bookSelected);
+            _fontFamily = "";
+            SetFontWindow(_fontFamily);
 
-            //AutoRotatePageBackKeyPress(null, null);
-            PhoneApplicationService.Current.State["WebFontSelectWindowSelection"] = _fontFamily;
-            NavigationService.Navigate(new Uri("/WebFontSelect.xaml", UriKind.Relative));
+            this.GetSelectedData(out selectedType, out bookSelected);
+            if (bookSelected != null)
+            {
+                var fontFromBible = (string)bookSelected.GetProperty(ConfigEntryType.Font);
+                if (fontFromBible != null)
+                {
+                    string fontFamily;
+                    if (Theme.FontFamilies.TryGetValue(fontFromBible, out fontFamily))
+                    {
+                        _fontFamily = fontFromBible;
+                        SetFontWindow(_fontFamily);
+                    }
+                }
+                if (selectedType == WindowType.WindowSelectedVerses)
+                {
+                    string bookPath =
+                        bookSelected.GetCetProperty(ConfigEntryType.ADataPath).ToString().Substring(2);
+                    bool isIsoEncoding = !bookSelected.GetCetProperty(ConfigEntryType.Encoding).Equals("UTF-8");
+
+                    selectbibelverses.source = new BibleZtextReader(
+                                        bookPath,
+                                        ((Language)bookSelected.GetCetProperty(ConfigEntryType.Lang)).Code,
+                                        isIsoEncoding,
+                                        (string)bookSelected.GetCetProperty(ConfigEntryType.CipherKey),
+                                        bookSelected.ConfPath,
+                                        (string)bookSelected.GetCetProperty(ConfigEntryType.Versification));
+                    await selectbibelverses.source.Initialize();
+
+                    selectbibelverses.SetPlaceMarkers(selectbibelverses.GetPlaceMarkers());
+                }
+            }
         }
+
         private void SetFontWindow(string font)
         {
             string foundFamily;
@@ -908,28 +947,15 @@ namespace CrossConnect
                     string.Empty) + body + "</body></html>");
         }
 
-        private void SelectBibleSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void WebBrowser2ScriptNotify(object sender, Microsoft.Phone.Controls.NotifyEventArgs e)
         {
             WindowType selectedType;
             SwordBookMetaData bookSelected;
-            _fontFamily = "";
-            SetFontWindow(_fontFamily);
+            GetSelectedData(out selectedType, out bookSelected);
 
-            this.GetSelectedData(out selectedType, out bookSelected);
-            if (bookSelected != null)
-            {
-                var fontFromBible = (string)bookSelected.GetProperty(ConfigEntryType.Font);
-                if (fontFromBible != null)
-                {
-                    string fontFamily;
-                    if (Theme.FontFamilies.TryGetValue(fontFromBible, out fontFamily))
-                    {
-                        _fontFamily = fontFromBible;
-                        SetFontWindow(_fontFamily);
-                    }
-                }
-            }
+            //AutoRotatePageBackKeyPress(null, null);
+            PhoneApplicationService.Current.State["WebFontSelectWindowSelection"] = _fontFamily;
+            NavigationService.Navigate(new Uri("/WebFontSelect.xaml", UriKind.Relative));
         }
-
     }
 }

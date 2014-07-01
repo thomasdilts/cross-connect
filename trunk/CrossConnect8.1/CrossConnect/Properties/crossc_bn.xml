@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">OneDrive সংযোগ করুন</string>
 <string key="Add a line between notes">নোট মধ্যে একটি লাইন যোগ করুন</string>
 <string key="Column">স্তম্ভ</string>
+<string key="Selected verses">সিলেক্টেড আয়াত</string>
+<string key="Book">বই</string>
+<string key="Chapter">অধ্যায়</string>
+<string key="Verse">পদ্য</string>
+<string key="To verse">শ্লোক</string>
 </translations>

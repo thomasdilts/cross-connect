@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">Kumonekta sa OneDrive</string>
 <string key="Add a line between notes">Magdagdag ng isang linya sa pagitan ng mga tala</string>
 <string key="Column">Haligi</string>
+<string key="Selected verses">Napiling verses</string>
+<string key="Book">Aklat</string>
+<string key="Chapter">Kabanata</string>
+<string key="Verse">Tula</string>
+<string key="To verse">Upang taludtod</string>
 </translations>

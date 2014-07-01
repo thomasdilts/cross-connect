@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">OneDrive에 연결</string>
 <string key="Add a line between notes">노트 사이에 선을 추가</string>
 <string key="Column">기둥</string>
+<string key="Selected verses">선택된 구절</string>
+<string key="Book">책</string>
+<string key="Chapter">장</string>
+<string key="Verse">절</string>
+<string key="To verse">구절에</string>
 </translations>

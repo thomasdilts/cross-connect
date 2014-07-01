@@ -245,4 +245,7 @@
 <string key="There is no backup to restore">មាន​ការ​បម្រុង​ទុក​ដើម្បី​ស្ដារ​ទេ</string>
 <string key="Connect to OneDrive">ភ្ជាប់​ទៅ OneDrive</string>
 <string key="Add a line between notes">បន្ថែម​បន្ទាត់​រវាង​ភក្ដិ​កំណត់​ត្រា​កំណត់​មួយ</string>
+<string key="Selected verses">ខ​ដែល​បាន​ជ្រើស</string>
+<string key="Select verse">ជ្រើស​ខ</string>
+<string key="To verse">ដើម្បី​ខ</string>
 </translations>

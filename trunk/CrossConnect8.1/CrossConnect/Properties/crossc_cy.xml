@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">Cysylltu â OneDrive</string>
 <string key="Add a line between notes">Ychwanegwch linell rhwng nodau</string>
 <string key="Column">Colofn</string>
+<string key="Selected verses">Penillion a ddewiswyd</string>
+<string key="Book">Llyfr</string>
+<string key="Chapter">Pennod</string>
+<string key="Verse">Adnod</string>
+<string key="To verse">I pennill</string>
 </translations>

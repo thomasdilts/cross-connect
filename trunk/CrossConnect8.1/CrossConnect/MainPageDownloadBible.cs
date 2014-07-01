@@ -241,6 +241,7 @@ namespace CrossConnect
                     WindowType.WindowCommentary,
                     Font,
                     fontFamily,
+                    null,
                     Window,
                     null,
                     false);
@@ -255,6 +256,7 @@ namespace CrossConnect
                     WindowType.WindowBook,
                     Font,
                     fontFamily,
+                    null,
                     Window,
                     null,
                     false);
@@ -263,7 +265,7 @@ namespace CrossConnect
             {
                 await App.InstalledBibles.AddGenericBook(this._sb.Sbmd.InternalName);
                 await App.AddWindow(
-                    this._sb.Sbmd.InternalName, this._sb.Sbmd.Name, WindowType.WindowBible, Font,fontFamily, Window, null, false);
+                    this._sb.Sbmd.InternalName, this._sb.Sbmd.Name, WindowType.WindowBible, Font,fontFamily,null, Window, null, false);
             }
 
             this._sb = null;

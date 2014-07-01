@@ -182,6 +182,12 @@
     <Compile Include="Common\LayoutAwarePage.cs" />
     <Compile Include="Common\RichTextColumns.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
+    <Compile Include="SelectBibleVerse.xaml.cs">
+      <DependentUpon>SelectBibleVerse.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SelectBibleVerses.xaml.cs">
+      <DependentUpon>SelectBibleVerses.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Theme.cs" />
     <Compile Include="Translations.cs" />
     <Compile Include="WebClient.cs" />
@@ -265,6 +271,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\AppBar\appbar.arrowto.rest.png" />
     <Content Include="Assets\AppBar\appbar.linkto.rest.pressed.png" />
     <Content Include="Assets\Badge.png" />
     <Content Include="Assets\Logo.png" />
@@ -392,6 +399,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MainPageSplit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SelectBibleVerse.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SelectBibleVerses.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

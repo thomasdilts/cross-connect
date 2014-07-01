@@ -227,4 +227,9 @@
 <string key="Connect to OneDrive">Pieslēgties OneDrive</string>
 <string key="Add a line between notes">Pievienotu līniju starp piezīmēm</string>
 <string key="Column">Sleja</string>
+<string key="Selected verses">Atlasītie vārsmas</string>
+<string key="Book">Grāmata</string>
+<string key="Chapter">Nodaļa</string>
+<string key="Verse">Dzejolis</string>
+<string key="To verse">Pantu</string>
 </translations>
