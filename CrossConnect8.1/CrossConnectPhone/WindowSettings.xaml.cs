@@ -290,13 +290,6 @@ namespace CrossConnect
         /// </param>
         private void PhoneApplicationPageLoaded(object sender, RoutedEventArgs e)
         {
-            if (_isInThisWindow)
-            {
-                return;
-            }
-
-            _isInThisWindow = true;
-            
             object changedFont;
             _fontFamily = string.Empty;
             if (PhoneApplicationService.Current.State.TryGetValue("WebFontSelectWindowSelection", out changedFont))
@@ -304,7 +297,16 @@ namespace CrossConnect
                 _fontFamily = (string)changedFont;
                 SetFontWindow(_fontFamily);
                 PhoneApplicationService.Current.State.Remove("WebFontSelectWindowSelection");
+            } 
+            
+            if (_isInThisWindow)
+            {
+                return;
             }
+
+            _isInThisWindow = true;
+            
+
             object skipWindowSettings;
             if (PhoneApplicationService.Current.State.TryGetValue("skipWindowSettings", out skipWindowSettings))
             {

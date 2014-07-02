@@ -248,7 +248,7 @@ namespace CrossConnect
                 return;
             }
 
-            ReloadWindow(((BibleZtextReader)openWindowSource).GetButtonWindowSpecs(0, 0, Translations.IsoLanguageCode));
+            ReloadWindow(((IBrowserTextSource)openWindowSource).GetButtonWindowSpecs(0, 0, Translations.IsoLanguageCode));
         }
 
         private void PhoneApplicationPageOrientationChanged(object sender, OrientationChangedEventArgs e)
