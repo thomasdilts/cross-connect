@@ -332,7 +332,8 @@ namespace CrossConnect
                 this.selectPlanType.SelectedIndex = App.DailyPlan.PlanNumber;
 
             }
-            else if (this.selectDocumentType.SelectedItem.Equals(Translations.Translate("Commentaries")))
+            
+            if (this.selectDocumentType.SelectedItem.Equals(Translations.Translate("Commentaries")))
             {
                 this.selectDocument.Items.Clear();
                 foreach (var book in App.InstalledBibles.InstalledCommentaries)
@@ -355,6 +356,22 @@ namespace CrossConnect
                 {
                     this.selectDocument.Items.Add(book.Value.Name);
                 }
+            }
+
+            if (WindowToChange != null)
+            {
+                foreach (var item in this.selectDocument.Items)
+                {
+                    if (item.Equals(WindowToChange.State.BibleDescription))
+                    {
+                        this.selectDocument.SelectedItem = item;
+                        break;
+                    }
+                }
+            }
+            if (this.selectDocument.SelectedIndex < 0)
+            {
+                this.selectDocument.SelectedIndex = 0;
             }
 
             bool isPageable = false;
@@ -391,11 +408,6 @@ namespace CrossConnect
                     }
                 }
             }
-
-            //if (this.selectDocument.Items.Any() && this.selectDocument.SelectedIndex < 0)
-            //{
-            //    this.selectDocument.SelectedIndex = 0;
-            //}
         }
         private void ButSetDateTodayClick(object sender, RoutedEventArgs e)
         {
@@ -457,12 +469,12 @@ namespace CrossConnect
                 this.selectDocumentType.Items.Add(Translations.Translate("Books"));
             }
 
-            this.selectDocument.Items.Clear();
+            //this.selectDocument.Items.Clear();
 
-            foreach (var book in App.InstalledBibles.InstalledBibles)
-            {
-                this.selectDocument.Items.Add(book.Value.Name);
-            }
+            //foreach (var book in App.InstalledBibles.InstalledBibles)
+            //{
+            //    this.selectDocument.Items.Add(book.Value.Name);
+            //}
             this.stackPanelSelectColumn.Visibility = WindowToChange == null ? Visibility.Visible : Visibility.Collapsed;
             this.selectColumn.Visibility = WindowToChange == null ? Visibility.Visible : Visibility.Collapsed;
             this.selectPlanTypeHeader.Visibility = Visibility.Collapsed;
@@ -473,7 +485,6 @@ namespace CrossConnect
             this.selectPlanType.Visibility = Visibility.Collapsed;
 
             this.sliderTextSize.Value = 20;
-            this.selectDocumentType.SelectedIndex = 0;
             if (App.OpenWindows.Any() && App.OpenWindows[0].State != null)
             {
                 this.sliderTextSize.Value = App.OpenWindows[0].State.HtmlFontSize;
@@ -510,6 +521,11 @@ namespace CrossConnect
                         break;
                     }
                 }
+            }
+
+            if (this.selectDocumentType.Items.Any() && this.selectDocumentType.SelectedIndex < 0)
+            {
+                this.selectDocumentType.SelectedIndex = 0;
             }
         }
 
