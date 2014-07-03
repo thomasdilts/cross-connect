@@ -339,11 +339,6 @@ namespace CrossConnect
                 {
                     this.selectDocument.Items.Add(book.Value.Name);
                 }
-
-                if (this.selectDocument.Items.Count() > 0)
-                {
-                    this.selectDocument.SelectedIndex = 0;
-                }
             }
             else if (this.selectDocumentType.SelectedItem.Equals(Translations.Translate("Books")))
             {
@@ -352,11 +347,6 @@ namespace CrossConnect
                 {
                     this.selectDocument.Items.Add(book.Value.Name);
                 }
-
-                if (this.selectDocument.Items.Count() > 0)
-                {
-                    this.selectDocument.SelectedIndex = 0;
-                }
             }
             else
             {
@@ -364,11 +354,6 @@ namespace CrossConnect
                 foreach (var book in App.InstalledBibles.InstalledBibles)
                 {
                     this.selectDocument.Items.Add(book.Value.Name);
-                }
-
-                if (this.selectDocument.Items.Any())
-                {
-                    this.selectDocument.SelectedIndex = 0;
                 }
             }
 
@@ -406,6 +391,11 @@ namespace CrossConnect
                     }
                 }
             }
+
+            //if (this.selectDocument.Items.Any() && this.selectDocument.SelectedIndex < 0)
+            //{
+            //    this.selectDocument.SelectedIndex = 0;
+            //}
         }
         private void ButSetDateTodayClick(object sender, RoutedEventArgs e)
         {
@@ -473,10 +463,6 @@ namespace CrossConnect
             {
                 this.selectDocument.Items.Add(book.Value.Name);
             }
-            if (this.selectDocument.Items.Any())
-            {
-                this.selectDocument.SelectedIndex = 0;
-            }
             this.stackPanelSelectColumn.Visibility = WindowToChange == null ? Visibility.Visible : Visibility.Collapsed;
             this.selectColumn.Visibility = WindowToChange == null ? Visibility.Visible : Visibility.Collapsed;
             this.selectPlanTypeHeader.Visibility = Visibility.Collapsed;
@@ -511,7 +497,7 @@ namespace CrossConnect
                     );
                 }
             }
-            selectDocumentSelectionChanged(null, null);
+            //selectDocumentSelectionChanged(null, null);
             if (WindowToChange != null)
             {
                 SetSelectedData(WindowToChange.State.WindowType, WindowToChange.State.BibleDescription);
@@ -578,6 +564,11 @@ namespace CrossConnect
         private bool IsInSelectDocChanged = false;
         private async void selectDocumentSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (selectDocument.SelectedIndex<0)
+            {
+                return;
+            }
+
             if(IsInSelectDocChanged)
             {
                 return;
