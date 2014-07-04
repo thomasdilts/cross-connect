@@ -291,7 +291,7 @@ namespace CrossConnect
         private void PhoneApplicationPageLoaded(object sender, RoutedEventArgs e)
         {
             object changedFont;
-            _fontFamily = string.Empty;
+            //_fontFamily = string.Empty;
             if (PhoneApplicationService.Current.State.TryGetValue("WebFontSelectWindowSelection", out changedFont))
             {
                 _fontFamily = (string)changedFont;
