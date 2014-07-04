@@ -49,7 +49,9 @@ namespace Sword.reader
 
         #endregion
 
+        [DataMember]
         public Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> NotesToShow;
+        [DataMember]
         public DisplaySettings LocalDisplaySettings;
         #region Constructors and Destructors
         public delegate void NotesChangedDelegate(Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> notesToShow, DisplaySettings displaySettings);
@@ -205,7 +207,7 @@ namespace Sword.reader
                     values,
                     !this.BookNames(Serial2.Iso2DigitLangCode).ExistsShortNames ? ButtonSize.Large : ButtonSize.Medium);
             }
-            else
+            else if (stage == 1)
             {
                 CanonBookDef book = canon.GetBookFromBookNumber(lastSelectedButton);
                 var allInBook = this.NotesToShow[book.ShortName1];
@@ -223,11 +225,15 @@ namespace Sword.reader
                 {
                     butColors[i] = 0;
                     butText[i] = (sortedKeys[i] + 1).ToString();
-                    values[i] = sortedKeys[i];
+                    values[i] = sortedKeys[i] + book.VersesInChapterStartIndex;
                 }
 
                 return new ButtonWindowSpecs(
                     stage, "Select a chapter to view", count, butColors, butText, values, ButtonSize.Small);
+            }
+            else
+            {
+                return null;
             }
         }
 
