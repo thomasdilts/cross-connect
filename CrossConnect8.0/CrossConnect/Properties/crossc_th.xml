@@ -248,4 +248,7 @@
 <string key="Selected verses">บทที่เลือก</string>
 <string key="Select verse">เลือกบทกวี</string>
 <string key="To verse">ไปข้อ</string>
+<string key="Backwards">ไปข้างหลัง</string>
+<string key="Forwards">ข้างหน้า</string>
+<string key="Remove screen transitions">เอาการเปลี่ยนหน้าจอ</string>
 </translations>

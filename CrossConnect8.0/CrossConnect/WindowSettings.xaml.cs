@@ -246,7 +246,7 @@ namespace CrossConnect
                     GetSelectedData(out selectedType, out bookSelected);
 
                     App.AddWindow(
-                        bookSelected.InternalName, bookSelected.Name, selectedType, sliderTextSize.Value, _fontFamily, selectbibelverses.GetPlaceMarkers());
+                        bookSelected.InternalName, bookSelected.Name, selectedType, sliderTextSize.SliderValue, _fontFamily, selectbibelverses.GetPlaceMarkers());
 
                     // if (NavigationService.CanGoBack)
                     // {
@@ -259,7 +259,7 @@ namespace CrossConnect
                         || App.OpenWindows[(int)openWindowIndex].State.WindowType == WindowType.WindowLexiconLink
                         || App.OpenWindows[(int)openWindowIndex].State.WindowType == WindowType.WindowTranslator)
                     {
-                        App.OpenWindows[(int)openWindowIndex].State.HtmlFontSize = sliderTextSize.Value;
+                        App.OpenWindows[(int)openWindowIndex].State.HtmlFontSize = sliderTextSize.SliderValue;
                     }
                     else
                     {
@@ -331,10 +331,12 @@ namespace CrossConnect
 
             if ((bool)initializeWindow)
             {
+                sliderTextSize.ValueChanged += SliderTextSizeValueChanged;
                 SetupEntirePage();
                 SetFontWindow(_fontFamily);
                 PhoneApplicationService.Current.State["InitializeWindowSettings"] = false;
             }
+
         }
 
         /// <summary>
@@ -467,7 +469,7 @@ namespace CrossConnect
             }
 
             SerializableWindowState state = App.OpenWindows[(int)openWindowIndex].State;
-            if (!state.BibleToLoad.Equals(bookSelected.InternalName) || state.WindowType != selectedType)
+            if ((!state.BibleToLoad.Equals(bookSelected.InternalName) || state.WindowType != selectedType) && state.WindowType!= WindowType.WindowLexiconLink)
             {
                 string relbookShortName;
                 int relChaptNum;
@@ -489,10 +491,10 @@ namespace CrossConnect
                 {
                     App.DailyPlan.PlanBible = state.BibleToLoad;
                     App.DailyPlan.PlanBibleDescription = state.BibleDescription;
-                    App.DailyPlan.PlanTextSize = sliderTextSize.Value;
+                    App.DailyPlan.PlanTextSize = sliderTextSize.SliderValue;
                 }
 
-                state.HtmlFontSize = sliderTextSize.Value;
+                state.HtmlFontSize = sliderTextSize.SliderValue;
                 state.Font = _fontFamily;
                 await ((BrowserTitledWindow)App.OpenWindows[(int)openWindowIndex]).Initialize(
                     state.BibleToLoad, state.BibleDescription, state.WindowType, selectbibelverses.GetPlaceMarkers());
@@ -504,10 +506,10 @@ namespace CrossConnect
             {
                 if (state.WindowType == WindowType.WindowDailyPlan)
                 {
-                    App.DailyPlan.PlanTextSize = sliderTextSize.Value;
+                    App.DailyPlan.PlanTextSize = sliderTextSize.SliderValue;
                 }
 
-                state.HtmlFontSize = sliderTextSize.Value;
+                state.HtmlFontSize = sliderTextSize.SliderValue;
                 state.Font = _fontFamily;
             }
         }
@@ -587,7 +589,11 @@ namespace CrossConnect
             EnterKeyText.Visibility = Visibility.Collapsed;
             butEnterKeySave.Visibility = Visibility.Collapsed;
 
-            sliderTextSize.Value = (double)Application.Current.Resources["PhoneFontSizeNormal"] * 5 / 8;
+            sliderTextSize.SliderValue = (double)Application.Current.Resources["PhoneFontSizeNormal"] * 5 / 8;
+            if(App.OpenWindows.Count >0)
+            {
+                sliderTextSize.SliderValue = App.OpenWindows[0].State.HtmlFontSize;
+            }
             bool isLocked = false;
             // must show the current window selections
             if (App.OpenWindows.Count > 0 && !(bool)isAddNewWindowOnly)
@@ -723,7 +729,7 @@ namespace CrossConnect
                         break;
                 }
 
-                sliderTextSize.Value = state.HtmlFontSize;
+                sliderTextSize.SliderValue = state.HtmlFontSize;
 
                 if (!string.IsNullOrEmpty(state.Font) && Theme.FontFamilies.ContainsKey(state.Font))
                 {

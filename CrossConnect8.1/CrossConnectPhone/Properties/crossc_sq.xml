@@ -248,4 +248,7 @@
 <string key="Selected verses">Vargjet e zgjedhura</string>
 <string key="Select verse">Zgjidh ajeti</string>
 <string key="To verse">Për vargun</string>
+<string key="Backwards">Mbrapsht</string>
+<string key="Forwards">Përpara</string>
+<string key="Remove screen transitions">Hiq tranzicionit ekran</string>
 </translations>

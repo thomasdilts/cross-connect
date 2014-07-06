@@ -248,4 +248,7 @@
 <string key="Selected verses">Udvalgte vers</string>
 <string key="Select verse">Vælg vers</string>
 <string key="To verse">Til vers</string>
+<string key="Backwards">Baglæns</string>
+<string key="Forwards">Fremad</string>
+<string key="Remove screen transitions">Fjern skærmen overgange</string>
 </translations>

@@ -134,6 +134,9 @@
     <Compile Include="CopyTexts.xaml.cs">
       <DependentUpon>CopyTexts.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EasySlider.xaml.cs">
+      <DependentUpon>EasySlider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ITiledWindow.cs" />
     <Compile Include="MediaPlayerWindow.xaml.cs">
       <DependentUpon>MediaPlayerWindow.xaml</DependentUpon>
@@ -229,6 +232,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="CopyTexts.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EasySlider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -398,6 +405,21 @@
     </Content>
     <Content Include="Backgroundlight.png" />
     <Content Include="crossbigbut691x336.png" />
+    <Content Include="Images\dark\appbar.arrowdown.rest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\dark\appbar.arrowdown.rest.press.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\dark\appbar.arrowto.rest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\dark\appbar.arrowup.rest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\dark\appbar.arrowup.rest.press.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\dark\appbar.download.rest.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -497,6 +519,12 @@
     <Content Include="Images\dark\open.folder.pressed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\dark\redo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\dark\undo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\dark\window.bigger.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -507,6 +535,21 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\dark\window.smaller.pressed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\light\appbar.arrowdown.rest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\light\appbar.arrowdown.rest.press.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\light\appbar.arrowto.rest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\light\appbar.arrowup.rest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\light\appbar.arrowup.rest.press.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\light\open.folder.png">

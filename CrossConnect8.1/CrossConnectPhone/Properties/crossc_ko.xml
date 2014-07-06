@@ -248,4 +248,7 @@
 <string key="Selected verses">선택된 구절</string>
 <string key="Select verse">선택시</string>
 <string key="To verse">구절에</string>
+<string key="Backwards">뒤로</string>
+<string key="Forwards">공격수</string>
+<string key="Remove screen transitions">화면 전환을 제거</string>
 </translations>

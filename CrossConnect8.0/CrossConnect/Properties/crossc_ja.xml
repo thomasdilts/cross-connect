@@ -248,4 +248,7 @@
 <string key="Selected verses">選択された詩</string>
 <string key="Select verse">詩を選択</string>
 <string key="To verse">詩へ</string>
+<string key="Backwards">後方</string>
+<string key="Forwards">フォワード</string>
+<string key="Remove screen transitions">画面遷移を削除</string>
 </translations>

@@ -248,4 +248,7 @@
 <string key="Selected verses">Seçilmiş ayetler</string>
 <string key="Select verse">Seç ayet</string>
 <string key="To verse">Ayet için</string>
+<string key="Backwards">Geriye</string>
+<string key="Forwards">Ileri</string>
+<string key="Remove screen transitions">Ekran geçişleri Kaldır</string>
 </translations>

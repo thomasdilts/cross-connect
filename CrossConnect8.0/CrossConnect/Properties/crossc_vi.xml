@@ -248,4 +248,7 @@
 <string key="Selected verses">Câu chọn</string>
 <string key="Select verse">Chọn câu</string>
 <string key="To verse">Để câu</string>
+<string key="Backwards">Ngược</string>
+<string key="Forwards">Tiền đạo</string>
+<string key="Remove screen transitions">Loại bỏ quá trình chuyển đổi màn hình</string>
 </translations>

@@ -248,4 +248,7 @@
 <string key="Selected verses">選定的詩句</string>
 <string key="Select verse">選擇詩句</string>
 <string key="To verse">詩句</string>
+<string key="Backwards">向後</string>
+<string key="Forwards">前鋒</string>
+<string key="Remove screen transitions">刪除屏幕轉換</string>
 </translations>

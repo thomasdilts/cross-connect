@@ -248,4 +248,7 @@
 <string key="Selected verses">Válogatott versek</string>
 <string key="Select verse">Válassza ki a vers</string>
 <string key="To verse">Vers</string>
+<string key="Backwards">Visszafelé</string>
+<string key="Forwards">Előre</string>
+<string key="Remove screen transitions">Vegye képernyő átmenetek</string>
 </translations>

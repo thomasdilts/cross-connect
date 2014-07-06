@@ -427,7 +427,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                         // set up the array for the chapter selection
                         int numOfChapters = parentChapter.Children.Count;
 
-                        if (numOfChapters <= 1)
+                        if (numOfChapters <= 0)
                         {
                             return null;
                         }

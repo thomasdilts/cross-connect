@@ -248,4 +248,7 @@
 <string key="Selected verses">தேர்ந்தெடுக்கப்பட்ட வசனங்கள்</string>
 <string key="Select verse">தேர்வு வசனம்</string>
 <string key="To verse">வசனம்</string>
+<string key="Backwards">பின்னோக்கி</string>
+<string key="Forwards">முன்னோக்கிய</string>
+<string key="Remove screen transitions">திரை மாற்றங்கள் நீக்க</string>
 </translations>

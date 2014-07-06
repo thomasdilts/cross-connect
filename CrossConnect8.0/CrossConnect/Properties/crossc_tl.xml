@@ -248,4 +248,7 @@
 <string key="Selected verses">Napiling verses</string>
 <string key="Select verse">Piliin ang mga taludtod</string>
 <string key="To verse">Upang taludtod</string>
+<string key="Backwards">Paurong</string>
+<string key="Forwards">Pasulong</string>
+<string key="Remove screen transitions">Alisin ang mga transition screen</string>
 </translations>

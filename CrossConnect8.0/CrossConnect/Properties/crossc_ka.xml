@@ -248,4 +248,7 @@
 <string key="Selected verses">შერჩეული ლექსები</string>
 <string key="Select verse">აირჩიეთ ლექსი</string>
 <string key="To verse">რომ ლექსი</string>
+<string key="Backwards">უკან</string>
+<string key="Forwards">თავდამსხმელები</string>
+<string key="Remove screen transitions">ამოღება ეკრანზე გადასვლები</string>
 </translations>

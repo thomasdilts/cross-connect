@@ -107,7 +107,11 @@ namespace CrossConnect
             this.TTS.Visibility = this._state != null && this._state.Source != null && this._state.Source.IsTTChearable && SpeechSynthesizer.AllVoices.Any()
                                        ? Visibility.Visible
                                        : Visibility.Collapsed;
-            this.Translate.Visibility = this.AddANote.Visibility;
+            this.Translate.Visibility = (this._state.WindowType == WindowType.WindowBible
+                                        || this._state.WindowType == WindowType.WindowDailyPlan
+                                        || this._state.WindowType == WindowType.WindowLexiconLink)
+                                           ? Visibility.Visible
+                                           : Visibility.Collapsed;
             this.Copy.Visibility = this.AddANote.Visibility;
             this.Highlight.Visibility = this.AddANote.Visibility;
             this.SendMail.Visibility = this.AddANote.Visibility;
@@ -209,7 +213,7 @@ namespace CrossConnect
                         await this._state.Source.GetTranslateableTexts(Translations.IsoLanguageCode, App.DisplaySettings, this._state.BibleToLoad);
                     var toTranslate = (string[])reply[0];
                     var isTranslateable = (bool[])reply[1];
-                    var transReader2 = new TranslatorReader(string.Empty, string.Empty, false, string.Empty, string.Empty, string.Empty);
+                    var transReader2 = new TranslatorReader(string.Empty, string.Empty, false, null, string.Empty, string.Empty);
                     await App.AddWindow(
                         this._state.BibleToLoad,
                         this._state.BibleDescription,

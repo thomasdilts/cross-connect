@@ -248,4 +248,7 @@
 <string key="Selected verses">Aukeratutako bertsoak</string>
 <string key="Select verse">Aukeratu Elortza</string>
 <string key="To verse">Bertsotan</string>
+<string key="Backwards">Atzeraka</string>
+<string key="Forwards">Aurreraka</string>
+<string key="Remove screen transitions">Kendu pantaila trantsizio</string>
 </translations>

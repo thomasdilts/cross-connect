@@ -132,6 +132,11 @@ namespace CrossConnect
             {
                 App.DisplaySettings.SyncMediaVerses = (bool)SyncVerses.IsChecked;
             }
+            if (this.RemoveScreenTransitions.IsChecked != null)
+            {
+                App.DisplaySettings.RemoveScreenTransitions = (bool)RemoveScreenTransitions.IsChecked;
+            }
+            
 
             if (this.useHighlighting.IsChecked != null)
             {
@@ -218,6 +223,7 @@ namespace CrossConnect
             this.useHighlighting.Header = Translations.Translate("Use highlighting");
             this.SyncVerses.Header = Translations.Translate("Synchronize to every verse");
             this.AddLineBetweenNotes.Header = Translations.Translate("Add a new line between notes");
+            this.RemoveScreenTransitions.Header = Translations.Translate("Remove screen transitions");
             
             butExportBookmarksHighlightsAndNotes.Content = Translations.Translate("Copy bookmarks, highlights and notes to the clipboard");
             butImportBookmarksHighlightsAndNotes.Content = Translations.Translate("Import bookmarks, highlights and notes after you paste the clipboard into the box below");
@@ -255,6 +261,7 @@ namespace CrossConnect
                     this.useHighlighting.IsChecked = App.DisplaySettings.UseHighlights;
                     this.SyncVerses.IsChecked = App.DisplaySettings.SyncMediaVerses;
                     this.AddLineBetweenNotes.IsChecked = App.DisplaySettings.AddLineBetweenNotes;
+                    this.RemoveScreenTransitions.IsChecked = App.DisplaySettings.RemoveScreenTransitions;
                     
                     successfulInitialize = true;
                 }

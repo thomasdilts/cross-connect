@@ -248,4 +248,7 @@
 <string key="Selected verses">Сонгосон ишлэл</string>
 <string key="Select verse">Сонгох шүлэг</string>
 <string key="To verse">Шүлэг тулд</string>
+<string key="Backwards">Хоцрогдсон</string>
+<string key="Forwards">Форвард</string>
+<string key="Remove screen transitions">Дэлгэц шилжилтийн устга</string>
 </translations>

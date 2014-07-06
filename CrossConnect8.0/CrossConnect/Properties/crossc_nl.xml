@@ -248,4 +248,7 @@
 <string key="Selected verses">Geselecteerde verzen</string>
 <string key="Select verse">Kies vers</string>
 <string key="To verse">Bij vers</string>
+<string key="Backwards">Achteruit</string>
+<string key="Forwards">Vooruit</string>
+<string key="Remove screen transitions">Verwijder scherm overgangen</string>
 </translations>

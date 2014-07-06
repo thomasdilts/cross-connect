@@ -86,7 +86,7 @@ namespace CrossConnect
                         int.Parse(this.planActualDateDay.SelectedItem.ToString()));
                     App.DailyPlan.PlanStartDate = startDate;
                     App.DailyPlan.PlanNumber = this.selectPlanType.SelectedIndex;
-                    App.DailyPlan.PlanTextSize = this.sliderTextSize.Value;
+                    App.DailyPlan.PlanTextSize = this.sliderTextSize.SliderValue;
                     int dayOfPlan = (int)actualDate.Subtract(startDate).TotalDays;
                     var schedule = DailyPlans.ZAllPlans(App.DailyPlan.PlanNumber);
                     if (dayOfPlan < 0 || dayOfPlan > schedule.GetUpperBound(0))
@@ -115,7 +115,7 @@ namespace CrossConnect
                         bookSelected.InternalName,
                         bookSelected.Name,
                         selectedType,
-                        this.sliderTextSize.Value,
+                        this.sliderTextSize.SliderValue,
                         fontFamily,
                         SelectVerses.GetPlaceMarkers(),
                         column,
@@ -137,7 +137,7 @@ namespace CrossConnect
                         out fullName,
                         out title);
                     WindowToChange.State.Font = fontFamily;
-                    WindowToChange.State.HtmlFontSize = this.sliderTextSize.Value;
+                    WindowToChange.State.HtmlFontSize = this.sliderTextSize.SliderValue;
                     WindowToChange.State.WindowType = selectedType;
                     await WindowToChange.Initialize(bookSelected.InternalName,
                         bookSelected.Name, selectedType, SelectVerses.GetPlaceMarkers());
@@ -484,10 +484,10 @@ namespace CrossConnect
             this.planActualDateCaption.Visibility = Visibility.Collapsed;
             this.selectPlanType.Visibility = Visibility.Collapsed;
 
-            this.sliderTextSize.Value = 20;
+            this.sliderTextSize.SliderValue = 20;
             if (App.OpenWindows.Any() && App.OpenWindows[0].State != null)
             {
-                this.sliderTextSize.Value = App.OpenWindows[0].State.HtmlFontSize;
+                this.sliderTextSize.SliderValue = App.OpenWindows[0].State.HtmlFontSize;
             }
 
             this.columns[0].IsChecked = true;
@@ -512,7 +512,7 @@ namespace CrossConnect
             if (WindowToChange != null)
             {
                 SetSelectedData(WindowToChange.State.WindowType, WindowToChange.State.BibleDescription);
-                this.sliderTextSize.Value = WindowToChange.State.HtmlFontSize;
+                this.sliderTextSize.SliderValue = WindowToChange.State.HtmlFontSize;
                 foreach (var item in WindowFontComboBox.Items)
                 {
                     if (((TextBlock)item).Text.Equals(WindowToChange.State.Font))
@@ -566,7 +566,7 @@ namespace CrossConnect
                         BrowserTitledWindow.GetBrowserColor("PhoneForegroundColor"),
                         BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
                         BrowserTitledWindow.GetBrowserColor("PhoneWordsOfChristColor"),
-                        this.sliderTextSize.Value,
+                        this.sliderTextSize.SliderValue,
                         Theme.FontFamilies[((TextBlock)WindowFontComboBox.SelectedItem).Text]) + "<a class=\"normalcolor\" href=\"#\">"
                     + Translations.Translate("Text size") + "</a>" + "</body></html>");
             }

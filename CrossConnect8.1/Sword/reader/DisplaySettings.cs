@@ -108,6 +108,9 @@ namespace Sword.reader
         [DataMember]
         public bool AddLineBetweenNotes = false;
 
+        [DataMember]
+        public bool RemoveScreenTransitions = false;
+
         public Highlighter highlighter = new Highlighter();
         #endregion
 
@@ -208,7 +211,8 @@ namespace Sword.reader
                 UseHighlights = this.UseHighlights,
                 SyncMediaVerses = this.SyncMediaVerses,
                 MarginInsideTextWindow = this.MarginInsideTextWindow,
-                AddLineBetweenNotes = this.AddLineBetweenNotes
+                AddLineBetweenNotes = this.AddLineBetweenNotes,
+                RemoveScreenTransitions = this.RemoveScreenTransitions
             };
             cloned.highlighter = this.highlighter;
             return cloned;
