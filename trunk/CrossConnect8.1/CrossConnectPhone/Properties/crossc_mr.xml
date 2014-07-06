@@ -248,4 +248,7 @@
 <string key="Selected verses">निवडक अध्याय</string>
 <string key="Select verse">निवडा काव्य</string>
 <string key="To verse">पद्य करण्यासाठी</string>
+<string key="Backwards">पाठीमागे</string>
+<string key="Forwards">पाठविते</string>
+<string key="Remove screen transitions">स्क्रीन संक्रमणे काढा</string>
 </translations>

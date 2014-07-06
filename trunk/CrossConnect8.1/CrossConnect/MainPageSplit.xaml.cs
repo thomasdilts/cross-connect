@@ -503,6 +503,7 @@ namespace CrossConnect
         private void MainPageLoaded(object sender, RoutedEventArgs e)
         {
             RedrawMainScreen(false);
+            sliderTextSize.ValueChanged += SliderTextSizeValueChanged;
         }
 
         public void RecolorScreen()

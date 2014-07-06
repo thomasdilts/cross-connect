@@ -248,4 +248,7 @@
 <string key="Selected verses">Versete selectate</string>
 <string key="Select verse">Selectați verset</string>
 <string key="To verse">La versetul</string>
+<string key="Backwards">Înapoi</string>
+<string key="Forwards">Înainte</string>
+<string key="Remove screen transitions">Elimina tranziții ecran</string>
 </translations>

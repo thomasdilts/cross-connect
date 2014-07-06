@@ -248,4 +248,7 @@
 <string key="Selected verses">آيات مختارة</string>
 <string key="Select verse">حدد الآية</string>
 <string key="To verse">إلى الآية</string>
+<string key="Backwards">الى الوراء</string>
+<string key="Forwards">إلى الأمام</string>
+<string key="Remove screen transitions">إزالة التحولات الشاشة</string>
 </translations>

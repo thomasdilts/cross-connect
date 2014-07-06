@@ -842,6 +842,7 @@ namespace CrossConnect
                 }
                 else
                 {
+                    var strongsNumber = RemoveAllAfterPeriod(chapterVerse[1]);
                     ITiledWindow foundWin = null;
                     foreach (ITiledWindow win in App.OpenWindows)
                     {
@@ -853,7 +854,7 @@ namespace CrossConnect
                     if (foundWin == null)
                     {
                         var win = new GreekHebrewDictReader(string.Empty, string.Empty, false);
-                        win.ShowLink(chapterVerse[1]);
+                        win.ShowLink(strongsNumber);
                         await App.AddWindow(
                             this._state.BibleToLoad,
                             this._state.BibleDescription,
@@ -866,7 +867,7 @@ namespace CrossConnect
                     }
                     else
                     {
-                        ((GreekHebrewDictReader)foundWin.State.Source).ShowLink(chapterVerse[1]);
+                        ((GreekHebrewDictReader)foundWin.State.Source).ShowLink(strongsNumber);
                         foundWin.UpdateBrowser(false);
                     }
                 }
@@ -924,6 +925,17 @@ namespace CrossConnect
                     App.AddHistory(bookShortName, chapterNum, verseNum);
                 }
             }
+        }
+        private string RemoveAllAfterPeriod(string toClean)
+        {
+            var cleanedString = toClean;
+            if (toClean.Contains("."))
+            {
+                var index = toClean.IndexOf(".");
+                cleanedString = toClean.Substring(0, index);
+            }
+
+            return cleanedString;
         }
         private async void ScrollToThisVerse(string bookShortName, int chapterNum, int verseNum)
         {

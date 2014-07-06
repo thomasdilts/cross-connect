@@ -249,4 +249,7 @@
   <string key="Selected verses">Selected verses</string>
   <string key="Select verse">Select verse</string>
   <string key="To verse">To verse</string>
+  <string key="Forwards">Forwards</string>
+  <string key="Backwards">Backwards</string>
+  <string key="Remove screen transitions">Remove screen transitions</string>
 </translations>

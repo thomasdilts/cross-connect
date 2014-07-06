@@ -248,4 +248,7 @@
 <string key="Selected verses">Избрани стихови</string>
 <string key="Select verse">Изберете стих</string>
 <string key="To verse">Да стих</string>
+<string key="Backwards">Наназад</string>
+<string key="Forwards">Напред</string>
+<string key="Remove screen transitions">Отстрани екран транзиции</string>
 </translations>

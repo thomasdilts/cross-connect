@@ -248,4 +248,7 @@
 <string key="Selected verses">Véarsaí Roghnaithe</string>
 <string key="Select verse">Roghnaigh véarsa</string>
 <string key="To verse">Chun véarsa</string>
+<string key="Backwards">Siardhátaithe</string>
+<string key="Forwards">Ar aghaidh</string>
+<string key="Remove screen transitions">Bain trasdulta scáileán</string>
 </translations>

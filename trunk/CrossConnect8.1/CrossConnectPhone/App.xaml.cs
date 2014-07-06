@@ -631,6 +631,19 @@ namespace CrossConnect
                                     nextWindow.State.IsResume = true;
                                 }
 
+                                switch(state.WindowType)
+                                {
+                                    case WindowType.WindowHistory:
+                                        App.HistoryChanged += ((BiblePlaceMarkReader)state.Source).BiblePlaceMarkSourceChanged;
+                                        break;
+                                    case WindowType.WindowBookmarks:
+                                        App.BookMarksChanged += ((BiblePlaceMarkReader)state.Source).BiblePlaceMarkSourceChanged;
+                                        break;
+                                    case WindowType.WindowAddedNotes:
+                                        App.PersonalNotesChanged += ((PersonalNotesReader)state.Source).NotesSourceChanged;
+                                        break;
+                                }
+
                                 OpenWindows.Add(nextWindow);
 
                                 // nextWindow.Initialize(nextWindow.state.bibleToLoad, nextWindow.state.windowType);
@@ -750,6 +763,8 @@ namespace CrossConnect
             {
                 PlaceMarkers = new BiblePlaceMarkers();
             }
+            RaiseHistoryChangeEvent();
+            RaiseBookmarkChangeEvent();
         }
 
         public delegate Task LoadPersObjDelegate(Dictionary<String, Object> objectsToLoad);

@@ -58,14 +58,16 @@
                                       IconUri="/Images/dark/appbar.new.rest.png" Text="New window" />
       <shell:ApplicationBarIconButton Click="ButAddBookmarkClick" x:Name="butAddBookmark"
                                       IconUri="/Images/dark/appbar.favs.addto.rest.png" Text="New window" />
-      <shell:ApplicationBarIconButton Click="ButGoToPlanClick" x:Name="butGoToPlan"
-                                      IconUri="/Images/dark/appbar.gotodate.rest.png" Text="New window" />
-      <shell:ApplicationBarIconButton Click="ButHelpClick" x:Name="butHelp"
-                                      IconUri="/Images/dark/appbar.questionmark.rest.png" Text="Help" />
+            <shell:ApplicationBarIconButton Click="ButUndoGoBackClick" x:Name="ButUndoGoBack"
+                                      IconUri="/Images/dark/undo.png" Text="Backwards" />
+            <shell:ApplicationBarIconButton Click="ButRedoGoForwardClick" x:Name="ButRedoGoForward"
+                                      IconUri="/Images/dark/redo.png" Text="Forwards" />
       <shell:ApplicationBar.MenuItems>
-        <shell:ApplicationBarMenuItem Click="MenuRateThisAppClick" x:Name="menuRateThisApp"
+                <shell:ApplicationBarMenuItem Click="ButHelpClick" x:Name="menuHelp"
+                                      Text="Help" />
+                <shell:ApplicationBarMenuItem Click="MenuRateThisAppClick" x:Name="menuRateThisApp"
                                       Text="Rate this application" />
-        <shell:ApplicationBarMenuItem Click="MenuHighlightClick" x:Name="menuHighlight" Text="Highlight" />
+                <shell:ApplicationBarMenuItem Click="MenuHighlightClick" x:Name="menuHighlight" Text="Highlight" />
         <shell:ApplicationBarMenuItem Click="MenuCopyClick" x:Name="menuCopy" Text="Copy" />
         <shell:ApplicationBarMenuItem Click="MenuThemesClick" x:Name="menuThemes" Text="Select colors" />
         <shell:ApplicationBarMenuItem Click="MenuDownloadBibleClick" x:Name="menuDownloadBible"
@@ -85,7 +87,6 @@
         <shell:ApplicationBarMenuItem Click="MenuSettingsClick" x:Name="menuSettings" Text="Settings" />
         <shell:ApplicationBarMenuItem Click="MenuLanguageClick" x:Name="menuLanguage" Text="Select language" />
         <shell:ApplicationBarMenuItem Click="MenuExportClick" x:Name="menuExport" Text="Export to OneDrive" />
-        <shell:ApplicationBarMenuItem Click="ButHelpClick" x:Name="menuHelp" Text="help" />
       </shell:ApplicationBar.MenuItems>
     </shell:ApplicationBar>
   </local:AutoRotatePage.ApplicationBar>

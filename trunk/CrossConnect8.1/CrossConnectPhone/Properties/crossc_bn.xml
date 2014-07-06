@@ -248,4 +248,7 @@
 <string key="Selected verses">সিলেক্টেড আয়াত</string>
 <string key="Select verse">নির্বাচন পদ্য</string>
 <string key="To verse">শ্লোক</string>
+<string key="Backwards">পিছে</string>
+<string key="Forwards">সম্মুখে</string>
+<string key="Remove screen transitions">পর্দা রূপান্তরের সরান</string>
 </translations>

@@ -248,4 +248,7 @@
 <string key="Selected verses">Ayat-ayat yang dipilih</string>
 <string key="Select verse">Pilih ayat</string>
 <string key="To verse">Untuk ayat</string>
+<string key="Backwards">Terbalik</string>
+<string key="Forwards">Pemain depan</string>
+<string key="Remove screen transitions">Hapus transisi layar</string>
 </translations>

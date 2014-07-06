@@ -248,4 +248,7 @@
 <string key="Selected verses">चयनित छंद</string>
 <string key="Select verse">चुनें कविता</string>
 <string key="To verse">कविता के लिए</string>
+<string key="Backwards">पीछे की ओर</string>
+<string key="Forwards">को अग्रेषित</string>
+<string key="Remove screen transitions">स्क्रीन संक्रमण निकालें</string>
 </translations>

@@ -248,4 +248,7 @@
 <string key="Selected verses">Вибрані вірші</string>
 <string key="Select verse">Виберіть вірш</string>
 <string key="To verse">Для вірш</string>
+<string key="Backwards">Назад</string>
+<string key="Forwards">Уперед</string>
+<string key="Remove screen transitions">Видалити екрану переходи</string>
 </translations>

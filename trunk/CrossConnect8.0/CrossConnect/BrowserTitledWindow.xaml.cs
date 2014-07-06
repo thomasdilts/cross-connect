@@ -774,6 +774,10 @@ namespace CrossConnect
             {
                 HitButtonClose(this, e);
             }
+            else
+            {
+                App.MainWindow.HitButtonClose(this, e);
+            }
         }
 
         private void ButCloseManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
@@ -883,47 +887,59 @@ namespace CrossConnect
         {
             KillManipulation();
             _state.Source.MoveNext(false);
+            if (!App.DisplaySettings.RemoveScreenTransitions)
+            {
+                string mode = "SlideLeftFadeOut";
+                TransitionElement transitionElement = SlideTransitionElement(mode);
 
-            string mode = "SlideLeftFadeOut";
-            TransitionElement transitionElement = SlideTransitionElement(mode);
-
-            ITransition transition = transitionElement.GetTransition(this);
-            transition.Completed += (sender1, e1) =>
-                {
-                    UpdateBrowser(false);
-                    transition.Stop();
-                    mode = "SlideLeftFadeIn";
-                    transitionElement = null;
-                    transitionElement = SlideTransitionElement(mode);
-                    transition = transitionElement.GetTransition(this);
-                    transition.Completed += delegate { transition.Stop(); };
-                    transition.Begin();
-                };
-            transition.Begin();
+                ITransition transition = transitionElement.GetTransition(this);
+                transition.Completed += (sender1, e1) =>
+                    {
+                        UpdateBrowser(false);
+                        transition.Stop();
+                        mode = "SlideLeftFadeIn";
+                        transitionElement = null;
+                        transitionElement = SlideTransitionElement(mode);
+                        transition = transitionElement.GetTransition(this);
+                        transition.Completed += delegate { transition.Stop(); };
+                        transition.Begin();
+                    };
+                transition.Begin();
+            }
+            else
+            {
+                UpdateBrowser(false); 
+            }
         }
 
         private void ButPreviousClick(object sender, RoutedEventArgs e)
         {
             KillManipulation();
             _state.Source.MovePrevious(false);
+            if (!App.DisplaySettings.RemoveScreenTransitions)
+            {
+                string mode = "SlideRightFadeOut";
+                TransitionElement transitionElement = SlideTransitionElement(mode);
 
-            string mode = "SlideRightFadeOut";
-            TransitionElement transitionElement = SlideTransitionElement(mode);
+                ITransition transition = transitionElement.GetTransition(this);
 
-            ITransition transition = transitionElement.GetTransition(this);
-
-            transition.Completed += (sender1, e1) =>
-                {
-                    UpdateBrowser(false);
-                    transition.Stop();
-                    mode = "SlideRightFadeIn";
-                    transitionElement = null;
-                    transitionElement = SlideTransitionElement(mode);
-                    transition = transitionElement.GetTransition(this);
-                    transition.Completed += delegate { transition.Stop(); };
-                    transition.Begin();
-                };
-            transition.Begin();
+                transition.Completed += (sender1, e1) =>
+                    {
+                        UpdateBrowser(false);
+                        transition.Stop();
+                        mode = "SlideRightFadeIn";
+                        transitionElement = null;
+                        transitionElement = SlideTransitionElement(mode);
+                        transition = transitionElement.GetTransition(this);
+                        transition.Completed += delegate { transition.Stop(); };
+                        transition.Begin();
+                    };
+                transition.Begin();
+            }
+            else
+            {
+                UpdateBrowser(false);
+            }
         }
 
         private void ButSmallerClick(object sender, RoutedEventArgs e)
@@ -1172,6 +1188,7 @@ namespace CrossConnect
                             foundWin = win;
                         }
                     }
+ 
                     if (foundWin == null)
                     {
                         var win = new InternetLinkReader(string.Empty, string.Empty, false);
@@ -1187,6 +1204,8 @@ namespace CrossConnect
                     }
                     else
                     {
+
+
                         ((InternetLinkReader)foundWin.State.Source).ShowLink(
                             chapterVerse[1], chapterVerse[1]);
                         foundWin.UpdateBrowser(false);
@@ -1194,6 +1213,9 @@ namespace CrossConnect
                 }
                 else
                 {
+                    // the number might have a decimal point. We must remove everything after the decimal point.
+                    var strongNumber = RemoveAllAfterPeriod(chapterVerse[1]);
+                    
                     ITiledWindow foundWin = null;
                     foreach (ITiledWindow win in App.OpenWindows)
                     {
@@ -1205,7 +1227,7 @@ namespace CrossConnect
                     if (foundWin == null)
                     {
                         var win = new GreekHebrewDictReader(string.Empty, string.Empty, false);
-                        win.ShowLink(chapterVerse[1]);
+                        win.ShowLink(strongNumber);
                         App.AddWindow(
                             this._state.BibleToLoad,
                             this._state.BibleDescription,
@@ -1217,7 +1239,7 @@ namespace CrossConnect
                     }
                     else
                     {
-                        ((GreekHebrewDictReader)foundWin.State.Source).ShowLink(chapterVerse[1]);
+                        ((GreekHebrewDictReader)foundWin.State.Source).ShowLink(strongNumber);
                         foundWin.UpdateBrowser(false);
                     }
                 }
@@ -1276,7 +1298,17 @@ namespace CrossConnect
                 }
             }
         }
+        private string RemoveAllAfterPeriod(string toClean)
+        {
+            var cleanedString = toClean;
+            if(toClean.Contains("."))
+            {
+                var index = toClean.IndexOf(".");
+                cleanedString = toClean.Substring(0, index);
+            }
 
+            return cleanedString;
+        }
         private void WebBrowser1Unloaded(object sender, RoutedEventArgs e)
         {
             if (_state != null && _state.Source != null)

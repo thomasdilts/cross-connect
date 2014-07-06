@@ -151,6 +151,9 @@
     </Compile>
     <Compile Include="BrowserStartAudio.cs" />
     <Compile Include="BrowserEnterKey.cs" />
+    <Compile Include="EasySlider.xaml.cs">
+      <DependentUpon>EasySlider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPageAddWindow.cs" />
     <Compile Include="MainPageDownloadBible.cs" />
     <Compile Include="MainPageOneDrive.cs" />
@@ -393,6 +396,10 @@
     <Page Include="Common\StandardStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EasySlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MediaPlayerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

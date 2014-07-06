@@ -248,4 +248,7 @@
 <string key="Selected verses">Valdar vísur</string>
 <string key="Select verse">Veldu vers</string>
 <string key="To verse">Að vísu</string>
+<string key="Backwards">Aftur á bak</string>
+<string key="Forwards">Framherjar</string>
+<string key="Remove screen transitions">Fjarlægja skjár umbreytingum</string>
 </translations>

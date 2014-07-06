@@ -248,4 +248,7 @@
 <string key="Selected verses">Des versets choisis</string>
 <string key="Select verse">Sélectionnez verset</string>
 <string key="To verse">Au verset</string>
+<string key="Backwards">En arrière</string>
+<string key="Forwards">Avant</string>
+<string key="Remove screen transitions">Retirer des transitions d'écran</string>
 </translations>

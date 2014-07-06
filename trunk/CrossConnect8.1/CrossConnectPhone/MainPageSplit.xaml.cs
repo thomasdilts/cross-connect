@@ -67,6 +67,7 @@ namespace CrossConnect
         public MainPageSplit()
         {
             InitializeComponent();
+            App.HistoryChanged += App_HistoryChanged;
         }
 
         #endregion Constructors
@@ -340,7 +341,7 @@ namespace CrossConnect
             ReDrawWindows();
         }
 
-        private void HitButtonClose(object sender, EventArgs e)
+        public void HitButtonClose(object sender, EventArgs e)
         {
             App.OpenWindows.RemoveAt(((ITiledWindow)sender).State.CurIndex);
             ReDrawWindows();
@@ -359,38 +360,39 @@ namespace CrossConnect
             {
                 DoLoading();
             }
+            App_HistoryChanged(null, null);
         }
 
         public void DoLoading()
         {
             ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).Text = Translations.Translate("Add new window");
             ((ApplicationBarIconButton)ApplicationBar.Buttons[1]).Text = Translations.Translate("Add to bookmarks");
-            ((ApplicationBarIconButton)ApplicationBar.Buttons[2]).Text = Translations.Translate("Daily plan");
-            ((ApplicationBarIconButton)ApplicationBar.Buttons[3]).Text = Translations.Translate("Help");
+            ((ApplicationBarIconButton)ApplicationBar.Buttons[2]).Text = Translations.Translate("Backwards");
+            ((ApplicationBarIconButton)ApplicationBar.Buttons[3]).Text = Translations.Translate("Forwards");
 
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[0]).Text = Translations.Translate(
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[0]).Text = Translations.Translate("Help");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[1]).Text = Translations.Translate(
                 "Rate this program");
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[1]).Text = Translations.Translate("Highlight");
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[2]).Text = Translations.Translate("Copy");
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[3]).Text = Translations.Translate("Themes");
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[4]).Text = Translations.Translate("Download bibles");
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[5]).Text = Translations.Translate("Add a note");
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[6]).Text =
-                Translations.Translate("Select bible to delete");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[2]).Text = Translations.Translate("Highlight");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[3]).Text = Translations.Translate("Copy");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[4]).Text = Translations.Translate("Themes");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[5]).Text = Translations.Translate("Download bibles");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[6]).Text = Translations.Translate("Add a note");
             ((ApplicationBarMenuItem)ApplicationBar.MenuItems[7]).Text =
+                Translations.Translate("Select bible to delete");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[8]).Text =
                 Translations.Translate("Select bookmark to delete");
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[8]).Text = Translations.Translate("Clear history");
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[9]).Text = Translations.Translate("Send message");
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[10]).Text = Translations.Translate("Send mail");
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[11]).Text = Translations.Translate("Add new window");
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[12]).Text = Translations.Translate(
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[9]).Text = Translations.Translate("Clear history");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[10]).Text = Translations.Translate("Send message");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[11]).Text = Translations.Translate("Send mail");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[12]).Text = Translations.Translate("Add new window");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[13]).Text = Translations.Translate(
                 "Add to bookmarks");
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[13]).Text = Translations.Translate("Daily plan");
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[14]).Text = Translations.Translate("Settings");
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[15]).Text =
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[14]).Text = Translations.Translate("Daily plan");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[15]).Text = Translations.Translate("Settings");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[16]).Text =
                 Translations.Translate("Select the language") + " (language)";
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[16]).Text = Translations.Translate("OneDrive backup / restore");
-            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[17]).Text = Translations.Translate("Help");
+            ((ApplicationBarMenuItem)ApplicationBar.MenuItems[17]).Text = Translations.Translate("OneDrive backup / restore");
 
             if (!App.OpenWindows.Any() || !App.InstalledBibles.InstalledBibles.Any())
             {
@@ -615,40 +617,127 @@ namespace CrossConnect
 
         private void ShowScreen(int screenNum)
         {
-            if (_isInScreenMoving)
+            if (!App.DisplaySettings.RemoveScreenTransitions)
             {
-                return;
-            }
+                if (_isInScreenMoving)
+                {
+                    return;
+                }
 
-            if (screenNum == _currentScreen)
+                if (screenNum == _currentScreen)
+                {
+                    return;
+                }
+                App.StartTimerForSavingWindows();
+                _isInScreenMoving = true;
+                if (Math.Abs(_screenWidth) < 0.1)
+                {
+                    SetScreenWidthVariable();
+                }
+
+                _screenPosIncrement = (_currentScreen - screenNum) / Math.Abs(_currentScreen - screenNum)
+                                           * 80;
+                _currentScreen = screenNum;
+                PhoneApplicationService.Current.State["CurrentScreen"] = _currentScreen;
+                DrawWindowSelectionButtons();
+
+                // give a kick start to the animation
+                var leftMargin = (int)WindowGrid.Margin.Left;
+                leftMargin += _screenPosIncrement * 3;
+                WindowGrid.Margin = new Thickness(leftMargin, 0, 0, 0);
+
+                // animate
+                _moveMultiScreenTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(5) };
+                _moveMultiScreenTimer.Tick += DoMoveMultiScreenTimerTick;
+                _moveMultiScreenTimer.Start();
+            }
+            else
             {
-                return;
+                _currentScreen = screenNum;
+                PhoneApplicationService.Current.State["CurrentScreen"] = _currentScreen;
+                DrawWindowSelectionButtons();
+                WindowGrid.Margin = new Thickness(-_currentScreen * _screenWidth, 0, 0, 0);
             }
-            App.StartTimerForSavingWindows();
-            _isInScreenMoving = true;
-            if (Math.Abs(_screenWidth) < 0.1)
-            {
-                SetScreenWidthVariable();
-            }
-
-            _screenPosIncrement = (_currentScreen - screenNum) / Math.Abs(_currentScreen - screenNum)
-                                       * 80;
-            _currentScreen = screenNum;
-            PhoneApplicationService.Current.State["CurrentScreen"] = _currentScreen;
-            DrawWindowSelectionButtons();
-
-            // give a kick start to the animation
-            var leftMargin = (int)WindowGrid.Margin.Left;
-            leftMargin += _screenPosIncrement * 3;
-            WindowGrid.Margin = new Thickness(leftMargin, 0, 0, 0);
-
-            // animate
-            _moveMultiScreenTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(5) };
-            _moveMultiScreenTimer.Tick += DoMoveMultiScreenTimerTick;
-            _moveMultiScreenTimer.Start();
         }
 
         #endregion Methods
 
+        private int _history_reveiw_pointer = -1;
+        BiblePlaceMarker _history_reveiw_pointer_lastlinked = null;
+        private void ButRedoGoForwardClick(object sender, EventArgs e)
+        {
+            var historyCount = App.PlaceMarkers.History.Count();
+            if (_history_reveiw_pointer < (historyCount - 1) && _history_reveiw_pointer != -1)
+            {
+                _history_reveiw_pointer++;
+                var jumpTo = App.PlaceMarkers.History[_history_reveiw_pointer];
+                _history_reveiw_pointer_lastlinked = jumpTo;
+                App.SynchronizeAllWindows(jumpTo.BookShortName, jumpTo.ChapterNum, jumpTo.VerseNum, -1, null);
+            }
+
+            ShowForwardBackwardButtons();
+        }
+
+        private void ButUndoGoBackClick(object sender, EventArgs e)
+        {
+            var historyCount = App.PlaceMarkers.History.Count();
+            if (historyCount > 0 && _history_reveiw_pointer != 0)
+            {
+                if (_history_reveiw_pointer == -1)
+                {
+                    _history_reveiw_pointer = App.PlaceMarkers.History.Count();
+                }
+                _history_reveiw_pointer--;
+                var jumpTo = App.PlaceMarkers.History[_history_reveiw_pointer];
+                _history_reveiw_pointer_lastlinked = jumpTo;
+                App.SynchronizeAllWindows(jumpTo.BookShortName, jumpTo.ChapterNum, jumpTo.VerseNum, -1, null);
+            }
+
+            ShowForwardBackwardButtons();
+        }
+
+        void App_HistoryChanged(List<BiblePlaceMarker> bookMarksToShow, DisplaySettings displaySettings)
+        {
+            //if (historyCount==0)
+            //{
+                _history_reveiw_pointer_lastlinked = null;
+                _history_reveiw_pointer = -1;
+            //}
+
+            //if (historyCount > _history_reveiw_pointer  && _history_reveiw_pointer>=0)
+            //{
+            //    var lastPlace = App.PlaceMarkers.History[_history_reveiw_pointer];
+            //    var lastPlaceMinusOne = _history_reveiw_pointer!=0? App.PlaceMarkers.History[_history_reveiw_pointer-1]:null;
+            //    // we need to keep the pointer in the same position
+            //    if( ! _history_reveiw_pointer_lastlinked.When.Equals(lastPlace.When))
+            //    {
+            //        if(lastPlaceMinusOne==null || ! _history_reveiw_pointer_lastlinked.When.Equals(lastPlaceMinusOne.When))
+            //        {
+            //            // we lost our place. Turn off everything
+            //            _history_reveiw_pointer_lastlinked=null;
+            //            _history_reveiw_pointer = -1;
+            //        }
+            //        else
+            //        {
+            //            _history_reveiw_pointer--;
+            //            _history_reveiw_pointer_lastlinked = lastPlaceMinusOne;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        _history_reveiw_pointer_lastlinked = lastPlace;
+            //    }
+            //}
+
+                ShowForwardBackwardButtons();
+        }
+        private void ShowForwardBackwardButtons()
+        {
+            var historyCount = App.PlaceMarkers.History.Count();
+            // forward
+            ((ApplicationBarIconButton)ApplicationBar.Buttons[3]).IsEnabled = _history_reveiw_pointer < (historyCount - 1) && _history_reveiw_pointer != -1 && historyCount > 0;
+            // backward
+            ((ApplicationBarIconButton)ApplicationBar.Buttons[2]).IsEnabled = historyCount > 0 && _history_reveiw_pointer != 0;
+        }
     }
 }

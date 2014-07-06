@@ -248,4 +248,7 @@
 <string key="Selected verses">Valitud värsse</string>
 <string key="Select verse">Vali salm</string>
 <string key="To verse">Salmi</string>
+<string key="Backwards">Tagasi</string>
+<string key="Forwards">Edasi</string>
+<string key="Remove screen transitions">Eemalda ekraan üleminekud</string>
 </translations>

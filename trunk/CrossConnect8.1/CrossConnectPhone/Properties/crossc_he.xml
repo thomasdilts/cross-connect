@@ -248,4 +248,7 @@
 <string key="Selected verses">פסוקים נבחרים</string>
 <string key="Select verse">פסוק בחר</string>
 <string key="To verse">פסוק</string>
+<string key="Backwards">אחורה</string>
+<string key="Forwards">קדימה</string>
+<string key="Remove screen transitions">הסר מעברי מסך</string>
 </translations>
