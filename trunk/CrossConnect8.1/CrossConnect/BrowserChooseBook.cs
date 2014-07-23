@@ -365,6 +365,10 @@ namespace CrossConnect
                         }
                         else
                         {
+                            if (this._state.Source is BibleZtextReader)
+                            {
+                                App.AddHistory(bookShortName, relChaptNum, 0);
+                            }
                             this._state.Source.MoveChapterVerse(bookShortName, relChaptNum, 0, false, this._state.Source);
 
                             this.BookPopup.IsOpen = false;
@@ -395,6 +399,10 @@ namespace CrossConnect
                         }
                         else
                         {
+                            if (this._state.Source is BibleZtextReader)
+                            {
+                                App.AddHistory(bookShortName, relChaptNum, 0);
+                            }
                             this._state.Source.MoveChapterVerse(bookShortName, relChaptNum, 0, false, this._state.Source);
 
                             this.BookPopup.IsOpen = false;
@@ -441,6 +449,10 @@ namespace CrossConnect
                         chapterNumber = (int)((Button)sender).Tag - book.VersesInChapterStartIndex;
                         bookName = book.ShortName1;
                     }
+                    if (this._state.Source is BibleZtextReader)
+                    {
+                        App.AddHistory(bookName, chapterNumber, 0);
+                    }
                     this._state.Source.MoveChapterVerse(bookName, chapterNumber, 0, false, this._state.Source);
 
                     this.BookPopup.IsOpen = false;
@@ -472,6 +484,11 @@ namespace CrossConnect
                 {
                     chapter = (int)((Button)sender).Tag;
                 }
+
+                if (this._state.Source is BibleZtextReader)
+                {
+                    App.AddHistory(bookname, chapter, 0);
+                }
                 this._state.Source.MoveChapterVerse(bookname, chapter, 0, false, this._state.Source);
                 this.BookPopup.IsOpen = false;
                 this.SearchPopup.IsOpen = false;
@@ -502,6 +519,10 @@ namespace CrossConnect
                     chapter = this._selectBibleBookSecondSelection;
                 }
 
+                if (this._state.Source is BibleZtextReader)
+                {
+                    App.AddHistory(bookname, chapter, (int)((Button)sender).Tag);
+                }
                 this._state.Source.MoveChapterVerse(bookname,  chapter, (int)((Button)sender).Tag, false, this._state.Source);
                 this.BookPopup.IsOpen = false;
                 this.SearchPopup.IsOpen = false;
@@ -523,6 +544,10 @@ namespace CrossConnect
             else
             {
                 chapter = (int)((Button)sender).Tag;
+            }
+            if (this._state.Source is BibleZtextReader)
+            {
+                App.AddHistory(bookname, chapter, 0);
             }
             this._state.Source.MoveChapterVerse(bookname, chapter, 0, false, this._state.Source);
             this.BookPopup.IsOpen = false;

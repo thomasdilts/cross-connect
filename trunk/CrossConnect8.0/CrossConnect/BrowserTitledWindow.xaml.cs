@@ -1357,6 +1357,10 @@ namespace CrossConnect
         }
         public void SelectedVerseEvent(string bookName, int moveToChapter, int verse)
         {
+            if (this._state.Source is BibleZtextReader)
+            {
+                App.AddHistory(bookName, moveToChapter, verse);
+            }
             this._state.Source.MoveChapterVerse(bookName, moveToChapter, verse, false, this._state.Source);
         }
         private void ButSelectBook_OnClick(object sender, RoutedEventArgs e)
