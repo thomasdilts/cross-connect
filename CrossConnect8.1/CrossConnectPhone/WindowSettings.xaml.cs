@@ -787,7 +787,7 @@ namespace CrossConnect
             {
                 ((BibleZtextReader)state.Source).Serial.CipherKey = this.EnterKeyText.Text;
                 string filenameComplete = ((BibleZtextReader)state.Source).Serial.Path + "CipherKey.txt";
-                await Hoot.File.WriteAllBytes(filenameComplete, Encoding.UTF8.GetBytes(this.EnterKeyText.Text));
+                await Hoot.File.WriteAllBytes(filenameComplete.Replace("/", "\\"), Encoding.UTF8.GetBytes(this.EnterKeyText.Text));
                 App.OpenWindows[(int)openWindowIndex].ForceReload = true;
                 App.OpenWindows[(int)openWindowIndex].UpdateBrowser(false);
                 HasFoundGoodKey = true;

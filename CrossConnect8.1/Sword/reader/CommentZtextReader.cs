@@ -534,18 +534,18 @@ namespace Sword.reader
                                                         string[] lemmas = reader.Value.Split(' ');
                                                         foreach (string lemma in lemmas)
                                                         {
-                                                            if (lemma.StartsWith("strong:"))
+                                                            if (lemma.StartsWith("strong:") || lemma.StartsWith("s:"))
                                                             {
                                                                 if (!string.IsNullOrEmpty(lemmaText))
                                                                 {
                                                                     lemmaText += ",";
                                                                 }
-
+                                                                var lemmaSplit = lemma.Split(':');
                                                                 lemmaText +=
                                                                     "<a class=\"strongsmorph\" href=\"#\" onclick=\"window.external.notify('STRONG_"
-                                                                    + lemma.Substring(7)
+                                                                    + lemmaSplit[1]
                                                                     + "'); event.returnValue=false; return false;\" >"
-                                                                    + lemma.Substring(8) + "</a>";
+                                                                    + lemmaSplit[1].Substring(1) + "</a>";
                                                             }
                                                         }
                                                     }
@@ -555,9 +555,10 @@ namespace Sword.reader
                                                         string[] morphs = reader.Value.Split(' ');
                                                         foreach (string morph in morphs)
                                                         {
-                                                            if (morph.StartsWith("robinson:"))
+                                                            if (morph.StartsWith("robinson:") || morph.StartsWith("m:") || morph.StartsWith("r:"))
                                                             {
-                                                                string subMorph = morph.Substring(9);
+                                                                var morphSplit = morph.Split(':');
+                                                                string subMorph = morphSplit[1];
                                                                 if (!string.IsNullOrEmpty(morphText))
                                                                 {
                                                                     morphText += ",";
@@ -577,7 +578,6 @@ namespace Sword.reader
                                         }
 
                                         break;
-
                                     case "versee":
                                         //AppendText(" ", plainText, noteText, isInElement);
                                         break;
