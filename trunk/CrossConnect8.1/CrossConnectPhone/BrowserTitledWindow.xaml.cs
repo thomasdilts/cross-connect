@@ -1357,7 +1357,7 @@ namespace CrossConnect
         }
         public void SelectedVerseEvent(string bookName, int moveToChapter, int verse)
         {
-            if (this._state.Source is BibleZtextReader)
+            if (this._state.Source is BibleZtextReader && !(this._state.Source is DailyPlanReader))
             {
                 App.AddHistory(bookName, moveToChapter, verse);
             }

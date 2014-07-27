@@ -365,7 +365,7 @@ namespace CrossConnect
                         }
                         else
                         {
-                            if (this._state.Source is BibleZtextReader)
+                            if (this._state.Source is BibleZtextReader && !(this._state.Source is DailyPlanReader))
                             {
                                 App.AddHistory(bookShortName, relChaptNum, 0);
                             }
@@ -399,7 +399,7 @@ namespace CrossConnect
                         }
                         else
                         {
-                            if (this._state.Source is BibleZtextReader)
+                            if (this._state.Source is BibleZtextReader && !(this._state.Source is DailyPlanReader))
                             {
                                 App.AddHistory(bookShortName, relChaptNum, 0);
                             }
@@ -449,7 +449,7 @@ namespace CrossConnect
                         chapterNumber = (int)((Button)sender).Tag - book.VersesInChapterStartIndex;
                         bookName = book.ShortName1;
                     }
-                    if (this._state.Source is BibleZtextReader)
+                    if (this._state.Source is BibleZtextReader && !(this._state.Source is DailyPlanReader))
                     {
                         App.AddHistory(bookName, chapterNumber, 0);
                     }
@@ -474,7 +474,7 @@ namespace CrossConnect
             {
                 var bookname = string.Empty;
                 var chapter = 0;
-                if (this._state.Source is BibleZtextReader)
+                if (this._state.Source is BibleZtextReader && !(this._state.Source is DailyPlanReader))
                 {
                     var book = ((BibleZtextReader)this._state.Source).canon.GetBookFromAbsoluteChapter((int)((Button)sender).Tag);
                     bookname = book.ShortName1;
@@ -485,7 +485,7 @@ namespace CrossConnect
                     chapter = (int)((Button)sender).Tag;
                 }
 
-                if (this._state.Source is BibleZtextReader)
+                if (this._state.Source is BibleZtextReader && !(this._state.Source is DailyPlanReader))
                 {
                     App.AddHistory(bookname, chapter, 0);
                 }
@@ -519,7 +519,7 @@ namespace CrossConnect
                     chapter = this._selectBibleBookSecondSelection;
                 }
 
-                if (this._state.Source is BibleZtextReader)
+                if (this._state.Source is BibleZtextReader && !(this._state.Source is DailyPlanReader))
                 {
                     App.AddHistory(bookname, chapter, (int)((Button)sender).Tag);
                 }
@@ -545,7 +545,7 @@ namespace CrossConnect
             {
                 chapter = (int)((Button)sender).Tag;
             }
-            if (this._state.Source is BibleZtextReader)
+            if (this._state.Source is BibleZtextReader && !(this._state.Source is DailyPlanReader))
             {
                 App.AddHistory(bookname, chapter, 0);
             }
