@@ -169,10 +169,10 @@ namespace CrossConnect.readers
                 fontFamily);
             var schedule = DailyPlans.ZAllPlans(App.DailyPlan.PlanNumber);
             const string ChapterEndHtml = "</body></html>";
-            var book = canonKjv.GetBookFromAbsoluteChapter(schedule[App.DailyPlan.PlanDayNumber][0]);
             var sb = new StringBuilder(chapterStartHtml);
-            string firstVerseForTheDayRedirect = "<a name=\"" + book.ShortName1 + "_"
-                                                 + (schedule[App.DailyPlan.PlanDayNumber][0]-book.VersesInChapterStartIndex) + "_0" + "\"></a>";
+            var bookStart = canonKjv.GetBookFromAbsoluteChapter(schedule[App.DailyPlan.PlanDayNumber][0]);
+            string firstVerseForTheDayRedirect = "<a name=\"" + bookStart.ShortName1 + "_"
+                                                 + (schedule[App.DailyPlan.PlanDayNumber][0] - bookStart.VersesInChapterStartIndex) + "_0" + "\"></a>";
             sb.Append(
                 firstVerseForTheDayRedirect + "<h3>" + Translations.Translate("Day") + " "
                 + (App.DailyPlan.PlanDayNumber + 1) + ", "
@@ -189,6 +189,7 @@ namespace CrossConnect.readers
                 int relChaptNum;
                 string fullName;
                 string title;
+                var book = canonKjv.GetBookFromAbsoluteChapter(schedule[App.DailyPlan.PlanDayNumber][i]);
                 this.GetInfo(
                     isoLangCode,
                     book.ShortName1,
