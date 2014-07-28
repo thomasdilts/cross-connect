@@ -112,6 +112,9 @@ namespace Sword.reader
         public bool RemoveScreenTransitions = false;
 
         public Highlighter highlighter = new Highlighter();
+
+        public delegate string ImageUrlRenderar(string source);
+        public ImageUrlRenderar GetImageUrl;
         #endregion
 
         #region Public Methods and Operators
@@ -175,7 +178,7 @@ namespace Sword.reader
             if (string.IsNullOrEmpty(this.OneDriveFolder))
             {
                 this.OneDriveFolder = "CrossConnectBackup";
-            } 
+            }
         }
 
         public DisplaySettings Clone()
@@ -212,7 +215,8 @@ namespace Sword.reader
                 SyncMediaVerses = this.SyncMediaVerses,
                 MarginInsideTextWindow = this.MarginInsideTextWindow,
                 AddLineBetweenNotes = this.AddLineBetweenNotes,
-                RemoveScreenTransitions = this.RemoveScreenTransitions
+                RemoveScreenTransitions = this.RemoveScreenTransitions,
+                GetImageUrl = this.GetImageUrl
             };
             cloned.highlighter = this.highlighter;
             return cloned;

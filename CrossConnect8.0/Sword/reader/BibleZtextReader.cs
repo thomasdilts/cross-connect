@@ -1941,6 +1941,27 @@ function SetFontColorForElement(elemntId, colorRgba){
                             case XmlNodeType.Element:
                                 switch (reader.Name)
                                 {
+                                    case "img":
+                                    case "figure":
+                                        if (reader.HasAttributes && displaySettings.GetImageUrl != null)
+                                        {
+                                            reader.MoveToFirstAttribute();
+                                            do
+                                            {
+                                                if (reader.Name.ToLower().Equals("src"))
+                                                {
+                                                    AppendText(
+                                                        "<img src=\"" + displaySettings.GetImageUrl(reader.Value) + "\" />",
+                                                        plainText,
+                                                        noteText,
+                                                        isInElement);
+                                                    isInQuote = true;
+                                                }
+                                            }
+                                            while (reader.MoveToNextAttribute());
+                                        }
+
+                                        break;
                                     case "CM":
                                         if (!isRaw && !displaySettings.EachVerseNewLine && isLastElementLineBreak == 0)
                                         {
@@ -2414,6 +2435,10 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         break;
                                     case "versee":
                                         AppendText(" ", plainText, noteText, isInElement);
+                                        break;
+                                    case "figure":
+                                    case "img":
+                                        // nothing needed. Already handled
                                         break;
                                     default:
                                         //AppendText(" ", plainText, noteText, isInElement);

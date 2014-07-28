@@ -259,11 +259,11 @@ namespace CrossConnect
 
             try
             {
-                if (App.Themes.IsMainBackImage && !string.IsNullOrEmpty(App.Themes.MainBackImage))
+                if (IsImagesInFile || (App.Themes.IsMainBackImage && !string.IsNullOrEmpty(App.Themes.MainBackImage)))
                 {
-                    webBrowser1.Base = App.WebDirIsolated;
+                    webBrowser1.Base = string.Empty;// App.WebDirIsolated;
                     var filename = await PutToFile(createdFile);
-                    var source = new Uri(filename, UriKind.Relative);
+                    var source = new Uri(App.WebDirIsolated + "/" + filename, UriKind.Relative);
                     this.webBrowser1.Navigate(source);
                 }
                 else
@@ -683,9 +683,11 @@ namespace CrossConnect
 
                     if (App.Themes.IsMainBackImage && !string.IsNullOrEmpty(App.Themes.MainBackImage))
                     {
-                        fontFamily += "background-image:url('images/" + App.Themes.MainBackImage + "');";
+                        fontFamily += "background-image:url('/" + App.WebDirIsolated + "/images/" + App.Themes.MainBackImage + "');";
                     }
 
+                    App.DisplaySettings.GetImageUrl = GetImageUrlForWeb;
+                    IsImagesInFile = false;
                     try
                     {
                         string createdFileName =
@@ -717,6 +719,29 @@ namespace CrossConnect
 
             App.StartTimerForSavingWindows();
             Debug.WriteLine("UpdateBrowser end");
+        }
+
+        private bool IsImagesInFile = false;
+        private string GetImageUrlForWeb(string source)
+        {
+            string path = string.Empty;
+            IsImagesInFile = true;
+            if(this._state.Source is BibleZtextReader)
+            {
+                path = ((BibleZtextReader)this._state.Source).Serial.Path;
+            }
+            else if(this._state.Source is RawGenTextReader)
+            {
+                path = ((RawGenTextReader)this._state.Source).Serial.Path;
+                // remove everything after the last slash
+                var pos = path.LastIndexOf("/");
+                if(pos>=0)
+                {
+                    path = path.Substring(0, pos);
+                }
+            }
+            webBrowser1.Base = string.Empty;
+            return "/" + path + (source.StartsWith("/")?string.Empty:"/")  + source;
         }
 
         public static ImageSource GetImage(string path)

@@ -1947,6 +1947,27 @@ function SetFontColorForElement(elemntId, colorRgba){
                             case XmlNodeType.Element:
                                 switch (reader.Name)
                                 {
+                                    case "img":
+                                    case "figure":
+                                        if (reader.HasAttributes && displaySettings.GetImageUrl != null)
+                                        {
+                                            reader.MoveToFirstAttribute();
+                                            do
+                                            {
+                                                if (reader.Name.ToLower().Equals("src"))
+                                                {
+                                                    AppendText(
+                                                        "<img src=\"" + displaySettings.GetImageUrl(reader.Value) + "\" />",
+                                                        plainText,
+                                                        noteText,
+                                                        isInElement);
+                                                    isInQuote = true;
+                                                }
+                                            }
+                                            while (reader.MoveToNextAttribute());
+                                        }
+
+                                        break;
                                     case "CM":
                                         if (!isRaw && !displaySettings.EachVerseNewLine && isLastElementLineBreak == 0)
                                         {
@@ -2441,7 +2462,10 @@ function SetFontColorForElement(elemntId, colorRgba){
                                     case "versee":
                                         AppendText(" ", plainText, noteText, isInElement);
                                         break;
-
+                                    case "img":
+                                    case "figure":
+                                        // nothing needed. Already handled
+                                        break;
                                     default:
                                         //AppendText(" ", plainText, noteText, isInElement);
                                         Debug.WriteLine("EndElement untreated: " + reader.Name);
