@@ -23,6 +23,8 @@
 
 namespace Sword.reader
 {
+    //using Ionic.Zlib;
+    using Sword.versification;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -37,7 +39,6 @@ namespace Sword.reader
     using ComponentAce.Compression.Libs.zlib;
 
     using Windows.Storage;
-    using Sword.versification;
 
     [DataContract]
     public class BiblePlaceMarker
@@ -59,7 +60,7 @@ namespace Sword.reader
         [DataMember(Name = "when")]
         public DateTime When;
 
-        #endregion
+        #endregion Fields
 
         #region Constructors and Destructors
 
@@ -71,7 +72,7 @@ namespace Sword.reader
             this.When = when;
         }
 
-        #endregion
+        #endregion Constructors and Destructors
 
         #region Public Methods and Operators
 
@@ -90,6 +91,7 @@ namespace Sword.reader
             };
             return newMarker;
         }
+
         public static List<BiblePlaceMarker> Clone(List<BiblePlaceMarker> toClone)
         {
             var returnedClone = new List<BiblePlaceMarker>();
@@ -99,7 +101,8 @@ namespace Sword.reader
             }
             return returnedClone;
         }
-        #endregion
+
+        #endregion Public Methods and Operators
     }
 
     /// <summary>
@@ -159,43 +162,44 @@ namespace Sword.reader
 
         protected const long SkipBookFlag = 68;
 
-        #endregion
+        #endregion Constants
 
         #region Static Fields
 
-        public static Dictionary<string, string> FontPropertiesStartHtml = new Dictionary<string, string> 
-        { 
-            { "acrostic", "<span style=\"text-shadow:1px 1px 5px white;\">" }, 
-            { "bold", "<b>" }, 
-            { "emphasis", "<em>" }, 
-            { "illuminated", "<span style=\"text-shadow:1px 1px 5px white;\">" }, 
-            { "italic", "<i>" }, 
-            { "line-through", "<s>" }, 
-            { "normal", "<span style=\"font-variant:normal;\">" }, 
-            { "small-caps", "<span style=\"font-variant:small-caps;\">" }, 
-            { "sub", "<sub>" }, 
-            { "super", "<sup>" }, 
-            { "underline", "<u>" } 
+        public static Dictionary<string, string> FontPropertiesStartHtml = new Dictionary<string, string>
+        {
+            { "acrostic", "<span style=\"text-shadow:1px 1px 5px white;\">" },
+            { "bold", "<b>" },
+            { "emphasis", "<em>" },
+            { "illuminated", "<span style=\"text-shadow:1px 1px 5px white;\">" },
+            { "italic", "<i>" },
+            { "line-through", "<s>" },
+            { "normal", "<span style=\"font-variant:normal;\">" },
+            { "small-caps", "<span style=\"font-variant:small-caps;\">" },
+            { "sub", "<sub>" },
+            { "super", "<sup>" },
+            { "underline", "<u>" }
         };
-        public static Dictionary<string, string> FontPropertiesEndHtml = new Dictionary<string, string>  
-        { 
-            { "acrostic", "</span>" }, 
-            { "bold", "</b>" }, 
-            { "emphasis", "</em>" }, 
-            { "illuminated", "</span>" }, 
-            { "italic", "</i>" }, 
-            { "line-through", "</s>" }, 
-            { "normal", "</span>" }, 
-            { "small-caps", "</span>" }, 
-            { "sub", "</sub>" }, 
-            { "super", "</sup>" }, 
-            { "underline", "</u>" } 
+
+        public static Dictionary<string, string> FontPropertiesEndHtml = new Dictionary<string, string>
+        {
+            { "acrostic", "</span>" },
+            { "bold", "</b>" },
+            { "emphasis", "</em>" },
+            { "illuminated", "</span>" },
+            { "italic", "</i>" },
+            { "line-through", "</s>" },
+            { "normal", "</span>" },
+            { "small-caps", "</span>" },
+            { "sub", "</sub>" },
+            { "super", "</sup>" },
+            { "underline", "</u>" }
         };
 
         /// <summary>
         ///     Chapters divided into categories
         /// </summary>
-        public static readonly Dictionary<string, int> ChapterCategories = new Dictionary<string, int> 
+        public static readonly Dictionary<string, int> ChapterCategories = new Dictionary<string, int>
         {
             {"Gen",1},
             {"Exod",1},
@@ -296,7 +300,7 @@ namespace Sword.reader
 
         protected static byte[] Suffix = Encoding.UTF8.GetBytes("\n</versee>");
 
-        #endregion
+        #endregion Static Fields
 
         #region Fields
 
@@ -309,6 +313,7 @@ namespace Sword.reader
         protected IndexingBlockType BlockType = IndexingBlockType.Book;
 
         private BibleNames _bookNames = null;
+
         public BibleNames BookNames(string appChoosenIsoLangCode, bool reset = false)
         {
             if (this._bookNames == null || reset)
@@ -323,7 +328,7 @@ namespace Sword.reader
 
         public Canon canon;
 
-        #endregion
+        #endregion Fields
 
         #region Constructors and Destructors
 
@@ -345,10 +350,11 @@ namespace Sword.reader
             canon = CanonManager.GetCanon(this.Serial.Versification);
         }
 
-        public async Task Initialize()
+        public async Task<bool> Initialize()
         {
             await this.ReloadSettingsFile();
             this.SetToFirstChapter();
+            return true;
         }
 
         public virtual async Task<IBrowserTextSource> Clone()
@@ -359,13 +365,13 @@ namespace Sword.reader
             return cloned;
         }
 
-        #endregion
+        #endregion Constructors and Destructors
 
         #region Public Events
 
         public event WindowSourceChanged SourceChanged;
 
-        #endregion
+        #endregion Public Events
 
         #region Enums
 
@@ -376,14 +382,13 @@ namespace Sword.reader
             Chapter = 'c'
         }
 
-        #endregion
+        #endregion Enums
 
         #region Public Properties
 
         public bool ExistsShortNames(string appChoosenIsoLangCode)
         {
             return this.BookNames(appChoosenIsoLangCode).ExistsShortNames;
-
         }
 
         public virtual bool IsExternalLink
@@ -458,7 +463,7 @@ namespace Sword.reader
             }
         }
 
-        #endregion
+        #endregion Public Properties
 
         #region Public Methods and Operators
 
@@ -690,7 +695,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 case 1:
                     {
                         CanonBookDef book = canon.GetBookFromBookNumber(lastSelectedButton);
-                        //Chapters 
+                        //Chapters
 
                         // set up the array for the chapter selection
                         int numOfChapters = book.NumberOfChapters;
@@ -840,7 +845,6 @@ function SetFontColorForElement(elemntId, colorRgba){
             }
             try
             {
-
                 fullName = GetFullName(bookShortName, isoLangCode);
                 title = fullName + " " + (chapterNum + 1) + ":" + (verseNum + 1);
             }
@@ -919,7 +923,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             VersePos verse = this.Chapters[book.VersesInChapterStartIndex + chapterNumber].Verses[verseNumber];
             int noteMarker = 0;
             bool isInPoetry = false;
-            return this.ParseOsisText(
+            var texts = await this.ParseOsisText(
                 displaySettings,
                 string.Empty,
                 string.Empty,
@@ -929,9 +933,10 @@ function SetFontColorForElement(elemntId, colorRgba){
                 this.Serial.IsIsoEncoding,
                 false,
                 true,
-                ref noteMarker,
-                ref isInPoetry,
+                noteMarker,
+                isInPoetry,
                 true);
+            return texts[0];
         }
 
         public virtual async Task<string> GetTTCtext(bool isVerseOnly)
@@ -977,6 +982,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             var chapterBuffer = await this.GetChapterBytes(chapterNumber + book.VersesInChapterStartIndex);
             return RawGenTextReader.CleanXml(Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length), true);
         }
+
         public async Task<List<string>> MakeListDisplayText(string appChoosenIsoLangCode,
             DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay)
         {
@@ -993,7 +999,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                 VersePos verse = versesForChapterPositions.Verses[place.VerseNum];
                 int noteMarker = 0;
-                string verseTxt = this.ParseOsisText(
+                var texts = await this.ParseOsisText(
                     displaySettings,
                     this.GetFullName(chaptPos.Booknum, appChoosenIsoLangCode) + " " + (chaptPos.BookRelativeChapterNum + 1) + ":"
                     + (place.VerseNum + 1) + "  " + place.When.ToString("yyyy-MM-dd") + " "
@@ -1005,9 +1011,9 @@ function SetFontColorForElement(elemntId, colorRgba){
                     this.Serial.IsIsoEncoding,
                     false,
                     true,
-                    ref noteMarker,
-                    ref isInPoetry);
-                returnList.Add(verseTxt);
+                    noteMarker,
+                    isInPoetry);
+                returnList.Add(texts[0]);
             }
 
             return returnList;
@@ -1127,6 +1133,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 this.MoveChapterVerse(newBook.ShortName1, absAvailChapter - newBook.VersesInChapterStartIndex, 0, false, this);
             }
         }
+
         private int GetAvailableChapter(int chapterNumber, bool IsReverseFind = false)
         {
             int returnChapterNum = chapterNumber;
@@ -1288,7 +1295,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         {
         }
 
-        #endregion
+        #endregion Public Methods and Operators
 
         #region Methods
 
@@ -1349,7 +1356,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 fs =
                     await
                     ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(filenameComplete.Replace("/", "\\"));
-                //fs = await file.OpenStreamForReadAsync(); 
+                //fs = await file.OpenStreamForReadAsync();
             }
             catch (Exception ee)
             {
@@ -1362,6 +1369,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             fs.Position = bookStartPos;
             ZInputStream zipStream;
             zipStream = string.IsNullOrEmpty(this.Serial.CipherKey) ? new ZInputStream(fs) : new ZInputStream(new SapphireStream(fs, this.Serial.CipherKey));
+            //ZlibStream zipStream;
+            //zipStream = string.IsNullOrEmpty(this.Serial.CipherKey) ? new ZlibStream(fs, CompressionMode.Decompress) : new ZlibStream(new SapphireStream(fs, this.Serial.CipherKey), CompressionMode.Decompress);
 
             var chapterBuffer = new byte[blockLen];
             int totalBytesRead = 0;
@@ -1375,6 +1384,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                     try
                     {
                         len = zipStream.read(buffer, 0, 10000);
+                        //len = zipStream.Read(buffer, 0, 10000);
                     }
                     catch (Exception ee)
                     {
@@ -1577,7 +1587,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                     verseTxt = "*** ERROR ***";
                     try
                     {
-                        verseTxt = this.ParseOsisText(
+                        var texts = await this.ParseOsisText(
                             displaySettings,
                             startText,
                             restartText,
@@ -1587,8 +1597,11 @@ function SetFontColorForElement(elemntId, colorRgba){
                             this.Serial.IsIsoEncoding,
                             isNotesOnly,
                             false,
-                            ref noteIdentifier,
-                            ref isInPoetry);
+                            noteIdentifier,
+                            isInPoetry);
+                        verseTxt = texts[0];
+                        isInPoetry = bool.Parse(texts[1]);
+                        noteIdentifier = int.Parse(texts[2]);
                         if (isInPoetry && (i == versesForChapterPositions.Verses.Count - 1))
                         {
                             // we must end the indentations
@@ -1668,7 +1681,6 @@ function SetFontColorForElement(elemntId, colorRgba){
         protected async Task<string> MakeListTtcHearingText(string appChoosenIsoLangCode,
             List<BiblePlaceMarker> listToDisplay)
         {
-
             var listText = new StringBuilder();
             for (int j = listToDisplay.Count - 1; j >= 0; j--)
             {
@@ -1697,6 +1709,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
             return listText.ToString();
         }
+
         protected async Task<string> MakeListDisplayText(
             string appChoosenIsoLangCode,
             DisplaySettings displaySettings,
@@ -1747,13 +1760,13 @@ function SetFontColorForElement(elemntId, colorRgba){
                 bool isContinuedVerse = lastBook.Equals(place.BookShortName) && lastChapter == place.ChapterNum && lastVerse == (place.VerseNum - 1);
                 bool isNextVerseContinued = j >= 1 && place.BookShortName.Equals(listToDisplay[j - 1].BookShortName) && listToDisplay[j - 1].ChapterNum == place.ChapterNum && listToDisplay[j - 1].VerseNum == (place.VerseNum + 1);
                 var ToVerse = -1;
-                if(!isContinuedVerse && isNextVerseContinued)
+                if (!isContinuedVerse && isNextVerseContinued)
                 {
                     ToVerse = place.VerseNum + 1;
                     //look ahead to find the end of the consecutive verses
-                    for (int k = j-1; k >=0; k--)
+                    for (int k = j - 1; k >= 0; k--)
                     {
-                        if(k >= 1 && listToDisplay[k].BookShortName.Equals(listToDisplay[k - 1].BookShortName) && listToDisplay[k - 1].ChapterNum == listToDisplay[k].ChapterNum && listToDisplay[k - 1].VerseNum == (listToDisplay[k].VerseNum + 1))
+                        if (k >= 1 && listToDisplay[k].BookShortName.Equals(listToDisplay[k - 1].BookShortName) && listToDisplay[k - 1].ChapterNum == listToDisplay[k].ChapterNum && listToDisplay[k - 1].VerseNum == (listToDisplay[k].VerseNum + 1))
                         {
                             ToVerse = listToDisplay[k].VerseNum + 1;
                         }
@@ -1784,11 +1797,12 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                 string htmlChapterText = startVerseMarking + this.GetFullName(chaptPos.Booknum, appChoosenIsoLangCode) + " "
                     + (chaptPos.BookRelativeChapterNum + 1) + ":" + (place.VerseNum + 1) + (ToVerse > 0 ? "-" + (ToVerse + 1) : string.Empty) + "  "
-                    + (showDate ? place.When.ToString("yyyy-MM-dd") + " " + place.When.ToString("hh.mm.ss") : string.Empty) + stopVerseMarking;
+                    + (showDate?place.When.ToString("yyyy-MM-dd") + " " + place.When.ToString("hh.mm.ss"):string.Empty)
+                                         + stopVerseMarking;
 
                 string textId = place.BookShortName + "_" + place.ChapterNum + "_" + place.VerseNum;
                 int noteMarker = 0;
-                string verseTxt = this.ParseOsisText(
+                var texts = await this.ParseOsisText(
                     displaySettings,
                     "<a name=\"" + textId + "\"></a><a class=\"normalcolor\" id=\"ID_" + textId
                     + "\"  href=\"#\" onclick=\"window.external.notify('" + textId
@@ -1800,15 +1814,18 @@ function SetFontColorForElement(elemntId, colorRgba){
                     this.Serial.IsIsoEncoding,
                     false,
                     true,
-                    ref noteMarker,
-                    ref isInPoetry);
+                    noteMarker,
+                    isInPoetry);
+                string verseTxt = texts[0];
+                isInPoetry = bool.Parse(texts[1]);
+                noteMarker = int.Parse(texts[2]);
 
                 lastVerseContinued = false;
                 // create the verse
                 if (string.IsNullOrEmpty(place.Note))
                 {
                     htmlListText.Append((isContinuedVerse ? string.Empty : "<p>") + verseTxt + "</a>" + (isNextVerseContinued ? string.Empty : "</p><hr />"));
-                    lastVerseContinued=isContinuedVerse;
+                    lastVerseContinued = isContinuedVerse;
                 }
                 else
                 {
@@ -1825,7 +1842,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return htmlListText.ToString();
         }
 
-        protected virtual string ParseOsisText(
+        protected virtual async Task<string[]> ParseOsisText(
             DisplaySettings displaySettings,
             string chapterNumber,
             string restartText,
@@ -1835,8 +1852,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             bool isIsoText,
             bool isNotesOnly,
             bool noTitles,
-            ref int noteIdentifier,
-            ref bool isInPoetry,
+            int noteIdentifier,
+            bool isInPoetry,
             bool isRaw = false)
         {
             var ms = new MemoryStream();
@@ -1852,13 +1869,13 @@ function SetFontColorForElement(elemntId, colorRgba){
             // Some indexes are bad. make sure the startpos and length are not bad
             if (length == 0)
             {
-                return string.Empty;
+                return new string[] { string.Empty, isInPoetry.ToString(), noteIdentifier.ToString() };
             }
 
             if (startPos >= xmlbytes.Length)
             {
                 Debug.WriteLine("Bad startpos;" + xmlbytes.Length + ";" + startPos + ";" + length);
-                return "*** POSSIBLE ERROR IN BIBLE, TEXT MISSING HERE ***";
+                return new string[] { "*** POSSIBLE ERROR IN BOOK, TEXT MISSING HERE ***", isInPoetry.ToString(), noteIdentifier.ToString() };
             }
 
             if (startPos + length > xmlbytes.Length)
@@ -1869,13 +1886,13 @@ function SetFontColorForElement(elemntId, colorRgba){
                 if (length == 0)
                 {
                     // this might be a problem or it might not. Put some stars here anyway.
-                    return "***";
+                    return new string[] { "***", isInPoetry.ToString(), noteIdentifier.ToString() };
                 }
             }
             // if it contains a 0 character then it is also an empty verse
             if (xmlbytes[0]== 0)
             {
-                return string.Empty;
+                return new string[] { string.Empty, isInPoetry.ToString(), noteIdentifier.ToString() };
             }
 
             try
@@ -1935,9 +1952,11 @@ function SetFontColorForElement(elemntId, colorRgba){
                             case XmlNodeType.SignificantWhitespace:
                                 AppendText(reader.Value, plainText, noteText, isInElement);
                                 break;
+
                             case XmlNodeType.Whitespace:
                                 AppendText(reader.Value, plainText, noteText, isInElement);
                                 break;
+
                             case XmlNodeType.Element:
                                 switch (reader.Name)
                                 {
@@ -1951,7 +1970,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                                 if (reader.Name.ToLower().Equals("src"))
                                                 {
                                                     AppendText(
-                                                        "<img src=\"" + displaySettings.GetImageUrl(reader.Value) + "\" />",
+                                                        "<img src=\"" + await displaySettings.GetImageUrl(reader.Value) + "\" />",
                                                         plainText,
                                                         noteText,
                                                         isInElement);
@@ -1970,6 +1989,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         }
 
                                         break;
+
                                     case "lb":
                                         if (!isRaw && !displaySettings.EachVerseNewLine)
                                         {
@@ -1994,6 +2014,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         }
 
                                         break;
+
                                     case "title":
                                         isInTitle = true;
                                         if (!(noTitles || !displaySettings.ShowHeadings) && !isRaw)
@@ -2002,6 +2023,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         }
 
                                         break;
+
                                     case "reference":
                                         if (reader.HasAttributes)
                                         {
@@ -2026,6 +2048,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                                         noteText.Append("  [");
                                         break;
+
                                     case "lg":
                                         if (!isRaw && !displaySettings.EachVerseNewLine)
                                         {
@@ -2048,6 +2071,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         }
 
                                         break;
+
                                     case "l":
                                         if (!isRaw && !displaySettings.EachVerseNewLine && isLastElementLineBreak == 0)
                                         {
@@ -2056,6 +2080,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         }
 
                                         break;
+
                                     case "FI":
                                         if (!isRaw && !isNotesOnly && displaySettings.ShowNotePositions)
                                         {
@@ -2082,7 +2107,6 @@ function SetFontColorForElement(elemntId, colorRgba){
                                             if (!isFirstNoteInText && displaySettings.AddLineBetweenNotes)
                                             {
                                                 noteText.Append("<br />");
-
                                             }
                                             isFirstNoteInText = false;
                                             noteText.Append(
@@ -2097,6 +2121,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         noteText.Append("(");
                                         isInInjectionElement = true;
                                         break;
+
                                     case "RF":
                                     case "note":
                                         if (!isRaw && !isNotesOnly && displaySettings.ShowNotePositions)
@@ -2125,7 +2150,6 @@ function SetFontColorForElement(elemntId, colorRgba){
                                             if (!isFirstNoteInText && displaySettings.AddLineBetweenNotes)
                                             {
                                                 noteText.Append("<br />");
-
                                             }
                                             isFirstNoteInText = false;
                                             noteText.Append(
@@ -2138,9 +2162,9 @@ function SetFontColorForElement(elemntId, colorRgba){
                                             }
                                         }
 
-
                                         isInElement = true;
                                         break;
+
                                     case "hi":
                                         if (!isRaw)
                                         {
@@ -2178,13 +2202,16 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         }
 
                                         break;
+
                                     case "Rf":
                                         isInElement = false;
                                         break;
+
                                     case "Fi":
                                         noteText.Append(") ");
                                         isInInjectionElement = false;
                                         break;
+
                                     case "q":
                                         if (!isRaw && !isNotesOnly)
                                         {
@@ -2216,6 +2243,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         }
 
                                         break;
+
                                     case "w":
 
                                         // <w lemma="strong:G1078" morph="robinson:N-GSF">γενεσεως</w>
@@ -2265,7 +2293,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                                                 {
                                                                     morphText += ",";
                                                                 }
-                                                                
+
                                                                 morphText +=
                                                                     "<a class=\"strongsmorph\" href=\"#\" onclick=\"window.external.notify('MORPH_"
                                                                     + subMorph
@@ -2284,6 +2312,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                     case "versee":
                                         //AppendText(" ", plainText, noteText, isInElement);
                                         break;
+
                                     default:
                                         //AppendText(" ", plainText, noteText, isInElement);
                                         Debug.WriteLine("Element untreated: " + reader.Name);
@@ -2291,6 +2320,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                 }
 
                                 break;
+
                             case XmlNodeType.Text:
                                 if (!isInElement && !isInInjectionElement && chapterNumber.Length > 0 && !isInTitle
                                     && !isChaptNumGiven)
@@ -2342,6 +2372,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                 }
 
                                 break;
+
                             case XmlNodeType.EndElement:
                                 switch (reader.Name)
                                 {
@@ -2353,6 +2384,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                                         isInTitle = false;
                                         break;
+
                                     case "reference":
                                         noteText.Append("] ");
                                         if (isReferenceLinked)
@@ -2362,9 +2394,11 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                                         isReferenceLinked = false;
                                         break;
+
                                     case "note":
                                         isInElement = false;
                                         break;
+
                                     case "hi":
                                         if (!isRaw && fontStylesEnd.Any())
                                         {
@@ -2374,6 +2408,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         }
 
                                         break;
+
                                     case "q":
                                         if (isInQuote)
                                         {
@@ -2382,6 +2417,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         }
 
                                         break;
+
                                     case "w":
 
                                         // <w lemma="strong:G1078" morph="robinson:N-GSF">γενεσεως</w>
@@ -2418,6 +2454,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         //    AppendText(" ", plainText, noteText, isInElement);
                                         //}
                                         break;
+
                                     case "lg":
                                         if (!isRaw && !displaySettings.EachVerseNewLine)
                                         {
@@ -2426,6 +2463,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         }
 
                                         break;
+
                                     case "l":
                                         if (!isRaw && !displaySettings.EachVerseNewLine)
                                         {
@@ -2433,11 +2471,12 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         }
 
                                         break;
+
                                     case "versee":
                                         AppendText(" ", plainText, noteText, isInElement);
                                         break;
-                                    case "figure":
                                     case "img":
+                                    case "figure":
                                         // nothing needed. Already handled
                                         break;
                                     default:
@@ -2463,11 +2502,11 @@ function SetFontColorForElement(elemntId, colorRgba){
                     noteText.Append("</p>");
                 }
 
-                return noteText.ToString();
+                return new string[]{ noteText.ToString(), isInPoetry.ToString(), noteIdentifier.ToString() };
             }
 
             // this replace fixes a character translation problem for slanted apostrophy
-            return plainText.ToString().Replace('\x92', '\'');
+            return new string[]{ plainText.ToString().Replace('\x92', '\''), isInPoetry.ToString(), noteIdentifier.ToString() };
         }
 
         protected void RaiseSourceChangedEvent()
@@ -2477,6 +2516,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 this.SourceChanged();
             }
         }
+
         private async Task<bool> ReloadOneIndex(string filename, int startBook, int endBook, CanonBookDef[] booksInTestement)
         {
             if (string.IsNullOrEmpty(this.Serial.Path))
@@ -2573,7 +2613,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                                 if (chapt.StartPos == -1)
                                 {
-                                    chapt.StartPos = this.BlockType != IndexingBlockType.Chapter ? 0 : startPos;
+                                    chapt.StartPos =  this.BlockType != IndexingBlockType.Chapter?0:startPos;
                                     chapt.BookStartPos = bookPositions[booknum].StartPos;
                                 }
                                 chapt.Verses.Add(new VersePos(startPos - chapt.StartPos, length, i));
@@ -2690,6 +2730,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
             return "(" + Reverse(base26) + ")";
         }
+
         public string Reverse(string input)
         {
             char[] output = new char[input.Length];
@@ -2706,7 +2747,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return new String(output);
         }
 
-        #endregion
+        #endregion Methods
 
         [DataContract]
         public struct VersePos
@@ -2722,7 +2763,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             [DataMember(Name = "startPos")]
             public long StartPos;
 
-            #endregion
+            #endregion Fields
 
             #region Constructors and Destructors
 
@@ -2733,7 +2774,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 this.Booknum = booknum;
             }
 
-            #endregion
+            #endregion Constructors and Destructors
 
             #region Public Methods and Operators
 
@@ -2743,7 +2784,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                        && equalsTo.StartPos == this.StartPos;
             }
 
-            #endregion
+            #endregion Public Methods and Operators
         }
 
         [DataContract(IsReference = true)]
@@ -2764,7 +2805,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             [DataMember(Name = "unused")]
             public long Unused;
 
-            #endregion
+            #endregion Fields
 
             #region Constructors and Destructors
 
@@ -2775,7 +2816,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 this.Unused = unused;
             }
 
-            #endregion
+            #endregion Constructors and Destructors
         }
 
         [DataContract(IsReference = true)]
@@ -2804,7 +2845,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
             public bool IsEmpty = false;
 
-            #endregion
+            #endregion Fields
 
             #region Constructors and Destructors
 
@@ -2814,9 +2855,10 @@ function SetFontColorForElement(elemntId, colorRgba){
                 this.Booknum = booknum;
                 this.BookRelativeChapterNum = bookRelativeChapterNum;
                 this.BookStartPos = bookStartPos;
+                this.IsEmpty = true;
             }
 
-            #endregion
+            #endregion Constructors and Destructors
         }
     }
 
@@ -2852,7 +2894,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         [DataMember(Name = "Versification")]
         public string Versification;
 
-        #endregion
+        #endregion Fields
 
         #region Constructors and Destructors
 
@@ -2873,7 +2915,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             this.ConfigPath = configPath;
         }
 
-        #endregion
+        #endregion Constructors and Destructors
 
         #region Public Methods and Operators
 
@@ -2888,6 +2930,6 @@ function SetFontColorForElement(elemntId, colorRgba){
             this.ConfigPath = from.ConfigPath;
         }
 
-        #endregion
+        #endregion Public Methods and Operators
     }
 }

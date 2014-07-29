@@ -722,7 +722,7 @@ namespace CrossConnect
         }
 
         private bool IsImagesInFile = false;
-        private string GetImageUrlForWeb(string source)
+        private async Task<string> GetImageUrlForWeb(string source)
         {
             string path = string.Empty;
             IsImagesInFile = true;
@@ -740,7 +740,7 @@ namespace CrossConnect
                     path = path.Substring(0, pos);
                 }
             }
-            webBrowser1.Base = string.Empty;
+            // webBrowser1.Base = string.Empty;
             return "/" + path + (source.StartsWith("/")?string.Empty:"/")  + source;
         }
 

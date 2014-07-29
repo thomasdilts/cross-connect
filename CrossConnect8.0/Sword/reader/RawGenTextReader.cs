@@ -34,7 +34,7 @@ namespace Sword.reader
     using System.Threading.Tasks;
     using System.Xml;
 
-    using ComponentAce.Compression.Libs.zlib;
+    //using ComponentAce.Compression.Libs.zlib;
 
     using Windows.Storage;
 
@@ -929,7 +929,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             bool isInPoetry = false;
             try
             {
-                htmlChapter.Append(this.ParseOsisText(
+                var texts = await this.ParseOsisText(
                     displaySettings,
                     string.Empty,
                     string.Empty,
@@ -939,8 +939,9 @@ function SetFontColorForElement(elemntId, colorRgba){
                     this.Serial.IsIsoEncoding,
                     isNotesOnly,
                     false,
-                    ref noteIdentifier,
-                    ref isInPoetry));
+                    noteIdentifier,
+                    isInPoetry);
+                htmlChapter.Append(texts[0]);
             }
             catch (Exception e)
             {
@@ -1005,7 +1006,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return string.Empty;
         }
 
-        protected string ParseOsisText(
+        protected async Task<string[]> ParseOsisText(
             DisplaySettings displaySettings,
             string chapterNumber,
             string restartText,
@@ -1015,8 +1016,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             bool isIsoText,
             bool isNotesOnly,
             bool noTitles,
-            ref int noteIdentifier,
-            ref bool isInPoetry,
+            int noteIdentifier,
+            bool isInPoetry,
             bool isRaw = false)
         {
             var ms = new MemoryStream();
@@ -1032,13 +1033,13 @@ function SetFontColorForElement(elemntId, colorRgba){
             // Some indexes are bad. make sure the startpos and length are not bad
             if (length == 0)
             {
-                return string.Empty;
+                return new string[] { string.Empty, isInPoetry.ToString(), noteIdentifier.ToString() };
             }
 
             if (startPos >= xmlbytes.Length)
             {
                 Debug.WriteLine("Bad startpos;" + xmlbytes.Length + ";" + startPos + ";" + length);
-                return "*** POSSIBLE ERROR IN BOOK, TEXT MISSING HERE ***";
+                return new string[] { "*** POSSIBLE ERROR IN BOOK, TEXT MISSING HERE ***", isInPoetry.ToString(), noteIdentifier.ToString() };
             }
 
             if (startPos + length > xmlbytes.Length)
@@ -1049,7 +1050,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 if (length == 0)
                 {
                     // this might be a problem or it might not. Put some stars here anyway.
-                    return "***";
+                    return new string[] { "***", isInPoetry.ToString(), noteIdentifier.ToString() };
                 }
             }
 
@@ -1125,7 +1126,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                                 if (reader.Name.ToLower().Equals("src"))
                                                 {
                                                     AppendText(
-                                                        "<img src=\"" + displaySettings.GetImageUrl(reader.Value) + "\" />",
+                                                        "<img src=\"" + await displaySettings.GetImageUrl(reader.Value) + "\" />",
                                                         plainText,
                                                         noteText,
                                                         isInElement);
@@ -1586,11 +1587,11 @@ function SetFontColorForElement(elemntId, colorRgba){
                     noteText.Append("</p>");
                 }
 
-                return noteText.ToString();
+                return new string[] { noteText.ToString(), isInPoetry.ToString(), noteIdentifier.ToString() };
             }
 
             // this replace fixes a character translation problem for slanted apostrophy
-            return plainText.ToString().Replace('\x92', '\'');
+            return new string[] { plainText.ToString().Replace('\x92', '\''), isInPoetry.ToString(), noteIdentifier.ToString() };
         }
 
         public static string CleanXml(string xml, bool removeAllXml = false)

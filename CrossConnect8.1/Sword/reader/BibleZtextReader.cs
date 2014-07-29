@@ -923,7 +923,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             VersePos verse = this.Chapters[book.VersesInChapterStartIndex + chapterNumber].Verses[verseNumber];
             int noteMarker = 0;
             bool isInPoetry = false;
-            return this.ParseOsisText(
+            var texts = await this.ParseOsisText(
                 displaySettings,
                 string.Empty,
                 string.Empty,
@@ -933,9 +933,10 @@ function SetFontColorForElement(elemntId, colorRgba){
                 this.Serial.IsIsoEncoding,
                 false,
                 true,
-                ref noteMarker,
-                ref isInPoetry,
+                noteMarker,
+                isInPoetry,
                 true);
+            return texts[0];
         }
 
         public virtual async Task<string> GetTTCtext(bool isVerseOnly)
@@ -998,7 +999,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                 VersePos verse = versesForChapterPositions.Verses[place.VerseNum];
                 int noteMarker = 0;
-                string verseTxt = this.ParseOsisText(
+                var texts = await this.ParseOsisText(
                     displaySettings,
                     this.GetFullName(chaptPos.Booknum, appChoosenIsoLangCode) + " " + (chaptPos.BookRelativeChapterNum + 1) + ":"
                     + (place.VerseNum + 1) + "  " + place.When.ToString("yyyy-MM-dd") + " "
@@ -1010,9 +1011,9 @@ function SetFontColorForElement(elemntId, colorRgba){
                     this.Serial.IsIsoEncoding,
                     false,
                     true,
-                    ref noteMarker,
-                    ref isInPoetry);
-                returnList.Add(verseTxt);
+                    noteMarker,
+                    isInPoetry);
+                returnList.Add(texts[0]);
             }
 
             return returnList;
@@ -1382,6 +1383,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 {
                     try
                     {
+                         //len = zipStream.read(buffer, 0, 10000);
                         len = zipStream.Read(buffer, 0, 10000);
                     }
                     catch (Exception ee)
@@ -1585,7 +1587,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                     verseTxt = "*** ERROR ***";
                     try
                     {
-                        verseTxt = this.ParseOsisText(
+                        var texts = await this.ParseOsisText(
                             displaySettings,
                             startText,
                             restartText,
@@ -1595,8 +1597,11 @@ function SetFontColorForElement(elemntId, colorRgba){
                             this.Serial.IsIsoEncoding,
                             isNotesOnly,
                             false,
-                            ref noteIdentifier,
-                            ref isInPoetry);
+                            noteIdentifier,
+                            isInPoetry);
+                        verseTxt = texts[0];
+                        isInPoetry = bool.Parse(texts[1]);
+                        noteIdentifier = int.Parse(texts[2]);
                         if (isInPoetry && (i == versesForChapterPositions.Verses.Count - 1))
                         {
                             // we must end the indentations
@@ -1797,7 +1802,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                 string textId = place.BookShortName + "_" + place.ChapterNum + "_" + place.VerseNum;
                 int noteMarker = 0;
-                string verseTxt = this.ParseOsisText(
+                var texts = await this.ParseOsisText(
                     displaySettings,
                     "<a name=\"" + textId + "\"></a><a class=\"normalcolor\" id=\"ID_" + textId
                     + "\"  href=\"#\" onclick=\"window.external.notify('" + textId
@@ -1809,8 +1814,11 @@ function SetFontColorForElement(elemntId, colorRgba){
                     this.Serial.IsIsoEncoding,
                     false,
                     true,
-                    ref noteMarker,
-                    ref isInPoetry);
+                    noteMarker,
+                    isInPoetry);
+                string verseTxt = texts[0];
+                isInPoetry = bool.Parse(texts[1]);
+                noteMarker = int.Parse(texts[2]);
 
                 lastVerseContinued = false;
                 // create the verse
@@ -1834,7 +1842,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return htmlListText.ToString();
         }
 
-        protected virtual string ParseOsisText(
+        protected virtual async Task<string[]> ParseOsisText(
             DisplaySettings displaySettings,
             string chapterNumber,
             string restartText,
@@ -1844,8 +1852,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             bool isIsoText,
             bool isNotesOnly,
             bool noTitles,
-            ref int noteIdentifier,
-            ref bool isInPoetry,
+            int noteIdentifier,
+            bool isInPoetry,
             bool isRaw = false)
         {
             var ms = new MemoryStream();
@@ -1861,13 +1869,13 @@ function SetFontColorForElement(elemntId, colorRgba){
             // Some indexes are bad. make sure the startpos and length are not bad
             if (length == 0)
             {
-                return string.Empty;
+                return new string[] { string.Empty, isInPoetry.ToString(), noteIdentifier.ToString() };
             }
 
             if (startPos >= xmlbytes.Length)
             {
                 Debug.WriteLine("Bad startpos;" + xmlbytes.Length + ";" + startPos + ";" + length);
-                return "*** POSSIBLE ERROR IN BIBLE, TEXT MISSING HERE ***";
+                return new string[] { "*** POSSIBLE ERROR IN BOOK, TEXT MISSING HERE ***", isInPoetry.ToString(), noteIdentifier.ToString() };
             }
 
             if (startPos + length > xmlbytes.Length)
@@ -1878,7 +1886,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                 if (length == 0)
                 {
                     // this might be a problem or it might not. Put some stars here anyway.
-                    return "***";
+                    return new string[] { "***", isInPoetry.ToString(), noteIdentifier.ToString() };
                 }
             }
 
@@ -1957,7 +1965,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                                 if (reader.Name.ToLower().Equals("src"))
                                                 {
                                                     AppendText(
-                                                        "<img src=\"" + displaySettings.GetImageUrl(reader.Value) + "\" />",
+                                                        "<img src=\"" + await displaySettings.GetImageUrl(reader.Value) + "\" />",
                                                         plainText,
                                                         noteText,
                                                         isInElement);
@@ -2489,11 +2497,11 @@ function SetFontColorForElement(elemntId, colorRgba){
                     noteText.Append("</p>");
                 }
 
-                return noteText.ToString();
+                return new string[]{ noteText.ToString(), isInPoetry.ToString(), noteIdentifier.ToString() };
             }
 
             // this replace fixes a character translation problem for slanted apostrophy
-            return plainText.ToString().Replace('\x92', '\'');
+            return new string[]{ plainText.ToString().Replace('\x92', '\''), isInPoetry.ToString(), noteIdentifier.ToString() };
         }
 
         protected void RaiseSourceChangedEvent()

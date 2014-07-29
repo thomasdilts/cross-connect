@@ -369,7 +369,7 @@ namespace CrossConnect
                     }
                 }
             }
-            if (this.selectDocument.SelectedIndex < 0)
+            if (this.selectDocument.Items.Any() && this.selectDocument.SelectedIndex < 0)
             {
                 this.selectDocument.SelectedIndex = 0;
             }

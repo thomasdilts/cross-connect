@@ -53,6 +53,7 @@ namespace Sword.reader
         public Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> NotesToShow;
         [DataMember]
         public DisplaySettings LocalDisplaySettings;
+
         #region Constructors and Destructors
         public delegate void NotesChangedDelegate(Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> notesToShow, DisplaySettings displaySettings);
 

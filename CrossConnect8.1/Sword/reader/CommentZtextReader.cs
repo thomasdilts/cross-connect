@@ -132,7 +132,7 @@ namespace Sword.reader
             }
             return string.Empty;
         }*/
-        protected override string ParseOsisText(
+        protected override async Task<string[]> ParseOsisText(
             DisplaySettings displaySettings,
             string chapterNumber,
             string restartText,
@@ -142,8 +142,8 @@ namespace Sword.reader
             bool isIsoText,
             bool isNotesOnly,
             bool noTitles,
-            ref int noteIdentifier,
-            ref bool isInPoetry,
+            int noteIdentifier,
+            bool isInPoetry,
             bool isRaw = false)
         {
             var ms = new MemoryStream();
@@ -159,13 +159,13 @@ namespace Sword.reader
             // Some indexes are bad. make sure the startpos and length are not bad
             if (length == 0)
             {
-                return string.Empty;
+                return new string[] { string.Empty, isInPoetry.ToString(), noteIdentifier.ToString() };
             }
 
             if (startPos >= xmlbytes.Length)
             {
                 Debug.WriteLine("Bad startpos;" + xmlbytes.Length + ";" + startPos + ";" + length);
-                return "*** POSSIBLE ERROR IN BIBLE, TEXT MISSING HERE ***";
+                return new string[] { "*** POSSIBLE ERROR IN BOOK, TEXT MISSING HERE ***", isInPoetry.ToString(), noteIdentifier.ToString() };
             }
 
             if (startPos + length > xmlbytes.Length)
@@ -176,9 +176,10 @@ namespace Sword.reader
                 if (length == 0)
                 {
                     // this might be a problem or it might not. Put some stars here anyway.
-                    return "***";
+                    return new string[] { "***", isInPoetry.ToString(), noteIdentifier.ToString() };
                 }
             }
+
 
             try
             {
@@ -253,7 +254,7 @@ namespace Sword.reader
                                                 if (reader.Name.ToLower().Equals("src"))
                                                 {
                                                     AppendText(
-                                                        "<img src=\"" + displaySettings.GetImageUrl(reader.Value) + "\" />",
+                                                        "<img src=\"" + await displaySettings.GetImageUrl(reader.Value) + "\" />",
                                                         plainText,
                                                         noteText,
                                                         isInElement);
@@ -781,11 +782,11 @@ namespace Sword.reader
                     noteText.Append("</p>");
                 }
 
-                return noteText.ToString();
+                return new string[]{ noteText.ToString(), isInPoetry.ToString(), noteIdentifier.ToString() };
             }
 
             // this replace fixes a character translation problem for slanted apostrophy
-            return plainText.ToString().Replace('\x92', '\'');
+            return new string[]{ plainText.ToString().Replace('\x92', '\''), isInPoetry.ToString(), noteIdentifier.ToString() };
         }
 
         protected override async Task<string> GetChapterHtml(
@@ -917,7 +918,7 @@ namespace Sword.reader
                     verseTxt = "*** ERROR ***";
                     try
                     {
-                        verseTxt = this.ParseOsisText(
+                        var texts = await this.ParseOsisText(
                             displaySettings,
                             startText,
                             restartText,
@@ -927,8 +928,11 @@ namespace Sword.reader
                             this.Serial.IsIsoEncoding,
                             isNotesOnly,
                             false,
-                            ref noteIdentifier,
-                            ref isInPoetry);
+                            noteIdentifier,
+                            isInPoetry);
+                        verseTxt = texts[0];
+                        isInPoetry = bool.Parse(texts[1]);
+                        noteIdentifier = int.Parse(texts[2]);
                         if (isInPoetry && (i == versesForChapterPositions.Verses.Count - 1))
                         {
                             // we must end the indentations

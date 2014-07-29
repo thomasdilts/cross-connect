@@ -173,7 +173,7 @@ namespace CrossConnect.readers
             VersePos verse = this.Chapters[chapterNumber].Verses[verseNumber];
             int noteMarker = 0;
             bool isInPoetry = false;
-            return this.ParseOsisText(
+            var texts = await this.ParseOsisText(
                 displaySettings,
                 "",
                 "",
@@ -183,8 +183,9 @@ namespace CrossConnect.readers
                 this.Serial.IsIsoEncoding,
                 true,
                 true,
-                ref noteMarker,
-                ref isInPoetry);
+                noteMarker,
+                isInPoetry);
+            return texts[0];
         }
 
         public override async Task Resume()
