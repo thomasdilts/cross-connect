@@ -33,7 +33,7 @@ namespace Sword.reader
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
-    using Hoot;
+    //using Hoot;
 
     using Sword.reader;
 
@@ -346,7 +346,7 @@ namespace Sword.reader
                                        + (j + 1) + (displaySettings.SmallVerseNumbers ? " </sup>" : ")");
                             const string htmlSuffix = "</a></p><hr />";
                             int noteMarker = 0;
-                            string verseTxt = this.ParseOsisText(
+                            var texts = await this.ParseOsisText(
                                 displaySettings,
                                 string.Empty,
                                 string.Empty,
@@ -356,11 +356,12 @@ namespace Sword.reader
                                 this.Serial.IsIsoEncoding,
                                 false,
                                 true,
-                                ref noteMarker,
-                                ref isInPoetry);
-                            matches = regex.Matches(verseTxt);
+                                noteMarker,
+                                isInPoetry);
+                            matches = regex.Matches(texts[0]);
                             Match lastMatch = null;
                             bool foundMatch = false;
+                            var verseText = texts[0];
                             foreach (Match match in matches)
                             {
                                 // if the match goes over into the previous match then skip it
@@ -373,14 +374,14 @@ namespace Sword.reader
 
                                 lastMatch = match;
                                 foundMatch = true;
-                                verseTxt = verseTxt.Substring(0, match.Index) + "<b>"
-                                           + verseTxt.Substring(match.Index, match.Length) + "</b>"
-                                           + verseTxt.Substring(match.Index + match.Length);
+                                verseText = verseText.Substring(0, match.Index) + "<b>"
+                                           + verseText.Substring(match.Index, match.Length) + "</b>"
+                                           + verseText.Substring(match.Index + match.Length);
                             }
 
                             if (foundMatch)
                             {
-                                displayTextBody.Append(s + verseTxt + htmlSuffix);
+                                displayTextBody.Append(s + texts + htmlSuffix);
                                 numFoundMatches++;
                             }
                         }

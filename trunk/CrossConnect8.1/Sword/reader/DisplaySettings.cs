@@ -113,7 +113,7 @@ namespace Sword.reader
 
         public Highlighter highlighter = new Highlighter();
 
-        public delegate string ImageUrlRenderar(string source);
+        public delegate Task<string> ImageUrlRenderar(string source);
         public ImageUrlRenderar GetImageUrl;
         #endregion
 

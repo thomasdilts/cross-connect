@@ -49,7 +49,7 @@ namespace Sword.reader
         public List<BiblePlaceMarker> BookMarksToShow;
 
         [DataMember]
-        protected string _title;
+        public string _title;
 
         [DataMember]
         protected bool ShowDate = true;

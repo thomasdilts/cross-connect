@@ -33,7 +33,7 @@ namespace Sword.reader
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
-    using Hoot;
+    //using Hoot;
 
     using Sword.reader;
 

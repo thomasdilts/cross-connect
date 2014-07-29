@@ -83,7 +83,7 @@ namespace Sword.reader
         }
 
         #endregion
-
+        /*
         protected override string ParseOsisText(
             DisplaySettings displaySettings,
             string chapterNumber,
@@ -98,16 +98,6 @@ namespace Sword.reader
             ref bool isInPoetry,
             bool isRaw = false)
         {
-            var ms = new MemoryStream();
-            if (isIsoText)
-            {
-                ms.Write(PrefixIso, 0, PrefixIso.Length);
-            }
-            else
-            {
-                ms.Write(Prefix, 0, Prefix.Length);
-            }
-
             // Some indexes are bad. make sure the startpos and length are not bad
             if (length == 0)
             {
@@ -131,22 +121,77 @@ namespace Sword.reader
                     return "***";
                 }
             }
-            // if it contains a 0 character then it is also an empty verse
-            if (xmlbytes[startPos] == 0)
+
+            try
             {
-                return string.Empty;
+                return chapterNumber + System.Text.UTF8Encoding.UTF8.GetString(xmlbytes, 0, xmlbytes.Length) + "</a>";
             }
+            catch (Exception ee)
+            {
+                Debug.WriteLine("crashed in a strange place. err=" + ee.StackTrace);
+            }
+            return string.Empty;
+        }*/
+        protected override async Task<string[]> ParseOsisText(
+            DisplaySettings displaySettings,
+            string chapterNumber,
+            string restartText,
+            byte[] xmlbytes,
+            int startPos,
+            int length,
+            bool isIsoText,
+            bool isNotesOnly,
+            bool noTitles,
+            int noteIdentifier,
+            bool isInPoetry,
+            bool isRaw = false)
+        {
+            var ms = new MemoryStream();
+            if (isIsoText)
+            {
+                ms.Write(PrefixIso, 0, PrefixIso.Length);
+            }
+            else
+            {
+                ms.Write(Prefix, 0, Prefix.Length);
+            }
+
+            // Some indexes are bad. make sure the startpos and length are not bad
+            if (length == 0)
+            {
+                return new string[] { string.Empty, isInPoetry.ToString(), noteIdentifier.ToString() };
+            }
+
+            if (startPos >= xmlbytes.Length)
+            {
+                Debug.WriteLine("Bad startpos;" + xmlbytes.Length + ";" + startPos + ";" + length);
+                return new string[] { "*** POSSIBLE ERROR IN BOOK, TEXT MISSING HERE ***", isInPoetry.ToString(), noteIdentifier.ToString() };
+            }
+
+            if (startPos + length > xmlbytes.Length)
+            {
+                // we can fix this
+                Debug.WriteLine("Fixed bad length;" + xmlbytes.Length + ";" + startPos + ";" + length);
+                length = xmlbytes.Length - startPos - 1;
+                if (length == 0)
+                {
+                    // this might be a problem or it might not. Put some stars here anyway.
+                    return new string[] { "***", isInPoetry.ToString(), noteIdentifier.ToString() };
+                }
+            }
+
 
             try
             {
                 ms.Write(xmlbytes, startPos, length);
                 ms.Write(Suffix, 0, Suffix.Length);
                 ms.Position = 0;
+
                 // debug
-                byte[] buf = new byte[ms.Length]; ms.Read(buf, 0, (int)ms.Length);
-                string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, buf.Length);
-                System.Diagnostics.Debug.WriteLine("osisbuf: " + xxxxxx);
-                ms.Position = 0;
+                //byte[] buf = new byte[ms.Length]; ms.Read(buf, 0, (int)ms.Length);
+                //string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, buf.Length);
+                //System.Diagnostics.Debug.WriteLine("osisbuf: " + xxxxxx);
+                //ms.Position = 0;
             }
             catch (Exception ee)
             {
@@ -209,7 +254,7 @@ namespace Sword.reader
                                                 if (reader.Name.ToLower().Equals("src"))
                                                 {
                                                     AppendText(
-                                                        "<img src=\"" + displaySettings.GetImageUrl(reader.Value) + "\" />",
+                                                        "<img src=\"" + await displaySettings.GetImageUrl(reader.Value) + "\" />",
                                                         plainText,
                                                         noteText,
                                                         isInElement);
@@ -555,7 +600,6 @@ namespace Sword.reader
                                         }
 
                                         break;
-                                    
                                     case "versee":
                                         //AppendText(" ", plainText, noteText, isInElement);
                                         break;
@@ -738,11 +782,11 @@ namespace Sword.reader
                     noteText.Append("</p>");
                 }
 
-                return noteText.ToString();
+                return new string[]{ noteText.ToString(), isInPoetry.ToString(), noteIdentifier.ToString() };
             }
 
             // this replace fixes a character translation problem for slanted apostrophy
-            return plainText.ToString().Replace('\x92', '\'');
+            return new string[]{ plainText.ToString().Replace('\x92', '\''), isInPoetry.ToString(), noteIdentifier.ToString() };
         }
 
         protected override async Task<string> GetChapterHtml(
@@ -845,7 +889,7 @@ namespace Sword.reader
                     }
                 }
             }
-            var chapterBuffer = await this.GetChapterBytes(chapterNumber + book.VersesInChapterStartIndex);
+            byte[] chapterBuffer = await this.GetChapterBytes(chapterNumber + book.VersesInChapterStartIndex);
 
             // for debug
             //string xxxxxx = Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
@@ -854,7 +898,6 @@ namespace Sword.reader
             for (int i = 0; i < versesForChapterPositions.Verses.Count; i++)
             {
                 VersePos verse = versesForChapterPositions.Verses[i];
-
                 string htmlChapterText = startVerseMarking
                                          + (displaySettings.ShowBookName ? bookName + " " : string.Empty)
                                          + (displaySettings.ShowChapterNumber
@@ -875,7 +918,7 @@ namespace Sword.reader
                     verseTxt = "*** ERROR ***";
                     try
                     {
-                        verseTxt = this.ParseOsisText(
+                        var texts = await this.ParseOsisText(
                             displaySettings,
                             startText,
                             restartText,
@@ -885,8 +928,11 @@ namespace Sword.reader
                             this.Serial.IsIsoEncoding,
                             isNotesOnly,
                             false,
-                            ref noteIdentifier,
-                            ref isInPoetry);
+                            noteIdentifier,
+                            isInPoetry);
+                        verseTxt = texts[0];
+                        isInPoetry = bool.Parse(texts[1]);
+                        noteIdentifier = int.Parse(texts[2]);
                         if (isInPoetry && (i == versesForChapterPositions.Verses.Count - 1))
                         {
                             // we must end the indentations

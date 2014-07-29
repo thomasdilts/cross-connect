@@ -31,8 +31,8 @@ namespace Sword.reader
     using System.Xml;
 
     using Sword.reader;
+    //using Ionic.Zlib;
     using ICSharpCode.SharpZipLib.GZip;
-        //using ICSharpCode.SharpZipLib.GZip;
 
     /// <summary>
     ///     Load from a file all the book and verse pointers to the bzz file so that
@@ -315,7 +315,9 @@ namespace Sword.reader
             {
                 Assembly assem = Assembly.Load(new AssemblyName("CrossConnect"));
                 Stream stream = assem.GetManifestResourceStream("CrossConnect.Properties." + filepath);
+
                 var gzip = new GZipInputStream(stream);
+                //var gzip = new GZipStream(stream,CompressionMode.Decompress);
 
                 string entry = string.Empty;
                 LexiconEntry lexEntry = null;

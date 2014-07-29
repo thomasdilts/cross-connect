@@ -21,9 +21,9 @@
     <VisualStudio>
       <FlavorProperties GUID="{C089C8C0-30E0-4E22-80C0-CE093F111A43}">
         <SilverlightMobileCSProjectFlavor>
-          <FullDeploy>True</FullDeploy>
-          <DebuggerType>Mixed</DebuggerType>
-          <DebuggerAgentType>Mixed</DebuggerAgentType>
+          <FullDeploy>False</FullDeploy>
+          <DebuggerType>Native</DebuggerType>
+          <DebuggerAgentType>Native</DebuggerAgentType>
           <Tombstone>False</Tombstone>
         </SilverlightMobileCSProjectFlavor>
       </FlavorProperties>

@@ -45,6 +45,7 @@ namespace CrossConnect
     using Windows.UI.Xaml.Media;
     using Windows.UI.Xaml.Media.Imaging;
     using Windows.UI.Xaml.Navigation;
+    using Windows.Storage.Streams;
 
     public sealed partial class BrowserTitledWindow : ITiledWindow
     {
@@ -195,7 +196,56 @@ namespace CrossConnect
             _isNextOrPrevious = false;
             Debug.WriteLine("CallbackFromUpdate end");
         }
-        
+        private async Task<string> GetImageUrlForWeb(string source)
+        {
+            string path = string.Empty;
+            if (this._state.Source is BibleZtextReader)
+            {
+                path = ((BibleZtextReader)this._state.Source).Serial.Path;
+            }
+            else if (this._state.Source is RawGenTextReader)
+            {
+                path = ((RawGenTextReader)this._state.Source).Serial.Path;
+                // remove everything after the last slash
+                var pos = path.LastIndexOf("/");
+                if (pos >= 0)
+                {
+                    path = path.Substring(0, pos);
+                }
+            }
+            var fileExtension = "png";
+
+            var pathSplitOnPeriod = source.Split('.');
+            if (pathSplitOnPeriod.Length!=0)
+            {
+                fileExtension = pathSplitOnPeriod[pathSplitOnPeriod.Length - 1];
+            }
+
+            return "data:image/" + fileExtension + ";base64," + await getBase64ImageString( path + (source.StartsWith("/") ? string.Empty : "/") + source);
+        }
+        public async static Task<string> getBase64ImageString(string path)
+        {
+            string base64ImageString = string.Empty;
+            try
+            {
+                var file = await ApplicationData.Current.LocalFolder.GetFileAsync(path.Replace("/","\\"));
+                var readStream = await file.OpenReadAsync();
+                //IRandomAccessStream readStream = await image.OpenAsync(FileAccessMode.Read);
+                //IInputStream inputStream = readStream.GetInputStreamAt(0);
+                DataReader dataReader = new DataReader(readStream);
+
+                uint numOfBytes = await dataReader.LoadAsync((uint)readStream.Size);
+                byte[] bytes = new byte[numOfBytes];
+                dataReader.ReadBytes(bytes);
+                base64ImageString = Convert.ToBase64String(bytes);
+            }
+            catch (Exception ex)
+            {
+                //WebViewUtils.LogException(ex);
+            }
+            return base64ImageString;
+        }
+
 
         private bool _isNextOrPrevious;
 
@@ -543,7 +593,7 @@ namespace CrossConnect
                     {
                         fontFamily += "background-image:url('/images/" + App.Themes.MainBackImage + "');";
                     }
-
+                    App.DisplaySettings.GetImageUrl = this.GetImageUrlForWeb;
                     try
                     {
                         string createdFileName =
@@ -653,53 +703,53 @@ namespace CrossConnect
             }
         }
 
-        private async void GetHtmlAsynchronously(
-            DisplaySettings dispSet,
-            HtmlColorRgba htmlBackgroundColor,
-            HtmlColorRgba htmlForegroundColor,
-            HtmlColorRgba htmlPhoneAccentColor,
-            HtmlColorRgba htmlWordsOfChristColor,
-            HtmlColorRgba[] htmlHighlightColor,
-            double htmlFontSize,
-            string fontFamily,
-            string fileErase)
-        {
-            if (this._isInGetHtmlAsynchronously)
-            {
-                Debug.WriteLine("GetHtmlAsynchronously MULTIPLE ENTRY");
-                return;
-            }
+        //private async void GetHtmlAsynchronously(
+        //    DisplaySettings dispSet,
+        //    HtmlColorRgba htmlBackgroundColor,
+        //    HtmlColorRgba htmlForegroundColor,
+        //    HtmlColorRgba htmlPhoneAccentColor,
+        //    HtmlColorRgba htmlWordsOfChristColor,
+        //    HtmlColorRgba[] htmlHighlightColor,
+        //    double htmlFontSize,
+        //    string fontFamily,
+        //    string fileErase)
+        //{
+        //    if (this._isInGetHtmlAsynchronously)
+        //    {
+        //        Debug.WriteLine("GetHtmlAsynchronously MULTIPLE ENTRY");
+        //        return;
+        //    }
 
-            this._isInGetHtmlAsynchronously = true;
-            Debug.WriteLine("GetHtmlAsynchronously");
+        //    this._isInGetHtmlAsynchronously = true;
+        //    Debug.WriteLine("GetHtmlAsynchronously");
 
-            try
-            {
-                string createdFileName =
-                    await
-                    this._state.Source.GetChapterHtml(
-                        Translations.IsoLanguageCode,
-                        dispSet,
-                        htmlBackgroundColor,
-                        htmlForegroundColor,
-                        htmlPhoneAccentColor,
-                        htmlWordsOfChristColor,
-                        htmlHighlightColor,
-                        htmlFontSize,
-                        fontFamily,
-                        false,
-                        true,
-                        this.ForceReload);
-                this.ForceReload = false;
-                this.CallbackFromUpdate(createdFileName);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("GetHtmlAsynchronously Failed; " + e.Message);
-                this.CallbackFromUpdate(string.Empty);
-                return;
-            }
-        }
+        //    try
+        //    {
+        //        string createdFileName =
+        //            await
+        //            this._state.Source.GetChapterHtml(
+        //                Translations.IsoLanguageCode,
+        //                dispSet,
+        //                htmlBackgroundColor,
+        //                htmlForegroundColor,
+        //                htmlPhoneAccentColor,
+        //                htmlWordsOfChristColor,
+        //                htmlHighlightColor,
+        //                htmlFontSize,
+        //                fontFamily,
+        //                false,
+        //                true,
+        //                this.ForceReload);
+        //        this.ForceReload = false;
+        //        this.CallbackFromUpdate(createdFileName);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Debug.WriteLine("GetHtmlAsynchronously Failed; " + e.Message);
+        //        this.CallbackFromUpdate(string.Empty);
+        //        return;
+        //    }
+        //}
 
         private void GetTouchProperties()
         {
