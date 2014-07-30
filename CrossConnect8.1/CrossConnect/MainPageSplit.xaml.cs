@@ -157,7 +157,7 @@ namespace CrossConnect
                 this._windows[0].Children.Add(text);
                 var but = new Button { /* todo Background = back, Foreground = fore, BorderBrush = border */ };
                 Grid.SetRow(but, 1);
-                if ((!App.InstalledBibles.InstalledBibles.Any() && !App.InstalledBibles.InstalledCommentaries.Any() && !App.InstalledBibles.InstalledGeneralBooks.Any()))
+                if ((!App.InstalledBibles.InstalledBibles.Any() && !App.InstalledBibles.InstalledCommentaries.Any() && !App.InstalledBibles.InstalledGeneralBooks.Any() && !App.InstalledBibles.InstalledDictionaries.Any()))
                 {
                     but.Content = Translations.Translate("Download bible");
                     but.Click += this.MenuDownloadBibleClick;
@@ -533,9 +533,9 @@ namespace CrossConnect
 
             this.SetLanguageDependentTexts();
 
-            if (!App.OpenWindows.Any() || (!App.InstalledBibles.InstalledBibles.Any() && !App.InstalledBibles.InstalledCommentaries.Any() && !App.InstalledBibles.InstalledGeneralBooks.Any()))
+            if (!App.OpenWindows.Any() || (!App.InstalledBibles.InstalledBibles.Any() && !App.InstalledBibles.InstalledCommentaries.Any() && !App.InstalledBibles.InstalledGeneralBooks.Any() && !App.InstalledBibles.InstalledDictionaries.Any()))
             {
-                if (!App.InstalledBibles.InstalledBibles.Any() && !App.InstalledBibles.InstalledCommentaries.Any() && !App.InstalledBibles.InstalledGeneralBooks.Any())
+                if (!App.InstalledBibles.InstalledBibles.Any() && !App.InstalledBibles.InstalledCommentaries.Any() && !App.InstalledBibles.InstalledGeneralBooks.Any() && !App.InstalledBibles.InstalledDictionaries.Any())
                 {
                     if (App.IsFirstTimeInMainPageSplit == 0)
                     {

@@ -111,11 +111,15 @@
     <Compile Include="reader\BiblePlaceMarkReader.cs" />
     <Compile Include="reader\BibleZtextReader.cs" />
     <Compile Include="reader\CommentZtextReader.cs" />
+    <Compile Include="reader\DictionaryRawDefReader.cs" />
+    <Compile Include="reader\DictionaryZldDefReader.cs" />
+    <Compile Include="reader\DictionaryZldIndexReader.cs" />
     <Compile Include="reader\DisplaySettings.cs" />
     <Compile Include="reader\GreekHebrewDictReader.cs" />
     <Compile Include="reader\IBrowserTextSource.cs" />
     <Compile Include="reader\PersonalNotesReader.cs" />
     <Compile Include="reader\RawGenSearchReader.cs" />
+    <Compile Include="reader\DictionaryRawIndexReader.cs" />
     <Compile Include="reader\RawGenTextReader.cs" />
     <Compile Include="reader\sapphire.cs" />
     <Compile Include="reader\SearchReader.cs" />

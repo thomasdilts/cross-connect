@@ -62,7 +62,7 @@ namespace CrossConnect
             string foundKey = string.Empty;
             var index = (string)((TextBlock)e.AddedItems[0]).Tag;
             Dictionary<string, SwordBookMetaData> biblesAndCommentaries =
-                App.InstalledBibles.InstalledBibles.Concat(App.InstalledBibles.InstalledCommentaries).Concat(App.InstalledBibles.InstalledGeneralBooks)
+                App.InstalledBibles.InstalledBibles.Concat(App.InstalledBibles.InstalledCommentaries).Concat(App.InstalledBibles.InstalledGeneralBooks).Concat(App.InstalledBibles.InstalledDictionaries)
                    .ToDictionary(x => x.Key, x => x.Value);
             foreach (var book in biblesAndCommentaries)
             {
@@ -109,9 +109,13 @@ namespace CrossConnect
                                 {
                                     App.InstalledBibles.InstalledBibles.Remove(foundKey);
                                 }
-                                else if(App.InstalledBibles.InstalledGeneralBooks.ContainsKey(foundKey))
+                                else if (App.InstalledBibles.InstalledGeneralBooks.ContainsKey(foundKey))
                                 {
                                     App.InstalledBibles.InstalledGeneralBooks.Remove(foundKey);
+                                }
+                                else if (App.InstalledBibles.InstalledDictionaries.ContainsKey(foundKey))
+                                {
+                                    App.InstalledBibles.InstalledDictionaries.Remove(foundKey);
                                 }
                                 else
                                 {
@@ -133,7 +137,7 @@ namespace CrossConnect
         {
             this.SelectListBibleDelete.Items.Clear();
             Dictionary<string, SwordBookMetaData> biblesAndCommentaries =
-                App.InstalledBibles.InstalledBibles.Concat(App.InstalledBibles.InstalledCommentaries).Concat(App.InstalledBibles.InstalledGeneralBooks)
+                App.InstalledBibles.InstalledBibles.Concat(App.InstalledBibles.InstalledCommentaries).Concat(App.InstalledBibles.InstalledGeneralBooks).Concat(App.InstalledBibles.InstalledDictionaries)
                    .ToDictionary(x => x.Key, x => x.Value);
             foreach (var book in biblesAndCommentaries)
             {

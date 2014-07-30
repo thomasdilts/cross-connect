@@ -267,6 +267,10 @@ namespace CrossConnect
                     {
                         selectedType = WindowType.WindowBook;
                     }
+                    else if (this.selectDocumentType.SelectedItem.Equals(Translations.Translate("Dictionaries")))
+                    {
+                        selectedType = WindowType.WindowDictionary;
+                    }
                     break;
 
             }
@@ -289,6 +293,18 @@ namespace CrossConnect
                 {
                     // did the book choice change?
                     foreach (var book in App.InstalledBibles.InstalledGeneralBooks)
+                    {
+                        if (this.selectDocument.SelectedItem.Equals(book.Value.Name))
+                        {
+                            bookSelected = book.Value;
+                            break;
+                        }
+                    }
+                }
+                else if (selectedType == WindowType.WindowDictionary)
+                {
+                    // did the book choice change?
+                    foreach (var book in App.InstalledBibles.InstalledDictionaries)
                     {
                         if (this.selectDocument.SelectedItem.Equals(book.Value.Name))
                         {
@@ -345,6 +361,14 @@ namespace CrossConnect
             {
                 this.selectDocument.Items.Clear();
                 foreach (var book in App.InstalledBibles.InstalledGeneralBooks)
+                {
+                    this.selectDocument.Items.Add(book.Value.Name);
+                }
+            }
+            else if (this.selectDocumentType.SelectedItem.Equals(Translations.Translate("Dictionaries")))
+            {
+                this.selectDocument.Items.Clear();
+                foreach (var book in App.InstalledBibles.InstalledDictionaries)
                 {
                     this.selectDocument.Items.Add(book.Value.Name);
                 }
@@ -467,6 +491,10 @@ namespace CrossConnect
             if (App.InstalledBibles.InstalledGeneralBooks.Count > 0)
             {
                 this.selectDocumentType.Items.Add(Translations.Translate("Books"));
+            }
+            if (App.InstalledBibles.InstalledDictionaries.Count > 0)
+            {
+                this.selectDocumentType.Items.Add(Translations.Translate("Dictionaries"));
             }
 
             //this.selectDocument.Items.Clear();

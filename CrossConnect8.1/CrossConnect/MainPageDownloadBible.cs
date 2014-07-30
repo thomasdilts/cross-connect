@@ -182,6 +182,7 @@ namespace CrossConnect
             this.selectType.Items.Add(Translations.Translate("Bible"));
             this.selectType.Items.Add(Translations.Translate("Commentaries"));
             this.selectType.Items.Add(Translations.Translate("Books"));
+            this.selectType.Items.Add(Translations.Translate("Dictionaries"));
             this.selectType.SelectedIndex = 0;
 
             this.WaitingForDownload.Visibility = Visibility.Visible;
@@ -231,42 +232,17 @@ namespace CrossConnect
             }
             var fontFamily = (string)_sb.Sbmd.GetProperty(ConfigEntryType.Font);
             fontFamily = fontFamily==null?string.Empty:fontFamily;
-            if (this.selectType.SelectedItem != null
-                && this.selectType.SelectedItem.Equals(Translations.Translate("Commentaries")))
-            {
-                await App.InstalledBibles.AddGenericBook(this._sb.Sbmd.InternalName);
-                await App.AddWindow(
-                    this._sb.Sbmd.InternalName,
-                    this._sb.Sbmd.Name,
-                    WindowType.WindowCommentary,
-                    Font,
-                    fontFamily,
-                    null,
-                    Window,
-                    null,
-                    false);
-            }
-            else if (this.selectType.SelectedItem != null
-                && this.selectType.SelectedItem.Equals(Translations.Translate("Books")))
-            {
-                await App.InstalledBibles.AddGenericBook(this._sb.Sbmd.InternalName);
-                await App.AddWindow(
-                    this._sb.Sbmd.InternalName,
-                    this._sb.Sbmd.Name,
-                    WindowType.WindowBook,
-                    Font,
-                    fontFamily,
-                    null,
-                    Window,
-                    null,
-                    false);
-            }
-            else
-            {
-                await App.InstalledBibles.AddGenericBook(this._sb.Sbmd.InternalName);
-                await App.AddWindow(
-                    this._sb.Sbmd.InternalName, this._sb.Sbmd.Name, WindowType.WindowBible, Font,fontFamily,null, Window, null, false);
-            }
+            await App.InstalledBibles.AddGenericBook(this._sb.Sbmd.InternalName);
+            await App.AddWindow(
+                this._sb.Sbmd.InternalName,
+                this._sb.Sbmd.Name,
+                WindowType.WindowCommentary,
+                Font,
+                fontFamily,
+                null,
+                Window,
+                null,
+                false); 
 
             this._sb = null;
             this.DownloadBiblePopup.IsOpen = false;
@@ -292,21 +268,25 @@ namespace CrossConnect
                                                 Translations.Translate("Commentaries"));
                 bool isGeneralBookSelected = this.selectType.SelectedItem != null
                                             && this.selectType.SelectedItem.Equals(
-                                                Translations.Translate("Books"));
+                                                Translations.Translate("Books")); 
+                bool isDictionariesSelected = this.selectType.SelectedItem != null
+                                             && this.selectType.SelectedItem.Equals(
+                                                 Translations.Translate("Dictionaries"));
                 bool isBibleSelected = this.selectType.SelectedItem == null
                                        || this.selectType.SelectedItem.Equals(Translations.Translate("Bible"));
                 foreach (var book in this._webInst.Entries)
                 {
                     var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
+                    var driver = ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
                     if (lang.Name.Equals(this.selectLangauge.SelectedItem)
                         && ((isBibleSelected
-                             && ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper().Equals("ZTEXT"))
+                             && driver.Equals("ZTEXT"))
                             || (isCommentarySelected
-                                && ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper()
-                                                                                                .Equals("ZCOM"))
+                                && driver.Equals("ZCOM"))
                                 || (isGeneralBookSelected
-                                && ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper()
-                                                                                                .Equals("RAWGENBOOK"))))
+                                && driver.Equals("RAWGENBOOK"))
+                                || (isDictionariesSelected
+                                && (driver.Equals("RAWLD") || driver.Equals("ZLD")))))
                     {
                         allBooks[book.Value.Sbmd.Name] = book.Value.Sbmd.Name;
                     }
@@ -428,6 +408,12 @@ namespace CrossConnect
                 {
                     isGeneralBookSelected = this.selectType.SelectedItem.Equals(Translations.Translate("Books"));
                 }
+                bool isDictionarySelected = false;
+                if (this.selectType != null && this.selectType.SelectedItem != null)
+                {
+                    isDictionarySelected = this.selectType.SelectedItem.Equals(Translations.Translate("Dictionaries"));
+                }
+                bool isBibleSelected = !isDictionarySelected && !isGeneralBookSelected && !isCommentarySelected;
 
                 if (this._webInst != null && this._webInst.IsLoaded && this.selectLangauge != null
                     && this.selectLangauge.Items != null)
@@ -435,30 +421,19 @@ namespace CrossConnect
                     var allLanguages = new Dictionary<string, Language>();
                     foreach (var book in this._webInst.Entries)
                     {
-                        if (isCommentarySelected
-                            && ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper().Equals("ZCOM"))
+                        var driver = ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
+                        if ((isCommentarySelected
+                            && driver.Equals("ZCOM"))
+                            ||(isGeneralBookSelected
+                            && driver.Equals("RAWGENBOOK"))
+                            ||(isBibleSelected
+                            && driver.Equals("ZTEXT"))
+                            ||(isDictionarySelected
+                            && (driver.Equals("ZLD") || driver.Equals("RAWLD"))))
                         {
                             var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
                             allLanguages[lang.Name] = lang;
                         }
-                        else if (isGeneralBookSelected
-                            && ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper().Equals("RAWGENBOOK"))
-                        {
-                            var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
-                            allLanguages[lang.Name] = lang;
-                        }
-                        else if (!isCommentarySelected && !isGeneralBookSelected
-                                 && ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper()
-                                                                                                 .Equals("ZTEXT"))
-                        {
-                            var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
-                            allLanguages[lang.Name] = lang;
-                        }
-
-                        //if (((string)book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey)) != null)
-                        //{
-                        //    Debug.WriteLine(book.Value.Sbmd.GetCetProperty(ConfigEntryType.Description) + "is ciphered, key = " + book.Value.Sbmd.GetCetProperty(ConfigEntryType.CipherKey));
-                        //}
                     }
 
                     List<KeyValuePair<string, Language>> list = allLanguages.OrderBy(t => t.Key).ToList();

@@ -306,14 +306,14 @@ namespace Sword.reader
             return this._displayText;
         }
 
-        public override void MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
+        public override bool MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
         {
             if (!IsPageable)
             {
-                return;
+                return false;
             }
 
-            this.MoveChapterVerse(bookShortName, chapter, verse, isLocalLinkChange, false);
+            return this.MoveChapterVerse(bookShortName, chapter, verse, isLocalLinkChange, false);
         }
 
         public override void MoveNext(bool isVerse)
@@ -419,7 +419,7 @@ namespace Sword.reader
             return returnList;
         }
 
-        private void MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, bool forcePrevious)
+        private bool MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, bool forcePrevious)
         {
             if (IsPageable)
             {
@@ -432,25 +432,26 @@ namespace Sword.reader
                         this.Serial.PosBookShortName = bookShortName;
                         this.Serial.PosChaptNum = chapter;
                         this.Serial.PosVerseNum = 0;
-                        return;
+                        return true;
                     }
                     else if (Highlighter.SortByBibleChapterVerse(testMarker, marker) < 0)
                     {
                         this.Serial.PosBookShortName = marker.BookShortName;
                         this.Serial.PosChaptNum = marker.ChapterNum;
                         this.Serial.PosVerseNum = 0;
-                        return;
+                        return true;
                     }
                 }
-                // If we are here we found nothing. go to the first
-                var marker2 = sortedNotes.FirstOrDefault();
-                if(marker2!=null)
-                {
-                    this.Serial.PosBookShortName = marker2.BookShortName;
-                    this.Serial.PosChaptNum = marker2.ChapterNum;
-                    this.Serial.PosVerseNum = 0;
-                }
+                //// If we are here we found nothing. go to the first
+                //var marker2 = sortedNotes.FirstOrDefault();
+                //if(marker2!=null)
+                //{
+                //    this.Serial.PosBookShortName = marker2.BookShortName;
+                //    this.Serial.PosChaptNum = marker2.ChapterNum;
+                //    this.Serial.PosVerseNum = 0;
+                //}
             }
+            return false;
         }
 
         public override void SetToFirstChapter()

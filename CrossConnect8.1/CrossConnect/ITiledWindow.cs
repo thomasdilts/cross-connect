@@ -93,7 +93,9 @@ namespace CrossConnect
 
         WindowLexiconLink,
 
-        WindowMediaPlayer
+        WindowMediaPlayer,
+
+        WindowDictionary
     }
 
     /// <summary>
