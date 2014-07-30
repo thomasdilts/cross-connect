@@ -49,6 +49,8 @@ namespace Sword
 
         public Dictionary<string, SwordBookMetaData> InstalledGeneralBooks = new Dictionary<string, SwordBookMetaData>();
 
+        public Dictionary<string, SwordBookMetaData> InstalledDictionaries = new Dictionary<string, SwordBookMetaData>();
+
         #endregion
 
         #region Constructors and Destructors
@@ -62,6 +64,7 @@ namespace Sword
             InstalledBibles = new Dictionary<string, SwordBookMetaData>();
             InstalledCommentaries = new Dictionary<string, SwordBookMetaData>();
             InstalledGeneralBooks = new Dictionary<string, SwordBookMetaData>();
+            InstalledDictionaries = new Dictionary<string, SwordBookMetaData>();
 
             try
             {
@@ -92,21 +95,26 @@ namespace Sword
         public async Task<bool> AddGenericBook(string modPath)
         {
             var book = await this.DoLoading(modPath);
+            var driver = ((string)book.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
             if (book == null)
             {
                 return false;
             }
-            if (((string)book.GetProperty(ConfigEntryType.ModDrv)).ToUpper().Equals("ZTEXT"))
+            if (driver.Equals("ZTEXT"))
             {
                 this.InstalledBibles[modPath] = book;
             }
-            else if (((string)book.GetProperty(ConfigEntryType.ModDrv)).ToUpper().Equals("ZCOM"))
+            else if (driver.Equals("ZCOM"))
             {
                 this.InstalledCommentaries[modPath] = book;
             }
-            else if (((string)book.GetProperty(ConfigEntryType.ModDrv)).ToUpper().Equals("RAWGENBOOK"))
+            else if (driver.Equals("RAWGENBOOK"))
             {
                 this.InstalledGeneralBooks[modPath] = book;
+            }
+            else if (driver.Equals("ZLD") || driver.Equals("RAWLD"))
+            {
+                this.InstalledDictionaries[modPath] = book;
             }
 
             return true;

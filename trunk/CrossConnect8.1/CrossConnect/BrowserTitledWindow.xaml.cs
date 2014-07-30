@@ -305,6 +305,9 @@ namespace CrossConnect
                     case WindowType.WindowBook:
                         books = App.InstalledBibles.InstalledGeneralBooks;
                         break;
+                    case WindowType.WindowDictionary:
+                        books = App.InstalledBibles.InstalledDictionaries;
+                        break;
                     default:
                         books = App.InstalledBibles.InstalledBibles;
                         break;
@@ -413,6 +416,27 @@ namespace CrossConnect
                                         isIsoEncoding);
                                     await ((RawGenTextReader)this._state.Source).Initialize();
                                     return;
+                                case WindowType.WindowDictionary:
+                                    var driver = ((string)book.Value.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
+                                    if (driver.Equals("RAWLD"))
+                                    {
+                                        this._state.Source = new DictionaryRawIndexReader(
+                                            bookPath,
+                                            ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
+                                            isIsoEncoding,
+                                            Guid.NewGuid().ToString().Substring(0, 8));
+                                        await ((DictionaryRawIndexReader)this._state.Source).Initialize();
+                                    }
+                                    else
+                                    {
+                                        this._state.Source = new DictionaryZldIndexReader(
+                                            bookPath,
+                                            ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
+                                            isIsoEncoding,
+                                            Guid.NewGuid().ToString().Substring(0, 8));
+                                        await ((DictionaryZldIndexReader)this._state.Source).Initialize();
+                                    }
+                                    return;
                                 case WindowType.WindowAddedNotes:
                                     var notes = new PersonalNotesReader(
                                         bookPath,
@@ -514,14 +538,16 @@ namespace CrossConnect
                     out fullName,
                     out title);
                 bool isBookAndChapterTheSame = bookShortName.Equals(relbookShortName) && relChaptNum.Equals(chapterNum);
-                this._state.Source.MoveChapterVerse(bookShortName, chapterNum, verseNum, false, source);
-                if (!isBookAndChapterTheSame)
+                if (this._state.Source.MoveChapterVerse(bookShortName, chapterNum, verseNum, false, source))
                 {
-                    this.UpdateBrowser(false);
-                }
-                else 
-                {
-                    ScrollToThisVerse(bookShortName, chapterNum, verseNum);
+                    if (!isBookAndChapterTheSame)
+                    {
+                        this.UpdateBrowser(false);
+                    }
+                    else
+                    {
+                        ScrollToThisVerse(bookShortName, chapterNum, verseNum);
+                    }
                 }
             }
         }

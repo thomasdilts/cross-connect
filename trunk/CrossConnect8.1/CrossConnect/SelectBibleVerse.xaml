@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="CrossConnect.SelectBibleVerse"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CrossConnect"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="200"
+    d:DesignWidth="400" Loaded="UserControl_Loaded">
+
+    <Grid x:Name="LayoutRoot" Height="45" Margin="0 4 0 4"  >
+        <StackPanel x:Name="MainContent"  Orientation="Horizontal">
+            <ComboBox  Name="SelectBibleList" Tapped="SelectBibleList_Tapped" SelectionChanged="SelectBibleList_SelectionChanged" >
+                <TextBlock Name="test00">Book</TextBlock>
+            </ComboBox>
+            <ComboBox Name="SelectChapterList" SelectionChanged="SelectChapterList_SelectionChanged" >
+                    <TextBlock Name="test000">Chapter</TextBlock>
+            </ComboBox>
+            <ComboBox Name="SelectVerseList" SelectionChanged="SelectVerseList_SelectionChanged" >
+                    <TextBlock Name="test000fffxx">Verse</TextBlock>
+            </ComboBox>
+            <Image Name="arrowright" Source="Assets/AppBar/appbar.arrowto.rest.png" Width="40" />
+            <ComboBox Name="SelectToVerseList" >
+                <TextBlock Name="test000fff">To Verse</TextBlock>
+            </ComboBox>
+            <Button Width="40" 
+                           Click="ButMoveUpClick" HorizontalAlignment="Center"
+                            Style="{StaticResource UploadAppBarButtonStyle2}" x:Name="butMoveUp"
+                            />
+            <Button Width="40" 
+                           Click="ButMoveDownClick" HorizontalAlignment="Center"
+                            Style="{StaticResource DownloadAppBarButtonStyle2}" x:Name="butMoveDown"
+                           />
+            <Button Width="40" 
+                           Click="ButCloseClick" HorizontalAlignment="Center"
+                            Style="{StaticResource DeleteAppBarButtonStyle2}" x:Name="butClose"
+                            />
+        </StackPanel>
+    </Grid>
+</UserControl>

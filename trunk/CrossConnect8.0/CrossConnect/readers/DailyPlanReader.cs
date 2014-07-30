@@ -242,11 +242,11 @@ namespace CrossConnect.readers
                     + Translations.Translate("Daily plan");
         }
 
-        public override void MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
+        public override bool MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
         {
             if (!(source is BibleZtextReader))
             {
-                return;
+                return false;
             }
             if (isLocalLinkChange)
             {
@@ -262,6 +262,8 @@ namespace CrossConnect.readers
                     schedule[App.DailyPlan.PlanDayNumber][0];
                 this.Serial.PosVerseNum = 0;
             }
+
+            return true;
         }
 
         public override void MoveNext(bool isVerse)

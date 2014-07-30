@@ -1019,7 +1019,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return returnList;
         }
 
-        public virtual void MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
+        public virtual bool MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
         {
             //if (!(source is BibleZtextReader))
             //{
@@ -1036,12 +1036,14 @@ function SetFontColorForElement(elemntId, colorRgba){
                     this.Serial.PosChaptNum = chapter;
                     this.Serial.PosVerseNum = canon.VersesInChapter[book.VersesInChapterStartIndex + chapter] > verse
                         ? verse : (canon.VersesInChapter[book.VersesInChapterStartIndex + chapter] - 1);
+                    return true;
                 }
             }
             catch (Exception e)
             {
                 Debug.WriteLine("moveChapterVerse " + e.Message + " ; " + e.StackTrace);
             }
+            return false;
         }
 
         public virtual void MoveNext(bool isVerseMove)
