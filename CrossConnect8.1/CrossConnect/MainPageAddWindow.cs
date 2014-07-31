@@ -213,7 +213,19 @@ namespace CrossConnect
                     this.selectDocumentType.SelectedIndex = 7;
                     break;
                 case WindowType.WindowBook:
-                    this.selectDocumentType.SelectedIndex = App.InstalledBibles.InstalledCommentaries.Count > 0?8:7;
+                    this.selectDocumentType.SelectedIndex = App.InstalledBibles.InstalledCommentaries.Count > 0 ? 8 : 7;
+                    break;
+                case WindowType.WindowDictionary:
+                    var index = 7;
+                    if (App.InstalledBibles.InstalledCommentaries.Any())
+                    {
+                        index++;
+                    }
+                    if (App.InstalledBibles.InstalledGeneralBooks.Any())
+                    {
+                        index++;
+                    }
+                    this.selectDocumentType.SelectedIndex = index;
                     break;
             }
             foreach (var item in  this.selectDocument.Items)

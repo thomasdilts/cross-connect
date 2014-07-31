@@ -271,6 +271,7 @@
     <PRIResource Include="Locale\ta\resource.resw" />
     <PRIResource Include="Locale\te\resource.resw" />
     <PRIResource Include="Locale\zu\resource.resw" />
+    <None Include="Package.StoreAssociation.xml" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -308,7 +309,6 @@
     <EmbeddedResource Include="Properties\crossc_eo.xml" />
     <EmbeddedResource Include="Properties\crossc_cy.xml" />
     <EmbeddedResource Include="Properties\crossc_bn.xml" />
-    <None Include="Package.StoreAssociation.xml" />
     <EmbeddedResource Include="Properties\crossc_af.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>

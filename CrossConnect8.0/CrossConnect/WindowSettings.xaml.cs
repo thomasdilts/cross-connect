@@ -149,6 +149,10 @@ namespace CrossConnect
                     {
                         selectedType = WindowType.WindowBook;
                     }
+                    else if (this.selectDocumentType.SelectedItem.Equals(Translations.Translate("Dictionaries")))
+                    {
+                        selectedType = WindowType.WindowDictionary;
+                    }
                     break;
             }
 
@@ -170,6 +174,18 @@ namespace CrossConnect
                 {
                     // did the book choice change?
                     foreach (var book in App.InstalledBibles.InstalledGeneralBooks)
+                    {
+                        if (selectDocument.SelectedItem.Equals(book.Value.Name))
+                        {
+                            bookSelected = book.Value;
+                            break;
+                        }
+                    }
+                }
+                else if (selectedType == WindowType.WindowDictionary)
+                {
+                    // did the book choice change?
+                    foreach (var book in App.InstalledBibles.InstalledDictionaries)
                     {
                         if (selectDocument.SelectedItem.Equals(book.Value.Name))
                         {
@@ -405,6 +421,19 @@ namespace CrossConnect
                     }
                 }
             }
+            else if (this.selectDocumentType.SelectedItem != null && this.selectDocumentType.SelectedItem.Equals(Translations.Translate("Dictionaries")))
+            {
+                selectDocument.Items.Clear();
+                foreach (var book in App.InstalledBibles.InstalledDictionaries)
+                {
+                    selectDocument.Items.Add(book.Value.Name);
+                    if ((bool)isAddNewWindowOnly == false && App.OpenWindows.Count > 0
+                        && App.OpenWindows[(int)openWindowIndex].State.BibleToLoad.Equals(book.Value.InternalName))
+                    {
+                        selectDocument.SelectedIndex = selectDocument.Items.Count - 1;
+                    }
+                }
+            }
             else
             {
                 selectDocument.Items.Clear();
@@ -546,6 +575,10 @@ namespace CrossConnect
             if (App.InstalledBibles.InstalledGeneralBooks.Count > 0)
             {
                 selectDocumentType.Items.Add(Translations.Translate("Books"));
+            } 
+            if (App.InstalledBibles.InstalledDictionaries.Count > 0)
+            {
+                selectDocumentType.Items.Add(Translations.Translate("Dictionaries"));
             }
 
             object isAddNewWindowOnly;
@@ -691,7 +724,32 @@ namespace CrossConnect
                         this.selectDocumentType.SelectedIndex = App.InstalledBibles.InstalledCommentaries.Count > 0 ? 8 : 7;
 
                         break;
+                    case WindowType.WindowDictionary:
+                        selectDocument.Items.Clear();
+                        foreach (var book in App.InstalledBibles.InstalledDictionaries)
+                        {
+                            selectDocument.Items.Add(book.Value.Name);
+                            if ((bool)isAddNewWindowOnly == false && App.OpenWindows.Count > 0
+                                &&
+                                App.OpenWindows[(int)openWindowIndex].State.BibleToLoad.Equals(
+                                    book.Value.InternalName))
+                            {
+                                selectDocument.SelectedIndex = selectDocument.Items.Count - 1;
+                            }
+                        }
+                        
+                        var index = 7;
+                        if (App.InstalledBibles.InstalledCommentaries.Any())
+                        {
+                            index++;
+                        }
+                        if (App.InstalledBibles.InstalledGeneralBooks.Any())
+                        {
+                            index++;
+                        }
+                        this.selectDocumentType.SelectedIndex = index;
 
+                        break;
                     case WindowType.WindowCommentary:
                         selectDocument.Items.Clear();
                         foreach (var book in App.InstalledBibles.InstalledCommentaries)

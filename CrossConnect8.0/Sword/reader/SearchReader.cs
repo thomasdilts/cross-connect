@@ -346,7 +346,7 @@ namespace Sword.reader
                                        + (j + 1) + (displaySettings.SmallVerseNumbers ? " </sup>" : ")");
                             const string htmlSuffix = "</a></p><hr />";
                             int noteMarker = 0;
-                            var texts = await this.ParseOsisText(
+                            var texts = await ParseOsisText(
                                 displaySettings,
                                 string.Empty,
                                 string.Empty,

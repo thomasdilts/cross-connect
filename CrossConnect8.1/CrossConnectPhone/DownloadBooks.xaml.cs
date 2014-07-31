@@ -192,6 +192,7 @@ namespace CrossConnect
             selectType.Items.Add(Translations.Translate("Bible"));
             selectType.Items.Add(Translations.Translate("Commentaries"));
             selectType.Items.Add(Translations.Translate("Books"));
+            selectType.Items.Add(Translations.Translate("Dictionaries"));
 
             WaitingForDownload.Visibility = Visibility.Visible;
             selectType.Visibility = Visibility.Collapsed;
@@ -251,20 +252,23 @@ namespace CrossConnect
                 var allBooks = new Dictionary<string, string>();
                 bool isCommentarySelected = selectType.SelectedItem.Equals(Translations.Translate("Commentaries"));
                 bool isGeneralBookSelected = selectType.SelectedItem.Equals(Translations.Translate("Books"));
+                bool isDictionarySelected = selectType.SelectedItem.Equals(Translations.Translate("Dictionaries"));
                 bool isBibleSelected = selectType.SelectedItem.Equals(Translations.Translate("Bible"));
                 foreach (var book in _webInst.Entries)
                 {
                     var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
+                    var driver = ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
                     if (lang.Name.Equals(selectLangauge.SelectedItem)
                         &&
                         ((isBibleSelected
-                          && ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper().Equals("ZTEXT"))
+                          && driver.Equals("ZTEXT"))
                          ||
                          (isCommentarySelected
-                          && ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper().Equals("ZCOM"))
+                          && driver.Equals("ZCOM"))
                         || (isGeneralBookSelected
-                                && ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper()
-                                                                                                .Equals("RAWGENBOOK"))))
+                                && driver.Equals("RAWGENBOOK"))
+                        || (isDictionarySelected
+                                && (driver.Equals("RAWLD")||driver.Equals("ZLD")))))
                     {
                         allBooks[book.Value.Sbmd.Name] = book.Value.Sbmd.Name;
                     }
@@ -365,10 +369,12 @@ namespace CrossConnect
 
                 bool isCommentarySelected = false;
                 bool isGeneralBookSelected = false;
+                bool isDictionarySelected = false;
                 if (selectType != null && selectType.SelectedItem != null)
                 {
                     isCommentarySelected = selectType.SelectedItem.Equals(Translations.Translate("Commentaries"));
                     isGeneralBookSelected = selectType.SelectedItem.Equals(Translations.Translate("Books"));
+                    isDictionarySelected = selectType.SelectedItem.Equals(Translations.Translate("Dictionaries"));
                 }
 
                 if (_webInst != null && _webInst.IsLoaded && selectLangauge != null
@@ -377,21 +383,28 @@ namespace CrossConnect
                     var allLanguages = new Dictionary<string, Language>();
                     foreach (var book in _webInst.Entries)
                     {
+                        var driver = ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
                         if (isCommentarySelected
-                            && ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper().Equals("ZCOM"))
+                            && driver.Equals("ZCOM"))
                         {
                             var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
                             allLanguages[lang.Name] = lang;
                         }
                         else if (isGeneralBookSelected
-                            && ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper().Equals("RAWGENBOOK"))
+                            && driver.Equals("RAWGENBOOK"))
+                        {
+                            var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
+                            allLanguages[lang.Name] = lang;
+                        }
+                        else if (isDictionarySelected
+                            && (driver.Equals("RAWLD") || driver.Equals("ZLD")))
                         {
                             var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
                             allLanguages[lang.Name] = lang;
                         }
                         else if (!isCommentarySelected && !isGeneralBookSelected
                                  &&
-                                 ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper().Equals("ZTEXT"))
+                                 driver.Equals("ZTEXT"))
                         {
                             var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
                             allLanguages[lang.Name] = lang;
