@@ -31,8 +31,9 @@ namespace Sword.reader
     using System.Xml;
 
     using Sword.reader;
-    //using Ionic.Zlib;
+
     using ICSharpCode.SharpZipLib.GZip;
+    //using ICSharpCode.SharpZipLib.GZip;
 
     /// <summary>
     ///     Load from a file all the book and verse pointers to the bzz file so that

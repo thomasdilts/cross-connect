@@ -885,13 +885,15 @@ namespace CrossConnect
                     };
                     using (XmlWriter writer = XmlWriter.Create(sw, settings))
                     {
-                        OpenWindows[i].State.Source.SerialSave();
-                        if (OpenWindows[i].State.WindowType != WindowType.WindowMediaPlayer)
+                        if (OpenWindows[i].State != null && OpenWindows[i].State.Source != null)
                         {
-                            // change the windows view to this one
-                            OpenWindows[i].State.VSchrollPosition = await ((BrowserTitledWindow)OpenWindows[i]).GetVScroll();
+                            OpenWindows[i].State.Source.SerialSave();
+                            if (OpenWindows[i].State.WindowType != WindowType.WindowMediaPlayer)
+                            {
+                                // change the windows view to this one
+                                OpenWindows[i].State.VSchrollPosition = await ((BrowserTitledWindow)OpenWindows[i]).GetVScroll();
+                            }
                         }
-
                         ser.WriteObject(writer, OpenWindows[i].State);
                     }
 

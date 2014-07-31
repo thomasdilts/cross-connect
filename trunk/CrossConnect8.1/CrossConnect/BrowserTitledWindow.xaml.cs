@@ -559,6 +559,7 @@ namespace CrossConnect
             {
                 return;
             }
+
             this.border1.BorderBrush = new SolidColorBrush(App.Themes.BorderColor);
             this.WebBrowserBorder.BorderBrush = this.border1.BorderBrush;
             this.grid1.Background = new SolidColorBrush(App.Themes.TitleBackColor);
@@ -878,6 +879,7 @@ namespace CrossConnect
             this.grid1.Background = new SolidColorBrush(App.Themes.TitleBackColor);
 
             this.title.Foreground = new SolidColorBrush(App.Themes.TitleFontColor);
+
         }
 
         private async void WebBrowser1ScriptNotify(object sender, NotifyEventArgs e)
@@ -1076,6 +1078,22 @@ namespace CrossConnect
                                      ? this._state.BibleToLoad
                                      : this._state.BibleDescription)
                               + "                                                               ";
+            if (this._state.Source is DictionaryRawIndexReader)
+            {
+                butSearchDictionary.Visibility = Visibility.Visible;
+                SearchInput.Visibility = Visibility.Visible;
+                searchPanel.ColumnDefinitions[2].Width = GridLength.Auto;
+                searchPanel.ColumnDefinitions[3].Width = GridLength.Auto;
+                searchPanel.ColumnDefinitions[0].Width = new GridLength(searchPanel.ActualWidth - butSearchDictionary.ActualWidth*2 - SearchInput.Width);
+            }
+            else
+            {
+                butSearchDictionary.Visibility = Visibility.Collapsed;
+                SearchInput.Visibility = Visibility.Collapsed;
+                searchPanel.ColumnDefinitions[2].Width = new GridLength(0);
+                searchPanel.ColumnDefinitions[3].Width = new GridLength(0);
+                searchPanel.ColumnDefinitions[0].Width = GridLength.Auto;
+            }
         }
 
         private void webBrowser1_NavigationFailed_1(object sender, WebViewNavigationFailedEventArgs e)
@@ -1105,6 +1123,13 @@ namespace CrossConnect
         private void ButWindowSettings_OnClick(object sender, RoutedEventArgs e)
         {
             App.MainWindow.ButAddWindowClick(this, null);
+        }
+
+        private void butSearchDictionary_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.webBrowser1.InvokeScript(
+                "DoSearch",
+                new[] { "ID_" + SearchInput.Text });
         }
     }
 }

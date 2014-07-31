@@ -21,7 +21,7 @@
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
                 <RowDefinition Height="40"></RowDefinition>
-                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="0"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
       </Grid.RowDefinitions>
       <StackPanel Name="stackPanelButtons" Grid.Row="0" Orientation="Horizontal" Height="40"
@@ -30,7 +30,7 @@
                            PressedImage="/Images/dark/appbar.people.2.pressed.rest.png" x:Name="butPrevious"
                            Template="{StaticResource ImageButtonControlTemplate}" />
         <TextBlock Width="85" ManipulationCompleted="TitleManipulationCompleted" Margin="7,0,0,0"
-                   Grid.Column="1" Grid.Row="0" Name="title" Text="" />
+                   Grid.Column="1" Grid.Row="0" Name="title" Text="Please wait, loading..." />
         <local:ImageButton Width="40" Click="ButNextClick" Image="/Images/dark/appbar.people.1.rest.png"
                            PressedImage="/Images/dark/appbar.people.1.rest.pressed.png" x:Name="butNext"
                            Template="{StaticResource ImageButtonControlTemplate}" />
@@ -60,7 +60,15 @@
                            PressedImage="/Images/dark/appbar.cancel.rest.pressed.png" x:Name="butClose"
                            Template="{StaticResource ImageButtonControlTemplate}" />
       </StackPanel>
-            <TextBlock ManipulationCompleted="TitleManipulationCompleted" Margin="7,0,0,0"
+            <StackPanel Visibility="Collapsed" Name="searchPanel" Grid.Row="1" Orientation="Horizontal" Height="40"
+                  HorizontalAlignment="Center" Margin="0,0,0,0">
+                <TextBox Width="250" Margin="0,-10,0,-10" FontSize="20" Text="" Padding="0,0,0,0" Height="60" Name="SearchInput" />
+                <local:ImageButton Width="40" 
+                    Click="butSearchDictionary_OnClick"  Image="/Images/dark/appbar.translate.png"
+                    PressedImage="/Images/dark/appbar.translate.pressed.png" x:Name="butSearchDictionary"
+                    Template="{StaticResource ImageButtonControlTemplate}" />
+            </StackPanel>
+            <TextBlock Visibility="Collapsed" ManipulationCompleted="TitleManipulationCompleted" Margin="7,0,0,0"
                 Grid.Column="1" Grid.Row="1" Name="title2" Text="" />
             <Border Name="WebBrowserBorder" BorderBrush="Silver" BorderThickness="1" Grid.Row="2">
         <phone:WebBrowser Margin="0 0 0 0" IsScriptEnabled="True"  ScriptNotify="WebBrowser1ScriptNotify" 

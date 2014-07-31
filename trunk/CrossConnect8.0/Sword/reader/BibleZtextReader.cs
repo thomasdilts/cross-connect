@@ -923,7 +923,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             VersePos verse = this.Chapters[book.VersesInChapterStartIndex + chapterNumber].Verses[verseNumber];
             int noteMarker = 0;
             bool isInPoetry = false;
-            var texts = await this.ParseOsisText(
+            var texts = await ParseOsisText(
                 displaySettings,
                 string.Empty,
                 string.Empty,
@@ -999,7 +999,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                 VersePos verse = versesForChapterPositions.Verses[place.VerseNum];
                 int noteMarker = 0;
-                var texts = await this.ParseOsisText(
+                var texts = await ParseOsisText(
                     displaySettings,
                     this.GetFullName(chaptPos.Booknum, appChoosenIsoLangCode) + " " + (chaptPos.BookRelativeChapterNum + 1) + ":"
                     + (place.VerseNum + 1) + "  " + place.When.ToString("yyyy-MM-dd") + " "
@@ -1019,7 +1019,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return returnList;
         }
 
-        public virtual void MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
+        public virtual bool MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
         {
             //if (!(source is BibleZtextReader))
             //{
@@ -1036,12 +1036,14 @@ function SetFontColorForElement(elemntId, colorRgba){
                     this.Serial.PosChaptNum = chapter;
                     this.Serial.PosVerseNum = canon.VersesInChapter[book.VersesInChapterStartIndex + chapter] > verse
                         ? verse : (canon.VersesInChapter[book.VersesInChapterStartIndex + chapter] - 1);
+                    return true;
                 }
             }
             catch (Exception e)
             {
                 Debug.WriteLine("moveChapterVerse " + e.Message + " ; " + e.StackTrace);
             }
+            return false;
         }
 
         public virtual void MoveNext(bool isVerseMove)
@@ -1384,7 +1386,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                     try
                     {
                         len = zipStream.read(buffer, 0, 10000);
-                        //len = zipStream.Read(buffer, 0, 10000);
+                        // len = zipStream.Read(buffer, 0, 10000);
                     }
                     catch (Exception ee)
                     {
@@ -1587,7 +1589,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                     verseTxt = "*** ERROR ***";
                     try
                     {
-                        var texts = await this.ParseOsisText(
+                        var texts = await ParseOsisText(
                             displaySettings,
                             startText,
                             restartText,
@@ -1802,7 +1804,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                 string textId = place.BookShortName + "_" + place.ChapterNum + "_" + place.VerseNum;
                 int noteMarker = 0;
-                var texts = await this.ParseOsisText(
+                var texts = await ParseOsisText(
                     displaySettings,
                     "<a name=\"" + textId + "\"></a><a class=\"normalcolor\" id=\"ID_" + textId
                     + "\"  href=\"#\" onclick=\"window.external.notify('" + textId
@@ -1842,7 +1844,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return htmlListText.ToString();
         }
 
-        protected virtual async Task<string[]> ParseOsisText(
+        public static async Task<string[]> ParseOsisText(
             DisplaySettings displaySettings,
             string chapterNumber,
             string restartText,
@@ -1888,11 +1890,6 @@ function SetFontColorForElement(elemntId, colorRgba){
                     // this might be a problem or it might not. Put some stars here anyway.
                     return new string[] { "***", isInPoetry.ToString(), noteIdentifier.ToString() };
                 }
-            }
-            // if it contains a 0 character then it is also an empty verse
-            if (xmlbytes[0]== 0)
-            {
-                return new string[] { string.Empty, isInPoetry.ToString(), noteIdentifier.ToString() };
             }
 
             try
@@ -2092,7 +2089,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                                             plainText.Append(
                                                 (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
-                                                + this.convertNoteNumToId(noteIdentifier)
+                                                + convertNoteNumToId(noteIdentifier)
                                                 + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
                                             noteIdentifier++;
                                         }
@@ -2111,7 +2108,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                             isFirstNoteInText = false;
                                             noteText.Append(
                                                 (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
-                                                + this.convertNoteNumToId(noteIdentifier)
+                                                + convertNoteNumToId(noteIdentifier)
                                                 + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
                                             if (isNotesOnly)
                                             {
@@ -2134,7 +2131,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                                             plainText.Append(
                                                 (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
-                                                + this.convertNoteNumToId(noteIdentifier)
+                                                + convertNoteNumToId(noteIdentifier)
                                                 + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
                                             noteIdentifier++;
                                         }
@@ -2154,7 +2151,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                             isFirstNoteInText = false;
                                             noteText.Append(
                                                 (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
-                                                + this.convertNoteNumToId(noteIdentifier)
+                                                + convertNoteNumToId(noteIdentifier)
                                                 + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
                                             if (isNotesOnly)
                                             {
@@ -2718,7 +2715,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         //    return "(" + noteReturned + ")";
         //}
         //private static string[] IntToBase24 = new string[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
-        protected string convertNoteNumToId(int noteIdentifier)
+        protected static string convertNoteNumToId(int noteIdentifier)
         {
             string base26 = string.Empty;
             do
@@ -2731,7 +2728,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return "(" + Reverse(base26) + ")";
         }
 
-        public string Reverse(string input)
+        public static string Reverse(string input)
         {
             char[] output = new char[input.Length];
 

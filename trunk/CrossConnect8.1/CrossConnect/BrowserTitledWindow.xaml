@@ -57,7 +57,18 @@
                     <Button x:Name="ButClose" Grid.Column="7" Click="ButCloseClick" HorizontalAlignment="Center"
                             Style="{StaticResource DeleteAppBarButtonStyle2}" Tag="Edit" />
                 </Grid>
-                <TextBlock Name="title" Text="This is the first strange text" FontSize="18" />
+                <Grid Name="searchPanel" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="0" />
+                        <ColumnDefinition Width="0" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Name="title" Text="Please wait, loading..." FontSize="18" />
+                    <TextBox Visibility="Collapsed" Grid.Column="2" Width="250"   Text=""  Name="SearchInput" />
+                    <Button Visibility="Collapsed" Grid.Column="3" x:Name="butSearchDictionary" Click="butSearchDictionary_OnClick" HorizontalAlignment="Center"
+                            Style="{StaticResource SearchAppBarButtonStyle2}" Tag="Edit" />
+                </Grid>
             </StackPanel>
             <Rectangle Name="UserInterfaceBlocker" Grid.Row="1" />
             <Popup x:Name="SearchPopup" Opened="SearchPopup_OnOpened" Closed="SearchPopup_OnClosed" Grid.Row="1"

@@ -23,8 +23,8 @@
 
 namespace Sword.reader
 {
-    using Ionic.Zlib;
-    //using ComponentAce.Compression.Libs.zlib;
+    //using Ionic.Zlib;
+    using ComponentAce.Compression.Libs.zlib;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -107,24 +107,24 @@ namespace Sword.reader
                 MemoryStream memoryStream = new MemoryStream(sectionCompressed);
 
                 // unzip the section
-                //ZInputStream zipStream = new ZInputStream(memoryStream);
-                ZlibStream zipStream = new ZlibStream(memoryStream, CompressionMode.Decompress);
+                ZInputStream zipStream = new ZInputStream(memoryStream);
+                //ZlibStream zipStream = new ZlibStream(memoryStream, CompressionMode.Decompress);
 
 
                 var expandedBuffer = new byte[0];
                 const int BUFFER_SIZE = 10000;
                 var buffer = new byte[BUFFER_SIZE];
                 var length = 0;
-                //while ((length = zipStream.read(buffer, 0, BUFFER_SIZE)) > 0)
-                while ((length = zipStream.Read(buffer, 0, BUFFER_SIZE)) > 0)
+                while ((length = zipStream.read(buffer, 0, BUFFER_SIZE)) > 0)
+                //while ((length = zipStream.Read(buffer, 0, BUFFER_SIZE)) > 0)
                 {
                     Array.Resize<byte>(ref buffer, length);
                     expandedBuffer = expandedBuffer.Concat(buffer).ToArray();
                     //this must be removed in the 8.0 version
-                    if (length < BUFFER_SIZE)
-                    {
-                        break;
-                    }
+                    //if (length < BUFFER_SIZE)
+                    //{
+                    //    break;
+                    //}
                     buffer = new byte[BUFFER_SIZE];
                 }
 

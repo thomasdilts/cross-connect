@@ -385,6 +385,9 @@ namespace CrossConnect
                     case WindowType.WindowBook:
                         books = App.InstalledBibles.InstalledGeneralBooks;
                         break;
+                    case WindowType.WindowDictionary:
+                        books = App.InstalledBibles.InstalledDictionaries;
+                        break;
                     default:
                         books = App.InstalledBibles.InstalledBibles;
                         break;
@@ -494,6 +497,27 @@ namespace CrossConnect
                                         ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
                                         isIsoEncoding);
                                     await ((RawGenTextReader)this._state.Source).Initialize();
+                                    return true;
+                                case WindowType.WindowDictionary:
+                                    var driver = ((string)book.Value.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
+                                    if (driver.Equals("RAWLD"))
+                                    {
+                                        this._state.Source = new DictionaryRawIndexReader(
+                                            bookPath,
+                                            ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
+                                            isIsoEncoding,
+                                            Guid.NewGuid().ToString().Substring(0, 8));
+                                        await ((DictionaryRawIndexReader)this._state.Source).Initialize();
+                                    }
+                                    else
+                                    {
+                                        this._state.Source = new DictionaryZldIndexReader(
+                                            bookPath,
+                                            ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
+                                            isIsoEncoding,
+                                            Guid.NewGuid().ToString().Substring(0, 8));
+                                        await ((DictionaryZldIndexReader)this._state.Source).Initialize();
+                                    }
                                     return true;
                                 case WindowType.WindowAddedNotes:
                                     var notes = new PersonalNotesReader(
@@ -607,14 +631,16 @@ namespace CrossConnect
                     out fullName,
                     out title);
                 bool isBookAndChapterTheSame = bookShortName.Equals(relbookShortName) && relChaptNum.Equals(chapterNum);
-                this._state.Source.MoveChapterVerse(bookShortName, chapterNum, verseNum, false, source);
-                if (!isBookAndChapterTheSame)
+                if (this._state.Source.MoveChapterVerse(bookShortName, chapterNum, verseNum, false, source))
                 {
-                    this.UpdateBrowser(false);
-                }
-                else
-                {
-                    ScrollToThisVerse(bookShortName, chapterNum, verseNum);
+                    if (!isBookAndChapterTheSame)
+                    {
+                        this.UpdateBrowser(false);
+                    }
+                    else
+                    {
+                        ScrollToThisVerse(bookShortName, chapterNum, verseNum);
+                    }
                 }
             }
         }
@@ -740,7 +766,7 @@ namespace CrossConnect
                     path = path.Substring(0, pos);
                 }
             }
-            webBrowser1.Base = string.Empty;
+            // webBrowser1.Base = string.Empty;
             return "/" + path + (source.StartsWith("/")?string.Empty:"/")  + source;
         }
 
@@ -1370,6 +1396,22 @@ namespace CrossConnect
                 title2.Visibility = Visibility.Collapsed;
                 grid1.RowDefinitions[1].Height = new System.Windows.GridLength(0);
             }
+            if(this._state.Source is DictionaryRawIndexReader)
+            {
+                title2.Visibility = Visibility.Collapsed;
+                searchPanel.Visibility = Visibility.Visible;
+                grid1.RowDefinitions[1].Height = grid1.RowDefinitions[0].Height;
+                string colorDir = App.Themes.IsButtonColorDark ? "light" : "dark";
+                SetButtonVisibility(
+                    butSearchDictionary,
+                    true,
+                    "/Images/" + colorDir + "/appbar.feature.search.rest.png",
+                    "/Images/" + colorDir + "/appbar.feature.search.rest.pressed.png");
+            }
+            else
+            {
+                searchPanel.Visibility = Visibility.Collapsed;
+            }
         }
 
         #endregion Methods
@@ -1463,6 +1505,13 @@ namespace CrossConnect
             catch (Exception)
             {
             }
+        }
+
+        private void butSearchDictionary_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.webBrowser1.InvokeScript(
+                "DoSearch",
+                new[] { "ID_" + SearchInput.Text });
         }
     }
 }

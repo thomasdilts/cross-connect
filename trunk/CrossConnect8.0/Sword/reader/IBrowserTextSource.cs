@@ -116,7 +116,7 @@ namespace Sword.reader
 
         Task<List<string>> MakeListDisplayText(string isoLangCode, DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay);
 
-        void MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source);
+        bool MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source);
 
         void MoveNext(bool isVerse);
 
@@ -166,7 +166,7 @@ namespace Sword.reader
         #endregion
 
         #region Constructors and Destructors
-
+        public ButtonWindowSpecs() { }
         public ButtonWindowSpecs(
             int stage, string title, int numButtons, int[] colors, string[] text, int[] value, ButtonSize butSize)
         {
