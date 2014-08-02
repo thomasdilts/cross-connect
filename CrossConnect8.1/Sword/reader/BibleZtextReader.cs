@@ -467,6 +467,108 @@ namespace Sword.reader
 
         #region Public Methods and Operators
 
+
+        private static bool IsNumeric(char x )
+        {
+            return x.CompareTo('0') >= 0 && x.CompareTo('9') <= 0;
+        }
+        private static string WriteScriptureNumbersInHtml(string bookName, string numbers)
+        {
+            var htmltext = new StringBuilder();
+            var numbersSplitColon = numbers.Split(':');
+            int chapterNum = 0;
+            if (numbersSplitColon.Length<1 || !int.TryParse(numbersSplitColon[0].Trim(), out chapterNum))
+            {
+                // must have a valid chapter. kill it
+                return " (" + bookName + " " + numbers + ") ";
+            }
+
+            var numbersSplitComma = numbersSplitColon.Length==1?new string[]{"1"}: numbersSplitColon[1].Split(',');
+            foreach (var verse in numbersSplitComma)
+            {
+                var numbersSplitDash = verse.Replace(" ff","").Replace(" f","").Trim().Split('-');
+                int verseNum = 0;
+                var displayText = bookName + " " + chapterNum + (numbersSplitColon.Length == 1 ? string.Empty : ":" + verse);
+                if (!int.TryParse(numbersSplitDash[0].Trim(), out verseNum))
+                {
+                    // something is wrong with the verse.  No links
+                    htmltext.Append(" (" + displayText + ") ");
+                }
+                else
+                {
+                    string textId = bookName + "_" + (chapterNum-1) + "_" + (verseNum-1);
+                    htmltext.Append(
+                            "<a class=\"normalcolor\" id=\"ID_" + textId
+                       + "\"  href=\"#\" onclick=\"window.external.notify('" + textId
+                        + "'); event.returnValue=false; return false;\" > [" + displayText + "] </a>");
+                }
+            }
+
+            return htmltext.ToString();
+        }
+        public static string GetScripRefHtmlFromRef(string scripref)
+        {
+            var scriprefSplit = scripref.Split(';');
+            var htmltext = new StringBuilder();
+            if(scriprefSplit != null && scriprefSplit.Any())
+            {
+                string lastFoundShortNameBook = string.Empty;
+                foreach (var refText in scriprefSplit)
+                {
+                    var refTextClean = refText.Trim();
+                    if(string.IsNullOrEmpty(refTextClean))
+                    {
+                        // nothing there.
+                        continue;
+                    }
+
+                    // try to determine if there is no bookname, just a number
+                    if(refTextClean.Length==1 && IsNumeric(refTextClean[0]) ||(refTextClean.Length>=2 && IsNumeric(refTextClean[0]) && (IsNumeric(refTextClean[1]) || refTextClean[1]==':' || refTextClean[1]==',' )))
+                    {
+                        // it is just a number
+                        if(string.IsNullOrEmpty(lastFoundShortNameBook))
+                        {
+                            // some kind of error.. just print it.
+                            htmltext.Append(" (" + refText + ") ");
+                        }
+                        else
+                        {
+                            htmltext.Append(WriteScriptureNumbersInHtml(lastFoundShortNameBook, refTextClean));
+                        }
+                    }
+                    else
+                    {
+                        // This should be a valid book name at the start.
+                        // find the first digit excluding the first letter
+
+                        var spacePos = refTextClean.Substring(2).IndexOf(' ');
+                        if(spacePos<0)
+                        {
+                            // some kind of error.. just print it.
+                            htmltext.Append(" (" + refText + ") ");
+                        }
+                        else
+                        {
+                            spacePos += 2; // adjust since we started looking att pos 2.
+
+                            lastFoundShortNameBook = CanonManager.GetShortNameFromAbbreviation(refTextClean.Substring(0, spacePos));
+                            if (string.IsNullOrEmpty(lastFoundShortNameBook) || refTextClean.Length <= spacePos)
+                            {
+                                // bad book.. just print it.
+                                htmltext.Append(" (" + refText + ") ");
+                            }
+                            else
+                            {
+                                htmltext.Append(WriteScriptureNumbersInHtml(lastFoundShortNameBook, refTextClean.Substring(spacePos + 1)));
+                            }
+                        }
+                    }
+                }
+            }
+
+            return htmltext.ToString();
+        }
+
         public static bool ConvertOsisRefToAbsoluteChaptVerse(string osisRef, out string bookShortName, out int chaptNumLoc, out int verseNumLoc)
         {
             chaptNumLoc = 0;
@@ -490,26 +592,12 @@ namespace Sword.reader
                 osisRef = osisRef.Substring(0, osisRef.IndexOf("-"));
             }
 
-            string[] osis = osisRef.Split(".".ToCharArray());
+            string[] osis = osisRef.Split('.');
             if (osis.Length > 0)
             {
-                CanonBookDef book = null;
-                // we use KJVA because it probably has all possible books.
-                var canon = CanonManager.GetCanon("KJVA");
-                if (!canon.BookByShortName.TryGetValue(osis[0], out book))
+                bookShortName = CanonManager.GetShortNameFromAbbreviation(osis[0]);
+                if (!string.IsNullOrEmpty(bookShortName))
                 {
-                    // try with tolower conversion
-                    var osislower = osis[0].ToLower();
-                    var key = canon.BookByShortName.Keys.FirstOrDefault(p => p.ToLower().Equals(osislower));
-                    if (!string.IsNullOrEmpty(key))
-                    {
-                        book = canon.BookByShortName[key];
-                    }
-                }
-
-                if (book != null)
-                {
-                    bookShortName = book.ShortName1;
                     if (osis.Length > 1)
                     {
                         int chapterRelative;
@@ -1894,6 +1982,18 @@ function SetFontColorForElement(elemntId, colorRgba){
 
             try
             {
+                // try to remove null characters at the end
+                for (int i = length - 1; i > startPos; i--)
+                {
+                    if (xmlbytes[startPos + i] == (byte)0)
+                    {
+                        length--;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 ms.Write(xmlbytes, startPos, length);
                 ms.Write(Suffix, 0, Suffix.Length);
                 ms.Position = 0;
@@ -1917,6 +2017,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             bool isInQuote = false;
             bool isInInjectionElement = false;
             bool isInTitle = false;
+            bool isInScripRef = false;
+            string scriptRefText = string.Empty;
             var fontStylesEnd = new List<string>();
             bool isChaptNumGiven = false;
             bool isChaptNumGivenNotes = false;
@@ -1955,7 +2057,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                 break;
 
                             case XmlNodeType.Element:
-                                switch (reader.Name)
+                                switch (reader.Name.ToLower())
                                 {
                                     case "img":
                                     case "figure":
@@ -1978,7 +2080,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         }
 
                                         break;
-                                    case "CM":
+                                    case "cm":
                                         if (!isRaw && !displaySettings.EachVerseNewLine && isLastElementLineBreak == 0)
                                         {
                                             AppendText("<br />", plainText, noteText, isInElement);
@@ -2020,7 +2122,11 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         }
 
                                         break;
+                                    case "scripref":
+                                        // only the contents of the scripref are interesting
+                                        isInScripRef = true;
 
+                                        break;
                                     case "reference":
                                         if (reader.HasAttributes)
                                         {
@@ -2035,15 +2141,15 @@ function SetFontColorForElement(elemntId, colorRgba){
                                                 {
                                                     isReferenceLinked = true;
                                                     string textId = bookShortName + "_" + chaptNumLoc + "_" + verseNumLoc;
-                                                    noteText.Append(
+                                                    AppendText(
                                                             "</a><a class=\"normalcolor\" id=\"ID_" + textId
                                                        + "\"  href=\"#\" onclick=\"window.external.notify('" + textId
-                                                        + "'); event.returnValue=false; return false;\" >");
+                                                        + "'); event.returnValue=false; return false;\" >", plainText, noteText, isInElement);
                                                 }
                                             }
                                         }
 
-                                        noteText.Append("  [");
+                                        AppendText("  [", plainText, noteText, isInElement);
                                         break;
 
                                     case "lg":
@@ -2078,7 +2184,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                                         break;
 
-                                    case "FI":
+                                    case "fi":
                                         if (!isRaw && !isNotesOnly && displaySettings.ShowNotePositions)
                                         {
                                             if (chapterNumber.Length > 0 && !isChaptNumGiven)
@@ -2096,30 +2202,30 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                                         if (!isChaptNumGivenNotes && !isRaw)
                                         {
-                                            noteText.Append("<p>" + chapterNumber);
+                                            AppendText("<p>" + chapterNumber, plainText, noteText, isInElement);
                                             isChaptNumGivenNotes = true;
                                         }
                                         if (!isRaw && displaySettings.ShowNotePositions)
                                         {
                                             if (!isFirstNoteInText && displaySettings.AddLineBetweenNotes)
                                             {
-                                                noteText.Append("<br />");
+                                                AppendText("<br />", plainText, noteText, isInElement);
                                             }
                                             isFirstNoteInText = false;
-                                            noteText.Append(
+                                            AppendText(
                                                 (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
                                                 + convertNoteNumToId(noteIdentifier)
-                                                + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
+                                                + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty), plainText, noteText, isInElement);
                                             if (isNotesOnly)
                                             {
                                                 noteIdentifier++;
                                             }
                                         }
-                                        noteText.Append("(");
+                                        AppendText("(", plainText, noteText, isInElement);
                                         isInInjectionElement = true;
                                         break;
 
-                                    case "RF":
+                                    case "rf":
                                     case "note":
                                         if (!isRaw && !isNotesOnly && displaySettings.ShowNotePositions)
                                         {
@@ -2138,7 +2244,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                                         if (!isChaptNumGivenNotes && !isRaw)
                                         {
-                                            noteText.Append("<p>" + chapterNumber);
+                                            AppendText("<p>" + chapterNumber, plainText, noteText, true);
                                             isChaptNumGivenNotes = true;
                                         }
 
@@ -2146,13 +2252,13 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         {
                                             if (!isFirstNoteInText && displaySettings.AddLineBetweenNotes)
                                             {
-                                                noteText.Append("<br />");
+                                                AppendText("<br />", plainText, noteText, isInElement);
                                             }
                                             isFirstNoteInText = false;
-                                            noteText.Append(
+                                            AppendText(
                                                 (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
                                                 + convertNoteNumToId(noteIdentifier)
-                                                + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
+                                                + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty), plainText, noteText, isInElement);
                                             if (isNotesOnly)
                                             {
                                                 noteIdentifier++;
@@ -2198,15 +2304,6 @@ function SetFontColorForElement(elemntId, colorRgba){
                                             }
                                         }
 
-                                        break;
-
-                                    case "Rf":
-                                        isInElement = false;
-                                        break;
-
-                                    case "Fi":
-                                        noteText.Append(") ");
-                                        isInInjectionElement = false;
                                         break;
 
                                     case "q":
@@ -2309,7 +2406,14 @@ function SetFontColorForElement(elemntId, colorRgba){
                                     case "versee":
                                         //AppendText(" ", plainText, noteText, isInElement);
                                         break;
-
+                                    case "br":
+                                        // if they are smart enough to have line breaks then we need to keep them.
+                                        AppendText("<br />", plainText, noteText, isInElement);
+                                        break;
+                                    case "p":
+                                        // if they are smart enough to have paragraphs then we need to keep them.
+                                        AppendText("<p>", plainText, noteText, isInElement);
+                                        break;
                                     default:
                                         //AppendText(" ", plainText, noteText, isInElement);
                                         Debug.WriteLine("Element untreated: " + reader.Name);
@@ -2319,7 +2423,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                 break;
 
                             case XmlNodeType.Text:
-                                if (!isInElement && !isInInjectionElement && chapterNumber.Length > 0 && !isInTitle
+                                if (!isInElement && !isInInjectionElement && chapterNumber.Length > 0 && !isInTitle && !isInScripRef
                                     && !isChaptNumGiven)
                                 {
                                     if (isInQuote)
@@ -2355,23 +2459,31 @@ function SetFontColorForElement(elemntId, colorRgba){
                                     }
                                 }
 
-                                if ((!(noTitles || !displaySettings.ShowHeadings) || !isInTitle) && text.Length > 0)
+                                if(isInScripRef)
                                 {
-                                    char firstChar = text[0];
-                                    AppendText(/*
+                                    scriptRefText += text;
+                                }
+                                else
+                                {
+                                    if ((!(noTitles || !displaySettings.ShowHeadings) || !isInTitle) && text.Length > 0)
+                                    {
+                                        char firstChar = text[0];
+                                        AppendText(/*
                                         ((!firstChar.Equals(',') && !firstChar.Equals('.') && !firstChar.Equals(':')
                                           && !firstChar.Equals(';') && !firstChar.Equals('?'))
                                              ? " "
                                              : string.Empty) +*/ text,
-                                        plainText,
-                                        noteText,
-                                        isInElement || isInInjectionElement);
+                                            plainText,
+                                            noteText,
+                                            isInElement || isInInjectionElement);
+                                    }
                                 }
+
 
                                 break;
 
                             case XmlNodeType.EndElement:
-                                switch (reader.Name)
+                                switch (reader.Name.ToLower())
                                 {
                                     case "title":
                                         if (!(noTitles || !displaySettings.ShowHeadings) && !isRaw)
@@ -2383,10 +2495,10 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         break;
 
                                     case "reference":
-                                        noteText.Append("] ");
+                                        AppendText("] ", plainText, noteText, isInElement);
                                         if (isReferenceLinked)
                                         {
-                                            noteText.Append("</a>" + restartText);
+                                            AppendText("</a>" + restartText, plainText, noteText, isInElement);
                                         }
 
                                         isReferenceLinked = false;
@@ -2469,6 +2581,15 @@ function SetFontColorForElement(elemntId, colorRgba){
 
                                         break;
 
+                                    case "scripref":
+                                        AppendText(GetScripRefHtmlFromRef(scriptRefText), plainText, noteText, isInElement);
+                                        scriptRefText = string.Empty;
+                                        isInScripRef = false;
+                                        break;
+                                    case "p":
+                                        // if they are smart enough to have paragraphs then we need to keep them.
+                                        AppendText("</p>", plainText, noteText, isInElement);
+                                        break;
                                     case "versee":
                                         AppendText(" ", plainText, noteText, isInElement);
                                         break;

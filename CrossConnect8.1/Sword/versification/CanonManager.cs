@@ -217,5 +217,33 @@ namespace Sword.versification
 
             return canon;
         }
+
+        private static Dictionary<string, string> AllAbbreviations = null;
+        public static string GetShortNameFromAbbreviation(string abbrev)
+        {
+            if(AllAbbreviations==null)
+            {
+                AllAbbreviations = new Dictionary<string, string>();
+                var canon = GetCanon("NRSVA");
+                foreach (var book in canon.BookByShortName)
+                {
+                    // these 2 might be the same. On second try we force it
+                    AllAbbreviations.Add(book.Value.ShortName1.ToLower(), book.Value.ShortName1);
+                    AllAbbreviations[book.Value.FullName.ToLower()] = book.Value.ShortName1;
+                    var allNames = book.Value.ShortName2.Split(',');
+                    if (allNames != null && allNames.Any())
+                    {
+                        foreach (var name in allNames)
+                        {
+                            AllAbbreviations.Add(name.ToLower(), book.Value.ShortName1);
+                        }
+                    }
+                }
+            }
+
+            var foundShortName = string.Empty;
+            AllAbbreviations.TryGetValue(abbrev.ToLower(), out foundShortName);
+            return foundShortName;
+        }
     }
 }

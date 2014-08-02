@@ -534,6 +534,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             // for debug
             //string xxxxxx = Encoding.UTF8.GetString(chapterBuffer, 0, chapterBuffer.Length);
             //Debug.WriteLine("RawChapter: " + xxxxxx);
+
             var htmlChapter = new StringBuilder();
             string chapterStartHtml = string.Empty;
             string chapterEndHtml = string.Empty;
