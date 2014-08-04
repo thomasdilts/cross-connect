@@ -230,13 +230,30 @@ namespace CrossConnect
                 Window = App.OpenWindows[0].State.Window;
                 Font = App.OpenWindows[0].State.HtmlFontSize;
             }
+            WindowType typeSelected = WindowType.WindowBible;
+            switch (this.selectType.SelectedIndex)
+            {
+                case 0:
+                    typeSelected = WindowType.WindowBible;
+                    break;
+                case 1:
+                    typeSelected = WindowType.WindowCommentary;
+                    break;
+                case 2:
+                    typeSelected = WindowType.WindowBook;
+                    break;
+                case 3:
+                    typeSelected = WindowType.WindowDictionary;
+                    break;
+            }
+
             var fontFamily = (string)_sb.Sbmd.GetProperty(ConfigEntryType.Font);
             fontFamily = fontFamily==null?string.Empty:fontFamily;
             await App.InstalledBibles.AddGenericBook(this._sb.Sbmd.InternalName);
             await App.AddWindow(
                 this._sb.Sbmd.InternalName,
                 this._sb.Sbmd.Name,
-                WindowType.WindowCommentary,
+                typeSelected,
                 Font,
                 fontFamily,
                 null,
