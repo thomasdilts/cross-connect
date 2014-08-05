@@ -333,7 +333,6 @@
     <None Include="Properties\AppManifest.xml">
       <SubType>Designer</SubType>
     </None>
-    <EmbeddedResource Include="AppResources.ja.resx" />
     <EmbeddedResource Include="Properties\strongsgreek.xml.gz" />
     <EmbeddedResource Include="Properties\strongshebrew.xml.gz" />
     <None Include="Properties\WMAppManifest.xml">
