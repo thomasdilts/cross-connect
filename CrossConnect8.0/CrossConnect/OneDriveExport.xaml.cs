@@ -39,6 +39,8 @@ namespace CrossConnect
     using System.Xml;
     using System.Text;
     using System.Linq;
+    using System.Threading;
+    using Microsoft.Phone.Storage;
 
     /// <summary>
     /// The settings.
@@ -46,7 +48,7 @@ namespace CrossConnect
     public partial class OneDriveExport
     {
         private bool _isInThisWindow = false;
-        private BackupRestore backupRestoreObj = new BackupRestore();
+        private IBackupRestore backupRestoreObj = null;
         #region Constructors
 
         /// <summary>
@@ -64,7 +66,7 @@ namespace CrossConnect
         private void AutoRotatePageBackKeyPress(object sender, CancelEventArgs e)
         {
             _isInThisWindow = false;
-            backupRestoreObj.IsCanceled = true;
+            //backupRestoreObj.IsCanceled = true;
             
         }
 
@@ -72,17 +74,22 @@ namespace CrossConnect
 
         private void UpdateUi()
         {
+            var isConnected = backupRestoreObj == null ? false : backupRestoreObj.IsConnected;
+            oneDriveButConnectSdCard.Visibility = isConnected || !_existsSdCard ? Visibility.Collapsed : Visibility.Visible;
 
-            oneDriveContentPanel.Visibility = backupRestoreObj.IsConnected && !_isTransfering ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
-            oneDriveConnectPanel.Visibility = backupRestoreObj.IsConnected || _isTransfering ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
-            oneDriveButConnect.Visibility = backupRestoreObj.IsConnected ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
-            oneDriveProgressBar.Visibility = backupRestoreObj.IsConnected ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+            oneDriveContentPanel.Visibility = isConnected && !_isTransfering ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+            oneDriveConnectPanel.Visibility = isConnected || _isTransfering ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+            oneDriveButConnect.Visibility = isConnected ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+            oneDriveProgressBar.Visibility = isConnected ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
             oneDriveConnectPanelTransfer.Visibility = _isTransfering ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
         }
         private async void ButConnectClick(object sender, RoutedEventArgs e)
         {
             oneDriveButConnect.Visibility = System.Windows.Visibility.Collapsed;
             oneDriveProgressBar.Visibility = System.Windows.Visibility.Visible;
+            oneDriveButConnectSdCard.Visibility = System.Windows.Visibility.Collapsed;
+            backupRestoreObj = new BackupRestoreOneDrive();
+            backupRestoreObj.IsCanceled = false;
             var message = await backupRestoreObj.AuthenticateUser();
             if (!string.IsNullOrEmpty(message))
             {
@@ -90,16 +97,25 @@ namespace CrossConnect
             }
             UpdateUi();
         }
+        private void ButConnectSdCardClick(object sender, RoutedEventArgs e)
+        {
+            oneDriveButConnect.Visibility = System.Windows.Visibility.Collapsed;
+            oneDriveProgressBar.Visibility = System.Windows.Visibility.Collapsed;
+            oneDriveButConnectSdCard.Visibility = System.Windows.Visibility.Collapsed;
+            backupRestoreObj = new BackupRestoreSdCard();
+            backupRestoreObj.IsCanceled = false;
+      
+            UpdateUi();
+        }
+
+        private bool _existsSdCard = false;
         private void AutoRotatePageLoaded(object sender, RoutedEventArgs e)
         {
             if (_isInThisWindow)
             {
                 return;
             }
-
             _isInThisWindow = true;
-            backupRestoreObj.IsCanceled = false;
-            UpdateUi();
 
             PageTitle.Text = Translations.Translate("OneDrive backup / restore");
             oneDriveInformationText.Text = Translations.Translate("Select the items you want to backup / restore. Then hit the button at the bottom");
@@ -114,6 +130,7 @@ namespace CrossConnect
             this.oneDriveCaptionPutInFolder.Text = Translations.Translate("Folder on OneDrive");
             this.oneDriveButConnect.Content = Translations.Translate("Connect to OneDrive");
             this.oneDriveButLogout.Content = Translations.Translate("Logout from OneDrive");
+            this.oneDriveButConnectSdCard.Content = Translations.Translate("Connect to memory card");
 
             bool successfulInitialize = false;
             while (!successfulInitialize)
@@ -129,6 +146,54 @@ namespace CrossConnect
                     Debug.WriteLine("null in probably: " + eee.Message + "; " + eee.StackTrace);
                 }
             }
+
+            new Thread(() =>
+            {
+                _existsSdCard = ExistsSdCard().Result;
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    UpdateUi();
+                });
+            }).Start();
+
+        }
+
+        private async Task<bool> ExistsSdCard()
+        {
+            return false;
+            //try
+            //{
+            //    // Get the logical root folder for all external storage devices.
+            //    //var sdCard = (await Microsoft.Phone.Storage.ExternalStorage.GetExternalStorageDevicesAsync()).FirstOrDefault();
+            //    StorageFolder externalDevices = Windows.Storage.KnownFolders.PicturesLibrary;
+            //    //StorageFolder sdCard = (await KnownFolders.RemovableDevices.GetFoldersAsync()).FirstOrDefault();
+            //    // Get the first child folder, which represents the SD card.
+            //    StorageFolder sdCard = (await externalDevices.GetFoldersAsync()).FirstOrDefault();
+            //    /*
+            //    if (sdCard != null)
+            //    {
+            //        // Get the root folder on the SD card.
+            //        ExternalStorageFolder sdrootFolder = sdCard.RootFolder;
+            //        if (sdrootFolder != null)
+            //        {
+            //            // List all the files on the root folder.
+            //            var files = await sdrootFolder.GetFilesAsync();
+            //            if (files != null)
+            //            { 
+            //            }
+            //            var folders = await sdrootFolder.GetFoldersAsync();
+            //            if (folders != null)
+            //            {
+            //            }
+            //        }
+            //    }*/
+            //    return sdCard != null;
+            //}
+            //catch (Exception e)
+            //{
+            //    return false;
+            //}
+
         }
 
         #endregion Methods

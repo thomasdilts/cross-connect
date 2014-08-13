@@ -130,6 +130,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AutoRotatePage.cs" />
+    <Compile Include="BackupRestoreOneDrive.cs" />
+    <Compile Include="BackupRestoreSdCard.cs" />
     <Compile Include="BackupRestore.cs" />
     <Compile Include="CopyTexts.xaml.cs">
       <DependentUpon>CopyTexts.xaml</DependentUpon>

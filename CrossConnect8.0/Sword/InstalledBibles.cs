@@ -148,63 +148,51 @@ namespace Sword
         {
             try
             {
-                string modFile = BibleZtextReader.DirConf + '\\' + Sbmd.InternalName.ToLower()
+                string modFile = BibleZtextReader.DirConf + '/' + Sbmd.InternalName.ToLower()
                                  + BibleZtextReader.ExtensionConf;
                 string bookPath = Sbmd.GetCetProperty(ConfigEntryType.ADataPath).ToString().Substring(2);
-                StorageFolder bookFolder =
-                    await ApplicationData.Current.LocalFolder.GetFolderAsync(bookPath.Replace("/", "\\"));
-                IReadOnlyList<StorageFile> bookFiles = await bookFolder.GetFilesAsync();
 
-                try
-                {
-                    StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(modFile);
-                    await file.DeleteAsync();
-                }
-                catch (Exception)
-                {
-                }
+                await Hoot.File.Delete(modFile.Replace("/", "\\"));
 
+                var bookFiles = await Hoot.File.GetFiles(bookPath.Replace("/", "\\") + "*.*");
                 foreach (var file in bookFiles)
                 {
-                    try
-                    {
-                        StorageFile deletefile = await bookFolder.GetFileAsync(file.Name);
-                        await deletefile.DeleteAsync();
-                    }
-                    catch (Exception)
-                    {
-                    }
+                    await Hoot.File.Delete(Path.Combine(bookPath.Replace("/", "\\"), file));
                 }
 
-                if (Sbmd.GetCetProperty(ConfigEntryType.ModDrv).Equals("RawGenBook"))
+                var driver = ((string)Sbmd.GetCetProperty(ConfigEntryType.ModDrv)).ToUpper();
+                if (driver.Equals("RAWGENBOOK") || driver.Equals("RAWLD") || driver.Equals("ZLD"))
                 {
                     // In a book, the main files are one searchway down.
                     var mainDir = Path.GetDirectoryName(bookPath.Replace("/", "\\") + ".idx");
-                    bookFolder =
-                        await
-                        ApplicationData.Current.LocalFolder.GetFolderAsync(mainDir);
-                    bookFiles = await bookFolder.GetFilesAsync();
+
+                    bookFiles = await Hoot.File.GetFiles(mainDir.Replace("/", "\\") + "\\*.*");
                     foreach (var file in bookFiles)
                     {
-                        try
-                        {
-                            StorageFile deletefile = await bookFolder.GetFileAsync(file.Name);
-                            await deletefile.DeleteAsync();
-                        }
-                        catch (Exception)
-                        {
-                        }
+                        await Hoot.File.Delete(Path.Combine(bookPath.Replace("/", "\\"), file));
+                    }
+
+                    try
+                    {
+                        var folder = await ApplicationData.Current.LocalFolder.GetFolderAsync(mainDir.Replace("/", "\\"));
+                        await folder.DeleteAsync();
+                    }
+                    catch(Exception)
+                    {
+
                     }
                 }
+                else
+                {
+                    try
+                    {
+                        var folder = await ApplicationData.Current.LocalFolder.GetFolderAsync(bookPath.Replace("/", "\\"));
+                        await folder.DeleteAsync();
+                    }
+                    catch (Exception)
+                    {
 
-                try
-                {
-                    StorageFolder file =
-                        await ApplicationData.Current.LocalFolder.GetFolderAsync(bookPath.Replace("/", "\\"));
-                    await file.DeleteAsync();
-                }
-                catch (Exception)
-                {
+                    }
                 }
             }
             catch (Exception e3)
@@ -213,7 +201,6 @@ namespace Sword
                 Debug.WriteLine(e3);
             }
         }
-
         #endregion
     }
 }
