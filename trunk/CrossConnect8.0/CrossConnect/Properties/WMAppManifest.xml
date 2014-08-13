@@ -55,6 +55,7 @@
       <Capability Name="ID_CAP_MEDIALIB_PLAYBACK" />
       <Capability Name="ID_CAP_SPEECH_RECOGNITION" />
       <Capability Name="ID_CAP_IDENTITY_USER" />
+      <Capability Name="ID_CAP_REMOVABLE_STORAGE" />
     </Capabilities>
     <Tasks>
       <DefaultTask Name="_default" NavigationPage="MainPageSplit.xaml" />
@@ -85,6 +86,14 @@
         </TemplateFlip>
       </PrimaryToken>
     </Tokens>
+    <Extensions>
+      <FileTypeAssociation TaskID="_default" Name="CONF and CZIP files" NavUriFragment="fileToken=%s">
+        <SupportedFileTypes>
+          <FileType ContentType="application/conf">.conf</FileType>
+          <FileType ContentType="application/czip">.czip</FileType>
+        </SupportedFileTypes>
+      </FileTypeAssociation>
+    </Extensions>
     <ScreenResolutions>
       <ScreenResolution Name="ID_RESOLUTION_WVGA" />
       <ScreenResolution Name="ID_RESOLUTION_WXGA" />

@@ -381,7 +381,7 @@ namespace Sword.reader
 
                             if (foundMatch)
                             {
-                                displayTextBody.Append(s + texts + htmlSuffix);
+                                displayTextBody.Append(s + verseText + htmlSuffix);
                                 numFoundMatches++;
                             }
                         }
@@ -456,10 +456,10 @@ namespace Sword.reader
                     extraText = translationWholeBible;
                     break;
                 case 1:
-                    extraText = translationOldTestement;
+                    extraText = translationNewTestement;
                     break;
                 case 2:
-                    extraText = translationNewTestement;
+                    extraText = translationOldTestement;
                     break;
                 case 3:
                     extraText = fullName;

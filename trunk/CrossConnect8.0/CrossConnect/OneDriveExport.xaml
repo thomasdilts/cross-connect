@@ -40,6 +40,7 @@
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
         <RowDefinition Height="*" />
       </Grid.RowDefinitions>
 
@@ -84,7 +85,8 @@
                 <Button Content="Connect" Name="oneDriveButConnect" Click="ButConnectClick" />
                 <ProgressBar Margin="0 40 0 0" IsIndeterminate="True" Name="oneDriveProgressBar" />
             </StackPanel>
-            <StackPanel Grid.Row="3" x:Name="oneDriveConnectPanelTransfer">
+            <Button Grid.Row="3" Content="Connect to memory card" Name="oneDriveButConnectSdCard" Click="ButConnectSdCardClick" />
+            <StackPanel Grid.Row="4" x:Name="oneDriveConnectPanelTransfer">
                 <ProgressBar Margin="0 40 0 0" IsIndeterminate="False" Name="oneDriveProgressBarTotal" />
                 <ProgressBar Margin="0 40 0 0" IsIndeterminate="False" Name="oneDriveProgressBarPartial" />
                 <TextBlock Name="oneDriveDebugText" Text="" />

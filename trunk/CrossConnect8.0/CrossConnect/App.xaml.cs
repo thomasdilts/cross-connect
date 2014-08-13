@@ -549,7 +549,6 @@ namespace CrossConnect
 
             // Handle navigation failures
             RootFrame.NavigationFailed += RootFrame_NavigationFailed;
-
             // Ensure we don't initialize again
             _phoneApplicationInitialized = true;
         }
@@ -817,11 +816,11 @@ namespace CrossConnect
 
                 await InstalledBibles.Initialize();
                 var fileNames = new List<string> { 
-                    BackupRestore.PersistantObjectsDisplaySettingsFileName,
-                    BackupRestore.PersistantObjectsThemesFileName,
-                    BackupRestore.PersistantObjectsHighlightFileName,
-                    BackupRestore.PersistantObjectsMarkersFileName,
-                    BackupRestore.PersistantObjectsWindowsFileName};
+                    BackupRestoreConstants.PersistantObjectsDisplaySettingsFileName,
+                    BackupRestoreConstants.PersistantObjectsThemesFileName,
+                    BackupRestoreConstants.PersistantObjectsHighlightFileName,
+                    BackupRestoreConstants.PersistantObjectsMarkersFileName,
+                    BackupRestoreConstants.PersistantObjectsWindowsFileName};
                 var loadFunctions = new List<LoadPersObjDelegate>{
                     LoadPersistantDisplaySettings,
                     LoadPersistantThemes,
@@ -1047,7 +1046,7 @@ namespace CrossConnect
             {
 
             }
-            await SavePersistantObjects(objectsToSave, BackupRestore.PersistantObjectsWindowsFileName);
+            await SavePersistantObjects(objectsToSave, BackupRestoreConstants.PersistantObjectsWindowsFileName);
         }
         public static async Task SaveAllPersistantObjects()
         {
@@ -1079,7 +1078,7 @@ namespace CrossConnect
                 objectsToSave.Remove("Themes");
             }
 
-            await SavePersistantObjects(objectsToSave, BackupRestore.PersistantObjectsThemesFileName);
+            await SavePersistantObjects(objectsToSave, BackupRestoreConstants.PersistantObjectsThemesFileName);
         }
 
         public static async Task SavePersistantDisplaySettings()
@@ -1103,14 +1102,14 @@ namespace CrossConnect
                 objectsToSave["DisplaySettings"] = sw.ToString();
             }
             // UseRemoteStorage is always local
-            await SavePersistantObjects(objectsToSave, BackupRestore.PersistantObjectsDisplaySettingsFileName, true);
+            await SavePersistantObjects(objectsToSave, BackupRestoreConstants.PersistantObjectsDisplaySettingsFileName, true);
         }
 
         public static async Task SavePersistantHighlighting()
         {
             var objectsToSave = new Dictionary<string, object>();
             objectsToSave["Highlights"] = DisplaySettings.highlighter.ToString();
-            await SavePersistantObjects(objectsToSave, BackupRestore.PersistantObjectsHighlightFileName);
+            await SavePersistantObjects(objectsToSave, BackupRestoreConstants.PersistantObjectsHighlightFileName);
         }
 
         public static async Task SavePersistantMarkers()
@@ -1136,7 +1135,7 @@ namespace CrossConnect
                 objectsToSave["BiblePlaceMarkers"] = sw.ToString();
             }
 
-            await SavePersistantObjects(objectsToSave, BackupRestore.PersistantObjectsMarkersFileName);
+            await SavePersistantObjects(objectsToSave, BackupRestoreConstants.PersistantObjectsMarkersFileName);
         }
 
         public static async Task SavePersistantObjects(Dictionary<string, object> objectsToSave, string filename, bool alwaysLocal = false)

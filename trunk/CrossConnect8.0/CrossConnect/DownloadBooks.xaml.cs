@@ -43,7 +43,7 @@ namespace CrossConnect
 
         private bool _isInCompletedUnzipped;
         private SwordBook _sb;
-        private WebInstaller _webInst;
+        private IWebInstaller _webInst;
 
         private bool _isInThisWindow = false;
 
@@ -60,7 +60,7 @@ namespace CrossConnect
 
         #region Methods
 
-        private void ButDownloadBookClick(object sender, RoutedEventArgs e)
+        private async void ButDownloadBookClick(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -75,11 +75,9 @@ namespace CrossConnect
 
                     butDownloadBook.Visibility = Visibility.Collapsed;
                     _sb = _webInst.Entries[selectBook.SelectedItem.ToString()];
-                    _sb.ProgressCompleted += SbProgressCompleted;
-                    _sb.ProgressUpdate += SbProgressUpdate;
                     progressBarGetBook.Visibility = Visibility.Visible;
                     progressBarGetBook.Value = 5;
-                    string errMsg = _sb.DownloadBookNow(_webInst);
+                    string errMsg = await _webInst.DownloadBookNow(_sb.Sbmd, SbProgressUpdate, SbProgressCompleted);
                     if (errMsg != null)
                     {
                         MessageBox.Show(
@@ -108,22 +106,20 @@ namespace CrossConnect
             }
         }
 
-        private void ButDownloadClick(object sender, RoutedEventArgs e)
+        private async void ButDownloadClick(object sender, RoutedEventArgs e)
         {
             butDownload.Visibility = Visibility.Collapsed;
 
             // Ask the Install Manager for a map of all known module sites
-            IDictionary<string, WebInstaller> installers = _imanager.Installers;
+            IDictionary<string, IWebInstaller> installers = _imanager.Installers;
             _webInst = installers[selectServer.SelectedItem.ToString()];
             progressBarGetBookList.Visibility = Visibility.Visible;
             progressBarGetBookList.Maximum = 100;
             progressBarGetBookList.Minimum = 0;
             progressBarGetBookList.Value = 5;
             selectServer.IsEnabled = false;
-            _webInst.ProgressUpdate += WebInstProgressUpdate;
-            _webInst.ProgressCompleted += WebInstProgressCompleted;
 
-            string errMsg = _webInst.ReloadBookList();
+            string errMsg = await _webInst.ReloadBookList(WebInstProgressUpdate, WebInstProgressCompleted);
             if (errMsg != null)
             {
                 MessageBox.Show(
@@ -156,7 +152,7 @@ namespace CrossConnect
                     });
         }
 
-        private void InstallersRetrieved(Dictionary<string, WebInstaller> installers, string message)
+        private void InstallersRetrieved(Dictionary<string, IWebInstaller> installers, string message)
         {
             foreach (var mapEntry in installers)
             {
@@ -210,7 +206,7 @@ namespace CrossConnect
             _imanager.GetBibleDownloadList(InstallersRetrieved);
         }
 
-        private void SbProgressCompleted(object sender, OpenReadCompletedEventArgs e)
+        private async void SbProgressCompleted(object sender, OpenReadCompletedEventArgs e)
         {
             selectType.IsEnabled = true;
             selectBook.IsEnabled = true;
@@ -225,7 +221,7 @@ namespace CrossConnect
                 return;
             }
 
-            App.InstalledBibles.AddGenericBook(_sb.Sbmd.InternalName);
+            await App.InstalledBibles.AddGenericBook(_sb.Sbmd.InternalName);
 
             _sb = null;
             _isInThisWindow = false;
@@ -325,9 +321,7 @@ namespace CrossConnect
                 return;
             }
 
-            _webInst.ProgressCompleted -= WebInstProgressCompleted;
-            _webInst.ProgressCompleted += WebInstProgressCompletedUnzipped;
-            Do(() => _webInst.UnzipBookList());
+            Do(() => _webInst.UnzipBookList(WebInstProgressUpdate, WebInstProgressCompletedUnzipped));
         }
 
         private void WebInstProgressCompletedUnzipped(object sender, OpenReadCompletedEventArgs e)
@@ -375,6 +369,7 @@ namespace CrossConnect
                     isCommentarySelected = selectType.SelectedItem.Equals(Translations.Translate("Commentaries"));
                     isGeneralBookSelected = selectType.SelectedItem.Equals(Translations.Translate("Books"));
                     isDictionarySelected = selectType.SelectedItem.Equals(Translations.Translate("Dictionaries"));
+                    selectType.Visibility = Visibility.Visible;
                 }
 
                 if (_webInst != null && _webInst.IsLoaded && selectLangauge != null
@@ -402,7 +397,7 @@ namespace CrossConnect
                             var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
                             allLanguages[lang.Name] = lang;
                         }
-                        else if (!isCommentarySelected && !isGeneralBookSelected
+                        else if (!isCommentarySelected && !isGeneralBookSelected && !isDictionarySelected
                                  &&
                                  driver.Equals("ZTEXT"))
                         {

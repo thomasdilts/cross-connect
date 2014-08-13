@@ -32,6 +32,7 @@ namespace CrossConnect
     using System.Text;
     using System.Windows;
     using System.Xml;
+    using System.Linq;
 
     using ICSharpCode.SharpZipLib.GZip;
     using ICSharpCode.SharpZipLib.Tar;
@@ -40,6 +41,9 @@ namespace CrossConnect
     using Sword;
     using Sword.javaprops;
     using Sword.reader;
+    using Microsoft.Phone.Storage;
+    using System.Threading.Tasks;
+    using Windows.Storage;
 
     
 
@@ -49,7 +53,7 @@ namespace CrossConnect
 
         private BibleListReturned _callbackListRetrieved;
         private WebClient _client = new WebClient();
-        private Dictionary<string, WebInstaller> _installers = new Dictionary<string, WebInstaller>();
+        private Dictionary<string, IWebInstaller> _installers = new Dictionary<string, IWebInstaller>();
 
         #endregion Fields
 
@@ -76,13 +80,13 @@ namespace CrossConnect
 
         #region Delegates
 
-        public delegate void BibleListReturned(Dictionary<string, WebInstaller> installers, string message);
+        public delegate void BibleListReturned(Dictionary<string, IWebInstaller> installers, string message);
 
         #endregion Delegates
 
         #region Properties
 
-        public Dictionary<string, WebInstaller> Installers
+        public Dictionary<string, IWebInstaller> Installers
         {
             get
             {
@@ -120,7 +124,7 @@ namespace CrossConnect
             }
         }
 
-        private void AddCustomDownloadLink(Dictionary<string, WebInstaller> installers)
+        private async Task AddCustomDownloadLink(Dictionary<string, IWebInstaller> installers)
         {
             if (!string.IsNullOrEmpty(App.DisplaySettings.CustomBibleDownloadLinks))
             {
@@ -133,11 +137,16 @@ namespace CrossConnect
                         new WebInstaller(parts[0].Trim(), parts[1].Trim(), parts[2].Trim());
                 }
             }
+            if(await SdCardInstaller.HasSdCardFiles())
+            {
+                installers[Translations.Translate("Memory card")] =
+                        new SdCardInstaller();
+            }
         }
 
-        private void ClientOpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
+        private async void ClientOpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
         {
-            var installers = new Dictionary<string, WebInstaller>();
+            var installers = new Dictionary<string, IWebInstaller>();
             string msgFromServer;
             try
             {
@@ -217,7 +226,7 @@ namespace CrossConnect
                 return;
             }
 
-            AddCustomDownloadLink(installers);
+            await AddCustomDownloadLink(installers);
             _installers = installers;
             _callbackListRetrieved(installers, msgFromServer);
         }
@@ -254,7 +263,7 @@ namespace CrossConnect
         public readonly bool IsLoaded;
         public readonly SwordBookMetaData Sbmd;
 
-        private const string ZipSuffix = ".zip";
+        public const string ZipSuffix = ".zip";
 
         private WebClient _client = new WebClient();
 
@@ -283,6 +292,11 @@ namespace CrossConnect
             }
         }
 
+        public SwordBook(Stream stream, string bookName)
+        {
+            Sbmd = new SwordBookMetaData(stream, bookName);
+            IsLoaded = true;
+        }
         public SwordBook(byte[] buffer, string bookName)
         {
             Sbmd = new SwordBookMetaData(buffer, bookName);
@@ -293,9 +307,6 @@ namespace CrossConnect
 
         #region Events
 
-        public event OpenReadCompletedEventHandler ProgressCompleted;
-
-        public event DownloadProgressChangedEventHandler ProgressUpdate;
 
         #endregion Events
 
@@ -311,179 +322,155 @@ namespace CrossConnect
 
         #endregion Properties
 
-        #region Methods
-
-        public string DownloadBookNow(WebInstaller iManager)
-        {
-            try
-            {
-                string pathToHost = "http://" + iManager.Host + iManager.PackageDirectory + "/" + Sbmd.Initials
-                                    + ZipSuffix;
-                var source = new Uri(pathToHost);
-
-                _client = new WebClient();
-                _client.DownloadProgressChanged += ClientDownloadProgressChanged;
-                _client.OpenReadCompleted += ClientOpenReadCompleted;
-                Logger.Debug("download start");
-                _client.OpenReadAsync(source);
-                Logger.Debug("DownloadStringAsync returned");
-                return null;
-            }
-            catch (Exception e)
-            {
-                Logger.Fail(e.ToString());
-                return e.Message;
-            }
-        }
-
-        public async void RemoveBible()
-        {
-            try
-            {
-                string modFile = BibleZtextReader.DirConf + '/' + this.Sbmd.InternalName.ToLower()
-                                 + BibleZtextReader.ExtensionConf;
-                string bookPath = this.Sbmd.GetCetProperty(ConfigEntryType.ADataPath).ToString().Substring(2);
-
-                await Hoot.File.Delete(modFile.Replace("/", "\\"));
-
-                var bookFiles = await Hoot.File.GetFiles(bookPath.Replace("/", "\\") + "*.*");
-                foreach (var file in bookFiles)
-                {
-                    await Hoot.File.Delete(Path.Combine(bookPath.Replace("/", "\\"), file));
-                }
-
-                if (this.Sbmd.GetCetProperty(ConfigEntryType.ModDrv).Equals("RawGenBook"))
-                {
-                    // In a book, the main files are one searchway down.
-                    var mainDir = Path.GetDirectoryName(bookPath.Replace("/", "\\") + ".idx");
-
-                    bookFiles = await Hoot.File.GetFiles(mainDir.Replace("/", "\\") + "\\*.*");
-                    foreach (var file in bookFiles)
-                    {
-                        await Hoot.File.Delete(Path.Combine(bookPath.Replace("/", "\\"), file));
-                    }
-                }
-            }
-            catch (Exception e3)
-            {
-                // many things can go wrong here. It is no danger to leave the bible in the rare case that this does not work.
-                Debug.WriteLine(e3);
-            }
-        }
-
-        private static void MakeSurePathExists(IsolatedStorageFile isolatedStorageRoot, string path)
-        {
-            string[] directories = path.Split("/".ToCharArray());
-            string totalTestPath = string.Empty;
-            if (directories.Length > 1)
-            {
-                for (int i = 0; i < (directories.Length - 1); i++)
-                {
-                    if (totalTestPath.Length > 0)
-                    {
-                        totalTestPath += "/";
-                    }
-
-                    totalTestPath += directories[i];
-                    if (!isolatedStorageRoot.DirectoryExists(totalTestPath))
-                    {
-                        isolatedStorageRoot.CreateDirectory(totalTestPath);
-                    }
-                }
-            }
-        }
-
-        private void ClientDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            if (ProgressUpdate != null)
-            {
-                ProgressUpdate(sender, e);
-            }
-        }
-
-        private void ClientOpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
-        {
-            try
-            {
-                ZipInputStream zipStream;
-                try
-                {
-                    zipStream = new ZipInputStream(e.Result);
-                }
-                catch (Exception)
-                {
-                    if (ProgressCompleted != null)
-                    {
-                        ProgressCompleted(e.Error.Message, e);
-                    }
-
-                    return;
-                }
-
-                IsolatedStorageFile isolatedStorageRoot = IsolatedStorageFile.GetUserStoreForApplication();
-                while (true)
-                {
-                    ZipEntry entry = zipStream.GetNextEntry();
-                    if (entry == null)
-                    {
-                        break;
-                    }
-
-                    string entrypath = entry.Name;
-                    if (entry.IsDirectory)
-                    {
-                        if (entry.Name.StartsWith("/"))
-                        {
-                            entrypath = entry.Name.Substring(1);
-                        }
-
-                        if (entry.Name.EndsWith("/"))
-                        {
-                            entrypath = entry.Name.Substring(0, entry.Name.Length - 1);
-                        }
-
-                        isolatedStorageRoot.CreateDirectory(entrypath);
-                    }
-                    else
-                    {
-                        MakeSurePathExists(isolatedStorageRoot, entry.Name);
-                        IsolatedStorageFileStream fStream = isolatedStorageRoot.CreateFile(entry.Name);
-                        var buffer = new byte[10000];
-                        int len;
-                        while ((len = zipStream.Read(buffer, 0, buffer.GetUpperBound(0))) > 0)
-                        {
-                            fStream.Write(buffer, 0, len);
-                        }
-
-                        fStream.Close();
-                    }
-                }
-
-                if (ProgressCompleted != null)
-                {
-                    ProgressCompleted(null, e);
-                }
-            }
-            catch (Exception exp)
-            {
-                if (ProgressCompleted != null)
-                {
-                    ProgressCompleted(exp.Message, e);
-                }
-            }
-        }
-
-        #endregion Methods
     }
 
-    public class WebInstaller
+    public interface IWebInstaller
+    {
+        Dictionary<string, SwordBook> Entries { get;}
+        Task<string> DownloadBookNow(SwordBookMetaData sbmd, DownloadProgressChangedEventHandler ProgressChanged, OpenReadCompletedEventHandler ProgressCompleted);
+        Task<string> ReloadBookList(DownloadProgressChangedEventHandler ProgressChanged, OpenReadCompletedEventHandler ProgressCompleted);
+        void UnzipBookList(DownloadProgressChangedEventHandler ProgressChanged, OpenReadCompletedEventHandler ProgressCompleted);
+        bool IsLoaded{get;}
+    }
+
+    public class SdCardInstaller : IWebInstaller
+    {
+        public static async Task<bool> HasSdCardFiles()
+        {
+            ExternalStorageDevice _sdCard = (await ExternalStorage.GetExternalStorageDevicesAsync()).FirstOrDefault();
+
+            // If the SD card is present, add GPX files to the Routes collection.
+            if (_sdCard != null)
+            {
+                try
+                {
+                    // Look for a folder on the SD card named Routes.
+                    ExternalStorageFolder routesFolder = await _sdCard.GetFolderAsync(CROSSCONNECT_INSTALL_SD_CARD_DIR);
+
+                    // Get all files from the Routes folder.
+                    IEnumerable<ExternalStorageFile> routeFiles = await routesFolder.GetFilesAsync();
+
+                    // Add each GPX file to the Routes collection.
+                    foreach (ExternalStorageFile esf in routeFiles)
+                    {
+                        if (esf.Path.EndsWith(".conf"))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                catch (FileNotFoundException)
+                {
+                    // No Routes folder is present.
+                    return false;
+                }
+            }
+
+            return false;
+        }
+        public readonly Dictionary<string, SwordBook> _Entries = new Dictionary<string, SwordBook>();
+        public Dictionary<string, SwordBook> Entries { get { return _Entries; } }
+        public async Task<string> DownloadBookNow(SwordBookMetaData sbmd, DownloadProgressChangedEventHandler ProgressChanged, OpenReadCompletedEventHandler ProgressCompleted)
+        {            // Connect to the current SD card.
+            ExternalStorageDevice _sdCard = (await ExternalStorage.GetExternalStorageDevicesAsync()).FirstOrDefault();
+
+            // If the SD card is present, add GPX files to the Routes collection.
+            if (_sdCard != null)
+            {
+                try
+                {
+                    // Look for a folder on the SD card named Routes.
+                    ExternalStorageFolder routesFolder = await _sdCard.GetFolderAsync(CROSSCONNECT_INSTALL_SD_CARD_DIR);
+
+                    // Get all files from the Routes folder.
+                    IEnumerable<ExternalStorageFile> routeFiles = await routesFolder.GetFilesAsync();
+
+                    // Add each GPX file to the Routes collection.
+                    foreach (ExternalStorageFile esf in routeFiles)
+                    {
+                        var filename = sbmd.Initials + ".czip";
+                        if (esf.Name.ToLower().Equals(filename.ToLower()))
+                        {
+                            string winRtPath = "D:\\" + esf.Path;
+                            FileStream s = new System.IO.FileStream(winRtPath, FileMode.Open);
+                            var tempWebInst = new WebInstaller(null, null, null);
+                            tempWebInst.ClientDownloadBookCompleted(s, null);
+                            Deployment.Current.Dispatcher.BeginInvoke(() => ProgressCompleted(null, null));
+                            return null;
+                        }
+                    }
+                }
+                catch (FileNotFoundException)
+                {
+                    // No Routes folder is present.
+                    Deployment.Current.Dispatcher.BeginInvoke(() => ProgressCompleted(null, null));
+                    return "Directory missing on memory card" + " " + CROSSCONNECT_INSTALL_SD_CARD_DIR;
+                }
+            }
+            Deployment.Current.Dispatcher.BeginInvoke(() => ProgressCompleted(null, null));
+            return "couldn't find " + sbmd.Initials + ".czip";
+        }
+        private const string CROSSCONNECT_INSTALL_SD_CARD_DIR = "CrossConnectInstall";
+        public async Task<string> ReloadBookList(DownloadProgressChangedEventHandler ProgressChanged, OpenReadCompletedEventHandler ProgressCompleted)
+        {
+            Entries.Clear();
+            _loaded = false;
+            // Connect to the current SD card.
+            ExternalStorageDevice _sdCard = (await ExternalStorage.GetExternalStorageDevicesAsync()).FirstOrDefault();
+
+            // If the SD card is present, add GPX files to the Routes collection.
+            if (_sdCard != null)
+            {
+                try
+                {
+                    // Look for a folder on the SD card named Routes.
+                    ExternalStorageFolder routesFolder = await _sdCard.GetFolderAsync(CROSSCONNECT_INSTALL_SD_CARD_DIR);
+
+                    // Get all files from the Routes folder.
+                    IEnumerable<ExternalStorageFile> routeFiles = await routesFolder.GetFilesAsync();
+
+                    // Add each GPX file to the Routes collection.
+                    foreach (ExternalStorageFile esf in routeFiles)
+                    {
+                        if (esf.Path.EndsWith(".conf"))
+                        {
+                            string winRtPath = "D:\\" + esf.Path;
+                            FileStream s = new System.IO.FileStream(winRtPath, FileMode.Open);
+                            var book = new SwordBook(s, Path.GetFileNameWithoutExtension(esf.Name));
+                            Entries[book.Name] = book;
+                        }
+                    }
+
+                    _loaded = true;
+                }
+                catch (FileNotFoundException)
+                {
+                    ProgressCompleted(null, null);
+                    // No Routes folder is present.
+                    return "Directory missing on memory card" + " " + CROSSCONNECT_INSTALL_SD_CARD_DIR;
+                }
+            }
+
+            ProgressCompleted(null, null);
+            return null;
+        }
+        public void UnzipBookList(DownloadProgressChangedEventHandler ProgressChanged, OpenReadCompletedEventHandler ProgressCompleted)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() => ProgressCompleted(null, null));
+        }
+        private bool _loaded = false;
+        public bool IsLoaded { get { return _loaded; } }
+    }
+    
+    public class WebInstaller:IWebInstaller
     {
         #region Fields
 
         /// <summary>
         ///   * A map of the books in this download area
         /// </summary>
-        public readonly Dictionary<string, SwordBook> Entries = new Dictionary<string, SwordBook>();
+        public readonly Dictionary<string, SwordBook> _Entries = new Dictionary<string, SwordBook>();
+        public Dictionary<string, SwordBook> Entries { get { return _Entries; } }
 
         /// <summary>
         ///   * The remote hostname.
@@ -561,8 +548,11 @@ namespace CrossConnect
 
         #region Methods
 
-        public string ReloadBookList()
+        public async Task<string> ReloadBookList(DownloadProgressChangedEventHandler ProgressChanged, OpenReadCompletedEventHandler ProgressCompleted)
         {
+            this.ProgressCompleted = ProgressCompleted;
+            this.ProgressUpdate = ProgressChanged;
+
             _books.Clear();
             var uri = new Uri("http://" + Host + "/" + _catalogDirectory + "/" + FileListGz);
             string errMsg = Download(uri);
@@ -576,8 +566,11 @@ namespace CrossConnect
             return null;
         }
 
-        public void UnzipBookList()
+        public void UnzipBookList(DownloadProgressChangedEventHandler ProgressChanged, OpenReadCompletedEventHandler ProgressCompleted)
         {
+            this.ProgressCompleted = ProgressCompleted;
+            this.ProgressUpdate = ProgressChanged;
+
             GZipInputStream gzip;
             try
             {
@@ -725,6 +718,133 @@ namespace CrossConnect
                 return e.Message;
             }
         }
+
+        public async Task<string> DownloadBookNow(SwordBookMetaData sbmd, DownloadProgressChangedEventHandler ProgressChanged, OpenReadCompletedEventHandler ProgressCompleted)
+        {
+            try
+            {
+                string pathToHost = "http://" + this.Host + this.PackageDirectory + "/" + sbmd.Initials
+                                    + SwordBook.ZipSuffix;
+                var source = new Uri(pathToHost);
+                this.ProgressUpdate = ProgressChanged;
+                this.ProgressCompleted = ProgressCompleted;
+
+                _client = new WebClient();
+                _client.DownloadProgressChanged += ClientDownloadBookProgressChanged;
+                _client.OpenReadCompleted += ClientDownloadBookCompleted;
+                Logger.Debug("download start");
+                _client.OpenReadAsync(source);
+                Logger.Debug("DownloadStringAsync returned");
+                return null;
+            }
+            catch (Exception e)
+            {
+                Logger.Fail(e.ToString());
+                return e.Message;
+            }
+        }
+        private static void MakeSurePathExists(IsolatedStorageFile isolatedStorageRoot, string path)
+        {
+            string[] directories = path.Split("/".ToCharArray());
+            string totalTestPath = string.Empty;
+            if (directories.Length > 1)
+            {
+                for (int i = 0; i < (directories.Length - 1); i++)
+                {
+                    if (totalTestPath.Length > 0)
+                    {
+                        totalTestPath += "/";
+                    }
+
+                    totalTestPath += directories[i];
+                    if (!isolatedStorageRoot.DirectoryExists(totalTestPath))
+                    {
+                        isolatedStorageRoot.CreateDirectory(totalTestPath);
+                    }
+                }
+            }
+        }
+
+        private void ClientDownloadBookProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            if (ProgressUpdate != null)
+            {
+                ProgressUpdate(sender, e);
+            }
+        }
+
+        public void ClientDownloadBookCompleted(object sender, OpenReadCompletedEventArgs e)
+        {
+            try
+            {
+                ZipInputStream zipStream;
+                try
+                {
+                    zipStream = new ZipInputStream(sender is Stream?(Stream)sender:e.Result);
+                }
+                catch (Exception)
+                {
+                    if (ProgressCompleted != null)
+                    {
+                        ProgressCompleted(e.Error.Message, e);
+                    }
+
+                    return;
+                }
+
+                IsolatedStorageFile isolatedStorageRoot = IsolatedStorageFile.GetUserStoreForApplication();
+                while (true)
+                {
+                    ZipEntry entry = zipStream.GetNextEntry();
+                    if (entry == null)
+                    {
+                        break;
+                    }
+
+                    string entrypath = entry.Name;
+                    if (entry.IsDirectory)
+                    {
+                        if (entry.Name.StartsWith("/"))
+                        {
+                            entrypath = entry.Name.Substring(1);
+                        }
+
+                        if (entry.Name.EndsWith("/"))
+                        {
+                            entrypath = entry.Name.Substring(0, entry.Name.Length - 1);
+                        }
+
+                        isolatedStorageRoot.CreateDirectory(entrypath);
+                    }
+                    else
+                    {
+                        MakeSurePathExists(isolatedStorageRoot, entry.Name);
+                        IsolatedStorageFileStream fStream = isolatedStorageRoot.CreateFile(entry.Name);
+                        var buffer = new byte[10000];
+                        int len;
+                        while ((len = zipStream.Read(buffer, 0, buffer.GetUpperBound(0))) > 0)
+                        {
+                            fStream.Write(buffer, 0, len);
+                        }
+
+                        fStream.Close();
+                    }
+                }
+
+                if (ProgressCompleted != null)
+                {
+                    ProgressCompleted(null, e);
+                }
+            }
+            catch (Exception exp)
+            {
+                if (ProgressCompleted != null)
+                {
+                    ProgressCompleted(exp.Message, e);
+                }
+            }
+        }
+
 
         #endregion Methods
     }

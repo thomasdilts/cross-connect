@@ -111,6 +111,86 @@ namespace CrossConnect
             {
                 if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
                 progressCallback(5, 0, false, null, null, null);
+
+                var rootContents = await GetRootContents(crossConnectFolder);
+                string putInFolderId = rootContents[0][RootCrossConnectId];
+
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                progressCallback(7, 0, false, null, null, null);
+
+                var tempSharedTransfers = await GetTransferFolder();
+
+                // remove all files
+                foreach (var file in rootContents[0].Where(p => !p.Key.Equals(RootCrossConnectId)))
+                {
+                    LiveOperationResult operationResult = await liveClient.DeleteAsync(file.Value);
+                }
+                foreach (var file in rootContents[1])
+                {
+                    LiveOperationResult operationResult = await liveClient.DeleteAsync(file.Value);
+                }
+                progressCallback(10, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+
+                var settings = new bool[] { manifest.settings, manifest.themes, manifest.windowSetup, manifest.bookmarks, manifest.highlighting };
+                var filenames = new string[]
+                { 
+                    PersistantObjectsDisplaySettingsFileName, 
+                    PersistantObjectsThemesFileName, 
+                    PersistantObjectsWindowsFileName, 
+                    PersistantObjectsMarkersFileName, 
+                    PersistantObjectsHighlightFileName
+                };
+
+                var fileTransferList = new List<FileTransferItem>();
+                for (int i = 0; i < settings.Length; i++)
+                {
+                    if (settings[i])
+                    {
+                        fileTransferList.Add(new FileTransferItem(ApplicationData.Current.LocalFolder, filenames[i], putInFolderId));
+                    }
+                }
+
+                progressCallback(15, 0, false, null, null, null);
+                if (manifest.bibles)
+                {
+                    await PutFolderSimulation(tempSharedTransfers, ApplicationData.Current.LocalFolder, "mods.d", putInFolderId, fileTransferList);
+                    if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                    await PutFolderSimulation(tempSharedTransfers, ApplicationData.Current.LocalFolder, "modules", putInFolderId, fileTransferList);
+                    if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                }
+
+                this.oneDriveProgressBarTotal = 20;
+                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                _progressIncrement = 75.0 / (double)fileTransferList.Count();
+                foreach (var file in fileTransferList)
+                {
+                    await PutFileInFolder(tempSharedTransfers, file.folder, file.filename, file.idFolder);
+                    this.oneDriveProgressBarTotal += _progressIncrement;
+                    progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                    if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                }
+
+                this.oneDriveProgressBarTotal = 95;
+                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                await Hoot.File.WriteAllBytes(BackupManifestFileName, Encoding.UTF8.GetBytes(Serialize(manifest)));
+                await PutFileInFolder(tempSharedTransfers, ApplicationData.Current.LocalFolder, BackupManifestFileName, putInFolderId);
+            }
+            catch (Exception e)
+            {
+                progressCallback(100, 100, true, null, Uri.UnescapeDataString(e.Message), null);
+                return;
+            }
+            progressCallback(100, 100, true, null, null, null);
+
+
+            /*
+            this.progressCallback = progressCallback;
+            try
+            {
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                progressCallback(5, 0, false, null, null, null);
                 var files = await Hoot.File.GetFiles("mods.d", ApplicationData.Current.LocalFolder);
                 if (files.Length != 0)
                 {
@@ -194,7 +274,7 @@ namespace CrossConnect
             {
                 progressCallback(100, 100, true, Uri.UnescapeDataString(e.Message), null, null);
             }
-            progressCallback(100, 100, true, null, null, null);
+            progressCallback(100, 100, true, null, null, null);*/
         }
         private System.Threading.CancellationToken ctsUpload;
 
@@ -207,7 +287,25 @@ namespace CrossConnect
             dynamic result = operationResult.Result;
             return result.id;
         }
-
+        private async Task PutFolderSimulation(StorageFolder tempSharedTransfers, StorageFolder rootFolder, string folder, string idContainingFolder,List<FileTransferItem> fileTransferList)
+        {
+            var idFolder = await CreateFolder(folder, idContainingFolder);
+            var storageFolder = await rootFolder.GetFolderAsync(folder);
+            var files = await Hoot.File.GetFiles(folder, rootFolder);
+            foreach (var file in files)
+            {
+                //await PutFileInFolder(tempSharedTransfers, storageFolder, file, idFolder);
+                //this.oneDriveProgressBarTotal += _progressIncrement;
+                //progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                fileTransferList.Add(new FileTransferItem(storageFolder, file, idFolder));
+            }
+            var containedFolders = await Hoot.File.GetFolders(folder, rootFolder);
+            foreach (var containedFolder in containedFolders)
+            {
+                await PutFolderSimulation(tempSharedTransfers, storageFolder, containedFolder, idFolder, fileTransferList);
+            }
+        }
+        /*
         private async Task PutFolder(StorageFolder tempSharedTransfers, StorageFolder rootFolder, string folder, string idContainingFolder)
         {
             var idFolder = await CreateFolder(folder, idContainingFolder);
@@ -225,7 +323,7 @@ namespace CrossConnect
                 await PutFolder(tempSharedTransfers, storageFolder, containedFolder, idFolder);
             }
         }
-
+        */
         private async Task<string> PutFileInFolder(StorageFolder transferFolder, StorageFolder folder, string filename, string idFolder)
         {
             CheckPendingBackgroundOperations();
@@ -352,7 +450,7 @@ namespace CrossConnect
             }
         }
 
-        private async Task GetRemoteFolder(StorageFolder tempSharedTransfers, StorageFolder rootFolder, string folder, string idRemoteFolder)
+        /*private async Task GetRemoteFolder(StorageFolder tempSharedTransfers, StorageFolder rootFolder, string folder, string idRemoteFolder)
         {
             var storageFolder = await rootFolder.CreateFolderAsync(folder);
             var files = await GetFolderContents(idRemoteFolder + "/files" );
@@ -366,11 +464,133 @@ namespace CrossConnect
             {
                 await GetRemoteFolder(tempSharedTransfers, storageFolder, folderIdInRemote.Key, folderIdInRemote.Value);
             }
+        }*/
+        private async Task GetRemoteFolderSimulation(StorageFolder tempSharedTransfers, StorageFolder rootFolder, string folder, string idRemoteFolder, List<FileTransferItem> fileTransferList)
+        {
+            var storageFolder = await rootFolder.CreateFolderAsync(folder);
+            var files = await GetFolderContents(idRemoteFolder + "/files");
+            foreach (var file in files[0])
+            {
+                fileTransferList.Add(new FileTransferItem(storageFolder, file.Key, file.Value));
+            }
+            foreach (var folderIdInRemote in files[1])
+            {
+                await GetRemoteFolderSimulation(tempSharedTransfers, storageFolder, folderIdInRemote.Key, folderIdInRemote.Value, fileTransferList);
+            }
         }
-
         private const string TempImportFolderName = "XyzXXTempImportFolderZZ";
         public async void DoImport(BackupManifest manifestSelected, string crossConnectFolder, Progress progressCallback)
         {
+            this.progressCallback = progressCallback;
+            try
+            {
+                var tempSharedTransfers = await GetTransferFolder();
+                var rootContents = await GetRootContents(crossConnectFolder);
+                progressCallback(6, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                string remoteCrossConnectFolderId = rootContents[0][RootCrossConnectId];
+
+                string foundManifestFileId;
+                if (!rootContents[0].TryGetValue(BackupManifestFileName, out foundManifestFileId))
+                {
+                    progressCallback(100, 0, true, null, null, "There is no backup to restore");
+                    return;
+                }
+
+                string modsFolderId;
+                if (rootContents[1].TryGetValue("mods.d", out modsFolderId))
+                {
+                    var modsContents = await GetFolderContents(modsFolderId + "/files");
+                    _progressIncrement = 80.0 / ((double)modsContents[0].Count() * 7.0 + 5.0);
+                }
+                progressCallback(8, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                await GetFileRemote(foundManifestFileId, BackupManifestFileName, ApplicationData.Current.LocalFolder, tempSharedTransfers);
+                var manifestBytes = await Hoot.File.ReadAllBytes(BackupManifestFileName);
+                BackupRestore.BackupManifest manifest = (BackupRestore.BackupManifest)Deserialize(manifestBytes, typeof(BackupRestore.BackupManifest));
+                progressCallback(10, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                await Hoot.File.Delete(BackupManifestFileName);
+                List<ManifestCheck> manifestChecker = new List<ManifestCheck> 
+                { 
+                    new ManifestCheck(manifest.bibles, manifestSelected.bibles, "Bibles",null),
+                    new ManifestCheck(manifest.settings, manifestSelected.settings, "Settings",PersistantObjectsDisplaySettingsFileName),
+                    new ManifestCheck(manifest.highlighting, manifestSelected.highlighting, "Highlighting",PersistantObjectsHighlightFileName),
+                    new ManifestCheck(manifest.bookmarks, manifestSelected.bookmarks, "Bookmarks and custom notes",PersistantObjectsMarkersFileName),
+                    new ManifestCheck(manifest.themes, manifestSelected.themes, "Themes",PersistantObjectsThemesFileName),
+                    new ManifestCheck(manifest.windowSetup, manifestSelected.windowSetup, "Window setup", PersistantObjectsWindowsFileName),
+                };
+
+                foreach (var check in manifestChecker)
+                {
+                    if (check.RequestValue && !check.ManifestValue)
+                    {
+                        progressCallback(100, 0, true, null, check.Message, "Doesn't exist in OneDrive. Remove it and try again");
+                        return;
+                    }
+                }
+
+                progressCallback(12, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+
+                // Create tempFolder but delete it first.
+                if (await Hoot.File.Exists(TempImportFolderName))
+                {
+                    var deleteFolder = await ApplicationData.Current.LocalFolder.GetFolderAsync(TempImportFolderName);
+                    await deleteFolder.DeleteAsync();
+                }
+
+                var tempImportFolder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(TempImportFolderName);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+
+                var fileTransferList = new List<FileTransferItem>();
+
+                _progressIncrement = 0.5;
+                this.oneDriveProgressBarTotal = 10.0;
+                foreach (var file in manifestChecker)
+                {
+                    if (file.RequestValue)
+                    {
+                        if (!string.IsNullOrEmpty(file.fileName))
+                        {
+                            fileTransferList.Add(new FileTransferItem(tempImportFolder, file.fileName, rootContents[0][file.fileName]));
+                        }
+                        else
+                        {
+                            await GetRemoteFolderSimulation(tempSharedTransfers, tempImportFolder, "mods.d", rootContents[1]["mods.d"], fileTransferList);
+                            if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                            await GetRemoteFolderSimulation(tempSharedTransfers, tempImportFolder, "modules", rootContents[1]["modules"], fileTransferList);
+                        }
+
+                        if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                    }
+                }
+
+                this.oneDriveProgressBarTotal = 15.0;
+                _progressIncrement = 80.0 / (double)fileTransferList.Count();
+                foreach (var file in fileTransferList)
+                {
+                    await GetFileRemote(file.idFolder, file.filename, file.folder, tempSharedTransfers);
+                    this.oneDriveProgressBarTotal += _progressIncrement;
+                    progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                }
+
+                this.oneDriveProgressBarTotal = 95;
+                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+
+                // move the temporary folder to the actual folder
+                await MoveFolder(tempImportFolder, ApplicationData.Current.LocalFolder);
+            }
+            catch (Exception ee)
+            {
+                progressCallback(100, 100, true, null, Uri.UnescapeDataString(ee.Message), null);
+                return;
+            }
+
+            progressCallback(100, 100, true, null, null, null);
+
+            /*
             this.progressCallback = progressCallback;
             try
             {
@@ -489,7 +709,7 @@ namespace CrossConnect
                 progressCallback(100, 100, true, Uri.UnescapeDataString(ee.Message), null, null);
             }
 
-            progressCallback(100, 100, true, null, null, null);
+            progressCallback(100, 100, true, null, null, null);*/
         }
 
         public static async Task MoveFolder(StorageFolder fromFolder, StorageFolder toFolder)
@@ -538,15 +758,28 @@ namespace CrossConnect
         {
             public bool ManifestValue;
             public bool RequestValue;
+            public string fileName;
             public string Message;
-            public ManifestCheck(bool ManifestValue, bool RequestValue, string Message)
+            public ManifestCheck(bool ManifestValue, bool RequestValue, string Message, string fileName)
             {
                 this.ManifestValue = ManifestValue;
                 this.RequestValue = RequestValue;
                 this.Message = Message;
+                this.fileName = fileName;
             }
         }
-
+        private class FileTransferItem
+        {
+            public FileTransferItem(StorageFolder folder, string filename, string idFolder)
+            {
+                this.folder = folder;
+                this.filename = filename;
+                this.idFolder = idFolder;
+            }
+            public StorageFolder folder;
+            public string filename;
+            public string idFolder;
+        }
         [DataContract]
         public class BackupManifest
         {
