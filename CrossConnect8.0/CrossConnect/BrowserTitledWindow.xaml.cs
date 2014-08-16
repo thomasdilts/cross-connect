@@ -509,6 +509,15 @@ namespace CrossConnect
                                             Guid.NewGuid().ToString().Substring(0, 8));
                                         await ((DictionaryRawIndexReader)this._state.Source).Initialize();
                                     }
+                                    else if (driver.Equals("RAWLD4"))
+                                    {
+                                        this._state.Source = new DictionaryRaw4IndexReader(
+                                            bookPath,
+                                            ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
+                                            isIsoEncoding,
+                                            Guid.NewGuid().ToString().Substring(0, 8));
+                                        await ((DictionaryRaw4IndexReader)this._state.Source).Initialize();
+                                    }
                                     else
                                     {
                                         this._state.Source = new DictionaryZldIndexReader(

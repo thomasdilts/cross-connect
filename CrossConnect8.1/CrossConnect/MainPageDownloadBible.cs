@@ -303,7 +303,7 @@ namespace CrossConnect
                                 || (isGeneralBookSelected
                                 && driver.Equals("RAWGENBOOK"))
                                 || (isDictionariesSelected
-                                && (driver.Equals("RAWLD") || driver.Equals("ZLD")))))
+                                && (driver.Equals("RAWLD") || driver.Equals("RAWLD4") || driver.Equals("ZLD")))))
                     {
                         allBooks[book.Value.Sbmd.Name] = book.Value.Sbmd.Name;
                     }
@@ -446,7 +446,7 @@ namespace CrossConnect
                             ||(isBibleSelected
                             && driver.Equals("ZTEXT"))
                             ||(isDictionarySelected
-                            && (driver.Equals("ZLD") || driver.Equals("RAWLD"))))
+                            && (driver.Equals("ZLD") || driver.Equals("RAWLD") || driver.Equals("RAWLD4"))))
                         {
                             var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
                             allLanguages[lang.Name] = lang;

@@ -399,7 +399,14 @@ namespace CrossConnect
                     await dataSource.Initialize();
                     await nextWindow2.Initialize(bibleToLoad, bibleDescription, typeOfWindow, initialData, dataSource);
                 }
-                else
+                else if (nextWindow.State.Source is DictionaryRaw4IndexReader)
+                {
+                    var indexerSource = ((DictionaryRaw4IndexReader)nextWindow.State.Source);
+                    var dataSource = new DictionaryRawDefReader(indexerSource.Serial.Path, indexerSource.Serial.Iso2DigitLangCode, indexerSource.Serial.IsIsoEncoding, indexerSource.WindowMatchingKey);
+                    await dataSource.Initialize();
+                    await nextWindow2.Initialize(bibleToLoad, bibleDescription, typeOfWindow, initialData, dataSource);
+                }
+                else 
                 {
                     var indexerSource = ((DictionaryRawIndexReader)nextWindow.State.Source);
                     var dataSource = new DictionaryRawDefReader(indexerSource.Serial.Path, indexerSource.Serial.Iso2DigitLangCode, indexerSource.Serial.IsIsoEncoding, indexerSource.WindowMatchingKey);
@@ -617,7 +624,7 @@ namespace CrossConnect
                                                     typeof(SearchReader), typeof(DailyPlanReader),
                                                     typeof(PersonalNotesReader), typeof(InternetLinkReader),
                                                     typeof(GreekHebrewDictReader), typeof(RawGenSearchReader),
-                                                    typeof(DictionaryRawDefReader),typeof(DictionaryRawIndexReader),typeof(DictionaryZldDefReader),typeof(DictionaryZldIndexReader),
+                                                    typeof(DictionaryRawDefReader),typeof(DictionaryRawIndexReader),typeof(DictionaryRaw4IndexReader),typeof(DictionaryZldDefReader),typeof(DictionaryZldIndexReader),
                                                     typeof(AudioPlayer.MediaInfo), typeof(RawGenTextReader), typeof(RawGenTextPlaceMarker)
                                                 };
                                 var ser = new DataContractSerializer(typeof(SerializableWindowState), types);
@@ -978,7 +985,7 @@ namespace CrossConnect
                                     typeof(SearchReader), typeof(DailyPlanReader),
                                     typeof(PersonalNotesReader), typeof(InternetLinkReader),
                                     typeof(GreekHebrewDictReader), typeof(AudioPlayer.MediaInfo), typeof(RawGenTextReader), 
-                                    typeof(DictionaryRawDefReader),typeof(DictionaryRawIndexReader),typeof(DictionaryZldDefReader),typeof(DictionaryZldIndexReader),
+                                    typeof(DictionaryRawDefReader),typeof(DictionaryRawIndexReader),typeof(DictionaryRaw4IndexReader),typeof(DictionaryZldDefReader),typeof(DictionaryZldIndexReader),
                                     typeof(RawGenTextPlaceMarker), typeof(RawGenSearchReader)
                                 };
                     var ser = new DataContractSerializer(typeof(SerializableWindowState), types);

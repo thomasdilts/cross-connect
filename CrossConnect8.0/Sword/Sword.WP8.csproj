@@ -113,6 +113,7 @@
     <Compile Include="reader\BiblePlaceMarkReader.cs" />
     <Compile Include="reader\CommentZtextReader.cs" />
     <Compile Include="reader\DictionaryRawDefReader.cs" />
+    <Compile Include="reader\DictionaryRaw4IndexReader.cs" />
     <Compile Include="reader\DictionaryRawIndexReader.cs" />
     <Compile Include="reader\DictionaryZldDefReader.cs" />
     <Compile Include="reader\DictionaryZldIndexReader.cs" />
