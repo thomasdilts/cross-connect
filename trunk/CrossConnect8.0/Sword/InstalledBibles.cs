@@ -112,7 +112,7 @@ namespace Sword
             {
                 this.InstalledGeneralBooks[modPath] = book;
             }
-            else if (driver.Equals("ZLD") || driver.Equals("RAWLD"))
+            else if (driver.Equals("ZLD") || driver.Equals("RAWLD") || driver.Equals("RAWLD4"))
             {
                 this.InstalledDictionaries[modPath] = book;
             }
@@ -161,7 +161,7 @@ namespace Sword
                 }
 
                 var driver = ((string)Sbmd.GetCetProperty(ConfigEntryType.ModDrv)).ToUpper();
-                if (driver.Equals("RAWGENBOOK") || driver.Equals("RAWLD") || driver.Equals("ZLD"))
+                if (driver.Equals("RAWGENBOOK") || driver.Equals("RAWLD") || driver.Equals("RAWLD4") || driver.Equals("ZLD"))
                 {
                     // In a book, the main files are one searchway down.
                     var mainDir = Path.GetDirectoryName(bookPath.Replace("/", "\\") + ".idx");

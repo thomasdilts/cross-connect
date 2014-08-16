@@ -2027,6 +2027,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             string lemmaText = string.Empty;
             string morphText = string.Empty;
             bool isFirstNoteInText = true;
+
             using (XmlReader reader = XmlReader.Create(ms, settings))
             {
                 try

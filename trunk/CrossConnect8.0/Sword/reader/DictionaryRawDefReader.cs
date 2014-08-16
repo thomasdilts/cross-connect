@@ -192,7 +192,7 @@ namespace Sword.reader
 
         public async Task<IBrowserTextSource> Clone()
         {
-            var cloned = new DictionaryRawIndexReader(this.Serial.Path, this.Serial.Iso2DigitLangCode, this.Serial.IsIsoEncoding, this.WindowMatchingKey);
+            var cloned = new DictionaryRawDefReader(this.Serial.Path, this.Serial.Iso2DigitLangCode, this.Serial.IsIsoEncoding, this.WindowMatchingKey);
             await cloned.Resume();
             cloned.MoveChapterVerse(this.Serial.PosBookShortName, this.Serial.PosChaptNum, this.Serial.PosVerseNum, false, cloned);
             return cloned;
@@ -495,6 +495,20 @@ function SetFontColorForElement(elemntId, colorRgba){
                 fs.Seek(this.PositionInDat, SeekOrigin.Begin);
                 chapterdata = new byte[this.Length];
                 fs.Read(chapterdata, 0, (int)this.Length);
+                // must remove any &nbsp
+                for (int i = 0; i < chapterdata.Length; i++)
+			    {
+			        if(chapterdata[i]=='&' && (i + 5) < chapterdata.Length)
+                    {
+                        if(chapterdata[i+1]=='n' && chapterdata[i+2]=='b' && chapterdata[i+3]=='s' && chapterdata[i+4]=='p' && chapterdata[i+5]==';')
+                        {
+                            for (int j = i; j <= (i+5); j++)
+			                {
+			                    chapterdata[j]=(byte)' ';
+			                }
+                        }
+                    }
+			    }
             }
             catch (Exception ee)
             {
