@@ -174,10 +174,32 @@ namespace CrossConnect
                 _progressIncrement = 75.0 / (double)fileTransferList.Count();
                 foreach (var file in fileTransferList)
                 {
-                    await PutFileInFolder(tempSharedTransfers, file.folder,file.filename, file.idFolder);
-                    this.oneDriveProgressBarTotal += _progressIncrement;
-                    progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null, null);
-                    if (_isCanceled) { progressCallback(100, 100, true, null, null, null, null); return; };
+                    // try 3 times to get the file.
+                    int i = 0;
+                    Exception error = null;
+                    for (i = 0; i < 3; i++)
+                    {
+                        try
+                        {
+                            error = null;
+                            await PutFileInFolder(tempSharedTransfers, file.folder, file.filename, file.idFolder);
+                            this.oneDriveProgressBarTotal += _progressIncrement;
+                            progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null, null);
+                            if (_isCanceled) { progressCallback(100, 100, true, null, null, null, null); return; };
+                            // it went ok. Lets get out
+                            break;
+                        }
+                        catch (Exception e)
+                        {
+                            // we probably need to wait here for things to cool off.
+                            System.Threading.Thread.Sleep(2500);
+                            error = e;
+                        }
+                    }
+                    if (i == 3 && error != null)
+                    {
+                        throw error;
+                    }
                 }
 
                 this.oneDriveProgressBarTotal = 95;
@@ -459,9 +481,31 @@ namespace CrossConnect
                 _progressIncrement = 80.0 / (double)fileTransferList.Count();
                 foreach (var file in fileTransferList)
                 {
-                    await GetFileRemote(file.idFolder, file.filename, file.folder, tempSharedTransfers);
-                    this.oneDriveProgressBarTotal += _progressIncrement;
-                    progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null, null);
+                    // try 3 times to get the file.
+                    int i = 0;
+                    Exception error = null;
+                    for (i = 0; i < 3; i++)
+                    {
+                        try
+                        {
+                            error = null;
+                            await GetFileRemote(file.idFolder, file.filename, file.folder, tempSharedTransfers);
+                            this.oneDriveProgressBarTotal += _progressIncrement;
+                            progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null, null);
+                            // it went ok. Lets get out
+                            break;
+                        }
+                        catch (Exception e)
+                        {
+                            // we probably need to wait here for things to cool off.
+                            System.Threading.Thread.Sleep(2500);
+                            error = e;
+                        }
+                    }
+                    if (i == 3 && error!=null)
+                    {
+                        throw error;
+                    }
                 }
 
                 this.oneDriveProgressBarTotal = 95;

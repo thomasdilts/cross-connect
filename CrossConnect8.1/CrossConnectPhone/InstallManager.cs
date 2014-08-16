@@ -45,7 +45,7 @@ namespace CrossConnect
     using System.Threading.Tasks;
     using Windows.Storage;
 
-
+    
 
     public class InstallManager
     {
@@ -137,7 +137,7 @@ namespace CrossConnect
                         new WebInstaller(parts[0].Trim(), parts[1].Trim(), parts[2].Trim());
                 }
             }
-            if (await SdCardInstaller.HasSdCardFiles())
+            if(await SdCardInstaller.HasSdCardFiles())
             {
                 installers[Translations.Translate("Memory card")] =
                         new SdCardInstaller();
@@ -326,11 +326,11 @@ namespace CrossConnect
 
     public interface IWebInstaller
     {
-        Dictionary<string, SwordBook> Entries { get; }
+        Dictionary<string, SwordBook> Entries { get;}
         Task<string> DownloadBookNow(SwordBookMetaData sbmd, DownloadProgressChangedEventHandler ProgressChanged, OpenReadCompletedEventHandler ProgressCompleted);
         Task<string> ReloadBookList(DownloadProgressChangedEventHandler ProgressChanged, OpenReadCompletedEventHandler ProgressCompleted);
         void UnzipBookList(DownloadProgressChangedEventHandler ProgressChanged, OpenReadCompletedEventHandler ProgressCompleted);
-        bool IsLoaded { get; }
+        bool IsLoaded{get;}
     }
 
     public class SdCardInstaller : IWebInstaller
@@ -392,7 +392,7 @@ namespace CrossConnect
                         if (esf.Name.ToLower().Equals(filename.ToLower()))
                         {
                             string winRtPath = "D:\\" + esf.Path;
-                            FileStream s = new System.IO.FileStream(winRtPath, FileMode.Open);
+                            FileStream s = new System.IO.FileStream(winRtPath, FileMode.Open, FileAccess.Read);
                             var tempWebInst = new WebInstaller(null, null, null);
                             tempWebInst.ClientDownloadBookCompleted(s, null);
                             Deployment.Current.Dispatcher.BeginInvoke(() => ProgressCompleted(null, null));
@@ -435,7 +435,7 @@ namespace CrossConnect
                         if (esf.Path.EndsWith(".conf"))
                         {
                             string winRtPath = "D:\\" + esf.Path;
-                            FileStream s = new System.IO.FileStream(winRtPath, FileMode.Open);
+                            FileStream s = new System.IO.FileStream(winRtPath, FileMode.Open, FileAccess.Read);
                             var book = new SwordBook(s, Path.GetFileNameWithoutExtension(esf.Name));
                             Entries[book.Name] = book;
                         }
@@ -461,8 +461,8 @@ namespace CrossConnect
         private bool _loaded = false;
         public bool IsLoaded { get { return _loaded; } }
     }
-
-    public class WebInstaller : IWebInstaller
+    
+    public class WebInstaller:IWebInstaller
     {
         #region Fields
 
@@ -780,7 +780,7 @@ namespace CrossConnect
                 ZipInputStream zipStream;
                 try
                 {
-                    zipStream = new ZipInputStream(sender is Stream ? (Stream)sender : e.Result);
+                    zipStream = new ZipInputStream(sender is Stream?(Stream)sender:e.Result);
                 }
                 catch (Exception)
                 {

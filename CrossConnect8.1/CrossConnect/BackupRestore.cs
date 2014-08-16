@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using Windows.Storage;
@@ -165,10 +166,35 @@ namespace CrossConnect
                 _progressIncrement = 75.0 / (double)fileTransferList.Count();
                 foreach (var file in fileTransferList)
                 {
-                    await PutFileInFolder(tempSharedTransfers, file.folder, file.filename, file.idFolder);
-                    this.oneDriveProgressBarTotal += _progressIncrement;
-                    progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
-                    if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                    // try 3 times to get the file.
+                    int i = 0;
+                    Exception error = null;
+                    for (i = 0; i < 3; i++)
+                    {
+                        try
+                        {
+                            error = null;
+                            await PutFileInFolder(tempSharedTransfers, file.folder, file.filename, file.idFolder);
+                            this.oneDriveProgressBarTotal += _progressIncrement;
+                            progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                            if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                            // it went ok. Lets get out
+                            break;
+                        }
+                        catch (Exception e)
+                        {
+                            // we probably need to wait here for things to cool off.
+                            using (EventWaitHandle tmpEvent = new ManualResetEvent(false))
+                            {
+                                tmpEvent.WaitOne(1000);
+                            }
+                            error = e;
+                        }
+                    }
+                    if (i == 3 && error != null)
+                    {
+                        throw error;
+                    }
                 }
 
                 this.oneDriveProgressBarTotal = 95;
@@ -570,9 +596,34 @@ namespace CrossConnect
                 _progressIncrement = 80.0 / (double)fileTransferList.Count();
                 foreach (var file in fileTransferList)
                 {
-                    await GetFileRemote(file.idFolder, file.filename, file.folder, tempSharedTransfers);
-                    this.oneDriveProgressBarTotal += _progressIncrement;
-                    progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                    // try 3 times to get the file.
+                    int i = 0;
+                    Exception error = null;
+                    for (i = 0; i < 3; i++)
+                    {
+                        try
+                        {
+                            error = null;
+                            await GetFileRemote(file.idFolder, file.filename, file.folder, tempSharedTransfers);
+                            this.oneDriveProgressBarTotal += _progressIncrement;
+                            progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                            // it went ok. Lets get out
+                            break;
+                        }
+                        catch (Exception e)
+                        {
+                            // we probably need to wait here for things to cool off.
+                            using (EventWaitHandle tmpEvent = new ManualResetEvent(false))
+                            {
+                                tmpEvent.WaitOne(1000);
+                            }
+                            error = e;
+                        }
+                    }
+                    if (i == 3 && error != null)
+                    {
+                        throw error;
+                    }
                 }
 
                 this.oneDriveProgressBarTotal = 95;
