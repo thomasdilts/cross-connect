@@ -392,7 +392,7 @@ namespace CrossConnect
                         if (esf.Name.ToLower().Equals(filename.ToLower()))
                         {
                             string winRtPath = "D:\\" + esf.Path;
-                            FileStream s = new System.IO.FileStream(winRtPath, FileMode.Open);
+                            FileStream s = new System.IO.FileStream(winRtPath, FileMode.Open, FileAccess.Read);
                             var tempWebInst = new WebInstaller(null, null, null);
                             tempWebInst.ClientDownloadBookCompleted(s, null);
                             Deployment.Current.Dispatcher.BeginInvoke(() => ProgressCompleted(null, null));
@@ -435,7 +435,7 @@ namespace CrossConnect
                         if (esf.Path.EndsWith(".conf"))
                         {
                             string winRtPath = "D:\\" + esf.Path;
-                            FileStream s = new System.IO.FileStream(winRtPath, FileMode.Open);
+                            FileStream s = new System.IO.FileStream(winRtPath, FileMode.Open, FileAccess.Read);
                             var book = new SwordBook(s, Path.GetFileNameWithoutExtension(esf.Name));
                             Entries[book.Name] = book;
                         }
