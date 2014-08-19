@@ -2249,21 +2249,18 @@ function SetFontColorForElement(elemntId, colorRgba){
                                             isChaptNumGivenNotes = true;
                                         }
 
-                                        if (!isRaw && displaySettings.ShowNotePositions)
+                                        if (!isRaw && isNotesOnly && displaySettings.ShowNotePositions)
                                         {
                                             if (!isFirstNoteInText && displaySettings.AddLineBetweenNotes)
                                             {
-                                                AppendText("<br />", plainText, noteText, isInElement);
+                                                noteText.Append("<br />");
                                             }
                                             isFirstNoteInText = false;
-                                            AppendText(
+                                            noteText.Append(
                                                 (displaySettings.SmallVerseNumbers ? "<sup>" : string.Empty)
                                                 + convertNoteNumToId(noteIdentifier)
-                                                + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty), plainText, noteText, isInElement);
-                                            if (isNotesOnly)
-                                            {
-                                                noteIdentifier++;
-                                            }
+                                                + (displaySettings.SmallVerseNumbers ? "</sup>" : string.Empty));
+                                            noteIdentifier++;
                                         }
 
                                         isInElement = true;
