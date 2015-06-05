@@ -19,7 +19,7 @@
 // <summary>
 // Email: thomas@cross-connect.se
 // </summary>
-// <author>Thomas Edward Dilts</author>
+// <author>Thomas Dilts</author>
 
 namespace CrossConnect
 {
@@ -39,15 +39,8 @@ namespace CrossConnect
 
     using Windows.ApplicationModel;
     using Windows.ApplicationModel.Activation;
-    using Windows.Foundation;
-    using Windows.Foundation.Collections;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
-    using Windows.UI.Xaml.Controls.Primitives;
-    using Windows.UI.Xaml.Data;
-    using Windows.UI.Xaml.Input;
-    using Windows.UI.Xaml.Media;
-    using Windows.UI.Xaml.Navigation;
     using Windows.Storage;
     using Windows.Storage.Streams;
     using Windows.UI.Notifications;
