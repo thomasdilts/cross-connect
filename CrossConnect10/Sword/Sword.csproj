@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{727F835F-97DF-4963-83AF-1AFBE8362656}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sword</RootNamespace>
+    <AssemblyName>Sword</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion>10.0.10069.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10069.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UAP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UAP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <PlatformTarget>ARM</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UAP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <PlatformTarget>ARM</PlatformTarget>
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UAP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UAP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UAP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UAP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UAP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="BibleNames.cs" />
+    <Compile Include="ConfigEntry.cs" />
+    <Compile Include="ConfigEntryTable.cs" />
+    <Compile Include="ConfigEntryType.cs" />
+    <Compile Include="DailyPlans.cs" />
+    <Compile Include="InstalledBibles.cs" />
+    <Compile Include="javaprops\JavaProperties.cs" />
+    <Compile Include="javaprops\JavaPropertyReader.cs" />
+    <Compile Include="Language.cs" />
+    <Compile Include="Languages.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="reader\BibleNoteReader.cs" />
+    <Compile Include="reader\BiblePlaceMarkReader.cs" />
+    <Compile Include="reader\BibleZtextReader.cs" />
+    <Compile Include="reader\CommentZtextReader.cs" />
+    <Compile Include="reader\DictionaryRaw4IndexReader.cs" />
+    <Compile Include="reader\DictionaryRawDefReader.cs" />
+    <Compile Include="reader\DictionaryRawIndexReader.cs" />
+    <Compile Include="reader\DictionaryZldDefReader.cs" />
+    <Compile Include="reader\DictionaryZldIndexReader.cs" />
+    <Compile Include="reader\DisplaySettings.cs" />
+    <Compile Include="reader\GreekHebrewDictReader.cs" />
+    <Compile Include="reader\IBrowserTextSource.cs" />
+    <Compile Include="reader\PersonalNotesReader.cs" />
+    <Compile Include="reader\RawGenSearchReader.cs" />
+    <Compile Include="reader\RawGenTextReader.cs" />
+    <Compile Include="reader\sapphire.cs" />
+    <Compile Include="reader\SearchReader.cs" />
+    <Compile Include="StaticBibleVerses.cs" />
+    <Compile Include="SwordBookMetaData.cs" />
+    <Compile Include="versification\Canon.cs" />
+    <Compile Include="versification\CanonCatholic.cs" />
+    <Compile Include="versification\CanonCatholic2.cs" />
+    <Compile Include="versification\CanonGerman.cs" />
+    <Compile Include="versification\CanonKjva.cs" />
+    <Compile Include="versification\CanonLeningrad.cs" />
+    <Compile Include="versification\CanonLuther.cs" />
+    <Compile Include="versification\CanonLxx.cs" />
+    <Compile Include="versification\CanonManager.cs" />
+    <Compile Include="versification\CanonMt.cs" />
+    <Compile Include="versification\CanonNrsv.cs" />
+    <Compile Include="versification\CanonNrsva.cs" />
+    <Compile Include="versification\CanonOrthodox.cs" />
+    <Compile Include="versification\CanonSynodal.cs" />
+    <Compile Include="versification\CanonSynodalProt.cs" />
+    <Compile Include="versification\CanonVulg.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Ionic.ZLib, Version=2.0.0.14, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MarkerMetro.Unity.Ionic.Zlib.2.0.0.14\lib\netcore45\Ionic.ZLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Numerics.Vectors, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.0.0\lib\win8\System.Numerics.Vectors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Numerics.Vectors.WindowsRuntime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.0.0\lib\win8\System.Numerics.Vectors.WindowsRuntime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <EmbeddedResource Include="Properties\InstallManager.plugin" />
+    <EmbeddedResource Include="Properties\iso639.properties" />
+    <EmbeddedResource Include="Properties\iso639full.properties" />
+    <EmbeddedResource Include="Properties\iso639_de.properties" />
+    <EmbeddedResource Include="Properties\iso639_en.properties" />
+    <EmbeddedResource Include="Properties\iso639_fa.properties" />
+    <EmbeddedResource Include="Properties\iso639_in.properties" />
+    <EmbeddedResource Include="Properties\iso639_vi.properties" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Hoot\Hoot.csproj">
+      <Project>{c7c5bdb3-b729-4b44-b236-c77c14a9c9e1}</Project>
+      <Name>Hoot</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\BibleNames_af.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_ar.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_az.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_bg.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_cs.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_cy.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_da.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_de.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_el.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_en.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_es.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_et.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_fa.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_fi.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_fo.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_fr.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_ga.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_he.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_hr.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_ht.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_hu.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_id.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_it.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_ja.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_ko.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_la.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_lt.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_mt.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_nb.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_nl.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_no.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_pl.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_pt.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_ro.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_ru.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_sk.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_sl.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_sv.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_th.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_uk.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_vi.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_zh_cn.xml" />
+    <EmbeddedResource Include="Properties\BibleNames_zh_tw.xml" />
+    <EmbeddedResource Include="Properties\verses.xml" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

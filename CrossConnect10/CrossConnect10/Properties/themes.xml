@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<ccthemes version="1.0">
+  <theme bordercolor="FF2B2B2D" titlebackcolor="FFE8EBEE" accentcolor="FFBB14C2" titlefontcolor="FF212222" font="Segoe WP" ismainbackimage="False" mainbackcolor="FFAEACA8" mainbackimage="" mainfontcolor="FF2C2A2B" framecolor="FF535252" wordsofchrist="FFDC465D" isbuttoncolordark="True" uniqid="08afbb51-83a6-4ac5-8046-bfb6b606c625" >Easy on the eyes</theme>
+  <theme bordercolor="FF9F122E" titlebackcolor="FFEF8200" accentcolor="DADC0000" titlefontcolor="FFF7C5C9"
+         font="Comic Sans MS" ismainbackimage="False" mainbackcolor="B3AC500D" mainbackimage=""
+         mainfontcolor="FF691B0F" framecolor="FFE35700" wordsofchrist="FFBB1439" isbuttoncolordark="False"
+         uniqid="a8f17005-e8ba-40bc-b990-8818a6d3b20a"  highlight1="88E6E600" highlight2="88E86C19" highlight3="8819D119" highlight4="8825B8B8" highlight5="88FF66FF" highlight6="88AD5C33">Warm</theme>
+  <theme bordercolor="FF9F122E" titlebackcolor="FFBA1026" accentcolor="FFE90FF1" titlefontcolor="FFF7C5C9"
+         font="Comic Sans MS" ismainbackimage="False" mainbackcolor="FFF3B5B5" mainbackimage=""
+         mainfontcolor="FFC5150F" framecolor="FFA32046" wordsofchrist="FFFF1439" isbuttoncolordark="False"
+         uniqid="5959d7f3-e7f5-4980-a91c-eccdffe9d049" highlight1="88E6E600" highlight2="88E86C19" highlight3="8819D119" highlight4="8825B8B8" highlight5="88FF66FF" highlight6="88AD5C33">Red</theme>
+<theme bordercolor="FF264B9B" titlebackcolor="FF2D66DD" accentcolor="F69728A4" titlefontcolor="FFCFD2EC" font="Segoe WP" ismainbackimage="False" mainbackcolor="FFCFBFF3" mainbackimage="" mainfontcolor="FF3705FF" framecolor="FF0070D5" wordsofchrist="FFDA14F4" isbuttoncolordark="False" uniqid="b7f8e82e-dae5-468a-a209-c7f01e722db8"  highlight1="88E6E600" highlight2="88E86C19" highlight3="8819D119" highlight4="8825B8B8" highlight5="88FF66FF" highlight6="88AD5C33">Blue</theme>
+<theme bordercolor="FF19843F" titlebackcolor="FF125C39" accentcolor="FFD2EBC5" titlefontcolor="FFBECADC" font="Segoe WP" ismainbackimage="False" mainbackcolor="FF0B5F22" mainbackimage="" mainfontcolor="FF86D880" framecolor="FF00451F" wordsofchrist="FFDD9E39" isbuttoncolordark="False" uniqid="a7f8e82e-dae5-468a-a209-c7f01e722db8"  highlight1="88E6E600" highlight2="88E86C19" highlight3="8819D119" highlight4="8825B8B8" highlight5="88FF66FF" highlight6="88AD5C33">Green</theme>
+<theme bordercolor="C1F7048B" titlebackcolor="FFC605E9" accentcolor="FFBB14C2" titlefontcolor="FFBA9DDA" font="Segoe WP" ismainbackimage="False" mainbackcolor="FFFF88D9" mainbackimage="" mainfontcolor="FF8A1EC8" framecolor="FFFF57FF" wordsofchrist="FFFF1439" isbuttoncolordark="False" uniqid="a7f8e82e-dae5-468a-a209-c7f04e722db9"  highlight1="88E6E600" highlight2="88E86C19" highlight3="8819D119" highlight4="8825B8B8" highlight5="88FF66FF" highlight6="88AD5C33">Pink</theme>
+
+  <theme bordercolor="B6B8B7B7" titlebackcolor="FF898989" accentcolor="FFBB14C2" titlefontcolor="D6D7D4D8"
+         font="Segoe WP" ismainbackimage="False" mainbackcolor="FF2A2928" mainbackimage="" mainfontcolor="D4D8D7D5"
+         framecolor="FF322F30" wordsofchrist="FFFF7270" isbuttoncolordark="False" uniqid="d0d1fb14-a78c-42fe-a306-16622f80143b" highlight1="88E6E600" highlight2="88E86C19" highlight3="8819D119" highlight4="8825B8B8" highlight5="88FF66FF" highlight6="88AD5C33">Dark but easy</theme>
+  <theme bordercolor="FF000000" titlebackcolor="FFFFFFFF" accentcolor="FFBB14C2" titlefontcolor="FF000000"
+         font="Segoe WP" ismainbackimage="False" mainbackcolor="FFFFFFFF" mainbackimage="" mainfontcolor="FF000000"
+         framecolor="FFFFFFFF" wordsofchrist="FFFF1439" isbuttoncolordark="True" uniqid="a7f8e82e-dae5-468a-a209-c7f03e722db9" highlight1="88E6E600" highlight2="88E86C19" highlight3="8819D119" highlight4="8825B8B8" highlight5="88FF66FF" highlight6="88AD5C33">Black and white light</theme>
+<theme bordercolor="FFFFFFFF" titlebackcolor="FF000000" accentcolor="FFBB14C2" titlefontcolor="FFFFFFFF" font="Segoe WP" ismainbackimage="False" mainbackcolor="FF000000" mainbackimage="" mainfontcolor="FFFFFFFF" framecolor="FF2E2F32" wordsofchrist="FFFF6260" isbuttoncolordark="False" uniqid="a7f8e82e-dae5-468a-a209-c7f02e722db9"  highlight1="88E6E600" highlight2="88E86C19" highlight3="8819D119" highlight4="8825B8B8" highlight5="88FF66FF" highlight6="88AD5C33">Black and white dark</theme>
+<theme bordercolor="FF2B810C" titlebackcolor="FF467504" accentcolor="FF51720E" titlefontcolor="FF0B944B" font="Bookman Old Style" ismainbackimage="True" mainbackcolor="FF096115" mainbackimage="" mainfontcolor="FFD2D2C6" framecolor="FF2E2F32" wordsofchrist="FFF4B64A" isbuttoncolordark="True" uniqid="7ca9ac68-9f04-43de-bcf7-b3fad999ad6a"  highlight1="88E6E600" highlight2="88E86C19" highlight3="8819D119" highlight4="8825B8B8" highlight5="88FF66FF" highlight6="88AD5C33">Olive tree</theme>
+</ccthemes>

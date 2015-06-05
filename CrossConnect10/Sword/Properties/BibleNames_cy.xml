@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<biblenames isolang="cy" isolocale="" version="1.0">
+<book key="Gen" short="GENESIS" full="GENESIS" />
+<book key="Exod" short="EXODUS" full="EXODUS" />
+<book key="Lev" short="LEFITICUS" full="LEFITICUS" />
+<book key="Num" short="NUMERI" full="NUMERI" />
+<book key="Deut" short="DEUTERONOMIUM" full="DEUTERONOMIUM" />
+<book key="Josh" short="JOSUA" full="JOSUA" />
+<book key="Judg" short="BARNWYR" full="BARNWYR" />
+<book key="Ruth" short="" full="" />
+<book key="1Sam" short="1 SAMUEL" full="1 SAMUEL" />
+<book key="2Sam" short="2 SAMUEL" full="2 SAMUEL" />
+<book key="1Kgs" short="1 BRENHINOEDD" full="1 BRENHINOEDD" />
+<book key="2Kgs" short="2 BRENHINOEDD" full="2 BRENHINOEDD" />
+<book key="1Chr" short="1 CRONICL" full="1 CRONICL" />
+<book key="2Chr" short="2 CRONICL" full="2 CRONICL" />
+<book key="Ezra" short="ESRA" full="ESRA" />
+<book key="Neh" short="NEHEMEIA" full="NEHEMEIA" />
+<book key="Esth" short="ESTHER" full="ESTHER" />
+<book key="Job" short="" full="" />
+<book key="Ps" short="SALMAU" full="SALMAU" />
+<book key="Prov" short="DIARHEBION" full="DIARHEBION" />
+<book key="Eccl" short="PREGETHWR" full="PREGETHWR" />
+<book key="Song" short="CANIAD SOLOMON" full="CANIAD SOLOMON" />
+<book key="Isa" short="ESEIA" full="ESEIA" />
+<book key="Jer" short="JEREMEIA" full="JEREMEIA" />
+<book key="Lam" short="GALARNAD" full="GALARNAD" />
+<book key="Ezek" short="ESECIEL" full="ESECIEL" />
+<book key="Dan" short="" full="" />
+<book key="Hos" short="" full="" />
+<book key="Joel" short="" full="" />
+<book key="Amos" short="" full="" />
+<book key="Obad" short="OBADEIA" full="OBADEIA" />
+<book key="Jonah" short="JONA" full="JONA" />
+<book key="Mic" short="MICHA" full="MICHA" />
+<book key="Nah" short="" full="" />
+<book key="Hab" short="HABACUC" full="HABACUC" />
+<book key="Zeph" short="SEFFANEIA" full="SEFFANEIA" />
+<book key="Hag" short="HAGGAI" full="HAGGAI" />
+<book key="Zech" short="SECHAREIA" full="SECHAREIA" />
+<book key="Mal" short="" full="" />
+<book key="Matt" short="MATHEW" full="MATHEW" />
+<book key="Mark" short="MARC" full="MARC" />
+<book key="Luke" short="LUC" full="LUC" />
+<book key="John" short="IOAN" full="IOAN" />
+<book key="Acts" short="ACTAU" full="ACTAU" />
+<book key="Rom" short="RHUFEINIAID" full="RHUFEINIAID" />
+<book key="1Cor" short="1 CORINTHIAID" full="1 CORINTHIAID" />
+<book key="2Cor" short="2 CORINTHIAID" full="2 CORINTHIAID" />
+<book key="Gal" short="GALATIAID" full="GALATIAID" />
+<book key="Eph" short="EFFESIAID" full="EFFESIAID" />
+<book key="Phil" short="PHILIPIAID" full="PHILIPIAID" />
+<book key="Col" short="COLOSIAID" full="COLOSIAID" />
+<book key="1Thess" short="1 THESALONIAID" full="1 THESALONIAID" />
+<book key="2Thess" short="2 THESALONIAID" full="2 THESALONIAID" />
+<book key="1Tim" short="1 TIMOTHEUS" full="1 TIMOTHEUS" />
+<book key="2Tim" short="2 TIMOTHEUS" full="2 TIMOTHEUS" />
+<book key="Titus" short="" full="" />
+<book key="Phlm" short="" full="" />
+<book key="Heb" short="HEBREAID" full="HEBREAID" />
+<book key="Jas" short="IAGO" full="IAGO" />
+<book key="1Pet" short="1 PEDR" full="1 PEDR" />
+<book key="2Pet" short="2 PEDR" full="2 PEDR" />
+<book key="1John" short="1 IOAN" full="1 IOAN" />
+<book key="2John" short="2 IOAN" full="2 IOAN" />
+<book key="3John" short="3 IOAN" full="3 IOAN" />
+<book key="Jude" short="JWDAS" full="JWDAS" />
+<book key="Rev" short="DATGUDDIAD" full="DATGUDDIAD" />
+</biblenames>
