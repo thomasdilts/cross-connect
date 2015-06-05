@@ -19,7 +19,7 @@
 // <summary>
 // Email: thomas@cross-connect.se
 // </summary>
-// <author>Thomas Dilts</author>
+// <author>Thomas Edward Dilts</author>
 
 namespace CrossConnect
 {
