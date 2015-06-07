@@ -462,10 +462,6 @@ namespace CrossConnect
             this.gridPanelButtons1.Width = this.grid1.ActualWidth;
         }
 
-        private void MyMedia_OnBufferingProgressChanged(object sender, RoutedEventArgs e)
-        {
-        }
-
         private void MyMedia_OnCurrentStateChanged(object sender, RoutedEventArgs e)
         {
             this.ButPlay.Visibility = (this.myMedia.CurrentState != MediaElementState.Playing)
@@ -507,14 +503,6 @@ namespace CrossConnect
                     }
                     break;
             }
-        }
-
-        private void MyMedia_OnDownloadProgressChanged(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void MyMedia_OnMarkerReached(object sender, TimelineMarkerRoutedEventArgs e)
-        {
         }
 
         private void MyMedia_OnMediaEnded(object sender, RoutedEventArgs e)

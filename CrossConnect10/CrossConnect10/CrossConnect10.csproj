@@ -20,6 +20,8 @@
     <PackageCertificateKeyFile>CrossConnect10_TemporaryKey.pfx</PackageCertificateKeyFile>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <!-- <SupportedCultures>es-ES;fr-FR;it-IT;de-DE;af-AF;ar-AR;az-AZ;be-BE;bg-BG;cs-CS;da-DA;el-EL;et-ET;fa-FA;fi-FI;hi-HI;hr-HR;hu-HU;hy-HY;id-ID;is-IS;iw-IW;ja-JA;ko-KO;lt-LT;lv-LV;mk-MK;ms-MS;mt-MT;nl-NL;no-NO;pl-PL;pt-PT;ro-RO;ru-RU;sk-SK;sl-SL;sq-SQ;sr-SR;sv-SV;sw-SW;th-TH;tl-TL;tr-TR;uk-UK;ur-UR;vi-VI;zh-CN;zh-TW</SupportedCultures> -->
+    <SupportedCultures>es-ES;fr-FR;it-IT;de-DE;af-AF;ar-AR;az-AZ;be-BE;bg-BG;cs-CS;da-DA;el-EL;et-ET;fa-FA;fi-FI;hi-HI;hr-HR;hu-HU;hy-HY;id-ID;is-IS;iw-IW;ja-JA;ko-KO;lt-LT;lv-LV;mk-MK;ms-MS;mt-MT;nl-NL;no-NO;pl-PL;pt-PT;ro-RO;ru-RU;sk-SK;sl-SL;sq-SQ;sr-SR;sv-SV;sw-SW;th-TH;tl-TL;tr-TR;uk-UK;ur-UR;vi-VI;zh-CN;zh-TW</SupportedCultures>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -248,6 +250,7 @@
     <Content Include="Assets\splash24x24.png" />
     <Content Include="Assets\splash30x30.png" />
     <Content Include="Assets\splash310x150.png" />
+    <Content Include="Assets\splash44x44.png" />
     <Content Include="Assets\splash50x50.png" />
     <Content Include="Assets\StoreLogo.png" />
     <EmbeddedResource Include="Properties\crossc_af.xml" />

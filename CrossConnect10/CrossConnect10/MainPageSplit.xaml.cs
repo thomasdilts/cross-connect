@@ -336,6 +336,7 @@ namespace CrossConnect
             this.Dispatcher.RunAsync(CoreDispatcherPriority.Low, () => App.ShowUserInterface(false));
             //App.ShowUserInterface(false);
             BottomAppBar.IsOpen = true;
+            TopAppBar.IsOpen = true;
         }
 
         private void ButAddBookmarkClick(object sender, RoutedEventArgs e)

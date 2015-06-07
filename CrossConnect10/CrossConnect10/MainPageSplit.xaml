@@ -11,7 +11,7 @@
     mc:Ignorable="d">
 
     <Page.TopAppBar>
-        <AppBar x:Name="TopAppBar1" Padding="10,0,10,0" AutomationProperties.Name="Top App Bar">
+        <AppBar ClosedDisplayMode="Hidden" x:Name="TopAppBar1" Padding="10,0,10,0" AutomationProperties.Name="Top App Bar">
             <ScrollViewer VerticalScrollMode="Disabled" Name="scrollViewerTopAppBar1" HorizontalScrollMode="Auto"
                           Style="{StaticResource HorizontalScrollViewerStyle}">
                 <Grid Name="GridTopAppBar1">

@@ -126,6 +126,10 @@ namespace Sword
 
             if (stream == null)
             {
+                if(isoLang2DigitCode.Count()==0)
+                {
+                    isoLang2DigitCode = "zz";
+                }
                 stream = assem.GetManifestResourceStream("Sword.Properties.BibleNames_" + isoLang2DigitCode.Substring(0, 2) + ".xml");
                 if (stream == null)
                 {

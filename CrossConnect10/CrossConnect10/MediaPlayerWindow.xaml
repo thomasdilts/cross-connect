@@ -122,9 +122,7 @@
                             MediaFailed="MyMedia_OnMediaFailed"
                             MediaOpened="MyMedia_OnMediaOpened"
                             CurrentStateChanged="MyMedia_OnCurrentStateChanged"
-                            BufferingProgressChanged="MyMedia_OnBufferingProgressChanged"
-                            DownloadProgressChanged="MyMedia_OnDownloadProgressChanged"
-                            MarkerReached="MyMedia_OnMarkerReached"
+                             
                             AudioCategory="BackgroundCapableMedia" />
                     </StackPanel>
                 </StackPanel>
