@@ -647,8 +647,8 @@ namespace CrossConnect
                 AutomationProperties.NameProperty, Translations.Translate("Select bible to delete"));
             this.DeleteBookmarks.SetValue(
                 AutomationProperties.NameProperty, Translations.Translate("Select a bookmark to delete"));
-            this.OneDriveBackupRestore.SetValue(
-                AutomationProperties.NameProperty, Translations.Translate("OneDrive backup / restore"));
+            //this.OneDriveBackupRestore.SetValue(
+             //   AutomationProperties.NameProperty, Translations.Translate("OneDrive backup / restore"));
         }
 
         /// <summary>

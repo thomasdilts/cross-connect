@@ -67,8 +67,8 @@
                                 Style="{StaticResource DeleteAppBarButtonStyle}" Tag="Next" />
                         <Button x:Name="DeleteBookmarks" Click="MenuDeleteBookmarkClick"
                                 Style="{StaticResource UnfavoriteAppBarButtonStyle}" Tag="Next" />
-                        <Button x:Name="OneDriveBackupRestore" Click="MenuOneDriveBackupRestoreClick"
-                                Style="{StaticResource UploadSkyDriveAppBarButtonStyle}" Tag="Next" />
+                     <!--   <Button x:Name="OneDriveBackupRestore" Click="MenuOneDriveBackupRestoreClick"
+                                Style="{StaticResource UploadSkyDriveAppBarButtonStyle}" Tag="Next" /> -->
                     </StackPanel>
                     <StackPanel x:Name="RightPanel22" Orientation="Horizontal" Grid.Column="1"
                                 HorizontalAlignment="Right">
