@@ -45,7 +45,7 @@ namespace CrossConnect.readers
 
         #region Public Methods and Operators
 
-        public static string GetTitle(MediaInfo info)
+        public static string GetTitle(BackgroundAudioShared.AudioModel info)
         {
             string bookShortName;
             string bookFullName;
@@ -57,7 +57,7 @@ namespace CrossConnect.readers
             return bookNames.GetFullName(bookShortName, bookFullName) + " : " + (relChapterNum + 1).ToString(CultureInfo.InvariantCulture);
         }
 
-        public static async Task<List<MediaInfo>> ReadMediaSourcesFile(StorageFile downloadedFile)
+        public static async Task<List<BackgroundAudioShared.AudioModel>> ReadMediaSourcesFile(StorageFile downloadedFile)
         {
             string message;
             // for debug
@@ -65,14 +65,15 @@ namespace CrossConnect.readers
             //e.Result.Read(buffer, 0, (int)e.Result.Length);
             //System.Diagnostics.Debug.WriteLine("RawFile: " + System.Text.UTF8Encoding.UTF8.GetString(buffer, 0, (int)e.Result.Length));
             message = string.Empty;
-            var mediaList = new List<MediaInfo>();
+            var mediaList = new List<BackgroundAudioShared.AudioModel>();
             string biblePattern = string.Empty;
             IRandomAccessStream file = await downloadedFile.OpenAsync(FileAccessMode.Read);
             Stream stream = file.AsStreamForRead();
+            var kjvCannon = Sword.versification.CanonManager.GetCanon("KJV");
             using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings { CheckCharacters = false }))
             {
                 string name = string.Empty;
-                MediaInfo foundMedia = null;
+                BackgroundAudioShared.AudioModel foundMedia = null;
 
                 // Parse the file and get each of the nodes.
                 while (reader.Read())
@@ -83,7 +84,7 @@ namespace CrossConnect.readers
                             name = string.Empty;
                             if (reader.Name.ToLower().Equals("source") && reader.HasAttributes)
                             {
-                                foundMedia = new MediaInfo();
+                                foundMedia = new BackgroundAudioShared.AudioModel();
                                 name = string.Empty;
                                 reader.MoveToFirstAttribute();
                                 do
@@ -96,6 +97,9 @@ namespace CrossConnect.readers
                                             break;
                                         case "abschapter":
                                             int.TryParse(reader.Value, out foundMedia.Chapter);
+                                            var book = kjvCannon.GetBookFromAbsoluteChapter(foundMedia.Chapter);
+                                            foundMedia.Book = book.ShortName1;
+                                            foundMedia.Chapter = foundMedia.Chapter - book.VersesInChapterStartIndex;
                                             break;
                                         case "language":
                                             foundMedia.Language = reader.Value;
@@ -157,7 +161,7 @@ namespace CrossConnect.readers
                 }
             }
 
-            foreach (MediaInfo media in mediaList)
+            foreach (BackgroundAudioShared.AudioModel media in mediaList)
             {
                 media.Pattern = biblePattern;
             }
@@ -165,7 +169,7 @@ namespace CrossConnect.readers
             return mediaList;
         }
 
-        public static void SetRelativeChapter(int relativePostion, MediaInfo currentInfo, IBrowserTextSource bibleSource)
+        public static void SetRelativeChapter(int relativePostion, BackgroundAudioShared.AudioModel currentInfo, IBrowserTextSource bibleSource)
         {
             if (currentInfo != null)
             {
@@ -193,7 +197,7 @@ namespace CrossConnect.readers
 
         #region Methods
 
-        private static int AddChapter(MediaInfo info, int valToAdd)
+        private static int AddChapter(BackgroundAudioShared.AudioModel info, int valToAdd)
         {
             int adjustedChapter = info.Chapter + valToAdd;
             var canonKjv = CanonManager.GetCanon("KJV");
@@ -234,48 +238,5 @@ namespace CrossConnect.readers
 
         #endregion
 
-        [DataContract]
-        public class MediaInfo
-        {
-            #region Fields
-
-            [DataMember]
-            public int Chapter;
-
-            [DataMember]
-            public string Book;
-
-            [DataMember]
-            public string VoiceName;
-
-            [DataMember]
-            public int Verse;
-
-            [DataMember]
-            public string Code = string.Empty;
-
-            [DataMember]
-            public string Icon = string.Empty;
-
-            [DataMember]
-            public string IconLink = string.Empty;
-
-            [DataMember]
-            public bool IsNtOnly;
-
-            [DataMember]
-            public string Language = string.Empty;
-
-            [DataMember]
-            public string Name = string.Empty;
-
-            [DataMember]
-            public string Pattern = string.Empty;
-
-            [DataMember]
-            public string Src = string.Empty;
-
-            #endregion
-        }
     }
 }

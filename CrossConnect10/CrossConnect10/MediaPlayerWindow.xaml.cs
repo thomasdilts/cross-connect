@@ -39,6 +39,11 @@ namespace CrossConnect
     using Windows.UI.Xaml.Media.Imaging;
     using Windows.Media.SpeechSynthesis;
     using System.Threading.Tasks;
+    using Windows.Media.Playback;
+    using System.Threading;
+    using BackgroundAudioShared.Messages;
+    using Windows.Foundation;
+    using BackgroundAudioShared;
 
     public sealed partial class MediaPlayerWindow : ITiledWindow
     {
@@ -47,10 +52,9 @@ namespace CrossConnect
         private bool _isLoaded;
 
         private SerializableWindowState _state = new SerializableWindowState();
-
-        private DispatcherTimer _updatePositionTimer;
-
-        private AudioPlayerReader.MediaInfo Info = null;
+        private AutoResetEvent backgroundAudioTaskStarted;
+        private bool isMyBackgroundTaskRunning = false;
+        private BackgroundAudioShared.AudioModel Info= null;
 
         #endregion
 
@@ -59,20 +63,8 @@ namespace CrossConnect
         public MediaPlayerWindow()
         {
             this.InitializeComponent();
-
-            //MediaControl.PlayPressed += this.MediaControlPlayPressed;
-            //MediaControl.PausePressed += this.MediaControlPausePressed;
-            //MediaControl.PlayPauseTogglePressed += this.MediaControlPlayPauseTogglePressed;
-            //MediaControl.StopPressed += this.MediaControlStopPressed;
-            //MediaControl.FastForwardPressed += this.MediaControl_FastForwardPressed;
-            //MediaControl.RewindPressed += this.MediaControl_RewindPressed;
-            //MediaControl.ChannelDownPressed += this.MediaControl_ChannelDownPressed;
-            //MediaControl.ChannelUpPressed += this.MediaControl_ChannelUpPressed;
-            //MediaControl.PreviousTrackPressed += this.MediaControl_ChannelUpPressed;
-            //MediaControl.NextTrackPressed += this.MediaControl_ChannelDownPressed;
-            //MediaControl.AlbumArt = new Uri("ms-appx:///assets/splash150x150.png");
-
-            this.myMedia.AudioCategory = AudioCategory.BackgroundCapableMedia;
+            // Setup the initialization lock
+            backgroundAudioTaskStarted = new AutoResetEvent(false);
         }
 
         #endregion
@@ -101,14 +93,39 @@ namespace CrossConnect
                 this._state = value;
             }
         }
+        /// <summary>
+        /// Gets the information about background task is running or not by reading the setting saved by background task.
+        /// This is used to determine when to start the task and also when to avoid sending messages.
+        /// </summary>
+        private bool IsMyBackgroundTaskRunning
+        {
+            get
+            {
+                if (isMyBackgroundTaskRunning)
+                    return true;
 
+                string value = ApplicationSettingsHelper.ReadResetSettingsValue(ApplicationSettingsConstants.BackgroundTaskState) as string;
+                if (value == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    try
+                    {
+                        isMyBackgroundTaskRunning = EnumHelper.Parse<BackgroundTaskState>(value) == BackgroundTaskState.Running;
+                    }
+                    catch (ArgumentException)
+                    {
+                        isMyBackgroundTaskRunning = false;
+                    }
+                    return isMyBackgroundTaskRunning;
+                }
+            }
+        }
         #endregion
 
         #region Public Methods and Operators
-
-        public static void StartNewTrack(AudioPlayerReader.MediaInfo info)
-        {
-        }
 
         public void CalculateTitleTextWidth()
         {
@@ -122,125 +139,190 @@ namespace CrossConnect
             tmr.Interval = TimeSpan.FromSeconds(5);
             tmr.Start();
         }
-        private static SpeechSynthesizer _synth = null;
-        private SpeechSynthesizer GetSynthesizer()
+
+        /// <summary>
+        /// Unsubscribes to MediaPlayer events. Should run only on suspend
+        /// </summary>
+        private void RemoveMediaPlayerEventHandlers()
         {
-
-            if(_synth==null || !_synth.Voice.DisplayName.Equals(Info.VoiceName))
-            {
-                _synth = new SpeechSynthesizer();
-                VoiceInformation uniqueVoice = SpeechSynthesizer.AllVoices.FirstOrDefault(v => v.DisplayName.Equals(Info.VoiceName));
-                _synth.Voice = uniqueVoice;
-            }
-
-            return _synth;
+            BackgroundMediaPlayer.Current.CurrentStateChanged -= this.MediaPlayer_CurrentStateChanged;
+            BackgroundMediaPlayer.MessageReceivedFromBackground -= this.BackgroundMediaPlayer_MessageReceivedFromBackground;
         }
 
-        private static SpeechSynthesisStream stream = null;
+        /// <summary>
+        /// Subscribes to MediaPlayer events
+        /// </summary>
+        private void AddMediaPlayerEventHandlers()
+        {
+            BackgroundMediaPlayer.Current.CurrentStateChanged += this.MediaPlayer_CurrentStateChanged;
+            BackgroundMediaPlayer.MessageReceivedFromBackground += this.BackgroundMediaPlayer_MessageReceivedFromBackground;
+        }
 
-        private async void RestartToThisMedia()
+        private void MediaPlayerWindowUnloaded(object sender, RoutedEventArgs e)
+        {
+            if (isMyBackgroundTaskRunning)
+            {
+                RemoveMediaPlayerEventHandlers();
+            }
+            BackgroundMediaPlayer.Current.Pause();
+            ApplicationSettingsHelper.SaveSettingsValue(ApplicationSettingsConstants.BackgroundTaskState, BackgroundTaskState.Running.ToString());
+        }
+
+        private void MediaPlayerWindowLoaded(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Suspending += ForegroundApp_Suspending;
+            Application.Current.Resuming += ForegroundApp_Resuming;
+
+            this.UpdateBrowser(false);
+            if (this._isLoaded)
+            {
+                return;
+            }
+
+            this._isLoaded = true;
+
+            this.SetButtonVisibility(false);
+
+            switch (BackgroundMediaPlayer.Current.CurrentState)
+            {
+                case MediaPlayerState.Playing:
+                case MediaPlayerState.Paused:
+                    if (Info != null)
+                    {
+                        if (!string.IsNullOrEmpty(Info.Src))
+                        {
+                            this.ShowTrack(Info);
+                        }
+                        else
+                        {
+                            // do a restart
+                            this.RestartToThisMedia();
+                        }
+                    }
+
+                    break;
+                case MediaPlayerState.Closed:
+                    break;
+                default:
+                    // lets start it again.
+                    this.RestartToThisMedia();
+                    break;
+            }
+        }
+
+
+        /// <summary>
+        /// MediaPlayer state changed event handlers. 
+        /// Note that we can subscribe to events even if Media Player is playing media in background
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        async void MediaPlayer_CurrentStateChanged(MediaPlayer sender, object args)
+        {
+            var currentState = sender.CurrentState; // cache outside of completion or you might get a different value
+            await this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                // Update controls
+                UpdateTransportControls(currentState);
+            });
+        }
+        private void UpdateTransportControls(MediaPlayerState state)
+        {
+            if (state == MediaPlayerState.Playing)
+            {
+                //playButton.Content = "| |";     // Change to pause button
+            }
+            else
+            {
+                //playButton.Content = ">";     // Change to play button
+            }
+        }
+        /// <summary>
+        /// This event is raised when a message is recieved from BackgroundAudioTask
+        /// </summary>
+        async void BackgroundMediaPlayer_MessageReceivedFromBackground(object sender, MediaPlayerDataReceivedEventArgs e)
+        {
+            PositionMessage backgroundPositionMessage;
+            if (MessageService.TryParseMessage(e.Data, out backgroundPositionMessage))
+            {
+                // StartBackgroundAudioTask is waiting for this signal to know when the task is up and running
+                // and ready to receive messages
+                Debug.WriteLine("position " + backgroundPositionMessage.procent.ToString());
+                //this.txtCurrentState.Text = backgroundPositionMessage.procent.ToString();
+                return;
+            }
+
+            TrackChangedMessage trackChangedMessage;
+            if (MessageService.TryParseMessage(e.Data, out trackChangedMessage))
+            {
+                Info = trackChangedMessage.audioModel;
+                // When foreground app is active change track based on background message
+                await this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    this.title.Text = trackChangedMessage.title + "        " + Info.Name;
+                    SetButtonVisibility(true, true);
+
+                });
+                return;
+            }
+
+            BackgroundAudioTaskStartedMessage backgroundAudioTaskStartedMessage;
+            if (MessageService.TryParseMessage(e.Data, out backgroundAudioTaskStartedMessage))
+            {
+                // StartBackgroundAudioTask is waiting for this signal to know when the task is up and running
+                // and ready to receive messages
+                Debug.WriteLine("BackgroundAudioTask started");
+                backgroundAudioTaskStarted.Set();
+                return;
+            }
+        }
+        /// <summary>
+        /// Initialize Background Media Player Handlers and starts playback
+        /// </summary>
+        private void StartBackgroundAudioTask()
+        {
+
+            var startResult = this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                bool result = backgroundAudioTaskStarted.WaitOne(10000);
+                //Send message to initiate playback
+                if (result == true)
+                {
+                    MessageService.SendMessageToBackground(new UpdateStartPointMessage(Info));
+                    if (string.IsNullOrEmpty(Info.VoiceName))
+                    {
+                    }
+                    else
+                    {
+                    }
+                }
+                else
+                {
+                    throw new Exception("Background Audio Task didn't start in expected time");
+                }
+            });
+            startResult.Completed = new AsyncActionCompletedHandler(BackgroundTaskInitializationCompleted);
+        }
+
+        private void BackgroundTaskInitializationCompleted(IAsyncAction action, AsyncStatus status)
+        {
+            if (status == AsyncStatus.Completed)
+            {
+                Debug.WriteLine("Background Audio Task initialized");
+            }
+            else if (status == AsyncStatus.Error)
+            {
+                Debug.WriteLine("Background Audio Task could not initialized due to an error ::" + action.ErrorCode.ToString());
+            }
+        }
+
+        private void RestartToThisMedia()
         {
             if (Info == null || (string.IsNullOrEmpty(Info.VoiceName) && string.IsNullOrEmpty(Info.Src)))
             {
                 return;
             }
-            if (string.IsNullOrEmpty(Info.VoiceName))
-            {
-                AudioPlayerReader.SetRelativeChapter(0, Info, this.State.Source);
-                this.myMedia.Source = new Uri(Info.Src);
-                if (this.title != null)
-                {
-                    this.title.Text = AudioPlayerReader.GetTitle(Info) + "        " + Info.Name;
-                    this.SetButtonVisibility(false);
-                    //MediaControl.TrackName = this.title.Text;
-                    //MediaControl.ArtistName = Info.Name;
-                }
-            }
-            else
-            {
-                string bookShortName;
-                int relChaptNum;
-                int verseNum;
-                string fullName;
-                string title;
-                this._state.Source.GetInfo(
-                    Translations.IsoLanguageCode, 
-                    out bookShortName,
-                    out relChaptNum,
-                    out verseNum,
-                    out fullName,
-                    out title);
-                string chapterdata=null;
-                if (this.title != null)
-                {
-                    this.title.Text = title + " - "
-                              + (string.IsNullOrEmpty(this._state.BibleDescription)
-                                     ? this._state.BibleToLoad
-                                     : this._state.BibleDescription);
-                    this.SetButtonVisibility(false);
-                    //MediaControl.TrackName = this.title.Text;
-                    //MediaControl.ArtistName = Info.Name;
-                }
-                var synthesizer = this.GetSynthesizer();
-                if (stream != null)
-                {
-
-                    stream.Dispose();
-                    stream = null;
-
-                }
-                else
-                {
-                    await Task.Delay(TimeSpan.FromSeconds(3));
-                }
-
-                while (string.IsNullOrEmpty(chapterdata))
-                {
-                    chapterdata = await this._state.Source.GetTTCtext(App.DisplaySettings.SyncMediaVerses);
-                    if(!string.IsNullOrEmpty(chapterdata))
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        this._state.Source.MoveNext(App.DisplaySettings.SyncMediaVerses);
-                    }
-                }
-                if (!App.DisplaySettings.SyncMediaVerses)
-                {
-                    await Task.Delay(TimeSpan.FromSeconds(1));
-                } 
-                else
-                {
-                    this._state.Source.GetInfo(
-                        Translations.IsoLanguageCode, 
-                        out bookShortName,
-                        out relChaptNum,
-                        out verseNum,
-                        out fullName,
-                        out title);
-                    App.SynchronizeAllWindows(bookShortName, relChaptNum, verseNum, -1, this._state.Source);
-                }
-                try
-                {
-                    stream = await synthesizer.SynthesizeTextToStreamAsync(chapterdata);
-                    if(stream == null)
-                    {
-                        // try one more time
-                        await Task.Delay(TimeSpan.FromSeconds(3));
-                        stream = await synthesizer.SynthesizeTextToStreamAsync(chapterdata);
-                    }
-                    if (stream != null)
-                    {
-                        this.myMedia.SetSource(stream, stream.ContentType);
-                    }
-
-                }
-                catch(Exception e)
-                {
-                    Debug.WriteLine(e);
-                }
-            }
+            this.ButPlay_OnClick(null, null);
             App.StartTimerForSavingWindows();
         }
 
@@ -265,15 +347,7 @@ namespace CrossConnect
             this.title.Foreground = new SolidColorBrush(App.Themes.TitleFontColor);
             this.AllContent.Background = new SolidColorBrush(App.Themes.MainBackColor);
 
-            this.ProgressPosition.Foreground = new SolidColorBrush(App.Themes.AccentColor);
-            this.txtDuration.Foreground = new SolidColorBrush(App.Themes.MainFontColor);
-            this.txtPosition.Foreground = new SolidColorBrush(App.Themes.MainFontColor);
             this.grid1.UpdateLayout();
-            double newWidth = this.grid1.ActualWidth - (this.txtPosition.Width * 2) - 15;
-            if (newWidth > 0)
-            {
-                this.GridProgressBars.Width = this.grid1.ActualWidth - (this.txtPosition.Width * 2) - 15;
-            }
         }
 
         #endregion
@@ -292,58 +366,69 @@ namespace CrossConnect
         {
             if (Info != null)
             {
-                if (string.IsNullOrEmpty(Info.VoiceName))
-                {
-                    AudioPlayerReader.SetRelativeChapter(1, Info, this.State.Source);
-                }
-                else
-                {
-                    this._state.Source.MoveNext(App.DisplaySettings.SyncMediaVerses);
-                }
+                MessageService.SendMessageToBackground(new SkipNextMessage());
 
-                this.RestartToThisMedia();
+                // Prevent the user from repeatedly pressing the button and causing 
+                // a backlong of button presses to be handled. This button is re-eneabled 
+                // in the TrackReady Playstate handler.
+                ButNext.IsEnabled = false;
             }
-
-            // Prevent the user from repeatedly pressing the button and causing
-            // a backlong of button presses to be handled. This button is re-eneabled
-            // in the TrackReady Playstate handler.
-            //SetButtonVisibility(false);
         }
 
         private void ButPause_OnClick(object sender, RoutedEventArgs e)
         {
-            this.myMedia.Pause();
+            BackgroundMediaPlayer.Current.Pause();
+            SetButtonVisibility(true);
         }
 
         private void ButPlay_OnClick(object o, RoutedEventArgs e)
         {
-            this.myMedia.Play();
+            Debug.WriteLine("Play button pressed from App");
+            if (IsMyBackgroundTaskRunning)
+            {
+                if (MediaPlayerState.Playing == BackgroundMediaPlayer.Current.CurrentState)
+                {
+                    BackgroundMediaPlayer.Current.Pause();
+                }
+                else if (MediaPlayerState.Paused == BackgroundMediaPlayer.Current.CurrentState)
+                {
+                    if (o == null)
+                    {
+                        MessageService.SendMessageToBackground(new UpdateStartPointMessage(Info));
+                    }
+                    else
+                    {
+                        BackgroundMediaPlayer.Current.Play();
+                    }
+                }
+                else if (MediaPlayerState.Closed == BackgroundMediaPlayer.Current.CurrentState)
+                {
+                    StartBackgroundAudioTask();
+                }
+                SetButtonVisibility(true);
+            }
+            else
+            {
+                StartBackgroundAudioTask();
+            }
         }
 
         private void ButPreviousClick(object sender, RoutedEventArgs e)
         {
             if (Info != null)
             {
-                if (string.IsNullOrEmpty(Info.VoiceName))
-                {
-                    AudioPlayerReader.SetRelativeChapter(-1, Info, this.State.Source);
-                }
-                else
-                {
-                    this._state.Source.MovePrevious(App.DisplaySettings.SyncMediaVerses);
-                }
-                this.RestartToThisMedia();
-            }
+                MessageService.SendMessageToBackground(new SkipPreviousMessage());
 
-            // Prevent the user from repeatedly pressing the button and causing
-            // a backlong of button presses to be handled. This button is re-eneabled
-            // in the TrackReady Playstate handler.
-            //SetButtonVisibility(false);
+                // Prevent the user from repeatedly pressing the button and causing 
+                // a backlong of button presses to be handled. This button is re-eneabled 
+                // in the TrackReady Playstate handler.
+                ButPrevious.IsEnabled = false;
+            }
         }
 
         private void ImageIcon_OnTapped(object sender, TappedRoutedEventArgs e)
         {
-            AudioPlayerReader.MediaInfo info = Info;
+            BackgroundAudioShared.AudioModel info = Info;
             if (info != null && !string.IsNullOrEmpty(info.IconLink))
             {
                 try
@@ -357,91 +442,7 @@ namespace CrossConnect
             }
         }
 
-        private void MediaControlPausePressed(object sender, object e)
-        {
-            this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => this.myMedia.Pause());
-        }
-
-        private async void MediaControlPlayPauseTogglePressed(object sender, object e)
-        {
-            //if (MediaControl.IsPlaying)
-            //{
-            //    await this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { this.myMedia.Pause(); });
-            //}
-            //else
-            //{
-            //    await this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { this.myMedia.Play(); });
-            //}
-        }
-
-        private void MediaControlPlayPressed(object sender, object e)
-        {
-            this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => this.myMedia.Play());
-        }
-
-        private void MediaControlStopPressed(object sender, object e)
-        {
-            this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => this.myMedia.Stop());
-        }
-
-        private void MediaControl_ChannelDownPressed(object sender, object e)
-        {
-            this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => this.ButNextClick(null, null));
-        }
-
-        private void MediaControl_ChannelUpPressed(object sender, object e)
-        {
-            this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => this.ButPreviousClick(null, null));
-        }
-
-        private void MediaControl_FastForwardPressed(object sender, object e)
-        {
-        }
-
-        private void MediaControl_RewindPressed(object sender, object e)
-        {
-        }
-
-        private void MediaPlayerWindowLoaded(object sender, RoutedEventArgs e)
-        {
-            this.UpdateBrowser(false);
-            if (this._isLoaded)
-            {
-                return;
-            }
-
-            this._isLoaded = true;
-
-            this.SetButtonVisibility(false);
-
-            switch (this.myMedia.CurrentState)
-            {
-                case MediaElementState.Playing:
-                case MediaElementState.Paused:
-                    if (Info != null)
-                    {
-                        if (!string.IsNullOrEmpty(Info.Src))
-                        {
-                            this.ShowTrack(Info);
-                        }
-                        else
-                        {
-                            // do a restart
-                            this.RestartToThisMedia();
-                        }
-                    }
-
-                    break;
-                case MediaElementState.Closed:
-                    break;
-                default:
-                    // lets start it again.
-                    this.RestartToThisMedia();
-                    break;
-            }
-        }
-
-        public void SetMediaInfo(SerializableWindowState theState, AudioPlayerReader.MediaInfo info)
+        public void SetMediaInfo(SerializableWindowState theState, BackgroundAudioShared.AudioModel info)
         {
             this._state = theState;
             this.Info = info;
@@ -450,6 +451,7 @@ namespace CrossConnect
             theState.Pattern = info.Pattern;
             theState.IsNtOnly = info.IsNtOnly;
             theState.code = info.Code;
+            AddMediaPlayerEventHandlers();
             this.RestartToThisMedia();
         }
 
@@ -464,57 +466,45 @@ namespace CrossConnect
 
         private void MyMedia_OnCurrentStateChanged(object sender, RoutedEventArgs e)
         {
-            this.ButPlay.Visibility = (this.myMedia.CurrentState != MediaElementState.Playing)
+            this.ButPlay.Visibility = (BackgroundMediaPlayer.Current.CurrentState != MediaPlayerState.Playing)
                                           ? Visibility.Visible
                                           : Visibility.Collapsed;
             this.ButPause.Visibility = (this.ButPlay.Visibility == Visibility.Collapsed)
                                            ? Visibility.Visible
                                            : Visibility.Collapsed;
             //MediaControl.IsPlaying = (this.myMedia.CurrentState == MediaElementState.Playing);
-            switch (this.myMedia.CurrentState)
+            switch (BackgroundMediaPlayer.Current.CurrentState)
             {
-                case MediaElementState.Buffering:
+                case MediaPlayerState.Buffering:
                     break;
-                case MediaElementState.Playing:
+                case MediaPlayerState.Playing:
                     // try to load the icon.
-                    AudioPlayerReader.MediaInfo info = Info;
+                    BackgroundAudioShared.AudioModel info = Info;
                     this.ShowTrack(info);
                     //title.Text = AudioPlayerReader.GetTitle(info);
                     this.SetButtonVisibility(true);
                     break;
 
-                case MediaElementState.Paused:
-                    if (this.myMedia.Position.Seconds.Equals(this.myMedia.NaturalDuration.TimeSpan.Seconds))
-                    {
-                        this.ButNextClick(null,null);
-                    }
-                    else
-                    {
-                        if (this._updatePositionTimer != null)
-                        {
-                            this._updatePositionTimer.Stop();
-                        }
-                    }
+                case MediaPlayerState.Paused:
+                    //if (this.myMedia.Position.Seconds.Equals(this.myMedia.NaturalDuration.TimeSpan.Seconds))
+                    //{
+                    //    this.ButNextClick(null,null);
+                    //}
+                    //else
+                    //{
+                    //    if (this._updatePositionTimer != null)
+                    //    {
+                    //        this._updatePositionTimer.Stop();
+                    //    }
+                    //}
                     break;
-                case MediaElementState.Stopped:
-                    if (this._updatePositionTimer != null)
-                    {
-                        this._updatePositionTimer.Stop();
-                    }
+                case MediaPlayerState.Stopped:
+                    //if (this._updatePositionTimer != null)
+                    //{
+                    //    this._updatePositionTimer.Stop();
+                    //}
                     break;
             }
-        }
-
-        private void MyMedia_OnMediaEnded(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void MyMedia_OnMediaFailed(object sender, ExceptionRoutedEventArgs e)
-        {
-        }
-
-        private void MyMedia_OnMediaOpened(object sender, RoutedEventArgs e)
-        {
         }
 
         private void OnDelayUpdateTimerTick(object sender, object e)
@@ -524,7 +514,7 @@ namespace CrossConnect
             this.UpdateBrowser(false);
         }
 
-        private void SetButtonVisibility(bool isButtonsVisible)
+        private void SetButtonVisibility(bool isButtonsVisible, bool overridePlay=false)
         {
             this.ButPlay.Visibility = isButtonsVisible ? Visibility.Visible : Visibility.Collapsed;
             this.ButPause.Visibility = isButtonsVisible ? Visibility.Visible : Visibility.Collapsed;
@@ -532,42 +522,22 @@ namespace CrossConnect
             this.ButPrevious.Visibility = isButtonsVisible ? Visibility.Visible : Visibility.Collapsed;
             this.stackContent.Visibility = isButtonsVisible ? Visibility.Visible : Visibility.Collapsed;
             this.WaitingForDownload.Visibility = !isButtonsVisible ? Visibility.Visible : Visibility.Collapsed;
+            this.ButNext.IsEnabled = true;
+            this.ButPrevious.IsEnabled = true;
             if (isButtonsVisible)
             {
-                this.ButPlay.Visibility = (this.myMedia.CurrentState != MediaElementState.Playing)
+                this.ButPlay.Visibility = (!overridePlay && BackgroundMediaPlayer.Current.CurrentState != MediaPlayerState.Playing)
                                               ? Visibility.Visible
                                               : Visibility.Collapsed;
                 this.ButPause.Visibility = (this.ButPlay.Visibility == Visibility.Collapsed)
                                                ? Visibility.Visible
                                                : Visibility.Collapsed;
             }
-            //MediaControl.IsPlaying = (this.myMedia.CurrentState == MediaElementState.Playing);
-
-            //if (isButtonsVisible && null != BackgroundAudioPlayer.Instance.Track)
-            //{
-            //    myMedia.
-            //    txtDuration.Text = BackgroundAudioPlayer.Instance.Track.Duration.ToString("c").Substring(3, 5);
-            //    title.Text = BackgroundAudioPlayer.Instance.Track.Title;
-            //}
         }
 
-        private void ShowTrack(AudioPlayerReader.MediaInfo info)
+        private void ShowTrack(BackgroundAudioShared.AudioModel info)
         {
             Info = info;
-            if (this.myMedia.CurrentState == MediaElementState.Playing)
-            {
-                // start timer
-                this._updatePositionTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
-                this._updatePositionTimer.Tick += this.UpdatePositionTimerTick;
-                this._updatePositionTimer.Start();
-            }
-            else
-            {
-                if (this._updatePositionTimer != null)
-                {
-                    this._updatePositionTimer.Stop();
-                }
-            }
 
             if (!string.IsNullOrEmpty(info.Icon))
             {
@@ -579,35 +549,60 @@ namespace CrossConnect
             }
         }
 
-        private void UpdatePositionTimerTick(object sender, object other)
+        /// <summary>
+        /// Sends message to background informing app has resumed
+        /// Subscribe to MediaPlayer events
+        /// </summary>
+        void ForegroundApp_Resuming(object sender, object e)
         {
-            AudioPlayerReader.MediaInfo info = Info;
-            if (info != null && info.Src != null)
+            ApplicationSettingsHelper.SaveSettingsValue(ApplicationSettingsConstants.AppState, AppState.Active.ToString());
+
+            // Verify the task is running
+            if (IsMyBackgroundTaskRunning)
             {
-                try
-                {
-                    this.ProgressDownload.Value = this.myMedia.BufferingProgress * 100.0;
-                    if (this.myMedia.NaturalDuration.TimeSpan.Seconds != 0
-                        && this.myMedia.Position.TotalSeconds > 0.0001)
-                    {
-                        this.ProgressPosition.Value = (100.0 * this.myMedia.Position.TotalSeconds)
-                                                      / this.myMedia.NaturalDuration.TimeSpan.TotalSeconds;
-                        this.txtPosition.Text = this.myMedia.Position.ToString("c").Substring(3, 5);
-                        this.txtDuration.Text = this.myMedia.NaturalDuration.TimeSpan.ToString("c").Substring(3, 5);
-                    }
-                    else
-                    {
-                        this.ProgressPosition.Value = 0;
-                        this.txtPosition.Text = "00:00";
-                    }
-                }
-                catch (Exception ee)
-                {
-                    Logger.Debug("crashed UpdatePositionTimerTick; " + ee);
-                }
+                // If yes, it's safe to reconnect to media play handlers
+                AddMediaPlayerEventHandlers();
+
+                // Send message to background task that app is resumed so it can start sending notifications again
+                MessageService.SendMessageToBackground(new AppResumedMessage());
+
+                UpdateTransportControls(BackgroundMediaPlayer.Current.CurrentState);
+                //var saved = AudioModel.CreateFromSettings();
+
+                //txtCurrentTrack.Text = saved.Src;
+                //txtCurrentState.Text = BackgroundMediaPlayer.Current.CurrentState.ToString();
+            }
+            else
+            {
+                //playButton.Content = ">";     // Change to play button
+                //txtCurrentTrack.Text = string.Empty;
+                //txtCurrentState.Text = "Background Task Not Running";
             }
         }
 
+        /// <summary>
+        /// Send message to Background process that app is to be suspended
+        /// Stop clock and slider when suspending
+        /// Unsubscribe handlers for MediaPlayer events
+        /// </summary>
+        void ForegroundApp_Suspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
+        {
+            var deferral = e.SuspendingOperation.GetDeferral();
+
+            // Only if the background task is already running would we do these, otherwise
+            // it would trigger starting up the background task when trying to suspend.
+            if (IsMyBackgroundTaskRunning)
+            {
+                // Stop handling player events immediately
+                RemoveMediaPlayerEventHandlers();
+
+                // Tell the background task the foreground is suspended
+                MessageService.SendMessageToBackground(new AppSuspendedMessage());
+            }
+
+            deferral.Complete();
+        }
         #endregion
+
     }
 }

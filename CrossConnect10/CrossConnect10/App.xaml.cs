@@ -636,7 +636,7 @@ namespace CrossConnect
                                 typeof(PersonalNotesReader), typeof(InternetLinkReader),
                                 typeof(GreekHebrewDictReader), typeof(RawGenSearchReader),
                                 typeof(DictionaryRawDefReader),typeof(DictionaryRawIndexReader),typeof(DictionaryRaw4IndexReader),typeof(DictionaryZldDefReader),typeof(DictionaryZldIndexReader),
-                                typeof(AudioPlayerReader.MediaInfo), typeof(RawGenTextReader), typeof(RawGenTextPlaceMarker)
+                                typeof(BackgroundAudioShared.AudioModel), typeof(RawGenTextReader), typeof(RawGenTextPlaceMarker)
                             };
                             var ser = new DataContractSerializer(typeof(SerializableWindowState), types);
                             var state = (SerializableWindowState)ser.ReadObject(reader);
@@ -656,9 +656,7 @@ namespace CrossConnect
                                     out verseNum,
                                     out fullName,
                                     out title);
-                                var canon = CanonManager.GetCanon("KJV");
-                                var book = canon.BookByShortName[bookShortName];
-                                var info = new AudioPlayerReader.MediaInfo() { Book = bookShortName, Chapter = book.VersesInChapterStartIndex + relChaptNum, Verse = verseNum, VoiceName = nextWindow.State.VoiceName, IsNtOnly = nextWindow.State.IsNtOnly, Pattern = nextWindow.State.Pattern, Src = nextWindow.State.Src, Code = nextWindow.State.code };
+                                var info = new BackgroundAudioShared.AudioModel() { Book = bookShortName, Chapter = relChaptNum, Verse = verseNum, VoiceName = nextWindow.State.VoiceName, IsNtOnly = nextWindow.State.IsNtOnly, Pattern = nextWindow.State.Pattern, Src = nextWindow.State.Src, Code = nextWindow.State.code };
                                 ((MediaPlayerWindow)nextWindow).SetMediaInfo(nextWindow.State, info);
                             }
                             else
@@ -877,7 +875,7 @@ namespace CrossConnect
                                     typeof(CommentZtextReader), typeof(TranslatorReader), typeof(BiblePlaceMarkReader),
                                     typeof(SearchReader), typeof(DailyPlanReader),
                                     typeof(PersonalNotesReader), typeof(InternetLinkReader),
-                                    typeof(GreekHebrewDictReader), typeof(AudioPlayerReader.MediaInfo), typeof(RawGenTextReader),
+                                    typeof(GreekHebrewDictReader), typeof(BackgroundAudioShared.AudioModel), typeof(RawGenTextReader),
                                     typeof(DictionaryRawDefReader),typeof(DictionaryRawIndexReader),typeof(DictionaryRaw4IndexReader),typeof(DictionaryZldDefReader),typeof(DictionaryZldIndexReader),
                                     typeof(RawGenTextPlaceMarker), typeof(RawGenSearchReader)
                                 };
