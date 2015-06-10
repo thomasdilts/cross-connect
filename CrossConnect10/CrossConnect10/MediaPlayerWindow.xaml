@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="600" SizeChanged="MediaPlayerWindow_OnSizeChanged"
-    d:DesignWidth="600" Loaded="MediaPlayerWindowLoaded" LayoutUpdated="MediaPlayerWindow_OnLayoutUpdated">
+    d:DesignWidth="600" Loaded="MediaPlayerWindowLoaded" Unloaded="MediaPlayerWindowUnloaded" LayoutUpdated="MediaPlayerWindow_OnLayoutUpdated">
 
     <Border BorderBrush="Silver" BorderThickness="3"
             Name="border1">
@@ -107,23 +107,7 @@
                 <StackPanel Name="AllContent">
                     <ProgressBar Name="WaitingForDownload" Margin="0,15,0,0" IsIndeterminate="True" />
                     <StackPanel Name="stackContent" Margin="0,15,0,0">
-                        <StackPanel Name="stackProgress" Orientation="Horizontal">
-                            <TextBlock TextAlignment="Center" Name="txtPosition" Text="00:00" Width="60" />
-                            <Grid Name="GridProgressBars" VerticalAlignment="Top" Height="30" Width="285">
-                                <ProgressBar Name="ProgressDownload" Maximum="100" Foreground="LightGray" />
-                                <ProgressBar Name="ProgressPosition" Maximum="100" />
-                            </Grid>
-                            <TextBlock TextAlignment="Center" Name="txtDuration" Text="00:00" Width="60" />
-                        </StackPanel>
                         <Image Width="55" Name="ImageIcon" Tapped="ImageIcon_OnTapped" />
-                        <MediaElement
-                            x:Name="myMedia"
-                            MediaEnded="MyMedia_OnMediaEnded"
-                            MediaFailed="MyMedia_OnMediaFailed"
-                            MediaOpened="MyMedia_OnMediaOpened"
-                            CurrentStateChanged="MyMedia_OnCurrentStateChanged"
-                             
-                            AudioCategory="BackgroundCapableMedia" />
                     </StackPanel>
                 </StackPanel>
             </Border>

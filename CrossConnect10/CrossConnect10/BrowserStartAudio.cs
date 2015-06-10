@@ -54,7 +54,7 @@ namespace CrossConnect
 
         #region Public Methods and Operators
 
-        public async void AddMediaWindow(AudioPlayerReader.MediaInfo info)
+        public async void AddMediaWindow(BackgroundAudioShared.AudioModel info)
         {
             // only one media window allowed
             for (int i = 0; i < App.OpenWindows.Count(); i++)
@@ -109,7 +109,7 @@ namespace CrossConnect
                 string msg = string.Empty;
                 Debug.WriteLine(await this._client.ReadStorageFileAsyncString());
 
-                List<AudioPlayerReader.MediaInfo> mediaList =
+                List<BackgroundAudioShared.AudioModel> mediaList =
                     await AudioPlayerReader.ReadMediaSourcesFile(this._client.downloadedFile);
                 this._client.RemoveTempFile();
                 this.MsgFromServer.Text = msg;
@@ -157,10 +157,10 @@ namespace CrossConnect
 
             // clear the selection because we might come here again after the media player
             this.ListStartAudio.SelectedIndex = -1;
-            AudioPlayerReader.MediaInfo info = null;
-            if (((TextBlock)e.AddedItems[0]).Tag is AudioPlayerReader.MediaInfo)
+            BackgroundAudioShared.AudioModel info = null;
+            if (((TextBlock)e.AddedItems[0]).Tag is BackgroundAudioShared.AudioModel)
             {
-                info = (AudioPlayerReader.MediaInfo)((TextBlock)e.AddedItems[0]).Tag;
+                info = (BackgroundAudioShared.AudioModel)((TextBlock)e.AddedItems[0]).Tag;
             }
             else
             {
@@ -175,7 +175,13 @@ namespace CrossConnect
                     out verseNum,
                     out fullName,
                     out title);
-                info = new AudioPlayerReader.MediaInfo { Book = bookShortName, Verse = verseNum, Chapter = relChaptNum, VoiceName = ((VoiceInformation)((TextBlock)e.AddedItems[0]).Tag).DisplayName, };
+                info = new BackgroundAudioShared.AudioModel
+                {
+                    Book = bookShortName,
+                    Verse = verseNum,
+                    Chapter = relChaptNum,
+                    VoiceName = ((VoiceInformation)((TextBlock)e.AddedItems[0]).Tag).DisplayName
+                };
             }
             AddMediaWindow(info);
 
