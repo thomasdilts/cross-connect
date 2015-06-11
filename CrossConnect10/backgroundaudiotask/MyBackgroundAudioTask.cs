@@ -27,6 +27,8 @@ using Windows.Foundation;
 using BackgroundAudioShared.Messages;
 using Windows.Storage.Streams;
 using Sword.versification;
+using Sword;
+using Sword.reader;
 
 /* This background task will start running the first time the
  * MediaPlayer singleton instance is accessed from foreground. When a new audio 
@@ -62,6 +64,7 @@ namespace BackgroundAudioTask
         //private Timer positionReporting;
         private SpeechSynthesizer synthesizer = null;
         private Sword.BibleNames booknames = null;
+        private BibleZtextReader zTextReader = null;
         #endregion
 
         #region IBackgroundTask and IBackgroundTaskInstance Interface Members and handlers
@@ -134,7 +137,9 @@ namespace BackgroundAudioTask
             else
             {
                 MoveToNextVerse();
-                var stream = await synthesizer.SynthesizeTextToStreamAsync("now is the time for all good men to come to the aid of their country");
+
+                this.zTextReader.MoveNext(true);
+                var stream = await synthesizer.SynthesizeTextToStreamAsync(await zTextReader.GetTTCtext(true));
                 BackgroundMediaPlayer.Current.SetStreamSource(stream);
                 UpdateUVCOnNewTrack(true);
             }
@@ -508,14 +513,31 @@ namespace BackgroundAudioTask
 
             if (!string.IsNullOrEmpty(startPoint.VoiceName))
             {
-                //var bible = bibles.InstalledBibles.FirstOrDefault(p => p.Value.InternalName.Equals(startPoint.Src));
-                if(synthesizer==null)
+                await bibles.Initialize();
+                var bookKeyValue = bibles.InstalledBibles.FirstOrDefault(p => p.Value.InternalName.Equals(startPoint.Src));
+                SwordBookMetaData bookSelected = bookKeyValue.Value==null? bibles.InstalledBibles.First().Value : bookKeyValue.Value ;
+
+                string bookPath =
+                    bookSelected.GetCetProperty(ConfigEntryType.ADataPath).ToString().Substring(2);
+                bool isIsoEncoding = !bookSelected.GetCetProperty(ConfigEntryType.Encoding).Equals("UTF-8");
+
+                this.zTextReader = new BibleZtextReader(
+                                    bookPath,
+                                    ((Language)bookSelected.GetCetProperty(ConfigEntryType.Lang)).Code,
+                                    isIsoEncoding,
+                                    (string)bookSelected.GetCetProperty(ConfigEntryType.CipherKey),
+                                    bookSelected.ConfPath,
+                                    (string)bookSelected.GetCetProperty(ConfigEntryType.Versification));
+                await this.zTextReader.Initialize();
+                this.zTextReader.MoveChapterVerse(startPoint.Book, startPoint.Chapter, startPoint.Verse, false, zTextReader);
+                if (synthesizer==null)
                 {
                     synthesizer = new SpeechSynthesizer();
                 }
 
                 synthesizer.Voice = SpeechSynthesizer.AllVoices.First(p => p.DisplayName.Equals(startPoint.VoiceName));
-                var stream = await synthesizer.SynthesizeTextToStreamAsync("now is the time for all good men to come to the aid of their country");
+                var textToSpeak = await zTextReader.GetTTCtext(true);
+                var stream = await synthesizer.SynthesizeTextToStreamAsync(textToSpeak);
                 BackgroundMediaPlayer.Current.SetStreamSource(stream);
             }
             else

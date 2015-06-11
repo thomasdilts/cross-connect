@@ -77,8 +77,10 @@ namespace CrossConnect
             {
                 WindowType = WindowType.WindowMediaPlayer,
                 Source = await this._state.Source.Clone(),
-                BibleDescription = this._state.BibleDescription
+                BibleDescription = this._state.BibleDescription,
+                BibleToLoad = this._state.BibleToLoad
             };
+            
 
             var nextWindow = new MediaPlayerWindow { State = state };
             nextWindow.State.CurIndex = App.OpenWindows.Count();

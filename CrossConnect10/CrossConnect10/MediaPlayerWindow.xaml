@@ -45,7 +45,7 @@
                     <Button x:Name="ButClose" Grid.Column="5" Click="ButCloseClick" HorizontalAlignment="Center"
                             Style="{StaticResource DeleteAppBarButtonStyle2}" Tag="Edit" />
                 </Grid>
-                <TextBlock Name="title" Text="This is the first strange text" FontSize="18" />
+                <TextBlock Name="title" Text="" FontSize="18" />
             </StackPanel>
             <Popup x:Name="SearchPopup" Opened="SearchPopup_OnOpened" Closed="SearchPopup_OnClosed" Grid.Row="1"
                    HorizontalOffset="150" VerticalOffset="-60" IsLightDismissEnabled="True">

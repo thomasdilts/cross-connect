@@ -113,6 +113,7 @@ namespace CrossConnect
                 object columnwidth;
                 Rect bounds = Window.Current.Bounds;
                 this._screenWidth = bounds.Width * 4 / 10;
+                this._screenWidth = this._screenWidth < 333 ? 333 : this._screenWidth;
                 if (ApplicationData.Current.LocalSettings.Values.TryGetValue("ColumnWidth", out columnwidth))
                 {
                     this._screenWidth = ((int)columnwidth);
@@ -373,6 +374,7 @@ namespace CrossConnect
             {
                 columnWidthInteger = (int)(windowBounds.Width / 8);
             }
+            columnWidthInteger = columnWidthInteger < 333 ? 333 : columnWidthInteger;
             ApplicationData.Current.LocalSettings.Values["ColumnWidth"] = columnWidthInteger;
             App.ShowUserInterface(true);
             this.ReDrawWindows(true);
@@ -397,6 +399,7 @@ namespace CrossConnect
             {
                 columnWidthInteger = (int)(windowBounds.Width / 8);
             }
+            columnWidthInteger = columnWidthInteger < 333 ? 333 : columnWidthInteger;
             ApplicationData.Current.LocalSettings.Values["ColumnWidth"] = columnWidthInteger;
             App.ShowUserInterface(true);
             this.ReDrawWindows(true);
