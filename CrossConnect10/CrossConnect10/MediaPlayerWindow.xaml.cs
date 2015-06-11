@@ -44,6 +44,7 @@ namespace CrossConnect
     using BackgroundAudioShared.Messages;
     using Windows.Foundation;
     using BackgroundAudioShared;
+    using Windows.UI.Popups;
 
     public sealed partial class MediaPlayerWindow : ITiledWindow
     {
@@ -259,9 +260,10 @@ namespace CrossConnect
                 // When foreground app is active change track based on background message
                 await this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    this.title.Text = trackChangedMessage.title + "        " + Info.Name;
                     SetButtonVisibility(true, true);
-
+                    var verseText = string.IsNullOrEmpty(trackChangedMessage.audioModel.VoiceName) ? string.Empty : ":" + (trackChangedMessage.audioModel.Verse + 1).ToString();
+                    this.title.Text = trackChangedMessage.title + verseText + "        " + Info.Name;
+                    App.SynchronizeAllWindows(trackChangedMessage.audioModel.Book, trackChangedMessage.audioModel.Chapter, trackChangedMessage.audioModel.Verse, this._state.CurIndex, this._state.Source);
                 });
                 return;
             }
@@ -273,6 +275,20 @@ namespace CrossConnect
                 // and ready to receive messages
                 Debug.WriteLine("BackgroundAudioTask started");
                 backgroundAudioTaskStarted.Set();
+                return;
+            }
+
+            ErrorMessage errorMessage;
+            if (MessageService.TryParseMessage(e.Data, out errorMessage))
+            {
+                await this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    var dialog =
+                        new MessageDialog(
+                            Translations.Translate(
+                                "An error occurred trying to connect to the network. Try again later.") + "; " + errorMessage.message);
+                    dialog.ShowAsync();
+                });
                 return;
             }
         }
@@ -451,6 +467,10 @@ namespace CrossConnect
             theState.Pattern = info.Pattern;
             theState.IsNtOnly = info.IsNtOnly;
             theState.code = info.Code;
+            if(!string.IsNullOrEmpty(info.VoiceName) && !string.IsNullOrEmpty(theState.BibleToLoad))
+            {
+                this.Info.Src = theState.BibleToLoad;
+            }
             AddMediaPlayerEventHandlers();
             this.RestartToThisMedia();
         }

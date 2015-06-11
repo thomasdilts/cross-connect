@@ -115,6 +115,13 @@ namespace Sword.reader
                 return false;
             }
         }
+        public override bool IsTTChearable
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         public override bool IsPageable
         {

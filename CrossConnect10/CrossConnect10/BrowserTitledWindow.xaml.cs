@@ -1050,7 +1050,7 @@ namespace CrossConnect
                 }
                 this._lastSelectedItem = id;
                 await this.webBrowser1.InvokeScriptAsync(
-                     "ShowNode",
+                     "ShowNodePhone",
                     new[] { this._lastSelectedItem });
                 this.WriteTitle();
             }
