@@ -1,62 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
-<Package
-  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
-  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
-  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
-  IgnorableNamespaces="uap mp">
-
-  <Identity
-    Name="2e09d4da-5327-4ae0-8264-c11fef8bd201"
-    Publisher="CN=Thomas Dilts"
-    Version="1.0.0.0" />
-
-  <mp:PhoneIdentity PhoneProductId="2e09d4da-5327-4ae0-8264-c11fef8bd201" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
-
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
+  <Identity Name="2e09d4da-5327-4ae0-8264-c11fef8bd201" Publisher="CN=Thomas Dilts" Version="1.0.1.0" />
+  <mp:PhoneIdentity PhoneProductId="2e09d4da-5327-4ae0-8264-c11fef8bd201" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Bible Reader Cross Connect</DisplayName>
     <PublisherDisplayName>ThomasDilts</PublisherDisplayName>
     <Logo>Assets\splash50x50.png</Logo>
   </Properties>
-
   <Dependencies>
     <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.10069.0" MaxVersionTested="10.0.10069.0" />
   </Dependencies>
-
   <Resources>
-    <Resource Language="x-generate"/>
+    <Resource Language="x-generate" />
   </Resources>
-
   <Applications>
-    <Application Id="App"
-      Executable="$targetnametoken$.exe"
-      EntryPoint="CrossConnect10.App">
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="CrossConnect10.App">
       <Extensions>
         <Extension Category="windows.backgroundTasks" EntryPoint="BackgroundAudioTask.MyBackgroundAudioTask">
           <BackgroundTasks>
             <Task Type="audio" />
-            <!--<Task Type="timer" />-->
           </BackgroundTasks>
         </Extension>
       </Extensions>
-      <uap:VisualElements
-        DisplayName="Bible Reader Cross Connect"
-        Square150x150Logo="Assets\splash150x150.png"
-        Square44x44Logo="Assets\splash44x44.png"
-        Description="Bible Reader Cross Connect based on the crosswire.org bible database"
-        BackgroundColor="#0000fe">
+      <uap:VisualElements DisplayName="Bible Reader Cross Connect" Square150x150Logo="Assets\splash150x150.png" Square44x44Logo="Assets\splash44x44.png" Description="Bible Reader Cross Connect based on the crosswire.org bible database" BackgroundColor="#0000fe">
         <uap:DefaultTile ShortName="CrossConnect" Wide310x150Logo="Assets\splash310x150.png">
           <uap:ShowNameOnTiles>
             <uap:ShowOn Tile="square150x150Logo" />
             <uap:ShowOn Tile="wide310x150Logo" />
           </uap:ShowNameOnTiles>
-        </uap:DefaultTile>        
-        <uap:SplashScreen BackgroundColor="#0000fe"  Image="Assets\Splash.png" />
+        </uap:DefaultTile>
+        <uap:SplashScreen BackgroundColor="#0000fe" Image="Assets\Splash.png" />
         <uap:LockScreen Notification="badge" BadgeLogo="Assets\badge.png" />
       </uap:VisualElements>
     </Application>
   </Applications>
-
   <Capabilities>
     <Capability Name="internetClient" />
   </Capabilities>

@@ -1,4 +1,4 @@
-﻿//using Microsoft.Live;
+﻿using Microsoft.Live;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,6 +14,7 @@ namespace CrossConnect
 {
     public class BackupRestore
     {
+        #region Methods
 
         public bool IsCanceled = false;
         private bool _isConnected = false;
@@ -32,7 +33,7 @@ namespace CrossConnect
         public const string PersistantObjectsMarkersFileName = "_Markers.xml";
         public const string PersistantObjectsHighlightFileName = "_Highlights.xml";
         private readonly string[] _defaultAuthScopes = new string[] { "wl.signin", "wl.basic", "wl.skydrive", "wl.skydrive_update" };
-/*        private LiveConnectClient liveClient = null;
+        private LiveConnectClient liveClient = null;
 
         private LiveAuthClient authClient = null;
         public string LogOut()
@@ -58,6 +59,7 @@ namespace CrossConnect
             try
             {
                 authClient = new LiveAuthClient();
+                
                 LiveLoginResult result = await authClient.LoginAsync(_defaultAuthScopes);
 
                 if (result.Status == LiveConnectSessionStatus.Connected)
@@ -83,6 +85,9 @@ namespace CrossConnect
             return text;
         }
 
+        #endregion Methods
+
+
         private async Task<StorageFolder> GetTransferFolder()
         {
             if (!await Hoot.File.Exists("shared"))
@@ -95,7 +100,7 @@ namespace CrossConnect
                 await sharedFolder.CreateFolderAsync("transfers");
             }
 
-            return  await sharedFolder.GetFolderAsync("transfers");
+            return await sharedFolder.GetFolderAsync("transfers");
         }
         private const string BackupManifestFileName = "_BackupManifest.xml";
         public delegate void Progress(double percentTotal, double percentPartial, bool IsFinal, string Message, string MessageTranslateable1, string MessageTranslateable2);
@@ -131,11 +136,11 @@ namespace CrossConnect
 
                 var settings = new bool[] { manifest.settings, manifest.themes, manifest.windowSetup, manifest.bookmarks, manifest.highlighting };
                 var filenames = new string[]
-                { 
-                    PersistantObjectsDisplaySettingsFileName, 
-                    PersistantObjectsThemesFileName, 
-                    PersistantObjectsWindowsFileName, 
-                    PersistantObjectsMarkersFileName, 
+                {
+                    PersistantObjectsDisplaySettingsFileName,
+                    PersistantObjectsThemesFileName,
+                    PersistantObjectsWindowsFileName,
+                    PersistantObjectsMarkersFileName,
                     PersistantObjectsHighlightFileName
                 };
 
@@ -206,6 +211,97 @@ namespace CrossConnect
             }
             progressCallback(100, 100, true, null, null, null);
 
+
+            /*
+            this.progressCallback = progressCallback;
+            try
+            {
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                progressCallback(5, 0, false, null, null, null);
+                var files = await Hoot.File.GetFiles("mods.d", ApplicationData.Current.LocalFolder);
+                if (files.Length != 0)
+                {
+                    _progressIncrement = 80.0 / ((double)files.Length * 7.0 + 5.0);
+                }
+
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                progressCallback(7, 0, false, null, null, null);
+                var rootContents = await GetRootContents(crossConnectFolder);
+                string putInFolderId = rootContents[0][RootCrossConnectId];
+
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                progressCallback(9, 0, false, null, null, null);
+
+                var tempSharedTransfers = await GetTransferFolder();
+
+                // remove all files
+                foreach (var file in rootContents[0].Where(p => !p.Key.Equals(RootCrossConnectId)))
+                {
+                    LiveOperationResult operationResult = await liveClient.DeleteAsync(file.Value);
+                } 
+                foreach (var file in rootContents[1])
+                {
+                    LiveOperationResult operationResult = await liveClient.DeleteAsync(file.Value);
+                }
+                progressCallback(11, 0, false, null, null, null);
+                this.oneDriveProgressBarTotal = 11;
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+
+                // put all files
+                if (manifest.settings)
+                {
+                    await PutFileInFolder(tempSharedTransfers, ApplicationData.Current.LocalFolder, PersistantObjectsDisplaySettingsFileName, putInFolderId);
+                }
+                this.oneDriveProgressBarTotal += _progressIncrement;
+                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                if (manifest.themes)
+                {
+                    await PutFileInFolder(tempSharedTransfers, ApplicationData.Current.LocalFolder, PersistantObjectsThemesFileName, putInFolderId);
+                }
+                this.oneDriveProgressBarTotal += _progressIncrement;
+                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                if (manifest.windowSetup)
+                {
+                    await PutFileInFolder(tempSharedTransfers, ApplicationData.Current.LocalFolder, PersistantObjectsWindowsFileName, putInFolderId);
+                }
+                this.oneDriveProgressBarTotal += _progressIncrement;
+                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                if (manifest.bookmarks)
+                {
+                    await PutFileInFolder(tempSharedTransfers, ApplicationData.Current.LocalFolder, PersistantObjectsMarkersFileName, putInFolderId);
+                }
+                this.oneDriveProgressBarTotal += _progressIncrement;
+                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                if (manifest.highlighting)
+                {
+                    await PutFileInFolder(tempSharedTransfers, ApplicationData.Current.LocalFolder, PersistantObjectsHighlightFileName, putInFolderId);
+                }
+                this.oneDriveProgressBarTotal += _progressIncrement;
+                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+
+                if (manifest.bibles)
+                {
+                    await PutFolder(tempSharedTransfers, ApplicationData.Current.LocalFolder, "mods.d", putInFolderId);
+                    if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                    await PutFolder(tempSharedTransfers, ApplicationData.Current.LocalFolder, "modules", putInFolderId);
+                }
+                this.oneDriveProgressBarTotal = 95;
+                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+
+                await Hoot.File.WriteAllBytes(BackupManifestFileName, Encoding.UTF8.GetBytes(Serialize(manifest)));
+                await PutFileInFolder(tempSharedTransfers, ApplicationData.Current.LocalFolder, BackupManifestFileName, putInFolderId);
+            }
+            catch(Exception e)
+            {
+                progressCallback(100, 100, true, Uri.UnescapeDataString(e.Message), null, null);
+            }
+            progressCallback(100, 100, true, null, null, null);*/
         }
         private System.Threading.CancellationToken ctsUpload;
 
@@ -218,7 +314,7 @@ namespace CrossConnect
             dynamic result = operationResult.Result;
             return result.id;
         }
-        private async Task PutFolderSimulation(StorageFolder tempSharedTransfers, StorageFolder rootFolder, string folder, string idContainingFolder,List<FileTransferItem> fileTransferList)
+        private async Task PutFolderSimulation(StorageFolder tempSharedTransfers, StorageFolder rootFolder, string folder, string idContainingFolder, List<FileTransferItem> fileTransferList)
         {
             var idFolder = await CreateFolder(folder, idContainingFolder);
             var storageFolder = await rootFolder.GetFolderAsync(folder);
@@ -236,7 +332,25 @@ namespace CrossConnect
                 await PutFolderSimulation(tempSharedTransfers, storageFolder, containedFolder, idFolder, fileTransferList);
             }
         }
-
+        /*
+        private async Task PutFolder(StorageFolder tempSharedTransfers, StorageFolder rootFolder, string folder, string idContainingFolder)
+        {
+            var idFolder = await CreateFolder(folder, idContainingFolder);
+            var storageFolder = await rootFolder.GetFolderAsync(folder);
+            var files = await Hoot.File.GetFiles(folder, rootFolder);
+            foreach (var file in files)
+            {
+                await PutFileInFolder(tempSharedTransfers, storageFolder, file, idFolder);
+                this.oneDriveProgressBarTotal += _progressIncrement;
+                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+            }
+            var containedFolders = await Hoot.File.GetFolders(folder, rootFolder);
+            foreach (var containedFolder in containedFolders)
+            {
+                await PutFolder(tempSharedTransfers, storageFolder, containedFolder, idFolder);
+            }
+        }
+        */
         private async Task<string> PutFileInFolder(StorageFolder transferFolder, StorageFolder folder, string filename, string idFolder)
         {
             CheckPendingBackgroundOperations();
@@ -246,7 +360,7 @@ namespace CrossConnect
                 //var fileToDelete = await fileObj.CopyAsync(transferFolder, filename, NameCollisionOption.ReplaceExisting);
 
                 var progressHandler = new Progress<LiveOperationProgress>(
-                    (progress) => 
+                    (progress) =>
                     {
                         progressCallback(this.oneDriveProgressBarTotal, progress.ProgressPercentage, false, null, null, null);
                     });
@@ -325,7 +439,7 @@ namespace CrossConnect
                     progressCallback(this.oneDriveProgressBarTotal, progress.ProgressPercentage, false, null, null, null);
                 });
             this.ctsDownload = new System.Threading.CancellationTokenSource();
-            var fileObj = await localFolder.CreateFileAsync(filename,CreationCollisionOption.ReplaceExisting);
+            var fileObj = await localFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
             await liveClient.BackgroundDownloadAsync(remoteFileId + "/Content", fileObj, this.ctsDownload.Token, progressHandler);
             //await Hoot.File.Delete(filename, localFolder);
             //var fileObj = await transferFolder.GetFileAsync(filename);
@@ -363,6 +477,21 @@ namespace CrossConnect
             }
         }
 
+        /*private async Task GetRemoteFolder(StorageFolder tempSharedTransfers, StorageFolder rootFolder, string folder, string idRemoteFolder)
+        {
+            var storageFolder = await rootFolder.CreateFolderAsync(folder);
+            var files = await GetFolderContents(idRemoteFolder + "/files" );
+            foreach (var file in files[0])
+            {
+                await GetFileRemote(file.Value, file.Key, storageFolder, tempSharedTransfers);
+                this.oneDriveProgressBarTotal += _progressIncrement;
+                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+            }
+            foreach (var folderIdInRemote in files[1])
+            {
+                await GetRemoteFolder(tempSharedTransfers, storageFolder, folderIdInRemote.Key, folderIdInRemote.Value);
+            }
+        }*/
         private async Task GetRemoteFolderSimulation(StorageFolder tempSharedTransfers, StorageFolder rootFolder, string folder, string idRemoteFolder, List<FileTransferItem> fileTransferList)
         {
             var storageFolder = await rootFolder.CreateFolderAsync(folder);
@@ -409,8 +538,8 @@ namespace CrossConnect
                 progressCallback(10, 0, false, null, null, null);
                 if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
                 await Hoot.File.Delete(BackupManifestFileName);
-                List<ManifestCheck> manifestChecker = new List<ManifestCheck> 
-                { 
+                List<ManifestCheck> manifestChecker = new List<ManifestCheck>
+                {
                     new ManifestCheck(manifest.bibles, manifestSelected.bibles, "Bibles",null),
                     new ManifestCheck(manifest.settings, manifestSelected.settings, "Settings",PersistantObjectsDisplaySettingsFileName),
                     new ManifestCheck(manifest.highlighting, manifestSelected.highlighting, "Highlighting",PersistantObjectsHighlightFileName),
@@ -512,6 +641,127 @@ namespace CrossConnect
             }
 
             progressCallback(100, 100, true, null, null, null);
+
+            /*
+            this.progressCallback = progressCallback;
+            try
+            {
+                var tempSharedTransfers = await GetTransferFolder();
+                var rootContents = await GetRootContents(crossConnectFolder);
+                progressCallback(6, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                string remoteCrossConnectFolderId = rootContents[0][RootCrossConnectId];
+
+                string foundManifestFileId;
+                if (!rootContents[0].TryGetValue(BackupManifestFileName, out foundManifestFileId))
+                {
+                    progressCallback(100, 0, true, null, "There is no backup to restore", null);
+                    return;
+                }
+
+                string modsFolderId;
+                if(rootContents[1].TryGetValue("mods.d",out modsFolderId))
+                {
+                    var modsContents = await GetFolderContents(modsFolderId + "/files");
+                    _progressIncrement = 80.0 / ((double)modsContents[0].Count() * 7.0 + 5.0);
+                }
+                progressCallback(8, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                await GetFileRemote(foundManifestFileId, BackupManifestFileName, ApplicationData.Current.LocalFolder, tempSharedTransfers);
+                var manifestBytes = await Hoot.File.ReadAllBytes(BackupManifestFileName);
+                BackupManifest manifest = (BackupManifest)Deserialize(manifestBytes, typeof(BackupManifest));
+                progressCallback(10, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                await Hoot.File.Delete(BackupManifestFileName);
+                List<ManifestCheck> manifestChecker = new List<ManifestCheck> 
+                { 
+                    new ManifestCheck(manifest.bibles, manifestSelected.bibles, "Bibles"),
+                    new ManifestCheck(manifest.settings, manifestSelected.settings, "Settings"),
+                    new ManifestCheck(manifest.highlighting, manifestSelected.highlighting, "Highlighting"),
+                    new ManifestCheck(manifest.bookmarks, manifestSelected.bookmarks, "Bookmarks and custom notes"),
+                    new ManifestCheck(manifest.themes, manifestSelected.themes, "Themes"),
+                    new ManifestCheck(manifest.windowSetup, manifestSelected.windowSetup, "Window setup"),
+                };
+
+                foreach (var check in manifestChecker)
+                {
+                    if (check.RequestValue && !check.ManifestValue)
+                    {
+                        progressCallback(100, 0, true, null, check.Message, "Doesn't exist in OneDrive. Remove it and try again");
+                        return;
+                    }
+                }
+                this.oneDriveProgressBarTotal = 12;
+                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+
+                // Create tempFolder but delete it first.
+                if (await Hoot.File.Exists(TempImportFolderName))
+                {
+                    var deleteFolder = await ApplicationData.Current.LocalFolder.GetFolderAsync(TempImportFolderName);
+                    await deleteFolder.DeleteAsync();
+                }
+
+                var tempImportFolder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(TempImportFolderName);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+
+                // put all files
+                if (manifestSelected.settings)
+                {
+                    await GetFileRemote(rootContents[0][PersistantObjectsDisplaySettingsFileName], PersistantObjectsDisplaySettingsFileName, tempImportFolder, tempSharedTransfers);
+                }
+                this.oneDriveProgressBarTotal += _progressIncrement;
+                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                if (manifestSelected.themes)
+                {
+                    await GetFileRemote(rootContents[0][PersistantObjectsThemesFileName], PersistantObjectsThemesFileName, tempImportFolder, tempSharedTransfers);
+                }
+                this.oneDriveProgressBarTotal += _progressIncrement;
+                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                if (manifestSelected.windowSetup)
+                {
+                    await GetFileRemote(rootContents[0][PersistantObjectsWindowsFileName], PersistantObjectsWindowsFileName, tempImportFolder, tempSharedTransfers);
+                }
+                this.oneDriveProgressBarTotal += _progressIncrement;
+                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                if (manifestSelected.bookmarks)
+                {
+                    await GetFileRemote(rootContents[0][PersistantObjectsMarkersFileName], PersistantObjectsMarkersFileName, tempImportFolder, tempSharedTransfers);
+                }
+                this.oneDriveProgressBarTotal += _progressIncrement;
+                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                if (manifestSelected.highlighting)
+                {
+                    await GetFileRemote(rootContents[0][PersistantObjectsHighlightFileName], PersistantObjectsHighlightFileName, tempImportFolder, tempSharedTransfers);
+                }
+                this.oneDriveProgressBarTotal += _progressIncrement;
+                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+
+                if (manifestSelected.bibles && rootContents[1].ContainsKey("mods.d") && rootContents[1].ContainsKey("modules"))
+                {
+                    await GetRemoteFolder(tempSharedTransfers, tempImportFolder, "mods.d", rootContents[1]["mods.d"]);
+                    if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+                    await GetRemoteFolder(tempSharedTransfers, tempImportFolder, "modules", rootContents[1]["modules"]);
+                }
+                this.oneDriveProgressBarTotal = 95;
+                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                if (IsCanceled) { progressCallback(100, 100, true, null, null, null); return; };
+
+                // move the temporary folder to the actual folder
+                await MoveFolder(tempImportFolder, ApplicationData.Current.LocalFolder);
+
+            }
+            catch (Exception ee)
+            {
+                progressCallback(100, 100, true, Uri.UnescapeDataString(ee.Message), null, null);
+            }
+
+            progressCallback(100, 100, true, null, null, null);*/
         }
 
         public static async Task MoveFolder(StorageFolder fromFolder, StorageFolder toFolder)
@@ -525,9 +775,9 @@ namespace CrossConnect
             var folders = await fromFolder.GetFoldersAsync();
             foreach (var folder in folders)
             {
-                if(await Hoot.File.Exists(toFolder, folder.Name))
+                if (await Hoot.File.Exists(toFolder, folder.Name))
                 {
-                    await ( await toFolder.GetFolderAsync(folder.Name)).DeleteAsync();
+                    await (await toFolder.GetFolderAsync(folder.Name)).DeleteAsync();
                 }
 
                 var childFolder = await toFolder.CreateFolderAsync(folder.Name);
@@ -550,7 +800,7 @@ namespace CrossConnect
         {
             using (MemoryStream memoryStream = new MemoryStream(xml))
             {
-                XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(memoryStream,XmlDictionaryReaderQuotas.Max);
+                XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(memoryStream, XmlDictionaryReaderQuotas.Max);
                 DataContractSerializer serializer = new DataContractSerializer(toType);
                 return serializer.ReadObject(reader);
             }
@@ -587,10 +837,10 @@ namespace CrossConnect
         {
             [DataMember]
             public bool bibles;
-            
+
             [DataMember]
             public bool settings;
-            
+
             [DataMember]
             public bool bookmarks;
 
@@ -606,6 +856,5 @@ namespace CrossConnect
             [DataMember]
             public bool IsWindowsPhone;
         }
-        */
     }
 }
