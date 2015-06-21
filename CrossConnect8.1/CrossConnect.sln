@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossConnect", "CrossConnect\CrossConnect.csproj", "{01DE01EF-2853-4291-810E-EBEA44945D3F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sword", "Sword\Sword.csproj", "{8F9CE9B3-1EC9-4285-984F-6404F1085428}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationsExtensions", "NotificationsExtensions\NotificationsExtensions.csproj", "{6E87464B-B064-40CA-8161-7C18C337ADFF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hoot", "Hoot\Hoot.csproj", "{74C2DFDB-64C9-4B14-8EA3-42AA2544F362}"
 EndProject
@@ -95,30 +93,6 @@ Global
 		{8F9CE9B3-1EC9-4285-984F-6404F1085428}.Release|x64.Build.0 = Release|x64
 		{8F9CE9B3-1EC9-4285-984F-6404F1085428}.Release|x86.ActiveCfg = Release|x86
 		{8F9CE9B3-1EC9-4285-984F-6404F1085428}.Release|x86.Build.0 = Release|x86
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Debug|ARM.ActiveCfg = Debug|ARM
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Debug|ARM.Build.0 = Debug|ARM
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Debug|Win32.ActiveCfg = Debug|Win32
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Debug|Win32.Build.0 = Debug|Win32
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Debug|x64.ActiveCfg = Debug|x64
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Debug|x64.Build.0 = Debug|x64
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Debug|x86.ActiveCfg = Debug|x86
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Debug|x86.Build.0 = Debug|x86
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Release|ARM.ActiveCfg = Release|ARM
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Release|ARM.Build.0 = Release|ARM
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Release|Mixed Platforms.Build.0 = Release|x86
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Release|Win32.ActiveCfg = Release|Win32
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Release|Win32.Build.0 = Release|Win32
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Release|x64.ActiveCfg = Release|x64
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Release|x64.Build.0 = Release|x64
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Release|x86.ActiveCfg = Release|x86
-		{6E87464B-B064-40CA-8161-7C18C337ADFF}.Release|x86.Build.0 = Release|x86
 		{74C2DFDB-64C9-4B14-8EA3-42AA2544F362}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{74C2DFDB-64C9-4B14-8EA3-42AA2544F362}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74C2DFDB-64C9-4B14-8EA3-42AA2544F362}.Debug|ARM.ActiveCfg = Debug|ARM

@@ -47,6 +47,8 @@ namespace CrossConnect
     using NotificationsExtensions.TileContent;
     using Sword.versification;
     using Sword;
+    using Windows.Data.Xml.Dom;
+    using System.Xml.Linq;
 
     /// <summary>
     ///     Provides application-specific behavior to supplement the default Application class.
@@ -217,27 +219,33 @@ namespace CrossConnect
 
             ITiledWindow foundWindowToUse = null;
             ITiledWindow firstBibleWindowToUse = null;
-            foreach (var window in OpenWindows)
+            try
             {
-                if (window.State.WindowType == WindowType.WindowBible)
+                foreach (var window in OpenWindows)
                 {
-                    if (firstBibleWindowToUse == null)
+                    if (window.State.WindowType == WindowType.WindowBible)
                     {
-                        firstBibleWindowToUse = window;
-                    }
+                        if (firstBibleWindowToUse == null)
+                        {
+                            firstBibleWindowToUse = window;
+                        }
 
-                    if (window.State.Source.GetLanguage().Substring(0,2).ToLower().Equals(Translations.IsoLanguageCode.Substring(0,2).ToLower()))
-                    {
-                        foundWindowToUse = window;
-                        break;
+                        if (window.State.Source.GetLanguage().Substring(0, 2).ToLower().Equals(Translations.IsoLanguageCode.Substring(0, 2).ToLower()))
+                        {
+                            foundWindowToUse = window;
+                            break;
+                        }
                     }
-                } 
+                }
             }
+            catch (Exception)
+            {
 
-            if(foundWindowToUse == null)
+            }
+            if (foundWindowToUse == null)
             {
                 foundWindowToUse = firstBibleWindowToUse;
-                if(foundWindowToUse == null)
+                if (foundWindowToUse == null)
                 {
                     return;
                 }
@@ -310,36 +318,67 @@ namespace CrossConnect
                 {
                     verseText = await foundWindowToUse.State.Source.GetVerseTextOnly(App.DisplaySettings, place.BookShortName, place.ChapterNum, place.VerseNum);
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     //this text is not in that bible.
                     continue;
                 }
                 titlesOnly += title;
-                textsWithTitles +=
-                    verseText.Replace("<p>", string.Empty)
+                var cleanVerse = verseText.Replace("<p>", string.Empty)
                              .Replace("</p>", string.Empty)
                              .Replace("<br />", string.Empty)
-                             .Replace("\n", " ") + " " + title;
-
-                // create the wide template
-                var tileContent = TileContentFactory.CreateTileWidePeekImage04();
-                tileContent.TextBodyWrap.Text = textsWithTitles;
-                tileContent.Image.Src = "ms-appx:///Assets/splash310x150.png";
-                tileContent.Image.Alt = "well what do you know";
+                             .Replace("\n", " ");
+                textsWithTitles += cleanVerse + " " + title;
 
                 // Users can resize tiles to square or wide.
                 // create the square template and attach it to the wide template
-                ITileSquarePeekImageAndText04 squareContent = TileContentFactory.CreateTileSquarePeekImageAndText04();
+                var squareContent = TileContentFactory.CreateTileSquare150x150Text04();
                 squareContent.TextBodyWrap.Text = textsWithTitles;
-                squareContent.Image.Src = "ms-appx:///Assets/splash150x150.png";
-                squareContent.Image.Alt = item.Key + "well what do you know";
-                tileContent.SquareContent = squareContent;
+                //squareContent.Image.Src = "ms-appx:///Assets/splash150x150.png";
+                //squareContent.Image.Alt = item.Key + "well what do you know";
+
+                // create the wide template
+                var tileContent = TileContentFactory.CreateTileWide310x150Text04();
+                tileContent.TextBodyWrap.Text = textsWithTitles;
+                //tileContent.Image.Src = "ms-appx:///Assets/splash310x150.png";
+                //tileContent.Image.Alt = "well what do you know";
+                tileContent.Square150x150Content = squareContent;
+
+                // Users can resize tiles to square or wide.
+                // create the square template and attach it to the wide template
+                var squareBigListContent = TileContentFactory.CreateTileSquare310x310ImageAndTextOverlay02();
+                squareBigListContent.TextBodyWrap.Text = cleanVerse;
+                squareBigListContent.TextHeadingWrap.Text = title;
+                squareBigListContent.Image.Src = "ms-appx:///Assets/square310x310.png";
+                squareBigListContent.Image.Alt = item.Key + "well what do you know";
+                squareBigListContent.Wide310x150Content = tileContent;
+
 
                 // send the notification
-                updater.Update(tileContent.CreateNotification());
+                updater.Update(new TileNotification(ToXmlDocument(squareBigListContent.GetXml())));
 
             }
+        }
+        private static XmlDocument ToXmlDocument(XDocument xDocument)
+        {
+            var xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(xDocument.ToString());
+            return xmlDocument;
+            /*
+            using (var reader = xDocument.CreateReader())
+            {
+                xmlDocument.Load(reader);
+            }
+            var xDeclaration = xDocument.Declaration;
+            if (xDeclaration != null)
+            {
+                var xmlDeclaration = xmlDocument.CreateXmlDeclaration(
+                    xDeclaration.Version,
+                    xDeclaration.Encoding,
+                    xDeclaration.Standalone);
+                xmlDocument.InsertBefore(xmlDeclaration, xmlDocument.FirstChild);
+            }
+            return xmlDocument;*/
         }
 
         public static async Task AddWindow(
