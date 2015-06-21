@@ -47,6 +47,10 @@ namespace CrossConnect
     using Windows.Storage;
     using Sword.versification;
     using Sword;
+    using Windows.UI.Notifications;
+    //using NotificationsExtensions.TileContent;
+    using Windows.Data.Xml.Dom;
+    using System.Xml.Linq;
 
     #region Enumerations
 
@@ -257,7 +261,7 @@ namespace CrossConnect
                     }
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
 
             }
@@ -273,6 +277,7 @@ namespace CrossConnect
             }
 
             if (IsClosingDown) return;
+
             var random = new Random();
             string verseText = string.Empty;
             string title = string.Empty;
@@ -298,7 +303,7 @@ namespace CrossConnect
             {
                 return;
             }
-
+            
             foreach (var item in ShellTile.ActiveTiles)
             {
                 FlipTileData TileData = new FlipTileData()
@@ -316,8 +321,29 @@ namespace CrossConnect
                 };
                 item.Update(TileData);
             }
-        }
 
+        }
+        private static XmlDocument ToXmlDocument(XDocument xDocument)
+        {
+            var xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(xDocument.ToString());
+            return xmlDocument;
+            /*
+            using (var reader = xDocument.CreateReader())
+            {
+                xmlDocument.Load(reader);
+            }
+            var xDeclaration = xDocument.Declaration;
+            if (xDeclaration != null)
+            {
+                var xmlDeclaration = xmlDocument.CreateXmlDeclaration(
+                    xDeclaration.Version,
+                    xDeclaration.Encoding,
+                    xDeclaration.Standalone);
+                xmlDocument.InsertBefore(xmlDeclaration, xmlDocument.FirstChild);
+            }
+            return xmlDocument;*/
+        }
         public static async void AddMediaWindow(AudioPlayer.MediaInfo info)
         {
             object openWindowIndex;
@@ -406,7 +432,7 @@ namespace CrossConnect
                     await dataSource.Initialize();
                     await nextWindow2.Initialize(bibleToLoad, bibleDescription, typeOfWindow, initialData, dataSource);
                 }
-                else 
+                else
                 {
                     var indexerSource = ((DictionaryRawIndexReader)nextWindow.State.Source);
                     var dataSource = new DictionaryRawDefReader(indexerSource.Serial.Path, indexerSource.Serial.Iso2DigitLangCode, indexerSource.Serial.IsIsoEncoding, indexerSource.WindowMatchingKey);
@@ -485,7 +511,7 @@ namespace CrossConnect
                 TimerForSavingWindows.Stop();
                 TimerForSavingWindows = null;
             }
-            if(TimerForNotifications != null)
+            if (TimerForNotifications != null)
             {
                 TimerForNotifications.Stop();
                 TimerForNotifications = null;
@@ -595,7 +621,7 @@ namespace CrossConnect
                     DailyPlan.PlanTextSize = 15;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
 
             }
@@ -662,7 +688,7 @@ namespace CrossConnect
                                     nextWindow.State.IsResume = true;
                                 }
 
-                                switch(state.WindowType)
+                                switch (state.WindowType)
                                 {
                                     case WindowType.WindowHistory:
                                         App.HistoryChanged += ((BiblePlaceMarkReader)state.Source).BiblePlaceMarkSourceChanged;
@@ -687,7 +713,7 @@ namespace CrossConnect
                         break;
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
 
                 }
@@ -806,7 +832,7 @@ namespace CrossConnect
             try
             {
                 if (IsClosingDown == true) return true;
- 
+
                 // make sure some important directories exist.
                 IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
                 if (!root.DirectoryExists(WebDirIsolated))
@@ -872,7 +898,7 @@ namespace CrossConnect
                 try
                 {
                     stream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(filename);
-                    
+
                     // Deserialize the Session State
                     var serializer = new DataContractSerializer(
                         typeof(Dictionary<string, object>), new[] { typeof(string) });
@@ -880,8 +906,8 @@ namespace CrossConnect
                     await loadFunction(objectsToLoad);
                     isLoaded = true;
                     stream.Close();
-                    stream=null;
-                    
+                    stream = null;
+
                 }
                 catch (Exception e)
                 {
@@ -900,13 +926,13 @@ namespace CrossConnect
                     //}
                     // debugging stop
 
-                    if(stream!=null)
+                    if (stream != null)
                     {
                         try
                         {
                             stream.Close();
                         }
-                        catch(Exception )
+                        catch (Exception)
                         {
 
                         }
@@ -949,7 +975,7 @@ namespace CrossConnect
             }
             else
             {
-                OnTimerForSavingWindowsTick(null,null);
+                OnTimerForSavingWindowsTick(null, null);
             }
 
             TimerForSavingWindows = new DispatcherTimer();
@@ -1013,7 +1039,7 @@ namespace CrossConnect
                         windowCounter++;
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
 
                 }
@@ -1049,7 +1075,7 @@ namespace CrossConnect
 
                 IsolatedStorageSettings.ApplicationSettings["CurrentScreen"] = currentScreen;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
 
             }

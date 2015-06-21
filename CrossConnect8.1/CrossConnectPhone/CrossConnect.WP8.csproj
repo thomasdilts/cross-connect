@@ -116,7 +116,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libraries\Coding4Fun.Phone.Site.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Live, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Live">
+      <HintPath>..\packages\LiveSDK.5.6.2\lib\WindowsPhone81\Microsoft.Live.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Live.Controls">
+      <HintPath>..\packages\LiveSDK.5.6.2\lib\WindowsPhone81\Microsoft.Live.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libraries\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
@@ -381,6 +386,7 @@
     <EmbeddedResource Include="Resources\AppResources.zh-CN.resx" />
     <EmbeddedResource Include="Resources\AppResources.zh-TW.resx" />
     <None Include="app.config" />
+    <None Include="Fonts\LiveSymbol.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml">
       <SubType>Designer</SubType>
