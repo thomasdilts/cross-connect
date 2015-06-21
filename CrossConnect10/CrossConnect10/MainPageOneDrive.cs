@@ -41,10 +41,10 @@ namespace CrossConnect
 
         private void UpdateUi()
         {
-            oneDriveContentPanel.Visibility = backupRestoreObj.IsConnected && !_isTransfering ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
-            oneDriveConnectPanel.Visibility = backupRestoreObj.IsConnected || _isTransfering ? Windows.UI.Xaml.Visibility.Collapsed : Windows.UI.Xaml.Visibility.Visible;
-            oneDriveButConnect.Visibility = backupRestoreObj.IsConnected ? Windows.UI.Xaml.Visibility.Collapsed : Windows.UI.Xaml.Visibility.Visible;
-            oneDriveProgressBar.Visibility = backupRestoreObj.IsConnected ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
+            oneDriveContentPanel.Visibility = !_isTransfering ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
+            //oneDriveConnectPanel.Visibility = backupRestoreObj.IsConnected || _isTransfering ? Windows.UI.Xaml.Visibility.Collapsed : Windows.UI.Xaml.Visibility.Visible;
+            //oneDriveButConnect.Visibility = backupRestoreObj.IsConnected ? Windows.UI.Xaml.Visibility.Collapsed : Windows.UI.Xaml.Visibility.Visible;
+            //oneDriveProgressBar.Visibility = backupRestoreObj.IsConnected ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
             oneDriveConnectPanelTransfer.Visibility = _isTransfering ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
         }
         private void SetupOneDrivePage()
@@ -64,8 +64,8 @@ namespace CrossConnect
             oneDriveWindowSetup.Header = Translations.Translate("Window setup");
             this.oneDriveCaptionPutInFolder.Text = Translations.Translate("Folder on OneDrive");
             oneDriveButCancel.Content = Translations.Translate("Cancel");
-            this.oneDriveButConnect.Content = Translations.Translate("Connect to OneDrive");
-            this.oneDriveButLogout.Content = Translations.Translate("Logout from OneDrive");
+            //this.oneDriveButConnect.Content = Translations.Translate("Connect to OneDrive");
+            //this.oneDriveButLogout.Content = Translations.Translate("Logout from OneDrive");
 
             oneDrivePutInFolder.Text = App.DisplaySettings.OneDriveFolder;
         }
@@ -76,11 +76,11 @@ namespace CrossConnect
                 this.OneDrivePopup, this.MainPaneOneDrivePopup, this.scrollViewerOneDrive, this.TopAppBar1, this.BottomAppBar);
             this.OneDrivePopup.IsOpen = true;
         }
-
+        /*
         private async void ButConnectClick(object sender, RoutedEventArgs e)
         {
-            oneDriveButConnect.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            oneDriveProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            //oneDriveButConnect.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            //oneDriveProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
             var message = await backupRestoreObj.AuthenticateUser();
             if (!string.IsNullOrEmpty(message))
             {
@@ -88,10 +88,10 @@ namespace CrossConnect
                 await dialog.ShowAsync();
             }
             UpdateUi();
-            this.oneDriveButLogout.Visibility = backupRestoreObj.CanLogOut ? Visibility.Visible : Visibility.Collapsed;
+            //this.oneDriveButLogout.Visibility = backupRestoreObj.CanLogOut ? Visibility.Visible : Visibility.Collapsed;
             OneDrivePopup.IsOpen = true;
         }
-
+        */
         private void oneDriveButCancelClick(object sender, RoutedEventArgs e)
         {
             backupRestoreObj.IsCanceled = true;
@@ -158,7 +158,7 @@ namespace CrossConnect
                     highlighting = (bool)this.oneDriveHighlighting.IsOn,
                     windowSetup = (bool)this.oneDriveWindowSetup.IsOn,
                     IsWindowsPhone = false
-                }, this.oneDrivePutInFolder.Text, BackupRestoreProgress);
+                }, this.oneDrivePutInFolder.Text, BackupRestoreProgress, Translations.Translate("Backup") + DateTime.Now.ToString("yyyy-MM-dd.hh.mm"));
         }
 
         private void butImport_Click(object sender, RoutedEventArgs e)
@@ -180,14 +180,14 @@ namespace CrossConnect
                     IsWindowsPhone = true
                 }, this.oneDrivePutInFolder.Text, BackupRestoreProgress);
         }
-
+        /*
         private void oneDriveButLogout_Click(object sender, RoutedEventArgs e)
         {
             backupRestoreObj.LogOut();
             _isTransfering = false;
             UpdateUi();
             OneDrivePopup.IsOpen = false;
-        }
+        }*/
         private void OneDrivePopup_OnClosed(object sender, object e)
         {
             App.ShowUserInterface(true);

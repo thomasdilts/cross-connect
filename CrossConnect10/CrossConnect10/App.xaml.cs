@@ -903,10 +903,12 @@ namespace CrossConnect
         public static async Task SavePersistantWindows()
         {
             var objectsToSave = new Dictionary<string, object>();
-            for (int i = 0; i < OpenWindows.Count(); i++)
+            try
             {
-                var types = new[]
-                                {
+                for (int i = 0; i < OpenWindows.Count(); i++)
+                {
+                    var types = new[]
+                                    {
                                     typeof(SerializableWindowState), typeof(BibleZtextReader.VersePos),
                                     typeof(BibleZtextReader.ChapterPos), typeof(BibleZtextReader.BookPos),
                                     typeof(BibleZtextReader), typeof(BibleNoteReader), typeof(BibleZtextReaderSerialData),
@@ -917,31 +919,36 @@ namespace CrossConnect
                                     typeof(DictionaryRawDefReader),typeof(DictionaryRawIndexReader),typeof(DictionaryRaw4IndexReader),typeof(DictionaryZldDefReader),typeof(DictionaryZldIndexReader),
                                     typeof(RawGenTextPlaceMarker), typeof(RawGenSearchReader)
                                 };
-                var ser = new DataContractSerializer(typeof(SerializableWindowState), types);
-                using (var sw = new StringWriter())
-                {
-                    var settings = new XmlWriterSettings
+                    var ser = new DataContractSerializer(typeof(SerializableWindowState), types);
+                    using (var sw = new StringWriter())
                     {
-                        OmitXmlDeclaration = true,
-                        Indent = true,
-                        NamespaceHandling = NamespaceHandling.OmitDuplicates
-                    };
-                    using (XmlWriter writer = XmlWriter.Create(sw, settings))
-                    {
-                        if (OpenWindows[i].State != null && OpenWindows[i].State.Source != null)
+                        var settings = new XmlWriterSettings
                         {
-                            OpenWindows[i].State.Source.SerialSave();
-                            if (OpenWindows[i].State.WindowType != WindowType.WindowMediaPlayer)
+                            OmitXmlDeclaration = true,
+                            Indent = true,
+                            NamespaceHandling = NamespaceHandling.OmitDuplicates
+                        };
+                        using (XmlWriter writer = XmlWriter.Create(sw, settings))
+                        {
+                            if (OpenWindows[i].State != null && OpenWindows[i].State.Source != null)
                             {
-                                // change the windows view to this one
-                                OpenWindows[i].State.VSchrollPosition = await ((BrowserTitledWindow)OpenWindows[i]).GetVScroll();
+                                OpenWindows[i].State.Source.SerialSave();
+                                if (OpenWindows[i].State.WindowType != WindowType.WindowMediaPlayer)
+                                {
+                                    // change the windows view to this one
+                                    OpenWindows[i].State.VSchrollPosition = await ((BrowserTitledWindow)OpenWindows[i]).GetVScroll();
+                                }
                             }
+                            ser.WriteObject(writer, OpenWindows[i].State);
                         }
-                        ser.WriteObject(writer, OpenWindows[i].State);
-                    }
 
-                    objectsToSave.Add("Windows" + i, sw.ToString());
+                        objectsToSave.Add("Windows" + i, sw.ToString());
+                    }
                 }
+            }
+            catch (Exception ee)
+            {
+                // we can get here if we delete a window while executing this function
             }
 
             var types3 = new[] { typeof(SerializableDailyPlan) };
