@@ -24,10 +24,11 @@
         </Extension>
       </Extensions>
       <m2:VisualElements DisplayName="Bible Reader Cross Connect" Description="Bible Reader Cross Connect based on the crosswire.org bible database" BackgroundColor="#0000fe" ForegroundText="light" Square150x150Logo="Assets\splash150x150.png" Square30x30Logo="Assets\splash30x30.png">
-        <m2:DefaultTile ShortName="CrossConnect" Wide310x150Logo="Assets\splash310x150.png">
+        <m2:DefaultTile ShortName="CrossConnect" Wide310x150Logo="Assets\splash310x150.png" Square310x310Logo="Assets\square310x310.png" Square70x70Logo="Assets\square70x70.png">
           <m2:ShowNameOnTiles>
             <m2:ShowOn Tile="square150x150Logo" />
             <m2:ShowOn Tile="wide310x150Logo" />
+            <m2:ShowOn Tile="square310x310Logo" />
           </m2:ShowNameOnTiles>
         </m2:DefaultTile>
         <m2:LockScreen Notification="badge" BadgeLogo="Assets\badge.png" />

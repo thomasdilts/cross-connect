@@ -115,10 +115,6 @@
       <Project>{74c2dfdb-64c9-4b14-8ea3-42aa2544f362}</Project>
       <Name>Hoot</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NotificationsExtensions\NotificationsExtensions.csproj">
-      <Project>{6e87464b-b064-40ca-8161-7c18c337adff}</Project>
-      <Name>NotificationsExtensions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Sword\Sword.csproj">
       <Project>{8f9ce9b3-1ec9-4285-984f-6404f1085428}</Project>
       <Name>Sword</Name>
@@ -271,6 +267,10 @@
     <PRIResource Include="Locale\ta\resource.resw" />
     <PRIResource Include="Locale\te\resource.resw" />
     <PRIResource Include="Locale\zu\resource.resw" />
+    <Content Include="Assets\square310x310.scale-100.png" />
+    <Content Include="Assets\square70x70.scale-100.png" />
+    <Content Include="Assets\square71x71.scale-100.png" />
+    <Content Include="Fonts\LiveSymbol.ttf" />
     <None Include="Package.StoreAssociation.xml" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -419,9 +419,13 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <SDKReference Include="LiveSDKXAML, Version=5.6">
-      <Name>Live SDK</Name>
-    </SDKReference>
+    <Reference Include="Microsoft.Live">
+      <HintPath>..\packages\LiveSDK.5.6.2\WindowsXAML\Microsoft.Live.dll</HintPath>
+    </Reference>
+    <Reference Include="NotificationsExtensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c936aba0ac6438e9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NotificationsExtensions.Portable.1.0.3\lib\NotificationsExtensions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
