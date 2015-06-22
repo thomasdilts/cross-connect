@@ -284,10 +284,10 @@ namespace NotificationsExtensions
     /// <summary>
     /// Exception returned when invalid notification content is provided.
     /// </summary>
-    internal sealed class NotificationContentValidationException : COMException
+    internal sealed class NotificationContentValidationException : Exception
     {
         public NotificationContentValidationException(string message)
-            : base(message, unchecked((int)0x80070057))
+            : base(message/*, unchecked((int)0x80070057)*/)
         {
         }
     }

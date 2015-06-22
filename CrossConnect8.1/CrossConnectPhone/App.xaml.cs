@@ -48,7 +48,7 @@ namespace CrossConnect
     using Sword.versification;
     using Sword;
     using Windows.UI.Notifications;
-    using NotificationsExtensions.TileContent;
+    //using NotificationsExtensions.TileContent;
     using Windows.Data.Xml.Dom;
     using System.Xml.Linq;
 
@@ -261,7 +261,7 @@ namespace CrossConnect
                     }
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
 
             }
@@ -278,11 +278,6 @@ namespace CrossConnect
 
             if (IsClosingDown) return;
 
-
-
-
-
-            /*
             var random = new Random();
             string verseText = string.Empty;
             string title = string.Empty;
@@ -325,115 +320,8 @@ namespace CrossConnect
                     WideBackBackgroundImage = new Uri("sidecrossbigbut691x336.png", UriKind.Relative),
                 };
                 item.Update(TileData);
-            }*/
-
-            //TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(false);
-            var updater = TileUpdateManager.CreateTileUpdaterForApplication();
-            //clear the queue.  It might be cleared anyway.
-            updater.Clear();
-
-            // Enable the notification queue - this only needs to be called once in the lifetime of your app
-            updater.EnableNotificationQueue(true);
-
-            //Try to find the best possible bible verses
-            var bibleVerses = new Dictionary<string, BiblePlaceMarker>();
-
-            var random = new Random();
-
-            //Try to get one from bookmarks
-            if (PlaceMarkers.Bookmarks.Any())
-            {
-                var count = PlaceMarkers.Bookmarks.Count();
-                var index = random.Next(0, count - 1);
-                bibleVerses[PlaceMarkers.Bookmarks[index].ToString()] = PlaceMarkers.Bookmarks[index];
-
-                //try to get another one from bookmarks if there is a lot
-                if (count > 3)
-                {
-                    do
-                    {
-                        index = random.Next(0, count - 1);
-                    } while (bibleVerses.ContainsKey(PlaceMarkers.Bookmarks[index].ToString()));
-                    bibleVerses[PlaceMarkers.Bookmarks[index].ToString()] = PlaceMarkers.Bookmarks[index];
-                }
             }
-            else
-            {
-                //else, try to get one from history
-                if (PlaceMarkers.History.Any())
-                {
-                    var count = PlaceMarkers.History.Count();
-                    var index = random.Next(0, count - 1);
-                    bibleVerses[PlaceMarkers.History[index].ToString()] = PlaceMarkers.History[index];
-                }
-            }
-            if (IsClosingDown) return;
-            var count2 = bibleVerses.Count();
-            //get the rest from the presaved intresting verses.
-            for (int i = count2; i < 5; i++)
-            {
-                var staticcount = StaticBibleVerses.Markers.Count;
-                int index;
-                do
-                {
-                    index = random.Next(0, staticcount - 1);
-                } while (bibleVerses.ContainsKey(StaticBibleVerses.Markers[index].ToString()));
-                bibleVerses[StaticBibleVerses.Markers[index].ToString()] = StaticBibleVerses.Markers[index];
-            }
-            if (IsClosingDown) return;
-            //
-            foreach (var item in bibleVerses)
-            {
-                string titlesOnly = string.Empty;
-                string textsWithTitles = string.Empty;
-                BiblePlaceMarker place = item.Value;
-                string title = ((BibleZtextReader)foundWindowToUse.State.Source).BookNames(Translations.IsoLanguageCode).GetShortName(place.BookShortName) + " " + (place.ChapterNum + 1) + ":" + (place.VerseNum + 1) + " - "
-                               + foundWindowToUse.State.BibleDescription;
-                string verseText = string.Empty;
-                try
-                {
-                    verseText = await foundWindowToUse.State.Source.GetVerseTextOnly(App.DisplaySettings, place.BookShortName, place.ChapterNum, place.VerseNum);
-                }
-                catch (Exception)
-                {
-                    //this text is not in that bible.
-                    continue;
-                }
-                titlesOnly += title;
-                var cleanVerse = verseText.Replace("<p>", string.Empty)
-                             .Replace("</p>", string.Empty)
-                             .Replace("<br />", string.Empty)
-                             .Replace("\n", " ");
-                textsWithTitles += cleanVerse + " " + title;
 
-                // Users can resize tiles to square or wide.
-                // create the square template and attach it to the wide template
-                var squareContent = TileContentFactory.CreateTileSquare150x150Text04();
-                squareContent.TextBodyWrap.Text = textsWithTitles;
-                //squareContent.Image.Src = "ms-appx:///Assets/splash150x150.png";
-                //squareContent.Image.Alt = item.Key + "well what do you know";
-
-                // create the wide template
-                var tileContent = TileContentFactory.CreateTileWide310x150Text04();
-                tileContent.TextBodyWrap.Text = textsWithTitles;
-                //tileContent.Image.Src = "ms-appx:///Assets/splash310x150.png";
-                //tileContent.Image.Alt = "well what do you know";
-                tileContent.Square150x150Content = squareContent;
-                /*
-                // Users can resize tiles to square or wide.
-                // create the square template and attach it to the wide template
-                var squareBigListContent = TileContentFactory.CreateTileSquare310x310ImageAndTextOverlay02();
-                squareBigListContent.TextBodyWrap.Text = cleanVerse;
-                squareBigListContent.TextHeadingWrap.Text = title;
-                squareBigListContent.Image.Src = "ms-appx:///Assets/square310x310.png";
-                squareBigListContent.Image.Alt = item.Key + "well what do you know";
-                squareBigListContent.Wide310x150Content = tileContent;
-                */
-
-                // send the notification
-                updater.Update(new TileNotification(ToXmlDocument(tileContent.GetXml())));
-                if (IsClosingDown) return;
-            }
         }
         private static XmlDocument ToXmlDocument(XDocument xDocument)
         {
@@ -544,7 +432,7 @@ namespace CrossConnect
                     await dataSource.Initialize();
                     await nextWindow2.Initialize(bibleToLoad, bibleDescription, typeOfWindow, initialData, dataSource);
                 }
-                else 
+                else
                 {
                     var indexerSource = ((DictionaryRawIndexReader)nextWindow.State.Source);
                     var dataSource = new DictionaryRawDefReader(indexerSource.Serial.Path, indexerSource.Serial.Iso2DigitLangCode, indexerSource.Serial.IsIsoEncoding, indexerSource.WindowMatchingKey);
@@ -623,7 +511,7 @@ namespace CrossConnect
                 TimerForSavingWindows.Stop();
                 TimerForSavingWindows = null;
             }
-            if(TimerForNotifications != null)
+            if (TimerForNotifications != null)
             {
                 TimerForNotifications.Stop();
                 TimerForNotifications = null;
@@ -733,7 +621,7 @@ namespace CrossConnect
                     DailyPlan.PlanTextSize = 15;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
 
             }
@@ -800,7 +688,7 @@ namespace CrossConnect
                                     nextWindow.State.IsResume = true;
                                 }
 
-                                switch(state.WindowType)
+                                switch (state.WindowType)
                                 {
                                     case WindowType.WindowHistory:
                                         App.HistoryChanged += ((BiblePlaceMarkReader)state.Source).BiblePlaceMarkSourceChanged;
@@ -825,7 +713,7 @@ namespace CrossConnect
                         break;
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
 
                 }
@@ -944,7 +832,7 @@ namespace CrossConnect
             try
             {
                 if (IsClosingDown == true) return true;
- 
+
                 // make sure some important directories exist.
                 IsolatedStorageFile root = IsolatedStorageFile.GetUserStoreForApplication();
                 if (!root.DirectoryExists(WebDirIsolated))
@@ -1010,7 +898,7 @@ namespace CrossConnect
                 try
                 {
                     stream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync(filename);
-                    
+
                     // Deserialize the Session State
                     var serializer = new DataContractSerializer(
                         typeof(Dictionary<string, object>), new[] { typeof(string) });
@@ -1018,8 +906,8 @@ namespace CrossConnect
                     await loadFunction(objectsToLoad);
                     isLoaded = true;
                     stream.Close();
-                    stream=null;
-                    
+                    stream = null;
+
                 }
                 catch (Exception e)
                 {
@@ -1038,13 +926,13 @@ namespace CrossConnect
                     //}
                     // debugging stop
 
-                    if(stream!=null)
+                    if (stream != null)
                     {
                         try
                         {
                             stream.Close();
                         }
-                        catch(Exception )
+                        catch (Exception)
                         {
 
                         }
@@ -1087,7 +975,7 @@ namespace CrossConnect
             }
             else
             {
-                OnTimerForSavingWindowsTick(null,null);
+                OnTimerForSavingWindowsTick(null, null);
             }
 
             TimerForSavingWindows = new DispatcherTimer();
@@ -1151,7 +1039,7 @@ namespace CrossConnect
                         windowCounter++;
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
 
                 }
@@ -1187,7 +1075,7 @@ namespace CrossConnect
 
                 IsolatedStorageSettings.ApplicationSettings["CurrentScreen"] = currentScreen;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
 
             }
