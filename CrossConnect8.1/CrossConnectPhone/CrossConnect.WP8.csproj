@@ -126,9 +126,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libraries\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
-    <Reference Include="NotificationsExtensions">
-      <HintPath>..\packages\NotificationsExtensions.Portable.1.0.3\lib\NotificationsExtensions.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddNote.xaml.cs">
