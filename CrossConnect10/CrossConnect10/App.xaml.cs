@@ -437,7 +437,7 @@ namespace CrossConnect
         {
             if (BookMarksChanged != null)
             {
-                BookMarksChanged(App.PlaceMarkers.Bookmarks, App.DisplaySettings);
+                BookMarksChanged(App.PlaceMarkers.Bookmarks, App.DisplaySettings,MainPageSplit.IsSmallScreen);
             }
             SavePersistantMarkers();
         }
@@ -445,7 +445,7 @@ namespace CrossConnect
         {
             if (HistoryChanged != null)
             {
-                HistoryChanged(App.PlaceMarkers.History, App.DisplaySettings);
+                HistoryChanged(App.PlaceMarkers.History, App.DisplaySettings, MainPageSplit.IsSmallScreen);
             }
             SavePersistantMarkers();
         }
@@ -454,7 +454,7 @@ namespace CrossConnect
         {
             if (PersonalNotesChanged != null)
             {
-                PersonalNotesChanged(App.DailyPlan.PersonalNotesVersified, App.DisplaySettings);
+                PersonalNotesChanged(App.DailyPlan.PersonalNotesVersified, App.DisplaySettings, MainPageSplit.IsSmallScreen);
             }
             SavePersistantMarkers();
         }

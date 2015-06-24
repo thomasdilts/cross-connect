@@ -78,6 +78,15 @@ namespace CrossConnect
         }
 
         #endregion
+        public const int LIMIT_DEFINING_SMALL_SCREEN = 500;
+        public static bool IsSmallScreen
+        {
+            get
+            {
+                Rect bounds = Window.Current.Bounds;
+                return (bounds.Width > bounds.Height ? bounds.Height : bounds.Width) <= LIMIT_DEFINING_SMALL_SCREEN;
+            }
+        }
 
         #region Public Methods and Operators
 
@@ -91,7 +100,15 @@ namespace CrossConnect
                     numColumns = win.State.Window + 1;
                 }
             }
-
+            var isSmallScreen = IsSmallScreen;
+            Visibility frameVisible= isSmallScreen ? Visibility.Collapsed : Visibility.Visible;
+            this.LeftSpacer.Visibility = frameVisible;
+            this.RightSpacer.Visibility = frameVisible;
+            this.TopSpacerImage.Visibility = frameVisible;
+            this.itemDetailTitlePanel.Visibility = frameVisible;
+            this.WindowGrid.Margin = isSmallScreen ? new Thickness(0,0,0,0) : new Thickness(0, 0, 0, 12);
+            scrollViewerBottomAppBar1.ChangeView(300, 0, 1);
+            scrollViewerTopAppBar1.ChangeView(300, 0, 1);
             if (this._windows.Count() != numColumns || forceCompleteRedraw)
             {
                 //LayoutMainRoot.Width = _screenWidth * numColumns;
@@ -113,7 +130,7 @@ namespace CrossConnect
                 object columnwidth;
                 Rect bounds = Window.Current.Bounds;
                 this._screenWidth = bounds.Width * 4 / 10;
-                this._screenWidth = this._screenWidth < 333 ? 333 : this._screenWidth;
+                this._screenWidth = bounds.Width <= LIMIT_DEFINING_SMALL_SCREEN ? bounds.Width : (this._screenWidth < 325 ? 325 : this._screenWidth);
                 if (ApplicationData.Current.LocalSettings.Values.TryGetValue("ColumnWidth", out columnwidth))
                 {
                     this._screenWidth = ((int)columnwidth);
@@ -336,8 +353,52 @@ namespace CrossConnect
             this.scrollViewerTopAppBar1.MaxWidth = Window.Current.Bounds.Width;
             this.Dispatcher.RunAsync(CoreDispatcherPriority.Low, () => App.ShowUserInterface(false));
             //App.ShowUserInterface(false);
+            
+            if (scrollViewerBottomAppBar1.HorizontalOffset > 0)
+            {
+                var tmr = new DispatcherTimer();
+                tmr.Tick += this.OnBottomAppBarAnimationTick;
+                tmr.Interval = TimeSpan.FromMilliseconds(5);
+                tmr.Start();
+            }
+
             BottomAppBar.IsOpen = true;
             TopAppBar.IsOpen = true;
+        }
+        private void OnBottomAppBarAnimationTick(object sender, object e)
+        {
+            if (scrollViewerBottomAppBar1.HorizontalOffset >= 20)
+            {
+                scrollViewerBottomAppBar1.ChangeView(scrollViewerBottomAppBar1.HorizontalOffset - 20, 0, 1);
+            }
+            if(scrollViewerBottomAppBar1.HorizontalOffset<20)
+            {
+                scrollViewerBottomAppBar1.ChangeView(0, 0, 1);
+                ((DispatcherTimer)sender).Stop();
+            }
+        }
+        private void TopAppBar1_Opened(object sender, object e)
+        {
+            if (scrollViewerTopAppBar1.HorizontalOffset > 0)
+            {
+                var tmr = new DispatcherTimer();
+                tmr.Tick += this.OnTopAppBarAnimationTick;
+                tmr.Interval = TimeSpan.FromMilliseconds(5);
+                tmr.Start();
+            }
+
+        }
+        private void OnTopAppBarAnimationTick(object sender, object e)
+        {
+            if (scrollViewerTopAppBar1.HorizontalOffset >= 20)
+            {
+                scrollViewerTopAppBar1.ChangeView(scrollViewerTopAppBar1.HorizontalOffset - 20, 0, 1);
+            }
+            if (scrollViewerTopAppBar1.HorizontalOffset < 20)
+            {
+                scrollViewerTopAppBar1.ChangeView(0, 0, 1);
+                ((DispatcherTimer)sender).Stop();
+            }
         }
 
         private void ButAddBookmarkClick(object sender, RoutedEventArgs e)

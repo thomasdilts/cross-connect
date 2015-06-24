@@ -218,7 +218,8 @@ namespace Sword.reader
             HtmlColorRgba htmlPhoneAccentColor,
             HtmlColorRgba htmlWordsOfChristColor,
             double htmlFontSize,
-            string fontFamily)
+            string fontFamily,
+            bool isSmallScreen)
         {
             var head = new StringBuilder();
             head.Append(
@@ -299,7 +300,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             return
                 await
@@ -315,7 +317,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                     fontFamily,
                     isNotesOnly,
                     addStartFinishHtml,
-                    forceReload);
+                    forceReload,
+                    isSmallScreen);
         }
 
         public virtual string GetExternalLink(DisplaySettings displaySettings)
@@ -535,7 +538,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             if(string.IsNullOrEmpty(this.Title))
             {
@@ -561,7 +565,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                     htmlPhoneAccentColor,
                     htmlWordsOfChristColor,
                     htmlFontSize,
-                    fontFamily);
+                    fontFamily,
+                    isSmallScreen);
                 chapterEndHtml = "</body></html>";
                 htmlChapter.Append(chapterStartHtml);
             }

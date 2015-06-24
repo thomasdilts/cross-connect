@@ -649,7 +649,8 @@ namespace Sword.reader
             HtmlColorRgba htmlPhoneAccentColor,
             HtmlColorRgba htmlWordsOfChristColor,
             double htmlFontSize,
-            string fontFamily)
+            string fontFamily,
+            bool isSmallScreen)
         {
             var head = new StringBuilder();
             head.Append(
@@ -662,7 +663,7 @@ namespace Sword.reader
                     htmlBackgroundColor.GetHtmlRgba(),
                     htmlForegroundColor.GetHtmlRgba(),
                     (int)(htmlFontSize + 0.5),
-                    displaySettings.MarginInsideTextWindow,
+                    isSmallScreen?displaySettings.MarginInsideTextWindow/3 : displaySettings.MarginInsideTextWindow,
                     fontFamily)); // old fashioned way to round an integer
 
             head.Append(
@@ -857,7 +858,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             return
                 await
@@ -875,7 +877,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                     fontFamily,
                     isNotesOnly,
                     addStartFinishHtml,
-                    forceReload);
+                    forceReload,
+                    isSmallScreen);
         }
 
         /// <summary>
@@ -1354,7 +1357,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                     fontFamily,
                     false,
                     true,
-                    forceReload);
+                    forceReload,
+                    false);
             tw.Write(fileContent);
             tw.Flush();
             tw.Dispose();
@@ -1562,7 +1566,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             if (this.Chapters.Count == 0)
             {
@@ -1584,7 +1589,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                     htmlPhoneAccentColor,
                     htmlWordsOfChristColor,
                     htmlFontSize,
-                    fontFamily);
+                    fontFamily,
+                    isSmallScreen);
                 chapterEndHtml = "</body></html>";
             }
 
@@ -1812,7 +1818,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             string fontFamily,
             bool showBookTitles,
             string notesTitle,
-            bool showDate)
+            bool showDate,
+            bool isSmallScreen)
         {
             if (htmlBackgroundColor == null)
             {
@@ -1827,7 +1834,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                 htmlPhoneAccentColor,
                 htmlWordsOfChristColor,
                 htmlFontSize,
-                fontFamily);
+                fontFamily,
+                isSmallScreen);
             const string chapterEndHtml = "</body></html>";
             var htmlListText = new StringBuilder(chapterStartHtml);
             int lastBookNum = -1;

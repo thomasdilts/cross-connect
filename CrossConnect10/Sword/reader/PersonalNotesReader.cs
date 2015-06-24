@@ -55,7 +55,7 @@ namespace Sword.reader
         public DisplaySettings LocalDisplaySettings;
 
         #region Constructors and Destructors
-        public delegate void NotesChangedDelegate(Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> notesToShow, DisplaySettings displaySettings);
+        public delegate void NotesChangedDelegate(Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> notesToShow, DisplaySettings displaySettings, bool isSmallScreen);
 
         public PersonalNotesReader(string path, string iso2DigitLangCode, bool isIsoEncoding, string cipherKey, string configPath, string versification, Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> notesToShow, string title, DisplaySettings displaySettings)
             : base(path, iso2DigitLangCode, isIsoEncoding, cipherKey, configPath, versification, new List<BiblePlaceMarker>(),title,true)
@@ -121,7 +121,7 @@ namespace Sword.reader
             return -1;
         }
 
-        public async void NotesSourceChanged(Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> notesToShow, DisplaySettings displaySettings)
+        public async void NotesSourceChanged(Dictionary<string, Dictionary<int, Dictionary<int, BiblePlaceMarker>>> notesToShow, DisplaySettings displaySettings, bool isSmallScreen)
         {
             this.NotesToShow = notesToShow;
             this.LocalDisplaySettings = displaySettings;
@@ -143,7 +143,8 @@ namespace Sword.reader
                         this._fontFamily,
                         false,
                         _title,
-                        true);
+                        true,
+                        isSmallScreen);
             }
             else
             {
@@ -162,7 +163,8 @@ namespace Sword.reader
                         this._fontFamily,
                         true,
                         _title,
-                        true);
+                        true,
+                        isSmallScreen);
             }
 
             this.RaiseSourceChangedEvent();
@@ -250,7 +252,8 @@ namespace Sword.reader
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             bool mustUpdate = this._htmlBackgroundColor == null;
             this._htmlBackgroundColor = htmlBackgroundColor;
@@ -279,7 +282,8 @@ namespace Sword.reader
                             fontFamily,
                             false,
                             _title,
-                            true);
+                            true,
+                            isSmallScreen);
                 }
                 else
                 {
@@ -298,7 +302,8 @@ namespace Sword.reader
                             this._fontFamily,
                             true,
                             _title,
-                            true);
+                            true,
+                            isSmallScreen);
                 }
             }
 

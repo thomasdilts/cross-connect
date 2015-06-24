@@ -70,9 +70,9 @@ namespace Sword.reader
 
         #endregion
 
-        public delegate void BiblePlaceMarkChangedDelegate(List<BiblePlaceMarker> bookMarksToShow, DisplaySettings displaySettings);
+        public delegate void BiblePlaceMarkChangedDelegate(List<BiblePlaceMarker> bookMarksToShow, DisplaySettings displaySettings, bool isSmallScreen);
         
-        public virtual async void BiblePlaceMarkSourceChanged(List<BiblePlaceMarker> biblePlaceMarkToShow, DisplaySettings displaySettings)
+        public virtual async void BiblePlaceMarkSourceChanged(List<BiblePlaceMarker> biblePlaceMarkToShow, DisplaySettings displaySettings, bool isSmallScreen)
         {
             this.BookMarksToShow = BiblePlaceMarker.Clone(biblePlaceMarkToShow);
             this._displayText =
@@ -89,7 +89,8 @@ namespace Sword.reader
                     this._fontFamily,
                     false,
                     string.Empty,
-                    this.ShowDate);
+                    this.ShowDate,
+                    isSmallScreen);
             this.RaiseSourceChangedEvent();
         }
 
@@ -192,7 +193,8 @@ namespace Sword.reader
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             bool mustUpdate = this._htmlBackgroundColor == null;
             this._htmlBackgroundColor = htmlBackgroundColor;
@@ -217,7 +219,8 @@ namespace Sword.reader
                         fontFamily,
                         false,
                         string.Empty,
-                        this.ShowDate);
+                        this.ShowDate,
+                        isSmallScreen);
             }
 
             this._htmlFontSize = htmlFontSize;

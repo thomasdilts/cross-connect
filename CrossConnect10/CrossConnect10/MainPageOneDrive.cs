@@ -134,6 +134,10 @@ namespace CrossConnect
                 App.SavePersistantDisplaySettings();
             }
         }
+        private void ReturnToWindowCallback()
+        {
+            this.OneDrivePopup.IsOpen = true;
+        }
         private async void ButExportClick(object sender, RoutedEventArgs e)
         {
             _isTransfering = true;
@@ -158,7 +162,11 @@ namespace CrossConnect
                     highlighting = (bool)this.oneDriveHighlighting.IsOn,
                     windowSetup = (bool)this.oneDriveWindowSetup.IsOn,
                     IsWindowsPhone = false
-                }, this.oneDrivePutInFolder.Text, BackupRestoreProgress, Translations.Translate("Backup") + DateTime.Now.ToString("yyyy-MM-dd.hh.mm"));
+                }, 
+                this.oneDrivePutInFolder.Text, 
+                BackupRestoreProgress,
+                ReturnToWindowCallback,
+                Translations.Translate("Backup") + DateTime.Now.ToString("yyyy-MM-dd.HH.mm"));
         }
 
         private void butImport_Click(object sender, RoutedEventArgs e)
@@ -178,7 +186,7 @@ namespace CrossConnect
                     highlighting = (bool)this.oneDriveHighlighting.IsOn,
                     windowSetup = (bool)this.oneDriveWindowSetup.IsOn,
                     IsWindowsPhone = true
-                }, this.oneDrivePutInFolder.Text, BackupRestoreProgress);
+                }, this.oneDrivePutInFolder.Text, BackupRestoreProgress, ReturnToWindowCallback);
         }
         /*
         private void oneDriveButLogout_Click(object sender, RoutedEventArgs e)
