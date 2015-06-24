@@ -202,7 +202,8 @@ namespace Sword.reader
             HtmlColorRgba htmlPhoneAccentColor,
             HtmlColorRgba htmlWordsOfChristColor,
             double htmlFontSize,
-            string fontFamily)
+            string fontFamily,
+            bool isSmallScreen)
         {
             var head = new StringBuilder();
             head.Append(
@@ -309,7 +310,8 @@ function DoSearch(searchText){
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             return
                 await
@@ -325,7 +327,8 @@ function DoSearch(searchText){
                     fontFamily,
                     isNotesOnly,
                     addStartFinishHtml,
-                    forceReload);
+                    forceReload,
+                    isSmallScreen);
         }
 
         public async Task<string> GetChapterRaw(int chapterNumber)
@@ -467,7 +470,8 @@ function DoSearch(searchText){
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             if (this.DictionaryEntries.Count == 0)
             {
@@ -492,7 +496,8 @@ function DoSearch(searchText){
                     htmlPhoneAccentColor,
                     htmlWordsOfChristColor,
                     htmlFontSize,
-                    fontFamily);
+                    fontFamily,
+                    isSmallScreen);
                 chapterEndHtml = "</body></html>";
                 
 

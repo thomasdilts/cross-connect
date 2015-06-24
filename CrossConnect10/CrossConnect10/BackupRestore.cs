@@ -68,9 +68,10 @@ namespace CrossConnect
         }
         private const string BackupManifestFileName = "_BackupManifest.xml";
         public delegate void Progress(double percentTotal, double percentPartial, bool IsFinal, string Message, string MessageTranslateable1, string MessageTranslateable2);
+        public delegate void ReturnToWindow();
         Progress progressCallback;
         double oneDriveProgressBarTotal = 0;
-        public async Task DoExport(BackupManifest manifest, string crossConnectFolder, Progress progressCallback, string suggestedName)
+        public async Task DoExport(BackupManifest manifest, string crossConnectFolder, Progress progressCallback, ReturnToWindow returnToWindowCallback, string suggestedName)
         {
             this.progressCallback = progressCallback;
             try
@@ -87,7 +88,7 @@ namespace CrossConnect
                     progressCallback(100, 100, true, null, null, null);
                     return;
                 }
-                
+                returnToWindowCallback();
                 // Prevent updates to the remote version of the file until we finish making changes and call CompleteUpdatesAsync.
                 CachedFileManager.DeferUpdates(zipFile);
 
@@ -234,29 +235,23 @@ namespace CrossConnect
 
                 using (Stream outputFileStream = await outputFile.OpenStreamForWriteAsync())
                 {
-                    byte[] buffer = new byte[entry.Length];
-                    await fileData.ReadAsync(buffer, 0, buffer.Length);
-                    await outputFileStream.WriteAsync(buffer, 0, (int)entry.Length);
+                    int bytesRead;
+                    byte[] buffer = new byte[10000];
+                    try
+                    {
+                        // if you use async read and write it doesn't work.
+                        while ((bytesRead = fileData.Read(buffer, 0, buffer.Length)) > 0)
+                        {
+                            outputFileStream.Write(buffer, 0, bytesRead);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+
+                        throw;
+                    }
+
                     await outputFileStream.FlushAsync();
-                    //int bytesRead;
-                    //try
-                    //{
-                    //    while (fileData.CanRead && (bytesRead = await fileData.ReadAsync(buffer, 0, buffer.Length)) != 0)
-                    //    {
-                    //        await outputFileStream.WriteAsync(buffer, 0, bytesRead);
-                    //        if (buffer.Length > bytesRead)
-                    //        {
-                    //            break;
-                    //        }
-                    //    }
-                    //}
-                    //catch (Exception e)
-                    //{
-
-                    //    throw;
-                    //}
-
-                    //await outputFileStream.FlushAsync();
                 }
             }
         }
@@ -275,7 +270,7 @@ namespace CrossConnect
             }
         }
 
-        public async void DoImport(BackupManifest manifestSelected, string crossConnectFolder, Progress progressCallback)
+        public async void DoImport(BackupManifest manifestSelected, string crossConnectFolder, Progress progressCallback, ReturnToWindow returnToWindowCallback)
         {
             this.progressCallback = progressCallback;
             try
@@ -292,13 +287,14 @@ namespace CrossConnect
                     progressCallback(100, 100, true, null, null, null);
                     return;
                 }
-
+                returnToWindowCallback();
                 using (var zipStream = await zipFile.OpenStreamForReadAsync())
                 {
                     using (MemoryStream zipMemoryStream = new MemoryStream((int)zipStream.Length))
                     {
+                        progressCallback(5, 0, false, null, null, null);
                         await zipStream.CopyToAsync(zipMemoryStream);
-
+                        progressCallback(10, 0, false, null, null, null);
                         using (var archive = new ZipArchive(zipMemoryStream, ZipArchiveMode.Read))
                         {
                             var manifestEntry = archive.Entries.FirstOrDefault(p => p.Name.Equals(BackupManifestFileName));
@@ -333,6 +329,9 @@ namespace CrossConnect
                                     return;
                                 }
                             }
+                            this.oneDriveProgressBarTotal = 20;
+                            progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                            _progressIncrement = 75.0 / (double)archive.Entries.Count();
 
                             foreach (ZipArchiveEntry entry in archive.Entries)
                             {
@@ -351,6 +350,9 @@ namespace CrossConnect
                                         await ExtractFile(ApplicationData.Current.LocalFolder, entry);
                                     }
                                 }
+
+                                this.oneDriveProgressBarTotal += _progressIncrement;
+                                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
                             }
                         }
                     }

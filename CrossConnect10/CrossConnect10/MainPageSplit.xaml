@@ -11,70 +11,76 @@
     mc:Ignorable="d">
 
     <Page.TopAppBar>
-        <AppBar ClosedDisplayMode="Hidden" x:Name="TopAppBar1" Padding="10,0,10,0" AutomationProperties.Name="Top App Bar">
-            <ScrollViewer VerticalScrollMode="Disabled" Name="scrollViewerTopAppBar1" HorizontalScrollMode="Auto"
+        <AppBar ClosedDisplayMode="Hidden" x:Name="TopAppBar1" Padding="10,0,10,0" AutomationProperties.Name="Top App Bar" Opened="TopAppBar1_Opened">
+            <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" BorderThickness="1"
+                    Background="{StaticResource ApplicationPageBackgroundThemeBrush}" x:Name="TopAppBarBorder">
+                <ScrollViewer VerticalScrollMode="Disabled" Name="scrollViewerTopAppBar1" HorizontalScrollMode="Auto"
                           Style="{StaticResource HorizontalScrollViewerStyle}">
-                <Grid Name="GridTopAppBar1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50*" />
-                        <ColumnDefinition Width="50*" />
-                        <ColumnDefinition Width="50*" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel x:Name="leftpanel" Orientation="Horizontal" Grid.Column="0" HorizontalAlignment="Left">
-                        <Button x:Name="AddNewWindow" Click="ButAddWindowClick"
+                    <Grid Name="GridTopAppBar1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50*" />
+                            <ColumnDefinition Width="50*" />
+                            <ColumnDefinition Width="50*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel x:Name="leftpanel" Orientation="Horizontal" Grid.Column="0" HorizontalAlignment="Left">
+                            <Button x:Name="AddNewWindow" Click="ButAddWindowClick"
                                 Style="{StaticResource AddAppBarButtonStyle}" Tag="Edit" />
-                        <Button x:Name="Settings" Click="MenuSettingsClick"
+                            <Button x:Name="Settings" Click="MenuSettingsClick"
                                 Style="{StaticResource SettingsAppBarButtonStyle}" Tag="Next" />
-                        <Button x:Name="DownloadBibles" Click="MenuDownloadBibleClick"
+                            <Button x:Name="DownloadBibles" Click="MenuDownloadBibleClick"
                                 Style="{StaticResource DownloadAppBarButtonStyle}" Tag="Delete" />
-                        <Button x:Name="Themes" Click="MenuThemesClick" Style="{StaticResource FontAppBarButtonStyle}"
+                            <Button x:Name="Themes" Click="MenuThemesClick" Style="{StaticResource FontAppBarButtonStyle}"
                                 Tag="Refresh" />
-                    </StackPanel>
-                    <StackPanel x:Name="CenterPanel1" Orientation="Horizontal" Grid.Column="1"
+                        </StackPanel>
+                        <StackPanel x:Name="CenterPanel1" Orientation="Horizontal" Grid.Column="1"
                                 HorizontalAlignment="Center">
-                        <Button x:Name="ColumnsWider" Click="ColumnsWider_OnClick"
+                            <Button x:Name="ColumnsWider" Click="ColumnsWider_OnClick"
                                 Style="{StaticResource ZoomInAppBarButtonStyle}" Tag="Columns Wider" />
-                        <Button x:Name="ColumnsSmaller" Click="ColumnsSmaller_OnClick"
+                            <Button x:Name="ColumnsSmaller" Click="ColumnsSmaller_OnClick"
                                 Style="{StaticResource ZoomOutAppBarButtonStyle}" Tag="Columns Smaller" />
-                    </StackPanel>
-                    <StackPanel x:Name="RightPanel1" Orientation="Horizontal" Grid.Column="2"
+                        </StackPanel>
+                        <StackPanel x:Name="RightPanel1" Orientation="Horizontal" Grid.Column="2"
                                 HorizontalAlignment="Right">
-                        <Button x:Name="Help" Click="ButHelpClick" Style="{StaticResource HelpAppBarButtonStyle}"
+                            <Button x:Name="Help" Click="ButHelpClick" Style="{StaticResource HelpAppBarButtonStyle}"
                                 Tag="Help" />
-                    </StackPanel>
-                </Grid>
-            </ScrollViewer>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </Border>
         </AppBar>
     </Page.TopAppBar>
 
     <Page.BottomAppBar>
         <AppBar x:Name="BottomAppBar1" Padding="10,0,10,0" AutomationProperties.Name="Bottom App Bar"
                 Opened="BottomAppBar1_Opened_1" Closed="BottomAppBar1_Closed_1">
-            <ScrollViewer Name="scrollViewerBottomAppBar1" HorizontalScrollMode="Auto"
+            <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" BorderThickness="1"
+                    Background="{StaticResource ApplicationPageBackgroundThemeBrush}" x:Name="BottomAppBarBorder">
+                <ScrollViewer Name="scrollViewerBottomAppBar1" HorizontalScrollMode="Auto"
                           Style="{StaticResource HorizontalScrollViewerStyle}" VerticalScrollMode="Disabled">
-                <Grid Name="GridBottomAppBar1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50*" />
-                        <ColumnDefinition Width="50*" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel x:Name="leftpanel22" Orientation="Horizontal" Grid.Column="0"
+                    <Grid Name="GridBottomAppBar1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50*" />
+                            <ColumnDefinition Width="50*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel x:Name="leftpanel22" Orientation="Horizontal" Grid.Column="0"
                                 HorizontalAlignment="Left">
-                        <Button x:Name="ClearHistory" Click="MenuClearHistoryClick"
+                            <Button x:Name="ClearHistory" Click="MenuClearHistoryClick"
                                 Style="{StaticResource DisableUpdatesAppBarButtonStyle}" Tag="Next" />
-                        <Button x:Name="SelectLanguage" Click="MenuLanguageClick"
+                            <Button x:Name="SelectLanguage" Click="MenuLanguageClick"
                                 Style="{StaticResource GlobeAppBarButtonStyle}" Tag="Next" />
-                        <Button x:Name="DeleteBible" Click="MenuDeleteBibleClick"
+                            <Button x:Name="DeleteBible" Click="MenuDeleteBibleClick"
                                 Style="{StaticResource DeleteAppBarButtonStyle}" Tag="Next" />
-                        <Button x:Name="DeleteBookmarks" Click="MenuDeleteBookmarkClick"
+                            <Button x:Name="DeleteBookmarks" Click="MenuDeleteBookmarkClick"
                                 Style="{StaticResource UnfavoriteAppBarButtonStyle}" Tag="Next" />
-                        <Button x:Name="OneDriveBackupRestore" Click="MenuOneDriveBackupRestoreClick"
+                            <Button x:Name="OneDriveBackupRestore" Click="MenuOneDriveBackupRestoreClick"
                                 Style="{StaticResource UploadSkyDriveAppBarButtonStyle}" Tag="Next" />
-                    </StackPanel>
-                    <StackPanel x:Name="RightPanel22" Orientation="Horizontal" Grid.Column="1"
+                        </StackPanel>
+                        <StackPanel x:Name="RightPanel22" Orientation="Horizontal" Grid.Column="1"
                                 HorizontalAlignment="Right">
-                    </StackPanel>
-                </Grid>
-            </ScrollViewer>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </Border>
         </AppBar>
     </Page.BottomAppBar>
 
@@ -99,7 +105,7 @@
             Grid.Row="0"
             Style="{StaticResource HorizontalScrollViewerStyle}">
             <StackPanel Orientation="Horizontal">
-                <Grid Name="LeftSpacer" Width="40"></Grid>
+                <Grid Name="LeftSpacer" Width="40" Visibility="Collapsed"></Grid>
                 <Grid x:Name="itemDetailGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -110,15 +116,15 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Image Grid.Row="1" Margin="0,0,20,0" Width="30" Height="22" Source="{Binding Image}"
+                    <Image Name="TopSpacerImage" Visibility="Collapsed" Grid.Row="1" Margin="0,0,20,0" Width="30" Height="22" Source="{Binding Image}"
                        Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" />
-                <StackPanel x:Name="itemDetailTitlePanel" Grid.Row="1" Grid.Column="1">
+                <StackPanel x:Name="itemDetailTitlePanel" Grid.Row="1" Grid.Column="1" Visibility="Collapsed">
                     <TextBlock x:Name="itemTitle" Margin="0,-10,0,-10" Text="Cross-Connect"
                                Style="{StaticResource SubheaderTextStyle}" />
                 </StackPanel>
                     <Grid Margin=" 0,0,0,12" x:Name="WindowGrid" Grid.Row="3" Grid.Column="1"></Grid>
             </Grid>
-                <Grid Name="RightSpacer" Width="40"></Grid>
+                <Grid Name="RightSpacer" Width="40" Visibility="Collapsed"></Grid>
             </StackPanel>
         </ScrollViewer>
         <Popup x:Name="SettingsPopup" IsLightDismissEnabled="True" Closed="SettingsPopup_OnClosed"

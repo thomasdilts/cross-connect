@@ -646,7 +646,8 @@ namespace CrossConnect
                                 fontFamily,
                                 false,
                                 true,
-                                this.ForceReload);
+                                this.ForceReload,
+                                MainPageSplit.IsSmallScreen);
                         this.ForceReload = false;
                         this.CallbackFromUpdate(createdFileName);
                     }

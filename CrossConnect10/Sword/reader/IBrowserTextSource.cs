@@ -93,7 +93,8 @@ namespace Sword.reader
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload);
+            bool forceReload,
+            bool isSmallScreen);
 
         string GetExternalLink(DisplaySettings displaySettings);
 
