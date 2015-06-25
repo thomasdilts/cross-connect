@@ -1417,7 +1417,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return buf[0];
         }
 
-        protected async Task<byte[]> GetChapterBytes(int chapterNumber)
+        protected virtual async Task<byte[]> GetChapterBytes(int chapterNumber)
         {
             //Debug.WriteLine("getChapterBytes start");
             int numberOfChapters = this.Chapters.Count;
@@ -1738,20 +1738,20 @@ function SetFontColorForElement(elemntId, colorRgba){
             return buf[1] * 0x100000000000 + buf[0] * 0x100000000 + buf[5] * 0x1000000 + buf[4] * 0x10000
                    + buf[3] * 0x100 + buf[2];
         }
-
-        protected int GetShortIntFromStream(Stream fs, out bool isEnd)
+         
+        public int GetShortIntFromStream(Stream fs, out bool isEnd)
         {
             var buf = new byte[2];
             isEnd = fs.Read(buf, 0, 2) != 2;
             if (isEnd)
             {
-                return 0;
+                 return 0;
             }
 
             return buf[1] * 0x100 + buf[0];
         }
 
-        protected long GetintFromStream(Stream fs, out bool isEnd)
+        public long GetintFromStream(Stream fs, out bool isEnd)
         {
             var buf = new byte[4];
             isEnd = fs.Read(buf, 0, 4) != 4;
@@ -2641,7 +2641,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             }
         }
 
-        private async Task<bool> ReloadOneIndex(string filename, int startBook, int endBook, CanonBookDef[] booksInTestement)
+        protected virtual async Task<bool> ReloadOneIndex(string filename, int startBook, int endBook, CanonBookDef[] booksInTestement)
         {
             if (string.IsNullOrEmpty(this.Serial.Path))
             {
@@ -2794,7 +2794,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return true;
         }
 
-        private async Task<bool> ReloadSettingsFile()
+        protected virtual async Task<bool> ReloadSettingsFile()
         {
             if (canon == null)
             {

@@ -324,14 +324,29 @@ namespace CrossConnect
                             switch (windowType)
                             {
                                 case WindowType.WindowBible:
-                                    this._state.Source = new BibleZtextReader(
-                                        bookPath,
-                                        ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
-                                        isIsoEncoding,
-                                        (string)book.Value.GetCetProperty(ConfigEntryType.CipherKey),
-                                        book.Value.ConfPath,
-                                        (string)book.Value.GetCetProperty(ConfigEntryType.Versification));
-                                    await ((BibleZtextReader)this._state.Source).Initialize();
+                                    var driver2 = ((string)book.Value.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
+                                    if (driver2.Equals("ZTEXT"))
+                                    {
+                                        this._state.Source = new BibleZtextReader(
+                                            bookPath,
+                                            ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
+                                            isIsoEncoding,
+                                            (string)book.Value.GetCetProperty(ConfigEntryType.CipherKey),
+                                            book.Value.ConfPath,
+                                            (string)book.Value.GetCetProperty(ConfigEntryType.Versification));
+                                        await ((BibleZtextReader)this._state.Source).Initialize();
+                                    }
+                                    else if (driver2.Equals("RAWTEXT"))
+                                    {
+                                        this._state.Source = new BibleRawTextReader(
+                                            bookPath,
+                                            ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
+                                            isIsoEncoding,
+                                            (string)book.Value.GetCetProperty(ConfigEntryType.CipherKey),
+                                            book.Value.ConfPath,
+                                            (string)book.Value.GetCetProperty(ConfigEntryType.Versification));
+                                        await ((BibleZtextReader)this._state.Source).Initialize();
+                                    }
                                     return;
                                 case WindowType.WindowBibleNotes:
                                     this._state.Source = new BibleNoteReader(
@@ -400,14 +415,29 @@ namespace CrossConnect
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     return;
                                 case WindowType.WindowCommentary:
-                                    this._state.Source = new CommentZtextReader(
+                                    var driver3 = ((string)book.Value.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
+                                    if (driver3.Equals("ZCOM"))
+                                    {
+                                        this._state.Source = new CommentZtextReader(
                                         bookPath,
                                         ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
                                         isIsoEncoding,
                                         (string)book.Value.GetCetProperty(ConfigEntryType.CipherKey),
                                         book.Value.ConfPath,
                                         (string)book.Value.GetCetProperty(ConfigEntryType.Versification));
-                                    await ((BibleZtextReader)this._state.Source).Initialize();
+                                        await ((BibleZtextReader)this._state.Source).Initialize();
+                                    }
+                                    else if (driver3.Equals("RAWCOM"))
+                                    {
+                                        this._state.Source = new CommentRawComReader(
+                                        bookPath,
+                                        ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
+                                        isIsoEncoding,
+                                        (string)book.Value.GetCetProperty(ConfigEntryType.CipherKey),
+                                        book.Value.ConfPath,
+                                        (string)book.Value.GetCetProperty(ConfigEntryType.Versification));
+                                        await ((BibleZtextReader)this._state.Source).Initialize();
+                                    }
                                     return;
                                 case WindowType.WindowBook:
                                     this._state.Source = new RawGenTextReader(
