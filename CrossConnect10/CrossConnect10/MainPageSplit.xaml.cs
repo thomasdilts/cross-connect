@@ -88,6 +88,15 @@ namespace CrossConnect
             }
         }
 
+        public static bool HasTouchScreen
+        {
+            get
+            {
+                var touch = new Windows.Devices.Input.TouchCapabilities();
+                return touch.TouchPresent > 0;
+            }
+        }
+
         #region Public Methods and Operators
 
         public async void ReDrawWindows(bool forceCompleteRedraw = false)
