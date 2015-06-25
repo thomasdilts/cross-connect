@@ -297,9 +297,9 @@ namespace CrossConnect
                     var driver = ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
                     if (lang.Name.Equals(this.selectLangauge.SelectedItem)
                         && ((isBibleSelected
-                             && driver.Equals("ZTEXT"))
+                             && (driver.Equals("ZTEXT") || driver.Equals("RAWTEXT")))
                             || (isCommentarySelected
-                                && driver.Equals("ZCOM"))
+                                && (driver.Equals("ZCOM") || driver.Equals("RAWCOM")))
                                 || (isGeneralBookSelected
                                 && driver.Equals("RAWGENBOOK"))
                                 || (isDictionariesSelected
@@ -440,11 +440,11 @@ namespace CrossConnect
                     {
                         var driver = ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
                         if ((isCommentarySelected
-                            && driver.Equals("ZCOM"))
+                            && (driver.Equals("ZCOM") || driver.Equals("RAWCOM")))
                             ||(isGeneralBookSelected
                             && driver.Equals("RAWGENBOOK"))
                             ||(isBibleSelected
-                            && driver.Equals("ZTEXT"))
+                            && (driver.Equals("ZTEXT")|| driver.Equals("RAWTEXT")))
                             ||(isDictionarySelected
                             && (driver.Equals("ZLD") || driver.Equals("RAWLD") || driver.Equals("RAWLD4"))))
                         {
