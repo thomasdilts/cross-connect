@@ -236,6 +236,7 @@
     <PRIResource Include="Locale\zh-cn\resource.resw" />
     <PRIResource Include="Locale\zh-TW\resource.resw" />
     <PRIResource Include="Locale\zu\resource.resw" />
+    <Content Include="Assets\pushtitle3.png" />
     <Content Include="Assets\square310x310.png" />
     <Content Include="Assets\square71x71.png" />
     <None Include="packages.config" />

@@ -495,6 +495,11 @@ namespace CrossConnect
             this.selectDocumentType.Items.Add(Translations.Translate("Daily plan"));
             this.selectDocumentType.Items.Add(Translations.Translate("Added notes"));
             this.selectDocumentType.Items.Add(Translations.Translate("Selected verses"));
+            this.BorderHelpText.Text = Translations.Translate("To move between screens push on the title or the borders");
+
+            this.BorderMoveTutorial.Visibility = Visibility.Collapsed ;
+            this.ImageMoveTutorial.Visibility = Visibility.Collapsed;
+            this.BorderHelpText.Visibility = Visibility.Collapsed;
 
             if (App.InstalledBibles.InstalledCommentaries.Count > 0)
             {
@@ -524,7 +529,7 @@ namespace CrossConnect
             this.planActualDateCaption.Visibility = Visibility.Collapsed;
             this.selectPlanType.Visibility = Visibility.Collapsed;
 
-            this.sliderTextSize.SliderValue = 20;
+            this.sliderTextSize.SliderValue = MainPageSplit.IsSmallScreen?16:20;
             if (App.OpenWindows.Any() && App.OpenWindows[0].State != null)
             {
                 this.sliderTextSize.SliderValue = App.OpenWindows[0].State.HtmlFontSize;
@@ -685,6 +690,18 @@ namespace CrossConnect
             IsInSelectDocChanged = false;
 
         }
+
+        private void Col1_Click(object sender, RoutedEventArgs e)
+        {
+            var hasTouch = HasTouchScreen;
+            if (hasTouch)
+            {
+                this.BorderHelpText.Visibility = !(bool)Col1.IsChecked ? Visibility.Visible : Visibility.Collapsed;
+                this.BorderMoveTutorial.Visibility = !(bool)Col1.IsChecked ? Visibility.Visible : Visibility.Collapsed;
+                this.ImageMoveTutorial.Visibility = !(bool)Col1.IsChecked ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
         #endregion
     }
 }

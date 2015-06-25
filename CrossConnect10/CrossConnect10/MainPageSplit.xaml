@@ -380,15 +380,15 @@
                             <TextBlock Name="selectColumn" Text="Column" TextWrapping="Wrap"
                                        Style="{StaticResource BaselineTextStyle}" />
                             <GridView Name="stackPanelSelectColumn" >
-                                <RadioButton GroupName="selectColumn" Margin="0 0 -70 0" Content="1" Name="Col1" />
-                                <RadioButton GroupName="selectColumn" Margin="0 0 -70 0" Content="2" Name="Col2" />
-                                <RadioButton GroupName="selectColumn" Margin="0 0 -70 0" Content="3" Name="Col3" />
-                                <RadioButton GroupName="selectColumn" Margin="0 0 -70 0" Content="4" Name="Col4" />
-                                <RadioButton GroupName="selectColumn" Margin="0 0 -70 0" Content="5" Name="Col5" />
-                                <RadioButton GroupName="selectColumn" Margin="0 0 -70 0" Content="6" Name="Col6" />
-                                <RadioButton GroupName="selectColumn" Margin="0 0 -70 0" Content="7" Name="Col7" />
-                                <RadioButton GroupName="selectColumn" Margin="0 0 -70 0" Content="8" Name="Col8" />
-                                <RadioButton GroupName="selectColumn" Margin="0 0 -70 0" Content="9" Name="Col9" />
+                                <RadioButton GroupName="selectColumn" Margin="0 0 -70 0" Content="1" Name="Col1"  Click="Col1_Click"/>
+                                <RadioButton GroupName="selectColumn" Margin="0 0 -70 0" Content="2" Name="Col2" Click="Col1_Click" />
+                                <RadioButton GroupName="selectColumn" Margin="0 0 -70 0" Content="3" Name="Col3" Click="Col1_Click" />
+                                <RadioButton GroupName="selectColumn" Margin="0 0 -70 0" Content="4" Name="Col4" Click="Col1_Click" />
+                                <RadioButton GroupName="selectColumn" Margin="0 0 -70 0" Content="5" Name="Col5" Click="Col1_Click" />
+                                <RadioButton GroupName="selectColumn" Margin="0 0 -70 0" Content="6" Name="Col6" Click="Col1_Click" />
+                                <RadioButton GroupName="selectColumn" Margin="0 0 -70 0" Content="7" Name="Col7" Click="Col1_Click" />
+                                <RadioButton GroupName="selectColumn" Margin="0 0 -70 0" Content="8" Name="Col8" Click="Col1_Click" />
+                                <RadioButton GroupName="selectColumn" Margin="0 0 -70 0" Content="9" Name="Col9" Click="Col1_Click"/>
                             </GridView>
                             <TextBlock Name="selectDocumentTypeHeader" Text="Select the window type"
                                        TextWrapping="Wrap" Style="{StaticResource BaselineTextStyle}" />
@@ -416,6 +416,12 @@
                                        Style="{StaticResource BaselineTextStyle}"/>
                             <ComboBox Margin="10 10 0 10" Name="selectDocument" SelectionChanged="selectDocumentSelectionChanged">
                             </ComboBox>
+                            <TextBlock Name="BorderHelpText" Text="To move between screens push on the title or the borders" TextWrapping="Wrap"
+                                       Style="{StaticResource BaselineTextStyle}" Margin="0 0 0 10"/>
+
+                            <Border Name="BorderMoveTutorial" BorderThickness="12" BorderBrush="OrangeRed" Background="OrangeRed">
+                                <Image Name="ImageMoveTutorial" Source="Assets/pushtitle3.png" />
+                            </Border>
                             <Grid>
                                 <Rectangle Name="UserInterfaceBlocker" MinHeight="50" />
                                 <WebView Margin="0 0 0 0" Visibility="Collapsed" Name="webBrowser1" MinHeight="50" />
