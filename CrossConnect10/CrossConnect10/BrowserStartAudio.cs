@@ -66,9 +66,10 @@ namespace CrossConnect
                     {
                         WindowType = WindowType.WindowMediaPlayer,
                         Source = await this._state.Source.Clone(),
-                        BibleDescription = this._state.BibleDescription
+                        BibleDescription = this._state.BibleDescription,
+                        CurIndex = i
                     };
-                    ((MediaPlayerWindow)App.OpenWindows[i]).SetMediaInfo(thestate, info);
+                    ((MediaPlayerWindow)App.OpenWindows[i]).SetMediaInfo(thestate, info, false);
                     return;
                 }
             }
@@ -92,7 +93,7 @@ namespace CrossConnect
                 App.MainWindow.ReDrawWindows();
             }
 
-            nextWindow.SetMediaInfo(nextWindow.State, info);
+            nextWindow.SetMediaInfo(nextWindow.State, info, false);
         }
 
         #endregion

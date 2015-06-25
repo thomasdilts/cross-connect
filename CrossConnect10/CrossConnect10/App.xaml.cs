@@ -695,7 +695,7 @@ namespace CrossConnect
                                     out fullName,
                                     out title);
                                 var info = new BackgroundAudioShared.AudioModel() { Book = bookShortName, Chapter = relChaptNum, Verse = verseNum, VoiceName = nextWindow.State.VoiceName, IsNtOnly = nextWindow.State.IsNtOnly, Pattern = nextWindow.State.Pattern, Src = nextWindow.State.Src, Code = nextWindow.State.code };
-                                ((MediaPlayerWindow)nextWindow).SetMediaInfo(nextWindow.State, info);
+                                ((MediaPlayerWindow)nextWindow).SetMediaInfo(nextWindow.State, info, true);
                             }
                             else
                             {
