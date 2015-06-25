@@ -416,7 +416,7 @@
                                        Style="{StaticResource BaselineTextStyle}"/>
                             <ComboBox Margin="10 10 0 10" Name="selectDocument" SelectionChanged="selectDocumentSelectionChanged">
                             </ComboBox>
-                            <TextBlock Name="BorderHelpText" Text="To move between screens push on the title or the borders" TextWrapping="Wrap"
+                            <TextBlock Name="BorderHelpText" Text="Pull on the title or the borders for moving to another window" TextWrapping="Wrap"
                                        Style="{StaticResource BaselineTextStyle}" Margin="0 0 0 10"/>
 
                             <Border Name="BorderMoveTutorial" BorderThickness="12" BorderBrush="OrangeRed" Background="OrangeRed">
