@@ -2422,7 +2422,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         break;
                                     default:
                                         //AppendText(" ", plainText, noteText, isInElement);
-                                        Debug.WriteLine("Element untreated: " + reader.Name);
+                                        //Debug.WriteLine("Element untreated: " + reader.Name);
                                         break;
                                 }
 
@@ -2605,7 +2605,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         break;
                                     default:
                                         //AppendText(" ", plainText, noteText, isInElement);
-                                        Debug.WriteLine("EndElement untreated: " + reader.Name);
+                                        //Debug.WriteLine("EndElement untreated: " + reader.Name);
                                         break;
                                 }
 

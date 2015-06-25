@@ -26,24 +26,16 @@ namespace CrossConnect
     using System.Diagnostics;
     using System.Linq;
 
-    using CrossConnect.readers;
-
     using Sword.reader;
 
-    using Windows.Media;
     using Windows.System;
     using Windows.UI.Core;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Input;
     using Windows.UI.Xaml.Media;
     using Windows.UI.Xaml.Media.Imaging;
-    using Windows.Media.SpeechSynthesis;
-    using System.Threading.Tasks;
     using Windows.Media.Playback;
-    using System.Threading;
     using BackgroundAudioShared.Messages;
-    using Windows.Foundation;
-    using BackgroundAudioShared;
     using Windows.UI.Popups;
 
     public sealed partial class MediaPlayerWindow : ITiledWindow
@@ -53,7 +45,6 @@ namespace CrossConnect
         private bool _isLoaded;
 
         private SerializableWindowState _state = new SerializableWindowState();
-        private AutoResetEvent backgroundAudioTaskStarted;
         private bool isMyBackgroundTaskRunning = false;
         private BackgroundAudioShared.AudioModel Info= null;
 
@@ -64,8 +55,7 @@ namespace CrossConnect
         public MediaPlayerWindow()
         {
             this.InitializeComponent();
-            // Setup the initialization lock
-            backgroundAudioTaskStarted = new AutoResetEvent(false);
+            StartBackgroundAudioTask();
         }
 
         #endregion
@@ -94,36 +84,7 @@ namespace CrossConnect
                 this._state = value;
             }
         }
-        /// <summary>
-        /// Gets the information about background task is running or not by reading the setting saved by background task.
-        /// This is used to determine when to start the task and also when to avoid sending messages.
-        /// </summary>
-        private bool IsMyBackgroundTaskRunning
-        {
-            get
-            {
-                if (isMyBackgroundTaskRunning)
-                    return true;
 
-                string value = ApplicationSettingsHelper.ReadResetSettingsValue(ApplicationSettingsConstants.BackgroundTaskState) as string;
-                if (value == null)
-                {
-                    return false;
-                }
-                else
-                {
-                    try
-                    {
-                        isMyBackgroundTaskRunning = EnumHelper.Parse<BackgroundTaskState>(value) == BackgroundTaskState.Running;
-                    }
-                    catch (ArgumentException)
-                    {
-                        isMyBackgroundTaskRunning = false;
-                    }
-                    return isMyBackgroundTaskRunning;
-                }
-            }
-        }
         #endregion
 
         #region Public Methods and Operators
@@ -155,6 +116,8 @@ namespace CrossConnect
         /// </summary>
         private void AddMediaPlayerEventHandlers()
         {
+            BackgroundMediaPlayer.Current.CurrentStateChanged -= this.MediaPlayer_CurrentStateChanged;
+            BackgroundMediaPlayer.MessageReceivedFromBackground -= this.BackgroundMediaPlayer_MessageReceivedFromBackground;
             BackgroundMediaPlayer.Current.CurrentStateChanged += this.MediaPlayer_CurrentStateChanged;
             BackgroundMediaPlayer.MessageReceivedFromBackground += this.BackgroundMediaPlayer_MessageReceivedFromBackground;
         }
@@ -166,7 +129,7 @@ namespace CrossConnect
                 RemoveMediaPlayerEventHandlers();
             }
             BackgroundMediaPlayer.Current.Pause();
-            ApplicationSettingsHelper.SaveSettingsValue(ApplicationSettingsConstants.BackgroundTaskState, BackgroundTaskState.Running.ToString());
+            this._isLoaded = false;
         }
 
         private void MediaPlayerWindowLoaded(object sender, RoutedEventArgs e)
@@ -182,7 +145,7 @@ namespace CrossConnect
 
             this._isLoaded = true;
 
-            this.SetButtonVisibility(false);
+            this.SetButtonVisibility(BackgroundMediaPlayer.Current.CurrentState == MediaPlayerState.Playing);
 
             switch (BackgroundMediaPlayer.Current.CurrentState)
             {
@@ -194,15 +157,11 @@ namespace CrossConnect
                         {
                             this.ShowTrack(Info);
                         }
-                        else
-                        {
-                            // do a restart
-                            this.RestartToThisMedia();
-                        }
                     }
 
                     break;
                 case MediaPlayerState.Closed:
+                    this.RestartToThisMedia();
                     break;
                 default:
                     // lets start it again.
@@ -224,20 +183,10 @@ namespace CrossConnect
             await this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 // Update controls
-                UpdateTransportControls(currentState);
+                SetButtonVisibility(true);
             });
         }
-        private void UpdateTransportControls(MediaPlayerState state)
-        {
-            if (state == MediaPlayerState.Playing)
-            {
-                //playButton.Content = "| |";     // Change to pause button
-            }
-            else
-            {
-                //playButton.Content = ">";     // Change to play button
-            }
-        }
+
         /// <summary>
         /// This event is raised when a message is recieved from BackgroundAudioTask
         /// </summary>
@@ -256,13 +205,17 @@ namespace CrossConnect
             TrackChangedMessage trackChangedMessage;
             if (MessageService.TryParseMessage(e.Data, out trackChangedMessage))
             {
+                Debug.WriteLine("TrackChangedMessage received ");
+
                 Info = trackChangedMessage.audioModel;
+
                 // When foreground app is active change track based on background message
                 await this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     SetButtonVisibility(true, true);
                     var verseText = string.IsNullOrEmpty(trackChangedMessage.audioModel.VoiceName) ? string.Empty : ":" + (trackChangedMessage.audioModel.Verse + 1).ToString();
                     this.title.Text = trackChangedMessage.title + verseText + "        " + Info.Name;
+                    this._state.Source.MoveChapterVerse(this.Info.Book,this.Info.Chapter,this.Info.Verse,true,this._state.Source);
                     App.SynchronizeAllWindows(trackChangedMessage.audioModel.Book, trackChangedMessage.audioModel.Chapter, trackChangedMessage.audioModel.Verse, this._state.CurIndex, this._state.Source);
                 });
                 return;
@@ -274,7 +227,11 @@ namespace CrossConnect
                 // StartBackgroundAudioTask is waiting for this signal to know when the task is up and running
                 // and ready to receive messages
                 Debug.WriteLine("BackgroundAudioTask started");
-                backgroundAudioTaskStarted.Set();
+
+                if(BackgroundMediaPlayer.Current.CurrentState != MediaPlayerState.Playing)
+                {
+                    RestartToThisMedia();
+                }
                 return;
             }
 
@@ -297,39 +254,8 @@ namespace CrossConnect
         /// </summary>
         private void StartBackgroundAudioTask()
         {
-
-            var startResult = this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                bool result = backgroundAudioTaskStarted.WaitOne(10000);
-                //Send message to initiate playback
-                if (result == true)
-                {
-                    MessageService.SendMessageToBackground(new UpdateStartPointMessage(Info));
-                    if (string.IsNullOrEmpty(Info.VoiceName))
-                    {
-                    }
-                    else
-                    {
-                    }
-                }
-                else
-                {
-                    throw new Exception("Background Audio Task didn't start in expected time");
-                }
-            });
-            startResult.Completed = new AsyncActionCompletedHandler(BackgroundTaskInitializationCompleted);
-        }
-
-        private void BackgroundTaskInitializationCompleted(IAsyncAction action, AsyncStatus status)
-        {
-            if (status == AsyncStatus.Completed)
-            {
-                Debug.WriteLine("Background Audio Task initialized");
-            }
-            else if (status == AsyncStatus.Error)
-            {
-                Debug.WriteLine("Background Audio Task could not initialized due to an error ::" + action.ErrorCode.ToString());
-            }
+            AddMediaPlayerEventHandlers();
+            MessageService.SendMessageToBackground(new AppResumedMessage());
         }
 
         private void RestartToThisMedia()
@@ -338,8 +264,7 @@ namespace CrossConnect
             {
                 return;
             }
-            this.ButPlay_OnClick(null, null);
-            App.StartTimerForSavingWindows();
+            MessageService.SendMessageToBackground(new UpdateStartPointMessage(Info));
         }
 
         public void ShowSizeButtons(bool isShow = true)
@@ -399,34 +324,8 @@ namespace CrossConnect
 
         private void ButPlay_OnClick(object o, RoutedEventArgs e)
         {
-            Debug.WriteLine("Play button pressed from App");
-            if (IsMyBackgroundTaskRunning)
-            {
-                if (MediaPlayerState.Playing == BackgroundMediaPlayer.Current.CurrentState)
-                {
-                    BackgroundMediaPlayer.Current.Pause();
-                }
-                else if (MediaPlayerState.Paused == BackgroundMediaPlayer.Current.CurrentState)
-                {
-                    if (o == null)
-                    {
-                        MessageService.SendMessageToBackground(new UpdateStartPointMessage(Info));
-                    }
-                    else
-                    {
-                        BackgroundMediaPlayer.Current.Play();
-                    }
-                }
-                else if (MediaPlayerState.Closed == BackgroundMediaPlayer.Current.CurrentState)
-                {
-                    StartBackgroundAudioTask();
-                }
-                SetButtonVisibility(true);
-            }
-            else
-            {
-                StartBackgroundAudioTask();
-            }
+            BackgroundMediaPlayer.Current.Play();
+            SetButtonVisibility(true);
         }
 
         private void ButPreviousClick(object sender, RoutedEventArgs e)
@@ -458,7 +357,7 @@ namespace CrossConnect
             }
         }
 
-        public void SetMediaInfo(SerializableWindowState theState, BackgroundAudioShared.AudioModel info)
+        public void SetMediaInfo(SerializableWindowState theState, BackgroundAudioShared.AudioModel info, bool isResume)
         {
             this._state = theState;
             this.Info = info;
@@ -471,8 +370,15 @@ namespace CrossConnect
             {
                 this.Info.Src = theState.BibleToLoad;
             }
-            AddMediaPlayerEventHandlers();
-            this.RestartToThisMedia();
+
+            if(isResume && BackgroundMediaPlayer.Current.CurrentState == MediaPlayerState.Playing)
+            {
+                    MessageService.SendMessageToBackground(new AppResumedMessage());
+            }
+            else
+            {
+                this.RestartToThisMedia();
+            }
         }
 
         private void MediaPlayerWindow_OnLayoutUpdated(object sender, object e)
@@ -575,29 +481,11 @@ namespace CrossConnect
         /// </summary>
         void ForegroundApp_Resuming(object sender, object e)
         {
-            ApplicationSettingsHelper.SaveSettingsValue(ApplicationSettingsConstants.AppState, AppState.Active.ToString());
+            // If yes, it's safe to reconnect to media play handlers
+            AddMediaPlayerEventHandlers();
 
-            // Verify the task is running
-            if (IsMyBackgroundTaskRunning)
-            {
-                // If yes, it's safe to reconnect to media play handlers
-                AddMediaPlayerEventHandlers();
-
-                // Send message to background task that app is resumed so it can start sending notifications again
-                MessageService.SendMessageToBackground(new AppResumedMessage());
-
-                UpdateTransportControls(BackgroundMediaPlayer.Current.CurrentState);
-                //var saved = AudioModel.CreateFromSettings();
-
-                //txtCurrentTrack.Text = saved.Src;
-                //txtCurrentState.Text = BackgroundMediaPlayer.Current.CurrentState.ToString();
-            }
-            else
-            {
-                //playButton.Content = ">";     // Change to play button
-                //txtCurrentTrack.Text = string.Empty;
-                //txtCurrentState.Text = "Background Task Not Running";
-            }
+            // Send message to background task that app is resumed so it can start sending notifications again
+            MessageService.SendMessageToBackground(new AppResumedMessage());
         }
 
         /// <summary>
@@ -611,14 +499,12 @@ namespace CrossConnect
 
             // Only if the background task is already running would we do these, otherwise
             // it would trigger starting up the background task when trying to suspend.
-            if (IsMyBackgroundTaskRunning)
-            {
-                // Stop handling player events immediately
-                RemoveMediaPlayerEventHandlers();
 
-                // Tell the background task the foreground is suspended
-                MessageService.SendMessageToBackground(new AppSuspendedMessage());
-            }
+            // Stop handling player events immediately
+            RemoveMediaPlayerEventHandlers();
+
+            // Tell the background task the foreground is suspended
+            MessageService.SendMessageToBackground(new AppSuspendedMessage());
 
             deferral.Complete();
         }

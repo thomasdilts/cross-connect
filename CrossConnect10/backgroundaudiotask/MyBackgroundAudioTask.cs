@@ -76,50 +76,49 @@ namespace BackgroundAudioTask
         {
             //await bibles.Initialize();
             Debug.WriteLine("Background Audio Task " + taskInstance.Task.Name + " starting...");
+            try
+            {
+                // Initialize SystemMediaTransportControls (SMTC) for integration with
+                // the Universal Volume Control (UVC).
+                //
+                // The UI for the UVC must update even when the foreground process has been terminated
+                // and therefore the SMTC is configured and updated from the background task.
+                smtc = BackgroundMediaPlayer.Current.SystemMediaTransportControls;
+                smtc.ButtonPressed += smtc_ButtonPressed;
+                smtc.PropertyChanged += smtc_PropertyChanged;
+                smtc.IsEnabled = true;
+                smtc.IsPauseEnabled = true;
+                smtc.IsPlayEnabled = true;
+                smtc.IsNextEnabled = true;
+                smtc.IsPreviousEnabled = true;
 
-            // Initialize SystemMediaTransportControls (SMTC) for integration with
-            // the Universal Volume Control (UVC).
-            //
-            // The UI for the UVC must update even when the foreground process has been terminated
-            // and therefore the SMTC is configured and updated from the background task.
-            smtc = BackgroundMediaPlayer.Current.SystemMediaTransportControls;
-            smtc.ButtonPressed += smtc_ButtonPressed;
-            smtc.PropertyChanged += smtc_PropertyChanged;
-            smtc.IsEnabled = true;
-            smtc.IsPauseEnabled = true;
-            smtc.IsPlayEnabled = true;
-            smtc.IsNextEnabled = true;
-            smtc.IsPreviousEnabled = true;
+                // Read persisted state of foreground app
 
-            // Read persisted state of foreground app
-            var value = ApplicationSettingsHelper.ReadResetSettingsValue(ApplicationSettingsConstants.AppState);
-            if (value == null)
-                foregroundAppState = AppState.Unknown;
-            else
-                foregroundAppState = EnumHelper.Parse<AppState>(value.ToString());
+                // Add handlers for MediaPlayer
+                BackgroundMediaPlayer.Current.CurrentStateChanged += Current_CurrentStateChanged;
 
-            // Add handlers for MediaPlayer
-            BackgroundMediaPlayer.Current.CurrentStateChanged += Current_CurrentStateChanged;
+                // Initialize message channel 
+                BackgroundMediaPlayer.MessageReceivedFromForeground += BackgroundMediaPlayer_MessageReceivedFromForeground;
+                BackgroundMediaPlayer.Current.MediaEnded += MediaEndedEvent;
+                BackgroundMediaPlayer.Current.MediaFailed += MediaFailedEvent;
 
-            // Initialize message channel 
-            BackgroundMediaPlayer.MessageReceivedFromForeground += BackgroundMediaPlayer_MessageReceivedFromForeground;
-            BackgroundMediaPlayer.Current.MediaEnded += MediaEndedEvent;
-            BackgroundMediaPlayer.Current.MediaFailed += MediaFailedEvent;
-
-            // Send information to foreground that background task has been started if app is active
-            if (foregroundAppState != AppState.Suspended)
+                // Send information to foreground that background task has been started if app is active
                 MessageService.SendMessageToForeground(new BackgroundAudioTaskStartedMessage());
 
-            ApplicationSettingsHelper.SaveSettingsValue(ApplicationSettingsConstants.BackgroundTaskState, BackgroundTaskState.Running.ToString());
+                deferral = taskInstance.GetDeferral(); // This must be retrieved prior to subscribing to events below which use it
 
-            deferral = taskInstance.GetDeferral(); // This must be retrieved prior to subscribing to events below which use it
+                // Mark the background task as started to unblock SMTC Play operation (see related WaitOne on this signal)
+                backgroundTaskStarted.Set();
 
-            // Mark the background task as started to unblock SMTC Play operation (see related WaitOne on this signal)
-            backgroundTaskStarted.Set();
+                // Associate a cancellation and completed handlers with the background task.
+                taskInstance.Task.Completed += TaskCompleted;
+                taskInstance.Canceled += new BackgroundTaskCanceledEventHandler(OnCanceled); // event may raise immediately before continung thread excecution so must be at the end
+            }
+            catch (Exception)
+            {
 
-            // Associate a cancellation and completed handlers with the background task.
-            taskInstance.Task.Completed += TaskCompleted;
-            taskInstance.Canceled += new BackgroundTaskCanceledEventHandler(OnCanceled); // event may raise immediately before continung thread excecution so must be at the end
+                throw;
+            }
         }
 
         void Position_TimerCallback(object state)
@@ -206,31 +205,45 @@ namespace BackgroundAudioTask
         {
             if (!isPlaying)
             {
-                smtc.PlaybackStatus = MediaPlaybackStatus.Stopped;
-                smtc.DisplayUpdater.MusicProperties.Title = string.Empty;
-                smtc.DisplayUpdater.Update();
-                return;
+                try
+                {
+                    MessageService.SendMessageToForeground(new TrackChangedMessage(currentlyPlaying, string.Empty));
+                    smtc.PlaybackStatus = MediaPlaybackStatus.Stopped;
+                    smtc.DisplayUpdater.MusicProperties.Title = string.Empty;
+                    smtc.DisplayUpdater.Update();
+                    return;
+                }
+                catch (Exception)
+                {
+                }
             }
-            smtc.IsChannelDownEnabled = true;
-            smtc.IsChannelUpEnabled = true;
-            smtc.IsNextEnabled = true;
-            smtc.IsPreviousEnabled = true;
-            smtc.PlaybackStatus = MediaPlaybackStatus.Playing;
-            smtc.DisplayUpdater.Type = MediaPlaybackType.Music;
-
-            var book = booknames.GetFullName(currentlyPlaying.Book,currentlyPlaying.Book);
-
-            smtc.DisplayUpdater.MusicProperties.Title = book + " " + (currentlyPlaying.Chapter + 1);
-
-            if (!string.IsNullOrEmpty(currentlyPlaying.Icon))
+            try
             {
-                smtc.DisplayUpdater.Thumbnail = RandomAccessStreamReference.CreateFromUri(new Uri(currentlyPlaying.Icon));
-            }
-            else
-                smtc.DisplayUpdater.Thumbnail = null;
+                smtc.IsChannelDownEnabled = true;
+                smtc.IsChannelUpEnabled = true;
+                smtc.IsNextEnabled = true;
+                smtc.IsPreviousEnabled = true;
+                smtc.PlaybackStatus = MediaPlaybackStatus.Playing;
+                smtc.DisplayUpdater.Type = MediaPlaybackType.Music;
 
-            smtc.DisplayUpdater.Update();
-            MessageService.SendMessageToForeground(new TrackChangedMessage(currentlyPlaying, smtc.DisplayUpdater.MusicProperties.Title));
+                var book = booknames.GetFullName(currentlyPlaying.Book, currentlyPlaying.Book);
+
+                smtc.DisplayUpdater.MusicProperties.Title = book + " " + (currentlyPlaying.Chapter + 1);
+                MessageService.SendMessageToForeground(new TrackChangedMessage(currentlyPlaying, smtc.DisplayUpdater.MusicProperties.Title));
+
+                if (!string.IsNullOrEmpty(currentlyPlaying.Icon))
+                {
+                    smtc.DisplayUpdater.Thumbnail = RandomAccessStreamReference.CreateFromUri(new Uri(currentlyPlaying.Icon));
+                }
+                else
+                    smtc.DisplayUpdater.Thumbnail = null;
+
+                smtc.DisplayUpdater.Update();
+            }
+            catch (Exception)
+            {
+            }
+
         }
 
         /// <summary>
@@ -460,6 +473,7 @@ namespace BackgroundAudioTask
             {
                 Debug.WriteLine("App resuming"); // App is resumed, now subscribe to message channel
                 foregroundAppState = AppState.Active;
+                UpdateUVCOnNewTrack(smtc.PlaybackStatus == MediaPlaybackStatus.Playing);
                 return;
             }
 
