@@ -14,7 +14,7 @@
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="CrossConnect10.App">
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="CrossConnect.App">
       <Extensions>
         <Extension Category="windows.backgroundTasks" EntryPoint="BackgroundAudioTask.MyBackgroundAudioTask">
           <BackgroundTasks>

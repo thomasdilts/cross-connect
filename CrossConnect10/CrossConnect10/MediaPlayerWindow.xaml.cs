@@ -45,7 +45,6 @@ namespace CrossConnect
         private bool _isLoaded;
 
         private SerializableWindowState _state = new SerializableWindowState();
-        private bool isMyBackgroundTaskRunning = false;
         private BackgroundAudioShared.AudioModel Info= null;
 
         #endregion
@@ -124,10 +123,7 @@ namespace CrossConnect
 
         private void MediaPlayerWindowUnloaded(object sender, RoutedEventArgs e)
         {
-            if (isMyBackgroundTaskRunning)
-            {
-                RemoveMediaPlayerEventHandlers();
-            }
+            RemoveMediaPlayerEventHandlers();
             BackgroundMediaPlayer.Current.Pause();
             this._isLoaded = false;
         }
@@ -297,6 +293,11 @@ namespace CrossConnect
 
         private void ButCloseClick(object sender, RoutedEventArgs e)
         {
+            if(BackgroundMediaPlayer.Current.CurrentState == MediaPlayerState.Playing)
+            {
+                BackgroundMediaPlayer.Current.Pause();
+            }
+
             if (this.HitButtonClose != null)
             {
                 this.HitButtonClose(this, null);
