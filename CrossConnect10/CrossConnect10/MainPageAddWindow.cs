@@ -495,7 +495,7 @@ namespace CrossConnect
             this.selectDocumentType.Items.Add(Translations.Translate("Daily plan"));
             this.selectDocumentType.Items.Add(Translations.Translate("Added notes"));
             this.selectDocumentType.Items.Add(Translations.Translate("Selected verses"));
-            this.BorderHelpText.Text = Translations.Translate("To move between screens push on the title or the borders");
+            this.BorderHelpText.Text = Translations.Translate("Pull on the title or the borders for moving to another window");
 
             this.BorderMoveTutorial.Visibility = Visibility.Collapsed ;
             this.ImageMoveTutorial.Visibility = Visibility.Collapsed;
