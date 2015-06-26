@@ -90,7 +90,7 @@ namespace CrossConnect
                 }
                 returnToWindowCallback();
                 // Prevent updates to the remote version of the file until we finish making changes and call CompleteUpdatesAsync.
-                CachedFileManager.DeferUpdates(zipFile);
+                //CachedFileManager.DeferUpdates(zipFile);
 
                 var tempSharedTransfers = await GetTransferFolder();
 
@@ -170,15 +170,15 @@ namespace CrossConnect
 
                 // Let Windows know that we're finished changing the file so the other app can update the remote version of the file.
                 // Completing updates may require Windows to ask for user input.
-                FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(zipFile);
-                if (status == FileUpdateStatus.Complete)
-                {
-                    //OutputTextBlock.Text = "File " + file.Name + " was saved.";
-                }
-                else
-                {
-                    //OutputTextBlock.Text = "File " + file.Name + " couldn't be saved.";
-                }
+                //FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(zipFile);
+                //if (status == FileUpdateStatus.Complete)
+                //{
+                //    //OutputTextBlock.Text = "File " + file.Name + " was saved.";
+                //}
+                //else
+                //{
+                //    //OutputTextBlock.Text = "File " + file.Name + " couldn't be saved.";
+                //}
             }
             catch (Exception e)
             {
