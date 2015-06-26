@@ -27,6 +27,8 @@ namespace CrossConnect
     using System.Linq;
 
     using Windows.ApplicationModel.DataTransfer;
+    using Windows.Storage;
+    using Windows.Storage.Pickers;
     using Windows.UI.Core;
     using Windows.UI.Popups;
     using Windows.UI.Xaml;
@@ -62,12 +64,9 @@ namespace CrossConnect
             oneDriveBookmarks.Header = Translations.Translate("Bookmarks and custom notes");
             oneDriveThemes.Header = Translations.Translate("Themes");
             oneDriveWindowSetup.Header = Translations.Translate("Window setup");
-            this.oneDriveCaptionPutInFolder.Text = Translations.Translate("Folder on OneDrive");
             oneDriveButCancel.Content = Translations.Translate("Cancel");
-            //this.oneDriveButConnect.Content = Translations.Translate("Connect to OneDrive");
-            //this.oneDriveButLogout.Content = Translations.Translate("Logout from OneDrive");
+            this.ImportOneSwordModule.Content = Translations.Translate("Install one 'Sword' module");
 
-            oneDrivePutInFolder.Text = App.DisplaySettings.OneDriveFolder;
         }
         private void MenuOneDriveBackupRestoreClick(object sender, RoutedEventArgs e)
         {
@@ -145,12 +144,7 @@ namespace CrossConnect
             this.oneDriveProgressBarTotal.Minimum = 0;
             this.oneDriveProgressBarTotal.Maximum = 100;
             this.oneDriveProgressBarTotal.Value = 3;
-            this.oneDrivePutInFolder.Text = this.oneDrivePutInFolder.Text.Replace("\\", "").Replace("/", "").Trim();
-            if (string.IsNullOrEmpty(this.oneDrivePutInFolder.Text))
-            {
-                this.oneDrivePutInFolder.Text = "CrossConnectBackup";
-            }
-            App.DisplaySettings.OneDriveFolder = this.oneDrivePutInFolder.Text;
+
             await App.SaveAllPersistantObjects();
             await backupRestoreObj.DoExport(
                 new BackupRestore.BackupManifest
@@ -163,7 +157,7 @@ namespace CrossConnect
                     windowSetup = (bool)this.oneDriveWindowSetup.IsOn,
                     IsWindowsPhone = false
                 }, 
-                this.oneDrivePutInFolder.Text, 
+                string.Empty, 
                 BackupRestoreProgress,
                 ReturnToWindowCallback,
                 Translations.Translate("Backup") + DateTime.Now.ToString("yyyy-MM-dd.HH.mm"));
@@ -186,7 +180,7 @@ namespace CrossConnect
                     highlighting = (bool)this.oneDriveHighlighting.IsOn,
                     windowSetup = (bool)this.oneDriveWindowSetup.IsOn,
                     IsWindowsPhone = true
-                }, this.oneDrivePutInFolder.Text, BackupRestoreProgress, ReturnToWindowCallback);
+                }, string.Empty, BackupRestoreProgress, ReturnToWindowCallback);
         }
         /*
         private void oneDriveButLogout_Click(object sender, RoutedEventArgs e)
@@ -206,6 +200,31 @@ namespace CrossConnect
             App.ShowUserInterface(false);
         }
 
+        private async void ImportOneSwordModule_Click(object sender, RoutedEventArgs e)
+        {
+
+            FileOpenPicker openPicker = new FileOpenPicker();
+            openPicker.ViewMode = PickerViewMode.Thumbnail;
+            openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            openPicker.FileTypeFilter.Add(".zip");
+
+            StorageFile zipFile = await openPicker.PickSingleFileAsync();
+            if (zipFile == null)
+            {
+                return;
+            }
+
+            var error = await SwordBook.TryInstallBibleFromZipFile(zipFile);
+            if (!string.IsNullOrEmpty(error[0]))
+            {
+                var dialog2 = new MessageDialog(error[0]);
+                await dialog2.ShowAsync();
+            }
+            else
+            {
+                await App.InstalledBibles.AddGenericBook(error[1]);
+            }
+        }
 
         #endregion
     }

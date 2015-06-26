@@ -430,6 +430,7 @@ namespace CrossConnect
                 {
                     this.ProgressCompleted(string.Empty);
                 }
+                zipStream.Dispose();
             }
             catch (Exception exp)
             {
@@ -441,11 +442,129 @@ namespace CrossConnect
 
             this._client.RemoveTempFile();
         }
+        /// <summary>
+        /// This may be a totally bogus file or a file with various errors.
+        /// Therefore there is maximal testing for a valid Sword format.
+        /// </summary>
+        /// <returns>Error text or empty string if no errors.</returns>
+        public static async Task<string[]> TryInstallBibleFromZipFile(StorageFile zipFile)
+        {
+            string ModFilePath=string.Empty;
+            var allowedDrivers = new HashSet<string> { "ZCOM", "RAWCOM", "RAWGENBOOK", "ZTEXT", "RAWTEXT", "ZLD", "RAWLD", "RAWLD4" };
+            try
+            {
+                ZipArchive zipStream;
+                try
+                {
+                    var stream = await zipFile.OpenStreamForReadAsync();
+                    //Stream stream = file.AsStreamForRead();
+                    zipStream = new ZipArchive(stream);
+                }
+                catch (Exception ee)
+                {
+                    return new string[] { "Cannot open the file as a zip stream:" + ee.Message };
+                }
+
+                //get all config files and list of all files.
+                ReadOnlyCollection<ZipArchiveEntry> entries = zipStream.Entries;
+                var foundPathToFiles = string.Empty;
+                var allNonConfigFiles = new List<string>();
+                foreach (ZipArchiveEntry entry in entries)
+                {
+                    if (entry.Name == "" )
+                    {
+                        // Probably an empty Folder
+                    }
+                    else if (entry.Name.EndsWith(".conf") && entry.FullName.StartsWith("mods.d/"))
+                    {
+                        // File
+                        //await ExtractFile(ApplicationData.Current.LocalFolder, entry);
+                        var buff = new byte[10000]; //it is impossible that this file is over 10000 bytes
+                        using (var stream = entry.Open())
+                        {
+                            var bytes = stream.Read(buff, 0, buff.Length);
+                            Array.Resize(ref buff, bytes);
+                            try
+                            {
+                                var book = new SwordBook(buff, entry.Name);
+                                var driver = ((string)book.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
+                                if(!allowedDrivers.Contains(driver))
+                                {
+                                    return new string[] { string.Format("Not an allowed type of sword file='{0}' ; Allowed types = {1}", driver, allowedDrivers.Aggregate((i, j) => i + ", " + j)) };
+                                }
+                                foundPathToFiles = book.Sbmd.GetCetProperty(ConfigEntryType.ADataPath).ToString().Substring(2);
+                                if(!foundPathToFiles.StartsWith("modules/"))
+                                {
+                                    return new string[] { string.Format("Something wrong in config file with the path to the files='{0}' ; should begin with './modules/'", foundPathToFiles) };
+                                }
+                                ModFilePath = Path.GetFileNameWithoutExtension(entry.FullName);
+                            }
+                            catch (Exception eee)
+                            {
+
+                                return new string[] { string.Format("Cannot read config file='{0}': error = {1}", entry.FullName, eee.Message) };
+                            }
+                        }
+                    }
+                    else
+                    {
+                        allNonConfigFiles.Add(entry.FullName);
+                    }
+                }
+
+                if(string.IsNullOrEmpty(ModFilePath))
+                {
+                    return new string[] { "Cannot find a config file in the expected directory=mods.d" };
+                }
+
+                if (!allNonConfigFiles.Any(p=>p.StartsWith(foundPathToFiles)))
+                {
+                    return new string[] { "Cannot find any files in the expected path=" + foundPathToFiles };
+                }
+
+                // looks good. Lets put it in our database.
+                StorageFolder isolatedStorageRoot = ApplicationData.Current.LocalFolder;
+                foreach (ZipArchiveEntry zipArchiveEntry in entries)
+                {
+                    // make sure it is not just a directory
+                    if (!zipArchiveEntry.FullName.EndsWith("\\") && !zipArchiveEntry.FullName.EndsWith("/") && zipArchiveEntry.Length != 0)
+                    {
+                        bool dummy = await MakeSurePathExists(zipArchiveEntry.FullName);
+
+                        StorageFile file =
+                            await
+                            isolatedStorageRoot.CreateFileAsync(
+                                zipArchiveEntry.FullName.Replace("/", "\\"), CreationCollisionOption.ReplaceExisting);
+                        Stream stream = await file.OpenStreamForWriteAsync();
+                        var buffer = new byte[10000];
+                        int len;
+                        Stream zstream = zipArchiveEntry.Open();
+
+                        while ((len = zstream.Read(buffer, 0, buffer.GetUpperBound(0))) > 0)
+                        {
+                            stream.Write(buffer, 0, len);
+                        }
+
+                        zstream.Dispose();
+                        stream.Dispose();
+                    }
+                }
+                zipStream.Dispose();
+            }
+            catch (Exception exp)
+            {
+                return new string[] { "Unexpected error while examining the zip file=" + exp.Message };
+            }
+
+            return new string[] { string.Empty, ModFilePath};
+        }
+
 
         #endregion
     }
 
-    public class WebInstaller
+
+public class WebInstaller
     {
         #region Constants
 
