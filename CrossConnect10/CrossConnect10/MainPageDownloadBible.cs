@@ -76,8 +76,7 @@ namespace CrossConnect
                     {
                         var dialog =
                             new MessageDialog(
-                                Translations.Translate(
-                                    "An error occurred trying to connect to the network. Try again later.") + "; "
+                                Translations.Translate("An error occurred trying to connect to the network. Try again later.") + "; "
                                 + errMsg);
                         await dialog.ShowAsync();
                         this.MenuDownloadBibleClick(null, null);
@@ -87,8 +86,7 @@ namespace CrossConnect
                 {
                     var dialog =
                         new MessageDialog(
-                            Translations.Translate(
-                                "An error occurred trying to connect to the network. Try again later."));
+                            Translations.Translate("An error occurred trying to connect to the network. Try again later."));
                     await dialog.ShowAsync();
                     this.MenuDownloadBibleClick(null, null);
                 }
@@ -395,8 +393,7 @@ namespace CrossConnect
                 {
                     var dialog =
                         new MessageDialog(
-                            Translations.Translate(
-                                "An error occurred trying to connect to the network. Try again later.") + "; " + error);
+                            Translations.Translate("An error occurred trying to connect to the network. Try again later.") + "; " + error);
                     await dialog.ShowAsync();
                     this.MenuDownloadBibleClick(null, null);
                     this._isInCompletedUnzipped = false;
@@ -474,8 +471,7 @@ namespace CrossConnect
                 {
                     var dialog =
                         new MessageDialog(
-                            Translations.Translate(
-                                "An error occurred trying to connect to the network. Try again later."));
+                            Translations.Translate("An error occurred trying to connect to the network. Try again later."));
                     await dialog.ShowAsync();
                     this.MenuDownloadBibleClick(null, null);
                 }

@@ -54,7 +54,7 @@ namespace CrossConnect
             backupRestoreObj.IsCanceled = false;
             UpdateUi();
 
-            OneDriveTitle.Text = Translations.Translate("OneDrive backup / restore");
+            OneDriveTitle.Text = Translations.Translate("Backup / restore");
             oneDriveInformationText.Text = Translations.Translate("Select the items you want to backup / restore. Then hit the button at the bottom");
             oneDriveButExport.Content = Translations.Translate("Backup");
             oneDriveButImport.Content = Translations.Translate("Restore");
@@ -105,8 +105,7 @@ namespace CrossConnect
             bool isError = false;
             if (IsFinal && !string.IsNullOrEmpty(Message))
             {
-                var dialog = new MessageDialog(Translations.Translate(
-                                "An error occurred trying to connect to the network. Try again later.") + "; " + Message);
+                var dialog = new MessageDialog(Translations.Translate("An error occurred trying to connect to the network. Try again later.") + "; " + Message);
                 await dialog.ShowAsync();
                 _isTransfering = false;
                 isError = true;

@@ -238,8 +238,7 @@ namespace CrossConnect
                 {
                     var dialog =
                         new MessageDialog(
-                            Translations.Translate(
-                                "An error occurred trying to connect to the network. Try again later.") + "; " + errorMessage.message);
+                            Translations.Translate("An error occurred trying to connect to the network. Try again later.") + "; " + errorMessage.message);
                     dialog.ShowAsync();
                 });
                 return;
