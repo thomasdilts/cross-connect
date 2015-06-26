@@ -129,11 +129,10 @@ namespace CrossConnect
                 progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
                 _progressIncrement = 75.0 / (double)fileTransferList.Count();
 
-
-                using (MemoryStream zipMemoryStream = new MemoryStream())
+                using (var zipStream = await zipFile.OpenStreamForWriteAsync())
                 {
                     // Create zip archive
-                    using (ZipArchive zipArchive = new ZipArchive(zipMemoryStream, ZipArchiveMode.Create))
+                    using (ZipArchive zipArchive = new ZipArchive(zipStream, ZipArchiveMode.Create))
                     {
                         // For each file to compress...
                         foreach (var fileToCompress in fileTransferList)
@@ -167,16 +166,6 @@ namespace CrossConnect
                     this.oneDriveProgressBarTotal = 95;
                     progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
 
-                    using (IRandomAccessStream zipStream = await zipFile.OpenAsync(FileAccessMode.ReadWrite))
-                    {
-                        // Write compressed data from memory to file
-                        using (Stream outstream = zipStream.AsStreamForWrite())
-                        {
-                            byte[] buffer = zipMemoryStream.ToArray();
-                            outstream.Write(buffer, 0, buffer.Length);
-                            outstream.Flush();
-                        }
-                    }
                 }
 
                 // Let Windows know that we're finished changing the file so the other app can update the remote version of the file.
@@ -226,6 +215,7 @@ namespace CrossConnect
 
             foreach (var i in steps)
             {
+                await folder.CreateFolderAsync(i, CreationCollisionOption.OpenIfExists);
                 folder = await folder.GetFolderAsync(i);
             }
 
@@ -290,70 +280,64 @@ namespace CrossConnect
                 returnToWindowCallback();
                 using (var zipStream = await zipFile.OpenStreamForReadAsync())
                 {
-                    using (MemoryStream zipMemoryStream = new MemoryStream((int)zipStream.Length))
+                    using (var archive = new ZipArchive(zipStream, ZipArchiveMode.Read))
                     {
-                        progressCallback(5, 0, false, null, null, null);
-                        await zipStream.CopyToAsync(zipMemoryStream);
-                        progressCallback(10, 0, false, null, null, null);
-                        using (var archive = new ZipArchive(zipMemoryStream, ZipArchiveMode.Read))
+                        var manifestEntry = archive.Entries.FirstOrDefault(p => p.Name.Equals(BackupManifestFileName));
+                        if(manifestEntry==null)
                         {
-                            var manifestEntry = archive.Entries.FirstOrDefault(p => p.Name.Equals(BackupManifestFileName));
-                            if(manifestEntry==null)
+                            progressCallback(100, 0, true, null, null, "Not a valid backup. No manifest file");
+                            return;
+                        }
+
+                        var buff = new byte[5000]; //it is impossible that this file is over 5000 bytes
+                        using (var stream = manifestEntry.Open())
+                        {
+                            var bytes = stream.Read(buff, 0, buff.Length);
+                            Array.Resize(ref buff, bytes);
+                        }
+                        BackupRestore.BackupManifest manifestFound = (BackupRestore.BackupManifest)Deserialize(buff, typeof(BackupRestore.BackupManifest));
+                        Dictionary<string, ManifestCheck> manifestCheck = new Dictionary<string, ManifestCheck>
+                        {
+                            { string.Empty, new ManifestCheck(manifestFound.bibles, manifestSelected.bibles, "Bibles",null) },
+                            { PersistantObjectsDisplaySettingsFileName, new ManifestCheck(manifestFound.settings, manifestSelected.settings, "Settings",PersistantObjectsDisplaySettingsFileName) },
+                            { PersistantObjectsHighlightFileName, new ManifestCheck(manifestFound.highlighting, manifestSelected.highlighting, "Highlighting",PersistantObjectsHighlightFileName) },
+                            { PersistantObjectsMarkersFileName, new ManifestCheck(manifestFound.bookmarks, manifestSelected.bookmarks, "Bookmarks and custom notes",PersistantObjectsMarkersFileName) },
+                            { PersistantObjectsThemesFileName, new ManifestCheck(manifestFound.themes, manifestSelected.themes, "Themes",PersistantObjectsThemesFileName) },
+                            { PersistantObjectsWindowsFileName, new ManifestCheck(manifestFound.windowSetup, manifestSelected.windowSetup, "Window setup", PersistantObjectsWindowsFileName) }
+                        };
+
+                        foreach (var check in manifestCheck)
+                        {
+                            if (check.Value.RequestValue && !check.Value.ManifestValue)
                             {
-                                progressCallback(100, 0, true, null, null, "Not a valid backup. No manifest file");
+                                progressCallback(100, 0, true, null, check.Value.Message, "Doesn't exist in archive. Remove it and try again");
                                 return;
                             }
+                        }
+                        this.oneDriveProgressBarTotal = 20;
+                        progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                        _progressIncrement = 75.0 / (double)archive.Entries.Count();
 
-                            var buff = new byte[5000]; //it is impossible that this file is over 5000 bytes
-                            using (var stream = manifestEntry.Open())
+                        foreach (ZipArchiveEntry entry in archive.Entries)
+                        {
+                            ManifestCheck foundCheck = null;
+                            if (!manifestCheck.TryGetValue(entry.Name, out foundCheck) || foundCheck.RequestValue)
                             {
-                                var bytes = stream.Read(buff, 0, buff.Length);
-                                Array.Resize(ref buff, bytes);
-                            }
-                            BackupRestore.BackupManifest manifestFound = (BackupRestore.BackupManifest)Deserialize(buff, typeof(BackupRestore.BackupManifest));
-                            Dictionary<string, ManifestCheck> manifestCheck = new Dictionary<string, ManifestCheck>
-                            {
-                                { string.Empty, new ManifestCheck(manifestFound.bibles, manifestSelected.bibles, "Bibles",null) },
-                                { PersistantObjectsDisplaySettingsFileName, new ManifestCheck(manifestFound.settings, manifestSelected.settings, "Settings",PersistantObjectsDisplaySettingsFileName) },
-                                { PersistantObjectsHighlightFileName, new ManifestCheck(manifestFound.highlighting, manifestSelected.highlighting, "Highlighting",PersistantObjectsHighlightFileName) },
-                                { PersistantObjectsMarkersFileName, new ManifestCheck(manifestFound.bookmarks, manifestSelected.bookmarks, "Bookmarks and custom notes",PersistantObjectsMarkersFileName) },
-                                { PersistantObjectsThemesFileName, new ManifestCheck(manifestFound.themes, manifestSelected.themes, "Themes",PersistantObjectsThemesFileName) },
-                                { PersistantObjectsWindowsFileName, new ManifestCheck(manifestFound.windowSetup, manifestSelected.windowSetup, "Window setup", PersistantObjectsWindowsFileName) }
-                            };
-
-                            foreach (var check in manifestCheck)
-                            {
-                                if (check.Value.RequestValue && !check.Value.ManifestValue)
-                                {
-                                    progressCallback(100, 0, true, null, check.Value.Message, "Doesn't exist in archive. Remove it and try again");
-                                    return;
-                                }
-                            }
-                            this.oneDriveProgressBarTotal = 20;
-                            progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
-                            _progressIncrement = 75.0 / (double)archive.Entries.Count();
-
-                            foreach (ZipArchiveEntry entry in archive.Entries)
-                            {
-                                ManifestCheck foundCheck = null;
-                                if (!manifestCheck.TryGetValue(entry.Name, out foundCheck) || foundCheck.RequestValue)
-                                {
                                     
-                                    if (entry.Name == "" && manifestSelected.bibles)
-                                    {
-                                        // Folder
-                                        await CreateRecursiveFolder(ApplicationData.Current.LocalFolder, entry);
-                                    }
-                                    else if (entry.Name != "" && !entry.Name.Equals(BackupManifestFileName) && (foundCheck!=null || manifestSelected.bibles))
-                                    {
-                                        // File
-                                        await ExtractFile(ApplicationData.Current.LocalFolder, entry);
-                                    }
+                                if (entry.Name == "" && manifestSelected.bibles)
+                                {
+                                    // Folder
+                                    await CreateRecursiveFolder(ApplicationData.Current.LocalFolder, entry);
                                 }
-
-                                this.oneDriveProgressBarTotal += _progressIncrement;
-                                progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
+                                else if (entry.Name != "" && !entry.Name.Equals(BackupManifestFileName) && (foundCheck!=null || manifestSelected.bibles))
+                                {
+                                    // File
+                                    await ExtractFile(ApplicationData.Current.LocalFolder, entry);
+                                }
                             }
+
+                            this.oneDriveProgressBarTotal += _progressIncrement;
+                            progressCallback(this.oneDriveProgressBarTotal, 0, false, null, null, null);
                         }
                     }
                 }
