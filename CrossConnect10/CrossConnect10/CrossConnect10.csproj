@@ -168,8 +168,6 @@
     </AppxManifest>
     <None Include="ApplicationInsights.config" />
     <None Include="CrossConnect10_TemporaryKey.pfx" />
-    <EmbeddedResource Include="Properties\strongsgreek.xml.gz" />
-    <EmbeddedResource Include="Properties\strongshebrew.xml.gz" />
     <PRIResource Include="Locale\af\resource.resw" />
     <PRIResource Include="Locale\ar\resource.resw" />
     <PRIResource Include="Locale\az-latn\resource.resw" />

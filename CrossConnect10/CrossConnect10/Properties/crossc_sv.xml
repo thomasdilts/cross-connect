@@ -122,8 +122,8 @@
 <string key="Morphology-Middle significance">USA signifikans</string>
 <string key="Morphology-Middle">Mitten</string>
 <string key="Morphology-Negative">Negativ</string>
-<string key="Morphology-Neuter">Sterilisera</string>
-<string key="Morphology-No tense stated (adverbial imperative)">Ingen spänd anges (adverbial imperativ)</string>
+<string key="Morphology-Neuter">Neutrum</string>
+<string key="Morphology-No tense stated (adverbial imperative)">Ingen tempus anges (adverbial imperativ)</string>
 <string key="Morphology-No voice stated">Ingen röst angivna</string>
 <string key="Morphology-Nominative">Nominativ</string>
 <string key="Morphology-Noun">Substantiv</string>
@@ -139,7 +139,7 @@
 <string key="Morphology-Plural">Plural</string>
 <string key="Morphology-Possessive pronoun">Possessiva pronomen</string>
 <string key="Morphology-Preposition">Preposition</string>
-<string key="Morphology-Present">Närvarande</string>
+<string key="Morphology-Present">Nurvarande</string>
 <string key="Morphology-Reciprocal pronoun">Ömsesidig pronomen</string>
 <string key="Morphology-Reflexive pronoun">Reflexivt pronomen</string>
 <string key="Morphology-Relative pronoun">Relativ pronomen</string>
