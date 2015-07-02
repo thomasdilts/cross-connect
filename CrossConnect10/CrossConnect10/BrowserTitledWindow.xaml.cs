@@ -1124,7 +1124,8 @@ namespace CrossConnect
                 SearchInput.Visibility = Visibility.Visible;
                 searchPanel.ColumnDefinitions[2].Width = GridLength.Auto;
                 searchPanel.ColumnDefinitions[3].Width = GridLength.Auto;
-                searchPanel.ColumnDefinitions[0].Width = new GridLength(searchPanel.ActualWidth - butSearchDictionary.ActualWidth*2 - SearchInput.Width);
+                var width = searchPanel.ActualWidth - butSearchDictionary.ActualWidth * 2 - SearchInput.Width;
+                searchPanel.ColumnDefinitions[0].Width = new GridLength(width>0?width:0);
             }
             else
             {
@@ -1165,9 +1166,9 @@ namespace CrossConnect
             App.MainWindow.ButAddWindowClick(this, null);
         }
 
-        private void butSearchDictionary_OnClick(object sender, RoutedEventArgs e)
+        private async void butSearchDictionary_OnClick(object sender, RoutedEventArgs e)
         {
-            this.webBrowser1.InvokeScript(
+            await this.webBrowser1.InvokeScriptAsync(
                 "DoSearch",
                 new[] { "ID_" + SearchInput.Text });
         }
