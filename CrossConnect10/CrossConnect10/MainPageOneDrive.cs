@@ -29,6 +29,7 @@ namespace CrossConnect
     using Windows.ApplicationModel.DataTransfer;
     using Windows.Storage;
     using Windows.Storage.Pickers;
+    using Windows.System;
     using Windows.UI.Core;
     using Windows.UI.Popups;
     using Windows.UI.Xaml;
@@ -65,6 +66,7 @@ namespace CrossConnect
             oneDriveThemes.Header = Translations.Translate("Themes");
             oneDriveWindowSetup.Header = Translations.Translate("Window setup");
             oneDriveButCancel.Content = Translations.Translate("Cancel");
+            oneDriveButHelp.Content = Translations.Translate("Help");
             this.ImportOneSwordModule.Content = Translations.Translate("Install one 'Sword' module");
 
         }
@@ -75,22 +77,7 @@ namespace CrossConnect
                 this.OneDrivePopup, this.MainPaneOneDrivePopup, this.scrollViewerOneDrive, this.TopAppBar1, this.BottomAppBar);
             this.OneDrivePopup.IsOpen = true;
         }
-        /*
-        private async void ButConnectClick(object sender, RoutedEventArgs e)
-        {
-            //oneDriveButConnect.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            //oneDriveProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            var message = await backupRestoreObj.AuthenticateUser();
-            if (!string.IsNullOrEmpty(message))
-            {
-                var dialog = new MessageDialog(message);
-                await dialog.ShowAsync();
-            }
-            UpdateUi();
-            //this.oneDriveButLogout.Visibility = backupRestoreObj.CanLogOut ? Visibility.Visible : Visibility.Collapsed;
-            OneDrivePopup.IsOpen = true;
-        }
-        */
+        
         private void oneDriveButCancelClick(object sender, RoutedEventArgs e)
         {
             backupRestoreObj.IsCanceled = true;
@@ -223,6 +210,12 @@ namespace CrossConnect
             {
                 await App.InstalledBibles.AddGenericBook(error[1]);
             }
+        }
+
+        private async void oneDriveButHelp_Click(object sender, RoutedEventArgs e)
+        {
+            await Launcher.LaunchUriAsync(
+                new Uri(@"http://www.cross-connect.se/help-metro/#backuprestore", UriKind.Absolute));
         }
 
         #endregion
