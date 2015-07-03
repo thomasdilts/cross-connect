@@ -579,7 +579,7 @@
                                     <Button Grid.Row="0" Grid.Column="0"  Content="Backup" Name="oneDriveButExport" Click="ButExportClick" />
                                     <Button Grid.Row="0" Grid.Column="1"  Content="Restore" Name="oneDriveButImport" Click="butImport_Click" />
                                     <TextBlock Text=" " Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
-                                    <TextBlock Text=" " Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+                                    <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"  Content="Help" Name="oneDriveButHelp" Click="oneDriveButHelp_Click" />
                                     <TextBlock Text=" " Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
                                     <TextBlock Text=" " Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"/>
                                     <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="Install one 'Sword' module" Name="ImportOneSwordModule" Click="ImportOneSwordModule_Click" />
