@@ -878,7 +878,7 @@ namespace CrossConnect
         {
             //this.webBrowser1.AllowedScriptNotifyUris = WebView.AnyScriptNotifyUri;
 
-            this.UpdateBrowser(false);
+            //this.UpdateBrowser(false);
 
             bool isPrevNext = this._state != null && this._state.Source != null && this._state.Source.IsPageable;
             this.ButPrevious.Visibility = isPrevNext ? Visibility.Visible : Visibility.Collapsed;
