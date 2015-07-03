@@ -116,8 +116,6 @@ namespace CrossConnect
             this.TopSpacerImage.Visibility = frameVisible;
             this.itemDetailTitlePanel.Visibility = frameVisible;
             this.WindowGrid.Margin = isSmallScreen ? new Thickness(0,0,0,0) : new Thickness(0, 0, 0, 12);
-            scrollViewerBottomAppBar1.ChangeView(300, 0, 1);
-            scrollViewerTopAppBar1.ChangeView(300, 0, 1);
             if (this._windows.Count() != numColumns || forceCompleteRedraw)
             {
                 //LayoutMainRoot.Width = _screenWidth * numColumns;
@@ -576,6 +574,8 @@ namespace CrossConnect
         // Load data for the ViewModel Items
         private void MainPageLoaded(object sender, RoutedEventArgs e)
         {
+            scrollViewerBottomAppBar1.ChangeView(300, 0, 1);
+            scrollViewerTopAppBar1.ChangeView(300, 0, 1);
             RedrawMainScreen(false);
             sliderTextSize.ValueChanged += SliderTextSizeValueChanged;
         }
