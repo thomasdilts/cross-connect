@@ -183,7 +183,7 @@ namespace Sword.reader
         {
             get
             {
-                return true;
+                return false;
             }
         }
 
