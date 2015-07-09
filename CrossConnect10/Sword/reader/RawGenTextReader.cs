@@ -183,7 +183,7 @@ namespace Sword.reader
         {
             get
             {
-                return false;
+                return true;
             }
         }
 
@@ -337,10 +337,11 @@ function SetFontColorForElement(elemntId, colorRgba){
 
             head.Append(
                 string.Format(
-                    "body {{background:{0};color:{1};font-size:{2}pt;margin:0;padding:0;{3} }}",
+                    "body {{background:{0};color:{1};font-size:{2}pt;margin:{3};padding:0;{4} }}",
                     htmlBackgroundColor.GetHtmlRgba(),
                     htmlForegroundColor.GetHtmlRgba(),
                     (int)(htmlFontSize + 0.5),
+                    isSmallScreen ? displaySettings.MarginInsideTextWindow / 3 : displaySettings.MarginInsideTextWindow,
                     fontFamily)); // old fashioned way to round an integer
 
             head.Append(

@@ -69,7 +69,7 @@ namespace Sword.reader
         {
             get
             {
-                return false;
+                return true;
             }
         }
         public override bool IsHearable

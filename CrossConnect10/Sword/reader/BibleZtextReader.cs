@@ -1202,6 +1202,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                 if (nextVerse < 0)
                 {
                     this.MovePrevious(false);
+                    var book2 = canon.BookByShortName[this.Serial.PosBookShortName];
+                    this.Serial.PosVerseNum = canon.VersesInChapter[book2.VersesInChapterStartIndex + this.Serial.PosChaptNum]-1;
                 }
                 else
                 {
@@ -2002,10 +2004,24 @@ function SetFontColorForElement(elemntId, colorRgba){
                         break;
                     }
                 }
-                ms.Write(xmlbytes, startPos, length);
+
+                //unfortuneately "&c." means "etcetera" in old english
+                //and "&c." really messes up html since & is a reserved word. 
+                string beforeFix = System.Text.UTF8Encoding.UTF8.GetString(xmlbytes, startPos, length);
+                string afterFix = beforeFix.Replace("&c.", "&amp;c.");
+                if(!beforeFix.Equals(afterFix))
+                {
+                    var newBuff = System.Text.UTF8Encoding.UTF8.GetBytes(afterFix);
+                    ms.Write(newBuff,0, newBuff.Length);
+                }
+                else
+                {
+                    ms.Write(xmlbytes, startPos, length);
+                }
+
                 ms.Write(Suffix, 0, Suffix.Length);
                 ms.Position = 0;
-
+                
                 // debug
                 //byte[] buf = new byte[ms.Length]; ms.Read(buf, 0, (int)ms.Length);
                 //string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, buf.Length);

@@ -562,7 +562,7 @@ namespace CrossConnect
 
         public void SynchronizeWindow(string bookShortName, int chapterNum, int verseNum, IBrowserTextSource source)
         {
-            if (!string.IsNullOrEmpty(bookShortName) &&  this._state.IsSynchronized && this._state.Source.IsSynchronizeable)
+            if (/*!string.IsNullOrEmpty(bookShortName) && */ this._state.IsSynchronized && this._state.Source.IsSynchronizeable)
             {
                 string relbookShortName;
                 int relChaptNum;
@@ -576,7 +576,7 @@ namespace CrossConnect
                     out relverseNum,
                     out fullName,
                     out title);
-                bool isBookAndChapterTheSame = bookShortName.Equals(relbookShortName) && relChaptNum.Equals(chapterNum);
+                bool isBookAndChapterTheSame = bookShortName==relbookShortName && relChaptNum.Equals(chapterNum);
                 if (this._state.Source.MoveChapterVerse(bookShortName, chapterNum, verseNum, false, source))
                 {
                     if (!isBookAndChapterTheSame)

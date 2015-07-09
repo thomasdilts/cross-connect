@@ -95,11 +95,12 @@ namespace Sword
         public async Task<bool> AddGenericBook(string modPath)
         {
             var book = await this.DoLoading(modPath);
-            var driver = ((string)book.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
             if (book == null)
             {
                 return false;
             }
+            var driver = ((string)book.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
+
             if (driver.Equals("ZTEXT") || driver.Equals("RAWTEXT"))
             {
                 this.InstalledBibles[modPath] = book;
