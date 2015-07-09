@@ -353,7 +353,6 @@
                                      x:Name="ListStartAudio" FontSize="14">
 
                             </ListBox>
-                        <ToggleSwitch Header="SyncVerses" Grid.Row="2" Margin="0 20 0 0" FontSize="18" Name="SyncVerses" />
                     </Grid>
                     </ScrollViewer>
                 </Border>
