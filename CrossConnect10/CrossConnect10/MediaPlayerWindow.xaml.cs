@@ -209,8 +209,7 @@ namespace CrossConnect
                 await this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     SetButtonVisibility(true, true);
-                    var verseText = string.IsNullOrEmpty(trackChangedMessage.audioModel.VoiceName) ? string.Empty : ":" + (trackChangedMessage.audioModel.Verse + 1).ToString();
-                    this.title.Text = trackChangedMessage.title + verseText + "        " + Info.Name;
+                    this.title.Text = trackChangedMessage.title + "        " + Info.Name;
                     this._state.Source.MoveChapterVerse(this.Info.Book,this.Info.Chapter,this.Info.Verse,true,this._state.Source);
                     App.SynchronizeAllWindows(trackChangedMessage.audioModel.Book, trackChangedMessage.audioModel.Chapter, trackChangedMessage.audioModel.Verse, this._state.CurIndex, this._state.Source);
                 });
