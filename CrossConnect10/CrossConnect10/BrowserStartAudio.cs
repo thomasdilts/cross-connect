@@ -167,7 +167,6 @@ namespace CrossConnect
             }
             else
             {
-                App.DisplaySettings.SyncMediaVerses = SyncVerses.IsOn;
                 string bookShortName;
                 int relChaptNum;
                 int verseNum;
@@ -210,9 +209,6 @@ namespace CrossConnect
             //show the voices available.
             // get all of the installed voices
             var voices = Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices;
-            SyncVerses.Visibility = Visibility.Visible;
-            SyncVerses.Header = Translations.Translate("Synchronize to every verse");
-            SyncVerses.IsOn = App.DisplaySettings.SyncMediaVerses;
             // get the currently selected voice
             this.ListStartAudio.Items.Clear();
             foreach (VoiceInformation voice in voices)
@@ -250,7 +246,6 @@ namespace CrossConnect
             {
                 return;
             }
-            SyncVerses.Visibility = Visibility.Collapsed;
             WaitingForDownload.Visibility = Windows.UI.Xaml.Visibility.Visible;
             MainPageSplit.SideBarShowPopup(
                 this.StartAudioPopup, this.MainPaneStartAudioPopup, this.scrollViewerStartAudio);
