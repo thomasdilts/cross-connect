@@ -291,7 +291,8 @@ namespace CrossConnect
 
         private void ButCloseClick(object sender, RoutedEventArgs e)
         {
-            if(BackgroundMediaPlayer.Current.CurrentState == MediaPlayerState.Playing)
+            EnableAllButtons(false);
+            if (BackgroundMediaPlayer.Current.CurrentState == MediaPlayerState.Playing)
             {
                 BackgroundMediaPlayer.Current.Pause();
             }
@@ -306,13 +307,22 @@ namespace CrossConnect
         {
             if (Info != null)
             {
-                MessageService.SendMessageToBackground(new SkipNextMessage());
-
                 // Prevent the user from repeatedly pressing the button and causing 
                 // a backlong of button presses to be handled. This button is re-eneabled 
                 // in the TrackReady Playstate handler.
-                ButNext.IsEnabled = false;
+                EnableAllButtons(false);
+
+                MessageService.SendMessageToBackground(new SkipNextMessage());
             }
+        }
+
+        private void EnableAllButtons(bool isEnabled)
+        {
+            ButNext.IsEnabled = isEnabled;
+            ButPause.IsEnabled = isEnabled;
+            ButPlay.IsEnabled = isEnabled;
+            ButPrevious.IsEnabled = isEnabled;
+            ButClose.IsEnabled = isEnabled;
         }
 
         private void ButPause_OnClick(object sender, RoutedEventArgs e)
@@ -331,12 +341,13 @@ namespace CrossConnect
         {
             if (Info != null)
             {
-                MessageService.SendMessageToBackground(new SkipPreviousMessage());
-
                 // Prevent the user from repeatedly pressing the button and causing 
                 // a backlong of button presses to be handled. This button is re-eneabled 
                 // in the TrackReady Playstate handler.
-                ButPrevious.IsEnabled = false;
+                EnableAllButtons(false);
+
+                MessageService.SendMessageToBackground(new SkipPreviousMessage());
+
             }
         }
 
@@ -447,8 +458,8 @@ namespace CrossConnect
             this.ButPrevious.Visibility = isButtonsVisible ? Visibility.Visible : Visibility.Collapsed;
             this.stackContent.Visibility = isButtonsVisible ? Visibility.Visible : Visibility.Collapsed;
             this.WaitingForDownload.Visibility = !isButtonsVisible ? Visibility.Visible : Visibility.Collapsed;
-            this.ButNext.IsEnabled = true;
-            this.ButPrevious.IsEnabled = true;
+            EnableAllButtons(true);
+
             if (isButtonsVisible)
             {
                 this.ButPlay.Visibility = (!overridePlay && BackgroundMediaPlayer.Current.CurrentState != MediaPlayerState.Playing)
