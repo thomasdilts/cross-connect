@@ -92,9 +92,6 @@
   <ItemGroup>
     <Compile Include="ApplicationSettingsHelper.cs" />
     <Compile Include="AppState.cs" />
-    <Compile Include="BackgroundTaskState.cs" />
-    <Compile Include="ApplicationSettingsConstants.cs" />
-    <Compile Include="EnumHelper.cs" />
     <Compile Include="JsonHelper.cs" />
     <Compile Include="Messages\PositionMessage.cs" />
     <Compile Include="Messages\StartPlaybackMessage.cs" />
