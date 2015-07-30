@@ -355,9 +355,9 @@ namespace CrossConnect
 
             }
         }
-        private static XmlDocument ToXmlDocument(XDocument xDocument)
+        private static Windows.Data.Xml.Dom.XmlDocument ToXmlDocument(XDocument xDocument)
         {
-            var xmlDocument = new XmlDocument();
+            var xmlDocument = new Windows.Data.Xml.Dom.XmlDocument();
             xmlDocument.LoadXml(xDocument.ToString());
             return xmlDocument;
             /*
