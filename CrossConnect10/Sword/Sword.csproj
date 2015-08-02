@@ -11,10 +11,11 @@
     <AssemblyName>Sword</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.10069.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.10069.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
+    <UapDefaultAssetScale>100</UapDefaultAssetScale>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -123,6 +124,8 @@
     <Compile Include="reader\BibleNoteReader.cs" />
     <Compile Include="reader\BiblePlaceMarkReader.cs" />
     <Compile Include="reader\BibleZtextReader.cs" />
+    <Compile Include="reader\BibleRawTextReader.cs" />
+    <Compile Include="reader\CommentRawComReader.cs" />
     <Compile Include="reader\CommentZtextReader.cs" />
     <Compile Include="reader\DictionaryRaw4IndexReader.cs" />
     <Compile Include="reader\DictionaryRawDefReader.cs" />
@@ -157,21 +160,6 @@
     <Compile Include="versification\CanonVulg.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Ionic.ZLib, Version=2.0.0.14, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MarkerMetro.Unity.Ionic.Zlib.2.0.0.14\lib\netcore45\Ionic.ZLib.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Numerics.Vectors, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Numerics.Vectors.4.0.0\lib\win8\System.Numerics.Vectors.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Numerics.Vectors.WindowsRuntime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Numerics.Vectors.4.0.0\lib\win8\System.Numerics.Vectors.WindowsRuntime.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
     <EmbeddedResource Include="Properties\InstallManager.plugin" />
     <EmbeddedResource Include="Properties\iso639.properties" />
     <EmbeddedResource Include="Properties\iso639full.properties" />
@@ -232,6 +220,13 @@
     <EmbeddedResource Include="Properties\BibleNames_zh_cn.xml" />
     <EmbeddedResource Include="Properties\BibleNames_zh_tw.xml" />
     <EmbeddedResource Include="Properties\verses.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\strongsgreek.xml" />
+    <EmbeddedResource Include="Properties\strongshebrew.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="project.json" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

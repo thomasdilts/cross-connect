@@ -46,9 +46,9 @@ namespace Sword.reader
     {
         #region Static Fields
 
-        private static readonly LexiconFromXmlFile GreekDict = new LexiconFromXmlFile("strongsgreek.xml.gz");
+        private static readonly LexiconFromXmlFile GreekDict = new LexiconFromXmlFile("strongsgreek.xml");
 
-        private static readonly LexiconFromXmlFile HebrewDict = new LexiconFromXmlFile("strongshebrew.xml.gz");
+        private static readonly LexiconFromXmlFile HebrewDict = new LexiconFromXmlFile("strongshebrew.xml");
 
         #endregion
 
@@ -66,11 +66,11 @@ namespace Sword.reader
         {
         }
 
-        #endregion
+    #endregion
 
-        #region Public Properties
+    #region Public Properties
 
-        public override bool IsExternalLink
+    public override bool IsExternalLink
         {
             get
             {
@@ -142,7 +142,8 @@ namespace Sword.reader
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             string displayText = string.Empty;
             int number;
@@ -173,7 +174,8 @@ namespace Sword.reader
                 htmlPhoneAccentColor,
                 htmlWordsOfChristColor,
                 htmlFontSize,
-                fontFamily) + displayText + "</body></html>";
+                fontFamily,
+                isSmallScreen) + displayText + "</body></html>";
         }
 
         public override void GetInfo(
@@ -313,15 +315,15 @@ namespace Sword.reader
 
             public LexiconFromXmlFile(string filepath)
             {
-                Assembly assem = Assembly.Load(new AssemblyName("CrossConnect"));
-                Stream stream = assem.GetManifestResourceStream("CrossConnect.Properties." + filepath);
+                Assembly assem = Assembly.Load(new AssemblyName("Sword"));
+                Stream stream = assem.GetManifestResourceStream("Sword.Properties." + filepath);
 
                 //var gzip = new GZipInputStream(stream);
-                var gzip = new GZipStream(stream,CompressionMode.Decompress);
+                //var gzip = new GZipStream(stream,CompressionMode.Decompress);
 
                 string entry = string.Empty;
                 LexiconEntry lexEntry = null;
-                using (XmlReader reader = XmlReader.Create(gzip))
+                using (XmlReader reader = XmlReader.Create(stream))
                 {
                     // Parse the file and get each of the nodes.
                     while (reader.Read())

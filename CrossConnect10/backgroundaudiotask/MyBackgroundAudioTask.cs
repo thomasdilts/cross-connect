@@ -1,13 +1,25 @@
-﻿//*********************************************************
+﻿// <copyright file="MyBackgroundAudioTask.cs" company="Thomas Dilts">
 //
-// Copyright (c) Microsoft. All rights reserved.
-// This code is licensed under the MIT License (MIT).
-// THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-// ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-// IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-// PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
 //
-//*********************************************************
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@cross-connect.se
+// </summary>
+// <author>Thomas Dilts</author>
 
 using System;
 using System.Diagnostics;
@@ -29,6 +41,7 @@ using Windows.Storage.Streams;
 using Sword.versification;
 using Sword;
 using Sword.reader;
+using System.Threading.Tasks;
 
 /* This background task will start running the first time the
  * MediaPlayer singleton instance is accessed from foreground. When a new audio 
@@ -64,7 +77,7 @@ namespace BackgroundAudioTask
         //private Timer positionReporting;
         private SpeechSynthesizer synthesizer = null;
         private Sword.BibleNames booknames = null;
-        private BibleZtextReader zTextReader = null;
+        private IBrowserTextSource zTextReader = null;
         #endregion
 
         #region IBackgroundTask and IBackgroundTaskInstance Interface Members and handlers
@@ -76,50 +89,49 @@ namespace BackgroundAudioTask
         {
             //await bibles.Initialize();
             Debug.WriteLine("Background Audio Task " + taskInstance.Task.Name + " starting...");
+            try
+            {
+                // Initialize SystemMediaTransportControls (SMTC) for integration with
+                // the Universal Volume Control (UVC).
+                //
+                // The UI for the UVC must update even when the foreground process has been terminated
+                // and therefore the SMTC is configured and updated from the background task.
+                smtc = BackgroundMediaPlayer.Current.SystemMediaTransportControls;
+                smtc.ButtonPressed += smtc_ButtonPressed;
+                smtc.PropertyChanged += smtc_PropertyChanged;
+                smtc.IsEnabled = true;
+                smtc.IsPauseEnabled = true;
+                smtc.IsPlayEnabled = true;
+                smtc.IsNextEnabled = true;
+                smtc.IsPreviousEnabled = true;
 
-            // Initialize SystemMediaTransportControls (SMTC) for integration with
-            // the Universal Volume Control (UVC).
-            //
-            // The UI for the UVC must update even when the foreground process has been terminated
-            // and therefore the SMTC is configured and updated from the background task.
-            smtc = BackgroundMediaPlayer.Current.SystemMediaTransportControls;
-            smtc.ButtonPressed += smtc_ButtonPressed;
-            smtc.PropertyChanged += smtc_PropertyChanged;
-            smtc.IsEnabled = true;
-            smtc.IsPauseEnabled = true;
-            smtc.IsPlayEnabled = true;
-            smtc.IsNextEnabled = true;
-            smtc.IsPreviousEnabled = true;
+                // Read persisted state of foreground app
 
-            // Read persisted state of foreground app
-            var value = ApplicationSettingsHelper.ReadResetSettingsValue(ApplicationSettingsConstants.AppState);
-            if (value == null)
-                foregroundAppState = AppState.Unknown;
-            else
-                foregroundAppState = EnumHelper.Parse<AppState>(value.ToString());
+                // Add handlers for MediaPlayer
+                BackgroundMediaPlayer.Current.CurrentStateChanged += Current_CurrentStateChanged;
 
-            // Add handlers for MediaPlayer
-            BackgroundMediaPlayer.Current.CurrentStateChanged += Current_CurrentStateChanged;
+                // Initialize message channel 
+                BackgroundMediaPlayer.MessageReceivedFromForeground += BackgroundMediaPlayer_MessageReceivedFromForeground;
+                BackgroundMediaPlayer.Current.MediaEnded += MediaEndedEvent;
+                BackgroundMediaPlayer.Current.MediaFailed += MediaFailedEvent;
 
-            // Initialize message channel 
-            BackgroundMediaPlayer.MessageReceivedFromForeground += BackgroundMediaPlayer_MessageReceivedFromForeground;
-            BackgroundMediaPlayer.Current.MediaEnded += MediaEndedEvent;
-            BackgroundMediaPlayer.Current.MediaFailed += MediaFailedEvent;
-
-            // Send information to foreground that background task has been started if app is active
-            if (foregroundAppState != AppState.Suspended)
+                // Send information to foreground that background task has been started if app is active
                 MessageService.SendMessageToForeground(new BackgroundAudioTaskStartedMessage());
 
-            ApplicationSettingsHelper.SaveSettingsValue(ApplicationSettingsConstants.BackgroundTaskState, BackgroundTaskState.Running.ToString());
+                deferral = taskInstance.GetDeferral(); // This must be retrieved prior to subscribing to events below which use it
 
-            deferral = taskInstance.GetDeferral(); // This must be retrieved prior to subscribing to events below which use it
+                // Mark the background task as started to unblock SMTC Play operation (see related WaitOne on this signal)
+                backgroundTaskStarted.Set();
 
-            // Mark the background task as started to unblock SMTC Play operation (see related WaitOne on this signal)
-            backgroundTaskStarted.Set();
+                // Associate a cancellation and completed handlers with the background task.
+                taskInstance.Task.Completed += TaskCompleted;
+                taskInstance.Canceled += new BackgroundTaskCanceledEventHandler(OnCanceled); // event may raise immediately before continung thread excecution so must be at the end
+            }
+            catch (Exception)
+            {
 
-            // Associate a cancellation and completed handlers with the background task.
-            taskInstance.Task.Completed += TaskCompleted;
-            taskInstance.Canceled += new BackgroundTaskCanceledEventHandler(OnCanceled); // event may raise immediately before continung thread excecution so must be at the end
+                throw;
+            }
         }
 
         void Position_TimerCallback(object state)
@@ -127,22 +139,10 @@ namespace BackgroundAudioTask
             MessageService.SendMessageToForeground(new PositionMessage(BackgroundMediaPlayer.Current.Position.Seconds*100/BackgroundMediaPlayer.Current.NaturalDuration.Seconds));
         }
 
-        async void MediaEndedEvent(MediaPlayer mp, System.Object obj)
+        void MediaEndedEvent(MediaPlayer mp, System.Object obj)
         {
             Debug.WriteLine("MediaEndedEvent ");
-            if(string.IsNullOrEmpty(currentlyPlaying.VoiceName))
-            {
-                SkipToNext();
-            }
-            else
-            {
-                MoveToNextVerse();
-
-                this.zTextReader.MoveNext(true);
-                var stream = await synthesizer.SynthesizeTextToStreamAsync(await zTextReader.GetTTCtext(true));
-                BackgroundMediaPlayer.Current.SetStreamSource(stream);
-                UpdateUVCOnNewTrack(true);
-            }
+            SkipToNext();
         }
         void MediaFailedEvent(MediaPlayer mp, MediaPlayerFailedEventArgs fail)
         {
@@ -206,31 +206,60 @@ namespace BackgroundAudioTask
         {
             if (!isPlaying)
             {
-                smtc.PlaybackStatus = MediaPlaybackStatus.Stopped;
-                smtc.DisplayUpdater.MusicProperties.Title = string.Empty;
-                smtc.DisplayUpdater.Update();
-                return;
+                try
+                {
+                    MessageService.SendMessageToForeground(new TrackChangedMessage(currentlyPlaying, string.Empty));
+                    smtc.PlaybackStatus = MediaPlaybackStatus.Stopped;
+                    smtc.DisplayUpdater.MusicProperties.Title = string.Empty;
+                    smtc.DisplayUpdater.Update();
+                    return;
+                }
+                catch (Exception)
+                {
+                }
             }
-            smtc.IsChannelDownEnabled = true;
-            smtc.IsChannelUpEnabled = true;
-            smtc.IsNextEnabled = true;
-            smtc.IsPreviousEnabled = true;
-            smtc.PlaybackStatus = MediaPlaybackStatus.Playing;
-            smtc.DisplayUpdater.Type = MediaPlaybackType.Music;
-
-            var book = booknames.GetFullName(currentlyPlaying.Book,currentlyPlaying.Book);
-
-            smtc.DisplayUpdater.MusicProperties.Title = book + " " + (currentlyPlaying.Chapter + 1);
-
-            if (!string.IsNullOrEmpty(currentlyPlaying.Icon))
+            try
             {
-                smtc.DisplayUpdater.Thumbnail = RandomAccessStreamReference.CreateFromUri(new Uri(currentlyPlaying.Icon));
-            }
-            else
-                smtc.DisplayUpdater.Thumbnail = null;
+                smtc.IsChannelDownEnabled = true;
+                smtc.IsChannelUpEnabled = true;
+                smtc.IsNextEnabled = true;
+                smtc.IsPreviousEnabled = true;
+                smtc.PlaybackStatus = MediaPlaybackStatus.Playing;
+                smtc.DisplayUpdater.Type = MediaPlaybackType.Music;
 
-            smtc.DisplayUpdater.Update();
-            MessageService.SendMessageToForeground(new TrackChangedMessage(currentlyPlaying, smtc.DisplayUpdater.MusicProperties.Title));
+                smtc.DisplayUpdater.MusicProperties.Title = GetCurrentTitle();
+                MessageService.SendMessageToForeground(new TrackChangedMessage(currentlyPlaying, smtc.DisplayUpdater.MusicProperties.Title));
+
+                if (!string.IsNullOrEmpty(currentlyPlaying.Icon))
+                {
+                    smtc.DisplayUpdater.Thumbnail = RandomAccessStreamReference.CreateFromUri(new Uri(currentlyPlaying.Icon));
+                }
+                else
+                    smtc.DisplayUpdater.Thumbnail = null;
+
+                smtc.DisplayUpdater.Update();
+            }
+            catch (Exception)
+            {
+            }
+
+        }
+
+        private string GetCurrentTitle()
+        {
+            string bookShortName;
+            int relChaptNum;
+            int verseNum;
+            string fullName;
+            string title;
+            zTextReader.GetInfo(
+                this.currentlyPlaying.Language,
+                out bookShortName,
+                out relChaptNum,
+                out verseNum,
+                out fullName,
+                out title);
+            return title;
         }
 
         /// <summary>
@@ -345,65 +374,101 @@ namespace BackgroundAudioTask
         {
             if (currentlyPlaying != null)
             {
-                AddChapter(currentlyPlaying, relativePostion);
-                SetAudioStartPoint(currentlyPlaying);
+                AddChapter(relativePostion);
                 Debug.WriteLine("starting new track = " + currentlyPlaying.Src);
             }
         }
 
-        private void MoveToNextVerse()
+        private async void AddChapter(int valToAdd)
         {
-            var canonKjv = CanonManager.GetCanon("KJV");
-            var book = canonKjv.BookByShortName[currentlyPlaying.Book];
-            int nextVerse = currentlyPlaying.Verse + 1;
-            if (nextVerse >= canonKjv.VersesInChapter[book.VersesInChapterStartIndex + currentlyPlaying.Chapter])
+            if (valToAdd > 0)
             {
-                AddChapter(currentlyPlaying, 1);
+                this.zTextReader.MoveNext(!string.IsNullOrEmpty(currentlyPlaying.VoiceName));
             }
             else
             {
-                currentlyPlaying.Verse = nextVerse;
+                this.zTextReader.MovePrevious(!string.IsNullOrEmpty(currentlyPlaying.VoiceName));
             }
+            string bookShortName;
+            int relChaptNum;
+            int verseNum;
+            string fullName;
+            string title;
+            zTextReader.GetInfo(
+                this.currentlyPlaying.Language,
+                out bookShortName,
+                out relChaptNum,
+                out verseNum,
+                out fullName,
+                out title);
+            currentlyPlaying.Book = bookShortName;
+            currentlyPlaying.Chapter = relChaptNum;
+            currentlyPlaying.Verse = verseNum;
 
-        }
-
-        private static CanonBookDef AddChapter(AudioModel info, int valToAdd)
-        {
-            var canonKjv = CanonManager.GetCanon("KJV");
-            var book = canonKjv.BookByShortName[info.Book];
-            int adjustedChapter = book.VersesInChapterStartIndex + info.Chapter + valToAdd;
-            var lastBook = canonKjv.NewTestBooks[canonKjv.NewTestBooks.Count() - 1];
-            var lastOtBook = canonKjv.OldTestBooks[canonKjv.OldTestBooks.Count() - 1];
-            var chaptersInOldTestement = lastOtBook.NumberOfChapters + lastOtBook.VersesInChapterStartIndex;
-            var chaptersInBible = lastBook.NumberOfChapters + lastBook.VersesInChapterStartIndex;
-            if (adjustedChapter >= chaptersInBible)
+            if(!string.IsNullOrEmpty(currentlyPlaying.VoiceName))
             {
-                adjustedChapter = info.IsNtOnly ? chaptersInOldTestement : 0;
+                string textToSpeak = string.Empty;
+                int loopCounter = 0;
+                while (loopCounter<50 && string.IsNullOrEmpty((textToSpeak = (await zTextReader.GetTTCtext(true)).Trim())))
+                {
+                    loopCounter++;
+                    if (valToAdd > 0)
+                    {
+                        this.zTextReader.MoveNext(true);
+                    }
+                    else
+                    {
+                        this.zTextReader.MovePrevious(true);
+                    }
+                    zTextReader.GetInfo(
+                        this.currentlyPlaying.Language,
+                        out bookShortName,
+                        out relChaptNum,
+                        out verseNum,
+                        out fullName,
+                        out title);
+                    currentlyPlaying.Book = bookShortName;
+                    currentlyPlaying.Chapter = relChaptNum;
+                    currentlyPlaying.Verse = verseNum;
+                }
+
+                var stream = await synthesizer.SynthesizeTextToStreamAsync(textToSpeak);
+                BackgroundMediaPlayer.Current.SetStreamSource(stream);
             }
-            else if (adjustedChapter < 0 || (info.IsNtOnly && adjustedChapter < chaptersInOldTestement))
+            else
             {
-                adjustedChapter = chaptersInBible - 1;
+                if (!string.IsNullOrEmpty(currentlyPlaying.Pattern) && !string.IsNullOrEmpty(currentlyPlaying.Code) && string.IsNullOrEmpty(currentlyPlaying.VoiceName))
+                {
+                    // we must make sure this follows the KJV canon
+                    var canonKjv = CanonManager.GetCanon("KJV");
+                    CanonBookDef book;
+                    if (!canonKjv.BookByShortName.TryGetValue(currentlyPlaying.Book, out book))
+                    {
+                        // we can only have KJV in the audio here.
+                        book = valToAdd > 0 ? canonKjv.BookByShortName["Matt"]: canonKjv.BookByShortName["Mal"];
+                        currentlyPlaying.Book = book.ShortName1;
+                        currentlyPlaying.Chapter = valToAdd > 0 ? 0 : book.NumberOfChapters - 1; ;
+                        currentlyPlaying.Verse = 0;
+                    }
+                    else if(book.NumberOfChapters<(currentlyPlaying.Chapter +1))
+                    {
+                        // versification mess-up here.  move to next/previous book.
+                        book = canonKjv.GetBookFromBookNumber(book.BookNum + valToAdd);
+                        currentlyPlaying.Book = book.ShortName1;
+                        currentlyPlaying.Chapter = valToAdd>0?0:book.NumberOfChapters-1;
+                        currentlyPlaying.Verse = 0;
+                    }
+
+                    // http://www.cross-connect.se/bibles/talking/{key}/Bible_{key}_{booknum2d}_{chapternum3d}.mp3
+                    currentlyPlaying.Src =
+                        currentlyPlaying.Pattern.Replace("{key}", currentlyPlaying.Code)
+                               .Replace("{booknum2d}", (book.BookNum + 1).ToString("D2"))
+                               .Replace("{chapternum3d}", (currentlyPlaying.Chapter + 1).ToString("D3"));
+                    BackgroundMediaPlayer.Current.SetUriSource(new Uri(currentlyPlaying.Src));
+                }
             }
 
-            var adjustedBook = canonKjv.GetBookFromAbsoluteChapter(adjustedChapter);
-            info.Book = adjustedBook.ShortName1;
-            info.Chapter = adjustedChapter - adjustedBook.VersesInChapterStartIndex;
-
-            if (!string.IsNullOrEmpty(info.Pattern) && !string.IsNullOrEmpty(info.Code) && string.IsNullOrEmpty(info.VoiceName))
-            {
-                // http://www.cross-connect.se/bibles/talking/{key}/Bible_{key}_{booknum2d}_{chapternum3d}.mp3
-                info.Src =
-                    info.Pattern.Replace("{key}", info.Code)
-                           .Replace("{booknum2d}", (adjustedBook.BookNum + 1).ToString("D2"))
-                           .Replace("{chapternum3d}", (info.Chapter + 1).ToString("D3"));
-            }
-
-            if(!string.IsNullOrEmpty(info.VoiceName))
-            {
-                info.Verse = 0;
-            }
-
-            return adjustedBook;
+            UpdateUVCOnNewTrack(true);
         }
 
         /// <summary>
@@ -460,6 +525,7 @@ namespace BackgroundAudioTask
             {
                 Debug.WriteLine("App resuming"); // App is resumed, now subscribe to message channel
                 foregroundAppState = AppState.Active;
+                UpdateUVCOnNewTrack(smtc.PlaybackStatus == MediaPlaybackStatus.Playing);
                 return;
             }
 
@@ -515,20 +581,74 @@ namespace BackgroundAudioTask
             {
                 await bibles.Initialize();
                 var bookKeyValue = bibles.InstalledBibles.FirstOrDefault(p => p.Value.InternalName.Equals(startPoint.Src));
+                if(bookKeyValue.Value == null)
+                {
+                    bookKeyValue = bibles.InstalledCommentaries.FirstOrDefault(p => p.Value.InternalName.Equals(startPoint.Src));
+                    if (bookKeyValue.Value == null)
+                    {
+                        bookKeyValue = bibles.InstalledGeneralBooks.FirstOrDefault(p => p.Value.InternalName.Equals(startPoint.Src));
+                    }
+                }
                 SwordBookMetaData bookSelected = bookKeyValue.Value==null? bibles.InstalledBibles.First().Value : bookKeyValue.Value ;
-
+                var driver = ((string)bookSelected.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
                 string bookPath =
                     bookSelected.GetCetProperty(ConfigEntryType.ADataPath).ToString().Substring(2);
                 bool isIsoEncoding = !bookSelected.GetCetProperty(ConfigEntryType.Encoding).Equals("UTF-8");
+                var langCode = ((Language)bookSelected.GetCetProperty(ConfigEntryType.Lang)).Code;
+                var cipherKey = (string)bookSelected.GetCetProperty(ConfigEntryType.CipherKey);
+                var versification = (string)bookSelected.GetCetProperty(ConfigEntryType.Versification);
+                switch (driver)
+                {
+                    case "ZTEXT":
+                        this.zTextReader = new BibleZtextReader(
+                                            bookPath,
+                                            langCode,
+                                            isIsoEncoding,
+                                            cipherKey,
+                                            bookSelected.ConfPath,
+                                            versification);
+                        await ((BibleZtextReader)this.zTextReader).Initialize();
+                        break;
+                    case "RAWTEXT":
+                        this.zTextReader = new BibleRawTextReader(
+                                            bookPath,
+                                            langCode,
+                                            isIsoEncoding,
+                                            cipherKey,
+                                            bookSelected.ConfPath,
+                                            versification);
+                        await ((BibleRawTextReader)this.zTextReader).Initialize();
+                        break;
+                    case "ZCOM":
+                        this.zTextReader = new CommentZtextReader(
+                                            bookPath,
+                                            langCode,
+                                            isIsoEncoding,
+                                            cipherKey,
+                                            bookSelected.ConfPath,
+                                            versification);
+                        await ((CommentZtextReader)this.zTextReader).Initialize();
+                        break;
+                    case "RAWCOM":
+                        this.zTextReader = new CommentRawComReader(
+                                            bookPath,
+                                            langCode,
+                                            isIsoEncoding,
+                                            cipherKey,
+                                            bookSelected.ConfPath,
+                                            versification);
+                        await ((CommentRawComReader)this.zTextReader).Initialize();
+                        break;
+                    case "RAWGENBOOK":
+                        this.zTextReader = new RawGenTextReader(
+                                            bookPath,
+                                            langCode,
+                                            isIsoEncoding);
+                        await ((RawGenTextReader)this.zTextReader).Initialize();
+                        break;
 
-                this.zTextReader = new BibleZtextReader(
-                                    bookPath,
-                                    ((Language)bookSelected.GetCetProperty(ConfigEntryType.Lang)).Code,
-                                    isIsoEncoding,
-                                    (string)bookSelected.GetCetProperty(ConfigEntryType.CipherKey),
-                                    bookSelected.ConfPath,
-                                    (string)bookSelected.GetCetProperty(ConfigEntryType.Versification));
-                await this.zTextReader.Initialize();
+                }
+
                 this.zTextReader.MoveChapterVerse(startPoint.Book, startPoint.Chapter, startPoint.Verse, false, zTextReader);
                 if (synthesizer==null)
                 {
@@ -536,17 +656,270 @@ namespace BackgroundAudioTask
                 }
 
                 synthesizer.Voice = SpeechSynthesizer.AllVoices.First(p => p.DisplayName.Equals(startPoint.VoiceName));
-                var textToSpeak = await zTextReader.GetTTCtext(true);
+                string textToSpeak = string.Empty;
+                int loopCounter = 0;
+                while (loopCounter < 50 && string.IsNullOrEmpty((textToSpeak = (await zTextReader.GetTTCtext(true)).Trim())))
+                {
+                    loopCounter++;
+                    zTextReader.MoveNext(true);
+                    string bookShortName;
+                    int relChaptNum;
+                    int verseNum;
+                    string fullName;
+                    string title;
+                    zTextReader.GetInfo(
+                        this.currentlyPlaying.Language,
+                        out bookShortName,
+                        out relChaptNum,
+                        out verseNum,
+                        out fullName,
+                        out title);
+                    currentlyPlaying.Book = bookShortName;
+                    currentlyPlaying.Chapter = relChaptNum;
+                    currentlyPlaying.Verse = verseNum;
+                }
                 var stream = await synthesizer.SynthesizeTextToStreamAsync(textToSpeak);
                 BackgroundMediaPlayer.Current.SetStreamSource(stream);
             }
             else
             {
+                this.zTextReader = new PsuedoKjvBibleReader(
+                    startPoint.Language,
+                    startPoint.IsNtOnly);
+                this.zTextReader.MoveChapterVerse(startPoint.Book, startPoint.Chapter, startPoint.Verse, false, this.zTextReader);
                 BackgroundMediaPlayer.Current.SetUriSource(new Uri(startPoint.Src));
             }
 
+
             UpdateUVCOnNewTrack(true);
         }
+        #endregion
+    }
+
+    class PsuedoKjvBibleReader : IBrowserTextSource
+    {
+        private string Language = string.Empty;
+        private string Book = "Gen";
+        private int Chapter = 0;
+        private int Verse = 0;
+        private Sword.BibleNames booknames = null;
+        private Canon canon = null;
+        private bool IsNtOnly = false;
+        public PsuedoKjvBibleReader(string Language, bool IsNtOnly)
+        {
+            this.Language = Language;
+            booknames = new Sword.BibleNames(Language, string.Empty);
+            canon = CanonManager.GetCanon("KJV");
+            this.IsNtOnly = IsNtOnly;
+        }
+
+        public void GetInfo(string isoLangCode, out string bookShortName, out int relChaptNum, out int verseNum, out string fullName, out string title)
+        {
+            bookShortName = this.Book;
+            relChaptNum = this.Chapter;
+            verseNum = this.Verse;
+            fullName = string.Empty;
+            title = string.Empty;
+            try
+            {
+                fullName = GetFullName(bookShortName, isoLangCode);
+                title = fullName + " " + (this.Chapter + 1);// + ":" + (verseNum + 1);
+            }
+            catch (Exception ee)
+            {
+                Debug.WriteLine("PsuedoKjvBibleReader.GetInfo; " + ee.Message);
+            }
+        }
+        private string GetFullName(string bookShortName, string appChoosenIsoLangCode)
+        {
+            var book = canon.BookByShortName[bookShortName];
+            return this.booknames.GetFullName(book.ShortName1, book.FullName);
+        }
+
+        public bool MoveChapterVerse(string bookShortName, int chapter, int verse, bool isLocalLinkChange, IBrowserTextSource source)
+        {
+            Book = bookShortName;
+            Chapter = chapter;
+            Verse = 0;
+            return true;
+        }
+
+        public void MoveNext(bool isVerse)
+        {
+            addChapter(1);
+        }
+        private void addChapter(int valToAdd)
+        {
+            var canonKjv = CanonManager.GetCanon("KJV");
+            var book = canonKjv.BookByShortName[this.Book];
+            int adjustedChapter = book.VersesInChapterStartIndex + this.Chapter + valToAdd;
+            var lastBook = canonKjv.NewTestBooks[canonKjv.NewTestBooks.Count() - 1];
+            var lastOtBook = canonKjv.OldTestBooks[canonKjv.OldTestBooks.Count() - 1];
+            var chaptersInOldTestement = lastOtBook.NumberOfChapters + lastOtBook.VersesInChapterStartIndex;
+            var chaptersInBible = lastBook.NumberOfChapters + lastBook.VersesInChapterStartIndex;
+            if (adjustedChapter >= chaptersInBible)
+            {
+                adjustedChapter = this.IsNtOnly ? chaptersInOldTestement : 0;
+            }
+            else if (adjustedChapter < 0 || (this.IsNtOnly && adjustedChapter < chaptersInOldTestement))
+            {
+                adjustedChapter = chaptersInBible - 1;
+            }
+
+            var adjustedBook = canonKjv.GetBookFromAbsoluteChapter(adjustedChapter);
+            this.Book = adjustedBook.ShortName1;
+            this.Chapter = adjustedChapter - adjustedBook.VersesInChapterStartIndex;
+        }
+
+        #region unused required functions
+
+        public void MovePrevious(bool isVerse)
+        {
+            addChapter(-1);
+        }
+
+        public bool IsExternalLink
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool IsHearable
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool IsLocalChangeDuringLink
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool IsLocked
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool IsPageable
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool IsSearchable
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool IsSynchronizeable
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool IsTranslateable
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool IsTTChearable
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public Task<IBrowserTextSource> Clone()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ExistsShortNames(string isoLangCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ButtonWindowSpecs GetButtonWindowSpecs(int stage, int lastSelectedButton, string isoLangCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetChapterHtml(string isoLangCode, DisplaySettings displaySettings, HtmlColorRgba htmlBackgroundColor, HtmlColorRgba htmlForegroundColor, HtmlColorRgba htmlPhoneAccentColor, HtmlColorRgba htmlWordsOfChristColor, HtmlColorRgba[] htmlHighlightColor, double htmlFontSize, string fontFamily, bool isNotesOnly, bool addStartFinishHtml, bool forceReload, bool isSmallScreen)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetExternalLink(DisplaySettings displaySettings)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetLanguage()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<object[]> GetTranslateableTexts(string isoLangCode, DisplaySettings displaySettings, string bibleToLoad)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetTTCtext(bool isVerseOnly)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetVerseTextOnly(DisplaySettings displaySettings, string bookName, int chapterNumber, int verseNum)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<string>> MakeListDisplayText(string isoLangCode, DisplaySettings displaySettings, List<BiblePlaceMarker> listToDisplay)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> PutHtmlTofile(string isoLangCode, DisplaySettings displaySettings, HtmlColorRgba htmlBackgroundColor, HtmlColorRgba htmlForegroundColor, HtmlColorRgba htmlPhoneAccentColor, HtmlColorRgba htmlWordsOfChristColor, HtmlColorRgba[] htmlHighlightColor, double htmlFontSize, string fontFamily, string fileErase, string filePath, bool forceReload)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RegisterUpdateEvent(WindowSourceChanged sourceChangedMethod, bool isRegister = true)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Resume()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SerialSave()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

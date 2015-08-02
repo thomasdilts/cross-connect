@@ -69,7 +69,7 @@ namespace Sword.reader
         {
             get
             {
-                return false;
+                return true;
             }
         }
         public override bool IsHearable
@@ -154,7 +154,8 @@ namespace Sword.reader
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             if (this.Chapters.Count == 0)
             {
@@ -176,7 +177,8 @@ namespace Sword.reader
                     htmlPhoneAccentColor,
                     htmlWordsOfChristColor,
                     htmlFontSize,
-                    fontFamily);
+                    fontFamily,
+                    isSmallScreen);
                 chapterEndHtml = "</body></html>";
             }
 

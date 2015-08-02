@@ -105,6 +105,8 @@ namespace CrossConnect
     [DataContract]
     [KnownType(typeof(DailyPlanReader))]
     [KnownType(typeof(CommentZtextReader))]
+    [KnownType(typeof(CommentRawComReader))]
+    [KnownType(typeof(BibleRawTextReader))]
     [KnownType(typeof(TranslatorReader))]
     [KnownType(typeof(BiblePlaceMarkReader))]
     [KnownType(typeof(SearchReader))]

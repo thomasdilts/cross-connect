@@ -27,6 +27,9 @@ namespace CrossConnect
     using System.Linq;
 
     using Windows.ApplicationModel.DataTransfer;
+    using Windows.Storage;
+    using Windows.Storage.Pickers;
+    using Windows.System;
     using Windows.UI.Core;
     using Windows.UI.Popups;
     using Windows.UI.Xaml;
@@ -41,10 +44,10 @@ namespace CrossConnect
 
         private void UpdateUi()
         {
-            oneDriveContentPanel.Visibility = backupRestoreObj.IsConnected && !_isTransfering ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
-            oneDriveConnectPanel.Visibility = backupRestoreObj.IsConnected || _isTransfering ? Windows.UI.Xaml.Visibility.Collapsed : Windows.UI.Xaml.Visibility.Visible;
-            oneDriveButConnect.Visibility = backupRestoreObj.IsConnected ? Windows.UI.Xaml.Visibility.Collapsed : Windows.UI.Xaml.Visibility.Visible;
-            oneDriveProgressBar.Visibility = backupRestoreObj.IsConnected ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
+            oneDriveContentPanel.Visibility = !_isTransfering ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
+            //oneDriveConnectPanel.Visibility = backupRestoreObj.IsConnected || _isTransfering ? Windows.UI.Xaml.Visibility.Collapsed : Windows.UI.Xaml.Visibility.Visible;
+            //oneDriveButConnect.Visibility = backupRestoreObj.IsConnected ? Windows.UI.Xaml.Visibility.Collapsed : Windows.UI.Xaml.Visibility.Visible;
+            //oneDriveProgressBar.Visibility = backupRestoreObj.IsConnected ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
             oneDriveConnectPanelTransfer.Visibility = _isTransfering ? Windows.UI.Xaml.Visibility.Visible : Windows.UI.Xaml.Visibility.Collapsed;
         }
         private void SetupOneDrivePage()
@@ -52,7 +55,7 @@ namespace CrossConnect
             backupRestoreObj.IsCanceled = false;
             UpdateUi();
 
-            OneDriveTitle.Text = Translations.Translate("OneDrive backup / restore");
+            OneDriveTitle.Text = Translations.Translate("Backup / restore");
             oneDriveInformationText.Text = Translations.Translate("Select the items you want to backup / restore. Then hit the button at the bottom");
             oneDriveButExport.Content = Translations.Translate("Backup");
             oneDriveButImport.Content = Translations.Translate("Restore");
@@ -62,12 +65,10 @@ namespace CrossConnect
             oneDriveBookmarks.Header = Translations.Translate("Bookmarks and custom notes");
             oneDriveThemes.Header = Translations.Translate("Themes");
             oneDriveWindowSetup.Header = Translations.Translate("Window setup");
-            this.oneDriveCaptionPutInFolder.Text = Translations.Translate("Folder on OneDrive");
             oneDriveButCancel.Content = Translations.Translate("Cancel");
-            this.oneDriveButConnect.Content = Translations.Translate("Connect to OneDrive");
-            this.oneDriveButLogout.Content = Translations.Translate("Logout from OneDrive");
+            oneDriveButHelp.Content = Translations.Translate("Help");
+            this.ImportOneSwordModule.Content = Translations.Translate("Install one 'Sword' module");
 
-            oneDrivePutInFolder.Text = App.DisplaySettings.OneDriveFolder;
         }
         private void MenuOneDriveBackupRestoreClick(object sender, RoutedEventArgs e)
         {
@@ -76,22 +77,7 @@ namespace CrossConnect
                 this.OneDrivePopup, this.MainPaneOneDrivePopup, this.scrollViewerOneDrive, this.TopAppBar1, this.BottomAppBar);
             this.OneDrivePopup.IsOpen = true;
         }
-
-        private async void ButConnectClick(object sender, RoutedEventArgs e)
-        {
-            oneDriveButConnect.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            oneDriveProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            var message = await backupRestoreObj.AuthenticateUser();
-            if (!string.IsNullOrEmpty(message))
-            {
-                var dialog = new MessageDialog(message);
-                await dialog.ShowAsync();
-            }
-            UpdateUi();
-            this.oneDriveButLogout.Visibility = backupRestoreObj.CanLogOut ? Visibility.Visible : Visibility.Collapsed;
-            OneDrivePopup.IsOpen = true;
-        }
-
+        
         private void oneDriveButCancelClick(object sender, RoutedEventArgs e)
         {
             backupRestoreObj.IsCanceled = true;
@@ -106,8 +92,7 @@ namespace CrossConnect
             bool isError = false;
             if (IsFinal && !string.IsNullOrEmpty(Message))
             {
-                var dialog = new MessageDialog(Translations.Translate(
-                                "An error occurred trying to connect to the network. Try again later.") + "; " + Message);
+                var dialog = new MessageDialog(Translations.Translate("An error occurred trying to connect to the network. Try again later.") + "; " + Message);
                 await dialog.ShowAsync();
                 _isTransfering = false;
                 isError = true;
@@ -134,6 +119,10 @@ namespace CrossConnect
                 App.SavePersistantDisplaySettings();
             }
         }
+        private void ReturnToWindowCallback()
+        {
+            this.OneDrivePopup.IsOpen = true;
+        }
         private async void ButExportClick(object sender, RoutedEventArgs e)
         {
             _isTransfering = true;
@@ -141,12 +130,7 @@ namespace CrossConnect
             this.oneDriveProgressBarTotal.Minimum = 0;
             this.oneDriveProgressBarTotal.Maximum = 100;
             this.oneDriveProgressBarTotal.Value = 3;
-            this.oneDrivePutInFolder.Text = this.oneDrivePutInFolder.Text.Replace("\\", "").Replace("/", "").Trim();
-            if (string.IsNullOrEmpty(this.oneDrivePutInFolder.Text))
-            {
-                this.oneDrivePutInFolder.Text = "CrossConnectBackup";
-            }
-            App.DisplaySettings.OneDriveFolder = this.oneDrivePutInFolder.Text;
+
             await App.SaveAllPersistantObjects();
             await backupRestoreObj.DoExport(
                 new BackupRestore.BackupManifest
@@ -158,7 +142,11 @@ namespace CrossConnect
                     highlighting = (bool)this.oneDriveHighlighting.IsOn,
                     windowSetup = (bool)this.oneDriveWindowSetup.IsOn,
                     IsWindowsPhone = false
-                }, this.oneDrivePutInFolder.Text, BackupRestoreProgress);
+                }, 
+                string.Empty, 
+                BackupRestoreProgress,
+                ReturnToWindowCallback,
+                Translations.Translate("Backup") + DateTime.Now.ToString("yyyy-MM-dd.HH.mm"));
         }
 
         private void butImport_Click(object sender, RoutedEventArgs e)
@@ -178,16 +166,16 @@ namespace CrossConnect
                     highlighting = (bool)this.oneDriveHighlighting.IsOn,
                     windowSetup = (bool)this.oneDriveWindowSetup.IsOn,
                     IsWindowsPhone = true
-                }, this.oneDrivePutInFolder.Text, BackupRestoreProgress);
+                }, string.Empty, BackupRestoreProgress, ReturnToWindowCallback);
         }
-
+        /*
         private void oneDriveButLogout_Click(object sender, RoutedEventArgs e)
         {
             backupRestoreObj.LogOut();
             _isTransfering = false;
             UpdateUi();
             OneDrivePopup.IsOpen = false;
-        }
+        }*/
         private void OneDrivePopup_OnClosed(object sender, object e)
         {
             App.ShowUserInterface(true);
@@ -198,6 +186,37 @@ namespace CrossConnect
             App.ShowUserInterface(false);
         }
 
+        private async void ImportOneSwordModule_Click(object sender, RoutedEventArgs e)
+        {
+
+            FileOpenPicker openPicker = new FileOpenPicker();
+            openPicker.ViewMode = PickerViewMode.Thumbnail;
+            openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            openPicker.FileTypeFilter.Add(".zip");
+
+            StorageFile zipFile = await openPicker.PickSingleFileAsync();
+            if (zipFile == null)
+            {
+                return;
+            }
+
+            var error = await SwordBook.TryInstallBibleFromZipFile(zipFile);
+            if (!string.IsNullOrEmpty(error[0]))
+            {
+                var dialog2 = new MessageDialog(error[0]);
+                await dialog2.ShowAsync();
+            }
+            else
+            {
+                await App.InstalledBibles.AddGenericBook(error[1]);
+            }
+        }
+
+        private async void oneDriveButHelp_Click(object sender, RoutedEventArgs e)
+        {
+            await Launcher.LaunchUriAsync(
+                new Uri(@"http://www.cross-connect.se/help-metro/#backuprestore", UriKind.Absolute));
+        }
 
         #endregion
     }

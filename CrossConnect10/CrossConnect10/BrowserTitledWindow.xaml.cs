@@ -324,14 +324,29 @@ namespace CrossConnect
                             switch (windowType)
                             {
                                 case WindowType.WindowBible:
-                                    this._state.Source = new BibleZtextReader(
-                                        bookPath,
-                                        ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
-                                        isIsoEncoding,
-                                        (string)book.Value.GetCetProperty(ConfigEntryType.CipherKey),
-                                        book.Value.ConfPath,
-                                        (string)book.Value.GetCetProperty(ConfigEntryType.Versification));
-                                    await ((BibleZtextReader)this._state.Source).Initialize();
+                                    var driver2 = ((string)book.Value.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
+                                    if (driver2.Equals("ZTEXT"))
+                                    {
+                                        this._state.Source = new BibleZtextReader(
+                                            bookPath,
+                                            ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
+                                            isIsoEncoding,
+                                            (string)book.Value.GetCetProperty(ConfigEntryType.CipherKey),
+                                            book.Value.ConfPath,
+                                            (string)book.Value.GetCetProperty(ConfigEntryType.Versification));
+                                        await ((BibleZtextReader)this._state.Source).Initialize();
+                                    }
+                                    else if (driver2.Equals("RAWTEXT"))
+                                    {
+                                        this._state.Source = new BibleRawTextReader(
+                                            bookPath,
+                                            ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
+                                            isIsoEncoding,
+                                            (string)book.Value.GetCetProperty(ConfigEntryType.CipherKey),
+                                            book.Value.ConfPath,
+                                            (string)book.Value.GetCetProperty(ConfigEntryType.Versification));
+                                        await ((BibleZtextReader)this._state.Source).Initialize();
+                                    }
                                     return;
                                 case WindowType.WindowBibleNotes:
                                     this._state.Source = new BibleNoteReader(
@@ -400,14 +415,29 @@ namespace CrossConnect
                                     await ((BibleZtextReader)this._state.Source).Initialize();
                                     return;
                                 case WindowType.WindowCommentary:
-                                    this._state.Source = new CommentZtextReader(
+                                    var driver3 = ((string)book.Value.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
+                                    if (driver3.Equals("ZCOM"))
+                                    {
+                                        this._state.Source = new CommentZtextReader(
                                         bookPath,
                                         ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
                                         isIsoEncoding,
                                         (string)book.Value.GetCetProperty(ConfigEntryType.CipherKey),
                                         book.Value.ConfPath,
                                         (string)book.Value.GetCetProperty(ConfigEntryType.Versification));
-                                    await ((BibleZtextReader)this._state.Source).Initialize();
+                                        await ((BibleZtextReader)this._state.Source).Initialize();
+                                    }
+                                    else if (driver3.Equals("RAWCOM"))
+                                    {
+                                        this._state.Source = new CommentRawComReader(
+                                        bookPath,
+                                        ((Language)book.Value.GetCetProperty(ConfigEntryType.Lang)).Code,
+                                        isIsoEncoding,
+                                        (string)book.Value.GetCetProperty(ConfigEntryType.CipherKey),
+                                        book.Value.ConfPath,
+                                        (string)book.Value.GetCetProperty(ConfigEntryType.Versification));
+                                        await ((BibleZtextReader)this._state.Source).Initialize();
+                                    }
                                     return;
                                 case WindowType.WindowBook:
                                     this._state.Source = new RawGenTextReader(
@@ -532,7 +562,7 @@ namespace CrossConnect
 
         public void SynchronizeWindow(string bookShortName, int chapterNum, int verseNum, IBrowserTextSource source)
         {
-            if (!string.IsNullOrEmpty(bookShortName) &&  this._state.IsSynchronized && this._state.Source.IsSynchronizeable)
+            if (/*!string.IsNullOrEmpty(bookShortName) && */ this._state.IsSynchronized && this._state.Source.IsSynchronizeable)
             {
                 string relbookShortName;
                 int relChaptNum;
@@ -546,7 +576,7 @@ namespace CrossConnect
                     out relverseNum,
                     out fullName,
                     out title);
-                bool isBookAndChapterTheSame = bookShortName.Equals(relbookShortName) && relChaptNum.Equals(chapterNum);
+                bool isBookAndChapterTheSame = bookShortName==relbookShortName && relChaptNum.Equals(chapterNum);
                 if (this._state.Source.MoveChapterVerse(bookShortName, chapterNum, verseNum, false, source))
                 {
                     if (!isBookAndChapterTheSame)
@@ -646,7 +676,8 @@ namespace CrossConnect
                                 fontFamily,
                                 false,
                                 true,
-                                this.ForceReload);
+                                this.ForceReload,
+                                MainPageSplit.IsSmallScreen);
                         this.ForceReload = false;
                         this.CallbackFromUpdate(createdFileName);
                     }
@@ -847,7 +878,7 @@ namespace CrossConnect
         {
             //this.webBrowser1.AllowedScriptNotifyUris = WebView.AnyScriptNotifyUri;
 
-            this.UpdateBrowser(false);
+            //this.UpdateBrowser(false);
 
             bool isPrevNext = this._state != null && this._state.Source != null && this._state.Source.IsPageable;
             this.ButPrevious.Visibility = isPrevNext ? Visibility.Visible : Visibility.Collapsed;
@@ -1093,7 +1124,8 @@ namespace CrossConnect
                 SearchInput.Visibility = Visibility.Visible;
                 searchPanel.ColumnDefinitions[2].Width = GridLength.Auto;
                 searchPanel.ColumnDefinitions[3].Width = GridLength.Auto;
-                searchPanel.ColumnDefinitions[0].Width = new GridLength(searchPanel.ActualWidth - butSearchDictionary.ActualWidth*2 - SearchInput.Width);
+                var width = searchPanel.ActualWidth - butSearchDictionary.ActualWidth * 2 - SearchInput.Width;
+                searchPanel.ColumnDefinitions[0].Width = new GridLength(width>0?width:0);
             }
             else
             {
@@ -1134,9 +1166,9 @@ namespace CrossConnect
             App.MainWindow.ButAddWindowClick(this, null);
         }
 
-        private void butSearchDictionary_OnClick(object sender, RoutedEventArgs e)
+        private async void butSearchDictionary_OnClick(object sender, RoutedEventArgs e)
         {
-            this.webBrowser1.InvokeScript(
+            await this.webBrowser1.InvokeScriptAsync(
                 "DoSearch",
                 new[] { "ID_" + SearchInput.Text });
         }

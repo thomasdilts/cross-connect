@@ -649,7 +649,8 @@ namespace Sword.reader
             HtmlColorRgba htmlPhoneAccentColor,
             HtmlColorRgba htmlWordsOfChristColor,
             double htmlFontSize,
-            string fontFamily)
+            string fontFamily,
+            bool isSmallScreen)
         {
             var head = new StringBuilder();
             head.Append(
@@ -662,7 +663,7 @@ namespace Sword.reader
                     htmlBackgroundColor.GetHtmlRgba(),
                     htmlForegroundColor.GetHtmlRgba(),
                     (int)(htmlFontSize + 0.5),
-                    displaySettings.MarginInsideTextWindow,
+                    isSmallScreen?displaySettings.MarginInsideTextWindow/3 : displaySettings.MarginInsideTextWindow,
                     fontFamily)); // old fashioned way to round an integer
 
             head.Append(
@@ -857,7 +858,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             return
                 await
@@ -875,7 +877,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                     fontFamily,
                     isNotesOnly,
                     addStartFinishHtml,
-                    forceReload);
+                    forceReload,
+                    isSmallScreen);
         }
 
         /// <summary>
@@ -1199,6 +1202,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                 if (nextVerse < 0)
                 {
                     this.MovePrevious(false);
+                    var book2 = canon.BookByShortName[this.Serial.PosBookShortName];
+                    this.Serial.PosVerseNum = canon.VersesInChapter[book2.VersesInChapterStartIndex + this.Serial.PosChaptNum]-1;
                 }
                 else
                 {
@@ -1354,7 +1359,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                     fontFamily,
                     false,
                     true,
-                    forceReload);
+                    forceReload,
+                    false);
             tw.Write(fileContent);
             tw.Flush();
             tw.Dispose();
@@ -1413,7 +1419,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return buf[0];
         }
 
-        protected async Task<byte[]> GetChapterBytes(int chapterNumber)
+        protected virtual async Task<byte[]> GetChapterBytes(int chapterNumber)
         {
             //Debug.WriteLine("getChapterBytes start");
             int numberOfChapters = this.Chapters.Count;
@@ -1562,7 +1568,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             if (this.Chapters.Count == 0)
             {
@@ -1584,7 +1591,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                     htmlPhoneAccentColor,
                     htmlWordsOfChristColor,
                     htmlFontSize,
-                    fontFamily);
+                    fontFamily,
+                    isSmallScreen);
                 chapterEndHtml = "</body></html>";
             }
 
@@ -1732,20 +1740,20 @@ function SetFontColorForElement(elemntId, colorRgba){
             return buf[1] * 0x100000000000 + buf[0] * 0x100000000 + buf[5] * 0x1000000 + buf[4] * 0x10000
                    + buf[3] * 0x100 + buf[2];
         }
-
-        protected int GetShortIntFromStream(Stream fs, out bool isEnd)
+         
+        public int GetShortIntFromStream(Stream fs, out bool isEnd)
         {
             var buf = new byte[2];
             isEnd = fs.Read(buf, 0, 2) != 2;
             if (isEnd)
             {
-                return 0;
+                 return 0;
             }
 
             return buf[1] * 0x100 + buf[0];
         }
 
-        protected long GetintFromStream(Stream fs, out bool isEnd)
+        public long GetintFromStream(Stream fs, out bool isEnd)
         {
             var buf = new byte[4];
             isEnd = fs.Read(buf, 0, 4) != 4;
@@ -1812,7 +1820,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             string fontFamily,
             bool showBookTitles,
             string notesTitle,
-            bool showDate)
+            bool showDate,
+            bool isSmallScreen)
         {
             if (htmlBackgroundColor == null)
             {
@@ -1827,7 +1836,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                 htmlPhoneAccentColor,
                 htmlWordsOfChristColor,
                 htmlFontSize,
-                fontFamily);
+                fontFamily,
+                isSmallScreen);
             const string chapterEndHtml = "</body></html>";
             var htmlListText = new StringBuilder(chapterStartHtml);
             int lastBookNum = -1;
@@ -1994,10 +2004,24 @@ function SetFontColorForElement(elemntId, colorRgba){
                         break;
                     }
                 }
-                ms.Write(xmlbytes, startPos, length);
+
+                //unfortuneately "&c." means "etcetera" in old english
+                //and "&c." really messes up html since & is a reserved word. 
+                string beforeFix = System.Text.UTF8Encoding.UTF8.GetString(xmlbytes, startPos, length);
+                string afterFix = beforeFix.Replace("&c.", "&amp;c.");
+                if(!beforeFix.Equals(afterFix))
+                {
+                    var newBuff = System.Text.UTF8Encoding.UTF8.GetBytes(afterFix);
+                    ms.Write(newBuff,0, newBuff.Length);
+                }
+                else
+                {
+                    ms.Write(xmlbytes, startPos, length);
+                }
+
                 ms.Write(Suffix, 0, Suffix.Length);
                 ms.Position = 0;
-
+                
                 // debug
                 //byte[] buf = new byte[ms.Length]; ms.Read(buf, 0, (int)ms.Length);
                 //string xxxxxx = System.Text.UTF8Encoding.UTF8.GetString(buf, 0, buf.Length);
@@ -2414,7 +2438,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         break;
                                     default:
                                         //AppendText(" ", plainText, noteText, isInElement);
-                                        Debug.WriteLine("Element untreated: " + reader.Name);
+                                        //Debug.WriteLine("Element untreated: " + reader.Name);
                                         break;
                                 }
 
@@ -2597,7 +2621,7 @@ function SetFontColorForElement(elemntId, colorRgba){
                                         break;
                                     default:
                                         //AppendText(" ", plainText, noteText, isInElement);
-                                        Debug.WriteLine("EndElement untreated: " + reader.Name);
+                                        //Debug.WriteLine("EndElement untreated: " + reader.Name);
                                         break;
                                 }
 
@@ -2633,7 +2657,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             }
         }
 
-        private async Task<bool> ReloadOneIndex(string filename, int startBook, int endBook, CanonBookDef[] booksInTestement)
+        protected virtual async Task<bool> ReloadOneIndex(string filename, int startBook, int endBook, CanonBookDef[] booksInTestement)
         {
             if (string.IsNullOrEmpty(this.Serial.Path))
             {
@@ -2786,7 +2810,7 @@ function SetFontColorForElement(elemntId, colorRgba){
             return true;
         }
 
-        private async Task<bool> ReloadSettingsFile()
+        protected virtual async Task<bool> ReloadSettingsFile()
         {
             if (canon == null)
             {
