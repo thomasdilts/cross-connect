@@ -57,6 +57,7 @@ namespace CrossConnect
         private DispatcherTimer _moveMultiScreenTimer;
         private int _overrideCurrentScreen = -1;
         private DispatcherTimer _overrideShowingScreenTimer;
+        private DispatcherTimer _recommendOtherAppTimer;
         private int _screenPosIncrement;
         private double _screenWidth;
 
@@ -352,6 +353,7 @@ namespace CrossConnect
             ReDrawWindows();
         }
 
+        private bool IsGetWindows10Shown = false;
         // Load data for the ViewModel Items
         private void MainPageLoaded(object sender, RoutedEventArgs e)
         {
@@ -361,6 +363,23 @@ namespace CrossConnect
                 DoLoading();
             }
             App_HistoryChanged(null, null);
+
+            if (!IsGetWindows10Shown && System.Environment.OSVersion.Version.Major.Equals(10))
+            {
+                _recommendOtherAppTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(10000) };
+                _recommendOtherAppTimer.Tick += RecommendLoadOtherAppTimerTick;
+                _recommendOtherAppTimer.Start();
+            }
+        }
+
+        private void RecommendLoadOtherAppTimerTick(object sender, EventArgs e)
+        {
+            if (App.OpenWindows.Any())
+            {
+                _recommendOtherAppTimer.Stop();
+                IsGetWindows10Shown = true;
+                NavigationService.Navigate(new Uri("/GetWindows10.xaml", UriKind.Relative));
+            }
         }
 
         public void DoLoading()

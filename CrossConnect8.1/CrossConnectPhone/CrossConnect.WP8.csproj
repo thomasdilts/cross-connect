@@ -144,6 +144,9 @@
     <Compile Include="EasySlider.xaml.cs">
       <DependentUpon>EasySlider.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GetWindows10.xaml.cs">
+      <DependentUpon>GetWindows10.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ITiledWindow.cs" />
     <Compile Include="MediaPlayerWindow.xaml.cs">
       <DependentUpon>MediaPlayerWindow.xaml</DependentUpon>
@@ -243,6 +246,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="EasySlider.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GetWindows10.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
