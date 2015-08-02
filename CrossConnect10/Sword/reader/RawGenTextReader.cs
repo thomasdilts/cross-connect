@@ -270,7 +270,7 @@ namespace Sword.reader
         {
             var head = new StringBuilder();
             head.Append(
-                "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">");
+                "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\" />");
 
             head.Append("<style>");
 
@@ -320,26 +320,28 @@ function SetFontColorForElement(elemntId, colorRgba){
             return head.ToString();
         }*/
         public static string HtmlHeader(
-    DisplaySettings displaySettings,
-    HtmlColorRgba htmlBackgroundColor,
-    HtmlColorRgba htmlForegroundColor,
-    HtmlColorRgba htmlPhoneAccentColor,
-            HtmlColorRgba htmlWordsOfChristColor,
-    double htmlFontSize,
-    string fontFamily)
+            DisplaySettings displaySettings,
+            HtmlColorRgba htmlBackgroundColor,
+            HtmlColorRgba htmlForegroundColor,
+            HtmlColorRgba htmlPhoneAccentColor,
+                    HtmlColorRgba htmlWordsOfChristColor,
+            double htmlFontSize,
+            string fontFamily,
+            bool isSmallScreen)
         {
             var head = new StringBuilder();
             head.Append(
-                "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">");
+                "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\" />");
 
             head.Append("<style>");
 
             head.Append(
                 string.Format(
-                    "body {{background:{0};color:{1};font-size:{2}pt;margin:0;padding:0;{3} }}",
+                    "body {{background:{0};color:{1};font-size:{2}pt;margin:{3};padding:0;{4} }}",
                     htmlBackgroundColor.GetHtmlRgba(),
                     htmlForegroundColor.GetHtmlRgba(),
                     (int)(htmlFontSize + 0.5),
+                    isSmallScreen ? displaySettings.MarginInsideTextWindow / 3 : displaySettings.MarginInsideTextWindow,
                     fontFamily)); // old fashioned way to round an integer
 
             head.Append(
@@ -467,7 +469,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             return
                 await
@@ -483,7 +486,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                     fontFamily,
                     isNotesOnly,
                     addStartFinishHtml,
-                    forceReload);
+                    forceReload,
+                    isSmallScreen);
         }
 
         /// <summary>
@@ -778,7 +782,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                     fontFamily,
                     false,
                     true,
-                    forceReload);
+                    forceReload,
+                    false);
             tw.Write(fileContent);
             tw.Flush();
             tw.Dispose();
@@ -898,7 +903,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             if (this.Chapters.Count == 0)
             {
@@ -924,7 +930,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                     htmlPhoneAccentColor,
                     htmlWordsOfChristColor,
                     htmlFontSize,
-                    fontFamily);
+                    fontFamily,
+                    isSmallScreen);
                 chapterEndHtml = "</body></html>";
                 htmlChapter.Append(chapterStartHtml);
             }

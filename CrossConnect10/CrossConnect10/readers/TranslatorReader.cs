@@ -131,7 +131,8 @@ namespace CrossConnect.readers
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             // Debug.WriteLine("SearchReader GetChapterHtml.text=" + displayText);
             return HtmlHeader(
@@ -141,7 +142,8 @@ namespace CrossConnect.readers
                 htmlPhoneAccentColor,
                 htmlWordsOfChristColor,
                 htmlFontSize,
-                fontFamily) + this.DisplayText + "</body></html>";
+                fontFamily,
+                isSmallScreen) + this.DisplayText + "</body></html>";
         }
 
         public override void GetInfo(

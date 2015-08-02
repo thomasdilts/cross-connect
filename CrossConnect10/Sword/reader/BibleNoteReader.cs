@@ -127,7 +127,8 @@ namespace CrossConnect.readers
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             return
                 await
@@ -145,7 +146,8 @@ namespace CrossConnect.readers
                     fontFamily,
                     true,
                     addStartFinishHtml,
-                    forceReload);
+                    forceReload,
+                    isSmallScreen);
         }
 
         public override void GetInfo(

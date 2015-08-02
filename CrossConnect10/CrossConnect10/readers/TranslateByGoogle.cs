@@ -206,8 +206,7 @@ namespace CrossConnect
                     if (string.IsNullOrEmpty(msgFromServer))
                     {
                         this.ReplyToTranslateRequestor(
-                            Translations.Translate(
-                                "An error occurred trying to connect to the network. Try again later."),
+                            Translations.Translate("An error occurred trying to connect to the network. Try again later."),
                             true);
                     }
                     else

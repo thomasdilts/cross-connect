@@ -495,6 +495,11 @@ namespace CrossConnect
             this.selectDocumentType.Items.Add(Translations.Translate("Daily plan"));
             this.selectDocumentType.Items.Add(Translations.Translate("Added notes"));
             this.selectDocumentType.Items.Add(Translations.Translate("Selected verses"));
+            this.BorderHelpText.Text = Translations.Translate("Pull on the title or the borders for moving to another window");
+
+            this.BorderMoveTutorial.Visibility = Visibility.Collapsed ;
+            this.ImageMoveTutorial.Visibility = Visibility.Collapsed;
+            this.BorderHelpText.Visibility = Visibility.Collapsed;
 
             if (App.InstalledBibles.InstalledCommentaries.Count > 0)
             {
@@ -524,7 +529,7 @@ namespace CrossConnect
             this.planActualDateCaption.Visibility = Visibility.Collapsed;
             this.selectPlanType.Visibility = Visibility.Collapsed;
 
-            this.sliderTextSize.SliderValue = 20;
+            this.sliderTextSize.SliderValue = MainPageSplit.IsSmallScreen?16:20;
             if (App.OpenWindows.Any() && App.OpenWindows[0].State != null)
             {
                 this.sliderTextSize.SliderValue = App.OpenWindows[0].State.HtmlFontSize;
@@ -584,7 +589,8 @@ namespace CrossConnect
                             BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
                             BrowserTitledWindow.GetBrowserColor("PhoneWordsOfChristColor"),
                             e.NewValue,
-                            Theme.FontFamilies[App.Themes.FontFamily]) + "<a class=\"normalcolor\" href=\"#\">"
+                            Theme.FontFamilies[App.Themes.FontFamily],
+                            MainPageSplit.IsSmallScreen) + "<a class=\"normalcolor\" href=\"#\">"
                         + Translations.Translate("Text size") + "</a>" + "</body></html>");
                 }
                 catch (Exception ee)
@@ -607,7 +613,8 @@ namespace CrossConnect
                         BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
                         BrowserTitledWindow.GetBrowserColor("PhoneWordsOfChristColor"),
                         this.sliderTextSize.SliderValue,
-                        Theme.FontFamilies[((TextBlock)WindowFontComboBox.SelectedItem).Text]) + "<a class=\"normalcolor\" href=\"#\">"
+                        Theme.FontFamilies[((TextBlock)WindowFontComboBox.SelectedItem).Text],
+                        MainPageSplit.IsSmallScreen) + "<a class=\"normalcolor\" href=\"#\">"
                     + Translations.Translate("Text size") + "</a>" + "</body></html>");
             }
             catch (Exception ee)
@@ -683,6 +690,18 @@ namespace CrossConnect
             IsInSelectDocChanged = false;
 
         }
+
+        private void Col1_Click(object sender, RoutedEventArgs e)
+        {
+            var hasTouch = HasTouchScreen;
+            if (hasTouch)
+            {
+                this.BorderHelpText.Visibility = !(bool)Col1.IsChecked ? Visibility.Visible : Visibility.Collapsed;
+                this.BorderMoveTutorial.Visibility = !(bool)Col1.IsChecked ? Visibility.Visible : Visibility.Collapsed;
+                this.ImageMoveTutorial.Visibility = !(bool)Col1.IsChecked ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
         #endregion
     }
 }

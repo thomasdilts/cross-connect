@@ -64,7 +64,7 @@
                         <ColumnDefinition Width="0" />
                         <ColumnDefinition Width="0" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Name="title" Text="Please wait, loading..." FontSize="18" />
+                    <TextBlock Grid.Column="0" Name="title" Text="......." FontSize="18" />
                     <TextBox Visibility="Collapsed" Grid.Column="2" Width="250"   Text=""  Name="SearchInput" />
                     <Button Visibility="Collapsed" Grid.Column="3" x:Name="butSearchDictionary" Click="butSearchDictionary_OnClick" HorizontalAlignment="Center"
                             Style="{StaticResource SearchAppBarButtonStyle2}" Tag="Edit" />
@@ -353,7 +353,6 @@
                                      x:Name="ListStartAudio" FontSize="14">
 
                             </ListBox>
-                        <ToggleSwitch Header="SyncVerses" Grid.Row="2" Margin="0 20 0 0" FontSize="18" Name="SyncVerses" />
                     </Grid>
                     </ScrollViewer>
                 </Border>

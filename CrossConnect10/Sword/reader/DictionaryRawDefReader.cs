@@ -218,11 +218,12 @@ namespace Sword.reader
             HtmlColorRgba htmlPhoneAccentColor,
             HtmlColorRgba htmlWordsOfChristColor,
             double htmlFontSize,
-            string fontFamily)
+            string fontFamily,
+            bool isSmallScreen)
         {
             var head = new StringBuilder();
             head.Append(
-                "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">");
+                "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\" />");
 
             head.Append("<style>");
 
@@ -299,7 +300,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             return
                 await
@@ -315,7 +317,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                     fontFamily,
                     isNotesOnly,
                     addStartFinishHtml,
-                    forceReload);
+                    forceReload,
+                    isSmallScreen);
         }
 
         public virtual string GetExternalLink(DisplaySettings displaySettings)
@@ -535,7 +538,8 @@ function SetFontColorForElement(elemntId, colorRgba){
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             if(string.IsNullOrEmpty(this.Title))
             {
@@ -554,14 +558,15 @@ function SetFontColorForElement(elemntId, colorRgba){
             string chapterEndHtml = string.Empty;
             if (addStartFinishHtml)
             {
-                chapterStartHtml = HtmlHeader(
+                chapterStartHtml = DictionaryRawDefReader.HtmlHeader(
                     displaySettings,
                     htmlBackgroundColor,
                     htmlForegroundColor,
                     htmlPhoneAccentColor,
                     htmlWordsOfChristColor,
                     htmlFontSize,
-                    fontFamily);
+                    fontFamily,
+                    isSmallScreen);
                 chapterEndHtml = "</body></html>";
                 htmlChapter.Append(chapterStartHtml);
             }

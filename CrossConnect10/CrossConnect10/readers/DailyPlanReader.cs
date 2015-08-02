@@ -156,7 +156,8 @@ namespace CrossConnect.readers
             string fontFamily,
             bool isNotesOnly,
             bool addStartFinishHtml,
-            bool forceReload)
+            bool forceReload,
+            bool isSmallScreen)
         {
             var canonKjv = CanonManager.GetCanon("KJV");
             string chapterStartHtml = HtmlHeader(
@@ -166,7 +167,8 @@ namespace CrossConnect.readers
                 htmlPhoneAccentColor,
                 htmlWordsOfChristColor,
                 htmlFontSize,
-                fontFamily);
+                fontFamily,
+                isSmallScreen);
             var schedule = DailyPlans.ZAllPlans(App.DailyPlan.PlanNumber);
             const string ChapterEndHtml = "</body></html>";
             var sb = new StringBuilder(chapterStartHtml);
@@ -215,7 +217,8 @@ namespace CrossConnect.readers
                         fontFamily,
                         false,
                         false,
-                        forceReload));
+                        forceReload,
+                        isSmallScreen));
             }
 
             sb.Append(ChapterEndHtml);

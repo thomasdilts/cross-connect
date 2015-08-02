@@ -1,13 +1,25 @@
-﻿//*********************************************************
+﻿// <copyright file="MessageService.cs" company="Thomas Dilts">
 //
-// Copyright (c) Microsoft. All rights reserved.
-// This code is licensed under the MIT License (MIT).
-// THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-// ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-// IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-// PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
+// CrossConnect Bible and Bible Commentary Reader for CrossWire.org
+// Copyright (C) 2011 Thomas Dilts
 //
-//*********************************************************
+// This program is free software: you can redistribute it and/or modify
+// it under the +terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <summary>
+// Email: thomas@cross-connect.se
+// </summary>
+// <author>Thomas Dilts</author>
 
 using System;
 using System.Collections.Generic;
@@ -50,10 +62,17 @@ namespace BackgroundAudioShared.Messages
     
         public static void SendMessageToBackground<T>(T message)
         {
-            var payload = new ValueSet();
-            payload.Add(MessageService.MessageType, typeof(T).FullName);
-            payload.Add(MessageService.MessageBody, JsonHelper.ToJson(message));
-            BackgroundMediaPlayer.SendMessageToBackground(payload);
+            // this will crash if the background is too busy to receive the message.
+            try
+            {
+                var payload = new ValueSet();
+                payload.Add(MessageService.MessageType, typeof(T).FullName);
+                payload.Add(MessageService.MessageBody, JsonHelper.ToJson(message));
+                BackgroundMediaPlayer.SendMessageToBackground(payload);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         public static bool TryParseMessage<T>(ValueSet valueSet, out T message)
@@ -70,10 +89,10 @@ namespace BackgroundAudioShared.Messages
                 // Validate type
                 if ((string)messageTypeValue != typeof(T).FullName)
                 {
-                    Debug.WriteLine("Message type was {0} but expected type was {1}", (string)messageTypeValue, typeof(T).FullName);
+                    //Debug.WriteLine("Message type was {0} but expected type was {1}", (string)messageTypeValue, typeof(T).FullName);
                     return false;
                 }
-
+                Debug.WriteLine("Message received={0}", typeof(T).Name);
                 message = JsonHelper.FromJson<T>(messageBodyValue.ToString());
                 return true;
             }
