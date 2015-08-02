@@ -253,4 +253,7 @@
 <string key="Remove screen transitions">Дэлгэц шилжилтийн устга</string>
 <string key="Dictionaries">Толь бичиг</string>
 <string key="Memory card">Санах ойн карт</string>
+<string key="Download the latest version that replaces this program">Энэ хөтөлбөрийг оронд хамгийн сүүлийн үеийн хувилбарыг татаж авах</string>
+<string key="Download now">Одоо татаж</string>
+<string key="Not now">Бус, одоо</string>
 </translations>
