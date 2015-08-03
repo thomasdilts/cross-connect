@@ -48,7 +48,6 @@
 <string key="Enter key">ಕೀ ನಮೂದಿಸಿ</string>
 <string key="Exact match">ನಿಖರ ಹೋಲಿಕೆಯಾಗಿದೆ</string>
 <string key="Factory reset themes">ಫ್ಯಾಕ್ಟರಿ ಮರುಹೊಂದಿಸು ವಿಷಯಗಳನ್ನು</string>
-<string key="Fast search help text">ವೇಗದ ಹುಡುಕಾಟ ನೀವು ನಂತರ ಬೈಬಲ್ ಮತ್ತು ವೇಗವಾಗಿ ಪ್ರತಿ ಬಾರಿ ಅದನ್ನು ಬಳಸಿ ಮೊದಲ ಬಾರಿಗೆ ನಿಧಾನ. ವೇಗದ ಹುಡುಕಾಟ ನಿರ್ದಿಷ್ಟ ಪದಗಳನ್ನು ಎಲ್ಲಾ ಹೊಂದಿರುವ ಪದ್ಯಗಳನ್ನು ಹಿಂದಿರುಗಿಸುತ್ತದೆ. ಪ್ರತಿ ಪದ್ಯ ನೀಡಲಾಗಿದೆ ಪದಗಳನ್ನು ಯಾವುದೇ ಹುಡುಕಲು ಪ್ರತಿ ಪದ ಮುಂದೆ "+" ಹಾಕಿ. ಹಾಕಿ ಒಂದು "-" ಒಂದು ಪದದ ಮುಂದೆ ಪದ ಹೊಂದಿಲ್ಲ ಎಂದು ಶ್ಲೋಕದ ಎಲ್ಲಾ ಹುಡುಕಲು. ನಿರ್ದಿಷ್ಟಪಡಿಸಬೇಕು.ವೈಲ್ಡ್ಕಾರ್ಡ್ಗಳನ್ನು "*" ಮತ್ತು "?" ಬಳಸಬಹುದು. ಚೀನೀ ಮತ್ತು ನೀವು ಮೊದಲು ಮತ್ತು ಪ್ರತಿ ಪಾತ್ರದ ನಂತರ "*" ಇರಿಸಬೇಕಾಗುತ್ತದೆ ಜಪಾನಿನ ನಂತಹ ಸಂಕೇತಗಳನ್ನು ಬಳಸಿಕೊಂಡು ಭಾಷೆಗಳಲ್ಲಿ. "Strongs" ಸಂಖ್ಯೆಗಳನ್ನು ಕಂಡುಹಿಡಿಯಲು ಮಾತ್ರ ನಿಧಾನ ಹುಡುಕಾಟ ಬಳಸಿ.</string>
 <string key="Fast search">ಫಾಸ್ಟ್ ಹುಡುಕು</string>
 <string key="Font">ಫಾಂಟ್</string>
 <string key="Found">ಕಂಡುಬಂದಿಲ್ಲ</string>
@@ -238,4 +237,6 @@
 <string key="Yes">ಹೌದು</string>
 <string key="You must first select a verse">ನೀವು ಮೊದಲ ಒಂದು ಪದ್ಯ ಆಯ್ಕೆ ಮಾಡಬೇಕು</string>
 <string key="You must have at least one bible">ನೀವು ಕನಿಷ್ಟ ಒಂದು ಬೈಬಲ್ ಹೊಂದಿರಬೇಕು</string>
+<string key="Next">ಮುಂದಿನ</string>
+<string key="Previous">ಹಿಂದಿನ</string>
 </translations>

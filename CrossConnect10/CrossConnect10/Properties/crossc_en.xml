@@ -238,4 +238,6 @@
 <string key="Yes">Yes</string>
 <string key="You must first select a verse">You must first select a verse</string>
 <string key="You must have at least one bible">You must have at least one bible</string>
+<string key="Next">Next</string>
+<string key="Previous">Previous</string>
 </translations>

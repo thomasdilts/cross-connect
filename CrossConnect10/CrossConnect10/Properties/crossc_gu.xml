@@ -48,7 +48,6 @@
 <string key="Enter key">કી દાખલ કરો</string>
 <string key="Exact match">ચોક્કસ જોડણી</string>
 <string key="Factory reset themes">ફેક્ટરી રીસેટ થીમ્સ</string>
-<string key="Fast search help text">એક ઝડપી શોધ તમે ત્યારબાદ બાઇબલ અને ઝડપી દરેક સમય પર તેનો ઉપયોગ પ્રથમ વખત ધીમી છે. એક ઝડપી શોધ આપેલ તમામ શબ્દો સમાવતી છંદો આપે છે. દરેક શ્લોક આપેલ કોઈપણ શબ્દ શોધવા માટે દરેક શબ્દ સામે એક "+" મૂકો. મૂકો "-" એક શબ્દ સામે શબ્દ કે નથી કે છંદો બધા શોધવા માટે. વાઇલ્ડકાર્ડ "*" અને "?" વાપરી શકાય છે. ચિની અને તમે પહેલાં અને દરેક અક્ષર પછી "*" મૂકવામાં જ જોઈએ જાપાનીઝ જેવા પ્રતીકો ઉપયોગ કરીને ભાષાઓ છે. "Strongs" નંબરો શોધવા માટે માત્ર ધીમી શોધ વાપરો.</string>
 <string key="Fast search">ઝડપી શોધ</string>
 <string key="Font">ફૉન્ટ</string>
 <string key="Found">મળ્યો</string>
@@ -238,4 +237,6 @@
 <string key="Yes">હા</string>
 <string key="You must first select a verse">તમે પ્રથમ એક શ્લોક પસંદ કરવું જ જોઈએ</string>
 <string key="You must have at least one bible">તમારે ઓછામાં ઓછી એક બાઇબલ હોવી જ જોઈએ</string>
+<string key="Next">આગળ</string>
+<string key="Previous">ગત</string>
 </translations>

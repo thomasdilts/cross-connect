@@ -48,7 +48,6 @@
 <string key="Enter key">Phím Enter</string>
 <string key="Exact match">Kết hợp chính xác</string>
 <string key="Factory reset themes">Themes Factory reset</string>
-<string key="Fast search help text">Một tìm kiếm nhanh chóng là làm chậm thời gian đầu tiên bạn sử dụng nó trên mỗi cuốn kinh thánh và nhanh chóng thời gian sau đó. Một tìm kiếm nhanh chóng trả về câu có chứa tất cả các từ cho trước. Đặt một "+" ở phía trước của mỗi từ để tìm thấy bất kỳ của các từ trong mỗi câu thơ. Đặt một "-" ở phía trước của một từ để tìm tất cả các câu không có từ đó. Các kí hiệu "*" và "?" có thể được sử dụng. Trong các ngôn ngữ sử dụng biểu tượng như Trung Quốc và Nhật Bản, bạn phải đặt "*" trước và sau mỗi ký tự. Chỉ sử dụng tìm kiếm chậm để tìm "Strongs" con số.</string>
 <string key="Fast search">Tìm kiếm nhanh</string>
 <string key="Font">Font</string>
 <string key="Found">Tìm thấy</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Vâng</string>
 <string key="You must first select a verse">Trước tiên, bạn phải chọn một câu thơ</string>
 <string key="You must have at least one bible">Bạn phải có ít nhất một cuốn kinh thánh</string>
+<string key="Next">Kế tiếp</string>
+<string key="Previous">Trước</string>
 </translations>

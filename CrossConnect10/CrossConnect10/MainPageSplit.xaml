@@ -64,6 +64,10 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel x:Name="leftpanel22" Orientation="Horizontal" Grid.Column="0"
                                 HorizontalAlignment="Left">
+                            <Button x:Name="PreviousHistory" Click="MenuPreviousHistoryClick"
+                                Style="{StaticResource SkipBackAppBarButtonStyle}" Tag="Next" />
+                            <Button x:Name="NextHistory" Click="MenuNextHistoryClick"
+                                Style="{StaticResource SkipAheadAppBarButtonStyle}" Tag="Next" />
                             <Button x:Name="ClearHistory" Click="MenuClearHistoryClick"
                                 Style="{StaticResource DisableUpdatesAppBarButtonStyle}" Tag="Next" />
                             <Button x:Name="SelectLanguage" Click="MenuLanguageClick"

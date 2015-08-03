@@ -48,7 +48,6 @@
 <string key="Enter key">Antre kle</string>
 <string key="Exact match">Egzak matche ak</string>
 <string key="Factory reset themes">Tèm faktori Reyajiste</string>
-<string key="Fast search help text">Yon rechèch vit se ralanti premye fwa ou sèvi ak li sou yon Bib ak vit chak fwa apre sa. Yon rechèch rapide retounen vèsè ki gen tout nan mo sa yo bay yo. Mete yon "+" la devan chak mo jwenn nenpòt nan mo sa yo ki te bay nan chak vèsè. Mete yon "-" nan devan yon mo jwenn tout nan vèsè yo ki pa gen mo sa a. Djokèr "*" ak "?" kapab itilize. Nan lang lè l sèvi avèk senbòl tankou chinwa ak japonè ou dwe mete "*" anvan ak apre chak karaktè. Itilize sèlman rechèch la dousman jwenn "STRONGS" chif yo.</string>
 <string key="Fast search">Fast rechèch</string>
 <string key="Font">Font</string>
 <string key="Found">Twouve</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Wi</string>
 <string key="You must first select a verse">Ou dwe premye chwazi yon vèsè</string>
 <string key="You must have at least one bible">Ou dwe gen omwen yon Bib</string>
+<string key="Next">Next</string>
+<string key="Previous">Previous</string>
 </translations>

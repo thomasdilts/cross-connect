@@ -48,7 +48,6 @@
 <string key="Enter key">की प्रविष्ट करा</string>
 <string key="Exact match">अचूक सामना</string>
 <string key="Factory reset themes">फॅक्टरी रीसेट थीम</string>
-<string key="Fast search help text">एक जलद शोध तुम्ही त्यानंतर एक बायबल आणि जलद प्रत्येक वेळी तो वापरण्याचा पहिलीच वेळ कमी आहे. एक जलद शोध दिले सर्व शब्द असलेले अध्याय पुनरागमन झाले आहे. प्रत्येक काव्य दिली शब्द कोणत्याही शोधण्यासाठी प्रत्येक शब्द समोर एका "+" ठेवा. एखाद्या "-" एक शब्द समोर जे शब्द नाही अध्याय सर्व शोधण्यासाठी. वाइल्डकार्ड "*" आणि "?" वापरले जाऊ शकते. चीनी, आणि तुम्ही आधी आणि प्रत्येक अक्षर "*" ठेवले पाहिजे जपानी, इत्यादी प्रतीक वापरून भाषांमध्ये. "Strongs" संख्या शोधण्यासाठी फक्त मंद शोध वापरा.</string>
 <string key="Fast search">जलद शोध</string>
 <string key="Font">फॉन्ट</string>
 <string key="Found">सापडले</string>
@@ -238,4 +237,6 @@
 <string key="Yes">होय</string>
 <string key="You must first select a verse">आपण प्रथम एक काव्य निवडणे आवश्यक आहे</string>
 <string key="You must have at least one bible">आपण कमीत कमी एक बायबल असणे आवश्यक आहे</string>
+<string key="Next">पुढील</string>
+<string key="Previous">मागील</string>
 </translations>

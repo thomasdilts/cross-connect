@@ -48,7 +48,6 @@
 <string key="Enter key">Enter key</string>
 <string key="Exact match">Eksaktong tugma</string>
 <string key="Factory reset themes">Tema Factory reset</string>
-<string key="Fast search help text">Ang isang mabilis na paghahanap ay mabagal ang unang pagkakataon na gamitin mo ito sa isang bibliya at mabilis sa bawat oras pagkatapos noon. Ibinabalik ng mabilis na paghahanap bersikulo na naglalaman ng lahat ng mga ibinigay na mga salita. Maglagay ng "+" sa harap ng bawat salita upang mahanap ang anumang mga ibinigay na mga salita sa bawat taludtod. Maglagay ng isang "-" sa harap ng isang salita para hanapin ang lahat ng mga talata na hindi magkaroon ng salitang iyon. Wildcard "*" at "?" ay maaaring gamitin. Sa mga wikang gamit ng mga simbolo tulad ng Intsik at japanese kailangan mong ilagay ang "*" bago at pagkatapos ng bawat character. Gamitin lamang ang mabagal na paghahanap upang matagpuan ang "strongs" numero.</string>
 <string key="Fast search">Mabilis na paghahanap</string>
 <string key="Font">Font</string>
 <string key="Found">Itatag</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Oo</string>
 <string key="You must first select a verse">Kailangan mo munang pumili ng isang taludtod</string>
 <string key="You must have at least one bible">Dapat kang magkaroon ng hindi bababa sa isa sa bibliya</string>
+<string key="Next">Susunod</string>
+<string key="Previous">Nakaraan</string>
 </translations>

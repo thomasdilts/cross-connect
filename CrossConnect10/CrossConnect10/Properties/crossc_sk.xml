@@ -48,7 +48,6 @@
 <string key="Enter key">Enter key</string>
 <string key="Exact match">Presná zhoda</string>
 <string key="Factory reset themes">Factory Reset témy</string>
-<string key="Fast search help text">Rýchle vyhľadávanie je pomalý pri prvom ho použiť na biblie a rýchly zakaždým potom. Rýchle hľadanie vráti verše, ktoré obsahujú všetky z uvedených slov. Dajte "+" pred každým slovom nájsť niektorý z uvedených slov v každom verši. Put "-" pred slovo nájsť všetky verše, ktoré nemajú to slovo. Zástupné znaky "*" a "?" môže byť použité. V jazykoch pomocou symbolov, ako je čínština a japončina, musíte dať "*" pred a po každom znaku. Používajte iba pomalé hľadanie nájsť "Strongs" čísla.</string>
 <string key="Fast search">Rýchle vyhľadávanie</string>
 <string key="Font">Písmo</string>
 <string key="Found">Nájdené</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Áno</string>
 <string key="You must first select a verse">Najprv musíte vybrať verš</string>
 <string key="You must have at least one bible">Musíte mať aspoň jeden biblie</string>
+<string key="Next">Ďalšie</string>
+<string key="Previous">Predchádzajúci</string>
 </translations>

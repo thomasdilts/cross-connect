@@ -48,7 +48,6 @@
 <string key="Enter key">کلید ورود</string>
 <string key="Exact match">مطابقت دقیق</string>
 <string key="Factory reset themes">تم تنظیم مجدد کارخانه</string>
-<string key="Fast search help text">جستجوی سریع است سرعت اولین بار شما از آن استفاده در هر زمان کتاب مقدس و سریع پس از آن. جستجوی سریع گرداند آیات شامل تمام کلمات داده شده. قرار دادن یک "+" در جلوی هر کلمه برای پیدا کردن هر یک از کلمات داده شده در هر آیه. قرار دادن یک "-" در مقابل یک کلمه برای پیدا کردن همه از آیات که آن کلمه را ندارد. نویسههای عام "*" و "؟" می تواند به کار رود. در زبان با استفاده از علامت مانند چینی و ژاپنی شما باید قبل و بعد از هر یک از شخصیت قرار داده "*". استفاده از تنها جستجوی آهسته برای پیدا کردن "strongs در" اعداد.</string>
 <string key="Fast search">جستجوی سریع</string>
 <string key="Font">قلم</string>
 <string key="Found">یافت</string>
@@ -238,4 +237,6 @@
 <string key="Yes">بله</string>
 <string key="You must first select a verse">ابتدا باید، با یک آیه را انتخاب کنید</string>
 <string key="You must have at least one bible">شما باید حداقل یک کتاب مقدس دارند</string>
+<string key="Next">بعد</string>
+<string key="Previous">قبلی</string>
 </translations>

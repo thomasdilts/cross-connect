@@ -48,7 +48,6 @@
 <string key="Enter key">Enter billentyűt</string>
 <string key="Exact match">Pontos egyezés</string>
 <string key="Factory reset themes">Gyári beállítások visszaállítása témák</string>
-<string key="Fast search help text">A gyors keresés lassú az első alkalommal, amikor használja a Biblia és gyors minden egyes alkalommal azt követően. Egy gyors keresés eredményeként verseket tartalmazó valamennyi, az adott szó. Tegyél egy "+" előtt minden egyes szót találni olyan, az adott szó minden vers. Tegyél egy "-" előtt egy szót, hogy megtalálja azokat a verseket, amelyek nem rendelkeznek a szót. Helyettesítő karakterek "*" és "?" használható. Ebben nyelven a szimbólumok, mint a kínai és a japán meg kell tenni "*" előtt és után minden karakter. Csak a lassú keresés találni "Strongs" számok.</string>
 <string key="Fast search">Gyors keresés</string>
 <string key="Font">Betűtípus</string>
 <string key="Found">Talált</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Igen</string>
 <string key="You must first select a verse">Először ki kell választani egy vers</string>
 <string key="You must have at least one bible">Meg kell legalább egy biblia</string>
+<string key="Next">Következő</string>
+<string key="Previous">Előző</string>
 </translations>

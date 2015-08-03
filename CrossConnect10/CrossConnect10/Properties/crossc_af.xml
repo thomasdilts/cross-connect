@@ -48,7 +48,6 @@
 <string key="Enter key">Enter-sleutel</string>
 <string key="Exact match">Presiese wedstryd</string>
 <string key="Factory reset themes">Fabriek reset temas</string>
-<string key="Fast search help text">'N vinnige soek is stadig die eerste keer dat jy dit gebruik op 'n Bybel en 'n vinnige elke keer daarna. 'N vinnige soektog terugkeer verse wat al van die gegewe woorde. Sit 'n "+" in die voorkant van elke woord om enige van die gegewe woorde in elke vers te vind. Sit 'n "-" in die voorkant van 'n woord om al die verse wat nie die woord het nie, vind. Wildcards "*" en "?" gebruik kan word. In tale met behulp van simbole soos Chinese en Japannese moet jy "*" voor en na elke karakter. Gebruik slegs die stadige soektog te "Strongs" getalle te vind.</string>
 <string key="Fast search">Vinnige soektog</string>
 <string key="Font">Font</string>
 <string key="Found">Gevind</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Ja</string>
 <string key="You must first select a verse">Jy moet eers 'n vers</string>
 <string key="You must have at least one bible">Jy moet ten minste een Bybel het</string>
+<string key="Next">Volgende</string>
+<string key="Previous">Vorige</string>
 </translations>

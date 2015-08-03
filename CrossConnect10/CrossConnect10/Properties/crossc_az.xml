@@ -48,7 +48,6 @@
 <string key="Enter key">Əsas daxil edin</string>
 <string key="Exact match">Tam eşleme</string>
 <string key="Factory reset themes">Factory reset mövzular</string>
-<string key="Fast search help text">A sürətli axtarış sonra bir Müqəddəs və sürətli hər dəfə istifadə ilk dəfə yavaş edir. A sürətli axtarış verilmiş sözlərin bütün olan ayələri qaytarır. Hər ayənin verilən sözlərin hər hansı tapmaq üçün hər sözü qarşısında "+" qoyun. Qoymaq "-" bir söz qarşısında söz yoxdur ayələrin bütün tapmaq üçün. Joker "*" və "?" istifadə edilə bilər. Çin və əvvəl və hər bir xarakter sonra "*" qoymaq lazımdır yapon kimi simvolları istifadə dillərdə. "Strongs" nömrələrini tapmaq üçün yalnız yavaş axtarış istifadə edin.</string>
 <string key="Fast search">Tez axtarış</string>
 <string key="Font">Şrift</string>
 <string key="Found">Maşın tapılmışdır</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Bəli</string>
 <string key="You must first select a verse">Siz ilk bir ayə seçmelisiniz</string>
 <string key="You must have at least one bible">Siz ən azı bir Müqəddəs olmalıdır</string>
+<string key="Next">Sonrakı</string>
+<string key="Previous">Əvvəlki</string>
 </translations>

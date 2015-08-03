@@ -48,7 +48,6 @@
 <string key="Enter key">Eniga klavo</string>
 <string key="Exact match">Ĝusta partio</string>
 <string key="Factory reset themes">Fabriko reset temoj</string>
-<string key="Fast search help text">Rapida serĉo estas malrapida la unua tempo vi uzas ĝin sur biblio kaj rapida ĉiufoje poste. Rapida serĉo revenas versoj enhavas ĉiun donitaj vortoj. Metu "+" antaŭ ĉiu vorto trovi iun el la donitaj vortoj en ĉiu verso. Metis "-" antaŭ vorto trovi ĉiujn de la versoj kiuj ne havas tiun vorton. Ĵokerojn «*» kaj «?» povas uzi. En lingvoj uzante simbolojn kiel la ĉina kaj japana vi devas meti "*" antaŭ kaj post ĉiu karaktero. Uzu nur la malrapide serĉo por trovi "Strongs" nombroj.</string>
 <string key="Fast search">Rapida serĉo</string>
 <string key="Font">Font</string>
 <string key="Found">Trovita</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Jes</string>
 <string key="You must first select a verse">Vi devas unue elekti verso</string>
 <string key="You must have at least one bible">Vi devas havi almenaŭ unu biblio</string>
+<string key="Next">Sekva</string>
+<string key="Previous">Antaŭa</string>
 </translations>

@@ -48,7 +48,6 @@
 <string key="Enter key">Enter కీ</string>
 <string key="Exact match">ఖచ్చితమైన మ్యాచ్</string>
 <string key="Factory reset themes">ఫ్యాక్టరీ రీసెట్ థీమ్స్</string>
-<string key="Fast search help text">ఒక శీఘ్ర శోధన మీరు తర్వాత ఒక బైబిల్ మరియు ఫాస్ట్ ప్రతిసారీ దాన్ని ఉపయోగించడానికి మొదటి సారి నెమ్మదిగా ఉంది. ఒక శీఘ్ర శోధన ఇచ్చిన పదాలు అన్ని కలిగి శ్లోకాలు తిరిగి. ప్రతి పద్యం లో ఇచ్చిన పదాలను ఏ కనుగొనేందుకు ప్రతి పదం ముందు ఒక "+" ఇచ్చాడు. ఉంచండి ఒక "-" ఒక పదం ముందు ఆ పదం లేదు ఆ పద్యాలను అన్ని కనుగొనేందుకు. వైల్డ్ "*" మరియు "?" ఉపయోగించవచ్చు. చైనీస్ మరియు మీరు ముందు మరియు ప్రతి పాత్ర తర్వాత "*" చాలు ఉండాలి జపనీస్ వంటి గుర్తులు ఉపయోగించడం భాషలలో. "Strongs" సంఖ్యలు కనుగొనేందుకు మాత్రమే నెమ్మదిగా శోధన ఉపయోగించండి.</string>
 <string key="Fast search">శీఘ్ర శోధన</string>
 <string key="Font">ఫాంట్</string>
 <string key="Found">దొరకలేదు</string>
@@ -238,4 +237,6 @@
 <string key="Yes">అవును</string>
 <string key="You must first select a verse">మీరు మొదటి ఒక పద్యం ఎంచుకోవాలి</string>
 <string key="You must have at least one bible">మీరు కనీసం ఒక బైబిల్ కలిగి ఉండాలి</string>
+<string key="Next">తదుపరి</string>
+<string key="Previous">మునుపటి</string>
 </translations>

@@ -48,7 +48,6 @@
 <string key="Enter key">Въведете ключова</string>
 <string key="Exact match">Точно съвпадение</string>
 <string key="Factory reset themes">Възстановяване на фабричните настройки теми</string>
-<string key="Fast search help text">Бързо търсене е бавен първия път, когато го използвате на библия и бързо всеки път след това. Бързо търсене не върна стихове, съдържащи всички дадени думи. Сложете един "+" пред всяка дума, за да се намери някой от дадените думи на всеки стих. Сложете "-" пред думата, за да намерите всички от стиховете, които нямат тази дума. Wildcards "*" и "?" може да се използва. В езици, използващи символи като китайски и японски, трябва да поставят "*" преди и след всеки символ. Използвайте само бавното търсачката да намерите "Strongs" номера.</string>
 <string key="Fast search">Бързо търсене</string>
 <string key="Font">Font</string>
 <string key="Found">Намерени</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Да</string>
 <string key="You must first select a verse">Първо трябва да изберете един стих</string>
 <string key="You must have at least one bible">Трябва да имате поне една библия</string>
+<string key="Next">Следващия</string>
+<string key="Previous">Предишен</string>
 </translations>

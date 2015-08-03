@@ -48,7 +48,6 @@
 <string key="Enter key">E tomo matua</string>
 <string key="Exact match">Ōrite tangohia</string>
 <string key="Factory reset themes">Kaupapa Factory tautuhi</string>
-<string key="Fast search help text">Ko te rapu nohopuku ko pōturi te wā tuatahi whakamahi koe i te reira i runga i te paipera, me te nohopuku ia wa muri. He rapu nohopuku hoki mau irava kei katoa o nga kupu homai. Hoatu he "+" i roto i te mua o ia kupu, ki te kitea tetahi o nga kupu homai i roto i te irava ia. Hoatu he "-" i roto i te mua o te kupu, ki te kitea katoa o te mau irava e kore e e whai i taua kupu. Kārimākā "*", me te "?" Ka taea te whakamahi. I roto i te reo mā te whakamahi i ngā tohu rite hainamana me Japanese me hoatu e koe "*" i mua i a i muri i ia huru. Whakamahia anake te rapu puhoi ki te kitea "tino" tau.</string>
 <string key="Fast search">Rapu Fast</string>
 <string key="Font">Momotuhi</string>
 <string key="Found">Kitea</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Ae</string>
 <string key="You must first select a verse">Me te tuatahi tīpako koe i te irava</string>
 <string key="You must have at least one bible">Me whai koe i te iti rawa, kotahi paipera</string>
+<string key="Next">Tō muri mai</string>
+<string key="Previous">Mua</string>
 </translations>

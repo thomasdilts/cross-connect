@@ -48,7 +48,6 @@
 <string key="Enter key">Введите ключ</string>
 <string key="Exact match">Точное совпадение</string>
 <string key="Factory reset themes">Темы Factory Reset</string>
-<string key="Fast search help text">Быстрый поиск медленно в первый раз вы его используете на Библии и быстро каждый раз после этого. Быстрый поиск возвращает стихи, содержащие все заданные слова. Положите "+" перед каждым словом, чтобы найти какой-либо из данных слов в каждом стихе. Положите "-" перед словом, чтобы найти все стихи, которые не имеют это слово. Групповые символы "*" и "?" может быть использован. В языках, использующих символы как китайский и японский необходимо поставить "*" перед и после каждого символа. Используйте только медленную поиска, чтобы найти "Strongs" номера.</string>
 <string key="Fast search">Быстрый поиск</string>
 <string key="Font">Шрифта</string>
 <string key="Found">Найденный</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Да</string>
 <string key="You must first select a verse">Вы должны сначала выбрать стих</string>
 <string key="You must have at least one bible">Вы должны иметь по крайней мере одну Библию</string>
+<string key="Next">Следующий</string>
+<string key="Previous">Предыдущий</string>
 </translations>

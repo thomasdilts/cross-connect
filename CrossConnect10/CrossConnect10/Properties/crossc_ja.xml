@@ -48,7 +48,6 @@
 <string key="Enter key">キーを入力してください</string>
 <string key="Exact match">完全な一致</string>
 <string key="Factory reset themes">工場出荷時の状態にリセットするテーマ</string>
-<string key="Fast search help text">高速検索を使用すると、その後の聖書と高速たびにそれを使用する最初の時間が遅くなります。高速検索は、指定した単語をすべて含む詩を返します。各節で与えられた単語のいずれかを見つけるために、各単語の前に「+」を入れてください。その言葉を持っていない詩のすべてを見つけるために単語の前に -  ""入れてください。ワイルドカード「*」と「？」使用することができます。中国語や日本語のような記号を使用しての言語では、各文字の前と後に "*"をつける必要があります。 「Strongs」の番号を見つけるためにだけ遅い検索を使用します。</string>
 <string key="Fast search">高速検索</string>
 <string key="Font">フォント</string>
 <string key="Found">見つかりました</string>
@@ -238,4 +237,6 @@
 <string key="Yes">はい</string>
 <string key="You must first select a verse">あなたが最初の詩を選択する必要があります</string>
 <string key="You must have at least one bible">あなたは、少なくとも一つの聖書を持っている必要があります</string>
+<string key="Next">次</string>
+<string key="Previous">前</string>
 </translations>

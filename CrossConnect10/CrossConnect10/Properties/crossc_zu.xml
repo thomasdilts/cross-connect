@@ -48,7 +48,6 @@
 <string key="Enter key">Faka ukhiye</string>
 <string key="Exact match">Match Ngqo</string>
 <string key="Factory reset themes">Factory reset themes</string>
-<string key="Fast search help text">A search okusheshayo kancane okokuqala usebenzisa it on a time iBhayibheli futhi fast ngamunye kwalokho. A search fast ubuyela amavesi aqukethe wonke amazwi inikezwe. Faka "+" phambi igama ngalinye ukuthola noma yimaphi amazwi ezinikezwe evesini ngalinye. Faka "-" phambi izwi ukuthola yonke amavesi abangenawo lelo zwi. Wildcards "*" futhi "? ' ingasetshenziswa. Ezilimini ngekusebentisa timphawu like Chinese futhi Japanese Kumelwe ubeke "*" ngaphambi nangemuva umlingisi ngamunye. Sebenzisa kuphela search uyephuza ukuthola "Strongs" izinombolo.</string>
 <string key="Fast search">Search Fast</string>
 <string key="Font">Font</string>
 <string key="Found">Found</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Yebo</string>
 <string key="You must first select a verse">Kufanele kuqala ukhethe ivesi</string>
 <string key="You must have at least one bible">Kumele okungenani oyedwa bible</string>
+<string key="Next">Olandelayo</string>
+<string key="Previous">Previous</string>
 </translations>

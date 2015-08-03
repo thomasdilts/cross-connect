@@ -48,7 +48,6 @@
 <string key="Enter key">Ku qor muhiim ah</string>
 <string key="Exact match">Kulan rasmiga ah</string>
 <string key="Factory reset themes">Mawduucyada dib Factory</string>
-<string key="Fast search help text">Search A si degdeg ah u gaabiyaa intaas ka dib waxaad u isticmaali on bible oo degdeg ah mar kasta oo ah markii ugu horeysay. Search A soomi soo laabtay Aayaadkanaga oo ka kooban dhammaan erayada la siiyay. Saar ah "+" ee hore ee eray kasta si aad u hesho mid ka mid ah erayada laga siiyey aayadda kasta. Saar ah "-" hore ee hadalka ah in la helo oo dhan oo ka mid ah aayaadka in aadan hadalka oo aan haysan. Wildcards "*" iyo "?" waxaa loo isticmaali karaa. Luqadaha isticmaalaya calaamado sida China iyo Japan waa inaad "*" ka hor iyo ka dib markii qof kasta. Isticmaal oo keliya raadinta gaabis ah si aad u hesho lambarada "Strongs".</string>
 <string key="Fast search">Search Fast</string>
 <string key="Font">Font</string>
 <string key="Found">Laga Helaa</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Haa</string>
 <string key="You must first select a verse">Waa inaad marka hore dooro aayad ah</string>
 <string key="You must have at least one bible">Waa in aad ugu yaraan hal bible</string>
+<string key="Next">Next</string>
+<string key="Previous">Previous</string>
 </translations>

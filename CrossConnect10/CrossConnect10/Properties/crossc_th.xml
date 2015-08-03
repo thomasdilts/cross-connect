@@ -48,7 +48,6 @@
 <string key="Enter key">ปุ่ม Enter</string>
 <string key="Exact match">การแข่งขันที่แน่นอน</string>
 <string key="Factory reset themes">รูปแบบการตั้งค่าจากโรงงาน</string>
-<string key="Fast search help text">การค้นหาที่รวดเร็วเป็นชะลอตัวครั้งแรกที่คุณใช้ในพระคัมภีร์และรวดเร็วในแต่ละครั้งนั้นไม่นาน การค้นหาที่รวดเร็วกลับโองการที่มีทั้งหมดของคำที่กำหนด ใส่ "+" ในหน้าของแต่ละคำที่จะหาคำใด ๆ ที่ได้รับในแต่ละบทกวี ใส่ "-" ในหน้าของคำเพื่อค้นหาทั้งหมดของบทที่ไม่ได้มีคำว่า สัญลักษณ์ "*" และ "?" สามารถใช้ได้ ในภาษาที่ใช้สัญลักษณ์เช่นจีนและญี่ปุ่นคุณต้องใส่ "*" ก่อนและหลังตัวละครแต่ละตัว ใช้เฉพาะการค้นหาช้าที่จะหา "Strongs" ตัวเลข</string>
 <string key="Fast search">การค้นหาที่รวดเร็ว</string>
 <string key="Font">ตัวอักษร</string>
 <string key="Found">พบ</string>
@@ -238,4 +237,6 @@
 <string key="Yes">ใช่</string>
 <string key="You must first select a verse">ก่อนอื่นคุณต้องเลือกบทกวี</string>
 <string key="You must have at least one bible">คุณต้องมีอย่างน้อยหนึ่งพระคัมภีร์</string>
+<string key="Next">ถัดไป</string>
+<string key="Previous">ก่อน</string>
 </translations>

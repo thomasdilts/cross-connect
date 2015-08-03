@@ -48,7 +48,6 @@
 <string key="Enter key">Taustiņš Enter</string>
 <string key="Exact match">Precīza atbilstība</string>
 <string key="Factory reset themes">Factory reset tēmas</string>
-<string key="Fast search help text">Ātra meklēšana ir lēns pirmo reizi, kad lietojat to uz Bībeles un ātri katru reizi pēc tam. Ātra meklēšana atgriež vārsmas, kas satur visas dotajiem vārdiem. Put "+" pie katra vārda, lai atrastu kādu no dotajiem vārdiem katrā dzejolis. Put "-" priekšā vārdu, lai atrastu visas vārsmas, kas nav šo vārdu. Aizstājējzīmes "*" un "?" var lietot. In valodās, izmantojot simbolus, piemēram, ķīniešu un japāņu jums ir nodot "*" Pirms un pēc katras raksturu. Izmantojiet tikai lēni meklēšanu, lai atrastu "STRONGS" numurus.</string>
 <string key="Fast search">Ātra meklēšana</string>
 <string key="Font">Fonts</string>
 <string key="Found">Atrasts</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Jā</string>
 <string key="You must first select a verse">Jums vispirms jāizvēlas dzejolis</string>
 <string key="You must have at least one bible">Jums ir jābūt vismaz vienam Bībeli</string>
+<string key="Next">Nākamais</string>
+<string key="Previous">Iepriekšējais</string>
 </translations>

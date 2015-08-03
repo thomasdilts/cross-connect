@@ -48,7 +48,6 @@
 <string key="Enter key">Kuingia muhimu</string>
 <string key="Exact match">Halisi mechi</string>
 <string key="Factory reset themes">Kiwandani mandhari</string>
-<string key="Fast search help text">search haraka ni polepole mara ya kwanza matumizi yake juu ya Biblia na ya haraka kila wakati baada ya hapo. search haraka anarudi aya zenye wote wa maneno fulani. Kuweka "+" mbele ya kila neno kupata yoyote ya maneno kutolewa katika kila mstari. Kuweka "-" mbele ya neno kwa kupata yote ya mistari kwamba hawana neno hilo. Wildcards "*" na "?" inaweza kutumika. Katika lugha ya kutumia alama kama Kichina na Kijapani lazima kuweka "*" kabla na baada ya kila tabia. Kutumia tu search mwepesi wa kupata "STRONGS" namba.</string>
 <string key="Fast search">Kufunga tafuta</string>
 <string key="Font">Font</string>
 <string key="Found">Kupatikana</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Ndiyo</string>
 <string key="You must first select a verse">Lazima kwanza kuchagua aya</string>
 <string key="You must have at least one bible">Lazima uwe na Biblia angalau moja</string>
+<string key="Next">Ijayo</string>
+<string key="Previous">Uliopita</string>
 </translations>

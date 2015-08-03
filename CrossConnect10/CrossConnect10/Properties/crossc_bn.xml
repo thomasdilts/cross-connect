@@ -48,7 +48,6 @@
 <string key="Enter key">Enter কী</string>
 <string key="Exact match">সঠিক মিল</string>
 <string key="Factory reset themes">ফ্যাক্টরী রিসেট থিম</string>
-<string key="Fast search help text">একটি দ্রুত অনুসন্ধান আপনি তারপর একটি বাইবেল এবং দ্রুত প্রতিটি সময় এটি ব্যবহার প্রথমবার ধীর. দ্রুত সার্চ দেওয়া সব শব্দের ধারণকারী আয়াত ধার্য করা হয়. প্রতিটি আয়াতের দেওয়া কোনো শব্দের খুঁজে পেতে প্রতিটি শব্দের সামনে একটি "+" রাখুন. রাখুন একটি "-" একটি শব্দ সামনে যে শব্দ আছে না যে আয়াত সব খুঁজে পেতে. ওয়াইল্ডকার্ড "*" এবং "?" ব্যবহার করা যেতে পারে. চীনা এবং আপনি আগে এবং প্রতিটি অক্ষর পর "*" করা হবে জাপানি মত চিহ্ন ব্যবহার করে ভাষায়. "Strongs" নম্বর খুঁজতে শুধুমাত্র ধীর অনুসন্ধান ব্যবহার করুন.</string>
 <string key="Fast search">দ্রুত সন্ধান</string>
 <string key="Font">ফন্ট</string>
 <string key="Found">পাওয়া</string>
@@ -238,4 +237,6 @@
 <string key="Yes">হাঁ</string>
 <string key="You must first select a verse">আপনিই প্রথম একটি পদ্য নির্বাচন করতে হবে</string>
 <string key="You must have at least one bible">আপনি অন্তত এক বাইবেল উপস্থিত থাকা আবশ্যক</string>
+<string key="Next">পরবর্তী</string>
+<string key="Previous">পূর্ববর্তী</string>
 </translations>

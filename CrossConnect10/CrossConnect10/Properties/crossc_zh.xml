@@ -48,7 +48,6 @@
 <string key="Enter key">回車鍵</string>
 <string key="Exact match">精確匹配</string>
 <string key="Factory reset themes">恢復出廠設置的主題</string>
-<string key="Fast search help text">快速搜索速度慢的第一次此後一本聖經和快速每次上使用它。快速搜索返回一個包含所有給出的單詞的詩句。把一個“+”，在每個單詞的前面找到任何在每一節給定的話。把一個“ - ”在詞的前面找到所有不具備這個詞的經文。通配符“*”和“？”都可以使用。在使用像中國和日本必須把“*”之前，每個字符後的符號語言。只能使用慢速搜索找到“強身”的數字。</string>
 <string key="Fast search">快速搜索</string>
 <string key="Font">字形</string>
 <string key="Found">發現</string>
@@ -238,4 +237,6 @@
 <string key="Yes">是的</string>
 <string key="You must first select a verse">您必須先選擇一個詩</string>
 <string key="You must have at least one bible">你必須至少有一個聖經</string>
+<string key="Next">下一個</string>
+<string key="Previous">前</string>
 </translations>

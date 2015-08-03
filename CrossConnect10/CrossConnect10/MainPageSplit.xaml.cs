@@ -75,6 +75,7 @@ namespace CrossConnect
         public MainPageSplit()
         {
             this.InitializeComponent();
+            App.HistoryChanged += App_HistoryChanged;
         }
 
         #endregion
@@ -578,6 +579,7 @@ namespace CrossConnect
             scrollViewerTopAppBar1.ChangeView(300, 0, 1);
             RedrawMainScreen(false);
             sliderTextSize.ValueChanged += SliderTextSizeValueChanged;
+            ShowForwardBackwardButtons();
         }
 
         public void RecolorScreen()
@@ -700,6 +702,90 @@ namespace CrossConnect
             App.SavePersistantMarkers();
         }
 
+        private int _history_reveiw_pointer = -1;
+        BiblePlaceMarker _history_reveiw_pointer_lastlinked = null;
+
+        void App_HistoryChanged(List<BiblePlaceMarker> bookMarksToShow, DisplaySettings displaySettings, bool isSmallScreen)
+        {
+            //if (historyCount==0)
+            //{
+            _history_reveiw_pointer_lastlinked = null;
+            _history_reveiw_pointer = -1;
+            //}
+
+            //if (historyCount > _history_reveiw_pointer  && _history_reveiw_pointer>=0)
+            //{
+            //    var lastPlace = App.PlaceMarkers.History[_history_reveiw_pointer];
+            //    var lastPlaceMinusOne = _history_reveiw_pointer!=0? App.PlaceMarkers.History[_history_reveiw_pointer-1]:null;
+            //    // we need to keep the pointer in the same position
+            //    if( ! _history_reveiw_pointer_lastlinked.When.Equals(lastPlace.When))
+            //    {
+            //        if(lastPlaceMinusOne==null || ! _history_reveiw_pointer_lastlinked.When.Equals(lastPlaceMinusOne.When))
+            //        {
+            //            // we lost our place. Turn off everything
+            //            _history_reveiw_pointer_lastlinked=null;
+            //            _history_reveiw_pointer = -1;
+            //        }
+            //        else
+            //        {
+            //            _history_reveiw_pointer--;
+            //            _history_reveiw_pointer_lastlinked = lastPlaceMinusOne;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        _history_reveiw_pointer_lastlinked = lastPlace;
+            //    }
+            //}
+
+            ShowForwardBackwardButtons();
+        }
+        private void ShowForwardBackwardButtons()
+        {
+            var historyCount = App.PlaceMarkers.History.Count();
+            // forward
+            NextHistory.IsEnabled = _history_reveiw_pointer < (historyCount - 1) && _history_reveiw_pointer != -1 && historyCount > 0;
+            // backward
+            PreviousHistory.IsEnabled = historyCount > 0 && _history_reveiw_pointer != 0;
+        }
+
+        private void MenuNextHistoryClick(object sender, RoutedEventArgs e)
+        {
+            App.ShowUserInterface(true);
+
+            var historyCount = App.PlaceMarkers.History.Count();
+            if (_history_reveiw_pointer < (historyCount - 1) && _history_reveiw_pointer != -1)
+            {
+                _history_reveiw_pointer++;
+                var jumpTo = App.PlaceMarkers.History[_history_reveiw_pointer];
+                _history_reveiw_pointer_lastlinked = jumpTo;
+                App.SynchronizeAllWindows(jumpTo.BookShortName, jumpTo.ChapterNum, jumpTo.VerseNum, -1, null);
+            }
+
+            ShowForwardBackwardButtons();
+            this.Dispatcher.RunAsync(CoreDispatcherPriority.Low, () => App.ShowUserInterface(false));
+        }
+        private void MenuPreviousHistoryClick(object sender, RoutedEventArgs e)
+        {
+            App.ShowUserInterface(true);
+        
+            var historyCount = App.PlaceMarkers.History.Count();
+            if (historyCount > 0 && _history_reveiw_pointer != 0)
+            {
+                if (_history_reveiw_pointer == -1)
+                {
+                    _history_reveiw_pointer = App.PlaceMarkers.History.Count();
+                }
+                _history_reveiw_pointer--;
+                var jumpTo = App.PlaceMarkers.History[_history_reveiw_pointer];
+                _history_reveiw_pointer_lastlinked = jumpTo;
+                App.SynchronizeAllWindows(jumpTo.BookShortName, jumpTo.ChapterNum, jumpTo.VerseNum, -1, null);
+            }
+
+            ShowForwardBackwardButtons();
+
+            this.Dispatcher.RunAsync(CoreDispatcherPriority.Low, () => App.ShowUserInterface(false));
+        }
         private void SetLanguageDependentTexts()
         {
             this.AddNewWindow.SetValue(AutomationProperties.NameProperty, Translations.Translate("Add a new window"));
@@ -712,7 +798,10 @@ namespace CrossConnect
             this.ColumnsSmaller.SetValue(AutomationProperties.NameProperty, Translations.Translate("Columns narrower"));
 
             this.Help.SetValue(AutomationProperties.NameProperty, Translations.Translate("Help"));
-            //AddANote.SetValue(AutomationProperties.NameProperty, Translations.Translate("Add a note"));
+            this.PreviousHistory.SetValue(
+                AutomationProperties.NameProperty, Translations.Translate("Previous") + " " + Translations.Translate("History"));
+            this.NextHistory.SetValue(
+                AutomationProperties.NameProperty, Translations.Translate("Next") + " " + Translations.Translate("History"));
             this.ClearHistory.SetValue(AutomationProperties.NameProperty, Translations.Translate("Clear history"));
             this.SelectLanguage.SetValue(
                 AutomationProperties.NameProperty, Translations.Translate("Select the language"));

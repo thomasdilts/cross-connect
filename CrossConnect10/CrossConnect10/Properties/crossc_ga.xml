@@ -48,7 +48,6 @@
 <string key="Enter key">Iontráil eochair</string>
 <string key="Exact match">Cluiche Beacht</string>
 <string key="Factory reset themes">Téamaí mhonarcha athshocrú</string>
-<string key="Fast search help text">Tá cuardach tapa mall an chéad uair a úsáideann tú é ar Bíobla agus tapa gach uair ina dhiaidh sin. Tuairisceáin cuardach tapa véarsaí ina bhfuil gach ceann de na focail a tugadh. Cuir "+" os comhair gach focal a fháil ar aon cheann de na focail a thugtar i ngach véarsa. Cuir "-" os comhair an focal a aimsiú gach ceann de na véarsaí nach bhfuil an focal sin. Saoróga "*" agus "?" Is féidir é a úsáid. I dteangacha ag baint úsáide as siombailí cosúil le Sínis agus japanese ní mór duit a chur ar "*" roimh agus tar éis gach carachtar. Bain úsáid as ach an cuardach mall a aimsiú "Strongs" uimhreacha.</string>
 <string key="Fast search">Cuardaigh Fast</string>
 <string key="Font">Cló</string>
 <string key="Found">Aimsíodh</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Is ea</string>
 <string key="You must first select a verse">Ní mór duit a roghnú ar dtús véarsa</string>
 <string key="You must have at least one bible">Ní mór duit Bíobla amháin ar a laghad</string>
+<string key="Next">Ar Aghaidh</string>
+<string key="Previous">Roimhe Seo</string>
 </translations>

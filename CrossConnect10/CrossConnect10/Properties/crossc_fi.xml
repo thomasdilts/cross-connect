@@ -48,7 +48,6 @@
 <string key="Enter key">Enter-näppäin</string>
 <string key="Exact match">Tarkka ottelu</string>
 <string key="Factory reset themes">Tehdasasetusten palautus teemat</string>
-<string key="Fast search help text">Nopea haku on hidas ensimmäisen kerran käytät sitä raamattu ja nopea joka kerta sen jälkeen. Nopea haku palauttaa jakeita sisältää kaikki tietyn sanan. Laita "+" edessä jokaisen sanan löytää jonkin tietyn sanan jokaisessa jakeessa. Laita "-" eteen sana löytää kaikki säkeet, jotka eivät ole sitä sanaa. Jäkerimerkit "*" ja "?" voidaan käyttää. Kielillä symbolien kuten Kiinan ja Japanin sinun täytyy laittaa "*" ennen ja jälkeen jokaisen merkin. Käytä vain hitaasti haku löytää "Strongs" numeroita.</string>
 <string key="Fast search">Nopea haku</string>
 <string key="Font">Kirjasinlaji</string>
 <string key="Found">Löytyi</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Kyllä</string>
 <string key="You must first select a verse">Sinun täytyy ensin valita jae</string>
 <string key="You must have at least one bible">Sinulla on oltava vähintään yksi raamattu</string>
+<string key="Next">Seuraava</string>
+<string key="Previous">Edellinen</string>
 </translations>

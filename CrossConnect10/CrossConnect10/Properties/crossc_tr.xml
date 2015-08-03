@@ -48,7 +48,6 @@
 <string key="Enter key">Giriş anahtarı</string>
 <string key="Exact match">Tam uyum</string>
 <string key="Factory reset themes">Fabrika sıfırlama temalar</string>
-<string key="Fast search help text">Hızlı arama bundan sonra bir İncil ve hızlı her zaman kullanmak ilk defa yavaş. Hızlı arama verilen kelimelerin tümünü içeren ayetler döndürür. Her ayette verilen sözcüklerden herhangi birini bulmak için her kelimenin önüne "+" işareti koyun. Koyun "-" Bir kelimenin önünde o kelime yok ayetlerin hepsini bulmak için. Joker karakterler "*" ve "?" kullanılabilir. Çin ve önce ve her karakter sonrası "*" koymak gerekir japanese gibi sembolleri kullanarak dillerde. "Strongs" numaralarını bulmak için sadece yavaş aramayı kullanın.</string>
 <string key="Fast search">Hızlı arama</string>
 <string key="Font">Yazı</string>
 <string key="Found">Kurmak</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Evet</string>
 <string key="You must first select a verse">Önce bir ayet seçmelisiniz</string>
 <string key="You must have at least one bible">En az bir İncil olmalıdır</string>
+<string key="Next">Sonraki</string>
+<string key="Previous">Önceki</string>
 </translations>

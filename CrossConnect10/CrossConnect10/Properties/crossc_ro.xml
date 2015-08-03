@@ -48,7 +48,6 @@
 <string key="Enter key">Introduce cheia</string>
 <string key="Exact match">Potrivire exactă</string>
 <string key="Factory reset themes">Teme de resetare fabrică</string>
-<string key="Fast search help text">O căutare rapidă este lent prima dată când o utilizați pe o Biblie si rapid de fiecare dată după aceea. O căutare rapidă returnează versete care conțin toate cuvintele indicate. Pune un "+" în fața fiecărui cuvânt pentru a găsi oricare din cuvintele date din fiecare vers. Pune un "-" în fața unui cuvânt pentru a găsi toate versetele care nu au acel cuvânt. Wildcards "*" și "?" pot fi utilizate. În limbile care utilizează simboluri, cum ar fi chineza și japoneza trebuie pus "*", înainte și după fiecare caracter. Folosiți numai căutarea lent pentru a găsi numere "Strongs".</string>
 <string key="Fast search">Căutare rapidă</string>
 <string key="Font">Font</string>
 <string key="Found">Găsite</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Da</string>
 <string key="You must first select a verse">Trebuie să selectați mai întâi un vers</string>
 <string key="You must have at least one bible">Trebuie să aveți cel puțin un biblie</string>
+<string key="Next">Următorul</string>
+<string key="Previous">Anterior</string>
 </translations>
