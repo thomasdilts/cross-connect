@@ -187,7 +187,7 @@
 <string key="Select the items you want to backup / restore. Then hit the button at the bottom">ជ្រើស​ធាតុ​ដែល​អ្នក​ចង់​បម្រុងទុក / ស្ដារ​។ បន្ទាប់​មក​ចុច​ប៊ូតុង​នៅ​ខាង​ក្រោម</string>
 <string key="Select the language">ជ្រើស​ភាសា</string>
 <string key="Select the server">ជ្រើស​ម៉ាស៊ីន​បម្រើ</string>
-<string key="Select the window type">ជ្រើស​ប្រភេទ​បង្អួច & ‧​;</string>
+<string key="Select the window type">ជ្រើស​ប្រភេទ​បង្អួច</string>
 <string key="Select what you want to hear">ជ្រើស​នូវ​អ្វី​ដែល​អ្នក​ចង់​ឮ</string>
 <string key="Selected verses">ខ​គម្ពីរ​ដែល​បាន​ជ្រើស</string>
 <string key="Settings">ការ​កំណត់</string>
@@ -238,4 +238,6 @@
 <string key="Yes">បាទ</string>
 <string key="You must first select a verse">ដំបូង​អ្នក​ត្រូវ​តែ​ជ្រើស​ខ​គម្ពីរ</string>
 <string key="You must have at least one bible">អ្នក​ត្រូវ​តែ​មាន​យ៉ាង​ហោច​ណាស់​ព្រះគម្ពីរ</string>
+<string key="Next">បន្ទាប់</string>
+<string key="Previous">មុន</string>
 </translations>

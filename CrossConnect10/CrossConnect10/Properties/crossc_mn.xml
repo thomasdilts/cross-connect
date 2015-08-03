@@ -48,7 +48,6 @@
 <string key="Enter key">Гол оруулна уу</string>
 <string key="Exact match">Ончтой үр тоглолт</string>
 <string key="Factory reset themes">Үйлдвэр нь дахин эхлүүлэх сэдэв</string>
-<string key="Fast search help text">А хурдан хайлт Та дараа нь библийн, хурдан тухай бүрт ашиглах анх удаа буурах юм. А хурдан хайлт тухайн үгийг агуулсан бүх шүлгийг буцаана. Ишлэл бүрт өгөгдсөн үгийг ямар ч олохын тулд үг бүрийн өмнө "+" тавь. Тавих нь "-" үгээр өмнө гэсэн үг байхгүй байна шүлгүүд л олж байна. Нь бүгдээрээ орлуулагддаг тэмдэгтүүд "*" ба "?" ашиглаж болно. Хятад, та нар өмнө нь тус бүр зан дараа "*" тавих ёстой япон гэх мэт тэмдэглэгээг ашиглаж хэлээр байна. "Strongs" дугаарыг олж зөвхөн удаан хайлт хэрэглэнэ.</string>
 <string key="Fast search">Хурдан хайлт</string>
 <string key="Font">Фонт</string>
 <string key="Found">Олдсон</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Тийм ээ</string>
 <string key="You must first select a verse">Та эхлээд нэг шүлгийг сонгох ёстой</string>
 <string key="You must have at least one bible">Та дор хаяж нэг Библи байх ёстой</string>
+<string key="Next">Дараа нь</string>
+<string key="Previous">Өмнөх</string>
 </translations>

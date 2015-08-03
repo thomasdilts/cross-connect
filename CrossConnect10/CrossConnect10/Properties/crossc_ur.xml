@@ -48,7 +48,6 @@
 <string key="Enter key">کلید درج کریں</string>
 <string key="Exact match">عین مطابق مماثلت</string>
 <string key="Factory reset themes">فیکٹری ری سیٹ کے موضوعات</string>
-<string key="Fast search help text">ایک تیزی سے تلاش کیا آپ کے بعد ایک بائبل اور روزہ ہر وقت پر اس کا استعمال پہلی بار سست ہے. ایک روزہ تلاش دیئے الفاظ کی سب مشتمل آیات لوٹتا. ہر آیت میں دیا الفاظ میں سے کسی کو تلاش کرنے کے ہر لفظ کے سامنے ایک "+" رکھو. رکھو ایک "-" ایک لفظ کے سامنے اس لفظ نہیں ہے کہ آیات کی سب کو تلاش کرنے. وائلڈ کارڈ "*" اور "؟" استعمال کیا جا سکتا ہے. چینی اور تم سے پہلے اور ہر کردار کے بعد "*" ڈال ضروری جاپانی طرح علامتوں کا استعمال کرتے ہوئے زبانوں میں. "Strongs" نمبر کو تلاش کرنے کے لئے صرف سست تلاش کا استعمال کریں.</string>
 <string key="Fast search">تیز تلاش</string>
 <string key="Font">فونٹ</string>
 <string key="Found">ملا</string>
@@ -238,4 +237,6 @@
 <string key="Yes">جی ہاں</string>
 <string key="You must first select a verse">آپ سب سے پہلے ایک آیت کا انتخاب ہوگا</string>
 <string key="You must have at least one bible">تم نے کم از کم ایک بائبل کا ہونا ضروری ہے</string>
+<string key="Next">اگلا</string>
+<string key="Previous">پچھلا</string>
 </translations>

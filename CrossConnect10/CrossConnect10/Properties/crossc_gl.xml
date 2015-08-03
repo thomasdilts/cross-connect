@@ -48,7 +48,6 @@
 <string key="Enter key">Tecla Intro</string>
 <string key="Exact match">Combinación exacta</string>
 <string key="Factory reset themes">Temas reset de fábrica</string>
-<string key="Fast search help text">Unha busca rápida é retardar a primeira vez que usalo nunha Biblia e rápido cada vez que despois diso. Unha busca rápida devolve versos que conteñen todas as palabras dadas. Engade un "+" diante de cada palabra para atopar calquera das palabras que aparecen en cada verso. Engade un "-" diante dunha palabra para atopar todos os versos que non teñen esa palabra. Curinga "*" e "?" se pode usar. En idiomas utilizando símbolos como chinés e xaponés ten que poñer "*" antes e despois de cada personaxe. Utilice a busca lenta para atopar números "Strongs".</string>
 <string key="Fast search">Busca rápida</string>
 <string key="Font">Orixe</string>
 <string key="Found">Atopou</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Si</string>
 <string key="You must first select a verse">Ten que primeiro seleccionar un versículo</string>
 <string key="You must have at least one bible">Ten que ter polo menos unha Biblia</string>
+<string key="Next">Next</string>
+<string key="Previous">Anterior</string>
 </translations>

@@ -48,7 +48,6 @@
 <string key="Enter key">कुंजी दर्ज</string>
 <string key="Exact match">सटीक मिलान</string>
 <string key="Factory reset themes">कारखाना रीसेट विषयों</string>
-<string key="Fast search help text">एक तेजी से खोज आप उसके बाद एक बाइबल और तेजी से प्रत्येक समय पर इसका इस्तेमाल पहली बार धीमी है। एक तेजी से खोज दिए गए शब्दों के सभी युक्त छंद देता है। प्रत्येक कविता में दिए गए शब्दों के किसी भी खोजने के लिए प्रत्येक शब्द के सामने एक "+" रखो। रखो एक "-" एक शब्द के सामने उस शब्द नहीं है कि छंद के सभी खोजने के लिए। वाइल्डकार्ड "*" और "?" इस्तेमाल किया जा सकता है। चीनी और इससे पहले कि आप और प्रत्येक चरित्र के बाद "*" डाल चाहिए जापानी जैसे प्रतीकों का उपयोग कर भाषाओं में। "Strongs" संख्या को खोजने के लिए ही धीमी गति से खोज का उपयोग करें।</string>
 <string key="Fast search">फास्ट खोज</string>
 <string key="Font">फ़ॉन्ट</string>
 <string key="Found">मिला</string>
@@ -238,4 +237,6 @@
 <string key="Yes">हाँ</string>
 <string key="You must first select a verse">आपको सबसे पहले एक कविता का चयन करना होगा</string>
 <string key="You must have at least one bible">आप कम से कम एक बाइबिल होना आवश्यक है</string>
+<string key="Next">अगला</string>
+<string key="Previous">पिछला</string>
 </translations>

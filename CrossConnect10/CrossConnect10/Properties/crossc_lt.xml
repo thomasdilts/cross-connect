@@ -48,7 +48,6 @@
 <string key="Enter key">Enter</string>
 <string key="Exact match">Tiksli atitiktis</string>
 <string key="Factory reset themes">Gamyklinių parametrų atstatymas temos</string>
-<string key="Fast search help text">Greita paieška yra lėtas, kai pirmą kartą jį naudoti Bibliją ir greitai kiekvieną kartą po to. Greita paieška grįžta eilutes, kuriose yra visi duotieji žodžiai. Įdėti "+", priešais kiekvieno žodžio rasti bet kurį iš pateiktų tariant kiekvienoje eilutėje. Įdėkite "-" priešais žodį surasti visus eilėraščių, kurie neturi šio žodžio. Pakaitos simboliai "*" ir "?" gali būti panaudotas. Be kalbų, naudojant simbolius, pavyzdžiui, kinų ir japonų turite įtraukti "*" prieš ir po kiekvieno charakterį. Naudokite tik lėtai paiešką rasti "strongs" numerius.</string>
 <string key="Fast search">Greita paieška</string>
 <string key="Font">Šriftas</string>
 <string key="Found">Surasta</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Taip</string>
 <string key="You must first select a verse">Pirmiausia turite pasirinkti posmą</string>
 <string key="You must have at least one bible">Jūs turite turėti bent vieną Bibliją</string>
+<string key="Next">Kitas</string>
+<string key="Previous">Ankstesnis</string>
 </translations>

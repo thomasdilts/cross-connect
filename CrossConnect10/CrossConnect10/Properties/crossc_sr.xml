@@ -48,7 +48,6 @@
 <string key="Enter key">Типка на тастатури</string>
 <string key="Exact match">Тачно подударање</string>
 <string key="Factory reset themes">Фацтори Ресет теме</string>
-<string key="Fast search help text">Брзу претрагу је успорити први пут када га користите на Библију и брзо сваки пут после тога. Брзу претрагу враћа стихове који садрже све задате речи. Пут "+" испред сваке речи да пронађе било којег од наведених речи у сваком стиху. Пут "-" испред речи да пронађе све стихове које немају ту реч. Џокери "*" и "?" може се користити. У језицима који користе симболе као што су кинески и јапански морате ставити "*" пре и после сваког карактера. Користите само споро претрагу да пронађете "Стронгс" бројеве.</string>
 <string key="Fast search">Брза претрага</string>
 <string key="Font">Фонт</string>
 <string key="Found">Нашао</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Да</string>
 <string key="You must first select a verse">Прво морате да изаберете стих</string>
 <string key="You must have at least one bible">Морате имати најмање једну Библију</string>
+<string key="Next">Следећи</string>
+<string key="Previous">Претходна</string>
 </translations>

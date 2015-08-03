@@ -48,7 +48,6 @@
 <string key="Enter key">Przycisk ENTER</string>
 <string key="Exact match">Dokładne dopasowanie</string>
 <string key="Factory reset themes">Factory Reset tematy</string>
-<string key="Fast search help text">Szybkie wyszukiwanie jest spowolnienie czasu pierwszego użycia go na biblii i szybkiego każdym późniejszym czasie. Szybkie wyszukiwanie zwraca wiersze zawierające wszystkie podane słowa. Umieścić "+" przed każdym słowem znaleźć żadnej z podanych słów w każdym wersie. Put "-" przed słowem, aby znaleźć wszystkie wersety, które nie mają tego słowa. Symbole wieloznaczne "*" i "?" może być użyty. W językach z użyciem symboli, takich jak chiński i japoński należy umieścić "*" przed i po każdym znaku. Używaj tylko powolne wyszukiwanie znaleźć numery "Stronga".</string>
 <string key="Fast search">Szybkie wyszukiwanie</string>
 <string key="Font">Chrzcielnica</string>
 <string key="Found">Znaleziono</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Tak</string>
 <string key="You must first select a verse">Najpierw należy wybrać wiersz</string>
 <string key="You must have at least one bible">Musisz mieć co najmniej jedną biblię</string>
+<string key="Next">Następny</string>
+<string key="Previous">Poprzedni</string>
 </translations>

@@ -48,7 +48,6 @@
 <string key="Enter key">Sartu tekla</string>
 <string key="Exact match">Partidaren zehatza</string>
 <string key="Factory reset themes">Factory reset gaiak</string>
-<string key="Fast search help text">Azkarra bilaketa bat motela erabiltzen duzun a Biblia eta azkarra denbora bakoitzean gutxira lehen aldia da. Bilaketa azkarrak A Emandako hitz guztiak dituzten bertsoak itzultzen. Jarri bat "+" hitz bakoitzaren aurrean emandako bertso bakoitzaren hitz edozein aurkitzeko. Jarri bat "-" Hitz baten aurrean ez duten hitza duten bertso guztiak aurkitzeko. Komodinak "*" eta "?" erabili ahal izango da. Txinako eta Japoniako jarri behar duzu "*" izateko, eta pertsonaia bakoitzaren ondoren bezalako ikurrak erabiliz hizkuntzatan. Erabili motela bilaketa bakarrik "STRONGS" zenbakiak aurkitzeko.</string>
 <string key="Fast search">Fast bilaketa</string>
 <string key="Font">Font</string>
 <string key="Found">Found</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Bai</string>
 <string key="You must first select a verse">Hautatu behar duzu lehenago bertso bat</string>
 <string key="You must have at least one bible">Biblia bat gutxienez eduki behar duzu</string>
+<string key="Next">Hurrengo</string>
+<string key="Previous">Aurreko</string>
 </translations>

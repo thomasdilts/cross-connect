@@ -48,7 +48,6 @@
 <string key="Enter key">La touche Entrée</string>
 <string key="Exact match">Correspondance exacte</string>
 <string key="Factory reset themes">thèmes de réinitialisation d'usine</string>
-<string key="Fast search help text">Une recherche rapide est de ralentir la première fois que vous utilisez sur une bible et rapide à chaque fois par la suite. Une recherche rapide retourne versets contenant tous les mots donnés. Mettez un "+" en face de chaque mot pour trouver les mots donnés dans chaque verset. Mettez un "-" devant un mot pour trouver tous les versets qui ne possèdent pas ce mot. Les caractères génériques "*" et "?" peut être utilisé. Dans les langues utilisant des symboles comme le chinois et le japonais, vous devez mettre "*" avant et après chaque caractère. Utilisez uniquement la recherche lente pour trouver des numéros "Strongs".</string>
 <string key="Fast search">Recherche rapide</string>
 <string key="Font">Fonte</string>
 <string key="Found">Trouvé</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Oui</string>
 <string key="You must first select a verse">Vous devez d'abord sélectionner un verset</string>
 <string key="You must have at least one bible">Vous devez avoir au moins une bible</string>
+<string key="Next">Suivant</string>
+<string key="Previous">Précédent</string>
 </translations>

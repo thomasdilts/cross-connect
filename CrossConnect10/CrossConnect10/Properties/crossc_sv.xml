@@ -48,7 +48,6 @@
 <string key="Enter key">Enter-tangent</string>
 <string key="Exact match">Exakt matchning</string>
 <string key="Factory reset themes">Återställ fabriks teman</string>
-<string key="Fast search help text">En snabb sökning är långsam första gången du använder det på en bibel och snabb varje gång därefter. En snabb sökning ger verser som innehåller alla de angivna orden. Sätt en "+" framför varje ord för att hitta någon av de givna orden i varje vers. Sätt en "-" framför ett ord för att hitta alla verser som inte har det ordet. Jokertecken "*" och "?" kan användas. I språk med hjälp av symboler som kinesiska och japanska måste du sätta "*" före och efter varje tecken. Använd endast den långsamma sökning för att hitta "Strongs" siffror.</string>
 <string key="Fast search">Snabbsökning</string>
 <string key="Font">Font</string>
 <string key="Found">Funnet</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Ja</string>
 <string key="You must first select a verse">Du måste först välja en vers</string>
 <string key="You must have at least one bible">Du måste ha åtminstone en bibel</string>
+<string key="Next">Nästa</string>
+<string key="Previous">Föregående</string>
 </translations>

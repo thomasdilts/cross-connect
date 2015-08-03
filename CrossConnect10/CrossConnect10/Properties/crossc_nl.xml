@@ -48,7 +48,6 @@
 <string key="Enter key">Enter toets</string>
 <string key="Exact match">Exacte overeenkomst</string>
 <string key="Factory reset themes">Factory reset thema</string>
-<string key="Fast search help text">Een snelle zoektocht is langzaam de eerste keer dat je het gebruiken op een bijbel en snel elke keer daarna. Een snelle zoekactie had verzen die alle de opgegeven woorden. Zet een "+" voor elk woord geven de gegeven woorden elk vers vinden. Zet een "-" voor een woord om alle verzen die dat woord niet hoeft te vinden. Wildcards "*" en "?" kunnen worden gebruikt. In talen met behulp van symbolen zoals Chinees en Japans moet je "*" voor en na elk personage. Gebruik alleen de langzame zoekopdracht naar "Strongs 'nummers te vinden.</string>
 <string key="Fast search">Snel zoeken</string>
 <string key="Font">Doopvont</string>
 <string key="Found">Gevonden</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Ja</string>
 <string key="You must first select a verse">U moet eerst een vers</string>
 <string key="You must have at least one bible">U moet ten minste één bijbel hebben</string>
+<string key="Next">Volgende</string>
+<string key="Previous">Vorig</string>
 </translations>

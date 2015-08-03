@@ -48,7 +48,6 @@
 <string key="Enter key">ਕੁੰਜੀ ਨੂੰ ਦਿਓ</string>
 <string key="Exact match">ਸਹੀ ਮੈਚ</string>
 <string key="Factory reset themes">ਫੈਕਟਰੀ ਰੀਸੈੱਟ ਥੀਮ</string>
-<string key="Fast search help text">ਇੱਕ ਤੇਜ਼ ਖੋਜ ਤੁਹਾਨੂੰ ਬਾਅਦ ਇਕ ਬਾਈਬਲ ਅਤੇ ਤੇਜ਼ ਹਰ ਵਾਰ 'ਤੇ ਇਸ ਨੂੰ ਵਰਤ ਪਹਿਲੀ ਵਾਰ ਧੀਮੀ ਹੈ. ਇੱਕ ਤੇਜ਼ ਖੋਜ ਦਿੱਤੇ ਗਏ ਸ਼ਬਦ ਦੇ ਸਾਰੇ ਰੱਖਣ ਵਾਲੇ ਬਾਣੀ ਵਾਪਸ. ਹਰ ਇੱਕ ਆਇਤ ਵਿਚ ਦਿੱਤੀ ਸ਼ਬਦ ਦੇ ਕਿਸੇ ਵੀ ਪਤਾ ਕਰਨ ਲਈ ਹਰ ਇੱਕ ਸ਼ਬਦ ਨੂੰ ਦੇ ਸਾਹਮਣੇ, ਇੱਕ "+" ਪਾ ਦਿਓ. ਪਾ ਲਈ ਇੱਕ "-" ਇੱਕ ਸ਼ਬਦ ਦੇ ਸਾਹਮਣੇ ਹੈ, ਜੋ ਕਿ ਸ਼ਬਦ ਦਾ ਹੈ, ਨਾ ਹੈ, ਜੋ ਕਿ ਬਾਣੀ ਦੇ ਸਾਰੇ ਦਾ ਪਤਾ ਕਰਨ ਲਈ. ਵਾਈਲਡਕਾਰਡ "*" ਅਤੇ "?" ਵਰਤਿਆ ਜਾ ਸਕਦਾ ਹੈ. ਚੀਨੀ ਅਤੇ ਤੁਹਾਡੇ ਅੱਗੇ ਹੈ ਅਤੇ ਹਰ ਅੱਖਰ ਦੇ ਬਾਅਦ, "*" ਪਾ ਚਾਹੀਦਾ ਹੈ ਜਪਾਨੀ ਵਰਗੇ ਨਿਸ਼ਾਨ ਵਰਤ ਵਿਚ. "Strongs 'ਨੰਬਰ ਦਾ ਪਤਾ ਕਰਨ ਲਈ, ਸਿਰਫ ਹੌਲੀ ਖੋਜ ਵਰਤੋ.</string>
 <string key="Fast search">ਫਾਸਟ ਖੋਜ</string>
 <string key="Font">Font</string>
 <string key="Found">ਲੱਭਿਆ</string>
@@ -238,4 +237,6 @@
 <string key="Yes">ਜੀ</string>
 <string key="You must first select a verse">ਤੁਹਾਨੂੰ ਪਹਿਲੇ ਇੱਕ ਆਇਤ ਦੀ ਚੋਣ ਕਰਨੀ ਚਾਹੀਦੀ ਹੈ</string>
 <string key="You must have at least one bible">ਤੁਹਾਨੂੰ ਘੱਟੋ-ਘੱਟ ਇਕ ਬਾਈਬਲ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ</string>
+<string key="Next">ਅਗਲਾ</string>
+<string key="Previous">ਪਿੱਛੇ</string>
 </translations>

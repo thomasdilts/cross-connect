@@ -48,7 +48,6 @@
 <string key="Enter key">Enter</string>
 <string key="Exact match">Ndeshje e saktë</string>
 <string key="Factory reset themes">Tema fabrikë reset</string>
-<string key="Fast search help text">Një kërkim i shpejtë është i ngadalshëm hera e parë që e përdorin atë në një Bibël dhe të shpejtë çdo kohë pas kësaj. Një kërkim të shpejtë të kthimit vargje që përmbajnë të gjitha fjalët e dhënë. Vendos një "+" në frontin e çdo fjalë të gjeni ndonjë nga fjalët e dhënë në çdo ajet. Vendos një "-" në frontin e një fjalë për të gjetur të gjitha ajetet që nuk kanë këtë fjalë. Wildcards "*" dhe "?" mund të përdoret. Në gjuhë të përdorur simbole të tilla si kineze dhe japoneze ju duhet të vënë "*" para dhe pas çdo karakter. Përdorni vetëm kërko të ngadalshëm për të gjetur "strongs" numrat.</string>
 <string key="Fast search">Kërko shpejtë</string>
 <string key="Font">Burim</string>
 <string key="Found">Gjetur</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Po</string>
 <string key="You must first select a verse">Ju duhet së pari të zgjidhni një varg</string>
 <string key="You must have at least one bible">Ju duhet të keni të paktën një Biblën</string>
+<string key="Next">Tjetër</string>
+<string key="Previous">I mëparshëm</string>
 </translations>

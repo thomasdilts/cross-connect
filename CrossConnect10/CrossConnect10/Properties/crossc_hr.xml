@@ -48,7 +48,6 @@
 <string key="Enter key">Tipka na tastaturi</string>
 <string key="Exact match">Točno podudaranje</string>
 <string key="Factory reset themes">Factory Reset teme</string>
-<string key="Fast search help text">Brzo pretraživanje je usporiti prvi put kad ga koristiti na Bibliju i brzo svaki put nakon toga. Brzo traženje vraća stihove koji sadrže sve dane riječi. Put "+" ispred svake riječi kako bi pronašli bilo koju od zadanih riječi u svakom retku. Put "-" ispred riječi kako bi pronašli sve stihove koji nemaju tu riječ. Zamjenski znakovi "*" i "?" mogu se koristiti. U jezicima koji koriste simbole kao što su kineski i japanski morate staviti "*" prije i poslije svakog lika. Koristite samo sporo potrazi za "Strongs" brojeve.</string>
 <string key="Fast search">Brzo pretraživanje</string>
 <string key="Font">Krstionica</string>
 <string key="Found">Pronađen</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Da</string>
 <string key="You must first select a verse">Prvo morate odabrati stih</string>
 <string key="You must have at least one bible">Morate imati barem jednu Bibliju</string>
+<string key="Next">Sljedeći</string>
+<string key="Previous">Prijašnji</string>
 </translations>

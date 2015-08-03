@@ -48,7 +48,6 @@
 <string key="Enter key">Tipka Enter</string>
 <string key="Exact match">Natančno ujemanje</string>
 <string key="Factory reset themes">Factory Reset teme</string>
-<string key="Fast search help text">Hitro iskanje je počasi prvič, ko jo uporabite na Sveto pismo, in hitro vsako pozneje. Hitro iskanje vrne verze, ki vsebujejo vseh danih besed. Put "+" pred vsako besedo, da bi našli kateremkoli od danih besed v vsaki pesmi. Put "-" pred besedo, da bi našli vse od verzov, ki nimajo te besede. Džokerji "*" in "?" se lahko uporabijo. V jezikih s pomočjo simbolov, kot so kitajski in japonski morate dani "*" pred in po vsakem značaja. Uporabljajte le počasno iskanje najti številke "strongs".</string>
 <string key="Fast search">Hitro iskanje</string>
 <string key="Font">Pisava</string>
 <string key="Found">Najdeno</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Da</string>
 <string key="You must first select a verse">Najprej morate izbrati verz</string>
 <string key="You must have at least one bible">Imeti morate vsaj eno biblija</string>
+<string key="Next">Naslednja</string>
+<string key="Previous">Prejšnja</string>
 </translations>

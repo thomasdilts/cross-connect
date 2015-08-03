@@ -48,7 +48,6 @@
 <string key="Enter key">Masukkan kunci</string>
 <string key="Exact match">Sama persis</string>
 <string key="Factory reset themes">Tema factory reset</string>
-<string key="Fast search help text">Sebuah pencarian cepat lambat saat pertama kali Anda menggunakannya pada Alkitab dan cepat setiap kali setelahnya. Sebuah pencarian cepat kembali ayat-ayat yang mengandung semua kata yang diberikan. Letakkan "+" di depan setiap kata untuk menemukan kata-kata yang diberikan dalam setiap ayat. Letakkan "-" di depan kata untuk menemukan semua ayat-ayat yang tidak memiliki kata itu. Wildcard "*" dan "?" dapat digunakan. Dalam bahasa menggunakan simbol seperti Cina dan Jepang Anda harus menempatkan "*" sebelum dan setelah masing-masing karakter. Gunakan hanya pencarian lambat untuk mencari nomor "Strong".</string>
 <string key="Fast search">Pencarian Cepat</string>
 <string key="Font">Fon</string>
 <string key="Found">Ditemukan</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Iya Nih</string>
 <string key="You must first select a verse">Anda harus memilih sebuah ayat</string>
 <string key="You must have at least one bible">Anda harus memiliki setidaknya satu Alkitab</string>
+<string key="Next">Berikutnya</string>
+<string key="Previous">Sebelumnya</string>
 </translations>

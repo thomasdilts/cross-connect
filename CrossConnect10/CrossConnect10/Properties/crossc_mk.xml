@@ -48,7 +48,6 @@
 <string key="Enter key">Внесете клучни</string>
 <string key="Exact match">Точно појавување</string>
 <string key="Factory reset themes">Ресетирање фабрика теми</string>
-<string key="Fast search help text">А брзо пребарување е бавен на првиот пат кога го користите на Библијата и брзо секој пат кога потоа. А брзо пребарување враќа стихови ги содржат сите дадени зборови. Стави "+" во предниот дел на секој збор да се најде некој од дадените зборови во секој стих. Ставете "-" пред зборот да ги најдете сите на стихови кои немаат тој збор. Џокери "*" и "?" може да се користи. Во јазици, користејќи симболи како кинески и јапонски мора да се стави "*" пред и по секој лик. Користете само бавно пребарување да се најде "Strongs" броеви.</string>
 <string key="Fast search">Брзо пребарување</string>
 <string key="Font">Фонт</string>
 <string key="Found">Е пронајдено</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Да</string>
 <string key="You must first select a verse">Прво мора да изберете еден стих</string>
 <string key="You must have at least one bible">Мора да имате барем една библија</string>
+<string key="Next">Следна</string>
+<string key="Previous">Претходната</string>
 </translations>

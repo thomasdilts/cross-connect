@@ -48,7 +48,6 @@
 <string key="Enter key">מקש Enter</string>
 <string key="Exact match">התאמה מדויקת</string>
 <string key="Factory reset themes">נושאי איפוס להגדרות יצרן</string>
-<string key="Fast search help text">חיפוש מהיר הוא להאט את הפעם הראשונה שאתה משתמש בו על התנ"ך ומהיר בכל פעם שלאחר מכן. חיפוש מהיר חוזר פסוקים המכילים את כל המילים נתון. שים "+" בחזית של כל מילה למצוא כל המילים נתון בכל פסוק. שים "-" מול מילה למצוא את כל פסוקים שאין להם מילה ש. בתווים כלליים "*" ו- "?" ניתן להשתמש. בשפות באמצעות סמלים כמו סיני ויפניים אתה חייב לשים "*" לפני ואחרי כל תו. השתמש בחיפוש האיטי רק כדי למצוא את המספרים "סטרונג".</string>
 <string key="Fast search">חיפוש מהיר</string>
 <string key="Font">גופן</string>
 <string key="Found">נמצא</string>
@@ -238,4 +237,6 @@
 <string key="Yes">כן</string>
 <string key="You must first select a verse">ראשית, עליך לבחור פסוק</string>
 <string key="You must have at least one bible">אתה חייב להיות התנ"ך לפחות אחד</string>
+<string key="Next">הבא</string>
+<string key="Previous">קודם</string>
 </translations>

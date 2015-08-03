@@ -48,7 +48,6 @@
 <string key="Enter key">Введіть ключ</string>
 <string key="Exact match">Точне збіг</string>
 <string key="Factory reset themes">Теми Factory Reset</string>
-<string key="Fast search help text">Швидкий пошук повільно в перший раз ви його використовуєте на Біблії і швидко кожен раз після цього. Швидкий пошук повертає вірші, що містять всі задані слова. Покладіть "+" перед кожним словом, щоб знайти будь-якої з даних слів у кожному вірші. Покладіть "-" перед словом, щоб знайти всі вірші, які не мають це слово. Групові символи "*" та "?" може бути використаний. У мовах, що використовують символи як китайський і японський необхідно поставити "*" перед і після кожного символу. Використовуйте тільки повільну пошуку, щоб знайти "Strongs" номери.</string>
 <string key="Fast search">Швидкий пошук</string>
 <string key="Font">Шрифту</string>
 <string key="Found">Знайдений</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Так</string>
 <string key="You must first select a verse">Ви повинні спочатку вибрати вірш</string>
 <string key="You must have at least one bible">Ви повинні мати принаймні одну Біблію</string>
+<string key="Next">Наступний</string>
+<string key="Previous">Попередній</string>
 </translations>

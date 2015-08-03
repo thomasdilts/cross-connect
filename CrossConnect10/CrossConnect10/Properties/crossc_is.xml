@@ -48,7 +48,6 @@
 <string key="Enter key">Enter</string>
 <string key="Exact match">Nákvæm samsvörun</string>
 <string key="Factory reset themes">Factory Endurstilla þemu</string>
-<string key="Fast search help text">A fljótur leita er hægt á fyrsta skipti sem þú notar það á Biblíunni og fljótur hvert skipti eftir það. A fljótur leita aftur vísur innihalda öll gefin orð. Settu "+" fyrir framan hvert orð til að finna einhverju gefin orð í hverju versi. Settu "-" fyrir framan orð að finna allar vísur sem hafa ekki þessi orð. Blindstafi "*" og "?" er hægt að nota. Í tungumála með tákn, eins og kínversku og japönsku þú verður að setja "*" fyrir og eftir hvern staf. Notaðu aðeins hægur leit til að finna "strongs" tölur.</string>
 <string key="Fast search">Fast leit</string>
 <string key="Font">Font</string>
 <string key="Found">Fann</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Já</string>
 <string key="You must first select a verse">Þú verður fyrst að velja vers</string>
 <string key="You must have at least one bible">Þú verður að hafa að minnsta kosti einn Biblíuna</string>
+<string key="Next">Næsta</string>
+<string key="Previous">Fyrri</string>
 </translations>

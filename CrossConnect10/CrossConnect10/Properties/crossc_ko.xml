@@ -48,7 +48,6 @@
 <string key="Enter key">키 입력</string>
 <string key="Exact match">일치 검색</string>
 <string key="Factory reset themes">공장 초기화 테마</string>
-<string key="Fast search help text">빠른 검색은 이후 성경과 빠른 때마다 그것을 처음 사용할 때 속도가 느립니다. 빠른 검색은 주어진 모든 단어를 포함하는 구절을 반환합니다. 각 절에 주어진 단어 중 하나를 찾기 위해 각 단어 앞에 "+"를 넣어. 넣어 "-"단어의 앞에 그 단어가없는 구절을 모두 찾습니다. 와일드 카드 "*"및 "?" 사용될 수있다. 중국과 이전에 각 문자 다음에 "*"두어야합니다 일본어와 같은 기호를 사용하여 언어. "스트롱"번호를 찾을 만 느린 검색을 사용합니다.</string>
 <string key="Fast search">빠른 검색</string>
 <string key="Font">폰트</string>
 <string key="Found">발견</string>
@@ -238,4 +237,6 @@
 <string key="Yes">예</string>
 <string key="You must first select a verse">먼저 절을 선택해야합니다</string>
 <string key="You must have at least one bible">당신은 적어도 하나의 성경을 가지고 있어야합니다</string>
+<string key="Next">다음</string>
+<string key="Previous">이전</string>
 </translations>

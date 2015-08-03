@@ -48,7 +48,6 @@
 <string key="Enter key">Enter</string>
 <string key="Exact match">Täpne vaste</string>
 <string key="Factory reset themes">Factory reset teemad</string>
-<string key="Fast search help text">Kiire otsing on aeglane esimene kord, kui seda kasutada piibel ja kiire iga kord pärast seda. Kiire otsing annab salmid, mis sisaldab kõiki antud sõnad. Pane "+" ees iga sõna leida mõni antud sõna igas salmis. Pane "-" ees sõna leida kõik salmid, mis ei ole seda sõna. Metamärke "*" ja "?" saab kasutada. In keeles sümbolite abil nagu Hiina ja Jaapani peate panna "*" enne ja pärast iga märk. Kasutage ainult aeglane otsingut, et leida "STRONGS" numbrid.</string>
 <string key="Fast search">Kiire otsing</string>
 <string key="Font">Font</string>
 <string key="Found">Avastatud</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Jah</string>
 <string key="You must first select a verse">Esmalt tuleb valida salm</string>
 <string key="You must have at least one bible">Sa pead olema vähemalt üks piibel</string>
+<string key="Next">Järgmine</string>
+<string key="Previous">Eelmine</string>
 </translations>

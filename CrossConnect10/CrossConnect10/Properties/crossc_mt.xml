@@ -48,7 +48,6 @@
 <string key="Enter key">Enter</string>
 <string key="Exact match">Qbil eżatt</string>
 <string key="Factory reset themes">Reset fabbrika temi</string>
-<string key="Fast search help text">A tfittxija mgħaġġla hija bil-mod l-ewwel darba li tużah fuq bibbja u veloċi kull darba wara. A tfittxija fast prospetti versi li fihom kollha tal-kliem mogħtija. Ipoġġi "+" quddiem ta 'kull kelma li ssib xi waħda mill-kliem mogħtija f'kull poeżiji. Ipoġġi "-" quddiem ta 'kelma biex isibu kollha ta' l-versi li ma jkollhomx din il-kelma. Wildcards "*" u "?" jistgħu jintużaw. Fil-lingwi li jużaw simboli bħall Ċiniżi u Ġappuniżi inti trid tqiegħed "*" qabel u wara kull karattru. Uża biss it-tfittxija bil-mod biex isibu "strongs" numri.</string>
 <string key="Fast search">Tfittxija Fast</string>
 <string key="Font">Font</string>
 <string key="Found">Misjuba</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Iva</string>
 <string key="You must first select a verse">Ewwel trid tagħżel poeżiji</string>
 <string key="You must have at least one bible">Irid ikollok bibbja mill-inqas wieħed</string>
+<string key="Next">Li jmiss</string>
+<string key="Previous">Preċedenti</string>
 </translations>

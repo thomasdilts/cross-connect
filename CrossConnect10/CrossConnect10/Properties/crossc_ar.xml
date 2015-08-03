@@ -48,7 +48,6 @@
 <string key="Enter key">مفتاح الادخال</string>
 <string key="Exact match">تطابق تام</string>
 <string key="Factory reset themes">الموضوعات ضبط المصنع</string>
-<string key="Fast search help text">بحث سريع بطيء في المرة الأولى التي استخدامها على الكتاب المقدس وسريع في كل مرة بعد ذلك. بحث سريع يعود الآيات التي تحتوي على جميع الكلمات معين. وضع "+" أمام كل كلمة في العثور على أي من الكلمات الواردة في كل آية. وضع "-" أمام كلمة للعثور على جميع الآيات التي ليس لديها هذه الكلمة. البدل "*" و "؟" يمكن استخدامها. في اللغات باستخدام رموز مثل الصينية واليابانية يجب وضع "*" قبل وبعد كل حرف. فقط استخدام البحث بطيئة في العثور على أرقام "Strongs".</string>
 <string key="Fast search">بحث سريع</string>
 <string key="Font">الخط</string>
 <string key="Found">وجدت</string>
@@ -238,4 +237,6 @@
 <string key="Yes">نعم</string>
 <string key="You must first select a verse">يجب عليك أولا تحديد الآية</string>
 <string key="You must have at least one bible">يجب أن يكون الكتاب المقدس واحد على الأقل</string>
+<string key="Next">التالى</string>
+<string key="Previous">سابق</string>
 </translations>

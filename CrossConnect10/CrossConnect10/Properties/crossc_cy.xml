@@ -48,7 +48,6 @@
 <string key="Enter key">Rhowch allweddol</string>
 <string key="Exact match">Gêm Union</string>
 <string key="Factory reset themes">Themâu reset ffatri</string>
-<string key="Fast search help text">Mae chwiliad cyflym yn araf y tro cyntaf y byddwch yn ei ddefnyddio ar beibl ac yn gyflym bob amser wedi hynny. Mae chwiliad cyflym yn dychwelyd penillion sy'n cynnwys yr holl o'r geiriau a roddir. Rhowch "+" o flaen pob gair o hyd i unrhyw un o'r geiriau a roddir ym mhob pennill. Rhowch "-" o flaen gair i ddod o hyd pob un o'r penillion nad oes ganddynt y gair hwnnw. Caniateir nod-chwilwyr "*" a "?" gellir eu defnyddio. Mewn ieithoedd gan ddefnyddio symbolau megis Tseiniaidd a japanese mae'n rhaid i chi roi "*" cyn ac ar ôl pob cymeriad. Defnyddiwch dim ond y chwiliad araf i ddod o hyd i rifau "strongs".</string>
 <string key="Fast search">Chwilio Cyflym</string>
 <string key="Font">Ffont</string>
 <string key="Found">Wedi dod o hyd</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Ydy</string>
 <string key="You must first select a verse">Mae'n rhaid i chi yn gyntaf ddewis pennill</string>
 <string key="You must have at least one bible">Mae'n rhaid i chi gael o leiaf un Beibl</string>
+<string key="Next">Nesaf</string>
+<string key="Previous">Blaenorol</string>
 </translations>

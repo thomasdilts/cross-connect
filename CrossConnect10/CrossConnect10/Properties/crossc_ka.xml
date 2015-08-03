@@ -48,7 +48,6 @@
 <string key="Enter key">შეიყვანეთ გასაღები</string>
 <string key="Exact match">ზუსტი დამთხვევა</string>
 <string key="Factory reset themes">ქარხნის გადატვირთვის თემები</string>
-<string key="Fast search help text">სწრაფი ძებნა ნელი პირველად გამოიყენოთ ეს ბიბლია და სწრაფი ყოველ ჯერზე შემდეგ. სწრაფი ძებნა ბრუნდება ლექსები შეიცავს ყველა მოცემული სიტყვები. განათავსეთ "+" წინაშე თითოეული სიტყვა იპოვოთ ნებისმიერი მოცემული სიტყვები თითოეულ ლექსი. განათავსეთ "-" წინ სიტყვა ყველა იმ ლექსებს, რომ არ აქვს, რომ სიტყვა. Wildcards "*" და "?" შეიძლება იქნას გამოყენებული. In ენების გამოყენებით სიმბოლოები, როგორიცაა ჩინური და იაპონური თქვენ უნდა დააყენოს "*" და მის შემდეგ თითოეული ხასიათი. გამოიყენეთ მხოლოდ ნელი ძებნის მოვძებნოთ "Strongs" ნომრები.</string>
 <string key="Fast search">სწრაფი ძებნა</string>
 <string key="Font">Font</string>
 <string key="Found">ნაპოვნია</string>
@@ -238,4 +237,6 @@
 <string key="Yes">დიახ</string>
 <string key="You must first select a verse">თქვენ უნდა აირჩიოთ ლექსი</string>
 <string key="You must have at least one bible">თქვენ უნდა ჰქონდეს მინიმუმ ერთი ბიბლია</string>
+<string key="Next">შემდეგი</string>
+<string key="Previous">წინა</string>
 </translations>

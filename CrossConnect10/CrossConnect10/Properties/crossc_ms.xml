@@ -48,7 +48,6 @@
 <string key="Enter key">Masukkan kunci</string>
 <string key="Exact match">Perlawanan tepat</string>
 <string key="Factory reset themes">Tema reset kilang</string>
-<string key="Fast search help text">Satu carian pantas adalah perlahan pada kali pertama anda menggunakannya pada bible dan cepat setiap kali selepas itu. Satu carian pantas kembali ayat-ayat yang mengandungi semua perkataan yang diberi. Letakkan "+" di depan setiap perkataan untuk mencari mana-mana perkataan yang diberikan dalam setiap ayat. Letakkan "-" di hadapan perkataan untuk mencari semua ayat-ayat yang tidak mempunyai perkataan itu. Wildcard "*" dan "?" boleh digunakan. Dalam bahasa menggunakan simbol seperti cina dan jepun anda perlu meletakkan "*" sebelum dan selepas setiap watak. Gunakan hanya carian perlahan untuk mencari "Sungguh" nombor.</string>
 <string key="Fast search">Carian pantas</string>
 <string key="Font">Font</string>
 <string key="Found">Found</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Ya</string>
 <string key="You must first select a verse">Anda mesti memilih satu ayat</string>
 <string key="You must have at least one bible">Anda mesti mempunyai sekurang-kurangnya satu bible</string>
+<string key="Next">Seterusnya</string>
+<string key="Previous">Sebelumnya</string>
 </translations>

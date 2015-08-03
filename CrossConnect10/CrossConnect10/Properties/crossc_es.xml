@@ -48,7 +48,6 @@
 <string key="Enter key">Introducir clave</string>
 <string key="Exact match">Coincidencia exacta</string>
 <string key="Factory reset themes">Temas de restablecimiento de fábrica</string>
-<string key="Fast search help text">Una búsqueda rápida es lento la primera vez que lo utilice en una biblia y rápido cada vez que a partir de entonces. Una búsqueda rápida devuelve versos que contienen todas las palabras dadas. Ponga un signo "+" delante de cada palabra para encontrar cualquiera de las palabras dadas en cada verso. Ponga una "-" delante de una palabra para encontrar todos los versículos que no tienen esa palabra. Los comodines "*" y "?" puede ser usado. En lenguajes que usan símbolos como chino y japonés debe poner "*" antes y después de cada carácter. Utilice sólo la búsqueda lenta para encontrar números "Strong".</string>
 <string key="Fast search">Búsqueda rápida</string>
 <string key="Font">Fuente</string>
 <string key="Found">Encontrado</string>
@@ -238,4 +237,6 @@
 <string key="Yes">Sí</string>
 <string key="You must first select a verse">Primero debe seleccionar un verso</string>
 <string key="You must have at least one bible">Usted debe tener al menos una biblia</string>
+<string key="Next">Siguiente</string>
+<string key="Previous">Anterior</string>
 </translations>
