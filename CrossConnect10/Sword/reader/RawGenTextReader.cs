@@ -259,66 +259,7 @@ namespace Sword.reader
                 return false;
             }
         }
-        /*
-        public static string HtmlHeader(
-            DisplaySettings displaySettings,
-            HtmlColorRgba htmlBackgroundColor,
-            HtmlColorRgba htmlForegroundColor,
-            HtmlColorRgba htmlPhoneAccentColor,
-            double htmlFontSize,
-            string fontFamily)
-        {
-            var head = new StringBuilder();
-            head.Append(
-                "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\" />");
 
-            head.Append("<style>");
-
-            head.Append(
-                string.Format(
-                    "body {{background:{0};color:{1};font-size:{2}pt;margin:0;padding:0;{3} }}",
-                    htmlBackgroundColor.GetHtmlRgba(),
-                    htmlForegroundColor.GetHtmlRgba(),
-                    (int)(htmlFontSize + 0.5),
-                    fontFamily)); // old fashioned way to round an integer
-
-            head.Append(
-                string.Format(
-                    "sup,sub {{color:{0};font-size: .83em;}} "
-                    + "a.strongsmorph,a.strongsmorph:link,span.strongsmorph{{color:{1};text-decoration:none;}} "
-                    + "a.normalcolor,a.normalcolor:link {{color:{2};text-decoration:none;}}",
-                    displaySettings.HighlightMarkings
-                        ? htmlPhoneAccentColor.GetHtmlRgba()
-                        : htmlForegroundColor.GetHtmlRgba(),
-                    displaySettings.HighlightMarkings
-                        ? htmlPhoneAccentColor.GetHtmlRgba()
-                        : htmlForegroundColor.GetHtmlRgba(),
-                    htmlForegroundColor));
-
-            head.Append("</style>");
-            head.Append(@"<script type=""text/javascript"">
-
-function getVerticalScrollPosition() {
-    return document.body.scrollTop.toString();
-}
-function setVerticalScrollPosition(position) {
-    document.body.scrollTop = position;
-}
-function ScrollToAnchor(anchor, colorRgba) {
-    window.location.hash=anchor;
-    SetFontColorForElement(anchor, colorRgba);
-}
-function SetFontColorForElement(elemntId, colorRgba){
-    var element = document.getElementById(elemntId);
-    if(element!=null){
-        element.style.color = colorRgba;
-    }
-}
-
-</script>");
-            head.Append("</head><body>");
-            return head.ToString();
-        }*/
         public static string HtmlHeader(
             DisplaySettings displaySettings,
             HtmlColorRgba htmlBackgroundColor,
@@ -331,13 +272,13 @@ function SetFontColorForElement(elemntId, colorRgba){
         {
             var head = new StringBuilder();
             head.Append(
-                "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\" />");
+                "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=yes\" />");
 
-            head.Append("<style>");
+            head.Append("<style>img {max-width:100%; height: auto}");
 
             head.Append(
                 string.Format(
-                    "body {{background:{0};color:{1};font-size:{2}pt;margin:{3};padding:0;{4} }}",
+                    "body {{background:{0};color:{1};font-size:{2}pt;margin:{3};padding:0;{4}; }}",
                     htmlBackgroundColor.GetHtmlRgba(),
                     htmlForegroundColor.GetHtmlRgba(),
                     (int)(htmlFontSize + 0.5),
@@ -367,6 +308,16 @@ function SetFontColorForElement(elemntId, colorRgba){
 
             head.Append("</style>");
             head.Append(@"<script type=""text/javascript"">
+var imageWidthIsAuto = 0;
+function mousewheelhit(){
+    if(imageWidthIsAuto==0){
+        for(i=0; i<document.images.length;i++){
+            document.images[i].style.width = window.getComputedStyle(document.images[i]).getPropertyValue('width');
+            document.images[i].style.maxWidth = 'initial';
+        }
+    }
+    imageWidthIsAuto=1;
+}
 
 function getVerticalScrollPosition() {
     return document.body.scrollTop.toString();
@@ -384,9 +335,8 @@ function SetFontColorForElement(elemntId, colorRgba){
         element.style.color = colorRgba;
     }
 }
-
 </script>");
-            head.Append("</head><body>");
+            head.Append("</head><body onmousewheel=\"mousewheelhit()\">");
             return head.ToString();
         }
 

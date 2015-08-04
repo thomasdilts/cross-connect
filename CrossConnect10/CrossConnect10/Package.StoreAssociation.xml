@@ -354,6 +354,7 @@
     </ReservedNames>
   </ProductReservedInfo>
   <AccountPackageIdentityNames>
+    <MainPackageIdentityName>57294ThomasDilts.BibleCrossConnect</MainPackageIdentityName>
     <MainPackageIdentityName>57294ThomasDilts.EurostepTrackLocateRecordTLR</MainPackageIdentityName>
   </AccountPackageIdentityNames>
   <PackageInfoList LandingUrl="https://dev.windows.com/dashboard/Application?appId=9WZDNCRDCF6K">

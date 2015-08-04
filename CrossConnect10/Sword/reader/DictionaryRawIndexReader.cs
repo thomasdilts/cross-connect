@@ -209,7 +209,7 @@ namespace Sword.reader
             head.Append(
                 "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\" />");
 
-            head.Append("<style>");
+            head.Append("<style>img {width:100%; height: auto}");
 
             head.Append(
                 string.Format(

@@ -924,6 +924,11 @@ namespace CrossConnect
 
         private async void WebBrowser1ScriptNotify(object sender, NotifyEventArgs e)
         {
+            //if(e.Value.StartsWith("touchend"))
+            //{
+            //    Debug.WriteLine(e.Value);
+            //    return;
+            //}
             string[] chapterVerse = e.Value.Split('_');
             if (e.Value.Contains("STRONG"))
             {
@@ -1171,6 +1176,16 @@ namespace CrossConnect
             await this.webBrowser1.InvokeScriptAsync(
                 "DoSearch",
                 new[] { "ID_" + SearchInput.Text });
+        }
+
+        private void webBrowser1_ManipulationStarted(object sender, Windows.UI.Xaml.Input.ManipulationStartedRoutedEventArgs e)
+        {
+
+        }
+
+        private void webBrowser1_DoubleTapped(object sender, Windows.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
+        {
+
         }
     }
 }
