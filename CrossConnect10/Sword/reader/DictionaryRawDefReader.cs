@@ -225,7 +225,7 @@ namespace Sword.reader
             head.Append(
                 "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\" />");
 
-            head.Append("<style>");
+            head.Append("<style>img {max-width:100%; height: auto}");
 
             head.Append(
                 string.Format(
@@ -258,7 +258,16 @@ namespace Sword.reader
 
             head.Append("</style>");
             head.Append(@"<script type=""text/javascript"">
-
+var imageWidthIsAuto = 0;
+function mousewheelhit(){
+    if(imageWidthIsAuto==0){
+        for(i=0; i<document.images.length;i++){
+            document.images[i].style.width = window.getComputedStyle(document.images[i]).getPropertyValue('width');
+            document.images[i].style.maxWidth = 'initial';
+        }
+    }
+    imageWidthIsAuto=1;
+}
 function getVerticalScrollPosition() {
     return document.body.scrollTop.toString();
 }
@@ -277,7 +286,7 @@ function SetFontColorForElement(elemntId, colorRgba){
 }
 
 </script>");
-            head.Append("</head><body>");
+            head.Append("</head><body onmousewheel=\"mousewheelhit()\">");
             return head.ToString();
         }
 
