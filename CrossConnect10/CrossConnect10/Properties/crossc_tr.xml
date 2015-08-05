@@ -239,4 +239,5 @@
 <string key="You must have at least one bible">En az bir İncil olmalıdır</string>
 <string key="Next">Sonraki</string>
 <string key="Previous">Önceki</string>
+<string key="You have no voices available. You need to install them. See the help.">Hiç sesleri kullanılabilir olması. Onları yüklemeniz gerekir. Yardıma bakın.</string>
 </translations>

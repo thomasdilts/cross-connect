@@ -239,4 +239,5 @@
 <string key="You must have at least one bible">È necessario disporre di almeno una Bibbia</string>
 <string key="Next">Il Prossimo</string>
 <string key="Previous">Precedente</string>
+<string key="You have no voices available. You need to install them. See the help.">Non ci sono voci disponibili. È necessario installarli. Vedere la guida.</string>
 </translations>

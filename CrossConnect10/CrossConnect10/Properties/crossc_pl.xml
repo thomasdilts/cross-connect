@@ -239,4 +239,5 @@
 <string key="You must have at least one bible">Musisz mieć co najmniej jedną biblię</string>
 <string key="Next">Następny</string>
 <string key="Previous">Poprzedni</string>
+<string key="You have no voices available. You need to install them. See the help.">Nie masz głosy dostępne. Musisz je zainstalować. Zobacz pomoc.</string>
 </translations>

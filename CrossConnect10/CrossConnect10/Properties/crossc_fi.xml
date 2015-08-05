@@ -239,4 +239,5 @@
 <string key="You must have at least one bible">Sinulla on oltava vähintään yksi raamattu</string>
 <string key="Next">Seuraava</string>
 <string key="Previous">Edellinen</string>
+<string key="You have no voices available. You need to install them. See the help.">Sinulla ei ole ääniä käytettävissä. Sinun täytyy asentaa ne. Katso ohje.</string>
 </translations>

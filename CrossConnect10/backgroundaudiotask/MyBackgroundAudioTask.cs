@@ -168,7 +168,7 @@ namespace BackgroundAudioTask
         private void OnCanceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason)
         {
             // You get some time here to save your state before process and resources are reclaimed
-            Debug.WriteLine("MyBackgroundAudioTask " + sender.Task.TaskId + " Cancel Requested...");
+            //Debug.WriteLine("MyBackgroundAudioTask " + sender.Task.TaskId + " Cancel Requested...");
             try
             {
                 // immediately set not running
@@ -548,11 +548,19 @@ namespace BackgroundAudioTask
             }
 
             SkipPreviousMessage skipPreviousMessage;
-            if(MessageService.TryParseMessage(e.Data, out skipPreviousMessage))
+            if (MessageService.TryParseMessage(e.Data, out skipPreviousMessage))
             {
                 // User has chosen to skip track from app context.
                 Debug.WriteLine("Skipping to previous");
                 SkipToPrevious();
+                return;
+            }
+
+            KillMessage killMessage;
+            if (MessageService.TryParseMessage(e.Data, out killMessage))
+            {
+                // User has chosen to skip track from app context.
+                OnCanceled(null, new BackgroundTaskCancellationReason());
                 return;
             }
 

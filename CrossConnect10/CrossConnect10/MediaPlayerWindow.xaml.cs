@@ -115,10 +115,35 @@ namespace CrossConnect
         /// </summary>
         private void AddMediaPlayerEventHandlers()
         {
-            BackgroundMediaPlayer.Current.CurrentStateChanged -= this.MediaPlayer_CurrentStateChanged;
-            BackgroundMediaPlayer.MessageReceivedFromBackground -= this.BackgroundMediaPlayer_MessageReceivedFromBackground;
-            BackgroundMediaPlayer.Current.CurrentStateChanged += this.MediaPlayer_CurrentStateChanged;
-            BackgroundMediaPlayer.MessageReceivedFromBackground += this.BackgroundMediaPlayer_MessageReceivedFromBackground;
+            try
+            {
+                BackgroundMediaPlayer.Current.CurrentStateChanged -= this.MediaPlayer_CurrentStateChanged;
+                BackgroundMediaPlayer.MessageReceivedFromBackground -= this.BackgroundMediaPlayer_MessageReceivedFromBackground;
+                BackgroundMediaPlayer.Current.CurrentStateChanged += this.MediaPlayer_CurrentStateChanged;
+                BackgroundMediaPlayer.MessageReceivedFromBackground += this.BackgroundMediaPlayer_MessageReceivedFromBackground;
+            }
+            catch (Exception)
+            {
+                MessageService.SendMessageToBackground(new KillMessage());
+                BackgroundMediaPlayer.Shutdown();
+                throw;
+                //System.Threading.SpinWait.SpinUntil(IsMediaOk, 5000);
+                //BackgroundMediaPlayer.Current.CurrentStateChanged += this.MediaPlayer_CurrentStateChanged;
+                //BackgroundMediaPlayer.MessageReceivedFromBackground += this.BackgroundMediaPlayer_MessageReceivedFromBackground;
+            }
+        }
+        private bool IsMediaOk()
+        {
+            try
+            {
+                BackgroundMediaPlayer.Current.CurrentStateChanged += this.MediaPlayer_CurrentStateChanged;
+                BackgroundMediaPlayer.MessageReceivedFromBackground += this.BackgroundMediaPlayer_MessageReceivedFromBackground;
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         private void MediaPlayerWindowUnloaded(object sender, RoutedEventArgs e)

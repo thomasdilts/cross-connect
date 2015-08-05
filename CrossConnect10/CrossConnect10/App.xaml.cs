@@ -682,21 +682,29 @@ namespace CrossConnect
                             ITiledWindow nextWindow;
                             if (state.WindowType.Equals(WindowType.WindowMediaPlayer))
                             {
-                                nextWindow = new MediaPlayerWindow { State = state };
-                                await nextWindow.State.Source.Resume();
-                                nextWindow.State.IsResume = true;
-                                string bookShortName;
-                                int relChaptNum;
-                                int verseNum;
-                                string fullName;
-                                string title;
-                                nextWindow.State.Source.GetInfo(Translations.IsoLanguageCode, out bookShortName,
-                                    out relChaptNum,
-                                    out verseNum,
-                                    out fullName,
-                                    out title);
-                                var info = new BackgroundAudioShared.AudioModel() { Book = bookShortName, Chapter = relChaptNum, Verse = verseNum, VoiceName = nextWindow.State.VoiceName, IsNtOnly = nextWindow.State.IsNtOnly, Pattern = nextWindow.State.Pattern, Src = nextWindow.State.Src, Code = nextWindow.State.code };
-                                ((MediaPlayerWindow)nextWindow).SetMediaInfo(nextWindow.State, info, true);
+                                try
+                                {
+                                    nextWindow = new MediaPlayerWindow { State = state };
+                                    await nextWindow.State.Source.Resume();
+                                    nextWindow.State.IsResume = true;
+                                    string bookShortName;
+                                    int relChaptNum;
+                                    int verseNum;
+                                    string fullName;
+                                    string title;
+                                    nextWindow.State.Source.GetInfo(Translations.IsoLanguageCode, out bookShortName,
+                                        out relChaptNum,
+                                        out verseNum,
+                                        out fullName,
+                                        out title);
+                                    var info = new BackgroundAudioShared.AudioModel() { Book = bookShortName, Chapter = relChaptNum, Verse = verseNum, VoiceName = nextWindow.State.VoiceName, IsNtOnly = nextWindow.State.IsNtOnly, Pattern = nextWindow.State.Pattern, Src = nextWindow.State.Src, Code = nextWindow.State.code };
+                                    ((MediaPlayerWindow)nextWindow).SetMediaInfo(nextWindow.State, info, true);
+                                }
+                                catch (Exception)
+                                {
+                                    continue;
+                                }
+
                             }
                             else
                             {
