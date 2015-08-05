@@ -239,4 +239,5 @@
 <string key="You must have at least one bible">你必须至少有一个圣经</string>
 <string key="Next">下一个</string>
 <string key="Previous">前</string>
+<string key="You have no voices available. You need to install them. See the help.">你有没有可用的声音。你需要安装它们。请参阅帮助。</string>
 </translations>

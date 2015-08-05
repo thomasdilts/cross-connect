@@ -104,7 +104,7 @@ namespace CrossConnect
             this.Hear.Visibility = this._state != null && this._state.Source != null && this._state.Source.IsHearable && ExistsBibleBookInKjv()
                                        ? Visibility.Visible
                                        : Visibility.Collapsed;
-            this.TTS.Visibility = this._state != null && this._state.Source != null && this._state.Source.IsTTChearable && SpeechSynthesizer.AllVoices.Any()
+            this.TTS.Visibility = this._state != null && this._state.Source != null && this._state.Source.IsTTChearable
                                        ? Visibility.Visible
                                        : Visibility.Collapsed;
             this.Translate.Visibility = (this._state.WindowType == WindowType.WindowBible

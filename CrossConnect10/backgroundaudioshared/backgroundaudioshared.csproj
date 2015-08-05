@@ -95,6 +95,7 @@
     <Compile Include="AppState.cs" />
     <Compile Include="JsonHelper.cs" />
     <Compile Include="Messages\PositionMessage.cs" />
+    <Compile Include="Messages\KillMessage.cs" />
     <Compile Include="Messages\StartPlaybackMessage.cs" />
     <Compile Include="Messages\SkipNextMessage.cs" />
     <Compile Include="Messages\ErrorMessage.cs" />

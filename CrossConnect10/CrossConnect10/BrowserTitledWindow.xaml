@@ -340,20 +340,22 @@
                     <ScrollViewer Name="scrollViewerStartAudio" Grid.Row="1">
                         <Grid Name="MainPaneStartAudioPopup">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <StackPanel Grid.Row="0" Orientation="Vertical">
                             <TextBlock x:Name="StartMediaTitle" Margin="20 20 20 20" FontSize="18" />
-                            <TextBlock x:Name="MsgFromServer" Margin="20 20 20 20" FontSize="14" />
+                            <TextBlock x:Name="MsgFromServer" TextWrapping="Wrap" Margin="20 20 20 20" FontSize="14" />
                         </StackPanel>
                         <ProgressBar Grid.Row="1" Name="WaitingForDownload" Margin="0,30,0,0" IsIndeterminate="True" />
-                            <ListBox SelectionChanged="ListStartAudio_OnSelectionChanged" Grid.Row="1"
+                            <ListBox SelectionChanged="ListStartAudio_OnSelectionChanged" Grid.Row="2"
                                      x:Name="ListStartAudio" FontSize="14">
 
                             </ListBox>
-                    </Grid>
+                            <Button x:Name="ttsHelp"  Grid.Row="3" Content="Help" Click="ttsHelp_Click" Margin="20 100 20 20" FontSize="14" />
+                        </Grid>
                     </ScrollViewer>
                 </Border>
             </Popup>

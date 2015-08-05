@@ -239,4 +239,5 @@
 <string key="You must have at least one bible">คุณต้องมีอย่างน้อยหนึ่งพระคัมภีร์</string>
 <string key="Next">ถัดไป</string>
 <string key="Previous">ก่อน</string>
+<string key="You have no voices available. You need to install them. See the help.">คุณมีเสียงไม่สามารถใช้ได้ คุณจำเป็นต้องติดตั้งพวกเขา ดูวิธีใช้</string>
 </translations>

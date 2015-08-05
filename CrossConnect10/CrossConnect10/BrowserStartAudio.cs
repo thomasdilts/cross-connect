@@ -81,9 +81,20 @@ namespace CrossConnect
                 BibleDescription = this._state.BibleDescription,
                 BibleToLoad = this._state.BibleToLoad
             };
-            
 
-            var nextWindow = new MediaPlayerWindow { State = state };
+            MediaPlayerWindow nextWindow = null;
+            try
+            {
+                nextWindow = new MediaPlayerWindow { State = state };
+            }
+            catch (Exception ee)
+            {
+                var dialog =
+                    new MessageDialog(ee.Message);
+                dialog.ShowAsync();
+                return;
+            }
+
             nextWindow.State.CurIndex = App.OpenWindows.Count();
             nextWindow.State.HtmlFontSize = 20;
             App.OpenWindows.Add(nextWindow);
@@ -185,6 +196,7 @@ namespace CrossConnect
                     VoiceName = ((VoiceInformation)((TextBlock)e.AddedItems[0]).Tag).DisplayName
                 };
             }
+
             AddMediaWindow(info);
 
             App.StartTimerForSavingWindows();
@@ -208,27 +220,53 @@ namespace CrossConnect
         {
             //show the voices available.
             // get all of the installed voices
-            var voices = Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices;
+            this.MsgFromServer.Visibility = Visibility.Collapsed;
+            IReadOnlyList<VoiceInformation> voices = null;
+            try
+            {
+                voices = Windows.Media.SpeechSynthesis.SpeechSynthesizer.AllVoices;
+            }
+            catch (Exception)
+            {
+            }
+
             // get the currently selected voice
             this.ListStartAudio.Items.Clear();
-            foreach (VoiceInformation voice in voices)
+            if (voices != null && voices.Any())
             {
-                var item = new TextBlock
+                foreach (VoiceInformation voice in voices)
                 {
-                    Text = voice.DisplayName + " : " + voice.Language,
-                    Style = this.PageTitle.Style,
-                    Tag = voice,
-                    Name = voice.DisplayName,
-                    Margin = new Thickness(0, 0, 0, 10),
-                    TextWrapping = TextWrapping.Wrap
-                };
-                this.ListStartAudio.Items.Add(item);
+                    var item = new TextBlock
+                    {
+                        Text = voice.DisplayName + " : " + voice.Language,
+                        Style = this.PageTitle.Style,
+                        Tag = voice,
+                        Name = voice.DisplayName,
+                        Margin = new Thickness(0, 0, 0, 10),
+                        TextWrapping = TextWrapping.Wrap
+                    };
+                    this.ListStartAudio.Items.Add(item);
+                }
+            }
+            else
+            {
+                // show message
+                this.MsgFromServer.Visibility= Visibility.Visible;
+                this.MsgFromServer.Text = Translations.Translate("You have no voices available. You need to install them. See the help.");
             }
             MainPageSplit.SideBarShowPopup(
                 this.StartAudioPopup, this.MainPaneStartAudioPopup, this.scrollViewerStartAudio);
 
             this.StartMediaTitle.Text = Translations.Translate("Select what you want to hear");
+            this.ttsHelp.Content = Translations.Translate("Help");
+            this.ttsHelp.Visibility = Windows.UI.Xaml.Visibility.Visible;
             WaitingForDownload.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+        }
+
+        private async void ttsHelp_Click(object sender, RoutedEventArgs e)
+        {
+            await Windows.System.Launcher.LaunchUriAsync(
+                new Uri(@"http://www.cross-connect.se/help-metro/#installvoices", UriKind.Absolute));
         }
 
         private async void StartAudio_OnClick()
@@ -251,6 +289,7 @@ namespace CrossConnect
                 this.StartAudioPopup, this.MainPaneStartAudioPopup, this.scrollViewerStartAudio);
 
             this.StartMediaTitle.Text = Translations.Translate("Select what you want to hear");
+            this.ttsHelp.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             this.WaitingForDownload.Visibility = Visibility.Visible;
             this.MsgFromServer.Visibility = Visibility.Collapsed;
             this.MsgFromServer.Text = string.Empty;

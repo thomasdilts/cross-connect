@@ -239,4 +239,5 @@
 <string key="You must have at least one bible">אתה חייב להיות התנ"ך לפחות אחד</string>
 <string key="Next">הבא</string>
 <string key="Previous">קודם</string>
+<string key="You have no voices available. You need to install them. See the help.">אין לך קולות זמינים. אתה צריך להתקין אותם. עיין בעזרה.</string>
 </translations>
