@@ -108,7 +108,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="reader\BibleNoteReader.cs" />
     <Compile Include="reader\BiblePlaceMarkReader.cs" />
+    <Compile Include="reader\BibleRawTextReader.cs" />
     <Compile Include="reader\BibleZtextReader.cs" />
+    <Compile Include="reader\CommentRawComReader.cs" />
     <Compile Include="reader\CommentZtextReader.cs" />
     <Compile Include="reader\DictionaryRaw4IndexReader.cs" />
     <Compile Include="reader\DictionaryRawDefReader.cs" />

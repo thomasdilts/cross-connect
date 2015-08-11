@@ -87,6 +87,8 @@ namespace CrossConnect
     [KnownType(typeof(SearchReader))]
     [KnownType(typeof(BibleNoteReader))]
     [KnownType(typeof(BibleZtextReader))]
+    [KnownType(typeof(CommentRawComReader))]
+    [KnownType(typeof(BibleRawTextReader))]
     public class SerializableWindowState
     {
         #region Fields
