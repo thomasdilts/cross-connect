@@ -108,6 +108,8 @@ namespace CrossConnect
             oneDriveBookmarks.Header = Translations.Translate("Bookmarks and custom notes");
             oneDriveThemes.Header = Translations.Translate("Themes");
             oneDriveWindowSetup.Header = Translations.Translate("Window setup");
+            oneDriveButHelp.Content = Translations.Translate("Help");
+            oneDriveButSwordImport.Content = Translations.Translate("Restore") + " Sword";
 
             bool successfulInitialize = false;
             while (!successfulInitialize)
