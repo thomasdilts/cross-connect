@@ -41,6 +41,10 @@ namespace CrossConnect
     using System.Linq;
     using System.Threading;
     using Microsoft.Phone.Storage;
+    using Windows.System;
+    using Windows.Storage.Pickers;
+    using Windows.ApplicationModel.Activation;
+    using System.Windows.Navigation;
 
     /// <summary>
     /// The settings.
@@ -280,6 +284,56 @@ namespace CrossConnect
             backupRestoreObj.LogOut();
             _isTransfering = false;
             UpdateUi();
+        }
+
+        private void oneDriveButHelp_Click(object sender, RoutedEventArgs e)
+        {
+            Launcher.LaunchUriAsync(
+                new Uri(@"http://www.cross-connect.se/help-metro/#backuprestore", UriKind.Absolute));
+        }
+
+        private async void oneDriveButSwordImport_Click(object sender, RoutedEventArgs e)
+        {
+            FileOpenPicker openPicker = new FileOpenPicker();
+            openPicker.ViewMode = PickerViewMode.Thumbnail;
+            openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            openPicker.FileTypeFilter.Add(".zip");
+            openPicker.PickSingleFileAndContinue();
+
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            var app = App.Current as App;
+            if (app.FilePickerContinuationArgs != null)
+            {
+                this.ContinueFileOpenPicker(app.FilePickerContinuationArgs);
+            }
+        }
+        /// <summary>
+        /// Handle the returned files from file picker
+        /// This method is triggered by ContinuationManager based on ActivationKind
+        /// </summary>
+        /// <param name="args">File open picker continuation activation argment. It cantains the list of files user selected with file open picker </param>
+        public async void ContinueFileOpenPicker(FileOpenPickerContinuationEventArgs args)
+        {
+            if (args.Files.Count > 0)
+            {
+                var error = await SwordBook.TryInstallBibleFromZipFile(args.Files.First());
+                if (!string.IsNullOrEmpty(error[0]))
+                {
+                    MessageBox.Show(error[0]);
+                }
+                else
+                {
+                    await App.InstalledBibles.AddGenericBook(error[1]);
+                }
+            }
+
+        }
+        public async void ContinueFileSavePicker(FileSavePickerContinuationEventArgs args)
+        {
+
         }
     }
 }

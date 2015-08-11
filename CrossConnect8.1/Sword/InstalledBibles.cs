@@ -100,11 +100,11 @@ namespace Sword
             {
                 return false;
             }
-            if (driver.Equals("ZTEXT"))
+            if (driver.Equals("ZTEXT") || driver.Equals("RAWTEXT"))
             {
                 this.InstalledBibles[modPath] = book;
             }
-            else if (driver.Equals("ZCOM"))
+            else if (driver.Equals("ZCOM") || driver.Equals("RAWCOM"))
             {
                 this.InstalledCommentaries[modPath] = book;
             }

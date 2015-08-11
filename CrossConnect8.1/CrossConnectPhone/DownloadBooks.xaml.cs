@@ -254,16 +254,14 @@ namespace CrossConnect
                 {
                     var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
                     var driver = ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
-                    if (lang.Name.Equals(selectLangauge.SelectedItem)
-                        &&
-                        ((isBibleSelected
-                          && driver.Equals("ZTEXT"))
-                         ||
-                         (isCommentarySelected
-                          && driver.Equals("ZCOM"))
-                        || (isGeneralBookSelected
+                    if (lang.Name.Equals(this.selectLangauge.SelectedItem)
+                        && ((isBibleSelected
+                             && (driver.Equals("ZTEXT") || driver.Equals("RAWTEXT")))
+                            || (isCommentarySelected
+                                && (driver.Equals("ZCOM") || driver.Equals("RAWCOM")))
+                                || (isGeneralBookSelected
                                 && driver.Equals("RAWGENBOOK"))
-                        || (isDictionarySelected
+                                || (isDictionarySelected
                                 && (driver.Equals("RAWLD") || driver.Equals("RAWLD4") || driver.Equals("ZLD")))))
                     {
                         allBooks[book.Value.Sbmd.Name] = book.Value.Sbmd.Name;
@@ -380,7 +378,7 @@ namespace CrossConnect
                     {
                         var driver = ((string)book.Value.Sbmd.GetProperty(ConfigEntryType.ModDrv)).ToUpper();
                         if (isCommentarySelected
-                            && driver.Equals("ZCOM"))
+                            && (driver.Equals("ZCOM") || driver.Equals("RAWCOM")))
                         {
                             var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
                             allLanguages[lang.Name] = lang;
@@ -399,7 +397,7 @@ namespace CrossConnect
                         }
                         else if (!isCommentarySelected && !isGeneralBookSelected && !isDictionarySelected
                                  &&
-                                 driver.Equals("ZTEXT"))
+                                 (driver.Equals("ZTEXT") || driver.Equals("RAWTEXT")))
                         {
                             var lang = (Language)book.Value.Sbmd.GetProperty(ConfigEntryType.Lang);
                             allLanguages[lang.Name] = lang;

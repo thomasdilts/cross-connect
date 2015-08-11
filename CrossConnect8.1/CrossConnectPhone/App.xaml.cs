@@ -51,6 +51,7 @@ namespace CrossConnect
     //using NotificationsExtensions.TileContent;
     using Windows.Data.Xml.Dom;
     using System.Xml.Linq;
+    using Windows.ApplicationModel.Activation;
 
     #region Enumerations
 
@@ -97,7 +98,7 @@ namespace CrossConnect
         private const int MaxNumWindows = 30;
 
         private bool _phoneApplicationInitialized;
-
+        public FileOpenPickerContinuationEventArgs FilePickerContinuationArgs { get; set; }
 
         #endregion Fields
 
@@ -491,12 +492,13 @@ namespace CrossConnect
             App.StartTimerForSavingWindows();
         }
 
-        private void ApplicationActivated(object sender, ActivatedEventArgs e)
+        private async void ApplicationActivated(object sender, ActivatedEventArgs e)
         {
+            
             IsPersitanceLoaded = false;
             if (!e.IsApplicationInstancePreserved)
             {
-                LoadPersistantObjects();
+                await LoadPersistantObjects();
             }
         }
 
@@ -584,8 +586,19 @@ namespace CrossConnect
             RootFrame.NavigationFailed += RootFrame_NavigationFailed;
             // Ensure we don't initialize again
             _phoneApplicationInitialized = true;
-        }
+            PhoneApplicationService.Current.ContractActivated += Application_ContractActivated;
 
+        }
+        // Code to execute when the application is activated (brought to foreground)
+        // This code will not execute when the application is first launched
+        private void Application_ContractActivated(object sender, IActivatedEventArgs e)
+        {
+            var filePickerContinuationArgs = e as FileOpenPickerContinuationEventArgs;
+            if (filePickerContinuationArgs != null)
+            {
+                this.FilePickerContinuationArgs = filePickerContinuationArgs;
+            }
+        }
         private static async Task LoadPersistantWindows(Dictionary<String, Object> objectsToLoad)
         {
             try
@@ -644,8 +657,8 @@ namespace CrossConnect
                                                 {
                                                     typeof(SerializableWindowState), typeof(BibleZtextReader.VersePos),
                                                     typeof(BibleZtextReader.ChapterPos), typeof(BibleZtextReader.BookPos),
-                                                    typeof(BibleZtextReader), typeof(BibleNoteReader),
-                                                    typeof(BibleZtextReaderSerialData), typeof(CommentZtextReader),
+                                                    typeof(BibleZtextReader), typeof(BibleNoteReader),typeof(BibleRawTextReader),
+                                                    typeof(BibleZtextReaderSerialData), typeof(CommentZtextReader),typeof(CommentRawComReader),
                                                     typeof(TranslatorReader), typeof(BiblePlaceMarkReader),
                                                     typeof(SearchReader), typeof(DailyPlanReader),
                                                     typeof(PersonalNotesReader), typeof(InternetLinkReader),
@@ -1008,7 +1021,7 @@ namespace CrossConnect
                                     typeof(BibleZtextReader.ChapterPos), typeof(BibleZtextReader.BookPos),
                                     typeof(BibleZtextReader), typeof(BibleNoteReader), typeof(BibleZtextReaderSerialData),
                                     typeof(CommentZtextReader), typeof(TranslatorReader), typeof(BiblePlaceMarkReader),
-                                    typeof(SearchReader), typeof(DailyPlanReader),
+                                    typeof(SearchReader), typeof(DailyPlanReader),typeof(BibleRawTextReader),typeof(CommentRawComReader),
                                     typeof(PersonalNotesReader), typeof(InternetLinkReader),
                                     typeof(GreekHebrewDictReader), typeof(AudioPlayer.MediaInfo), typeof(RawGenTextReader), 
                                     typeof(DictionaryRawDefReader),typeof(DictionaryRawIndexReader),typeof(DictionaryRaw4IndexReader),typeof(DictionaryZldDefReader),typeof(DictionaryZldIndexReader),

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossConnect", "CrossConnect\CrossConnect.csproj", "{01DE01EF-2853-4291-810E-EBEA44945D3F}"
 EndProject
@@ -85,6 +85,7 @@ Global
 		{8F9CE9B3-1EC9-4285-984F-6404F1085428}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8F9CE9B3-1EC9-4285-984F-6404F1085428}.Release|ARM.ActiveCfg = Release|ARM
 		{8F9CE9B3-1EC9-4285-984F-6404F1085428}.Release|ARM.Build.0 = Release|ARM
+		{8F9CE9B3-1EC9-4285-984F-6404F1085428}.Release|ARM.Deploy.0 = Release|ARM
 		{8F9CE9B3-1EC9-4285-984F-6404F1085428}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{8F9CE9B3-1EC9-4285-984F-6404F1085428}.Release|Mixed Platforms.Build.0 = Release|x86
 		{8F9CE9B3-1EC9-4285-984F-6404F1085428}.Release|Win32.ActiveCfg = Release|x86
@@ -164,6 +165,7 @@ Global
 		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|ARM.ActiveCfg = Release|ARM
 		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|ARM.Build.0 = Release|ARM
+		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|ARM.Deploy.0 = Release|ARM
 		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|Mixed Platforms.Build.0 = Release|x86
 		{F2BA106B-3098-495F-90DC-D23E5458C95B}.Release|Win32.ActiveCfg = Release|x86
@@ -186,6 +188,7 @@ Global
 		{460C536A-FA50-46C0-B9DA-A0B4F8546AEE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{460C536A-FA50-46C0-B9DA-A0B4F8546AEE}.Release|ARM.ActiveCfg = Release|ARM
 		{460C536A-FA50-46C0-B9DA-A0B4F8546AEE}.Release|ARM.Build.0 = Release|ARM
+		{460C536A-FA50-46C0-B9DA-A0B4F8546AEE}.Release|ARM.Deploy.0 = Release|ARM
 		{460C536A-FA50-46C0-B9DA-A0B4F8546AEE}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{460C536A-FA50-46C0-B9DA-A0B4F8546AEE}.Release|Mixed Platforms.Build.0 = Release|x86
 		{460C536A-FA50-46C0-B9DA-A0B4F8546AEE}.Release|Win32.ActiveCfg = Release|x86
@@ -210,6 +213,7 @@ Global
 		{24D4E3E7-0EED-42B1-B2BC-5E05DE81865F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{24D4E3E7-0EED-42B1-B2BC-5E05DE81865F}.Release|ARM.ActiveCfg = Release|ARM
 		{24D4E3E7-0EED-42B1-B2BC-5E05DE81865F}.Release|ARM.Build.0 = Release|ARM
+		{24D4E3E7-0EED-42B1-B2BC-5E05DE81865F}.Release|ARM.Deploy.0 = Release|ARM
 		{24D4E3E7-0EED-42B1-B2BC-5E05DE81865F}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{24D4E3E7-0EED-42B1-B2BC-5E05DE81865F}.Release|Mixed Platforms.Build.0 = Release|x86
 		{24D4E3E7-0EED-42B1-B2BC-5E05DE81865F}.Release|Win32.ActiveCfg = Release|x86

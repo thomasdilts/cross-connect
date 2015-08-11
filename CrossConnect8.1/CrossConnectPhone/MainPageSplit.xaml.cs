@@ -353,7 +353,7 @@ namespace CrossConnect
             ReDrawWindows();
         }
 
-        private bool IsGetWindows10Shown = false;
+        private static bool IsGetWindows10Shown = false;
         // Load data for the ViewModel Items
         private void MainPageLoaded(object sender, RoutedEventArgs e)
         {
@@ -364,7 +364,7 @@ namespace CrossConnect
             }
             App_HistoryChanged(null, null);
 
-            if (!IsGetWindows10Shown && System.Environment.OSVersion.Version.Major.Equals(10))
+            if (!IsGetWindows10Shown && _recommendOtherAppTimer==null && System.Environment.OSVersion.Version.Major.Equals(10))
             {
                 _recommendOtherAppTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(10000) };
                 _recommendOtherAppTimer.Tick += RecommendLoadOtherAppTimerTick;
@@ -374,9 +374,10 @@ namespace CrossConnect
 
         private void RecommendLoadOtherAppTimerTick(object sender, EventArgs e)
         {
-            if (App.OpenWindows.Any())
+            if (App.OpenWindows.Any() && _recommendOtherAppTimer!=null)
             {
                 _recommendOtherAppTimer.Stop();
+                _recommendOtherAppTimer = null;
                 IsGetWindows10Shown = true;
                 NavigationService.Navigate(new Uri("/GetWindows10.xaml", UriKind.Relative));
             }
