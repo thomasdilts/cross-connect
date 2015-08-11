@@ -98,7 +98,7 @@ namespace CrossConnect
         private const int MaxNumWindows = 30;
 
         private bool _phoneApplicationInitialized;
-        public FileOpenPickerContinuationEventArgs FilePickerContinuationArgs { get; set; }
+        public IActivatedEventArgs FilePickerContinuationArgs { get; set; }
 
         #endregion Fields
 
@@ -221,6 +221,11 @@ namespace CrossConnect
         private static DispatcherTimer TimerForNotifications = null;
         public static void StartTimerForNotifications()
         {
+            if (TimerForNotifications != null)
+            {
+                TimerForNotifications.Stop();
+                TimerForNotifications = null;
+            }
             TimerForNotifications = new DispatcherTimer();
             TimerForNotifications.Tick += OnStartNotificationsTimerTick;
             TimerForNotifications.Interval = TimeSpan.FromSeconds(15);
@@ -593,11 +598,7 @@ namespace CrossConnect
         // This code will not execute when the application is first launched
         private void Application_ContractActivated(object sender, IActivatedEventArgs e)
         {
-            var filePickerContinuationArgs = e as FileOpenPickerContinuationEventArgs;
-            if (filePickerContinuationArgs != null)
-            {
-                this.FilePickerContinuationArgs = filePickerContinuationArgs;
-            }
+            this.FilePickerContinuationArgs = e;
         }
         private static async Task LoadPersistantWindows(Dictionary<String, Object> objectsToLoad)
         {
@@ -825,7 +826,9 @@ namespace CrossConnect
                         var types = new[] { typeof(BiblePlaceMarkers), typeof(BiblePlaceMarker) };
                         var ser = new DataContractSerializer(typeof(BiblePlaceMarkers), types);
                         PlaceMarkers = (BiblePlaceMarkers)ser.ReadObject(reader);
+                        reader.Close();
                     }
+                    sr.Close();
                 }
             }
 
@@ -862,11 +865,11 @@ namespace CrossConnect
 
                 await InstalledBibles.Initialize();
                 var fileNames = new List<string> { 
-                    BackupRestoreConstants.PersistantObjectsDisplaySettingsFileName,
-                    BackupRestoreConstants.PersistantObjectsThemesFileName,
-                    BackupRestoreConstants.PersistantObjectsHighlightFileName,
-                    BackupRestoreConstants.PersistantObjectsMarkersFileName,
-                    BackupRestoreConstants.PersistantObjectsWindowsFileName};
+                    BackupRestore.PersistantObjectsDisplaySettingsFileName,
+                    BackupRestore.PersistantObjectsThemesFileName,
+                    BackupRestore.PersistantObjectsHighlightFileName,
+                    BackupRestore.PersistantObjectsMarkersFileName,
+                    BackupRestore.PersistantObjectsWindowsFileName};
                 var loadFunctions = new List<LoadPersObjDelegate>{
                     LoadPersistantDisplaySettings,
                     LoadPersistantThemes,
@@ -916,10 +919,12 @@ namespace CrossConnect
                     var serializer = new DataContractSerializer(
                         typeof(Dictionary<string, object>), new[] { typeof(string) });
                     objectsToLoad = (Dictionary<string, object>)serializer.ReadObject(stream);
-                    await loadFunction(objectsToLoad);
-                    isLoaded = true;
                     stream.Close();
                     stream = null;
+
+                    await loadFunction(objectsToLoad);
+                    isLoaded = true;
+
 
                 }
                 catch (Exception e)
@@ -1092,7 +1097,7 @@ namespace CrossConnect
             {
 
             }
-            await SavePersistantObjects(objectsToSave, BackupRestoreConstants.PersistantObjectsWindowsFileName);
+            await SavePersistantObjects(objectsToSave, BackupRestore.PersistantObjectsWindowsFileName);
         }
         public static async Task SaveAllPersistantObjects()
         {
@@ -1124,7 +1129,7 @@ namespace CrossConnect
                 objectsToSave.Remove("Themes");
             }
 
-            await SavePersistantObjects(objectsToSave, BackupRestoreConstants.PersistantObjectsThemesFileName);
+            await SavePersistantObjects(objectsToSave, BackupRestore.PersistantObjectsThemesFileName);
         }
 
         public static async Task SavePersistantDisplaySettings()
@@ -1148,14 +1153,14 @@ namespace CrossConnect
                 objectsToSave["DisplaySettings"] = sw.ToString();
             }
             // UseRemoteStorage is always local
-            await SavePersistantObjects(objectsToSave, BackupRestoreConstants.PersistantObjectsDisplaySettingsFileName, true);
+            await SavePersistantObjects(objectsToSave, BackupRestore.PersistantObjectsDisplaySettingsFileName, true);
         }
 
         public static async Task SavePersistantHighlighting()
         {
             var objectsToSave = new Dictionary<string, object>();
             objectsToSave["Highlights"] = DisplaySettings.highlighter.ToString();
-            await SavePersistantObjects(objectsToSave, BackupRestoreConstants.PersistantObjectsHighlightFileName);
+            await SavePersistantObjects(objectsToSave, BackupRestore.PersistantObjectsHighlightFileName);
         }
 
         public static async Task SavePersistantMarkers()
@@ -1181,7 +1186,7 @@ namespace CrossConnect
                 objectsToSave["BiblePlaceMarkers"] = sw.ToString();
             }
 
-            await SavePersistantObjects(objectsToSave, BackupRestoreConstants.PersistantObjectsMarkersFileName);
+            await SavePersistantObjects(objectsToSave, BackupRestore.PersistantObjectsMarkersFileName);
         }
 
         public static async Task SavePersistantObjects(Dictionary<string, object> objectsToSave, string filename, bool alwaysLocal = false)

@@ -51,8 +51,16 @@ namespace CrossConnect
     /// </summary>
     public partial class OneDriveExport
     {
+        public enum FILE_PICKER_WAIT
+        {
+            WAIT_SWORD_IMPORT,
+            WAIT_EXPORT,
+            WAIT_IMPORT,
+            NONE
+        }
+        private FILE_PICKER_WAIT currentlyWaitingFor= FILE_PICKER_WAIT.NONE;
         private bool _isInThisWindow = false;
-        private IBackupRestore backupRestoreObj = null;
+        private BackupRestore backupRestoreObj = new BackupRestore();
         #region Constructors
 
         /// <summary>
@@ -70,49 +78,18 @@ namespace CrossConnect
         private void AutoRotatePageBackKeyPress(object sender, CancelEventArgs e)
         {
             _isInThisWindow = false;
-            //backupRestoreObj.IsCanceled = true;
-            
+            currentlyWaitingFor = FILE_PICKER_WAIT.NONE;
+            _isTransfering = false;
         }
 
         bool _isTransfering = false;
 
         private void UpdateUi()
         {
-            var isConnected = backupRestoreObj == null ? false : backupRestoreObj.IsConnected;
-            oneDriveButConnectSdCard.Visibility = isConnected || !_existsSdCard ? Visibility.Collapsed : Visibility.Visible;
-
-            oneDriveContentPanel.Visibility = isConnected && !_isTransfering ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
-            oneDriveConnectPanel.Visibility = isConnected || _isTransfering ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
-            oneDriveButConnect.Visibility = isConnected ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
-            oneDriveProgressBar.Visibility = isConnected ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+            oneDriveContentPanel.Visibility = !_isTransfering ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
             oneDriveConnectPanelTransfer.Visibility = _isTransfering ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
         }
-        private async void ButConnectClick(object sender, RoutedEventArgs e)
-        {
-            oneDriveButConnect.Visibility = System.Windows.Visibility.Collapsed;
-            oneDriveProgressBar.Visibility = System.Windows.Visibility.Visible;
-            oneDriveButConnectSdCard.Visibility = System.Windows.Visibility.Collapsed;
-            backupRestoreObj = new BackupRestoreOneDrive();
-            backupRestoreObj.IsCanceled = false;
-            var message = await backupRestoreObj.AuthenticateUser();
-            if (!string.IsNullOrEmpty(message))
-            {
-                MessageBox.Show(message);
-            }
-            UpdateUi();
-        }
-        private void ButConnectSdCardClick(object sender, RoutedEventArgs e)
-        {
-            oneDriveButConnect.Visibility = System.Windows.Visibility.Collapsed;
-            oneDriveProgressBar.Visibility = System.Windows.Visibility.Collapsed;
-            oneDriveButConnectSdCard.Visibility = System.Windows.Visibility.Collapsed;
-            backupRestoreObj = new BackupRestoreSdCard();
-            backupRestoreObj.IsCanceled = false;
-      
-            UpdateUi();
-        }
 
-        private bool _existsSdCard = false;
         private void AutoRotatePageLoaded(object sender, RoutedEventArgs e)
         {
             if (_isInThisWindow)
@@ -131,17 +108,12 @@ namespace CrossConnect
             oneDriveBookmarks.Header = Translations.Translate("Bookmarks and custom notes");
             oneDriveThemes.Header = Translations.Translate("Themes");
             oneDriveWindowSetup.Header = Translations.Translate("Window setup");
-            this.oneDriveCaptionPutInFolder.Text = Translations.Translate("Folder on OneDrive");
-            this.oneDriveButConnect.Content = Translations.Translate("Connect to OneDrive");
-            this.oneDriveButLogout.Content = Translations.Translate("Logout from OneDrive");
-            this.oneDriveButConnectSdCard.Content = Translations.Translate("Connect to memory card");
 
             bool successfulInitialize = false;
             while (!successfulInitialize)
             {
                 try
                 {
-                    oneDrivePutInFolder.Text = App.DisplaySettings.OneDriveFolder;
 
                     successfulInitialize = true;
                 }
@@ -153,7 +125,6 @@ namespace CrossConnect
 
             new Thread(() =>
             {
-                _existsSdCard = ExistsSdCard().Result;
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
                     UpdateUi();
@@ -162,52 +133,9 @@ namespace CrossConnect
 
         }
 
-        private async Task<bool> ExistsSdCard()
-        {
-            return false;
-            //try
-            //{
-            //    // Get the logical root folder for all external storage devices.
-            //    //var sdCard = (await Microsoft.Phone.Storage.ExternalStorage.GetExternalStorageDevicesAsync()).FirstOrDefault();
-            //    StorageFolder externalDevices = Windows.Storage.KnownFolders.PicturesLibrary;
-            //    //StorageFolder sdCard = (await KnownFolders.RemovableDevices.GetFoldersAsync()).FirstOrDefault();
-            //    // Get the first child folder, which represents the SD card.
-            //    StorageFolder sdCard = (await externalDevices.GetFoldersAsync()).FirstOrDefault();
-            //    /*
-            //    if (sdCard != null)
-            //    {
-            //        // Get the root folder on the SD card.
-            //        ExternalStorageFolder sdrootFolder = sdCard.RootFolder;
-            //        if (sdrootFolder != null)
-            //        {
-            //            // List all the files on the root folder.
-            //            var files = await sdrootFolder.GetFilesAsync();
-            //            if (files != null)
-            //            { 
-            //            }
-            //            var folders = await sdrootFolder.GetFoldersAsync();
-            //            if (folders != null)
-            //            {
-            //            }
-            //        }
-            //    }*/
-            //    return sdCard != null;
-            //}
-            //catch (Exception e)
-            //{
-            //    return false;
-            //}
-
-        }
-
         #endregion Methods
-        private async void BackupRestoreProgress(double percentTotal, double percentPartial, bool IsFinal, string debug, string Message, string MessageTranslateable1, string MessageTranslateable2)
+        private async void BackupRestoreProgress(double percentTotal, double percentPartial, bool IsFinal, string Message, string MessageTranslateable1, string MessageTranslateable2)
         {
-            if (!string.IsNullOrEmpty(debug))
-            {
-                oneDriveDebugText.Text = debug;
-                return;
-            }
             this.oneDriveProgressBarTotal.Value = percentTotal;
             this.oneDriveProgressBarPartial.Value = percentPartial;
             if(IsFinal && !string.IsNullOrEmpty(Message))
@@ -225,28 +153,26 @@ namespace CrossConnect
             }
             if(IsFinal)
             {
+                this.oneDriveProgressBarPartial.Value = 75;
                 await App.LoadPersistantObjects();
                 _isTransfering = false;
+                this.oneDriveProgressBarPartial.Value = 100;
                 UpdateUi();
                 Deployment.Current.Dispatcher.BeginInvoke(() => Deployment.Current.Dispatcher.BeginInvoke(() => { App.SavePersistantDisplaySettings(); App.SavePersistantThemes(); }));
-
+                currentlyWaitingFor = FILE_PICKER_WAIT.NONE;
             }
         }
         private async void ButExportClick(object sender, RoutedEventArgs e)
         {
             _isTransfering = true;
             UpdateUi();
+            currentlyWaitingFor = FILE_PICKER_WAIT.WAIT_EXPORT;
             this.oneDriveProgressBarTotal.Minimum = 0;
             this.oneDriveProgressBarTotal.Maximum = 100;
             this.oneDriveProgressBarTotal.Value = 3;
-            this.oneDrivePutInFolder.Text = this.oneDrivePutInFolder.Text.Replace("\\", "").Replace("/", "").Trim();
-            if (string.IsNullOrEmpty(this.oneDrivePutInFolder.Text))
-            {
-                this.oneDrivePutInFolder.Text = "CrossConnectBackup";
-            }
-            App.DisplaySettings.OneDriveFolder = this.oneDrivePutInFolder.Text;
+
             await App.SaveAllPersistantObjects();
-            await backupRestoreObj.DoExport(
+            backupRestoreObj.DoExport(
                 new BackupRestore.BackupManifest 
                 {  
                     bibles=(bool)this.oneDriveBibles.IsChecked,
@@ -256,11 +182,17 @@ namespace CrossConnect
                     highlighting = (bool)this.oneDriveHighlighting.IsChecked,
                     windowSetup = (bool)this.oneDriveWindowSetup.IsChecked,
                     IsWindowsPhone = true
-                }, this.oneDrivePutInFolder.Text, BackupRestoreProgress);
+                }, 
+                BackupRestoreProgress,
+                Translations.Translate("Backup") + DateTime.Now.ToString("yyyy-MM-dd.HH.mm"));
         }
+        private void ReturnToWindowCallback()
+        {
 
+        }
         private void butImport_Click(object sender, RoutedEventArgs e)
         {
+            currentlyWaitingFor = FILE_PICKER_WAIT.WAIT_IMPORT;
             _isTransfering = true;
             UpdateUi();
             this.oneDriveProgressBarTotal.Minimum = 0;
@@ -276,14 +208,7 @@ namespace CrossConnect
                     highlighting = (bool)this.oneDriveHighlighting.IsChecked,
                     windowSetup = (bool)this.oneDriveWindowSetup.IsChecked,
                     IsWindowsPhone = true
-                }, this.oneDrivePutInFolder.Text, BackupRestoreProgress);
-        }
-
-        private void oneDriveButLogout_Click(object sender, RoutedEventArgs e)
-        {
-            backupRestoreObj.LogOut();
-            _isTransfering = false;
-            UpdateUi();
+                }, BackupRestoreProgress);
         }
 
         private void oneDriveButHelp_Click(object sender, RoutedEventArgs e)
@@ -294,6 +219,7 @@ namespace CrossConnect
 
         private async void oneDriveButSwordImport_Click(object sender, RoutedEventArgs e)
         {
+            currentlyWaitingFor = FILE_PICKER_WAIT.WAIT_SWORD_IMPORT;
             FileOpenPicker openPicker = new FileOpenPicker();
             openPicker.ViewMode = PickerViewMode.Thumbnail;
             openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
@@ -305,9 +231,20 @@ namespace CrossConnect
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             var app = App.Current as App;
-            if (app.FilePickerContinuationArgs != null)
+            if (app.FilePickerContinuationArgs != null )
             {
-                this.ContinueFileOpenPicker(app.FilePickerContinuationArgs);
+                switch(currentlyWaitingFor)
+                {
+                    case FILE_PICKER_WAIT.WAIT_SWORD_IMPORT:
+                        this.ContinueFileOpenPickerSwordImport(app.FilePickerContinuationArgs as FileOpenPickerContinuationEventArgs);
+                        break;
+                    case FILE_PICKER_WAIT.WAIT_IMPORT:
+                        this.backupRestoreObj.DoImportContinued(app.FilePickerContinuationArgs as FileOpenPickerContinuationEventArgs);
+                        break;
+                    case FILE_PICKER_WAIT.WAIT_EXPORT:
+                        this.backupRestoreObj.DoExportContinued(app.FilePickerContinuationArgs as FileSavePickerContinuationEventArgs);
+                        break;
+                }
             }
         }
         /// <summary>
@@ -315,7 +252,7 @@ namespace CrossConnect
         /// This method is triggered by ContinuationManager based on ActivationKind
         /// </summary>
         /// <param name="args">File open picker continuation activation argment. It cantains the list of files user selected with file open picker </param>
-        public async void ContinueFileOpenPicker(FileOpenPickerContinuationEventArgs args)
+        public async void ContinueFileOpenPickerSwordImport(FileOpenPickerContinuationEventArgs args)
         {
             if (args.Files.Count > 0)
             {
@@ -331,7 +268,7 @@ namespace CrossConnect
             }
 
         }
-        public async void ContinueFileSavePicker(FileSavePickerContinuationEventArgs args)
+        public async void ContinueFileSavePickerForExport(FileSavePickerContinuationEventArgs args)
         {
 
         }
