@@ -1061,6 +1061,7 @@ namespace CrossConnect
             catch (Exception e)
             {
                 // we will come here if a windows is deleted while things are being saved.
+                StartTimerForSavingWindows();
             }
 
             try
