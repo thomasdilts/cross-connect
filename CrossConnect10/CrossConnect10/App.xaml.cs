@@ -958,25 +958,32 @@ namespace CrossConnect
             catch (Exception ee)
             {
                 // we can get here if we delete a window while executing this function
+                StartTimerForSavingWindows();
             }
-
-            var types3 = new[] { typeof(SerializableDailyPlan) };
-
-            var ser3 = new DataContractSerializer(typeof(SerializableDailyPlan), types3);
-            using (var sw = new StringWriter())
+            try
             {
-                var settings = new XmlWriterSettings
-                {
-                    OmitXmlDeclaration = true,
-                    Indent = true,
-                    NamespaceHandling = NamespaceHandling.OmitDuplicates
-                };
-                using (XmlWriter writer = XmlWriter.Create(sw, settings))
-                {
-                    ser3.WriteObject(writer, DailyPlan);
-                }
+                var types3 = new[] { typeof(SerializableDailyPlan) };
 
-                objectsToSave["DailyPlan"] = sw.ToString();
+                var ser3 = new DataContractSerializer(typeof(SerializableDailyPlan), types3);
+                using (var sw = new StringWriter())
+                {
+                    var settings = new XmlWriterSettings
+                    {
+                        OmitXmlDeclaration = true,
+                        Indent = true,
+                        NamespaceHandling = NamespaceHandling.OmitDuplicates
+                    };
+                    using (XmlWriter writer = XmlWriter.Create(sw, settings))
+                    {
+                        ser3.WriteObject(writer, DailyPlan);
+                    }
+
+                    objectsToSave["DailyPlan"] = sw.ToString();
+                }
+            }
+            catch (Exception ee)
+            {
+
             }
 
             await SavePersistantObjects(objectsToSave, BackupRestore.PersistantObjectsWindowsFileName);
