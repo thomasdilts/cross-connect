@@ -1016,22 +1016,22 @@ namespace CrossConnect
         {
             var objectsToSave = new Dictionary<string, object>();
             var windowCounter = 0;
-            for (int i = 0; i < OpenWindows.Count(); i++)
+            try
             {
-                try
+                for (int i = 0; i < OpenWindows.Count(); i++)
                 {
                     var types = new[]
-                                {
-                                    typeof(SerializableWindowState), typeof(BibleZtextReader.VersePos),
-                                    typeof(BibleZtextReader.ChapterPos), typeof(BibleZtextReader.BookPos),
-                                    typeof(BibleZtextReader), typeof(BibleNoteReader), typeof(BibleZtextReaderSerialData),
-                                    typeof(CommentZtextReader), typeof(TranslatorReader), typeof(BiblePlaceMarkReader),
-                                    typeof(SearchReader), typeof(DailyPlanReader),typeof(BibleRawTextReader),typeof(CommentRawComReader),
-                                    typeof(PersonalNotesReader), typeof(InternetLinkReader),
-                                    typeof(GreekHebrewDictReader), typeof(AudioPlayer.MediaInfo), typeof(RawGenTextReader), 
-                                    typeof(DictionaryRawDefReader),typeof(DictionaryRawIndexReader),typeof(DictionaryRaw4IndexReader),typeof(DictionaryZldDefReader),typeof(DictionaryZldIndexReader),
-                                    typeof(RawGenTextPlaceMarker), typeof(RawGenSearchReader)
-                                };
+                        {
+                            typeof(SerializableWindowState), typeof(BibleZtextReader.VersePos),
+                            typeof(BibleZtextReader.ChapterPos), typeof(BibleZtextReader.BookPos),
+                            typeof(BibleZtextReader), typeof(BibleNoteReader), typeof(BibleZtextReaderSerialData),
+                            typeof(CommentZtextReader), typeof(TranslatorReader), typeof(BiblePlaceMarkReader),
+                            typeof(SearchReader), typeof(DailyPlanReader),typeof(BibleRawTextReader),typeof(CommentRawComReader),
+                            typeof(PersonalNotesReader), typeof(InternetLinkReader),
+                            typeof(GreekHebrewDictReader), typeof(AudioPlayer.MediaInfo), typeof(RawGenTextReader),
+                            typeof(DictionaryRawDefReader),typeof(DictionaryRawIndexReader),typeof(DictionaryRaw4IndexReader),typeof(DictionaryZldDefReader),typeof(DictionaryZldIndexReader),
+                            typeof(RawGenTextPlaceMarker), typeof(RawGenSearchReader)
+                        };
                     var ser = new DataContractSerializer(typeof(SerializableWindowState), types);
                     using (var sw = new StringWriter())
                     {
@@ -1057,10 +1057,10 @@ namespace CrossConnect
                         windowCounter++;
                     }
                 }
-                catch (Exception e)
-                {
-
-                }
+            }
+            catch (Exception e)
+            {
+                // we will come here if a windows is deleted while things are being saved.
             }
 
             try
