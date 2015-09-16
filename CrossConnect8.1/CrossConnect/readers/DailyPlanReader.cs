@@ -166,7 +166,8 @@ namespace CrossConnect.readers
                 htmlPhoneAccentColor,
                 htmlWordsOfChristColor,
                 htmlFontSize,
-                fontFamily);
+                fontFamily,
+                this.Serial.Iso2DigitLangCode);
             var schedule = DailyPlans.ZAllPlans(App.DailyPlan.PlanNumber);
             const string ChapterEndHtml = "</body></html>";
             var sb = new StringBuilder(chapterStartHtml);

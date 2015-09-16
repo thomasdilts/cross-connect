@@ -166,6 +166,8 @@ namespace Sword.reader
 
         #region Static Fields
 
+        public static HashSet<string> RightToLeftLanguages = new HashSet<string> { "ar", "dv", "fa", "he", "ps", "sd", "ug", "ur", "yi" };
+
         public static Dictionary<string, string> FontPropertiesStartHtml = new Dictionary<string, string>
         {
             { "acrostic", "<span style=\"text-shadow:1px 1px 5px white;\">" },
@@ -649,7 +651,8 @@ namespace Sword.reader
             HtmlColorRgba htmlPhoneAccentColor,
             HtmlColorRgba htmlWordsOfChristColor,
             double htmlFontSize,
-            string fontFamily)
+            string fontFamily,
+            string iso2digitLangCode)
         {
             var head = new StringBuilder();
             head.Append(
@@ -658,11 +661,12 @@ namespace Sword.reader
             head.Append("<style>");
             head.Append(
                 string.Format(
-                    "body {{background:{0};color:{1};font-size:{2}pt;margin:{3};padding:0;{4} }}",
+                    "body {{background:{0};color:{1};font-size:{2}pt;margin:{3};padding:0;{4}{5} }}",
                     htmlBackgroundColor.GetHtmlRgba(),
                     htmlForegroundColor.GetHtmlRgba(),
                     (int)(htmlFontSize + 0.5),
                     displaySettings.MarginInsideTextWindow,
+                    RightToLeftLanguages.Contains(iso2digitLangCode) ? "direction:rtl;" : "",
                     fontFamily)); // old fashioned way to round an integer
 
             head.Append(
@@ -1584,7 +1588,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                     htmlPhoneAccentColor,
                     htmlWordsOfChristColor,
                     htmlFontSize,
-                    fontFamily);
+                    fontFamily,
+                    this.Serial.Iso2DigitLangCode);
                 chapterEndHtml = "</body></html>";
             }
 
@@ -1827,7 +1832,8 @@ function SetFontColorForElement(elemntId, colorRgba){
                 htmlPhoneAccentColor,
                 htmlWordsOfChristColor,
                 htmlFontSize,
-                fontFamily);
+                fontFamily,
+                this.Serial.Iso2DigitLangCode);
             const string chapterEndHtml = "</body></html>";
             var htmlListText = new StringBuilder(chapterStartHtml);
             int lastBookNum = -1;

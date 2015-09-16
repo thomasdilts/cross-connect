@@ -584,7 +584,8 @@ namespace CrossConnect
                             BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
                             BrowserTitledWindow.GetBrowserColor("PhoneWordsOfChristColor"),
                             e.NewValue,
-                            Theme.FontFamilies[App.Themes.FontFamily]) + "<a class=\"normalcolor\" href=\"#\">"
+                            Theme.FontFamilies[App.Themes.FontFamily],
+                            "en") + "<a class=\"normalcolor\" href=\"#\">"
                         + Translations.Translate("Text size") + "</a>" + "</body></html>");
                 }
                 catch (Exception ee)
@@ -607,7 +608,8 @@ namespace CrossConnect
                         BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
                         BrowserTitledWindow.GetBrowserColor("PhoneWordsOfChristColor"),
                         this.sliderTextSize.SliderValue,
-                        Theme.FontFamilies[((TextBlock)WindowFontComboBox.SelectedItem).Text]) + "<a class=\"normalcolor\" href=\"#\">"
+                        Theme.FontFamilies[((TextBlock)WindowFontComboBox.SelectedItem).Text],
+                        "en") + "<a class=\"normalcolor\" href=\"#\">"
                     + Translations.Translate("Text size") + "</a>" + "</body></html>");
             }
             catch (Exception ee)
