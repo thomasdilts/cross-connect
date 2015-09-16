@@ -141,7 +141,8 @@ namespace CrossConnect.readers
                 htmlPhoneAccentColor,
                 htmlWordsOfChristColor,
                 htmlFontSize,
-                fontFamily) + this.DisplayText + "</body></html>";
+                fontFamily,
+                this.Serial.Iso2DigitLangCode) + this.DisplayText + "</body></html>";
         }
 
         public override void GetInfo(

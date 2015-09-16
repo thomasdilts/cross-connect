@@ -81,7 +81,8 @@ namespace CrossConnect
                     BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
                     BrowserTitledWindow.GetBrowserColor("PhoneWordsOfChristColor"),
                     20,
-                    string.Empty) + sb + "</body></html>");
+                    string.Empty,
+                    "en") + sb + "</body></html>");
         }
 
         /// <summary>

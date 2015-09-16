@@ -820,7 +820,8 @@ namespace CrossConnect
                             BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
                             BrowserTitledWindow.GetBrowserColor("PhoneWordsOfChristColor"),
                             e.NewValue,
-                            Theme.FontFamilies[App.Themes.FontFamily]) + "<a class=\"normalcolor\" href=\"#\">"
+                            Theme.FontFamilies[App.Themes.FontFamily],
+                            Translations.IsoLanguageCode.Substring(0,2)) + "<a class=\"normalcolor\" href=\"#\">"
                         + Translations.Translate("Text size") + "</a>" + "</body></html>");
                 }
                 catch (Exception ee)
@@ -1010,7 +1011,8 @@ namespace CrossConnect
                     BrowserTitledWindow.GetBrowserColor("PhoneAccentColor"),
                     BrowserTitledWindow.GetBrowserColor("PhoneWordsOfChristColor"),
                     20,
-                    string.Empty) + body + "</body></html>");
+                    string.Empty,
+                    Translations.IsoLanguageCode.Substring(0, 2)) + body + "</body></html>");
         }
 
         private void WebBrowser2ScriptNotify(object sender, Microsoft.Phone.Controls.NotifyEventArgs e)

@@ -173,7 +173,8 @@ namespace Sword.reader
                 htmlPhoneAccentColor,
                 htmlWordsOfChristColor,
                 htmlFontSize,
-                fontFamily) + displayText + "</body></html>";
+                fontFamily,
+                "en") + displayText + "</body></html>";
         }
 
         public override void GetInfo(
