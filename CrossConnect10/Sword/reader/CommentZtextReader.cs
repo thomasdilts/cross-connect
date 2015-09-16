@@ -178,7 +178,8 @@ namespace Sword.reader
                     htmlWordsOfChristColor,
                     htmlFontSize,
                     fontFamily,
-                    isSmallScreen);
+                    isSmallScreen,
+                    this.Serial.Iso2DigitLangCode);
                 chapterEndHtml = "</body></html>";
             }
 
