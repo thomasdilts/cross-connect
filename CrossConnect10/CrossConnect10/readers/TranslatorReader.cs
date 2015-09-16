@@ -143,7 +143,8 @@ namespace CrossConnect.readers
                 htmlWordsOfChristColor,
                 htmlFontSize,
                 fontFamily,
-                isSmallScreen) + this.DisplayText + "</body></html>";
+                isSmallScreen,
+                this.Serial.Iso2DigitLangCode) + this.DisplayText + "</body></html>";
         }
 
         public override void GetInfo(

@@ -5,13 +5,13 @@
 <book key="Lev" short="ויקרא" full="ויקרא" />
 <book key="Num" short="במדבר" full="במדבר" />
 <book key="Deut" short="דברים" full="דברים" />
-<book key="Josh" short="יהושוע" full="יהושוע" />
+<book key="Josh" short="יהושע" full="יהושע" />
 <book key="Judg" short="שופטים" full="שופטים" />
 <book key="Ruth" short="רות" full="רות" />
 <book key="1Sam" short="שמואל א'" full="שמואל א'" />
 <book key="2Sam" short="שמואל ב'" full="שמואל ב'" />
-<book key="1Kgs" short="מלאכים א'" full="מלאכים א'" />
-<book key="2Kgs" short="מלאכים ב'" full="מלאכים ב'" />
+<book key="1Kgs" short="מלכים א'" full="מלכים א'" />
+<book key="2Kgs" short="מלכים ב'" full="מלכים ב'" />
 <book key="1Chr" short="דברי הימים א'" full="דברי הימים א'" />
 <book key="2Chr" short="דברי הימים ב'" full="דברי הימים ב'" />
 <book key="Ezra" short="עזרא" full="עזרא" />
@@ -20,13 +20,13 @@
 <book key="Job" short="איוב" full="איוב" />
 <book key="Ps" short="תהילים" full="תהילים" />
 <book key="Prov" short="משלי" full="משלי" />
-<book key="Eccl" short="קוהלת" full="קוהלת" />
+<book key="Eccl" short="קהלת" full="קהלת" />
 <book key="Song" short="שיר השירים" full="שיר השירים" />
-<book key="Isa" short="ישיעיהו" full="ישיעיהו" />
+<book key="Isa" short="ישעיהו" full="ישעיהו" />
 <book key="Jer" short="ירמיהו" full="ירמיהו" />
 <book key="Lam" short="איכה" full="איכה" />
 <book key="Ezek" short="יחזקאל" full="יחזקאל" />
-<book key="Dan" short="דנייאל" full="דנייאל" />
+<book key="Dan" short="דניאל" full="דניאל" />
 <book key="Hos" short="הושע" full="הושע" />
 <book key="Joel" short="יואל" full="יואל" />
 <book key="Amos" short="עמוס" full="עמוס" />
@@ -36,34 +36,34 @@
 <book key="Nah" short="נחום" full="נחום" />
 <book key="Hab" short="חבקוק" full="חבקוק" />
 <book key="Zeph" short="צפניה" full="צפניה" />
-<book key="Hag" short="חגיי" full="חגיי" />
+<book key="Hag" short="חגי" full="חגי" />
 <book key="Zech" short="זכריה" full="זכריה" />
 <book key="Mal" short="מלאכי" full="מלאכי" />
-<book key="Matt" short="הבשורה על־פי מתי" full="הבשורה על־פי מתי" />
-<book key="Mark" short="הבשורה על־פי מרקום" full="הבשורה על־פי מרקום" />
-<book key="Luke" short="הבשורה על־פי לוקם" full="הבשורה על־פי לוקם" />
-<book key="John" short="הבשורה על־פי יוחנן" full="הבשורה על־פי יוחנן" />
+<book key="Matt" short="מתי" full="הבשורה על־פי מתי" />
+<book key="Mark" short="מרקוס" full="הבשורה על־פי מרקוס" />
+<book key="Luke" short="לוקס" full="הבשורה על־פי לוקס" />
+<book key="John" short="יוחנן" full="הבשורה על־פי יוחנן" />
 <book key="Acts" short="מעשי השליחים" full="מעשי השליחים" />
-<book key="Rom" short="אגרת פולום השליח אל־הרומיים" full="אגרת פולום השליח אל־הרומיים" />
-<book key="1Cor" short="אגרת פולום הראשונה אל־הקורינתים" full="אגרת פולום הראשונה אל־הקורינתים" />
-<book key="2Cor" short="אגרת פולום השנייה אל־הקורינתים" full="אגרת פולום השנייה אל־הקורינתים" />
-<book key="Gal" short="אגרת פולום השליח אל־הגלטים" full="אגרת פולום השליח אל־הגלטים" />
-<book key="Eph" short="אגרת פולום השליח אל־האפסיים" full="אגרת פולום השליח אל־האפסיים" />
-<book key="Phil" short="אגרת פולום השליח אל־הפיליפיים" full="אגרת פולום השליח אל־הפיליפיים" />
-<book key="Col" short="אגר פולומ השליח אל־הקולומים" full="אגר פולומ השליח אל־הקולומים" />
-<book key="1Thess" short="אגרת פולום הראשונה אל־התסלוניקים" full="אגרת פולום הראשונה אל־התסלוניקים" />
-<book key="2Thess" short="אגרת פולום השנייה אל־התסלוניקים" full="אגרת פולום השנייה אל־התסלוניקים" />
-<book key="1Tim" short="אגרת פולום הראשונה אל־טימותיום" full="אגרת פולום הראשונה אל־טימותיום" />
-<book key="2Tim" short="אגרת פולום השנייה אל־טימותיום" full="אגרת פולום השנייה אל־טימותיום" />
-<book key="Titus" short="אגרת פולום אל־טיטום" full="אגרת פולום אל־טיטום" />
-<book key="Phlm" short="אגרת פולום אל־פילימון" full="אגרת פולום אל־פילימון" />
-<book key="Heb" short="האגרת אל־העברים" full="האגרת אל־העברים" />
+<book key="Rom" short="אל־הרומיים" full="אגרת פולוס השליח אל־הרומיים" />
+<book key="1Cor" short="אל־הקורינתים I" full="אגרת פולוס הראשונה אל־הקורינתים" />
+<book key="2Cor" short="אל־הקורינתים II" full="אגרת פולוס השניה אל־הקורינתים" />
+<book key="Gal" short="אל־הגלטים" full="אגרת פולוס השליח אל־הגלטים" />
+<book key="Eph" short="אל־האפסיים" full="אגרת פולוס השליח אל־האפסיים" />
+<book key="Phil" short="אל־הפיליפיים" full="אגרת פולוס השליח אל־הפיליפיים" />
+<book key="Col" short="אל־הקולוסים" full="אגרת פולוס השליח אל־הקולוסים" />
+<book key="1Thess" short="אל־התסלוניקים I" full="אגרת פולוס הראשונה אל־התסלוניקים" />
+<book key="2Thess" short="אל־התסלוניקים II" full="אגרת פולוס השניה אל־התסלוניקים" />
+<book key="1Tim" short="אל־טימותיוס" full="אגרת פולוס הראשונה אל־טימותיוס" />
+<book key="2Tim" short="אל־טימותיוס" full="אגרת פולוס השניה אל־טימותיוס" />
+<book key="Titus" short="אל־טיטוס" full="אגרת פולוס אל־טיטוס" />
+<book key="Phlm" short="אל־פילימון" full="אגרת פולוס אל־פילימון" />
+<book key="Heb" short="אל־העברים" full="האגרת אל־העברים" />
 <book key="Jas" short="אגרת יעקב" full="אגרת יעקב" />
-<book key="1Pet" short="אגרת הרשונה של פטרום השליח" full="אגרת הרשונה של פטרום השליח" />
-<book key="2Pet" short="אגרת השנייה של פטרום השליח" full="אגרת השנייה של פטרום השליח" />
-<book key="1John" short="אגרת הרשונה של יוחנן השליח" full="אגרת הרשונה של יוחנן השליח" />
-<book key="2John" short="אגרת השנייה של יוחנן השליח" full="אגרת השנייה של יוחנן השליח" />
-<book key="3John" short="אגרת השלישית יוחנן השליח" full="אגרת השלישית יוחנן השליח" />
+<book key="1Pet" short="אגרת פטרוס I" full="האגרת הראשונה של פטרוס השליח" />
+<book key="2Pet" short="אגרת פטרוס II" full="האגרת השניה של פטרוס השליח" />
+<book key="1John" short="אגרת יוחנן I" full="האגרת הראשונה של יוחנן השליח" />
+<book key="2John" short="אגרת יוחנן II" full="האגרת השניה של יוחנן השליח" />
+<book key="3John" short="אגרת יוחנן III" full="האגרת השלישית של יוחנן השליח" />
 <book key="Jude" short="אגרת יהודה" full="אגרת יהודה" />
-<book key="Rev" short="התגלות יוחנן" full="התגלות יוחנן" />
+<book key="Rev" short="התגלות" full="חזון יוחנן" />
 </biblenames>

@@ -175,7 +175,8 @@ namespace Sword.reader
                 htmlWordsOfChristColor,
                 htmlFontSize,
                 fontFamily,
-                isSmallScreen) + displayText + "</body></html>";
+                isSmallScreen,
+                this.Serial.Iso2DigitLangCode) + displayText + "</body></html>";
         }
 
         public override void GetInfo(
