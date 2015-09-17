@@ -45,7 +45,7 @@ namespace AudioPlaybackAgent1
     using Sword.reader;
     using Sword.versification;
 
-    public class AudioPlayer : AudioPlayerAgent
+    public class AudioPlayer //: AudioPlayerAgent
     {
         #region Fields
 
@@ -224,16 +224,6 @@ namespace AudioPlaybackAgent1
                 EnabledPlayerControls.All);
         }
 
-        /// <summary>
-        /// Called when the agent request is getting cancelled
-        /// </summary>
-        /// <remarks>
-        /// Once the request is Cancelled, the agent gets 5 seconds to finish its work,
-        /// by calling NotifyComplete()/Abort().
-        /// </remarks>
-        protected override void OnCancel()
-        {
-        }
 
         /// <summary>
         /// Called whenever there is an error with playback, such as an AudioTrack not downloading correctly
@@ -246,16 +236,16 @@ namespace AudioPlaybackAgent1
         /// This method is not guaranteed to be called in all cases. For example, if the background agent 
         /// itself has an unhandled exception, it won't get called back to handle its own errors.
         /// </remarks>
-        protected override void OnError(BackgroundAudioPlayer player, AudioTrack track, Exception error, bool isFatal)
+        protected void OnError(BackgroundAudioPlayer player, AudioTrack track, Exception error, bool isFatal)
         {
-            if (isFatal)
-            {
-                this.Abort();
-            }
-            else
-            {
-                this.NotifyComplete();
-            }
+            //if (isFatal)
+            //{
+            //    this.Abort();
+            //}
+            //else
+            //{
+            //    this.NotifyComplete();
+            //}
         }
 
         /// <summary>
@@ -274,7 +264,7 @@ namespace AudioPlaybackAgent1
         /// 
         /// Call NotifyComplete() only once, after the agent request has been completed, including async callbacks.
         /// </remarks>
-        protected override void OnPlayStateChanged(BackgroundAudioPlayer player, AudioTrack track, PlayState playState)
+        protected void OnPlayStateChanged(BackgroundAudioPlayer player, AudioTrack track, PlayState playState)
         {
             switch (playState)
             {
@@ -328,7 +318,7 @@ namespace AudioPlaybackAgent1
                     break;
             }
 
-            this.NotifyComplete();
+            //this.NotifyComplete();
         }
 
         /// <summary>
@@ -346,7 +336,7 @@ namespace AudioPlaybackAgent1
         /// 
         /// Call NotifyComplete() only once, after the agent request has been completed, including async callbacks.
         /// </remarks>
-        protected override void OnUserAction(BackgroundAudioPlayer player, AudioTrack track, UserAction action, object param)
+        protected void OnUserAction(BackgroundAudioPlayer player, AudioTrack track, UserAction action, object param)
         {
             switch (action)
             {
@@ -381,10 +371,10 @@ namespace AudioPlaybackAgent1
                     break;
             }
 
-            this.NotifyComplete();
+            //this.NotifyComplete();
         }
 
-        private static CanonBookDef AddChapter(MediaInfo info, int valToAdd)
+        public static CanonBookDef AddChapter(MediaInfo info, int valToAdd)
         {
             var canonKjv = CanonManager.GetCanon("KJV");
             var book = canonKjv.BookByShortName[info.Book];

@@ -56,6 +56,7 @@
                             PressedImage="/Images/dark/appbar.cancel.rest.pressed.png" x:Name="butNext"
                             Template="{StaticResource ImageButtonControlTemplate}" />
                                 <Image Width="55" Name="ImageIcon" Tap="ImageIconTap" />
+                            <MediaElement Visibility="Collapsed"  Name="mediaplayer" AutoPlay="True" CurrentStateChanged="mediaplayer_CurrentStateChanged" />
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>

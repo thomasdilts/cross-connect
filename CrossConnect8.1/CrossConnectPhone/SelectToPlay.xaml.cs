@@ -211,7 +211,7 @@ namespace CrossConnect
             {
                 NavigationService.GoBack();
             }
-
+            info.Language = Translations.IsoLanguageCode;
             App.AddMediaWindow(info);
             _isInSelectionChanged = false;
         }

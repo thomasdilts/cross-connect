@@ -133,6 +133,7 @@ namespace CrossConnect
                 && PhoneApplicationService.Current.State.TryGetValue("ChapterToHearLanguage", out language))
             {
                 var info = new AudioPlayer.MediaInfo { Book = (string)BookToHear, Chapter = (int)chapterToHear, Verse = (int)verseToHear, VoiceName = ((VoiceInformation)((TextBlock)e.AddedItems[0]).Tag).DisplayName };
+                info.Language = Translations.IsoLanguageCode;
                 App.AddMediaWindow(info);
             }
             if (NavigationService.CanGoBack)

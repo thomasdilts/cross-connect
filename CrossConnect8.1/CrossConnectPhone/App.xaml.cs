@@ -80,7 +80,7 @@ namespace CrossConnect
     {
         #region Fields
 
-        public const string Version = "2.0.8.7";
+        public const string Version = "2.0.8.8";
         public const string WebDirIsolated = "webtemporary";
         // the newer file names divided into sections.
 
@@ -375,6 +375,7 @@ namespace CrossConnect
             {
                 if (OpenWindows[i].State.WindowType == WindowType.WindowMediaPlayer)
                 {
+                    state.CurIndex = i;
                     // change the windows view to this one
                     ((MediaPlayerWindow)OpenWindows[i]).SetMediaInfo(state, info);
                     MainWindow.OverRideCurrentlyShowingScreen(OpenWindows[i].State.Window);
@@ -691,7 +692,7 @@ namespace CrossConnect
                                         out title);
                                     var canon = CanonManager.GetCanon("KJV");
                                     var book = canon.BookByShortName[bookShortName];
-                                    var info = new AudioPlayer.MediaInfo() { Book = bookShortName, Chapter = book.VersesInChapterStartIndex + relChaptNum, Verse = verseNum, VoiceName = nextWindow.State.VoiceName, IsNtOnly = nextWindow.State.IsNtOnly, Pattern = nextWindow.State.Pattern, Src = nextWindow.State.Src, Code = nextWindow.State.code };
+                                    var info = new AudioPlayer.MediaInfo() { Book = bookShortName, Chapter = relChaptNum, Verse = verseNum, VoiceName = nextWindow.State.VoiceName, IsNtOnly = nextWindow.State.IsNtOnly, Pattern = nextWindow.State.Pattern, Src = nextWindow.State.Src, Code = nextWindow.State.code };
                                     ((MediaPlayerWindow)nextWindow).SetMediaInfo(nextWindow.State, info);
                                 }
                                 else
