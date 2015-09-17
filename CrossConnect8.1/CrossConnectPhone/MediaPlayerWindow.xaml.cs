@@ -62,7 +62,7 @@ namespace CrossConnect
         public MediaPlayerWindow()
         {
             InitializeComponent();
-            BackgroundAudioPlayer.Instance.PlayStateChanged += InstancePlayStateChanged;
+           // mediaplayer.PlayStateChanged += InstancePlayStateChanged;
         }
 
         #endregion Constructors
@@ -159,14 +159,19 @@ namespace CrossConnect
         }
         public void RestartToThisMedia(AudioPlayer.MediaInfo Info)
         {
-
+            _IsCancel = false;
             if (Info == null || (string.IsNullOrEmpty(Info.VoiceName) && string.IsNullOrEmpty(Info.Src)))
             {
                 return;
             }
             if (string.IsNullOrEmpty(Info.VoiceName))
             {
-                AudioPlayer.StartNewTrack(Info);
+                mediaplayer.Source= new Uri(Info.Src);
+                if(string.IsNullOrEmpty(Info.Language))
+                {
+                    Info.Language = Translations.IsoLanguageCode;
+                }
+                _currentInfo = Info;
                 title.Text = AudioPlayer.GetTitle(Info);
                 SetButtonVisibility(false);
                 return;
@@ -277,13 +282,30 @@ namespace CrossConnect
 
         public void SetMediaInfo(SerializableWindowState theState, AudioPlayer.MediaInfo info)
         {
+            if (_state != null)
+            {
+                if (string.IsNullOrEmpty(_state.VoiceName))
+                {
+                    //mediaplayer.Close();
+                    _currentInfo = null;
+                    mediaplayer.Stop();
+                }
+                else if (_synth != null)
+                {
+                    _IsCancel = true;
+                    _synth.CancelAll();
+                }
+            }
+
+
             this._state = theState;
             theState.VoiceName = info.VoiceName;
             theState.Src = info.Src;
             theState.Pattern = info.Pattern;
             theState.IsNtOnly = info.IsNtOnly;
             theState.code = info.Code;
-            this.RestartToThisMedia(info);
+            Deployment.Current.Dispatcher.BeginInvoke(() => this.RestartToThisMedia(info));
+            
         }
 
         public void UpdateBrowser(bool isOrientationChangeOnly)
@@ -378,8 +400,9 @@ namespace CrossConnect
             SetButtonVisibility(false);
             if (string.IsNullOrEmpty(_state.VoiceName))
             {
-                BackgroundAudioPlayer.Instance.Close();
-
+                //mediaplayer.Close();
+                _currentInfo = null;
+                mediaplayer.Stop();
             }
             else if (_synth!=null)
             {
@@ -410,7 +433,8 @@ namespace CrossConnect
             SetButtonVisibility(false);
             if (string.IsNullOrEmpty(_state.VoiceName))
             {
-                BackgroundAudioPlayer.Instance.SkipNext();
+                GetRelativeTrack(1);
+                mediaplayer.Source = new Uri(_currentInfo.Src);
             }
             else 
             {
@@ -433,18 +457,20 @@ namespace CrossConnect
             }
         }
 
+        private bool pauseHit = false;
         private void ButPlayPauseClick(object sender, RoutedEventArgs e)
         {
 
             if (string.IsNullOrEmpty(_state.VoiceName))
             {
-                if (PlayState.Playing == BackgroundAudioPlayer.Instance.PlayerState)
+                if (MediaElementState.Playing == mediaplayer.CurrentState)
                 {
-                    BackgroundAudioPlayer.Instance.Pause();
+                    pauseHit = true;
+                    mediaplayer.Pause();
                 }
                 else
                 {
-                    BackgroundAudioPlayer.Instance.Play();
+                    mediaplayer.Play();
                 }
             }
             else
@@ -472,7 +498,8 @@ namespace CrossConnect
             SetButtonVisibility(false);
             if (string.IsNullOrEmpty(_state.VoiceName))
             {
-                BackgroundAudioPlayer.Instance.SkipPrevious();
+                GetRelativeTrack(-1);
+                mediaplayer.Source = new Uri(_currentInfo.Src);
             }
             else
             {
@@ -536,37 +563,7 @@ namespace CrossConnect
                 }
             }
         }
-
-        /// <summary>
-        /// Updates the UI with the current song data.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void InstancePlayStateChanged(object sender, EventArgs e)
-        {
-            switch (BackgroundAudioPlayer.Instance.PlayerState)
-            {
-                case PlayState.BufferingStarted:
-                    break;
-                case PlayState.Playing:
-                    // try to load the icon.
-                    string msg;
-                    var info = AudioPlayer.ReadMediaInfoFromXml(BackgroundAudioPlayer.Instance.Track.Tag, out msg);
-                    ShowTrack(info);
-                    title.Text = BackgroundAudioPlayer.Instance.Track.Title;
-                    break;
-
-                case PlayState.Paused:
-                case PlayState.Stopped:
-                    if (_updatePositionTimer != null)
-                    {
-                        _updatePositionTimer.Stop();
-                    }
-
-                    SetPlayPauseButton(false);     // Change to play button
-                    break;
-            }
-        }
+        
 
         private void SetStateFromMediaInfo(AudioPlayer.MediaInfo info)
         {
@@ -634,31 +631,29 @@ namespace CrossConnect
             if (string.IsNullOrEmpty(_state.VoiceName))
             {
                 SetButtonVisibility(false); 
-                switch (BackgroundAudioPlayer.Instance.PlayerState)
+                switch (mediaplayer.CurrentState)
                 {
-                    case PlayState.Playing:
-                    case PlayState.Paused:
-                        if (BackgroundAudioPlayer.Instance.Track != null)
+                    case MediaElementState.Playing:
+                    case MediaElementState.Paused:
+                        if (_currentInfo != null)
                         {
-                            string msg;
-                            AudioPlayer.MediaInfo info = AudioPlayer.ReadMediaInfoFromXml(BackgroundAudioPlayer.Instance.Track.Tag, out msg);
-                            if (!string.IsNullOrEmpty(info.Src))
+                            if (!string.IsNullOrEmpty(_currentInfo.Src))
                             {
-                                this.ShowTrack(info);
+                                this.ShowTrack(_currentInfo);
                             }
-                            else
-                            {
-                                // do a restart
-                                AudioPlayer.StartNewTrack(GetMediaInfo());
-                                title.Text = AudioPlayer.GetTitle(GetMediaInfo());
-                            }
+                            //else
+                            //{
+                            //    // do a restart
+                            //    mediaplayer.Source = new Uri(_currentInfo.Src);
+                            //    title.Text = AudioPlayer.GetTitle(_currentInfo);
+                            //}
                         }
 
                         break;
                     default:
                         // lets start it again.
-                        AudioPlayer.StartNewTrack(GetMediaInfo());
-                        title.Text = AudioPlayer.GetTitle(GetMediaInfo());
+                        //mediaplayer.Source = new Uri(_currentInfo.Src);
+                        //title.Text = AudioPlayer.GetTitle(_currentInfo);
                         break;
                 }
             }
@@ -676,10 +671,10 @@ namespace CrossConnect
             butPrevious.Visibility = isButtonsVisible ? Visibility.Visible : Visibility.Collapsed;
             stackContent.Visibility = isButtonsVisible ? Visibility.Visible : Visibility.Collapsed;
             WaitingForDownload.Visibility = !isButtonsVisible ? Visibility.Visible : Visibility.Collapsed;
-            if (isButtonsVisible && null != BackgroundAudioPlayer.Instance.Track)
+            if (isButtonsVisible && null != _currentInfo)
             {
-                txtDuration.Text = BackgroundAudioPlayer.Instance.Track.Duration.ToString("c").Substring(3, 5);
-                title.Text = BackgroundAudioPlayer.Instance.Track.Title;
+                txtDuration.Text = mediaplayer.NaturalDuration.TimeSpan.ToString("c").Substring(3, 5);
+                title.Text = AudioPlayer.GetTitle(_currentInfo);;
             }
         }
 
@@ -731,7 +726,7 @@ namespace CrossConnect
         private void ShowTrack(AudioPlayer.MediaInfo info)
         {
             SetStateFromMediaInfo(info);
-            if (BackgroundAudioPlayer.Instance.PlayerState == PlayState.Playing)
+            if (mediaplayer.CurrentState == MediaElementState.Playing)
             {
                 // start timer
                 _updatePositionTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
@@ -760,7 +755,7 @@ namespace CrossConnect
                 }
             }
 
-            SetPlayPauseButton(BackgroundAudioPlayer.Instance.PlayerState == PlayState.Playing);
+            SetPlayPauseButton(mediaplayer.CurrentState == MediaElementState.Playing);
             butPrevious.IsEnabled = true;
             butNext.IsEnabled = true;
         }
@@ -768,17 +763,17 @@ namespace CrossConnect
         private void UpdatePositionTimerTick(object sender, EventArgs e)
         {
             // we must delay updating of this webbrowser...
-            if (BackgroundAudioPlayer.Instance.Track != null)
+            if (_currentInfo != null)
             {
                 try
                 {
-                    ProgressDownload.Value = BackgroundAudioPlayer.Instance.BufferingProgress * 100.0;
-                    if (BackgroundAudioPlayer.Instance.Track.Duration.Seconds != 0)
+                    ProgressDownload.Value = mediaplayer.BufferingProgress * 100.0;
+                    if (mediaplayer.NaturalDuration.TimeSpan.Seconds != 0)
                     {
-                        ProgressPosition.Value = (100.0 * BackgroundAudioPlayer.Instance.Position.TotalSeconds)
-                                                  / BackgroundAudioPlayer.Instance.Track.Duration.TotalSeconds;
-                        txtPosition.Text = BackgroundAudioPlayer.Instance.Position.ToString("c").Substring(3, 5);
-                        txtDuration.Text = BackgroundAudioPlayer.Instance.Track.Duration.ToString("c").Substring(3, 5);
+                        ProgressPosition.Value = (100.0 * mediaplayer.Position.TotalSeconds)
+                                                  / mediaplayer.NaturalDuration.TimeSpan.TotalSeconds;
+                        txtPosition.Text = mediaplayer.Position.ToString("c").Substring(3, 5);
+                        txtDuration.Text = mediaplayer.NaturalDuration.TimeSpan.ToString("c").Substring(3, 5);
                     }
                     else
                     {
@@ -794,5 +789,80 @@ namespace CrossConnect
         }
 
         #endregion Methods
+
+        private void mediaplayer_CurrentStateChanged(object sender, RoutedEventArgs e)
+        {
+            switch (mediaplayer.CurrentState)
+            {
+                case MediaElementState.Buffering:
+                    break;
+                case MediaElementState.Playing:
+                    // try to load the icon.
+                    if (_currentInfo != null)
+                    {
+                        ShowTrack(_currentInfo);
+                        title.Text = AudioPlayer.GetTitle(_currentInfo);
+                    }
+                    break;
+
+                case MediaElementState.Paused:
+                case MediaElementState.Stopped:
+                    if (_updatePositionTimer != null)
+                    {
+                        _updatePositionTimer.Stop();
+                    }
+
+                    SetPlayPauseButton(false);     // Change to play button
+                    if (string.IsNullOrEmpty(_state.VoiceName) && _currentInfo!=null && !pauseHit)
+                    {
+                        ButNextClick(null,null);
+                    }
+                    pauseHit = false;
+                    break;
+            }
+        }
+
+        private static AudioPlayer.MediaInfo _currentInfo;
+        private void GetRelativeTrack(int relativePostion)
+        {
+            
+            if (_currentInfo == null)
+            {
+                return;
+            }
+
+            if (_currentInfo != null)
+            {
+                // update the _currentInfo
+                var book = AudioPlayer.AddChapter(_currentInfo, relativePostion);
+                //string bookName;
+                //string bookFullName;
+                //int relChapterNum;
+                //string source;
+                //GetBookAndChapterFromAbsoluteChapter(
+                //    _currentInfo.Chapter, _currentInfo.Pattern, _currentInfo.Code, out bookName, out bookFullName, out relChapterNum, out source);
+                //_currentInfo.Src = source;
+
+                if (!string.IsNullOrEmpty(_currentInfo.Pattern) && !string.IsNullOrEmpty(_currentInfo.Code))
+                {
+                    // http://www.cross-connect.se/bibles/talking/{key}/Bible_{key}_{booknum2d}_{chapternum3d}.mp3
+                    _currentInfo.Src =
+                        _currentInfo.Pattern.Replace("{key}", _currentInfo.Code)
+                               .Replace("{booknum2d}", (book.BookNum + 1).ToString("D2"))
+                               .Replace("{chapternum3d}", (_currentInfo.Chapter + 1).ToString("D3"));
+                    _state.Source.MoveChapterVerse(_currentInfo.Book,_currentInfo.Chapter,_currentInfo.Verse, false, this.State.Source);
+                    _state.Src = _currentInfo.Src;
+                    App.SynchronizeAllWindows(_currentInfo.Book, _currentInfo.Chapter, _currentInfo.Verse, -1, this._state.Source);
+                }
+
+
+
+
+                Debug.WriteLine("starting new track = " + _currentInfo.Src);
+
+            }
+
+        }
+
     }
 }
