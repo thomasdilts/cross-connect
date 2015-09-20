@@ -32,7 +32,7 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
-    <DefaultLanguage>en-US</DefaultLanguage>
+    <DefaultLanguage>en</DefaultLanguage>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -380,7 +380,7 @@
     <EmbeddedResource Include="Resources\AppResources.ro-RO.resx" />
     <EmbeddedResource Include="Resources\AppResources.ru-RU.resx" />
     <EmbeddedResource Include="Resources\AppResources.sk-SK.resx" />
-    <EmbeddedResource Include="Resources\AppResources.sl-SL.resx" />
+    <EmbeddedResource Include="Resources\AppResources.sl-SI.resx" />
     <EmbeddedResource Include="Resources\AppResources.sq-AL.resx" />
     <EmbeddedResource Include="Resources\AppResources.sr-Latn-CS.resx" />
     <EmbeddedResource Include="Resources\AppResources.sv-SE.resx" />
