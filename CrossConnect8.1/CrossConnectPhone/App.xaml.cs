@@ -80,7 +80,7 @@ namespace CrossConnect
     {
         #region Fields
 
-        public const string Version = "2.0.8.8";
+        public const string Version = "2.0.9.0";
         public const string WebDirIsolated = "webtemporary";
         // the newer file names divided into sections.
 
