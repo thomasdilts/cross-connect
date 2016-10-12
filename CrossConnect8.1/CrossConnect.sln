@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossConnect", "CrossConnect\CrossConnect.csproj", "{01DE01EF-2853-4291-810E-EBEA44945D3F}"
 EndProject
@@ -52,8 +52,6 @@ Global
 		{01DE01EF-2853-4291-810E-EBEA44945D3F}.Debug|x86.Build.0 = Debug|x86
 		{01DE01EF-2853-4291-810E-EBEA44945D3F}.Debug|x86.Deploy.0 = Debug|x86
 		{01DE01EF-2853-4291-810E-EBEA44945D3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{01DE01EF-2853-4291-810E-EBEA44945D3F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{01DE01EF-2853-4291-810E-EBEA44945D3F}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{01DE01EF-2853-4291-810E-EBEA44945D3F}.Release|ARM.ActiveCfg = Release|ARM
 		{01DE01EF-2853-4291-810E-EBEA44945D3F}.Release|ARM.Build.0 = Release|ARM
 		{01DE01EF-2853-4291-810E-EBEA44945D3F}.Release|ARM.Deploy.0 = Release|ARM
@@ -67,8 +65,6 @@ Global
 		{01DE01EF-2853-4291-810E-EBEA44945D3F}.Release|x64.Build.0 = Release|x64
 		{01DE01EF-2853-4291-810E-EBEA44945D3F}.Release|x64.Deploy.0 = Release|x64
 		{01DE01EF-2853-4291-810E-EBEA44945D3F}.Release|x86.ActiveCfg = Release|x86
-		{01DE01EF-2853-4291-810E-EBEA44945D3F}.Release|x86.Build.0 = Release|x86
-		{01DE01EF-2853-4291-810E-EBEA44945D3F}.Release|x86.Deploy.0 = Release|x86
 		{8F9CE9B3-1EC9-4285-984F-6404F1085428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8F9CE9B3-1EC9-4285-984F-6404F1085428}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F9CE9B3-1EC9-4285-984F-6404F1085428}.Debug|ARM.ActiveCfg = Debug|ARM
