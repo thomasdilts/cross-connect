@@ -1,0 +1,10 @@
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\backgroundaudioshared\backgroundaudioshared.csproj;neutral
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\BackgroundAudioShared\BackgroundAudioShared.csproj;neutral
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\backgroundaudiotask\backgroundaudiotask.csproj;neutral
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\CrossConnect10\CrossConnect10.csproj;x86
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\Hoot.csproj;neutral
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\Hoot.csproj;neutral
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\Hoot.csproj;neutral
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Sword\Sword.csproj;neutral
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Sword\Sword.csproj;neutral
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\zlib\zlib.csproj;neutral

@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PriInfo>
+	<ResourceMap name="57294ThomasDilts.BibleReaderCrossConnect" version="1.0" primary="true">
+		<Qualifiers>
+			<Language>EN-US,EN</Language>
+			<Scale>100</Scale>
+		</Qualifiers>
+		<ResourceMapSubtree name="Files">
+			<NamedResource name="AddNote.xbf" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/AddNote.xbf">
+				<Candidate type="EmbeddedData">
+					<Base64Value>[Embedded Binary Data]</Base64Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="App.xbf" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/App.xbf">
+				<Candidate type="EmbeddedData">
+					<Base64Value>[Embedded Binary Data]</Base64Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="ApplicationInsights.config" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/ApplicationInsights.config">
+				<Candidate type="Path">
+					<Value>ApplicationInsights.config</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="BrowserTitledWindow.xbf" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/BrowserTitledWindow.xbf">
+				<Candidate type="EmbeddedData">
+					<Base64Value>[Embedded Binary Data]</Base64Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="ColorPicker.xbf" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/ColorPicker.xbf">
+				<Candidate type="EmbeddedData">
+					<Base64Value>[Embedded Binary Data]</Base64Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="CrossConnect.xr.xml" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/CrossConnect.xr.xml">
+				<Candidate type="Path">
+					<Value>CrossConnect.xr.xml</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EasySlider.xbf" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/EasySlider.xbf">
+				<Candidate type="EmbeddedData">
+					<Base64Value>[Embedded Binary Data]</Base64Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="MainPageSplit.xbf" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/MainPageSplit.xbf">
+				<Candidate type="EmbeddedData">
+					<Base64Value>[Embedded Binary Data]</Base64Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="MediaPlayerWindow.xbf" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/MediaPlayerWindow.xbf">
+				<Candidate type="EmbeddedData">
+					<Base64Value>[Embedded Binary Data]</Base64Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="SelectBibleVerse.xbf" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/SelectBibleVerse.xbf">
+				<Candidate type="EmbeddedData">
+					<Base64Value>[Embedded Binary Data]</Base64Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="SelectBibleVerses.xbf" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/SelectBibleVerses.xbf">
+				<Candidate type="EmbeddedData">
+					<Base64Value>[Embedded Binary Data]</Base64Value>
+				</Candidate>
+			</NamedResource>
+			<ResourceMapSubtree name="Assets">
+				<NamedResource name="Badge.png" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/Assets/Badge.png">
+					<Candidate type="Path">
+						<Value>Assets\Badge.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="DarkGray.png" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/Assets/DarkGray.png">
+					<Candidate type="Path">
+						<Value>Assets\DarkGray.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="LightGray.png" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/Assets/LightGray.png">
+					<Candidate type="Path">
+						<Value>Assets\LightGray.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="MediumGray.png" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/Assets/MediumGray.png">
+					<Candidate type="Path">
+						<Value>Assets\MediumGray.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="pushtitle3.png" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/Assets/pushtitle3.png">
+					<Candidate type="Path">
+						<Value>Assets\pushtitle3.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="splash.png" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/Assets/splash.png">
+					<Candidate qualifiers="Scale-100" isDefault="true" type="Path">
+						<Value>Assets\splash.scale-100.png</Value>
+					</Candidate>
+					<Candidate type="Path">
+						<Value>Assets\splash.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="splash150x150.png" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/Assets/splash150x150.png">
+					<Candidate qualifiers="Scale-100" isDefault="true" type="Path">
+						<Value>Assets\splash150x150.scale-100.png</Value>
+					</Candidate>
+					<Candidate type="Path">
+						<Value>Assets\splash150x150.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="splash24x24.png" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/Assets/splash24x24.png">
+					<Candidate type="Path">
+						<Value>Assets\splash24x24.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="splash30x30.png" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/Assets/splash30x30.png">
+					<Candidate type="Path">
+						<Value>Assets\splash30x30.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="splash310x150.png" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/Assets/splash310x150.png">
+					<Candidate qualifiers="Scale-100" isDefault="true" type="Path">
+						<Value>Assets\splash310x150.scale-100.png</Value>
+					</Candidate>
+					<Candidate type="Path">
+						<Value>Assets\splash310x150.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="splash44x44.png" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/Assets/splash44x44.png">
+					<Candidate qualifiers="Scale-100" isDefault="true" type="Path">
+						<Value>Assets\splash44x44.scale-100.png</Value>
+					</Candidate>
+					<Candidate type="Path">
+						<Value>Assets\splash44x44.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="splash50x50.png" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/Assets/splash50x50.png">
+					<Candidate qualifiers="Scale-100" isDefault="true" type="Path">
+						<Value>Assets\splash50x50.scale-100.png</Value>
+					</Candidate>
+					<Candidate type="Path">
+						<Value>Assets\splash50x50.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="square310x310.png" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/Assets/square310x310.png">
+					<Candidate type="Path">
+						<Value>Assets\square310x310.png</Value>
+					</Candidate>
+				</NamedResource>
+				<NamedResource name="square71x71.png" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/Assets/square71x71.png">
+					<Candidate type="Path">
+						<Value>Assets\square71x71.png</Value>
+					</Candidate>
+				</NamedResource>
+				<ResourceMapSubtree name="AppBar">
+					<NamedResource name="appbar.arrowto.rest.png" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/Assets/AppBar/appbar.arrowto.rest.png">
+						<Candidate type="Path">
+							<Value>Assets\AppBar\appbar.arrowto.rest.png</Value>
+						</Candidate>
+					</NamedResource>
+					<NamedResource name="appbar.linkto.rest.pressed.png" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/Assets/AppBar/appbar.linkto.rest.pressed.png">
+						<Candidate type="Path">
+							<Value>Assets\AppBar\appbar.linkto.rest.pressed.png</Value>
+						</Candidate>
+					</NamedResource>
+				</ResourceMapSubtree>
+			</ResourceMapSubtree>
+			<ResourceMapSubtree name="Common">
+				<NamedResource name="StandardStyles.xbf" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/Common/StandardStyles.xbf">
+					<Candidate type="EmbeddedData">
+						<Base64Value>[Embedded Binary Data]</Base64Value>
+					</Candidate>
+				</NamedResource>
+			</ResourceMapSubtree>
+			<ResourceMapSubtree name="WinMetadata">
+				<NamedResource name="Windows.winmd" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Files/WinMetadata/Windows.winmd">
+					<Candidate type="Path">
+						<Value>WinMetadata\Windows.winmd</Value>
+					</Candidate>
+				</NamedResource>
+			</ResourceMapSubtree>
+		</ResourceMapSubtree>
+		<ResourceMapSubtree name="Microsoft.Diagnostics.Tracing.Messages">
+			<NamedResource name="ArgumentOutOfRange_MaxArgExceeded" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/ArgumentOutOfRange_MaxArgExceeded">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>The total number of parameters must not exceed {0}. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="ArgumentOutOfRange_MaxStringsExceeded" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/ArgumentOutOfRange_MaxStringsExceeded">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>The number of String parameters must not exceed {0}. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="ArgumentOutOfRange_NeedNonNegNum" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/ArgumentOutOfRange_NeedNonNegNum">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>The parameter must be positive.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="ArgumentOutOfRange_NeedValidId" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/ArgumentOutOfRange_NeedValidId">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>The parameter must be in the range {0} through {1}. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_AbstractMustNotDeclareEventMethods" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_AbstractMustNotDeclareEventMethods">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Abstract event source must not declare event methods ({0} with ID {1}).</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_AbstractMustNotDeclareKTOC" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_AbstractMustNotDeclareKTOC">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Abstract event source must not declare {0} nested type.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_AddScalarOutOfRange" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_AddScalarOutOfRange">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Getting out of bounds during scalar addition. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_AttributeOnNonVoid" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_AttributeOnNonVoid">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>[Event] attribute placed on method {0} which does not return 'void'. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_BadHexDigit" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_BadHexDigit">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Bad Hexadecimal digit "{0}".</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_ChannelTypeDoesNotMatchEventChannelValue" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_ChannelTypeDoesNotMatchEventChannelValue">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Channel {0} does not match event channel value {1}.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_DataDescriptorsOutOfRange" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_DataDescriptorsOutOfRange">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Data descriptors are out of range.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_DuplicateStringKey" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_DuplicateStringKey">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Multiple definitions for string "{0}".</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_EnumKindMismatch" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_EnumKindMismatch">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>The type of {0} ({1}) is not expected in {2}. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_EtwAlreadyRegistered" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_EtwAlreadyRegistered">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>The provider has already been registered with the operating system. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_EvenHexDigits" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_EvenHexDigits">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Must have an even number of Hexadecimal digits.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_EventChannelOutOfRange" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_EventChannelOutOfRange">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Channel {0} has a value of [1} which is outside the legal range (16-254).</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_EventIdReused" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_EventIdReused">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Event {0} has ID {1} which is already in use by event {2}. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_EventMustHaveTaskIfNonDefaultOpcode" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_EventMustHaveTaskIfNonDefaultOpcode">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Event {0} (with ID {1}) has a non-default opcode but not a task.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_EventMustNotBeExplicitImplementation" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_EventMustNotBeExplicitImplementation">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Event method {0} (with ID {1}) is an explicit interface method implementation. Re-write method as implicit implementation.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_EventNameDoesNotEqualTaskPlusOpcode" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_EventNameDoesNotEqualTaskPlusOpcode">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Event {0} (with ID {1}) has a name that is not the concatenation of its task name and opcode.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_EventNameReused" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_EventNameReused">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Event name {0} used more than once.  If you wish to overload a method, the overloaded method should have a NonEvent attribute. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_EventParametersMismatch" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_EventParametersMismatch">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Event {0} was called with {1} argument(s) , but it is defined with {2} paramenter(s).</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_EventSourceGuidInUse" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_EventSourceGuidInUse">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>An instance of EventSource with Guid {0} already exists. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_EventTooBig" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_EventTooBig">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>The payload for a single event is too large. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_EventWithAdminChannelMustHaveMessage" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_EventWithAdminChannelMustHaveMessage">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Event {0} specifies an Admin channel {1}. It must specify a Message property.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_IllegalKeywordsValue" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_IllegalKeywordsValue">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Keyword {0} has a value of {1} which is outside the legal range (0-0x0000080000000000).</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_IllegalOpcodeValue" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_IllegalOpcodeValue">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Opcode {0} has a value of {1} which is outside the legal range (11-238).</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_IllegalTaskValue" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_IllegalTaskValue">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Task {0} has a value of {1} which is outside the legal range (1-65535).</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_IllegalValue" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_IllegalValue">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Illegal value "{0}" (prefix strings with @ to indicate a literal string).</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_IncorrentlyAuthoredTypeInfo" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_IncorrentlyAuthoredTypeInfo">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Incorrectly-authored TypeInfo - a type should be serialized as one field or as one group</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_InvalidCommand" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_InvalidCommand">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Invalid command value.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_InvalidEventFormat" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_InvalidEventFormat">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Can't specify both etw event format flags.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_KeywordCollision" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_KeywordCollision">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Keywords {0} and {1} are defined with the same value ({2}).</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_KeywordNeedPowerOfTwo" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_KeywordNeedPowerOfTwo">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Value {0} for keyword {1} needs to be a power of 2. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_ListenerCreatedInsideCallback" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_ListenerCreatedInsideCallback">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Creating an EventListener inside a EventListener callback. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_ListenerNotFound" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_ListenerNotFound">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Listener not found. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_ListenerWriteFailure" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_ListenerWriteFailure">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>An error occurred when writing to a listener. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_MaxChannelExceeded" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_MaxChannelExceeded">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Attempt to define more than the maximum limit of 8 channels for a provider.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_MismatchIdToWriteEvent" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_MismatchIdToWriteEvent">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Event {0} is given event ID {1} but {2} was passed to WriteEvent. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_NeedGuid" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_NeedGuid">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>The Guid of an EventSource must be non zero. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_NeedName" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_NeedName">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>The name of an EventSource must not be null. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_NeedPositiveId" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_NeedPositiveId">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Event IDs must be positive integers (error for {0}). </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_NoFreeBuffers" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_NoFreeBuffers">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>No Free Buffers available from the operating system (e.g. event rate too fast). </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_NonCompliantTypeError" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_NonCompliantTypeError">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>The API supports only anonymous types or types decorated with the EventDataAttribute. Non-compliant type: {0} dataType.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_NotSupportedArrayOfBinary" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_NotSupportedArrayOfBinary">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Arrays of Binary are not supported.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_NotSupportedArrayOfNil" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_NotSupportedArrayOfNil">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Arrays of Nil are not supported.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_NotSupportedArrayOfNullTerminatedString" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_NotSupportedArrayOfNullTerminatedString">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Arrays of null-terminated string are not supported.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_NotSupportedCustomSerializedData" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_NotSupportedCustomSerializedData">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Enumerables of custom-serialized data are not supported</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_NotSupportedEnumType" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_NotSupportedEnumType">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Enum type {0} underlying type {1} is not supported for serialization.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_NotSupportedNestedArraysEnums" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_NotSupportedNestedArraysEnums">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Nested arrays/enumerables are not supported.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_NullInput" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_NullInput">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Null passed as an event argument. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_OpcodeCollision" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_OpcodeCollision">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Opcodes {0} and {1} are defined with the same value ({2}).</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_PCLPlatformNotSupportedGuid" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_PCLPlatformNotSupportedGuid">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Platform not supported: PCL event source must specify Guid as a property on the EventSourceAttribute</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_PCLPlatformNotSupportedReflection" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_PCLPlatformNotSupportedReflection">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Platform not supported: PCL event source does not support reflection-only loads</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_PeriodIllegalInProviderName" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_PeriodIllegalInProviderName">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Period character ('.') is illegal in an ETW provider name ({0}).</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_PinArrayOutOfRange" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_PinArrayOutOfRange">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value> Pins are out of range.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_RecursiveTypeDefinition" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_RecursiveTypeDefinition">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Recursive type definition is not supported.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_ReservedKeywords" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_ReservedKeywords">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Keywords values larger than 0x0000100000000000 are reserved for system use (event {0})</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_ReservedOpcode" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_ReservedOpcode">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Opcode values less than 11 are reserved for system use. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_SessionIdError" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_SessionIdError">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Bit position in AllKeywords ({0}) must equal the command argument named "EtwSessionKeyword" ({1}). </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_TaskCollision" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_TaskCollision">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Tasks {0} and {1} are defined with the same value ({2}).</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_TaskOpcodePairReused" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_TaskOpcodePairReused">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Event {0} (with ID {1}) has the same task/opcode pair as event {2} (with ID {3}).</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_TooManyArgs" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_TooManyArgs">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Too many arguments. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_TooManyFields" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_TooManyFields">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Too many fields in structure.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_ToString" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_ToString">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>EventSource({0}, {1}) </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_TraitEven" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_TraitEven">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>There must be an even number of trait strings (they are key-value pairs).</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_TypeMustBeSealedOrAbstract" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_TypeMustBeSealedOrAbstract">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Event source types must be sealed or abstract.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_TypeMustDeriveFromEventSource" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_TypeMustDeriveFromEventSource">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Event source types must derive from EventSource.</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_UndefinedChannel" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_UndefinedChannel">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Use of undefined channel value {0} for event {1}. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_UndefinedKeyword" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_UndefinedKeyword">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Use of undefined keyword value {0} for event {1}. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_UndefinedOpcode" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_UndefinedOpcode">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Use of undefined opcode value {0} for event {1}. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_UnknownEtwTrait" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_UnknownEtwTrait">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Unknow ETW Trait "{0}".</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_UnsupportedEventTypeInManifest" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_UnsupportedEventTypeInManifest">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Unsupported type {0} in event source. </Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="EventSource_UnsupportedMessageProperty" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/EventSource_UnsupportedMessageProperty">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Event {0} specifies an illegal or unsupported formatting message ("{1}").</Value>
+				</Candidate>
+			</NamedResource>
+			<NamedResource name="UnknownError_Num" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/Microsoft.Diagnostics.Tracing.Messages/UnknownError_Num">
+				<Candidate qualifiers="Language-EN-US" isDefault="true" type="String">
+					<Value>Error {0}.</Value>
+				</Candidate>
+			</NamedResource>
+		</ResourceMapSubtree>
+		<ResourceMapSubtree name="resource">
+			<NamedResource name="String1" uri="ms-resource://57294ThomasDilts.BibleReaderCrossConnect/resource/String1">
+				<Candidate qualifiers="Language-EN" isDefault="true" type="String">
+					<Value>hello</Value>
+				</Candidate>
+				<Candidate type="String">
+					<Value>hello</Value>
+				</Candidate>
+			</NamedResource>
+		</ResourceMapSubtree>
+	</ResourceMap>
+</PriInfo>

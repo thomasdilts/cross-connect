@@ -1,0 +1,6 @@
+﻿[ResourceMetadata]
+"ResourceId"			"split.language-mn-cyrl"
+"ResourceDimensions"		"language-mn-cyrl"
+
+[Files]
+"C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\CrossConnect10\obj\ARM\Release\split.language-mn-cyrl.pri"			"resources.pri"

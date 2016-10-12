@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<biblenames isolang="sk" isolocale="" version="1.0">
+<book key="Gen" short="1 MOJŽIŠOVA" full="1 MOJŽIŠOVA" />
+<book key="Exod" short="2 MOJŽIŠOVA" full="2 MOJŽIŠOVA" />
+<book key="Lev" short="3 MOJŽIŠOVA" full="3 MOJŽIŠOVA" />
+<book key="Num" short="4 MOJŽIŠOVA" full="4 MOJŽIŠOVA" />
+<book key="Deut" short="DEUTERONÓMIUM" full="DEUTERONÓMIUM" />
+<book key="Josh" short="JOZUE" full="JOZUE" />
+<book key="Judg" short="SUDCOV" full="SUDCOV" />
+<book key="Ruth" short="RUT" full="RUT" />
+<book key="1Sam" short="1 SAMUELOVA" full="1 SAMUELOVA" />
+<book key="2Sam" short="2 SAMUELOVA" full="2 SAMUELOVA" />
+<book key="1Kgs" short="1 KRÁĽOVSKÁ" full="1 KRÁĽOVSKÁ" />
+<book key="2Kgs" short="2 KRÁĽOVSKÁ" full="2 KRÁĽOVSKÁ" />
+<book key="1Chr" short="1 PARALIPOMENOM" full="1 PARALIPOMENOM" />
+<book key="2Chr" short="2 PARALIPOMENOM" full="2 PARALIPOMENOM" />
+<book key="Ezra" short="EZDRÁŠ" full="EZDRÁŠ" />
+<book key="Neh" short="NEHEMIÁŠ" full="NEHEMIÁŠ" />
+<book key="Esth" short="ESTER" full="ESTER" />
+<book key="Job" short="JOB" full="JOB" />
+<book key="Ps" short="ŽALMY" full="ŽALMY" />
+<book key="Prov" short="PRÍSLOVIA" full="PRÍSLOVIA" />
+<book key="Eccl" short="KOHELET" full="KOHELET" />
+<book key="Song" short="PIESEŇ ŠALAMÚNOVA" full="PIESEŇ ŠALAMÚNOVA" />
+<book key="Isa" short="IZAIÁŠ" full="IZAIÁŠ" />
+<book key="Jer" short="JEREMIÁŠ" full="JEREMIÁŠ" />
+<book key="Lam" short="PLAČ JEREMIÁŠOV" full="PLAČ JEREMIÁŠOV" />
+<book key="Ezek" short="EZECHIEL" full="EZECHIEL" />
+<book key="Dan" short="DANIEL" full="DANIEL" />
+<book key="Hos" short="HOZEÁŠ" full="HOZEÁŠ" />
+<book key="Joel" short="JOEL" full="JOEL" />
+<book key="Amos" short="ÁMOS" full="ÁMOS" />
+<book key="Obad" short="OBADIÁŠ" full="OBADIÁŠ" />
+<book key="Jonah" short="JONÁŠ" full="JONÁŠ" />
+<book key="Mic" short="MICHEÁŠ" full="MICHEÁŠ" />
+<book key="Nah" short="NÁHUM" full="NÁHUM" />
+<book key="Hab" short="HABAKUK" full="HABAKUK" />
+<book key="Zeph" short="SOFONIÁŠ" full="SOFONIÁŠ" />
+<book key="Hag" short="AGGEUS" full="AGGEUS" />
+<book key="Zech" short="ZACHARIÁŠ" full="ZACHARIÁŠ" />
+<book key="Mal" short="MALACHIÁŠ" full="MALACHIÁŠ" />
+<book key="Matt" short="MATÚŠ" full="MATÚŠ" />
+<book key="Mark" short="MAREK" full="MAREK" />
+<book key="Luke" short="LUKÁŠ" full="LUKÁŠ" />
+<book key="John" short="JÁN" full="JÁN" />
+<book key="Acts" short="SKUTKY" full="SKUTKY" />
+<book key="Rom" short="RIMANOM" full="RIMANOM" />
+<book key="1Cor" short="1 KORINŤANOM" full="1 KORINŤANOM" />
+<book key="2Cor" short="2 KORINŤANOM" full="2 KORINŤANOM" />
+<book key="Gal" short="GALAŤANOM" full="GALAŤANOM" />
+<book key="Eph" short="EFEZANOM" full="EFEZANOM" />
+<book key="Phil" short="FILIPANOM" full="FILIPANOM" />
+<book key="Col" short="KOLOSANOM" full="KOLOSANOM" />
+<book key="1Thess" short="1 TESALONIČANOM" full="1 TESALONIČANOM" />
+<book key="2Thess" short="2 TESALONIČANOM" full="2 TESALONIČANOM" />
+<book key="1Tim" short="1 TIMOTEJOVI" full="1 TIMOTEJOVI" />
+<book key="2Tim" short="2 TIMOTEJOVI" full="2 TIMOTEJOVI" />
+<book key="Titus" short="TÍTOVI" full="TÍTOVI" />
+<book key="Phlm" short="FILEMÓNOVI" full="FILEMÓNOVI" />
+<book key="Heb" short="HEBREJOM" full="HEBREJOM" />
+<book key="Jas" short="JAKUBOV" full="JAKUBOV" />
+<book key="1Pet" short="1 PETROV" full="1 PETROV" />
+<book key="2Pet" short="2 PETROV" full="2 PETROV" />
+<book key="1John" short="1 JÁNOV" full="1 JÁNOV" />
+<book key="2John" short="2 JÁNOV" full="2 JÁNOV" />
+<book key="3John" short="3 JÁNOV" full="3 JÁNOV" />
+<book key="Jude" short="JÚDOV" full="JÚDOV" />
+<book key="Rev" short="ZJAVENIE JÁNA" full="ZJAVENIE JÁNA" />
+<book key="1Esd" short="1 EZDRÁŠA" full="1 EZDRÁŠA" />
+<book key="2Esd" short="2 EZDRÁŠA" full="2 EZDRÁŠA" />
+<book key="Tob" short="TOBIÁŠ" full="TOBIÁŠ" />
+<book key="Jdt" short="JUDITA" full="JUDITA" />
+<book key="AddEsth" short="PRÍDAVOK K ESTERI" full="PRÍDAVOK K ESTERI" />
+<book key="EsthGr" short="ESTERr (GRÉC.)" full="ESTERr (GRÉC.)" />
+<book key="Wis" short="MÚDROSTI" full="MÚDROSTI" />
+<book key="Sir" short="SIRACHOVEC" full="SIRACHOVEC" />
+<book key="Bar" short="BÁRUCH" full="BÁRUCH" />
+<book key="PrAzar" short="MODLITBA AZARIÁŠOVA" full="MODLITBA AZARIÁŠOVA" />
+<book key="Sus" short="ZUZANA" full="ZUZANA" />
+<book key="Bel" short="BÉL AND DRAK" full="BÉL AND DRAK" />
+<book key="PrMan" short="MODLITBA MANASESA" full="MODLITBA MANASESA" />
+<book key="1Macc" short="1 MACHABEJCOV" full="1 MACHABEJCOV" />
+<book key="2Macc" short="2 MACHABEJCOV" full="2 MACHABEJCOV" />
+<book key="3Macc" short="3 MACHABEJCOV" full="3 MACHABEJCOV" />
+<book key="4Macc" short="4 MACHABEJCOV" full="4 MACHABEJCOV" />
+<book key="AddPs" short="ĎALŠIE ŽALMY" full="ĎALŠIE ŽALMY" />
+</biblenames>

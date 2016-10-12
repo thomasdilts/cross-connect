@@ -1,0 +1,8 @@
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\AudioPlaybackAgent1\AudioPlaybackAgent1.WP8.csproj;x86
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\CrossConnect.WP8.csproj;x86
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Hoot\Hoot.csproj;x86
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Hoot\Hoot.csproj;x86
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Hoot\Hoot.csproj;x86
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Sword\Sword.csproj;x86
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Sword\Sword.csproj;x86
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zip2\Zip.WP8.csproj;x86

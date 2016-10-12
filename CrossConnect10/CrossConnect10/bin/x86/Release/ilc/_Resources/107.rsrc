@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<biblenames isolang="mt" isolocale="" version="1.0">
+<book key="Gen" short="ĠENESI" full="ĠENESI" />
+<book key="Exod" short="EŻODU" full="EŻODU" />
+<book key="Lev" short="LEVITKU" full="LEVITKU" />
+<book key="Num" short="NUMRI" full="NUMRI" />
+<book key="Deut" short="DEWTERONOMJU" full="DEWTERONOMJU" />
+<book key="Josh" short="ĠOŻWE" full="ĠOŻWE" />
+<book key="Judg" short="IMĦALLFIN" full="IMĦALLFIN" />
+<book key="Ruth" short="RUT" full="RUT" />
+<book key="1Sam" short="1 SAMWEL" full="1 SAMWEL" />
+<book key="2Sam" short="2 SAMWEL" full="2 SAMWEL" />
+<book key="1Kgs" short="1 SLATEN" full="1 SLATEN" />
+<book key="2Kgs" short="2 SLATEN" full="2 SLATEN" />
+<book key="1Chr" short="1 KRONAKI" full="1 KRONAKI" />
+<book key="2Chr" short="2 KRONAKI" full="2 KRONAKI" />
+<book key="Ezra" short="ESDRA" full="ESDRA" />
+<book key="Neh" short="NEĦEMIJA" full="NEĦEMIJA" />
+<book key="Esth" short="ESTER" full="ESTER" />
+<book key="Job" short="ĠOB" full="ĠOB" />
+<book key="Ps" short="SALMI" full="SALMI" />
+<book key="Prov" short="QWIEL" full="QWIEL" />
+<book key="Eccl" short="KTIEB QOHELET" full="KTIEB QOHELET" />
+<book key="Song" short="L-GĦANJA TAL-GĦANJIET" full="L-GĦANJA TAL-GĦANJIET" />
+<book key="Isa" short="ISAIJA" full="ISAIJA" />
+<book key="Jer" short="ĠEREMIJA" full="ĠEREMIJA" />
+<book key="Lam" short="LAMENTAZZJONIJIET" full="LAMENTAZZJONIJIET" />
+<book key="Ezek" short="EŻEKJEL" full="EŻEKJEL" />
+<book key="Dan" short="DANJEL" full="DANJEL" />
+<book key="Hos" short="HOSEGĦA" full="HOSEGĦA" />
+<book key="Joel" short="JOEL" full="JOEL" />
+<book key="Amos" short="GĦAMOS" full="GĦAMOS" />
+<book key="Obad" short="GĦABDIJA" full="GĦABDIJA" />
+<book key="Jonah" short="JONA" full="JONA" />
+<book key="Mic" short="MIKEA" full="MIKEA" />
+<book key="Nah" short="NAĦUM" full="NAĦUM" />
+<book key="Hab" short="ĦABAQQUQ" full="ĦABAQQUQ" />
+<book key="Zeph" short="KTIEB SOFONIJA" full="KTIEB SOFONIJA" />
+<book key="Hag" short="ĦAGGAJ" full="ĦAGGAJ" />
+<book key="Zech" short="ŻAKKARIJA" full="ŻAKKARIJA" />
+<book key="Mal" short="MALAKIJA" full="MALAKIJA" />
+<book key="Matt" short="MATTEW" full="MATTEW" />
+<book key="Mark" short="MARK" full="MARK" />
+<book key="Luke" short="LUQA" full="LUQA" />
+<book key="John" short="ĠWANN" full="ĠWANN" />
+<book key="Acts" short="ATTI TAL-APPOSTLI" full="ATTI TAL-APPOSTLI" />
+<book key="Rom" short="L-ITTRA LIR-RUMANI" full="L-ITTRA LIR-RUMANI" />
+<book key="1Cor" short="L-1 ITTRA KORINTIN" full="L-1 ITTRA KORINTIN" />
+<book key="2Cor" short="IT-2 ITTRA LILL-KORINTIN" full="IT-2 ITTRA LILL-KORINTIN" />
+<book key="Gal" short="L-ITTRA LILL-GALATIN" full="L-ITTRA LILL-GALATIN" />
+<book key="1Thess" short="1 TESSALONKIN" full="1 TESSALONKIN" />
+<book key="2Thess" short="2 TESSALONKIN" full="2 TESSALONKIN" />
+<book key="Eph" short="ITRA LILL-EFESIN" full="ITRA LILL-EFESIN" />
+<book key="Phil" short="ITTRA LILL-FILIPPIN" full="ITTRA LILL-FILIPPIN" />
+<book key="Col" short="L-ITTRA LILL-KOLOSSIN" full="L-ITTRA LILL-KOLOSSIN" />
+<book key="Phlm" short="L-ITTRA LIL FILEMON" full="L-ITTRA LIL FILEMON" />
+<book key="1Tim" short="L-EWWEL ITTRA LIL TIMOTEUS" full="L-EWWEL ITTRA LIL TIMOTEUS" />
+<book key="2Tim" short="IT-TIENI ITTRA LIL TIMOTEUS" full="IT-TIENI ITTRA LIL TIMOTEUS" />
+<book key="Titus" short="L-ITTRA LIL TITUS" full="L-ITTRA LIL TITUS" />
+<book key="Heb" short="L-ITTRA LIL LHUD" full="L-ITTRA LIL LHUD" />
+<book key="Jas" short="L-ITTRA TA'SAN ĠAKBU" full="L-ITTRA TA'SAN ĠAKBU" />
+<book key="1Pet" short="L-EWWEL ITTRA TA' SAN PIETRU" full="L-EWWEL ITTRA TA' SAN PIETRU" />
+<book key="2Pet" short="IT-TIENI ITTRA TA' SAN PIETRU" full="IT-TIENI ITTRA TA' SAN PIETRU" />
+<book key="1John" short="L-EWWEL ITTRA TA' SAN ĠWANN" full="L-EWWEL ITTRA TA' SAN ĠWANN" />
+<book key="2John" short="IT-TIENI ITTRA TA' SAN ĠWANN" full="IT-TIENI ITTRA TA' SAN ĠWANN" />
+<book key="3John" short="IT-TIELET ITTRA TA' SAN ĠWANN" full="IT-TIELET ITTRA TA' SAN ĠWANN" />
+<book key="Jude" short="L-ITTRA TA' SAN ĠUDA" full="L-ITTRA TA' SAN ĠUDA" />
+<book key="Rev" short="APOKALISSI" full="APOKALISSI" />
+</biblenames>

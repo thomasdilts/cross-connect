@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<biblenames isolang="fi" isolocale="" version="1.0">
+<book key="Gen" short="1. MOOSEKSEN KIRJA" full="1. MOOSEKSEN KIRJA" />
+<book key="Exod" short="2. MOOSEKSEN KIRJA" full="2. MOOSEKSEN KIRJA" />
+<book key="Lev" short="3. MOOSEKSEN KIRJA" full="3. MOOSEKSEN KIRJA" />
+<book key="Num" short="4. MOOSEKSEN KIRJA" full="4. MOOSEKSEN KIRJA" />
+<book key="Deut" short="5. MOOSEKSEN KIRJA" full="5. MOOSEKSEN KIRJA" />
+<book key="Josh" short="JOOSUA" full="JOOSUA" />
+<book key="Judg" short="TUOMARIEN KIRJA" full="TUOMARIEN KIRJA" />
+<book key="Ruth" short="RUUT" full="RUUT" />
+<book key="1Sam" short="1. SAMUELIN KIRJA" full="1. SAMUELIN KIRJA" />
+<book key="2Sam" short="2. SAMUELIN KIRJA" full="2. SAMUELIN KIRJA" />
+<book key="1Kgs" short="1. KUNINKAIDEN KIRJA" full="1. KUNINKAIDEN KIRJA" />
+<book key="2Kgs" short="2. KUNINKAIDEN KIRJA" full="2. KUNINKAIDEN KIRJA" />
+<book key="1Chr" short="1. AIKAKIRJA" full="1. AIKAKIRJA" />
+<book key="2Chr" short="2. AIKAKIRJA" full="2. AIKAKIRJA" />
+<book key="Ezra" short="ESRA" full="ESRA" />
+<book key="Neh" short="NEHEMIA" full="NEHEMIA" />
+<book key="Esth" short="ESTER" full="ESTER" />
+<book key="Job" short="JOB" full="JOB" />
+<book key="Ps" short="PSALMIT" full="PSALMIT" />
+<book key="Prov" short="SANANLASKUT" full="SANANLASKUT" />
+<book key="Eccl" short="SAARNAAJA" full="SAARNAAJA" />
+<book key="Song" short="LAULUJEN LAULU" full="LAULUJEN LAULU" />
+<book key="Isa" short="JESAJA" full="JESAJA" />
+<book key="Jer" short="JEREMIA" full="JEREMIA" />
+<book key="Lam" short="VALITUSVIRRET" full="VALITUSVIRRET" />
+<book key="Ezek" short="HESEKIEL" full="HESEKIEL" />
+<book key="Dan" short="DANIEL" full="DANIEL" />
+<book key="Hos" short="HOOSEA" full="HOOSEA" />
+<book key="Joel" short="JOEL" full="JOEL" />
+<book key="Amos" short="AAMOS" full="AAMOS" />
+<book key="Obad" short="OBADJA" full="OBADJA" />
+<book key="Jonah" short="JOONA" full="JOONA" />
+<book key="Mic" short="MIIKA" full="MIIKA" />
+<book key="Nah" short="NAAHUM" full="NAAHUM" />
+<book key="Hab" short="HABAKUK" full="HABAKUK" />
+<book key="Zeph" short="SEFANJA" full="SEFANJA" />
+<book key="Hag" short="HAGGAI" full="HAGGAI" />
+<book key="Zech" short="SAKARJA" full="SAKARJA" />
+<book key="Mal" short="MALAKIA" full="MALAKIA" />
+<book key="Matt" short="MATTEUS" full="MATTEUS" />
+<book key="Mark" short="MARKUS" full="MARKUS" />
+<book key="Luke" short="LUUKAS" full="LUUKAS" />
+<book key="John" short="JOHANNES" full="JOHANNES" />
+<book key="Acts" short="APOSTOLIEN TEOT" full="APOSTOLIEN TEOT" />
+<book key="Rom" short="ROOMALAISKIRJE" full="ROOMALAISKIRJE" />
+<book key="1Cor" short="1. KORINTTOLAISKIRJE" full="1. KORINTTOLAISKIRJE" />
+<book key="2Cor" short="2. KORINTTOLAISKIRJE" full="2. KORINTTOLAISKIRJE" />
+<book key="Gal" short="GALATALAISKIRJE" full="GALATALAISKIRJE" />
+<book key="Eph" short="EFESOLAISKIRJE" full="EFESOLAISKIRJE" />
+<book key="Phil" short="FILIPPILÄISKIRJE" full="FILIPPILÄISKIRJE" />
+<book key="Col" short="KOLOSSALAISKIRJE" full="KOLOSSALAISKIRJE" />
+<book key="1Thess" short="1. TESSALONIKALAISKIRJE" full="1. TESSALONIKALAISKIRJE" />
+<book key="2Thess" short="2. TESSALONIKALAISKIRJE" full="2. TESSALONIKALAISKIRJE" />
+<book key="1Tim" short="1. KIRJE TIMOTEUKSELLE" full="1. KIRJE TIMOTEUKSELLE" />
+<book key="2Tim" short="2. KIRJE TIMOTEUKSELLE" full="2. KIRJE TIMOTEUKSELLE" />
+<book key="Titus" short="KIRJE TITUKSELLE" full="KIRJE TITUKSELLE" />
+<book key="Phlm" short="KIRJE FILEMONILLE" full="KIRJE FILEMONILLE" />
+<book key="Heb" short="HEPREALAISKIRJE" full="HEPREALAISKIRJE" />
+<book key="Jas" short="JAAKOBIN KIRJE" full="JAAKOBIN KIRJE" />
+<book key="1Pet" short="1. PIETARIN KIRJE" full="1. PIETARIN KIRJE" />
+<book key="2Pet" short="2. PIETARIN KIRJE" full="2. PIETARIN KIRJE" />
+<book key="1John" short="1. JOHANNEKSEN KIRJE" full="1. JOHANNEKSEN KIRJE" />
+<book key="2John" short="2. JOHANNEKSEN KIRJE" full="2. JOHANNEKSEN KIRJE" />
+<book key="3John" short="3. JOHANNEKSEN KIRJE" full="3. JOHANNEKSEN KIRJE" />
+<book key="Jude" short="JUUDAKSEN KIRJE" full="JUUDAKSEN KIRJE" />
+<book key="Rev" short="JOHANNEKSEN ILMESTYS" full="JOHANNEKSEN ILMESTYS" />
+</biblenames>

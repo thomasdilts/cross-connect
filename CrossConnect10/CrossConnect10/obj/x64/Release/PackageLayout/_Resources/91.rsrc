@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<biblenames isolang="et" isolocale="" version="1.0">
+<book key="Gen" short="1. MOOSESE" full="1. MOOSESE" />
+<book key="Exod" short="2. MOOSESE" full="2. MOOSESE" />
+<book key="Lev" short="3. MOOSESE" full="3. MOOSESE" />
+<book key="Num" short="4. MOOSESE" full="4. MOOSESE" />
+<book key="Deut" short="5. MOOSESE" full="5. MOOSESE" />
+<book key="Josh" short="JOOSUA" full="JOOSUA" />
+<book key="Judg" short="KOHTUMÕISTJATE" full="KOHTUMÕISTJATE" />
+<book key="Ruth" short="RUTT" full="RUTT" />
+<book key="1Sam" short="1. SAAMUELI" full="1. SAAMUELI" />
+<book key="2Sam" short="2. SAAMUELI" full="2. SAAMUELI" />
+<book key="1Kgs" short="1. KUNINGATE" full="1. KUNINGATE" />
+<book key="2Kgs" short="2. KUNINGATE" full="2. KUNINGATE" />
+<book key="1Chr" short="1. AJARAAMAT" full="1. AJARAAMAT" />
+<book key="2Chr" short="2. AJARAAMAT" full="2. AJARAAMAT" />
+<book key="Ezra" short="ESRA" full="ESRA" />
+<book key="Neh" short="NEHEMJA" full="NEHEMJA" />
+<book key="Esth" short="ESTER" full="ESTER" />
+<book key="Job" short="IIOB" full="IIOB" />
+<book key="Ps" short="PSALMID" full="PSALMID" />
+<book key="Prov" short="ÕPETUSSÕNAD" full="ÕPETUSSÕNAD" />
+<book key="Eccl" short="KOGUJA" full="KOGUJA" />
+<book key="Song" short="ÜLEMLAUL" full="ÜLEMLAUL" />
+<book key="Isa" short="JESAJA" full="JESAJA" />
+<book key="Jer" short="JEREMIJA" full="JEREMIJA" />
+<book key="Lam" short="NUTULAULUD" full="NUTULAULUD" />
+<book key="Ezek" short="HESEKIEL" full="HESEKIEL" />
+<book key="Dan" short="TAANIEL" full="TAANIEL" />
+<book key="Hos" short="HOOSEA" full="HOOSEA" />
+<book key="Joel" short="JOEL" full="JOEL" />
+<book key="Amos" short="AAMOS" full="AAMOS" />
+<book key="Obad" short="OBADJA" full="OBADJA" />
+<book key="Jonah" short="JOONA" full="JOONA" />
+<book key="Mic" short="MIIKA" full="MIIKA" />
+<book key="Nah" short="NAHUM" full="NAHUM" />
+<book key="Hab" short="HABAKUK" full="HABAKUK" />
+<book key="Zeph" short="SEFANJA" full="SEFANJA" />
+<book key="Hag" short="HAGGAI" full="HAGGAI" />
+<book key="Zech" short="SAKARJA" full="SAKARJA" />
+<book key="Mal" short="MALAKI" full="MALAKI" />
+<book key="Matt" short="MATTEUSE" full="MATTEUSE" />
+<book key="Mark" short="MARKUSE" full="MARKUSE" />
+<book key="Luke" short="LUUKA" full="LUUKA" />
+<book key="John" short="JOHANNESE" full="JOHANNESE" />
+<book key="Acts" short="APOSTLITE TEOD" full="APOSTLITE TEOD" />
+<book key="Rom" short="ROOMLASTELE" full="ROOMLASTELE" />
+<book key="1Cor" short="1. KORINTLASTELE" full="1. KORINTLASTELE" />
+<book key="2Cor" short="2. KORINTLASTELE" full="2. KORINTLASTELE" />
+<book key="Gal" short="GALAATLASTELE" full="GALAATLASTELE" />
+<book key="Eph" short="EFESLASTELE" full="EFESLASTELE" />
+<book key="Phil" short="FILIPLASTELE" full="FILIPLASTELE" />
+<book key="Col" short="KOLOSLASTELE" full="KOLOSLASTELE" />
+<book key="1Thess" short="1. TESSALOONIKLASTELE" full="1. TESSALOONIKLASTELE" />
+<book key="2Thess" short="2. TESSALOONIKLASTELE" full="2. TESSALOONIKLASTELE" />
+<book key="1Tim" short="1. TIMOTEOSELE" full="1. TIMOTEOSELE" />
+<book key="2Tim" short="2. TIMOTEOSELE" full="2. TIMOTEOSELE" />
+<book key="Titus" short="TIITUSELE" full="TIITUSELE" />
+<book key="Phlm" short="FILEEMONILE" full="FILEEMONILE" />
+<book key="Heb" short="HEEBREALASTELE" full="HEEBREALASTELE" />
+<book key="Jas" short="JAAKOBUSE" full="JAAKOBUSE" />
+<book key="1Pet" short="1. PEETRUSE" full="1. PEETRUSE" />
+<book key="2Pet" short="2. PEETRUSE" full="2. PEETRUSE" />
+<book key="1John" short="1. JOHANNESE" full="1. JOHANNESE" />
+<book key="2John" short="2. JOHANNESE" full="2. JOHANNESE" />
+<book key="3John" short="3. JOHANNESE" full="3. JOHANNESE" />
+<book key="Jude" short="JUUDA" full="JUUDA" />
+<book key="Rev" short="ILMUTUSE" full="ILMUTUSE" />
+</biblenames>

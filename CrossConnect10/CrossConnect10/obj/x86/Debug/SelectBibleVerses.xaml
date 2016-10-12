@@ -1,0 +1,67 @@
+﻿<UserControl x:ConnectionId='1' x:Class="CrossConnect.SelectBibleVerses"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CrossConnect"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="400"
+    d:DesignWidth="400"                            >
+
+    <Grid x:ConnectionId='2' x:Name="LayoutRoot" Margin="0 0 25 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock x:ConnectionId='3' Grid.Row="0" Name="title" Text="Selected verses" />
+        <Border x:ConnectionId='4' Grid.Row="1" BorderBrush="Silver" BorderThickness="3"
+          Name="border1">
+            <ScrollViewer x:ConnectionId='5' Height="400" Name="scroller">
+                <StackPanel x:ConnectionId='6' x:Name="MainContent" Orientation="Vertical">
+                    <local:SelectBibleVerse x:ConnectionId='7' x:Name="row1"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='8' x:Name="row2"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='9' x:Name="row3"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='10' x:Name="row4"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='11' x:Name="row5"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='12' x:Name="row6"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='13' x:Name="row7"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='14' x:Name="row8"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='15' x:Name="row9"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='16' x:Name="row10"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='17' x:Name="row11"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='18' x:Name="row12"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='19' x:Name="row13"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='20' x:Name="row14"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='21' x:Name="row15"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='22' x:Name="row16"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='23' x:Name="row17"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='24' x:Name="row18"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='25' x:Name="row19"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='26' x:Name="row20"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='27' x:Name="row21"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='28' x:Name="row22"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='29' x:Name="row23"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='30' x:Name="row24"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='31' x:Name="row25"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='32' x:Name="row26"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='33' x:Name="row27"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='34' x:Name="row28"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='35' x:Name="row29"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='36' x:Name="row30"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='37' x:Name="row31"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='38' x:Name="row32"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='39' x:Name="row33"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='40' x:Name="row34"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='41' x:Name="row35"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='42' x:Name="row36"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='43' x:Name="row37"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='44' x:Name="row38"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='45' x:Name="row39"></local:SelectBibleVerse>
+                    <local:SelectBibleVerse x:ConnectionId='46' x:Name="row40"></local:SelectBibleVerse>
+                    
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>
+

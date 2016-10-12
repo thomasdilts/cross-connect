@@ -1,0 +1,16 @@
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\bin\ARM\Release\Hoot.dll
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\bin\ARM\Release\Hoot.pdb
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\bin\ARM\Release\Hoot.pri
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\obj\ARM\Release\Hoot.dll
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\obj\ARM\Release\Hoot.pdb
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\obj\ARM\Release\priconfig.xml
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\obj\ARM\Release\priconfig.xml.intermediate
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\obj\ARM\Release\layout.resfiles
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\obj\ARM\Release\layout.resfiles.intermediate
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\obj\ARM\Release\resources.resfiles
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\obj\ARM\Release\resources.resfiles.intermediate
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\obj\ARM\Release\pri.resfiles
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\obj\ARM\Release\pri.resfiles.intermediate
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\obj\ARM\Release\qualifiers.txt
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\obj\ARM\Release\qualifiers.txt.intermediate
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\Hoot\obj\ARM\Release\MultipleQualifiersPerDimensionFound.txt

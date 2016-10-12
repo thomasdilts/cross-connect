@@ -1,0 +1,11 @@
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\AudioPlaybackAgent1\Bin\Debug.WP8\AudioPlaybackAgent1.dll
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\AudioPlaybackAgent1\Bin\Debug.WP8\AudioPlaybackAgent1.pdb
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\AudioPlaybackAgent1\Bin\Debug.WP8\Sword.dll
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\AudioPlaybackAgent1\Bin\Debug.WP8\Zlib.Portable.dll
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\AudioPlaybackAgent1\Bin\Debug.WP8\Hoot.dll
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\AudioPlaybackAgent1\Bin\Debug.WP8\Sword.pdb
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\AudioPlaybackAgent1\Bin\Debug.WP8\Zlib.Portable.pdb
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\AudioPlaybackAgent1\Bin\Debug.WP8\Hoot.pdb
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\AudioPlaybackAgent1\obj\Debug\AudioPlaybackAgent1.WP8.csprojResolveAssemblyReference.cache
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\AudioPlaybackAgent1\obj\Debug\AudioPlaybackAgent1.dll
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\AudioPlaybackAgent1\obj\Debug\AudioPlaybackAgent1.pdb

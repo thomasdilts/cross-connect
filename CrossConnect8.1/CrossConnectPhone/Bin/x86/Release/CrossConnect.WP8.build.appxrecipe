@@ -1,0 +1,492 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>ESSEPC216</Machine>
+    <WindowsUser>Thomas</WindowsUser>
+    <TargetPlatformIdentifier>Windows Phone</TargetPlatformIdentifier>
+    <TargetOsVersion>6.3</TargetOsVersion>
+    <TargetOsDescription>Windows Phone 8.1</TargetOsDescription>
+    <SolutionConfiguration>Release|x86</SolutionConfiguration>
+    <PackageArchitecture>x86</PackageArchitecture>
+    <PackageIdentityName>d9a3e975-c3d4-4d88-8a61-541a55e8b722</PackageIdentityName>
+    <PackageIdentityPublisher>CN=F67267EA-6C25-400F-81E7-7466BD444D76</PackageIdentityPublisher>
+    <IntermediateOutputPath>C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\obj\x86\Release\</IntermediateOutputPath>
+    <RemoteDeploymentType></RemoteDeploymentType>
+    <PackageRegistrationPath></PackageRegistrationPath>
+    <RemoveNonLayoutFiles>true</RemoveNonLayoutFiles>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Bin\x86\Release\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Bin\x86\Release\CrossConnect.dll">
+      <PackagePath>CrossConnect.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\AudioPlaybackAgent1\Bin\x86\Release\AudioPlaybackAgent1.dll">
+      <PackagePath>AudioPlaybackAgent1.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Sword\bin\x86\Release\Sword.dll">
+      <PackagePath>Sword.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Hoot\bin\x86\Release\Hoot.dll">
+      <PackagePath>Hoot.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zip2\Bin\x86\Release\zip2.dll">
+      <PackagePath>zip2.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\libraries\Coding4Fun.Phone.Controls.dll">
+      <PackagePath>Coding4Fun.Phone.Controls.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\libraries\Coding4Fun.Phone.Controls.Toolkit.dll">
+      <PackagePath>Coding4Fun.Phone.Controls.Toolkit.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\libraries\Coding4Fun.Phone.Site.Controls.dll">
+      <PackagePath>Coding4Fun.Phone.Site.Controls.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\Microsoft.Live.Controls.dll">
+      <PackagePath>Microsoft.Live.Controls.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\Microsoft.Live.dll">
+      <PackagePath>Microsoft.Live.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\libraries\Microsoft.Phone.Controls.Toolkit.dll">
+      <PackagePath>Microsoft.Phone.Controls.Toolkit.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Sword\bin\x86\Release\Zlib.Portable.dll">
+      <PackagePath>Zlib.Portable.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\cs\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>cs\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\da\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>da\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\de\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>de\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\el\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>el\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\en\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>en\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\en-gb\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>en-gb\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\es\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>es\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\fi\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>fi\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\fr\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>fr\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\hu\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>hu\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\id\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>id\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\it\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>it\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\ja\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>ja\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\ko\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>ko\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\ms\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>ms\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\nb-no\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>nb-no\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\nl\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>nl\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\pl\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>pl\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\pt-br\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>pt-br\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\pt-pt\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>pt-pt\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\ru\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>ru\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\sv\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>sv\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\zh-cn\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>zh-cn\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\packages\LiveSDK.5.6.2\lib\WindowsPhone81\zh-tw\Microsoft.Live.Controls.resources.dll">
+      <PackagePath>zh-tw\Microsoft.Live.Controls.resources.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\ApplicationIcon.png">
+      <PackagePath>ApplicationIcon.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Background.png">
+      <PackagePath>Background.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Backgroundlight.png">
+      <PackagePath>Backgroundlight.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\crossbigbut691x336.png">
+      <PackagePath>crossbigbut691x336.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.arrowdown.rest.png">
+      <PackagePath>Images\dark\appbar.arrowdown.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.arrowdown.rest.press.png">
+      <PackagePath>Images\dark\appbar.arrowdown.rest.press.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.arrowto.rest.png">
+      <PackagePath>Images\dark\appbar.arrowto.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.arrowup.rest.png">
+      <PackagePath>Images\dark\appbar.arrowup.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.arrowup.rest.press.png">
+      <PackagePath>Images\dark\appbar.arrowup.rest.press.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.download.rest.png">
+      <PackagePath>Images\dark\appbar.download.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.download.rest.press.png">
+      <PackagePath>Images\dark\appbar.download.rest.press.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.edit.rest.png">
+      <PackagePath>Images\dark\appbar.edit.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.favs.addto.rest.png">
+      <PackagePath>Images\dark\appbar.favs.addto.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.gotodate.rest.png">
+      <PackagePath>Images\dark\appbar.gotodate.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.new.rest.png">
+      <PackagePath>Images\dark\appbar.new.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.new.rest.press.png">
+      <PackagePath>Images\dark\appbar.new.rest.press.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.next.rest.press.png">
+      <PackagePath>Images\dark\appbar.next.rest.press.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.prev.rest.png">
+      <PackagePath>Images\dark\appbar.prev.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.prev.rest.press.png">
+      <PackagePath>Images\dark\appbar.prev.rest.press.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.questionmark.rest.png">
+      <PackagePath>Images\dark\appbar.questionmark.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.questionmark.rest.press.png">
+      <PackagePath>Images\dark\appbar.questionmark.rest.press.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.back.rest.png">
+      <PackagePath>Images\dark\appbar.back.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.cancel.rest.png">
+      <PackagePath>Images\dark\appbar.cancel.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.cancel.rest.pressed.png">
+      <PackagePath>Images\dark\appbar.cancel.rest.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.feature.search.rest.png">
+      <PackagePath>Images\dark\appbar.feature.search.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.feature.search.rest.pressed.png">
+      <PackagePath>Images\dark\appbar.feature.search.rest.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.linkto.rest.png">
+      <PackagePath>Images\dark\appbar.linkto.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.linkto.rest.pressed.png">
+      <PackagePath>Images\dark\appbar.linkto.rest.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.menu.rest.png">
+      <PackagePath>Images\dark\appbar.menu.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.menu.rest.pressed.png">
+      <PackagePath>Images\dark\appbar.menu.rest.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.minus.rest.png">
+      <PackagePath>Images\dark\appbar.minus.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.minus.rest.pressed.png">
+      <PackagePath>Images\dark\appbar.minus.rest.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.next.rest.png">
+      <PackagePath>Images\dark\appbar.next.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.people.1.rest.png">
+      <PackagePath>Images\dark\appbar.people.1.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.people.1.rest.pressed.png">
+      <PackagePath>Images\dark\appbar.people.1.rest.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.people.2.pressed.rest.png">
+      <PackagePath>Images\dark\appbar.people.2.pressed.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.people.2.rest.png">
+      <PackagePath>Images\dark\appbar.people.2.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.save.rest.png">
+      <PackagePath>Images\dark\appbar.save.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.share.rest.png">
+      <PackagePath>Images\dark\appbar.share.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.share.rest.pressed.png">
+      <PackagePath>Images\dark\appbar.share.rest.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\open.folder.png">
+      <PackagePath>Images\dark\open.folder.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\open.folder.pressed.png">
+      <PackagePath>Images\dark\open.folder.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\redo.png">
+      <PackagePath>Images\dark\redo.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\undo.png">
+      <PackagePath>Images\dark\undo.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\window.bigger.png">
+      <PackagePath>Images\dark\window.bigger.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\window.bigger.pressed.png">
+      <PackagePath>Images\dark\window.bigger.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\window.smaller.png">
+      <PackagePath>Images\dark\window.smaller.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\window.smaller.pressed.png">
+      <PackagePath>Images\dark\window.smaller.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.arrowdown.rest.png">
+      <PackagePath>Images\light\appbar.arrowdown.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.arrowdown.rest.press.png">
+      <PackagePath>Images\light\appbar.arrowdown.rest.press.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.arrowto.rest.png">
+      <PackagePath>Images\light\appbar.arrowto.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.arrowup.rest.png">
+      <PackagePath>Images\light\appbar.arrowup.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.arrowup.rest.press.png">
+      <PackagePath>Images\light\appbar.arrowup.rest.press.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\open.folder.png">
+      <PackagePath>Images\light\open.folder.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\open.folder.pressed.png">
+      <PackagePath>Images\light\open.folder.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\window.bigger.png">
+      <PackagePath>Images\light\window.bigger.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\window.bigger.pressed.png">
+      <PackagePath>Images\light\window.bigger.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\window.smaller.png">
+      <PackagePath>Images\light\window.smaller.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\window.smaller.pressed.png">
+      <PackagePath>Images\light\window.smaller.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\sidecrossbigbut691x336.png">
+      <PackagePath>sidecrossbigbut691x336.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Toolkit.Content\ApplicationBar.Delete.png">
+      <PackagePath>Toolkit.Content\ApplicationBar.Delete.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Toolkit.Content\ApplicationBar.Select.png">
+      <PackagePath>Toolkit.Content\ApplicationBar.Select.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.speaker.png">
+      <PackagePath>Images\dark\appbar.speaker.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.speaker.pressed.png">
+      <PackagePath>Images\dark\appbar.speaker.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.translate.png">
+      <PackagePath>Images\dark\appbar.translate.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.translate.pressed.png">
+      <PackagePath>Images\dark\appbar.translate.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.transport.ff.pressed.png">
+      <PackagePath>Images\dark\appbar.transport.ff.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.transport.ff.rest.png">
+      <PackagePath>Images\dark\appbar.transport.ff.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.transport.pause.rest.png">
+      <PackagePath>Images\dark\appbar.transport.pause.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.transport.play.rest.png">
+      <PackagePath>Images\dark\appbar.transport.play.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.transport.pause.rest.pressed.png">
+      <PackagePath>Images\dark\appbar.transport.pause.rest.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.transport.play.rest.pressed.png">
+      <PackagePath>Images\dark\appbar.transport.play.rest.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.transport.rew.pressed.png">
+      <PackagePath>Images\dark\appbar.transport.rew.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\dark\appbar.transport.rew.rest.png">
+      <PackagePath>Images\dark\appbar.transport.rew.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.speaker.png">
+      <PackagePath>Images\light\appbar.speaker.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.speaker.pressed.png">
+      <PackagePath>Images\light\appbar.speaker.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.translate.png">
+      <PackagePath>Images\light\appbar.translate.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.translate.pressed.png">
+      <PackagePath>Images\light\appbar.translate.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.transport.ff.pressed.png">
+      <PackagePath>Images\light\appbar.transport.ff.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.transport.ff.rest.png">
+      <PackagePath>Images\light\appbar.transport.ff.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.transport.pause.rest.png">
+      <PackagePath>Images\light\appbar.transport.pause.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.transport.play.rest.png">
+      <PackagePath>Images\light\appbar.transport.play.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.transport.pause.rest.pressed.png">
+      <PackagePath>Images\light\appbar.transport.pause.rest.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.transport.play.rest.pressed.png">
+      <PackagePath>Images\light\appbar.transport.play.rest.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.transport.rew.pressed.png">
+      <PackagePath>Images\light\appbar.transport.rew.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.transport.rew.rest.png">
+      <PackagePath>Images\light\appbar.transport.rew.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\square173.png">
+      <PackagePath>Images\square173.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Toolkit.Content\ApplicationBar.Cancel.png">
+      <PackagePath>Toolkit.Content\ApplicationBar.Cancel.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Toolkit.Content\ApplicationBar.Check.png">
+      <PackagePath>Toolkit.Content\ApplicationBar.Check.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.cancel.rest.png">
+      <PackagePath>Images\light\appbar.cancel.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.cancel.rest.pressed.png">
+      <PackagePath>Images\light\appbar.cancel.rest.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.download.rest.png">
+      <PackagePath>Images\light\appbar.download.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.download.rest.press.png">
+      <PackagePath>Images\light\appbar.download.rest.press.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.feature.search.rest.png">
+      <PackagePath>Images\light\appbar.feature.search.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.feature.search.rest.pressed.png">
+      <PackagePath>Images\light\appbar.feature.search.rest.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.linkto.rest.png">
+      <PackagePath>Images\light\appbar.linkto.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.linkto.rest.pressed.png">
+      <PackagePath>Images\light\appbar.linkto.rest.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.menu.rest.png">
+      <PackagePath>Images\light\appbar.menu.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.menu.rest.pressed.png">
+      <PackagePath>Images\light\appbar.menu.rest.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.minus.rest.png">
+      <PackagePath>Images\light\appbar.minus.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.minus.rest.pressed.png">
+      <PackagePath>Images\light\appbar.minus.rest.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.new.rest.png">
+      <PackagePath>Images\light\appbar.new.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.new.rest.press.png">
+      <PackagePath>Images\light\appbar.new.rest.press.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.next.rest.png">
+      <PackagePath>Images\light\appbar.next.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.next.rest.press.png">
+      <PackagePath>Images\light\appbar.next.rest.press.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.people.1.rest.png">
+      <PackagePath>Images\light\appbar.people.1.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.people.1.rest.pressed.png">
+      <PackagePath>Images\light\appbar.people.1.rest.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.people.2.pressed.rest.png">
+      <PackagePath>Images\light\appbar.people.2.pressed.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.people.2.rest.png">
+      <PackagePath>Images\light\appbar.people.2.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.prev.rest.png">
+      <PackagePath>Images\light\appbar.prev.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.prev.rest.press.png">
+      <PackagePath>Images\light\appbar.prev.rest.press.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.questionmark.rest.png">
+      <PackagePath>Images\light\appbar.questionmark.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.questionmark.rest.press.png">
+      <PackagePath>Images\light\appbar.questionmark.rest.press.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.share.rest.png">
+      <PackagePath>Images\light\appbar.share.rest.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Images\light\appbar.share.rest.pressed.png">
+      <PackagePath>Images\light\appbar.share.rest.pressed.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\README_FIRST.txt">
+      <PackagePath>README_FIRST.txt</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\SplashScreenImage.jpg">
+      <PackagePath>SplashScreenImage.jpg</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\CrossConnectPhone\Bin\x86\Release\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>

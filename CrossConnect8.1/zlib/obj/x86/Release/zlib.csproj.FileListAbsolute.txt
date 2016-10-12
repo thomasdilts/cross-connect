@@ -1,0 +1,4 @@
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zlib\bin\x86\Release\zlib.dll
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zlib\bin\x86\Release\zlib.pdb
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zlib\obj\x86\Release\zlib.dll
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zlib\obj\x86\Release\zlib.pdb

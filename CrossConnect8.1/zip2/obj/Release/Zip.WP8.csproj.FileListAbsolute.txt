@@ -1,0 +1,4 @@
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zip2\Bin\Release.WP8\zip2.dll
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zip2\Bin\Release.WP8\zip2.pdb
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zip2\obj\Release\zip2.dll
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zip2\obj\Release\zip2.pdb

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<biblenames isolang="id" isolocale="" version="1.0">
+<book key="Gen" short="Kej" full="Kejadian" />
+<book key="Exod" short="Kel" full="Keluaran" />
+<book key="Lev" short="Im" full="Imamat" />
+<book key="Num" short="Bil" full="Bilangan" />
+<book key="Deut" short="Ul" full="Ulangan" />
+<book key="Josh" short="Yos" full="Yosua" />
+<book key="Judg" short="Hak" full="Hakim-hakim" />
+<book key="Ruth" short="Rut" full="Rut" />
+<book key="1Sam" short="1Sam" full="I Samuel" />
+<book key="2Sam" short="2Sam" full="II Samuel" />
+<book key="1Kgs" short="1Raj" full="I Raja-Raja" />
+<book key="2Kgs" short="2Raj" full="II Raja-Raja" />
+<book key="1Chr" short="1Taw" full="I Tawarikh" />
+<book key="2Chr" short="2Taw" full="II Tawarikh" />
+<book key="Ezra" short="Ezr" full="Ezra" />
+<book key="Neh" short="Neh" full="Nehemia" />
+<book key="Esth" short="Est" full="Ester" />
+<book key="Job" short="Ayb" full="Ayub" />
+<book key="Ps" short="Mzm" full="Mazmur" />
+<book key="Prov" short="Ams" full="Amsal" />
+<book key="Eccl" short="Pkh" full="Pengkhotbah" />
+<book key="Song" short="Kid" full="Kidung Agung" />
+<book key="Isa" short="Yes" full="Yesaya" />
+<book key="Jer" short="Yer" full="Yeremia" />
+<book key="Lam" short="Rat" full="Ratapan" />
+<book key="Ezek" short="Yeh" full="Yehezkiel" />
+<book key="Dan" short="Dan" full="Daniel" />
+<book key="Hos" short="Hos" full="Hosea" />
+<book key="Joel" short="Yl" full="Yoel" />
+<book key="Amos" short="Am" full="Amos" />
+<book key="Obad" short="Ob" full="Obaja" />
+<book key="Jonah" short="Yun" full=" Yunus" />
+<book key="Mic" short="Mi" full="Mikha" />
+<book key="Nah" short="Nah" full="Nahum" />
+<book key="Hab" short="Hab" full="Habakuk" />
+<book key="Zeph" short="Zef" full="Zefanya" />
+<book key="Hag" short="Hag" full="Hagai" />
+<book key="Zech" short="Za" full="Zakharia" />
+<book key="Mal" short="Mal" full="Maleakhi" />
+<book key="Matt" short="Mat" full="Matius" />
+<book key="Mark" short="Mar" full="Markus" />
+<book key="Luke" short="Luk" full="Lukas" />
+<book key="John" short="Yoh" full="Yohanes" />
+<book key="Acts" short="KisRas" full="Kisah Para Rasul" />
+<book key="Rom" short="Rm" full="Roma" />
+<book key="1Cor" short="1Kor" full="I Korintus" />
+<book key="2Cor" short="2Kor" full="II Korintus" />
+<book key="Gal" short="Gal" full="Galatia" />
+<book key="Eph" short="Ef" full="Efesus" />
+<book key="Phil" short="Flp" full="Filipi" />
+<book key="Col" short="Kol" full="Kolose" />
+<book key="1Thess" short="1Tes" full="I Tesalonika" />
+<book key="2Thess" short="2Tes" full="II Tesalonika" />
+<book key="1Tim" short="1Tim" full="I Timotius" />
+<book key="2Tim" short="2Tim" full="II Timotius" />
+<book key="Titus" short="Tit" full="Titus" />
+<book key="Phlm" short="Flm" full="Filemon" />
+<book key="Heb" short="Ibr" full="Ibrani" />
+<book key="Jas" short="Yak" full="Yakobus" />
+<book key="1Pet" short="1Ptr" full="I Petrus" />
+<book key="2Pet" short="2Ptr" full="II Petrus" />
+<book key="1John" short="1Yoh" full="I Yohanes" />
+<book key="2John" short="2Yoh" full="II Yohanes" />
+<book key="3John" short="3Yoh" full="III Yohanes" />
+<book key="Jude" short="Yud" full="Yudas" />
+<book key="Rev" short="Why" full="Wahyu" />
+<book key="1Esd" short="1Esd" full="I Esdras" />
+<book key="2Esd" short="2Esd" full="II Esdras" />
+<book key="Tob" short="Tob" full="Tobit" />
+<book key="Jdt" short="Yud" full="Yudit" />
+<book key="AddEsth" short="TambEsth" full="Tambahan Esther" />
+<book key="Wis" short="Wis" full="Wisdom" />
+<book key="Sir" short="Sir" full="Yesus bin Sirakh" />
+<book key="Bar" short="Bar" full="Barukh" />
+<book key="PrAzar" short="PrAzar" full="Prayer of Azariah" />
+<book key="Sus" short="Sus" full="Susanna" />
+<book key="Bel" short="Bel" full="Bel and the Dragon" />
+<book key="PrMan" short="PrMan" full="Prayer of Manasses" />
+<book key="1Macc" short="1Mak" full="1Makabe" />
+<book key="2Macc" short="2Mak" full="2Makabe" />
+<book key="EsthGr" short="EsthGr" full="Esther (Greek)" />
+<book key="AddPs" short="AddPs" full="Additional Psalm" />
+<book key="3Macc" short="3Macc" full="III Maccabees" />
+<book key="4Macc" short="4Macc" full="IV Maccabees" />
+<book key="EpJer" short="SurJer" full="Surat Yeremia" />
+<book key="AddDan" short="TambDan" full="Tambahan Daniel" />
+<book key="PssSol" short="PssSol" full="Kebijaksanaan Salomo" />
+<book key="1En" short="1En" full="I Enoch" />
+<book key="Odes" short="Odes" full="Odes" />
+</biblenames>
