@@ -1,6 +1,0 @@
-﻿[ResourceMetadata]
-"ResourceId"			"split.language-te"
-"ResourceDimensions"		"language-te"
-
-[Files]
-"C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\CrossConnect10\obj\ARM\Release\split.language-te.pri"			"resources.pri"

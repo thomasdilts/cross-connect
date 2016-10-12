@@ -1,4 +1,0 @@
-C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zip2\Bin\x86\Release\zip2.dll
-C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zip2\Bin\x86\Release\zip2.pdb
-C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zip2\obj\x86\Release\zip2.dll
-C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zip2\obj\x86\Release\zip2.pdb

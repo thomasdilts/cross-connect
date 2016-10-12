@@ -1,9 +1,0 @@
-C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Sword\bin\Debug\Sword.dll
-C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Sword\bin\Debug\Sword.pdb
-C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Sword\bin\Debug\Hoot.dll
-C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Sword\bin\Debug\Zlib.Portable.dll
-C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Sword\bin\Debug\Hoot.pdb
-C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Sword\bin\Debug\Zlib.Portable.pdb
-C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Sword\obj\Debug\Sword.csprojResolveAssemblyReference.cache
-C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Sword\obj\Debug\Sword.dll
-C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Sword\obj\Debug\Sword.pdb

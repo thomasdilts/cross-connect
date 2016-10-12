@@ -1,7 +1,10 @@
 ﻿{
   "dependencies": {
     "MarkerMetro.Unity.Ionic.Zlib": "2.0.0.14",
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2"
+    "Microsoft.ApplicationInsights": "1.1.0",
+    "Microsoft.ApplicationInsights.PersistenceChannel": "1.1.0",
+    "Microsoft.ApplicationInsights.WindowsApps": "1.0.0",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0"
   },
   "frameworks": {
     "uap10.0": {}

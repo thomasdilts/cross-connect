@@ -1,5 +1,0 @@
-C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Hoot\bin\Release\Hoot.dll
-C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Hoot\bin\Release\Hoot.pdb
-C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Hoot\obj\Release\Hoot.csprojResolveAssemblyReference.cache
-C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Hoot\obj\Release\Hoot.dll
-C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\Hoot\obj\Release\Hoot.pdb
