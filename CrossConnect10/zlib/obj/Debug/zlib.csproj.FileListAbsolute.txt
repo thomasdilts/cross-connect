@@ -1,0 +1,17 @@
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\zlib\bin\Debug\zlib.dll
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\zlib\bin\Debug\zlib.pdb
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\zlib\bin\Debug\zlib.pri
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\zlib\obj\Debug\zlib.csprojResolveAssemblyReference.cache
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\zlib\obj\Debug\zlib.dll
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\zlib\obj\Debug\zlib.pdb
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\zlib\obj\Debug\priconfig.xml
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\zlib\obj\Debug\priconfig.xml.intermediate
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\zlib\obj\Debug\layout.resfiles
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\zlib\obj\Debug\layout.resfiles.intermediate
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\zlib\obj\Debug\resources.resfiles
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\zlib\obj\Debug\resources.resfiles.intermediate
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\zlib\obj\Debug\pri.resfiles
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\zlib\obj\Debug\pri.resfiles.intermediate
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\zlib\obj\Debug\qualifiers.txt
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\zlib\obj\Debug\qualifiers.txt.intermediate
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\zlib\obj\Debug\MultipleQualifiersPerDimensionFound.txt

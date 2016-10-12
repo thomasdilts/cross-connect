@@ -101,7 +101,7 @@
         </Grid.RowDefinitions>
 
         <!-- Details for selected item -->
-        
+
         <ScrollViewer
             Margin=" 0,0,0,5"
             x:Name="itemDetail"
@@ -111,23 +111,23 @@
             <StackPanel Orientation="Horizontal">
                 <Grid Name="LeftSpacer" Width="40" Visibility="Collapsed"></Grid>
                 <Grid x:Name="itemDetailGrid">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition x:Name="LastRow" Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition x:Name="LastRow" Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
                     <Image Name="TopSpacerImage" Visibility="Collapsed" Grid.Row="1" Margin="0,0,20,0" Width="30" Height="22" Source="{Binding Image}"
                        Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" />
-                <StackPanel x:Name="itemDetailTitlePanel" Grid.Row="1" Grid.Column="1" Visibility="Collapsed">
-                    <TextBlock x:Name="itemTitle" Margin="0,-10,0,-10" Text="Cross-Connect"
+                    <StackPanel x:Name="itemDetailTitlePanel" Grid.Row="1" Grid.Column="1" Visibility="Collapsed">
+                        <TextBlock x:Name="itemTitle" Margin="0,-10,0,-10" Text="Cross-Connect"
                                Style="{StaticResource SubheaderTextStyle}" />
-                </StackPanel>
+                    </StackPanel>
                     <Grid Margin=" 0,0,0,12" x:Name="WindowGrid" Grid.Row="3" Grid.Column="1"></Grid>
-            </Grid>
+                </Grid>
                 <Grid Name="RightSpacer" Width="40" Visibility="Collapsed"></Grid>
             </StackPanel>
         </ScrollViewer>
@@ -178,7 +178,7 @@
                                           Name="useRemoteStorage" />
                             <ToggleSwitch Header="SyncVerses" Name="SyncVerses" />
                             <ToggleSwitch Header="AddLineBetweenNotes" Name="AddLineBetweenNotes" />
-                            
+
                             <TextBlock Name="captionHebrewDictionaryLink" Text="Hebrew dictionary internet link" />
                             <TextBox Name="hebrewDictionaryLink" Text="" Margin="10 10 10 10" />
                             <TextBlock Name="captionGreekDictionaryLink" Text="Greek dictionary internet link" />
@@ -291,7 +291,7 @@
                             <ListBoxItem>Afrikaans (af)</ListBoxItem>
                             <ListBoxItem>العربية (Arabic ar)</ListBoxItem>
                             <ListBoxItem>Azərbaycan (Azerbaijani az)</ListBoxItem>
-                            <ListBoxItem>Беларускі (Belarussian be)</ListBoxItem>
+                            <ListBoxItem>Беларуская (Belarusian be)</ListBoxItem>
                             <ListBoxItem>Български (Bulgarian bg)</ListBoxItem>
                             <ListBoxItem>বাংলা (Bengali bn)</ListBoxItem>
                             <ListBoxItem>Čeština (Czech cs)</ListBoxItem>
