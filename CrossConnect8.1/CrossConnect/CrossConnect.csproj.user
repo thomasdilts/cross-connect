@@ -7,7 +7,7 @@
     <UseSimulator>False</UseSimulator>
   </PropertyGroup>
   <PropertyGroup>
-    <AppxPackageIsForStore>True</AppxPackageIsForStore>
+    <AppxPackageIsForStore>False</AppxPackageIsForStore>
     <AppxShowAllApps>True</AppxShowAllApps>
     <AppxBuildConfigurationSelection>neutral</AppxBuildConfigurationSelection>
     <ProjectView>ProjectFiles</ProjectView>

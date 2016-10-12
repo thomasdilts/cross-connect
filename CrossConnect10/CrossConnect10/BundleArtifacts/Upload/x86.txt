@@ -1,2 +1,0 @@
-MainPackage=C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\CrossConnect10\bin\x86\Release\Upload\CrossConnect10_3.0.8.0_x86.appx
-SymbolPackage=C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect10\CrossConnect10\AppPackages\CrossConnect10_3.0.8.0\CrossConnect10_3.0.8.0_x86.appxsym
