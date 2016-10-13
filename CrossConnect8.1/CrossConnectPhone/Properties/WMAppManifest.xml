@@ -48,7 +48,7 @@
     <Language code="zh-CN" />
     <Language code="zh-TW" />
   </Languages>
-  <App xmlns="" ProductID="{d9a3e975-c3d4-4d88-8a61-541a55e8b722}" Title="CrossConnect" RuntimeType="Silverlight" Version="2.0.9.1" Genre="apps.normal" Author="CrossConnect author" Description="Sample description" Publisher="CrossConnect" PublisherID="{6312fed0-e13d-4929-b54f-d174229773e2}">
+  <App xmlns="" ProductID="{d9a3e975-c3d4-4d88-8a61-541a55e8b722}" Title="CrossConnect" RuntimeType="Silverlight" Version="2.0.9.2" Genre="apps.normal" Author="CrossConnect author" Description="Sample description" Publisher="CrossConnect" PublisherID="{6312fed0-e13d-4929-b54f-d174229773e2}">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_IDENTITY_DEVICE" />
