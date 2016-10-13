@@ -740,7 +740,7 @@ function SetFontColorForElement(elemntId, colorRgba){
         {
             for (int i = 0; i < book.NumberOfChapters; i++)
             {
-                if (this.Chapters[book.VersesInChapterStartIndex + i].Length != 0)
+                if (this.Chapters[book.VersesInChapterStartIndex + i].Length > 5)
                 {
                     return true;
                 }
