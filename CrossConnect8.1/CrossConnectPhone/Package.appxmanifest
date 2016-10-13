@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="57294ThomasDilts.BibleCrossConnect" Publisher="CN=F67267EA-6C25-400F-81E7-7466BD444D76" Version="2.0.9.0" />
+  <Identity Name="57294ThomasDilts.BibleCrossConnect" Publisher="CN=F67267EA-6C25-400F-81E7-7466BD444D76" Version="2.0.9.1" />
   <mp:PhoneIdentity PhoneProductId="d9a3e975-c3d4-4d88-8a61-541a55e8b722" PhonePublisherId="6312fed0-e13d-4929-b54f-d174229773e2" />
   <Properties>
     <DisplayName>CrossConnect.WP8</DisplayName>
