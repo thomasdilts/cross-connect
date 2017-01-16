@@ -1,0 +1,5 @@
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zlib\bin\Debug\zlib.dll
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zlib\bin\Debug\zlib.pdb
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zlib\obj\Debug\zlib.csprojResolveAssemblyReference.cache
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zlib\obj\Debug\zlib.dll
+C:\Users\Thomas\Documents\GitHubVisualStudio\cross-connect\CrossConnect8.1\zlib\obj\Debug\zlib.pdb
