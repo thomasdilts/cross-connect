@@ -32,7 +32,7 @@
 <string key="Commentaries">Kommentare</string>
 <string key="Copy bookmarks, highlights and notes to the clipboard">Kopieren Sie Lesezeichen, Markierungen und Notizen in die Zwischenablage</string>
 <string key="Copy the last selected verses">Kopieren Sie die zuletzt ausgewählte Verse</string>
-<string key="Custom bible download addresses">Benutzerdefinierte Bibel Download-Adressen</string>
+<string key="Custom bible download addresses">Benutzerdefinierte bible herunterladen Adressen</string>
 <string key="Daily plan">Tagesplan</string>
 <string key="Dark but easy">Dunkel aber einfach</string>
 <string key="Day">Tag</string>
@@ -83,7 +83,6 @@
 <string key="Morphology-Apocopated form">Apocopated Form</string>
 <string key="Morphology-Aramaic transliterated word (indeclinable)">Aramäische Wort transkribiert (indeclinable)</string>
 <string key="Morphology-Attic Greek form">Attic griechische Form</string>
-<string key="Morphology-Attic">Attic</string>
 <string key="Morphology-Comparative">Vergleichend</string>
 <string key="Morphology-Conditional particle or conjunction">Bedingte Teilchen oder Verbindung</string>
 <string key="Morphology-Conjunction or conjunctive particle">Konjunktion oder konjunktive Teile</string>
