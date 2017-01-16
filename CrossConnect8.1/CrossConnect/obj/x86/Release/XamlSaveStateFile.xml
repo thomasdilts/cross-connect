@@ -1,7 +1,0 @@
-<XamlCompilerSaveState>
-  <ReferenceAssemblyList>
-    <ReferenceAssembly PathName="c:\users\thomas\documents\githubvisualstudio\cross-connect\crossconnect8.1\packages\callisto.1.4.0\lib\netcore451\callisto.dll" HashGuid="2e1ab8d4-b948-5a13-39d6-e24ac2a3055f" />
-    <ReferenceAssembly PathName="c:\users\thomas\documents\githubvisualstudio\cross-connect\crossconnect8.1\packages\livesdk.5.6.3\windowsxaml\microsoft.live.dll" HashGuid="dbe20de8-a889-28bb-f599-7e4799dc7096" />
-    <ReferenceAssembly PathName="c:\users\thomas\documents\githubvisualstudio\cross-connect\crossconnect8.1\packages\notificationsextensions.portable.1.0.7\lib\dotnet\notificationsextensions.dll" HashGuid="0cc4bb95-cfa3-4586-a101-177ac84d45c4" />
-  </ReferenceAssemblyList>
-</XamlCompilerSaveState>
