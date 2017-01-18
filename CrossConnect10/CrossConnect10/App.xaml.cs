@@ -59,7 +59,7 @@ namespace CrossConnect
     {
         #region Constants
 
-        public const string Version = "3.0.11.0";
+        public const string Version = "3.0.12.0";
 
         public const string WebDirIsolated = "webtemporary";
 
