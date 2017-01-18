@@ -59,7 +59,7 @@ namespace CrossConnect
     {
         #region Constants
 
-        public const string Version = "3.0.9.0";
+        public const string Version = "3.0.11.0";
 
         public const string WebDirIsolated = "webtemporary";
 
@@ -88,6 +88,8 @@ namespace CrossConnect
 
         public static Theme Themes = new Theme();
 
+        private Windows.System.Display.DisplayRequest _displayRequest;
+
         #endregion
 
         #region Constructors and Destructors
@@ -100,6 +102,12 @@ namespace CrossConnect
         {
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
+            //create the request instance if needed
+            if (_displayRequest == null)
+                _displayRequest = new Windows.System.Display.DisplayRequest();
+
+            //make request to put in active state
+            _displayRequest.RequestActive();
         }
 
         #endregion
